@@ -1,0 +1,137 @@
+/**
+ * 顶部内容
+ */
+.top-content {
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 570rpx;
+}
+.nav-top-title {
+    font-size: 42rpx;
+    font-weight: 700;
+    text-align: left;
+    padding: 66rpx 250rpx 20rpx 20rpx;
+    color: #fff;
+}
+
+/**
+ * 搜索
+ */
+.search-fixed-seat {
+    padding-top: 70rpx;
+}
+.search-content-fixed {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    padding-top: 60rpx;
+    padding-bottom: 20rpx;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+}
+.search-content {
+    border-radius: 90rpx;
+    background: #fff;
+    position: relative;
+}
+.search-content icon {
+    position: absolute;
+    left: 30rpx;
+    top: calc(50% - 16rpx);
+}
+.search-content input {
+    font-size: 28rpx;
+    padding: 0 30rpx 0 76rpx;
+    box-sizing: border-box;
+    height: 70rpx;
+    line-height: 70rpx;
+}
+
+/**
+ * 轮播
+ */
+.banner-content {
+    margin-top: 26rpx;
+}
+
+/**
+ * 楼层数据
+ */
+.floor-list {
+    position: relative;
+}
+.floor-list .word .word-icon:not(:last-child) {
+    margin-right: 20rpx;
+}
+.floor-list .word image {
+    max-width: 100%;
+    margin: 0 auto;
+}
+.floor-list .goods-list .goods {
+    width: calc(50% - 10rpx);
+    float: left;
+    padding-bottom: 10rpx;
+    margin-bottom: 20rpx;
+}
+.floor-list .goods-list .goods:nth-of-type(2n + 1) {
+    margin-right: 10rpx;
+}
+.floor-list .goods-list .goods:nth-of-type(2n) {
+    margin-left: 10rpx;
+}
+.floor-list .goods-list .goods image {
+    width: 100%;
+    height: 380rpx;
+}
+
+/*
+ * 限时秒杀 - 插件
+ */
+.limitedtimediscount .goods-list .item {
+    width: 260rpx;
+    height: 460rpx;
+    border: 1px solid #f5f5f5;
+    background: white;
+    display: inline-block;
+    position: relative;
+}
+.limitedtimediscount .goods-list .item:not(:last-child) {
+    margin-right: 10px;
+}
+.limitedtimediscount .goods-list .item image {
+    width: 260rpx;
+    height: 260rpx;
+}
+.limitedtimediscount .goods-list .goods-base .icon {
+    position: absolute;
+    right: 15rpx;
+    bottom: 15rpx;
+}
+
+/**
+ * 购买记录 - 插件
+ */
+.plugins-salerecords swiper {
+    height: 506rpx;
+}
+.plugins-salerecords swiper-item {
+    height: 100% !important;
+}
+.plugins-salerecords .item {
+    border-bottom: 1px solid #fbfbfb;
+}
+.plugins-salerecords image {
+    width: 40rpx !important;
+    height: 40rpx !important;
+    border-radius: 50%;
+}
+.plugins-salerecords .item-content {
+    width: 24%;
+}
+.plugins-salerecords .item-content:nth-child(1) {
+    width: 36%;
+}
+.plugins-salerecords .item-content:nth-child(2) {
+    width: 40%;
+}

@@ -1,0 +1,350 @@
+<template>
+<view>
+<view class="page">
+  <view v-if="data_list.length > 0">
+    <view v-for="(item, index) in data_list" :key="index" class="item bg-white spacing-mb">
+      <view @tap="address_conent_event" :data-index="index" class="oh">
+        <view v-if="(item.logo || null) != null" class="fl oh margin-right-lg">
+          <image class="dis-block address-logo" :src="item.logo" mode="widthFix"></image>
+        </view>
+        <view class="oh">
+          <view class="base oh">
+            <text v-if="(item.alias || null) != null" class="address-alias">{{item.alias}}</text>
+            <text>{{item.name}}</text>
+            <text class="fr">{{item.tel}}</text>
+          </view>
+          <view class="address oh">
+            <image class="item-icon fl" src="/static/images/user-address.png" mode="widthFix"></image>
+            <view class="text fr">{{item.province_name || ''}}{{item.city_name || ''}}{{item.county_name || ''}}{{item.address || ''}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="operation br-t oh">
+        <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
+          <text class="cr-gray">距离</text>
+          <text class="cr-base">{{item.distance_value}}</text>
+          <text class="cr-gray">{{item.distance_unit}}</text>
+        </view>
+        <view class="fr oh button-list">
+          <button v-if="(item.is_default || 0) == 0" class="cr-base map-submit br" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">选择</button>
+          <button v-else class="cr-grey map-submit br" type="default" size="mini" hover-class="none" :disabled="true">默认</button>
+          <button v-if="(item.lng || null) != null && (item.lat || null) != null && item.lng != 0 && item.lat != 0" class="cr-base map-submit br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view v-if="data_list.length == 0">
+    <!--<import src="/pages/common/nodata.wxml"></import>-->
+    <block data-type="template" data-is="nodata" data-attr="status: data_list_loding_status">
+  <!-- 1 加载中 -->
+  <view v-if="0 == 1" class="no-data-loding tc">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 2 处理错误 -->
+  <view v-else-if="0 == 2" class="no-data-box tc">
+    <image src="/static/images/error.png" mode="widthFix"></image>
+    <view class="no-data-tips">{{msg || '处理错误'}}</view>
+  </view>
+
+  <!-- 0 默认没有数据 -->
+  <view v-else-if="0 == 0" class="no-data-box tc">
+    <image src="/static/images/empty.png" mode="widthFix"></image>
+    <view class="no-data-tips">{{msg || '没有相关数据'}}</view>
+  </view>
+</block>
+  </view>
+    
+  <!--<import src="/pages/common/bottom_line.wxml"></import>-->
+  <block data-type="template" data-is="bottom_line" data-attr="status: data_bottom_line_status">
+    <view v-if="(status || false)" class="data-bottom-line">
+        <view class="left fl"></view>
+        <view class="msg fl">我是有底线的</view>
+        <view class="right fr"></view>
+    </view>
+</block>
+</view>
+</view>
+</template>
+
+<script>
+const app = getApp();
+
+export default {
+  data() {
+    return {
+      data_list_loding_status: 1,
+      data_bottom_line_status: false,
+      data_list: [],
+      params: null,
+      user_location_cache_key: app.globalData.data.cache_userlocation_key,
+      user_location: null,
+      is_first: 1,
+      home_extraction_address_position: 0
+    };
+  },
+
+  components: {},
+  props: {},
+
+  onLoad(params) {
+    this.setData({
+      params: params,
+      home_extraction_address_position: app.globalData.get_config('config.home_extraction_address_position', 0)
+    });
+  },
+
+  onReady: function () {
+    // 清除位置缓存信息
+    uni.removeStorage({
+      key: this.user_location_cache_key
+    }); // 是否获取位置
+
+    if (this.home_extraction_address_position == 1) {
+      uni.navigateTo({
+        url: '/pages/common/open-setting-location/open-setting-location'
+      });
+    }
+  },
+
+  onShow() {
+    uni.setNavigationBarTitle({
+      title: app.globalData.data.common_pages_title.extraction_address
+    }); // 是否需要选择地理位置
+
+    if (this.home_extraction_address_position == 1) {
+      // 首次不请求数据
+      if (this.is_first == 0) {
+        this.user_location_init();
+        this.init();
+      }
+    } else {
+      this.init();
+    }
+
+    this.setData({
+      is_first: 0
+    });
+  },
+
+  // 下拉刷新
+  onPullDownRefresh() {
+    this.get_data_list();
+  },
+
+  methods: {
+    // 初始化
+    init() {
+      var user = app.globalData.get_user_info(this, "init");
+
+      if (user != false) {
+        // 用户未绑定用户则转到登录页面
+        if (app.globalData.user_is_need_login(user)) {
+          uni.redirectTo({
+            url: "/pages/login/login?event_callback=init"
+          });
+          return false;
+        } else {
+          // 获取数据
+          this.get_data_list();
+        }
+      } else {
+        this.setData({
+          data_list_loding_status: 0,
+          data_bottom_line_status: false
+        });
+      }
+    },
+
+    // 地址信息初始化
+    user_location_init() {
+      var result = uni.getStorageSync(this.user_location_cache_key) || null;
+      var data = null;
+
+      if (result != null) {
+        data = {
+          name: result.name || null,
+          address: result.address || null,
+          lat: result.latitude || null,
+          lng: result.longitude || null
+        };
+      }
+
+      this.setData({
+        user_location: data
+      });
+    },
+
+    // 获取数据列表
+    get_data_list() {
+      // 加载loding
+      uni.showLoading({
+        title: "加载中..."
+      });
+      this.setData({
+        data_list_loding_status: 1
+      }); // 获取数据
+
+      var data = {}; // 是否有坐标
+
+      if ((this.user_location || null) != null) {
+        data['lng'] = this.user_location.lng;
+        data['lat'] = this.user_location.lat;
+      } // 请求接口
+
+
+      uni.request({
+        url: app.globalData.get_request_url("switchinfo", "extraction", "distribution"),
+        method: "POST",
+        data: data,
+        dataType: "json",
+        success: res => {
+          uni.hideLoading();
+          uni.stopPullDownRefresh();
+
+          if (res.data.code == 0) {
+            var data = res.data.data;
+
+            if (data.extraction_address.length > 0) {
+              this.setData({
+                data_list: data.extraction_address,
+                data_list_loding_status: 3,
+                data_bottom_line_status: true
+              });
+            } else {
+              this.setData({
+                data_list_loding_status: 0
+              });
+            }
+          } else {
+            this.setData({
+              data_list_loding_status: 0
+            });
+
+            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+              app.globalData.showToast(res.data.msg);
+            }
+          }
+        },
+        fail: () => {
+          uni.hideLoading();
+          uni.stopPullDownRefresh();
+          this.setData({
+            data_list_loding_status: 2
+          });
+          app.globalData.showToast("服务器请求出错");
+        }
+      });
+    },
+
+    // 地图查看
+    address_map_event(e) {
+      var index = e.currentTarget.dataset.index || 0;
+      var data = this.data_list[index] || null;
+
+      if (data == null) {
+        app.globalData.showToast("地址有误");
+        return false;
+      } // 打开地图
+
+
+      var name = data.alias || data.name || '';
+      var address = (data.province_name || '') + (data.city_name || '') + (data.county_name || '') + (data.address || '');
+      app.globalData.open_location(data.lng, data.lat, name, address);
+    },
+
+    // 地址内容事件
+    address_conent_event(e) {
+      var index = e.currentTarget.dataset.index || 0;
+      var is_back = this.params.is_back || 0;
+
+      if (is_back == 1) {
+        uni.setStorage({
+          key: app.globalData.data.cache_buy_user_address_select_key,
+          data: this.data_list[index]
+        });
+        uni.navigateBack();
+      }
+    },
+
+    // 切换选择事件
+    address_switch_event(e) {
+      var index = e.currentTarget.dataset.index || 0;
+      var temp_data = this.data_list;
+
+      if ((temp_data[index] || null) == null) {
+        app.globalData.showToast('数据有误');
+        return false;
+      } // 请求切换
+
+
+      var self = this;
+      uni.showLoading({
+        title: "处理中..."
+      });
+      uni.request({
+        url: app.globalData.get_request_url("switchsave", "extraction", "distribution"),
+        method: "POST",
+        data: {
+          "id": temp_data[index]['id'],
+          "value": temp_data[index]['id_old'] || 0
+        },
+        dataType: "json",
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        success: res => {
+          uni.hideLoading();
+
+          if (res.data.code == 0) {
+            app.globalData.showToast(res.data.msg, "success");
+            self.get_data_list();
+          } else {
+            if (app.globalData.is_login_check(res.data)) {
+              app.globalData.showToast(res.data.msg);
+            } else {
+              app.globalData.showToast('提交失败，请重试！');
+            }
+          }
+        },
+        fail: () => {
+          uni.hideLoading();
+          app.globalData.showToast("服务器请求出错");
+        }
+      });
+    }
+
+  }
+};
+</script>
+<style>
+.item {
+  padding: 10rpx 10rpx 0 10rpx;
+}
+.address-logo {
+  width: 140rpx;
+  height: 140rpx !important;
+}
+.base, .address, .operation {
+  padding: 20rpx 0;
+}
+.address .item-icon {
+  width: 30rpx;
+  height: 35rpx !important;
+}
+.address-alias {
+  border: 1px solid #d2364c;
+  color: #d2364c;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  margin-right: 10rpx;
+}
+.address .text {
+  line-height: 44rpx;
+  width: calc(100% - 40rpx);
+}
+.operation .button-list button:not(:last-child) {
+  margin-right: 20rpx;
+}
+</style>

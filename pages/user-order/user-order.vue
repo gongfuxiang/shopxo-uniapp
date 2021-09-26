@@ -1,0 +1,784 @@
+<template>
+<view>
+<!-- 导航 -->
+<view class="nav">
+  <block v-for="(item, index) in nav_status_list" :key="index">
+    <view v-if="nav_status_index == index" class="item fl tc cr-main" :data-index="index" @tap="nav_event">{{item.name}}</view>
+    <view v-else class="item fl tc" :data-index="index" @tap="nav_event">{{item.name}}</view>
+  </block>
+</view>
+
+<!-- 订单列表 -->
+<scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+  <view class="list-content">
+    <view v-for="(item, index) in data_list" :key="index" class="list-item bg-white spacing-mb" v-if="data_list.length > 0">
+      <view class="item-base oh br-b">
+        <!-- 选择 -->
+        <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" @tap="selected_event" :data-oid="item.id" class="fl selected">
+          <image class="icon" :src="'/images/default-select' + (tools.indexOf(order_select_ids, item.id) ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+        </view>
+        <!-- 基础信息 -->
+        <view class="fl" @tap="warehouse_group_event" :data-value="item.warehouse_url || ''">
+          <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-xs" :src="item.warehouse_icon" mode="aspectFit"></image>
+          <text class="cr-base va-m">{{item.warehouse_name}}</text>
+        </view>
+        <text class="fr cr-main">{{item.status_name}}<text v-if="(item.is_under_line_text || null) != null">（{{item.is_under_line_text}}）</text></text>
+      </view>
+      <view v-for="(detail, index2) in item.items" :key="index2" class="goods-item br-b-dashed oh">
+        <navigator :url="'/pages/user-order-detail/user-order-detail?id=' + item.id" hover-class="none">
+          <image class="goods-image fl" :src="detail.images" mode="aspectFill"></image>
+          <view class="goods-base">
+            <view class="goods-title multi-text">{{detail.title}}</view>
+            <block v-if="detail.spec != null">
+              <view v-for="(spec, index) in detail.spec" :key="index" class="goods-spec cr-gray">
+                {{spec.type}}:{{spec.value}}
+              </view>
+            </block>
+            <view v-if="(item.is_can_launch_aftersale == 1 || (detail.orderaftersale || null) != null) && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
+          </view>
+          <view class="oh goods-price">
+            <text class="sales-price">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
+            <text v-if="detail.original_price > 0" class="original-price">{{item.currency_data.currency_symbol}}{{detail.original_price}}</text>
+            <text class="buy-number">x{{detail.buy_number}}</text>
+          </view>
+        </navigator>
+      </view>
+      <view class="item-describe tr cr-base">{{item.describe}}</view>
+      <view v-if="item.status == 1 || item.status == 3 || (item.status == 4 && item.user_is_comments == 0) || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t">
+        <button v-if="item.status <= 1" class="submit-cancel" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+        <button v-if="item.status == 1" class="submit-pay cr-base br" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{item.is_under_line == 1 ? '切换' : ''}}支付</button>
+        <button v-if="item.status == 2 && item.order_model != 2" class="submit-rush cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
+        <button v-if="item.status == 3" class="submit-success cr-base br" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
+        <button v-if="item.status == 4 && item.user_is_comments == 0" class="submit-success cr-base br" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
+      </view>
+    </view>
+
+    <view v-if="data_list.length == 0">
+      <!--<import src="/pages/common/nodata.wxml"></import>-->
+      <block data-type="template" data-is="nodata" data-attr="status: data_list_loding_status">
+  <!-- 1 加载中 -->
+  <view v-if="0 == 1" class="no-data-loding tc">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 2 处理错误 -->
+  <view v-else-if="0 == 2" class="no-data-box tc">
+    <image src="/static/images/error.png" mode="widthFix"></image>
+    <view class="no-data-tips">{{msg || '处理错误'}}</view>
+  </view>
+
+  <!-- 0 默认没有数据 -->
+  <view v-else-if="0 == 0" class="no-data-box tc">
+    <image src="/static/images/empty.png" mode="widthFix"></image>
+    <view class="no-data-tips">{{msg || '没有相关数据'}}</view>
+  </view>
+</block>
+    </view>
+
+    <!--<import src="/pages/common/bottom_line.wxml"></import>-->
+    <block data-type="template" data-is="bottom_line" data-attr="status: data_bottom_line_status">
+    <view v-if="(status || false)" class="data-bottom-line">
+        <view class="left fl"></view>
+        <view class="msg fl">我是有底线的</view>
+        <view class="right fr"></view>
+    </view>
+</block>
+  </view>
+</scroll-view>
+
+<!-- 合并支付 -->
+<view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1">
+  <button class="submit-fixed pay-merge-submit" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
+</view>
+
+<!-- 支付方式 popup -->
+<component-popup :prop-show="is_show_payment_popup" prop-position="bottom" @onclose="payment_popup_event_close">
+  <view v-if="payment_list.length > 0" class="payment-list oh bg-white">
+    <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
+      <view class="item-content br" :data-value="item.id" @tap="popup_payment_event">
+        <image v-if="(item.logo || null) != null" class="icon" :src="item.logo" mode="widthFix"></image>
+        <text>{{item.name}}
+        </text>
+      </view>
+    </view>
+  </view>
+  <view v-else class="payment-list oh bg-white tc cr-gray">没有支付方式</view>
+</component-popup>
+</view>
+</template>
+
+<script module="tools" lang="wxs" src="../../utils/tools.wxs"></script>
+
+<script>
+const app = getApp();
+import componentPopup from "../../components/popup/popup";
+
+export default {
+  data() {
+    return {
+      data_list: [],
+      data_page_total: 0,
+      data_page: 1,
+      data_list_loding_status: 1,
+      data_bottom_line_status: false,
+      params: null,
+      input_keyword_value: '',
+      load_status: 0,
+      is_show_payment_popup: false,
+      payment_list: [],
+      payment_id: 0,
+      temp_pay_value: '',
+      nav_status_list: [{
+        name: "全部",
+        value: "-1"
+      }, {
+        name: "待付款",
+        value: "1"
+      }, {
+        name: "待发货",
+        value: "2"
+      }, {
+        name: "待收货",
+        value: "3"
+      }, {
+        name: "已完成",
+        value: "4"
+      }, {
+        name: "已失效",
+        value: "5,6"
+      }],
+      nav_status_index: 0,
+      order_select_ids: [],
+      // 基础配置
+      home_is_enable_order_bulk_pay: 0,
+      data_total: ""
+    };
+  },
+
+  components: {
+    componentPopup
+  },
+  props: {},
+
+  onLoad(params) {
+    // 是否指定状态
+    var nav_status_index = 0;
+
+    if ((params.status || null) != null) {
+      for (var i in this.nav_status_list) {
+        if (this.nav_status_list[i]['value'] == params.status) {
+          nav_status_index = i;
+          break;
+        }
+      }
+    }
+
+    this.setData({
+      params: params,
+      nav_status_index: nav_status_index
+    });
+  },
+
+  onShow() {
+    uni.setNavigationBarTitle({
+      title: app.globalData.data.common_pages_title.user_order
+    }); // 数据加载
+
+    this.init(); // 初始化配置
+
+    this.init_config();
+  },
+
+  // 下拉刷新
+  onPullDownRefresh() {
+    this.setData({
+      data_page: 1
+    });
+    this.get_data_list(1);
+  },
+
+  methods: {
+    // 初始化配置
+    init_config(status) {
+      if ((status || false) == true) {
+        this.setData({
+          home_is_enable_order_bulk_pay: app.globalData.get_config('config.home_is_enable_order_bulk_pay')
+        });
+      } else {
+        app.globalData.is_config(this, 'init_config');
+      }
+    },
+
+    // 获取数据
+    init() {
+      var user = app.globalData.get_user_info(this, 'init');
+
+      if (user != false) {
+        // 用户未绑定用户则转到登录页面
+        if (app.globalData.user_is_need_login(user)) {
+          uni.redirectTo({
+            url: "/pages/login/login?event_callback=init"
+          });
+          return false;
+        } else {
+          // 获取数据
+          this.get_data_list();
+        }
+      } else {
+        this.setData({
+          data_list_loding_status: 0,
+          data_bottom_line_status: false
+        });
+      }
+    },
+
+    // 输入框事件
+    input_event(e) {
+      this.setData({
+        input_keyword_value: e.detail.value
+      });
+    },
+
+    // 获取数据
+    get_data_list(is_mandatory) {
+      // 分页是否还有数据
+      if ((is_mandatory || 0) == 0) {
+        if (this.data_bottom_line_status == true) {
+          return false;
+        }
+      } // 加载loding
+
+
+      uni.showLoading({
+        title: "加载中..."
+      });
+      this.setData({
+        data_list_loding_status: 1
+      }); // 参数
+
+      var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value']; // 获取数据
+
+      uni.request({
+        url: app.globalData.get_request_url("index", "order"),
+        method: "POST",
+        data: {
+          page: this.data_page,
+          keywords: this.input_keyword_value || "",
+          status: order_status,
+          is_more: 1
+        },
+        dataType: "json",
+        success: res => {
+          uni.hideLoading();
+          uni.stopPullDownRefresh();
+
+          if (res.data.code == 0) {
+            if (res.data.data.data.length > 0) {
+              if (this.data_page <= 1) {
+                var temp_data_list = res.data.data.data; // 下订单支付处理
+
+                if (this.load_status == 0) {
+                  if ((this.params.is_pay || 0) == 1 && (this.params.order_ids || null) != null) {
+                    this.pay_handle(this.params.order_ids);
+                  }
+                }
+              } else {
+                var temp_data_list = this.data_list;
+                var temp_data = res.data.data.data;
+
+                for (var i in temp_data) {
+                  temp_data_list.push(temp_data[i]);
+                }
+              }
+
+              this.setData({
+                data_list: temp_data_list,
+                data_total: res.data.data.total,
+                data_page_total: res.data.data.page_total,
+                data_list_loding_status: 3,
+                data_page: this.data_page + 1,
+                load_status: 1,
+                payment_list: res.data.data.payment_list || []
+              }); // 是否还有数据
+
+              if (this.data_page > 1 && this.data_page > this.data_page_total) {
+                this.setData({
+                  data_bottom_line_status: true
+                });
+              } else {
+                this.setData({
+                  data_bottom_line_status: false
+                });
+              }
+            } else {
+              this.setData({
+                data_list_loding_status: 0,
+                load_status: 1,
+                data_list: [],
+                data_bottom_line_status: false
+              });
+            }
+          } else {
+            this.setData({
+              data_list_loding_status: 0,
+              load_status: 1
+            });
+
+            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+              app.globalData.showToast(res.data.msg);
+            }
+          }
+        },
+        fail: () => {
+          uni.hideLoading();
+          uni.stopPullDownRefresh();
+          this.setData({
+            data_list_loding_status: 2,
+            load_status: 1
+          });
+          app.globalData.showToast("服务器请求出错");
+        }
+      });
+    },
+
+    // 滚动加载
+    scroll_lower(e) {
+      this.get_data_list();
+    },
+
+    // 支付
+    pay_event(e) {
+      this.setData({
+        is_show_payment_popup: true,
+        temp_pay_value: e.currentTarget.dataset.value,
+        order_select_ids: []
+      });
+    },
+
+    // 支付弹窗关闭
+    payment_popup_event_close(e) {
+      this.setData({
+        is_show_payment_popup: false
+      });
+    },
+
+    // 支付弹窗发起支付
+    popup_payment_event(e) {
+      var payment_id = e.currentTarget.dataset.value || 0;
+      this.setData({
+        payment_id: payment_id
+      });
+      this.payment_popup_event_close();
+      this.pay_handle(this.temp_pay_value);
+    },
+
+    // 支付方法
+    pay_handle(order_ids) {
+      var self = this;
+      uni.showLoading({
+        title: "请求中..."
+      });
+      uni.request({
+        url: app.globalData.get_request_url("pay", "order"),
+        method: "POST",
+        data: {
+          ids: order_ids,
+          payment_id: this.payment_id
+        },
+        dataType: "json",
+        success: res => {
+          uni.hideLoading();
+
+          if (res.data.code == 0) {
+            // 是否直接支付成功
+            if ((res.data.data.is_success || 0) == 1) {
+              self.order_item_pay_success_handle(order_ids);
+              app.globalData.showToast('支付成功', 'success');
+            } else {
+              // 支付方式类型
+              switch (res.data.data.is_payment_type) {
+                // 正常线上支付
+                case 0:
+                  var data = res.data.data;
+                  uni.requestPayment({
+                    timeStamp: data.data.timeStamp,
+                    nonceStr: data.data.nonceStr,
+                    package: data.data.package,
+                    signType: data.data.signType,
+                    paySign: data.data.paySign,
+                    success: function (res) {
+                      // 数据设置
+                      self.order_item_pay_success_handle(order_ids); // 跳转支付页面
+
+                      uni.navigateTo({
+                        url: "/pages/paytips/paytips?code=9000"
+                      });
+                    },
+                    fail: function (res) {
+                      app.globalData.showToast('支付失败');
+                    }
+                  });
+                  break;
+                // 线下支付
+
+                case 1:
+                  var order_ids_arr = order_ids.split(',');
+                  var temp_data_list = self.data_list;
+
+                  for (var i in temp_data_list) {
+                    if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
+                      temp_data_list[i]['is_under_line'] = 1;
+                    }
+                  }
+
+                  self.setData({
+                    data_list: temp_data_list
+                  });
+                  app.globalData.alert({
+                    msg: res.data.msg,
+                    is_show_cancel: 0
+                  });
+                  break;
+                // 钱包支付
+
+                case 2:
+                  self.order_item_pay_success_handle(order_ids);
+                  app.globalData.showToast('支付成功', 'success');
+                  break;
+                // 默认
+
+                default:
+                  app.globalData.showToast('支付类型有误');
+              }
+            }
+          } else {
+            app.globalData.showToast(res.data.msg);
+          }
+        },
+        fail: () => {
+          uni.hideLoading();
+          app.globalData.showToast('服务器请求出错');
+        }
+      });
+    },
+
+    // 支付成功数据设置
+    order_item_pay_success_handle(order_ids) {
+      var order_ids_arr = order_ids.split(',');
+      var temp_data_list = this.data_list; // 数据设置
+
+      for (var i in temp_data_list) {
+        if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
+          switch (parseInt(temp_data_list[i]['order_model'])) {
+            // 销售模式
+            case 0:
+              temp_data_list[i]['status'] = 2;
+              temp_data_list[i]['status_name'] = '待发货';
+              break;
+            // 自提模式
+
+            case 2:
+              temp_data_list[i]['status'] = 2;
+              temp_data_list[i]['status_name'] = '待取货';
+              break;
+            // 虚拟模式
+
+            case 3:
+              temp_data_list[i]['status'] = 3;
+              temp_data_list[i]['status_name'] = '待收货';
+              break;
+          }
+        }
+      }
+
+      this.setData({
+        data_list: temp_data_list
+      });
+    },
+
+    // 取消
+    cancel_event(e) {
+      uni.showModal({
+        title: "温馨提示",
+        content: "取消后不可恢复，确定继续吗?",
+        confirmText: "确认",
+        cancelText: "不了",
+        success: result => {
+          if (result.confirm) {
+            // 参数
+            var id = e.currentTarget.dataset.value;
+            var index = e.currentTarget.dataset.index; // 加载loding
+
+            uni.showLoading({
+              title: "处理中..."
+            });
+            uni.request({
+              url: app.globalData.get_request_url("cancel", "order"),
+              method: "POST",
+              data: {
+                id: id
+              },
+              dataType: "json",
+              success: res => {
+                uni.hideLoading();
+
+                if (res.data.code == 0) {
+                  var temp_data_list = this.data_list;
+                  temp_data_list[index]['status'] = 5;
+                  temp_data_list[index]['status_name'] = '已取消';
+                  this.setData({
+                    data_list: temp_data_list
+                  });
+                  app.globalData.showToast(res.data.msg, "success");
+                } else {
+                  app.globalData.showToast(res.data.msg);
+                }
+              },
+              fail: () => {
+                uni.hideLoading();
+                app.globalData.showToast("服务器请求出错");
+              }
+            });
+          }
+        }
+      });
+    },
+
+    // 收货
+    collect_event(e) {
+      uni.showModal({
+        title: "温馨提示",
+        content: "请确认已收到货物或已完成，操作后不可恢复，确定继续吗?",
+        confirmText: "确认",
+        cancelText: "不了",
+        success: result => {
+          if (result.confirm) {
+            // 参数
+            var id = e.currentTarget.dataset.value;
+            var index = e.currentTarget.dataset.index; // 加载loding
+
+            uni.showLoading({
+              title: "处理中..."
+            });
+            uni.request({
+              url: app.globalData.get_request_url("collect", "order"),
+              method: "POST",
+              data: {
+                id: id
+              },
+              dataType: "json",
+              success: res => {
+                uni.hideLoading();
+
+                if (res.data.code == 0) {
+                  var temp_data_list = this.data_list;
+                  temp_data_list[index]['status'] = 4;
+                  temp_data_list[index]['status_name'] = '已完成';
+                  this.setData({
+                    data_list: temp_data_list
+                  });
+                  app.globalData.showToast(res.data.msg, "success");
+                } else {
+                  app.globalData.showToast(res.data.msg);
+                }
+              },
+              fail: () => {
+                uni.hideLoading();
+                app.globalData.showToast("服务器请求出错");
+              }
+            });
+          }
+        }
+      });
+    },
+
+    // 催催
+    rush_event(e) {
+      app.globalData.showToast("催促成功", "success");
+    },
+
+    // 导航事件
+    nav_event(e) {
+      this.setData({
+        nav_status_index: e.currentTarget.dataset.index || 0,
+        data_page: 1,
+        order_select_ids: []
+      }); // 重新拉取数据
+
+      this.get_data_list(1);
+    },
+
+    // 售后订单事件
+    orderaftersale_event(e) {
+      var oid = e.currentTarget.dataset.oid || 0;
+      var did = e.currentTarget.dataset.did || 0;
+
+      if (oid == 0 || did == 0) {
+        app.globalData.showToast("参数有误");
+        return false;
+      } // 进入售后页面
+
+
+      uni.navigateTo({
+        url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" + did
+      });
+    },
+
+    // 订单评论
+    comments_event(e) {
+      uni.navigateTo({
+        url: "/pages/user-order-comments/user-order-comments?id=" + e.currentTarget.dataset.value
+      });
+    },
+
+    // 选中处理
+    selected_event(e) {
+      var oid = e.currentTarget.dataset.oid || 0;
+      var temp_select_ids = this.order_select_ids;
+
+      if (temp_select_ids.indexOf(oid) == -1) {
+        temp_select_ids.push(oid);
+      } else {
+        for (var i in temp_select_ids) {
+          if (temp_select_ids[i] == oid) {
+            temp_select_ids.splice(i, 1);
+          }
+        }
+      }
+
+      this.setData({
+        order_select_ids: temp_select_ids
+      });
+    },
+
+    // 合并支付
+    pay_merge_event(e) {
+      this.setData({
+        is_show_payment_popup: true,
+        temp_pay_value: this.order_select_ids.join(',')
+      });
+    },
+
+    // 仓库事件
+    warehouse_group_event(e) {
+      app.globalData.url_event(e);
+    }
+
+  }
+};
+</script>
+<style>
+/*
+ * 导航
+ */
+.nav {
+  background: #eee;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+.nav .item {
+  width: 16.66%;
+}
+
+/*
+ * 列表
+ */
+.scroll-box{
+    height: calc(100vh - 80rpx);
+}
+.goods-base {
+  min-height: 160rpx;
+  margin-left: 180rpx;
+  position: relative;
+}
+.goods-title {
+    line-height: 36rpx;
+}
+.list-item .goods-item:last-child {
+    border-bottom: 0;
+}
+.goods-item {
+    padding: 20rpx 10rpx;
+}
+.goods-title, .goods-spec {
+    margin-bottom: 10rpx;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+    margin-right: 20rpx;
+}
+.goods-price {
+    position: relative;
+    margin-top: 10rpx;
+}
+.buy-number {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.item-base, .item-describe, .item-operation {
+    padding: 20rpx 10rpx 20rpx 10rpx;
+}
+.warehouse-group-icon {
+  width: 30rpx;
+  height: 30rpx;
+}
+.submit-cancel {
+    border: 1px solid #f7c3b3;
+    color: #f7c3b3 !important;
+}
+.item-operation button:not(:first-child) {
+    margin-left: 20rpx;
+}
+.item-operation button {
+    padding: 0 35rpx;
+}
+.orderaftersale-btn-text {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #4d7fa7;
+}
+
+/**
+ * 支付方式
+ */
+.payment-list {
+  padding: 40rpx 0;
+}
+.payment-list .item {
+  width: 50%;
+}
+.payment-list .item-content {
+  margin: 20rpx;
+  padding: 20rpx 10rpx;
+}
+.payment-list .item-content image {
+  width: 50rpx;
+  height: 50rpx !important;
+  vertical-align: middle;
+  margin-right: 10rpx;
+}
+
+/**
+ * 选择
+ */
+ .selected .icon {
+  width: 35rpx;
+  height: 35rpx !important;
+  margin: 0 20rpx 0 10rpx;
+  vertical-align: middle;
+}
+
+/**
+ * 合并支付按钮
+ */
+.pay-merge-submit {
+  width: 220rpx;
+  height: 70rpx !important;
+  line-height: 74rpx !important;
+  left: calc(50% - 110rpx);
+  bottom: 50rpx;
+}
+</style>
