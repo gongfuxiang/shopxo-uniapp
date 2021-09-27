@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="countdown" v-if="is_show && !is_end">
-            <block v-if="propMsecShow == 1">
+            <block v-if="propMsecShow">
                 <view class="time" :style="time_style">{{msec}}</view>
                 <view class="ds" :style="ds_style">{{propSecondDs}}</view>
             </block>
@@ -45,12 +45,12 @@
 				default: '00'
 			},
             propEndShow: {
-				type: [String,Number],
-				default: 0
+				type: Boolean,
+				default: false
 			},
             propMsecShow: {
-            	type: [String,Number],
-            	default: 0
+            	type: Boolean,
+            	default: false
             },
             propMsg: {
 				type: String,
@@ -163,7 +163,7 @@
                         self.is_end = true;
         
                         // 活动已结束、是否结束还展示
-                        if(self.propEndShow != 1) {
+                        if(!self.propEndShow) {
                             self.is_show = false;
                         }
                     }

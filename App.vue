@@ -497,8 +497,7 @@
                     return false;
                 }
 
-                var temp_tabbar_pages = this.tabbar_pages;
-
+                var temp_tabbar_pages = this.data.tabbar_pages;
                 for (var i in temp_tabbar_pages) {
                     if (temp_tabbar_pages[i] == value) {
                         return true;
@@ -979,7 +978,6 @@
             // 图片预览
             image_show_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-
                 if (value != null) {
                     uni.previewImage({
                         current: value,
