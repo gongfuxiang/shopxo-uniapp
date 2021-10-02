@@ -4,14 +4,13 @@
 .top-content {
     background-repeat: no-repeat;
     background-size: contain;
-    height: 570rpx;
 }
 .nav-top-title {
     font-size: 42rpx;
-    font-weight: 700;
+    font-weight: bold;
     text-align: left;
-    padding: 66rpx 250rpx 20rpx 20rpx;
-    color: #fff;
+    padding: 2px 250rpx 0 20rpx;
+    height: 37px;
 }
 
 /**
@@ -24,28 +23,11 @@
     position: fixed;
     top: 0;
     z-index: 1;
-    padding-top: 60rpx;
+    padding-top: 25px;
     padding-bottom: 20rpx;
     width: 100%;
     background-repeat: no-repeat;
     background-size: 100% auto;
-}
-.search-content {
-    border-radius: 90rpx;
-    background: #fff;
-    position: relative;
-}
-.search-content icon {
-    position: absolute;
-    left: 30rpx;
-    top: calc(50% - 16rpx);
-}
-.search-content input {
-    font-size: 28rpx;
-    padding: 0 30rpx 0 76rpx;
-    box-sizing: border-box;
-    height: 70rpx;
-    line-height: 70rpx;
 }
 
 /**

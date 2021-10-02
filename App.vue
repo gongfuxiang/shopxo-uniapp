@@ -206,7 +206,7 @@
                 var self = this;
                 uni.checkSession({
                     success: function() {
-                        var login_data = uni.getStorageSync(self.cache_user_login_key) || null;
+                        var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
 
                         if (login_data == null) {
                             self.user_login(object, method);
@@ -215,7 +215,7 @@
                         }
                     },
                     fail: function() {
-                        uni.removeStorageSync(self.cache_user_login_key);
+                        uni.removeStorageSync(self.data.cache_user_login_key);
                         self.user_login(object, method);
                     }
                 });
@@ -229,10 +229,8 @@
              */
             user_login(object, method) {
                 var login_data = uni.getStorageSync(this.data.cache_user_login_key) || null;
-
                 if (login_data == null) {
-                    var self = this; // 加载loding
-
+                    var self = this;
                     uni.showLoading({
                         title: "授权中..."
                     });
@@ -246,18 +244,13 @@
                                         authcode: res.code
                                     },
                                     dataType: 'json',
-                                    header: {
-                                        'content-type': 'application/x-www-form-urlencoded'
-                                    },
                                     success: res => {
                                         uni.hideLoading();
-
                                         if (res.data.code == 0) {
                                             var data = res.data.data;
-
                                             if ((data.is_user_exist || 0) == 1) {
                                                 uni.setStorage({
-                                                    key: self.cache_user_info_key,
+                                                    key: self.data.cache_user_info_key,
                                                     data: data,
                                                     success: res => {
                                                         if (typeof object ===
@@ -272,7 +265,7 @@
                                                 });
                                             } else {
                                                 uni.setStorage({
-                                                    key: self.cache_user_login_key,
+                                                    key: self.data.cache_user_login_key,
                                                     data: data
                                                 });
                                                 self.login_to_auth();
@@ -344,15 +337,12 @@
                         "referrer": referrer
                     },
                     dataType: 'json',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     success: res => {
                         uni.hideLoading();
 
                         if (res.data.code == 0) {
                             uni.setStorage({
-                                key: self.cache_user_info_key,
+                                key: self.data.cache_user_info_key,
                                 data: res.data.data,
                                 success: res => {
                                     if (typeof object === 'object' && (method || null) !=
@@ -606,7 +596,6 @@
              */
             alert(e) {
                 var msg = e.msg || null;
-
                 if (msg != null) {
                     var title = e.title || '';
                     var is_show_cancel = e.is_show_cancel == 0 ? false : true;
@@ -622,14 +611,11 @@
                         cancelColor: cancel_color,
                         confirmText: confirm_text,
                         confirmColor: confirm_color,
-
                         success(res) {
-                            if ((e.object || null) != null && typeof e.object === 'object' && (e.method ||
-                                null) != null) {
+                            if ((e.object || null) != null && typeof e.object === 'object' && (e.method || null) != null) {
                                 e.object[e.method](res.confirm ? 1 : 0);
                             }
                         }
-
                     });
                 } else {
                     self.showToast('提示信息为空 alert');
@@ -694,7 +680,6 @@
                     this.get_user_info(object, method);
                     return false;
                 }
-
                 return true;
             },
 
@@ -786,9 +771,6 @@
                     method: 'POST',
                     data: {},
                     dataType: 'json',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     success: res => {
                         if (res.data.code == 0) {
                             uni.setStorage({
@@ -1027,6 +1009,7 @@
 </script>
 <style>
     @import './common/css/lib.css';
+    @import './common/css/page.css';
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/common.css';

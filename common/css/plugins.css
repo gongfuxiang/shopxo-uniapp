@@ -28,6 +28,9 @@
     font-family: arial;
     font-size: 76rpx;
 }
+.coupon-container .v-left .base .unit {
+    margin-left: 5rpx;
+}
 .coupon-container .v-left .base .desc {
     margin-left: 20rpx;
 }

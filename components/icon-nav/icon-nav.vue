@@ -2,8 +2,7 @@
     <view v-if="propData.length > 0">
         <view class="data-list">
             <view v-for="(item, index) in propData" :key="index" class="items">
-                <view class="items-content" :data-value="item.event_value" :data-type="item.event_type"
-                    @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
+                <view class="items-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
                     <image :src="item.images_url" mode="aspectFit"></image>
                 </view>
                 <view class="title">{{item.name}}</view>
@@ -19,7 +18,6 @@
         data() {
             return {};
         },
-
         components: {},
         props: {
             propData: Array
@@ -28,7 +26,6 @@
             navigation_event(e) {
                 app.globalData.operation_event(e);
             }
-
         }
     };
 </script>
@@ -37,13 +34,11 @@
         overflow: hidden;
         margin-bottom: 20rpx;
     }
-
     .data-list .items {
         width: calc(20% - 40rpx);
         float: left;
         padding: 20rpx 20rpx 0 20rpx;
     }
-
     .items-content {
         border-radius: 50%;
         padding: 20rpx;
@@ -54,12 +49,10 @@
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
-
     .data-list .items image {
         width: 50rpx !important;
         height: 50rpx !important;
     }
-
     .data-list .items .title {
         margin-top: 6rpx;
         font-size: 30rpx;

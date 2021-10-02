@@ -2,19 +2,21 @@
     <view>
         <!-- 顶部导航 -->
         <view v-if="goods != null" class="page">
-            <view class="top-nav-left-icon">
-                <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @click="top_nav_left_back_event"></uni-icons>
-                <uni-icons type="list" size="20" color="#333" class="icon round margin-left-lg" @click="top_nav_left_more_event"></uni-icons>
+            <view class="top-nav-left-icon" :style="'top:'+(status_bar_height+8)+'px;'">
+                <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @tap="top_nav_left_back_event"></uni-icons>
+                <uni-icons type="list" size="20" color="#333" class="icon round margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
             </view>
-            <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height">
-                <view class="top-nav padding-bottom padding-horizontal-main">
-                    <view class="top-nav-content tc">
-                        <block v-for="(item, index) in top_nav_title_data" :key="index">
-                            <text @click="top_nav_title_event" :data-index="index" :data-value="item.ent" :class="top_nav_title_index == index ? 'nav-active border-color-main' : ''">{{item.name}}</text>
-                        </block>
+            <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
+                <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height">
+                    <view class="top-nav padding-bottom padding-horizontal-main">
+                        <view class="top-nav-content tc">
+                            <block v-for="(item, index) in top_nav_title_data" :key="index">
+                                <text @tap="top_nav_title_event" :data-index="index" :data-value="item.ent" :class="top_nav_title_index == index ? 'nav-active border-color-main' : ''">{{item.name}}</text>
+                            </block>
+                        </view>
                     </view>
-                </view>
-            </component-trn-nav>
+                </component-trn-nav>
+            </block>
                      
             <!-- 轮播图片 -->
             <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="goods-photo bg-white" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
@@ -32,15 +34,15 @@
                     <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
                 </view>
                 <view class="goods-video-submit" :style="'top: calc(' + photo_height + ' - 110rpx) !important;'">
-                    <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="video_play_icon" mode="aspectFit"></image>
-                    <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="video_close_icon" mode="aspectFit"></image>
+                    <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="static_url+'video-play-icon.png'" mode="aspectFit"></image>
+                    <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="static_url+'video-close-icon.png'" mode="aspectFit"></image>
                 </view>
             </block>
             
             <!-- 价格信息 -->
-            <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_limitedtimediscount_is_valid == 1) ? 'goods-base-price-countdown' : '')" :style="(plugins_limitedtimediscount_is_valid == 1) ? 'background-image: url('+plugins_limitedtimediscount_data.bg_img+')' : ''">
+            <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_limitedtimediscount_is_valid == 1) ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg">
+                <view class="price-content padding-lg" :style="(plugins_limitedtimediscount_is_valid == 1) ? 'background-image: url('+plugins_limitedtimediscount_data.bg_img+')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon radius va-m">{{show_field_price_text}}</text>
                         <text class="sales-price va-m">{{currency_symbol}}{{goods.min_price}}</text>
@@ -54,8 +56,8 @@
                 </view>
             </view>
 
-            <!-- 基础信息 -->
             <view class="padding-horizontal-main">
+                <!-- 基础信息 -->
                 <view class="goods-base-content border-radius-main bg-white spacing-mb">
                     <view class="padding-main">
                         <view class="goods-title-content oh">
@@ -63,8 +65,8 @@
                             <view class="goods-title fl" :style="'color:' + goods.title_color">{{goods.title}}</view>
                             <!-- 分享 -->
                             <view class="goods-share fr tc" @tap="popup_share_event">
-                                <image :src="share_icon" mode="scaleToFill" class="dis-block"></image>
-                                <view class="cr-grey">分享</view>
+                                <image :src="static_url+'share-icon.png'" mode="scaleToFill" class="dis-block"></image>
+                                <view class="cr-gray text-size-sm">分享</view>
                             </view>
                         </view>
                         
@@ -76,28 +78,42 @@
                     <view class="br-t padding-main">
                         <view class="base-grid oh padding-top-sm padding-bottom-sm">
                             <view class="fl tl">
-                                <text class="cr-gray">累计销量</text>
-                                <text class="cr-main padding-left-sm">{{goods.sales_count}}</text>
+                                <text class="cr-gray">库存</text>
+                                <text class="cr-main padding-left-sm">{{goods.inventory}}</text>
                             </view>
                             <view class="fl tc">
-                                <text class="cr-gray">浏览次数</text>
+                                <text class="cr-gray">热度</text>
                                 <text class="cr-main padding-left-sm">{{goods.access_count}}</text>
                             </view>
                             <view class="fl tr">
-                                <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none">
-                                    <text class="cr-gray">累计评论</text>
-                                    <text class="cr-main padding-left-sm">{{goods.comments_count}}</text>
-                                </navigator>
+                                <text class="cr-gray">销量</text>
+                                <text class="cr-main padding-left-sm">{{goods.sales_count}}</text>
                             </view>
                         </view>
                     </view>
+                </view>
+            
+                <!-- 优惠券 -->
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="coupon-container-view oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
+                    <view class="fl item-title">优惠券</view>
+                    <view class="fr column-right-view single-text" @tap="popup_coupon_event">
+                        <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
+                            <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';'">{{item.desc || item.name}}</view>
+                        </block>
+                    </view>
+                </view>
+
+                <!-- 规格选择 -->
+                <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0) == 1 || (buy_button.is_cart || 0) == 1))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
+                    <view class="fl item-title">规格</view>
+                    <view class="fr column-right-view cr-base single-text" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
                 </view>
             </view>
 
             <!-- icon -->
             <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container oh border-radius-main padding-horizontal-main margin-bottom-sm">
                 <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
-                    <view v-if="(item.name || null) != null" class="fl tc" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')">{{item.name}}</view>
+                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')">{{item.name}}</view>
                 </block>
             </view>
 
@@ -122,39 +138,12 @@
                 </view>
             </view>
 
-            <!-- 优惠劵 -->
-            <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0"
-                class="coupon-container wh-auto spacing-mt bg-white">
-                <scroll-view scroll-x="true">
-                    <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                        <view :class="'item bg-white ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
-                            <view class="v-left fl">
-                                <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
-                                    <text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
-                                    <text class="price">{{item.discount_value}}</text>
-                                    <text class="unit">{{item.type_unit}}</text>
-                                </view>
-                                <view v-if="(item.use_limit_type_name || null) != null"
-                                    class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
-                                <view v-if="(item.desc || null) != null" class="desc cr-gray single-text">{{item.desc}}
-                                </view>
-                            </view>
-                            <view class="v-right fr" @tap="coupon_receive_event" :data-index="index"
-                                ::data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
-                                <text class="circle"></text>
-                                <text>{{item.is_operable_name}}</text>
-                            </view>
-                        </view>
-                    </block>
-                </scroll-view>
-            </view>
-
-            <view class="padding-main">
+            <view class="padding-horizontal-main">
                 <!-- 多商户 -->
-                <view v-if="plugins_shop_data != null" class="plugins-shop-container oh border-radius-main padding-main bg-white spacing-mb">
+                <view v-if="plugins_shop_data != null" class="plugins-shop-container oh border-radius-main padding-main bg-white arrow-right spacing-mb">
                     <navigator :url="'/pages/plugins/shop/detail/detail?id=' + plugins_shop_data.id" hover-class="none">
                         <image :src="plugins_shop_data.logo" mode="aspectFit" class="plugins-shop-logo fl radius"></image>
-                        <view class="plugins-shop-base fr arrow-right">
+                        <view class="plugins-shop-base column-right-view fr">
                             <view class="plugins-shop-title single-text">
                                 <text v-if="plugins_shop_data.auth_type == 1" class="plugins-shop-auth-icon">{{plugins_shop_data.auth_type_name}}</text>
                                 <text>{{plugins_shop_data.name}}</text>
@@ -165,8 +154,49 @@
                     </navigator>
                 </view>
 
+                <!-- 商品评价 -->
+                <view class="goods-comment spacing-mb">
+                    <view class="spacing-nav-title">
+                        <text class="line"></text>
+                        <text class="text-wrapper">商品评价</text>
+                        <text class="margin-left-xs">({{goods.comments_count}})</text>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">好评率 {{goods.comments_score.rate}}%</navigator>
+                    </view>
+                    <view class="border-radius-main padding-main bg-white">
+                        <block v-if="((goods.comments_data || null) != null && goods.comments_data.length > 0)">
+                            <view v-for="(item, index) in goods.comments_data" :key="index" class="goods-comment-item spacing-mb">
+                                <view class="oh nav br-b padding-bottom-sm">
+                                    <image class="avatar dis-block fl" :src="item.user.avatar || static_url+'default-user.png'" mode="aspectFit"></image>
+                                    <view class="base-nav fr">
+                                        <text class="va-m">{{item.user.user_name_view}}</text>
+                                        <view class="dis-inline-block va-m margin-left-sm">
+                                            <uni-rate :value="item.rating" :is-fill="false" :size="14" />
+                                        </view>
+                                        <view class="fr">
+                                            <text class="cr-grey">{{item.add_time_date}}</text>
+                                        </view>
+                                    </view>
+                                </view>
+                                <view class="base-content oh padding-sm">
+                                    <view class="content cr-base text-size-sm">{{item.content}}</view>
+                                    <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
+                                        <block v-for="(iv, ix) in item.images" :key="ix">
+                                            <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                                        </block>
+                                    </view>
+                                    <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{item.msg}}</view>
+                                </view>
+                            </view>
+                            <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="cr-base tc">查看更多评价 >></navigator>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-sm padding-bottom-sm">暂无评价数据</view>
+                        </block>
+                    </view>
+                </view>
+                
                 <!-- 商品详情参数 -->
-                <view v-if="(goods.parameters || null) != null && goods.parameters.detail.length > 0">
+                <view v-if="(goods.parameters || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">商品参数</text>
@@ -193,8 +223,7 @@
                         <!-- 是否详情展示相册 -->
                         <block v-if="common_is_goods_detail_show_photo == 1 && goods_photo.length > 0">
                             <view v-for="(item, index) in goods_photo" :key="index" class="goods-detail-photo">
-                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event"
-                                    ::data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix">
+                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix">
                                 </image>
                             </view>
                         </block>
@@ -220,34 +249,43 @@
             <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作 -->
-            <view class="goods-buy-nav wh-auto bg-white br-t">
-                <view class="padding-horizontal-main oh">
-                    <view class="shop fl tc" @tap="shop_event">
+            <view class="goods-buy-nav oh wh-auto bg-white br-t">
+                <view class="bus-items fl tc">
+                    <view class="item fl" @tap="shop_event">
                         <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
-                        <text class="dis-block cr-gray">{{nav_home_button_info.text}}</text>
+                        <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
                     </view>
-                    <view class="collect fl tc" @tap="goods_favor_event">
-                        <image :src="'/static/images/default-favor-icon-' + nav_favor_button_info.status + '.png'" mode="scaleToFill"></image>
-                        <text :class="'dis-block ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
+                    <view class="item fl">
+                        <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
+                            <view class="badge-icon">
+                                <component-badge :prop-number="quick_nav_cart_count"></component-badge>
+                            </view>
+                            <image :src="static_url+'cart-icon.png'" mode="scaleToFill"></image>
+                            <text class="dis-block text-size-xs cr-gray">购物车</text>
+                        </navigator>
                     </view>
-                    <view :class="'fr button-items goods-buy-nav-btn-number-' + buy_button.count || 0">
+                    <view class="item fl " @tap="goods_favor_event">
+                        <image :src="static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
+                        <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
+                    </view>
+                </view>
+                <view :class="'btn-items fr goods-buy-nav-btn-number-' + buy_button.count || 0">
                         <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
                             <block v-for="(item, index) in buy_button.data" :key="index">
                                 <block v-if="(item.name || null) != null && (item.type || null) != null">
-                                    <button :class="'fl cr-white round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{item.name}}</button>
+                                    <button :class="'item fl cr-white round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{item.name}}</button>
                                 </block>
                             </block>
                         </block>
                         <block v-else>
-                            <button class="goods-not-buy bg-gray round tc" type="default" disabled>{{buy_button.error || '暂停销售'}}</button>
+                            <button class="item bg-gray round tc" type="default" disabled>{{buy_button.error || '暂停销售'}}</button>
                         </block>
                     </view>
-                </view>
             </view>
 
             <!-- 购买弹层 -->
             <component-popup :prop-show="popup_status" prop-position="bottom" @onclose="popup_close_event">
-                <view class="goods-popup bg-white">
+                <view class="goods-popup padding-main bg-white">
                     <view class="close fr oh">
                         <view class="fr" @tap.stop="popup_close_event">
                             <icon type="clear" size="20"></icon>
@@ -255,7 +293,7 @@
                     </view>
                     <!-- 规格基础信息 -->
                     <view class="goods-popup-base oh br-b">
-                        <image :src="goods_spec_base_images" mode="scaleToFill" class="br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
+                        <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                         <view class="goods-popup-base-content">
                             <view class="goods-price">
                                 <view class="sales-price">{{currency_symbol}}{{goods_spec_base_price}}</view>
@@ -277,8 +315,8 @@
                                 <view v-if="item.value.length > 0" class="spec">
                                     <block v-for="(items, keys) in item.value" :key="keys">
                                         <button @tap.stop="goods_specifications_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill"></image>
-                                            {{items.name}}
+                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m round margin-right-sm"></image>
+                                            <text class="va-m">{{items.name}}</text>
                                         </button>
                                     </block>
                                 </view>
@@ -288,7 +326,7 @@
                         <!-- 购买数量 -->
                         <view class="goods-buy-number oh">
                             <view class="title fl">购买数量</view>
-                            <view class="number-content tc oh">
+                            <view class="number-content tc oh radius">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
                                 <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="temp_buy_number">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
@@ -310,21 +348,58 @@
                     <view class="share-popup-content">
                         <view v-if="common_app_is_good_thing == 1" class="share-items oh">
                             <share-button :product="share_product" type="3" class="dis-block oh">
-                                <image class="fl" :src="share_recomend_icon" mode="scaleToFill">
+                                <image class="fl" :src="static_url+'share-recomend-icon.png'" mode="scaleToFill">
                                 </image>
                                 <view class="cr-gray single-text fl">好物推荐、和大家一起分享你发现的宝贝</view>
                             </share-button>
                         </view>
                         <view class="share-items oh">
                             <button class="dis-block" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
-                                <image :src="share_weixin_icon" mode="scaleToFill"></image>
+                                <image :src="static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
                                 <text class="cr-gray single-text">一键分享给好友、群聊</text>
                             </button>
                         </view>
                         <view v-if="common_app_is_poster_share == 1" class="share-items oh" @tap="poster_event">
-                            <image :src="share_friend_icon" mode="scaleToFill"></image>
+                            <image :src="static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
                         </view>
+                    </view>
+                </view>
+            </component-popup>
+            
+            <!-- 优惠券弹层 -->
+            <component-popup :prop-show="popup_coupon_status" prop-position="bottom" @onclose="popup_coupon_close_event">
+                <view class="coupon-popup padding-horizontal-main padding-top-main">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_coupon_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="coupon-container padding-bottom-main">
+                        <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
+                            <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
+                                <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
+                                    <view class="v-left fl">
+                                        <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
+                                            <text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
+                                            <text class="price">{{item.discount_value}}</text>
+                                            <text class="unit">{{item.type_unit}}</text>
+                                        </view>
+                                        <view v-if="(item.use_limit_type_name || null) != null"
+                                            class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
+                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text">{{item.desc}}
+                                        </view>
+                                    </view>
+                                    <view class="v-right fr" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
+                                        <text class="circle"></text>
+                                        <text>{{item.is_operable_name}}</text>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无优惠券信息</view>
+                        </block>
                     </view>
                 </view>
             </component-popup>
@@ -340,40 +415,10 @@
         <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         
         <!-- 在线客服 -->
-        <view v-if="common_app_is_online_service == 1">
-            <!--<import src="/pages/lib/online-service/content.wxml"></import>-->
-            <block data-type="template" data-is="online_service"
-                data-attr="title: goods.title, path: '/pages/goods-detail/goods-detail?goods_id='+goods.id, img: goods.images, card: true">
-                <button open-type="contact" class="common-quick-nav common-online-service"
-                    :send-message-title="title || ''" :send-message-path="path || ''" :send-message-img="img || ''"
-                    :show-message-card="card || false">
-                    <image src="/static/images/online-service-icon.png" class="dis-block"></image>
-                </button>
-            </block>
-        </view>
-            <!--<import src="/pages/lib/online-service/content.wxml"></import>-->
-            <block data-type="template" data-is="online_service"
-                data-attr="title: goods.title, path: '/pages/goods-detail/goods-detail?goods_id='+goods.id, img: goods.images, card: true">
-                <button open-type="contact" class="common-quick-nav common-online-service"
-                    :send-message-title="title || ''" :send-message-path="path || ''" :send-message-img="img || ''"
-                    :show-message-card="card || false">
-                    <image src="/static/images/online-service-icon.png" class="dis-block"></image>
-                </button>
-            </block>
-        </view>
-
-        <!-- 购物车 -->
-        <!-- <view class="common-quick-nav quick-nav-cart">
-            <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
-                <view class="badge-icon">
-                    <component-badge :prop-number="quick_nav_cart_count"></component-badge>
-                </view>
-                <image src="/static/images/default-cart-icon.png" class="dis-block"></image>
-            </navigator>
-        </view> -->
+        <component-online-service :prop-is-nav="true"></component-online-service>
 
         <!-- 快捷导航 -->
-        <!-- <component-quick-nav></component-quick-nav> -->
+        <component-quick-nav :prop-is-nav="true"></component-quick-nav>
     </view>
 </template>
 
@@ -386,11 +431,16 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentTrnNav from "../../components/trn-nav/trn-nav";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
+    import componentOnlineService from "../../components/online-service/online-service";
 
+    var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('goods_detail');
     export default {
         data() {
             return {
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight')),
+                common_static_url: common_static_url,
+                static_url: static_url,
                 indicator_dots: false,
                 indicator_color: 'rgba(0, 0, 0, .3)',
                 indicator_active_color: '#e31c55',
@@ -414,13 +464,14 @@
                 goods_spec_base_original_price: 0,
                 goods_spec_base_inventory: 0,
                 goods_spec_base_images: '',
+                goods_spec_selected_text: '请选择规格',
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
                 popup_share_status: false,
                 // 导航首页按钮
                 nav_home_button_info: {
                     "text": "首页",
-                    "icon": "/static/images/default-home-icon.png",
+                    "icon": static_url+"home-icon.png",
                     "value": "/pages/index/index"
                 },
                 // 导航收藏按钮
@@ -445,19 +496,7 @@
                 top_nav_title_index: 0,
                 top_nav_title_scroll: true,
                 top_nav_title_timer: null,
-                top_nav_title_data: [
-                    {"name": "商品", "ent": ".page"},
-                    {"name": "基础", "ent": ".goods-base-content"},
-                    {"name": "详情", "ent": ".goods-detail"},
-                ],
-                // 分享icon
-                share_icon: static_url+'share-icon.png',
-                share_recomend_icon: static_url+'share-recomend-icon.png',
-                share_weixin_icon: static_url+'share-weixin-icon.png',
-                share_friend_icon: static_url+'share-friend-icon.png',
-                // 视频操作
-                video_play_icon: static_url+'video-play-icon.png',
-                video_close_icon: static_url+'video-close-icon.png',
+                top_nav_title_data: [],
                 // 好物圈分享信息
                 share_product: {
                     "item_code": "",
@@ -475,6 +514,7 @@
                 plugins_coupon_data: null,
                 temp_coupon_receive_index: null,
                 temp_coupon_receive_value: null,
+                popup_coupon_status: false,
                 // 购买记录
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
@@ -492,7 +532,8 @@
             componentCountdown,
             componentNoData,
             componentTrnNav,
-            componentBottomLine
+            componentBottomLine,
+            componentOnlineService
         },
 
         onLoad(params) {
@@ -540,21 +581,21 @@
             this.scroll_value = e.scrollTop;
 
             // 顶部导航选中处理
-            if(this.top_nav_title_scroll) {
+            if (this.top_nav_title_scroll) {
                 var self = this;
                 var data = this.top_nav_title_data;
                 var query = uni.createSelectorQuery();
-                for(var i in data) {
+                for (var i in data) {
                     query.select(data[i]['ent']).boundingClientRect();
                 }
                 query.exec(function(res) {
                     var bar_h = app.globalData.get_system_info('statusBarHeight') || 0;
                     var nav_h = self.top_nav_height;
                     var length = res.length-1;
-                    for(var i=length; i>=0; i--) {
+                    for (var i=length; i>=0; i--) {
                         var temp = res[i]['top']-bar_h-nav_h;
-                        if(temp <= 0) {
-                            if(self.top_nav_title_index != i) {
+                        if (temp <= 0) {
+                            if (self.top_nav_title_index != i) {
                                 self.top_nav_title_index = i;
                             }
                             break;
@@ -654,6 +695,7 @@
                                         "status": data.goods.is_favor
                                     },
                                     buy_button: data.buy_button || null,
+                                    top_nav_title_data: data.middle_tabs_nav || [],
                                     goods_spec_base_price: data.goods.price,
                                     goods_spec_base_original_price: data.goods.original_price,
                                     goods_spec_base_inventory: data.goods.inventory,
@@ -729,7 +771,7 @@
             // 返回事件
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();
-                if(pages.length <= 1) {
+                if (pages.length <= 1) {
                     uni.switchTab({
                         url: '/pages/index/index'
                     });
@@ -950,18 +992,16 @@
                 var keys = e.currentTarget.dataset.keys || 0;
                 var temp_data = this.goods_specifications_choose;
                 var temp_images = this.goods_spec_base_images;
+
                 // 不能选择和禁止选择跳过
-                if ((temp_data[key]['value'][keys]['is_dont'] || null) == null && (temp_data[key]['value'][keys][
-                        'is_disabled'
-                    ] || null) == null) {
+                if ((temp_data[key]['value'][keys]['is_dont'] || null) == null && (temp_data[key]['value'][keys]['is_disabled'] || null) == null) {
                     // 规格选择
                     for (var i in temp_data) {
                         for (var k in temp_data[i]['value']) {
                             if ((temp_data[i]['value'][k]['is_dont'] || null) == null && (temp_data[i]['value'][k]['is_disabled'] || null) == null) {
                                 if (key == i) {
                                     if (keys == k && (temp_data[i]['value'][k]['is_active'] || null) == null) {
-                                        temp_data[i]['value'][k]['is_active'] = 'bg-white br-main cr-main';
-
+                                        temp_data[i]['value'][k]['is_active'] = 'cr-white bg-main br-main';
                                         if ((temp_data[i]['value'][k]['images'] || null) != null) {
                                             temp_images = temp_data[i]['value'][k]['images'];
                                         }
@@ -972,19 +1012,35 @@
                             }
                         }
                     }
-
                     this.setData({
                         goods_specifications_choose: temp_data,
                         goods_spec_base_images: temp_images,
-                        temp_buy_number: this.goods.buy_min_number || 1
+                        temp_buy_number: this.goods.buy_min_number || 1,
                     });
+
                     // 不能选择规格处理
                     this.goods_specifications_choose_handle_dont(key);
+
                     // 获取下一个规格类型
                     this.get_goods_specifications_type(key);
+
                     // 获取规格详情
                     this.get_goods_specifications_detail();
                 }
+                
+                // 已选择规格
+                var spec_selected = [];
+                for (var i in temp_data) {
+                    for (var k in temp_data[i]['value']) {
+                        if ((temp_data[i]['value'][k]['is_active'] || null) != null)
+                        {
+                            spec_selected.push(temp_data[i]['value'][k]['name']);
+                        }
+                    }
+                }
+                this.setData({
+                    goods_spec_selected_text: (spec_selected.length <= 0) ? '请选择规格' : spec_selected.join(' / ')
+                });
             },
 
             // 获取下一个规格类型
@@ -1012,7 +1068,7 @@
                 if (spec.length <= 0) {
                     return false;
                 }
-                
+                var self = this;
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('spectype', 'goods'),
@@ -1022,7 +1078,7 @@
                         "spec": JSON.stringify(spec)
                     },
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         if (res.data.code == 0) {
                             var spec_count = spec.length;
                             var index = spec_count > 0 ? spec_count : 0;
@@ -1033,24 +1089,20 @@
                                             temp_data[i]['value'][k]['is_dont'] = '';
                                             var temp_value = temp_data[i]['value'][k]['name'];
                                             var temp_status = false;
-
                                             for (var t in res.data.data) {
                                                 if (res.data.data[t] == temp_value) {
                                                     temp_status = true;
                                                     break;
                                                 }
                                             }
-
                                             if (temp_status == true) {
                                                 temp_data[i]['value'][k]['is_disabled'] = '';
                                             } else {
-                                                temp_data[i]['value'][k]['is_disabled'] =
-                                                    'spec-items-disabled';
+                                                temp_data[i]['value'][k]['is_disabled'] = 'spec-items-disabled';
                                             }
                                         }
                                     }
                                 }
-
                                 this.setData({
                                     goods_specifications_choose: temp_data
                                 });
@@ -1204,7 +1256,7 @@
                             }
 
                             if (active_count < sku_count) {
-                                app.globalData.showToast('请选择属性');
+                                app.globalData.showToast('请选择规格');
                                 return false;
                             }
                         }
@@ -1367,6 +1419,20 @@
                     }
                 }
             },
+            
+            // 优惠券开启弹层
+            popup_coupon_event(e) {
+                this.setData({
+                    popup_coupon_status: true
+                });
+            },
+            
+            // 优惠券弹层关闭
+            popup_coupon_close_event(e) {
+                this.setData({
+                    popup_coupon_status: false
+                });
+            },
 
             // 优惠劵领取事件
             coupon_receive_event(e) {
@@ -1382,6 +1448,11 @@
                         temp_coupon_receive_value: value
                     });
                 }
+                // 是否可以领取
+                var temp_list = this.plugins_coupon_data.data;
+                if (temp_list[index]['is_operable'] != 1) {
+                    return false;
+                }
                 
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
@@ -1393,48 +1464,51 @@
                         });
                         return false;
                     } else {
-                        var self = this;
-                        var temp_list = this.plugins_coupon_data.data;
-
-                        if (temp_list[index]['is_operable'] != 0) {
-                            uni.showLoading({
-                                title: "处理中..."
-                            });
-                            uni.request({
-                                url: app.globalData.get_request_url("receive", "coupon", "coupon"),
-                                method: "POST",
-                                data: {
-                                    "coupon_id": value
-                                },
-                                dataType: "json",
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        app.globalData.showToast(res.data.msg, "success");
-
-                                        if (self.plugins_coupon_data.base != null && self
-                                            .plugins_coupon_data.base.is_repeat_receive != 1) {
-                                            temp_list[index]['is_operable'] = 0;
-                                            temp_list[index]['is_operable_name'] = '已领取';
-                                            self.setData({
-                                                'plugins_coupon_data.data': temp_list
-                                            });
-                                        }
-                                    } else {
-                                        if (app.globalData.is_login_check(res.data, self,
-                                                'coupon_receive_event')) {
-                                            app.globalData.showToast(res.data.msg);
-                                        }
+                        uni.showLoading({
+                            title: "处理中..."
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url("receive", "coupon", "coupon"),
+                            method: "POST",
+                            data: {
+                                "coupon_id": value
+                            },
+                            dataType: "json",
+                            success: res => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    app.globalData.showToast(res.data.msg, "success");
+                                    if (this.plugins_coupon_data.base != null && this
+                                        .plugins_coupon_data.base.is_repeat_receive != 1) {
+                                        temp_list[index]['is_operable'] = 0;
+                                        temp_list[index]['is_operable_name'] = '已领取';
+                                        this.setData({
+                                            'plugins_coupon_data.data': temp_list
+                                        });
                                     }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                } else {
+                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
                                 }
-                            });
-                        }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast("服务器请求出错");
+                            }
+                        });
                     }
                 }
+            },
+            
+            // 评价图片预览
+            comment_images_show_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var ix = e.currentTarget.dataset.ix;
+                uni.previewImage({
+                    current: this.goods.comments_data[index]['images'][ix],
+                    urls: this.goods.comments_data[index]['images']
+                });
             }
         }
     };

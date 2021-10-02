@@ -1,0 +1,53 @@
+/*
+ * 评分
+ */
+.score-container .score {
+    width: 180rpx;
+    border-right: 1px solid #eee;
+}
+.score-container .score .value {
+    font-weight: bold;
+    font-size: 60rpx;
+    line-height: 60rpx;
+    margin-top: 10rpx;
+}
+.progress {
+    overflow: hidden;
+    height: 40rpx;
+    margin-top: 35rpx;
+    background-color: #eee;
+    width: calc(100% - 200rpx);
+}
+.progress .cr-gray {
+    font-size: 24rpx;
+    line-height: 40rpx;
+}
+.progress-bar {
+    float: left;
+    width: 0;
+    height: 100%;
+    font-size: 24rpx;
+    line-height: 40rpx;
+    color: #fff;
+    text-align: center;
+    background-color: #0e90d2;
+}
+.progress-bar-danger {
+    background-color: #dd514c;
+}
+.progress-bar-warning {
+    background-color: #F37B1D;
+}
+.progress-bar-secondary {
+    background-color: #3bb4f2;
+}
+.progress-bar-success {
+    background-color: #5eb95e;
+}
+
+/*
+ * 列表
+ */
+.scroll-box {
+    height: calc(100vh - 146rpx);
+}

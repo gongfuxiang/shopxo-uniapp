@@ -1,0 +1,159 @@
+/**
+* 商品列表
+*/
+.page {
+    padding-bottom: 100rpx;
+}
+.goods-item {
+    position: relative;
+}
+.goods-title {
+    line-height: 44rpx;
+    min-height: 86rpx;
+}
+.goods-image {
+    width: 155rpx;
+    height: 155rpx;
+    margin-right: 20rpx;
+}
+.goods-base {
+    margin-left: 175rpx;
+}
+.goods-item .items {
+    padding-left: 80rpx;
+}
+.goods-item .selected {
+    margin-top: 60rpx;
+}
+
+/**
+ * 错误提示
+ */
+.goods-item .error-msg {
+    position: absolute;
+    left: 104rpx;
+    top: 78rpx;
+    width: 142rpx;
+}
+.goods-item .error-msg text {
+    padding: 2rpx 20rpx;
+    box-shadow: 0 2px 10px rgb(181 181 181 / 95%);
+}
+
+/**
+ * 底部
+ */
+.goods-item .goods-bottom {
+    position: relative;
+    height: 58rpx;
+}
+
+/**
+* 数量操作
+*/
+.number-content {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.number-content .number-submit {
+    width: 60rpx;
+    font-weight: bold;
+}
+.number-content input {
+    width: 30px;
+    border-width: 0 1px;
+    border-style: solid;
+    border-color: #efefef;
+}
+.number-content .number-submit,
+.number-content input {
+    padding: 0;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+/**
+* 空购物车
+*/
+.no-data-box {
+    padding: 30% 0 0 0;
+}
+.no-data-box image {
+    width: 160rpx;
+    margin-bottom: 20rpx;
+}
+.no-data-box .no-data-tips {
+    font-size: 28rpx;
+    color: #a6a6a6;
+}
+.no-data-box navigator {
+    width: 220rpx;
+    margin: 0 auto;
+}
+.no-data-box button {
+    height: 60rpx;
+    line-height: 60rpx;
+    font-size: 28rpx;
+    margin-top: 30rpx;
+}
+
+/**
+* 操作导航
+*/
+.buy-nav {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+}
+.buy-nav,
+.nav-base,
+.nav-submit button {
+    height: 100rpx;
+}
+.nav-base,
+.nav-submit button {
+    line-height: 100rpx;
+}
+.nav-base {
+    width: calc(75% - 20rpx);
+    padding: 0 10rpx;
+}
+.nav-submit {
+    width: 25%;
+}
+.nav-submit button {
+    border-radius: 0;
+}
+.selected .icon {
+    width: 40rpx;
+    height: 40rpx !important;
+    margin: 0 10rpx;
+}
+.buy-nav .price {
+    width: calc(100% - 140rpx);
+}
+.buy-nav .sales-price {
+    max-width: calc(100% - 40px);
+}
+.nav-remove-submit {
+    position: absolute;
+    top: 36rpx;
+    left: 66rpx;
+    padding: 0rpx 20rpx;
+    line-height: 36rpx;
+}
+
+/*
+* 展示型
+*/
+.exhibition-mode button {
+    line-height: 80rpx;
+}
+.exhibition-mode-data .items {
+    padding-left: 0;
+}
+.exhibition-mode-data .error-msg {
+    left: 26rpx;
+}

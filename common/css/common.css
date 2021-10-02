@@ -51,17 +51,20 @@ button:before {
  * 边线主色
  */
 .border-color-main {
-    border-color: #f6c133;
+    border-color: #f6c133 !important;
 }
 .border-color-main-light {
-    border-color: #ffebd2;
+    border-color: #ffebd2 !important;
 }
 
 /**
- * 边框 主色、灰色（四边）
+ * 边框 主色、红色、灰色（四边）、无边线
  */
 .br-main {
     border: solid 1px #f6c133 !important;
+}
+.br-red {
+    border: solid 1px #f00 !important;
 }
 .br {
     border: solid 1px #efefef !important;
@@ -78,12 +81,18 @@ button:before {
 .br-r {
     border-right: solid 1px #efefef !important;
 }
+.br-0 {
+    border: 0 !important;
+}
 
 /**
- * 虚线边框 主色、灰色（四边）
+ * 虚线边框 主色、红色、灰色（四边）
  */
 .br-dashed-main {
     border: dashed 1px #f6c133 !important;
+}
+.br-dashed-red {
+    border: dashed 1px #f00 !important;
 }
 .br-dashed {
     border: dashed 1px #efefef !important;
@@ -143,11 +152,27 @@ button:before {
 .va-m {
     vertical-align: middle;
 }
+.radius-0 {
+    border-radius: 0 !important;
+}
 .radius {
-    border-radius: 10rpx;
+    border-radius: 10rpx !important;
 }
 .round {
-    border-radius: 50rpx;
+    border-radius: 50rpx !important;
+}
+
+/**
+ * 透明度
+ */
+.opacity-min {
+    opacity: 0.3;
+}
+.opacity {
+    opacity: 0.5;
+}
+.opacity-max {
+    opacity: 0.8;
 }
 
 /**
@@ -217,7 +242,7 @@ button[disabled]..button-main {
 
 /**
  * 统一颜色
- * 文本主色、次主色、搭配色、基础色、白色、黑色、灰色、浅灰色、红色
+ * 文本主色、次主色、搭配色、基础色、白色、绿色、黑色、灰色、浅灰色、红色
  */
 .cr-main {
     color: #f6c133 !important;
@@ -234,6 +259,9 @@ button[disabled]..button-main {
 .cr-white {
     color: #fff !important;
 }
+.cr-green {
+    color: #1AAD19 !important;
+}
 .cr-black {
     color: #000 !important;
 }
@@ -249,7 +277,7 @@ button[disabled]..button-main {
 
 /**
  * 统一背景色
- * 主色、次主色、搭配色、白色、灰色
+ * 主色、次主色、搭配色、白色、绿色、红色、灰色
  */
 .bg-main {
     background-color: #f6c133 !important;
@@ -262,6 +290,12 @@ button[disabled]..button-main {
 }
 .bg-white {
     background-color: #fff !important;
+}
+.bg-green {
+    background-color: #1AAD19 !important;
+}
+.bg-red {
+    background-color: #E64340 !important;
 }
 .bg-gray {
     background-color: #d6d6d6 !important;
@@ -281,6 +315,14 @@ button[disabled].bg-main-pair {
 button[disabled].bg-white {
     background-color: #fdfdfd !important;
     color: #ccc !important;
+}
+button[disabled].bg-green {
+    background-color: #94de94 !important;
+    color: #d5f5d5 !important;
+}
+button[disabled].bg-red {
+    background-color: #ffbaba !important;
+    color: #ffdfdf !important;
 }
 button[disabled].bg-gray {
     background-color: #ececec !important;

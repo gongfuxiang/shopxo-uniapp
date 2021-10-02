@@ -3,15 +3,14 @@
         <!-- 顶部内容 -->
         <view v-if="load_status == 1" class="top-content" :style="top_content_style">
             <!-- 标题 -->
-            <view class="nav-top-title single-text">{{application_title}}</view>
+            <view class="nav-top-title cr-white single-text">{{application_title}}</view>
 
             <!-- 搜索 -->
             <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
             <view v-if="load_status == 1" :class="search_is_fixed == 1 ? 'search-content-fixed bg-main' : ''" :style="search_is_fixed == 1 ? top_content_style : ''">
                 <view :style="search_style">
-                    <view class="search-content margin-horizontal-main">
-                        <icon type="search" size="32rpx"></icon>
-                        <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^！" placeholder-class="cr-grey" class="cr-base" @confirm="search_input_event">
+                    <view class="margin-horizontal-main">
+                        <component-search prop-bg-color="#fff"></component-search>
                     </view>
                 </view>
             </view>
@@ -39,7 +38,7 @@
                     <view class="dis-inline-block va-m margin-left-sm">
                         <component-countdown :prop-hour="plugins_limitedtimediscount_data.time.hours" :prop-minute="plugins_limitedtimediscount_data.time.minutes" :prop-second="plugins_limitedtimediscount_data.time.seconds"></component-countdown>
                     </view>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl margin-top-xs cr-gray fr">更多</navigator>
+                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
                 <view class="goods-list scroll-view-horizontal border-radius-main oh">
                     <scroll-view scroll-x>
@@ -73,9 +72,8 @@
                         <view class="spacing-nav-title">
                             <text class="text-wrapper">{{floor.name}}</text>
                             <text v-if="floor.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
-                            <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl margin-top-xs cr-gray fr">更多</navigator>
+                            <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                         </view>
-                        
                         <view class="floor-list wh-auto oh">
                             <view class="word scroll-view-horizontal">
                                 <scroll-view scroll-x>
@@ -85,12 +83,6 @@
                                         </block>
                                     </block>
                                 </scroll-view>
-                                
-                               <!-- <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id"
-                                    hover-class="none">
-                                    <image v-if="floor.big_images.length > 0" :src="floor.big_images" mode="aspectFit"
-                                        class="dis-block"></image>
-                                </navigator> -->
                             </view>
                             <view v-if="floor.goods.length > 0" class="goods-list margin-top-lg">
                                 <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh">
@@ -106,7 +98,9 @@
                         </view>
                     </view>
                 </block>
-            </block>         <!---main 底部购买记录 -->
+            </block>
+            
+            <!--- 底部购买记录 -->
             <view v-if="(plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
                 <view class="spacing-nav-title">
                     <text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
@@ -139,7 +133,7 @@
             <!-- 留言 -->
             <view v-if="load_status == 1 && common_app_is_enable_answer == 1" class="bg-white border-radius-main oh spacing-10">
                 <navigator url="/pages/answer-form/answer-form" hover-class="none">
-                    <image mode="widthFix" :src="answer_form_images" class="wh-auto border-radius-main"></image>
+                    <image mode="widthFix" :src="static_url+'answer-form.jpg'" class="wh-auto border-radius-main"></image>
                 </navigator>
             </view>
             
@@ -149,26 +143,23 @@
             <!-- 结尾 -->
             <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
 
-            <!-- 在线客服 -->
-            <view v-if="common_app_is_online_service == 1">
-                <button open-type="contact" class="common-quick-nav common-online-service">
-                    <image src="/static/images/online-service-icon.png" class="dis-block"></image>
-                </button>
-            </view>
-
-            <!-- 快捷导航 -->
-            <!-- <component-quick-nav></component-quick-nav> -->
-
             <!-- 版权信息 -->
             <view v-if="load_status == 1">
                 <component-copyright></component-copyright>
             </view>
         </view>
+        
+        <!-- 在线客服 -->
+        <component-online-service :prop-is-nav="true"></component-online-service>
+        
+        <!-- 快捷导航 -->
+        <component-quick-nav :prop-is-nav="true"></component-quick-nav>
     </view>
 </template>
 
 <script>
     const app = getApp();
+    import componentSearch from "../../components/search/search";
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentIconNav from "../../components/icon-nav/icon-nav";
     import componentBanner from "../../components/slider/slider";
@@ -177,11 +168,15 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentCopyright from "../../components/copyright/copyright";
+    import componentOnlineService from "../../components/online-service/online-service";
 
+    var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
+                static_url: static_url,
                 load_status: 0,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -200,23 +195,19 @@
                 // 限时秒杀插件
                 plugins_limitedtimediscount_is_valid: 0,
                 plugins_limitedtimediscount_data: null,
-                plugins_limitedtimediscount_timer_title: '',
-                plugins_limitedtimediscount_is_show_time: true,
-                plugins_limitedtimediscount_timer: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 // 顶部+搜索样式配置
-                top_content_style: 'background-image: url("'+static_url+'nav-top.png");',
+                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+5)+'px;',
                 search_style: '',
                 search_is_fixed: 0,
-                // 留言入口图片
-                answer_form_images: static_url+'answer-form.jpg',
                 // 名称
                 application_title: app.globalData.data.application_title,
             };
         },
 
         components: {
+            componentSearch,
             componentQuickNav,
             componentIconNav,
             componentBanner,
@@ -224,11 +215,13 @@
             componentLayout,
             componentNoData,
             componentBottomLine,
-            componentCopyright
+            componentCopyright,
+            componentOnlineService
         },
         props: {},
 
         onShow() {
+            console.log(this.status_bar_height)
             // 数据加载
             this.init();
 
@@ -242,15 +235,6 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.init();
-        },
-
-        // 页面从前台变为后台时执行
-        onHide: function() {
-            clearInterval(this.plugins_limitedtimediscount_timer);
-        },
-        // 页面销毁时执行
-        onUnload: function() {
-            clearInterval(this.plugins_limitedtimediscount_timer);
         },
 
         // 自定义分享
@@ -346,11 +330,6 @@
                             } else {
                                 app.globalData.set_tab_bar_badge(2, 1, cart_total);
                             }
-
-                            // 限时秒杀倒计时
-                            if (this.plugins_limitedtimediscount_is_valid == 1) {
-                                //this.plugins_limitedtimediscount_countdown();
-                            }
                         } else {
                             self.setData({
                                 data_list_loding_status: 0,
@@ -371,78 +350,6 @@
                 });
             },
 
-            // 搜索事件
-            search_input_event(e) {
-                var keywords = e.detail.value || null;
-                if (keywords == null) {
-                    app.globalData.showToast("请输入搜索关键字");
-                    return false;
-                }
-
-                // 进入搜索页面
-                uni.navigateTo({
-                    url: '/pages/goods-search/goods-search?keywords=' + keywords
-                });
-            },
-
-            // 显示秒杀插件-倒计时
-            plugins_limitedtimediscount_countdown() {
-                // 销毁之前的任务
-                clearInterval(this.plugins_limitedtimediscount_timer);
-
-                // 定时参数
-                var data = this.plugins_limitedtimediscount_data;
-                var status = data.time.status || 0;
-                var msg = data.time.msg || '';
-                var hours = parseInt(data.time.hours) || 0;
-                var minutes = parseInt(data.time.minutes) || 0;
-                var seconds = parseInt(data.time.seconds) || 0;
-                var self = this;
-                if (status == 1) {
-                    // 秒
-                    var timer = setInterval(function() {
-                        if (seconds <= 0) {
-                            if (minutes > 0) {
-                                minutes--;
-                                seconds = 59;
-                            } else if (hours > 0) {
-                                hours--;
-                                minutes = 59;
-                                seconds = 59;
-                            }
-                        } else {
-                            seconds--;
-                        }
-
-                        var temp = self.plugins_limitedtimediscount_data;
-                        temp['time']['hours'] = hours < 10 ? '0' + hours : hours;
-                        temp['time']['minutes'] = minutes < 10 ? '0' + minutes : minutes;
-                        temp['time']['seconds'] = seconds < 10 ? '0' + seconds : seconds;
-                        self.setData({
-                            plugins_limitedtimediscount_data: temp,
-                            plugins_limitedtimediscount_timer: timer
-                        });
-
-                        if (hours <= 0 && minutes <= 0 && seconds <= 0) {
-                            // 停止时间
-                            clearInterval(timer);
-
-                            // 活动已结束
-                            self.setData({
-                                plugins_limitedtimediscount_timer_title: '活动已结束',
-                                plugins_limitedtimediscount_is_show_time: false
-                            });
-                        }
-                    }, 1000);
-                } else {
-                    // 活动已结束
-                    self.setData({
-                        plugins_limitedtimediscount_timer_title: msg,
-                        plugins_limitedtimediscount_is_show_time: false
-                    });
-                }
-            },
-            
             // 页面滚动监听
             onPageScroll(e) {
                 var top = e.scrollTop > 35 ? 35 : e.scrollTop;

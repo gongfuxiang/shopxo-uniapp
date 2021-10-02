@@ -34,6 +34,9 @@
         position: fixed;
         background: #fff;
         z-index: 101;
+        overflow: hidden;
+        border-top-right-radius: 20rpx;
+        border-top-left-radius: 20rpx;
     }
     .popup-mask {
         position: fixed;
@@ -41,7 +44,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        background-color: rgba(0, 0, 0, 0.75);
+        background-color: rgba(0, 0, 0, 0.6);
         opacity: 0;
         pointer-events: none;
         z-index: 100;
@@ -76,9 +79,9 @@
         pointer-events: auto;
     }
     .popup.animation .popup-content {
-        transition: all 0.15s linear;
+        transition: all 0.25s linear;
     }
     .popup.animation .popup-mask {
-        transition: all 0.15s linear;
+        transition: all 0.25s linear;
     }
 </style>
