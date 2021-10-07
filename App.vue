@@ -61,7 +61,7 @@
                 },
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
-                //request_url: 'http://shopxo.com/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址
                 static_url: 'https://dev.shopxo.vip/',
                 // 基础信息

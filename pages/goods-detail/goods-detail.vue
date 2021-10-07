@@ -328,7 +328,7 @@
                             <view class="title fl">购买数量</view>
                             <view class="number-content tc oh radius">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
-                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="temp_buy_number">
+                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
                             </view>
                         </view>
@@ -457,7 +457,7 @@
                 goods_specifications_choose: [],
                 goods_content_app: [],
                 popup_status: false,
-                temp_buy_number: 1,
+                buy_number: 1,
                 buy_event_type: 'buy',
                 buy_button: {},
                 goods_spec_base_price: 0,
@@ -689,7 +689,7 @@
                                     goods_specifications_choose: data.goods.specifications.choose ||
                                         [],
                                     goods_content_app: data.goods.content_app || [],
-                                    temp_buy_number: data.goods.buy_min_number || 1,
+                                    buy_number: data.goods.buy_min_number || 1,
                                     nav_favor_button_info: {
                                         "text": (data.goods.is_favor == 1 ? '已' : '') + '收藏',
                                         "status": data.goods.is_favor
@@ -958,7 +958,7 @@
                             method: 'POST',
                             data: {
                                 "goods_id": this.goods.id,
-                                "stock": this.temp_buy_number,
+                                "stock": this.buy_number,
                                 "spec": JSON.stringify(spec)
                             },
                             dataType: 'json',
@@ -1015,7 +1015,7 @@
                     this.setData({
                         goods_specifications_choose: temp_data,
                         goods_spec_base_images: temp_images,
-                        temp_buy_number: this.goods.buy_min_number || 1,
+                        //buy_number: this.goods.buy_min_number || 1,
                     });
 
                     // 不能选择规格处理
@@ -1080,6 +1080,7 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
+                            var spec_type = res.data.data.spec_type;
                             var spec_count = spec.length;
                             var index = spec_count > 0 ? spec_count : 0;
                             if (index < sku_count) {
@@ -1089,8 +1090,8 @@
                                             temp_data[i]['value'][k]['is_dont'] = '';
                                             var temp_value = temp_data[i]['value'][k]['name'];
                                             var temp_status = false;
-                                            for (var t in res.data.data) {
-                                                if (res.data.data[t] == temp_value) {
+                                            for (var t in spec_type) {
+                                                if (spec_type[t] == temp_value) {
                                                     temp_status = true;
                                                     break;
                                                 }
@@ -1119,26 +1120,12 @@
 
             // 获取规格详情
             get_goods_specifications_detail() {
-                // 是否全部选中
-                var temp_data = this.goods_specifications_choose;
-                var sku_count = temp_data.length;
-                var active_count = 0;
-
                 // 获取规格值
-                var spec = [];
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                            active_count++;
-                            spec.push({
-                                "type": temp_data[i]['name'],
-                                "value": temp_data[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
+                var spec = this.goods_selected_spec();
 
+                // 存在规格的时候是否已完全选择规格
+                var sku_count = this.goods_specifications_choose.length;
+                var active_count = spec.length;
                 if (spec.length <= 0 || active_count < sku_count) {
                     this.setData({
                         goods_spec_base_price: this.goods.price,
@@ -1154,16 +1141,13 @@
                     method: 'POST',
                     data: {
                         "id": this.goods.id,
-                        "spec": JSON.stringify(spec)
+                        "spec": JSON.stringify(spec),
+                        "stock": this.buy_number,
                     },
                     dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
-                            this.setData({
-                                goods_spec_base_price: res.data.data.price,
-                                goods_spec_base_original_price: res.data.data.original_price,
-                                goods_spec_base_inventory: res.data.data.inventory
-                            });
+                            this.goods_spec_detail_back_handle(res.data.data);
                         } else {
                             app.globalData.showToast(res.data.msg);
                         }
@@ -1173,55 +1157,104 @@
                     }
                 });
             },
+            
+            // 已选的商品规格
+            goods_selected_spec() {
+                var spec = [];
+                var temp_data = this.goods_specifications_choose;
+                for (var i in temp_data) {
+                    for (var k in temp_data[i]['value']) {
+                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
+                            spec.push({
+                                "type": temp_data[i]['name'],
+                                "value": temp_data[i]['value'][k]['name']
+                            });
+                            break;
+                        }
+                    }
+                }
+                return spec;
+            },
+            
+            // 商品规格详情返回数据处理
+            goods_spec_detail_back_handle(data) {
+                var spec_base = data.spec_base;
+                var data = {
+                    goods_spec_base_price: spec_base.price,
+                    goods_spec_base_original_price: spec_base.original_price,
+                    goods_spec_base_inventory: spec_base.inventory,
+                };
+
+                // 已选数量是否超过规格库存
+                if(this.buy_number > spec_base.inventory) {
+                    data['buy_number'] = spec_base.inventory;
+                }
+                this.setData(data);
+            },
 
             // 数量输入事件
             goods_buy_number_blur(e) {
-                var buy_number = parseInt(e.detail.value) || 1;
-                this.setData({
-                    temp_buy_number: buy_number
-                });
-                this.goods_buy_number_func(buy_number);
+                var number = parseInt(e.detail.value) || 1;
+                if(isNaN(number)) {
+                    number = this.goods.buy_min_number || 1;
+                }
+                this.goods_buy_number_func(number);
             },
 
             // 数量操作事件
             goods_buy_number_event(e) {
                 var type = parseInt(e.currentTarget.dataset.type) || 0;
-                var temp_buy_number = parseInt(this.temp_buy_number);
-                if (type == 0) {
-                    var buy_number = temp_buy_number - 1;
-                } else {
-                    var buy_number = temp_buy_number + 1;
-                }
-
-                this.goods_buy_number_func(buy_number);
+                var temp_number = parseInt(this.buy_number);
+                var number = (type == 0) ? (temp_number - 1) : (temp_number + 1);
+                this.goods_buy_number_func(number);
             },
 
             // 数量处理方法
-            goods_buy_number_func(buy_number) {
+            goods_buy_number_func(number) {
                 var buy_min_number = parseInt(this.goods.buy_min_number) || 1;
                 var buy_max_number = parseInt(this.goods.buy_max_number) || 0;
                 var inventory = parseInt(this.goods_spec_base_inventory);
                 var inventory_unit = this.goods.inventory_unit;
 
-                if (buy_number < buy_min_number) {
-                    buy_number = buy_min_number;
-                    if (buy_min_number > 1) {
-                        app.globalData.showToast('起购' + buy_min_number + inventory_unit);
-                    }
+                if (number < buy_min_number) {
+                    number = buy_min_number;
+                    app.globalData.showToast('起购' + buy_min_number + inventory_unit);
                 }
 
-                if (buy_max_number > 0 && buy_number > buy_max_number) {
-                    buy_number = buy_max_number;
+                if (buy_max_number > 0 && number > buy_max_number) {
+                    number = buy_max_number;
                     app.globalData.showToast('限购' + buy_max_number + inventory_unit);
                 }
 
-                if (buy_number > inventory) {
-                    buy_number = inventory;
+                if (number > inventory) {
+                    number = inventory;
                     app.globalData.showToast('库存数量' + inventory + inventory_unit);
                 }
 
                 this.setData({
-                    temp_buy_number: buy_number
+                    buy_number: number
+                });
+                
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url('stock', 'goods'),
+                    method: 'POST',
+                    data: {
+                        "id": this.goods.id,
+                        "spec": this.goods_selected_spec(),
+                        "stock": this.buy_number,
+                    },
+                    dataType: 'json',
+                    success: res => {
+                        if (res.data.code == 0) {
+                            this.goods_spec_detail_back_handle(res.data.data);
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        app.globalData.showToast("服务器请求出错");
+                    }
                 });
             },
 
@@ -1268,7 +1301,7 @@
                                 var data = {
                                     "buy_type": "goods",
                                     "goods_id": this.goods.id,
-                                    "stock": this.temp_buy_number,
+                                    "stock": this.buy_number,
                                     "spec": JSON.stringify(spec)
                                 };
                                 uni.navigateTo({
