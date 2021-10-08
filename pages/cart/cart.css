@@ -127,8 +127,8 @@
     border-radius: 0;
 }
 .selected .icon {
-    width: 40rpx;
-    height: 40rpx !important;
+    width: 35rpx;
+    height: 35rpx !important;
     margin: 0 10rpx;
 }
 .buy-nav .price {
