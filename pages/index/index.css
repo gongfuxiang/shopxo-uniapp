@@ -4,6 +4,7 @@
 .top-content {
     background-repeat: no-repeat;
     background-size: contain;
+    min-height: 410rpx;
 }
 .nav-top-title {
     font-size: 42rpx;

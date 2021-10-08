@@ -23,7 +23,7 @@
     export default {
         data() {
             return {
-                static_dir: '/static/images/'+app.globalData.data.default_theme+'/common/',
+                static_dir: '/static/images/common/',
             };
         },
         components: {},

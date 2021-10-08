@@ -58,11 +58,8 @@ button:before {
 }
 
 /**
- * 边框 主色、红色、灰色（四边）、无边线
+ * 边框 红色、灰色（四边）、无边线、主色
  */
-.br-main {
-    border: solid 1px #f6c133 !important;
-}
 .br-red {
     border: solid 1px #f00 !important;
 }
@@ -81,16 +78,16 @@ button:before {
 .br-r {
     border-right: solid 1px #efefef !important;
 }
+.br-main {
+    border: solid 1px #f6c133 !important;
+}
 .br-0 {
     border: 0 !important;
 }
 
 /**
- * 虚线边框 主色、红色、灰色（四边）
+ * 虚线边框 红色、灰色（四边）、主色
  */
-.br-dashed-main {
-    border: dashed 1px #f6c133 !important;
-}
 .br-dashed-red {
     border: dashed 1px #f00 !important;
 }
@@ -108,6 +105,9 @@ button:before {
 }
 .br-r-dashed {
     border-right: dashed 1px #efefef !important;
+}
+.br-dashed-main {
+    border: dashed 1px #f6c133 !important;
 }
 
 /**

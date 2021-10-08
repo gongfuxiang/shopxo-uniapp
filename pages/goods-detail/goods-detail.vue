@@ -378,7 +378,7 @@
                     <view class="coupon-container padding-bottom-main">
                         <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
+                                <view :class="'item bg-white radius ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
                                     <view class="v-left fl">
                                         <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
                                             <text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
@@ -578,7 +578,7 @@
         // 监听滚动
         onPageScroll(e) {
             // 位置记录
-            this.scroll_value = e.scrollTop;
+            this.setData({scroll_value: e.scrollTop});
 
             // 顶部导航选中处理
             if (this.top_nav_title_scroll) {

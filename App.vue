@@ -21,7 +21,7 @@
                 // 获取位置选择缓存key
                 cache_userlocation_key: "cache_userlocation_key",
                 // 默认用户头像
-                default_user_head_src: "/static/images/default-user.png",
+                default_user_head_src: "/static/images/yellow/common/user.png",
                 // 成功圆形提示图片
                 default_round_success_icon: "/static/images/default-round-success-icon.png",
                 // 错误圆形提示图片
@@ -61,7 +61,7 @@
                 },
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
-                request_url: 'http://shopxo.com/',
+                //request_url: 'http://shopxo.com/',
                 // 静态资源地址
                 static_url: 'https://dev.shopxo.vip/',
                 // 基础信息
@@ -471,18 +471,22 @@
 
                 return s_x;
             },
-
-            /**
-             * 当前地址是否存在tabbar中
-             */
-            is_tabbar_pages(url) {
+            
+            url_value_handle(url) {
                 if (url.indexOf("?") == -1) {
                     var value = url;
                 } else {
                     var temp_str = url.split("?");
                     var value = temp_str[0];
                 }
+                return value;
+            },
 
+            /**
+             * 当前地址是否存在tabbar中
+             */
+            is_tabbar_pages(url) {
+                var value = this.url_value_handle(url);
                 if ((value || null) == null) {
                     return false;
                 }

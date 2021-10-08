@@ -68,7 +68,7 @@
         created: function() {
             this.init_config();
             
-            // 是否定义导航
+            // 页面是否定义导航
             this.top = this.propIsNav ? 150 : 0;
 
             // 非首次进入则重新初始化配置接口

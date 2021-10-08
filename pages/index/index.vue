@@ -221,7 +221,6 @@
         props: {},
 
         onShow() {
-            console.log(this.status_bar_height)
             // 数据加载
             this.init();
 

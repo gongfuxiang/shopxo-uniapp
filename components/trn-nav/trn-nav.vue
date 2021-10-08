@@ -1,6 +1,7 @@
 <template>
 	<view>
 		<view :style="'background:'+(propBackgroundColor || '#fff')+';'+nav_style" :class="'nav '+propEnt">
+            <view v-if="(propTitle || null) != null" class="nav-title single-text">{{propTitle}}</view>
 			<slot></slot>
 		</view>
 	</view>
@@ -69,5 +70,13 @@
 		width: 100%;
 		z-index: 10;
 		position: fixed;
+        top: 0;
+        left: 0;
 	}
+    .nav-title {
+        font-size: 42rpx;
+        text-align: left;
+        padding: 2px 250rpx 0 20rpx;
+        height: 37px;
+    }
 </style>
