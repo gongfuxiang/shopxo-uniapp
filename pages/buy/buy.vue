@@ -18,7 +18,7 @@
                         <view class="address arrow-right" @tap="address_event">
                             <view v-if="address != null" class="padding-bottom-main">
                                 <view class="address-base">
-                                    <text v-if="(address.alias || null) != null" class="address-alias round margin-right-sm">{{address.alias}}</text>
+                                    <text v-if="(address.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm">{{address.alias}}</text>
                                     <text>{{address.name}}</text>
                                     <text class="fr">{{address.tel}}</text>
                                 </view>

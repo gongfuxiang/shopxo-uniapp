@@ -297,33 +297,34 @@
                             temp_head_nav_list[3]['count'] = (data.integral || 0) == 0 ? 0 : data.integral;
 
                             // 数据设置
-                            var data = {
+                            var upd_data = {
                                 user_order_status_list: temp_user_order_status_list,
                                 message_total: (data.common_message_total || 0) == 0 ? 0 : data.common_message_total,
                                 head_nav_list: temp_head_nav_list,
                                 navigation: data.navigation || []
                             }
                             // 是否存在配置订单导航
-                            if(data.navigation.length > 0) {
-                                var temp_nav_order = null;
-                                for(var i in data.navigation) {
-                                    var url = app.globalData.url_value_handle(data.navigation[i]['event_value']);
+                            var temp_nav_order = null;
+                            if(upd_data.navigation.length > 0) {
+                                for(var i in upd_data.navigation) {
+                                    var url = app.globalData.url_value_handle(upd_data.navigation[i]['event_value']);
                                     if(url == '/pages/user-order/user-order') {
-                                        temp_nav_order = data.navigation[i];
-                                        data.navigation.splice(i, 1);
+                                        temp_nav_order = upd_data.navigation[i];
+                                        upd_data.navigation.splice(i, 1);
                                         break;
                                     }
                                 }
-                                data['navigation_order'] = temp_nav_order;
                             }
+                            upd_data['navigation_order'] = temp_nav_order;
+
                             // 用户基础信息处理
                             if((data.avatar || null) != null) {
-                                data['avatar'] = data.avatar;
+                                upd_data['avatar'] = data.avatar;
                             }
                             if((data.user_name_view || null) != null) {
-                                data['nickname'] = data.user_name_view;
+                                upd_data['nickname'] = data.user_name_view;
                             }
-                            this.setData(data);
+                            this.setData(upd_data);
 
                             // 导航购物车处理
                             var cart_total = data.common_cart_total || 0;

@@ -26,8 +26,6 @@
     line-height: 85rpx;
 }
 .address-alias {
-    border: 1px solid #d2364c;
-    color: #d2364c;
     padding: 2rpx 10rpx;
 }
 
@@ -116,10 +114,6 @@
 .payment-list .item-content image {
     width: 50rpx;
     height: 50rpx !important;
-}
-.payment-list .selected {
-    border: 1px solid #d2364c;
-    color: #d2364c;
 }
 
 /**
