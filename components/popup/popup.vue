@@ -35,8 +35,6 @@
         background: #fff;
         z-index: 101;
         overflow: hidden;
-        border-top-right-radius: 20rpx;
-        border-top-left-radius: 20rpx;
     }
     .popup-mask {
         position: fixed;
@@ -83,5 +81,21 @@
     }
     .popup.animation .popup-mask {
         transition: all 0.25s linear;
+    }
+    .popup-top {
+        border-bottom-right-radius: 20rpx;
+        border-bottom-left-radius: 20rpx;
+    }
+    .popup-bottom {
+        border-top-right-radius: 20rpx;
+        border-top-left-radius: 20rpx;
+    }
+    .popup-left {
+        border-top-right-radius: 20rpx;
+        border-bottom-right-radius: 20rpx;
+    }
+    .popup-right {
+        border-top-left-radius: 20rpx;
+        border-bottom-left-radius: 20rpx;
     }
 </style>

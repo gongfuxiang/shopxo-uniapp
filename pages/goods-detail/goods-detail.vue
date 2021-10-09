@@ -22,8 +22,7 @@
             <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="goods-photo bg-white" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
                 <block v-for="(item, index) in goods_photo" :key="index">
                     <swiper-item>
-                        <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="scaleToFill" :style="'height: ' + photo_height + ' !important;'">
-                        </image>
+                        <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="scaleToFill" :style="'height: ' + photo_height + ' !important;'"></image>
                     </swiper-item>
                 </block>
             </swiper>
@@ -148,8 +147,7 @@
                                 <text v-if="plugins_shop_data.auth_type == 1" class="plugins-shop-auth-icon">{{plugins_shop_data.auth_type_name}}</text>
                                 <text>{{plugins_shop_data.name}}</text>
                             </view>
-                            <view class="plugins-shop-desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}
-                            </view>
+                            <view class="plugins-shop-desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}</view>
                         </view>
                     </navigator>
                 </view>
@@ -270,17 +268,17 @@
                     </view>
                 </view>
                 <view :class="'btn-items fr goods-buy-nav-btn-number-' + buy_button.count || 0">
-                        <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
-                            <block v-for="(item, index) in buy_button.data" :key="index">
-                                <block v-if="(item.name || null) != null && (item.type || null) != null">
-                                    <button :class="'item fl cr-white round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{item.name}}</button>
-                                </block>
+                    <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
+                        <block v-for="(item, index) in buy_button.data" :key="index">
+                            <block v-if="(item.name || null) != null && (item.type || null) != null">
+                                <button :class="'item fl cr-white round bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="nav_buy_submit_event" :data-type="item.type" :data-value="item.value || ''" hover-class="none">{{item.name}}</button>
                             </block>
                         </block>
-                        <block v-else>
-                            <button class="item bg-gray round tc" type="default" disabled>{{buy_button.error || '暂停销售'}}</button>
-                        </block>
-                    </view>
+                    </block>
+                    <block v-else>
+                        <button class="item bg-gray round tc" type="default" disabled>{{buy_button.error || '暂停销售'}}</button>
+                    </block>
+                </view>
             </view>
 
             <!-- 购买弹层 -->
@@ -385,10 +383,8 @@
                                             <text class="price">{{item.discount_value}}</text>
                                             <text class="unit">{{item.type_unit}}</text>
                                         </view>
-                                        <view v-if="(item.use_limit_type_name || null) != null"
-                                            class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
-                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text">{{item.desc}}
-                                        </view>
+                                        <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
+                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text">{{item.desc}}</view>
                                     </view>
                                     <view class="v-right fr" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
                                         <text class="circle"></text>
@@ -427,9 +423,9 @@
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
+    import componentTrnNav from "../../components/trn-nav/trn-nav";
     import componentCountdown from "../../components/countdown/countdown";
     import componentNoData from "../../components/no-data/no-data";
-    import componentTrnNav from "../../components/trn-nav/trn-nav";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentOnlineService from "../../components/online-service/online-service";
 

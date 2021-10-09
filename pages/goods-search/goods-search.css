@@ -1,0 +1,147 @@
+/**
+* 排序导航
+*/
+.nav-sort {
+    background: #eee;
+}
+.nav-sort-content .item {
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 130rpx;
+}
+.nav-sort-content .item .icon {
+    width: 30rpx;
+    height: 30rpx;
+}
+.nav-sort-content .item text,
+.nav-sort-content .item image {
+    vertical-align: middle;
+}
+.screening-submit {
+    width: 50rpx;
+    height: 50rpx;
+    position: absolute;
+    top: 15rpx;
+    right: 20rpx;
+}
+
+/**
+* 商品列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.data-list {
+    overflow: hidden;
+}
+.data-list .items {
+    width: calc(50% - 50rpx);
+}
+.data-list .items:nth-child(2n) {
+    float: right;
+}
+.data-list .items:nth-child(2n+1) {
+    float: left;
+}
+.data-list .items image {
+    width: 100%;
+    height: 300rpx !important;
+}
+
+/**
+* 条件
+*/
+.search-map {
+    height: calc(100vh - 118rpx);
+    width: 660rpx;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.map-keywords {
+    padding: 0 20rpx;
+    line-height: 66rpx;
+    height: 66rpx;
+    font-size: 26rpx;
+    box-sizing: border-box;
+}
+.map-nav {
+    position: relative;
+}
+.map-nav text:first-child {
+    font-weight: bold;
+}
+.map-nav .arrow-bottom {
+    position: absolute;
+    top: 0;
+    right: 10rpx;
+    padding-right: 46rpx;
+    color: #999;
+}
+.map-item {
+    line-height: 66rpx;
+}
+.map-content {
+    line-height: 60rpx;
+}
+.map-content .item {
+    margin-bottom: 20rpx;
+}
+.map-content .item:not(:last-child) {
+    margin-right: 20rpx;
+}
+.map-text-items .item,
+.map-images-text-items .item {
+    padding: 0 15rpx;
+    border: 1px solid transparent;
+}
+.map-images-text-items .item {
+    vertical-align: middle;
+    border: 1px solid #eee;
+    width: 150rpx;
+    height: 72rpx;
+    line-height: 72rpx;
+}
+.map-images-text-items .item image {
+    width: 150rpx;
+    height: calc(100% - 8rpx);
+    display: block;
+    margin: 0 auto;
+    margin-top: 4rpx;
+}
+.search-map .search-submit {
+    height: 80rpx;
+    line-height: 80rpx;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-size: 32rpx;
+}
+
+/**
+* 品牌基础信息
+*/
+.brand-info {
+    height: 160rpx;
+}
+.brand-info image,
+.brand-info .info-logo-empty {
+    width: 300rpx;
+    height: 130rpx;
+    border: 1px solid #eee;
+}
+.brand-info .info-logo-empty {
+    line-height: 130rpx;
+    font-weight: bold;
+}
+.brand-info .info-right {
+    width: calc(100% - 330rpx);
+}
+.brand-info .info-name {
+    line-height: 56rpx;
+    font-weight: bold;
+}
+.brand-info .info-desc {
+    font-size: 28rpx;
+    line-height: 40rpx;
+    min-height: 80rpx;
+}
