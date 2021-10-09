@@ -12,11 +12,11 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view class="list-content padding-main">
                 <block v-if="data_list.length > 0">
-                    <view v-for="(item, index) in data_list" :key="index" class="list-item padding-main border-radius-main bg-white oh spacing-mb">
+                    <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                         <view class="item-base oh br-b padding-bottom-main">
                             <!-- 选择 -->
                             <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" @tap="selected_event" :data-oid="item.id" class="fl selected">
-                                <image class="icon" :src="'/images/default-select' + (tools.indexOf(order_select_ids, item.id) ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                                <image class="icon va-m" :src="common_static_url+'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             </view>
                             <!-- 基础信息 -->
                             <view class="fl" @tap="warehouse_group_event" :data-value="item.warehouse_url || ''">
@@ -36,7 +36,7 @@
                                             <text class="cr-gray">{{sv.value}}</text>
                                         </block>
                                     </view>
-                                    <view v-if="(item.is_can_launch_aftersale == 1 || (detail.orderaftersale || null) != null) && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
+                                    <view v-if="(item.is_can_launch_aftersale == 1 || (detail.orderaftersale || null) != null) && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
                                 </view>
                                 <view class="oh pr margin-top-sm">
                                     <text class="sales-price">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
@@ -45,13 +45,13 @@
                                 </view>
                             </navigator>
                         </view>
-                        <view class="padding-vertical-main tr cr-base">{{item.describe}}</view>
-                        <view v-if="item.status == 1 || item.status == 3 || (item.status == 4 && item.user_is_comments == 0) || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t padding-top-main">
-                            <button v-if="item.status <= 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                            <button v-if="item.status == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">{{item.is_under_line == 1 ? '切换' : ''}}支付</button>
+                        <view class="padding-vertical-main tr cr-base text-size-lg">{{item.describe}}</view>
+                        <view v-if="item.operate_data.is_cancel == 1 || item.operate_data.is_pay == 3 || item.operate_data.is_collect == 1 || item.operate_data.is_comments == 1 || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t padding-vertical-main">
+                            <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                            <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">支付</button>
+                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
+                            <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
                             <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
-                            <button v-if="item.status == 3" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
-                            <button v-if="item.status == 4 && item.user_is_comments == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
                         </view>
                     </view>
                 </block>
@@ -67,7 +67,7 @@
 
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1">
-            <button class="submit-fixed pay-merge-submit" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
+            <button class="submit-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
 
         <!-- 支付方式 popup -->
@@ -75,7 +75,7 @@
             <view v-if="payment_list.length > 0" class="payment-list oh bg-white">
                 <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
                     <view class="item-content br" :data-value="item.id" @tap="popup_payment_event">
-                        <image v-if="(item.logo || null) != null" class="icon" :src="item.logo" mode="widthFix"></image>
+                        <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                         <text>{{item.name}}
                         </text>
                     </view>
@@ -85,18 +85,17 @@
         </component-popup>
     </view>
 </template>
-
-<script module="tools" lang="wxs" src="../../utils/tools.wxs"></script>
-
 <script>
     const app = getApp();
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
 
+    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
                 data_list: [],
                 data_page_total: 0,
                 data_page: 1,
@@ -109,25 +108,14 @@
                 payment_list: [],
                 payment_id: 0,
                 temp_pay_value: '',
-                nav_status_list: [{
-                    name: "全部",
-                    value: "-1"
-                }, {
-                    name: "待付款",
-                    value: "1"
-                }, {
-                    name: "待发货",
-                    value: "2"
-                }, {
-                    name: "待收货",
-                    value: "3"
-                }, {
-                    name: "已完成",
-                    value: "4"
-                }, {
-                    name: "已失效",
-                    value: "5,6"
-                }],
+                nav_status_list: [
+                    { name: "全部", value: "-1" },
+                    { name: "待付款", value: "1" },
+                    { name: "待发货", value: "2" },
+                    { name: "待收货", value: "3" },
+                    { name: "已完成", value: "4" },
+                    { name: "已失效", value: "5,6" },
+                ],
                 nav_status_index: 0,
                 order_select_ids: [],
                 // 基础配置
@@ -146,7 +134,6 @@
         onLoad(params) {
             // 是否指定状态
             var nav_status_index = 0;
-
             if ((params.status || null) != null) {
                 for (var i in this.nav_status_list) {
                     if (this.nav_status_list[i]['value'] == params.status) {
@@ -155,20 +142,17 @@
                     }
                 }
             }
-
             this.setData({
                 params: params,
                 nav_status_index: nav_status_index
             });
         },
 
-        onShow() {
-            uni.setNavigationBarTitle({
-                title: app.globalData.data.common_pages_title.user_order
-            }); // 数据加载
-
-            this.init(); // 初始化配置
-
+        onShow() {            
+            // 数据加载
+            this.init();
+            
+            // 初始化配置
             this.init_config();
         },
 
@@ -185,8 +169,7 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        home_is_enable_order_bulk_pay: app.globalData.get_config(
-                            'config.home_is_enable_order_bulk_pay')
+                        home_is_enable_order_bulk_pay: app.globalData.get_config('config.home_is_enable_order_bulk_pay')
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -196,7 +179,6 @@
             // 获取数据
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
-
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
@@ -230,19 +212,18 @@
                     if (this.data_bottom_line_status == true) {
                         return false;
                     }
-                } // 加载loding
-
-
+                }
+                
+                // 加载loding
                 uni.showLoading({
                     title: "加载中..."
                 });
                 this.setData({
                     data_list_loding_status: 1
-                }); // 参数
-
-                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this
-                    .nav_status_list[this.nav_status_index]['value']; // 获取数据
-
+                });
+                
+                // 参数
+                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value']; // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order"),
                     method: "POST",
@@ -256,12 +237,12 @@
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
                                 if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data; // 下订单支付处理
-
+                                    var temp_data_list = res.data.data.data;
+                                    
+                                    // 下订单支付处理
                                     if (this.load_status == 0) {
                                         if ((this.params.is_pay || 0) == 1 && (this.params.order_ids ||
                                                 null) != null) {
@@ -271,7 +252,6 @@
                                 } else {
                                     var temp_data_list = this.data_list;
                                     var temp_data = res.data.data.data;
-
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);
                                     }
@@ -285,8 +265,9 @@
                                     data_page: this.data_page + 1,
                                     load_status: 1,
                                     payment_list: res.data.data.payment_list || []
-                                }); // 是否还有数据
+                                });
 
+                                // 是否还有数据
                                 if (this.data_page > 1 && this.data_page > this.data_page_total) {
                                     this.setData({
                                         data_bottom_line_status: true
@@ -309,7 +290,6 @@
                                 data_list_loding_status: 0,
                                 load_status: 1
                             });
-
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
                             }
@@ -374,7 +354,6 @@
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();
-
                         if (res.data.code == 0) {
                             // 是否直接支付成功
                             if ((res.data.data.is_success || 0) == 1) {
@@ -406,18 +385,15 @@
                                             }
                                         });
                                         break;
-                                        // 线下支付
-
+                                    // 线下支付
                                     case 1:
                                         var order_ids_arr = order_ids.split(',');
                                         var temp_data_list = self.data_list;
-
                                         for (var i in temp_data_list) {
                                             if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
                                                 temp_data_list[i]['is_under_line'] = 1;
                                             }
                                         }
-
                                         self.setData({
                                             data_list: temp_data_list
                                         });
@@ -426,14 +402,12 @@
                                             is_show_cancel: 0
                                         });
                                         break;
-                                        // 钱包支付
-
+                                    // 钱包支付
                                     case 2:
                                         self.order_item_pay_success_handle(order_ids);
                                         app.globalData.showToast('支付成功', 'success');
                                         break;
-                                        // 默认
-
+                                    // 默认
                                     default:
                                         app.globalData.showToast('支付类型有误');
                                 }
@@ -452,8 +426,9 @@
             // 支付成功数据设置
             order_item_pay_success_handle(order_ids) {
                 var order_ids_arr = order_ids.split(',');
-                var temp_data_list = this.data_list; // 数据设置
-
+                var temp_data_list = this.data_list;
+                
+                // 数据设置
                 for (var i in temp_data_list) {
                     if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
                         switch (parseInt(temp_data_list[i]['order_model'])) {
@@ -462,14 +437,12 @@
                                 temp_data_list[i]['status'] = 2;
                                 temp_data_list[i]['status_name'] = '待发货';
                                 break;
-                                // 自提模式
-
+                            // 自提模式
                             case 2:
                                 temp_data_list[i]['status'] = 2;
                                 temp_data_list[i]['status_name'] = '待取货';
                                 break;
-                                // 虚拟模式
-
+                            // 虚拟模式
                             case 3:
                                 temp_data_list[i]['status'] = 3;
                                 temp_data_list[i]['status_name'] = '待收货';
@@ -477,7 +450,6 @@
                         }
                     }
                 }
-
                 this.setData({
                     data_list: temp_data_list
                 });
@@ -494,8 +466,9 @@
                         if (result.confirm) {
                             // 参数
                             var id = e.currentTarget.dataset.value;
-                            var index = e.currentTarget.dataset.index; // 加载loding
-
+                            var index = e.currentTarget.dataset.index;
+                            
+                            // 加载loding
                             uni.showLoading({
                                 title: "处理中..."
                             });
@@ -508,7 +481,6 @@
                                 dataType: "json",
                                 success: res => {
                                     uni.hideLoading();
-
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 5;
@@ -542,8 +514,9 @@
                         if (result.confirm) {
                             // 参数
                             var id = e.currentTarget.dataset.value;
-                            var index = e.currentTarget.dataset.index; // 加载loding
-
+                            var index = e.currentTarget.dataset.index;
+                            
+                            // 加载loding
                             uni.showLoading({
                                 title: "处理中..."
                             });
@@ -556,7 +529,6 @@
                                 dataType: "json",
                                 success: res => {
                                     uni.hideLoading();
-
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 4;
@@ -590,8 +562,9 @@
                     nav_status_index: e.currentTarget.dataset.index || 0,
                     data_page: 1,
                     order_select_ids: []
-                }); // 重新拉取数据
-
+                });
+                
+                // 重新拉取数据
                 this.get_data_list(1);
             },
 
@@ -599,16 +572,14 @@
             orderaftersale_event(e) {
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
-
                 if (oid == 0 || did == 0) {
                     app.globalData.showToast("参数有误");
                     return false;
-                } // 进入售后页面
-
-
+                }
+                
+                // 进入售后页面
                 uni.navigateTo({
-                    url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" +
-                        did
+                    url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" + did
                 });
             },
 
@@ -623,7 +594,6 @@
             selected_event(e) {
                 var oid = e.currentTarget.dataset.oid || 0;
                 var temp_select_ids = this.order_select_ids;
-
                 if (temp_select_ids.indexOf(oid) == -1) {
                     temp_select_ids.push(oid);
                 } else {
@@ -633,7 +603,6 @@
                         }
                     }
                 }
-
                 this.setData({
                     order_select_ids: temp_select_ids
                 });

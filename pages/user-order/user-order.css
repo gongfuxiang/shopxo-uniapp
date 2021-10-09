@@ -37,12 +37,11 @@
 }
 .item-operation button {
     padding: 0 35rpx;
+    display: inline-flex;
 }
 .orderaftersale-btn-text {
-    position: absolute;
     right: 0;
     bottom: 0;
-    color: #4d7fa7;
 }
 
 /**
@@ -61,8 +60,6 @@
 .payment-list .item-content image {
     width: 50rpx;
     height: 50rpx !important;
-    vertical-align: middle;
-    margin-right: 10rpx;
 }
 
 /**
@@ -72,7 +69,6 @@
     width: 35rpx;
     height: 35rpx !important;
     margin: 0 20rpx 0 10rpx;
-    vertical-align: middle;
 }
 
 /**

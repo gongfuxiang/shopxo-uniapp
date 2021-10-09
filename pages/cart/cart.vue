@@ -16,7 +16,7 @@
                                     <!-- 图片 -->
                                     <image :class="'goods-image fl br radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                     <!-- 错误 -->
-                                    <view v-if="(item.is_error || 0) == 1" class="error-msg tc">
+                                    <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc">
                                         <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
                                     </view>
                                 </navigator>
@@ -40,7 +40,7 @@
                                         <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
                                     
                                         <!-- 数量 -->
-                                        <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="number-content tc oh round br">
+                                        <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="number-content pa tc oh round br">
                                             <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="0">-</view>
                                             <input @blur="goods_buy_number_blur" class="tc cr-gray fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index">
                                             <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="1">+</view>
@@ -74,7 +74,7 @@
                             <image class="icon va-m" :src="common_static_url+'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             <text v-if="!already_selected_status" class="va-m cr-base">全选</text>
                         </view>
-                        <view v-if="already_selected_status" @tap="cart_all_remove_event" class="nav-remove-submit bg-white cr-red br-red round">删除</view>
+                        <view v-if="already_selected_status" @tap="cart_all_remove_event" class="nav-remove-submit pa bg-white cr-red br-red round">删除</view>
                         <view class="fr price">
                             <view class="sales-price single-text fr">{{currency_symbol}}{{total_price}}</view>
                             <view class="fr">合计：</view>

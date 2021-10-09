@@ -160,69 +160,30 @@
                 post_data: {},
                 is_show_popup_form: false,
                 popup_form_loading_status: false,
-                search_nav_sort_list: [{
-                    name: "综合",
-                    field: "default",
-                    sort: "asc",
-                    "icon": null
-                }, {
-                    name: "销量",
-                    field: "sales_count",
-                    sort: "asc",
-                    "icon": "default"
-                }, {
-                    name: "热度",
-                    field: "access_count",
-                    sort: "asc",
-                    "icon": "default"
-                }, {
-                    name: "价格",
-                    field: "min_price",
-                    sort: "asc",
-                    "icon": "default"
-                }, {
-                    name: "最新",
-                    field: "id",
-                    sort: "asc",
-                    "icon": "default"
-                }],
+                search_nav_sort_list: [
+                    { name: "综合", field: "default", sort: "asc", "icon": null },
+                    { name: "销量", field: "sales_count", sort: "asc", "icon": "default" },
+                    { name: "热度", field: "access_count", sort: "asc", "icon": "default" },
+                    { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
+                    { name: "最新", field: "id", sort: "asc", "icon": "default" }
+                ],
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 搜素条件
                 search_map_list: {
-                    "brand_list": [],
-                    "category_list": [],
-                    "screening_price_list": [],
-                    "goods_params_list": [],
-                    "goods_spec_list": []
+                    brand_list: [],
+                    category_list: [],
+                    screening_price_list: [],
+                    goods_params_list: [],
+                    goods_spec_list: []
                 },
                 search_map_info: [],
                 map_fields_list: {
-                    "brand_list": {
-                        "height": "100rpx",
-                        "default": "100rpx",
-                        "form_key": "brand_ids"
-                    },
-                    "category_list": {
-                        "height": "80rpx",
-                        "default": "80rpx",
-                        "form_key": "category_ids"
-                    },
-                    "screening_price_list": {
-                        "height": "80rpx",
-                        "default": "80rpx",
-                        "form_key": "screening_price_values"
-                    },
-                    "goods_params_list": {
-                        "height": "80rpx",
-                        "default": "80rpx",
-                        "form_key": "goods_params_values"
-                    },
-                    "goods_spec_list": {
-                        "height": "80rpx",
-                        "default": "80rpx",
-                        "form_key": "goods_spec_values"
-                    }
+                    brand_list: {height: "100rpx", default: "100rpx", form_key: "brand_ids"},
+                    category_list: {height: "82rpx", default: "82rpx", form_key: "category_ids"},
+                    screening_price_list: {height: "82rpx", default: "82rpx", form_key: "screening_price_values"},
+                    goods_params_list: {height: "82rpx", default: "82rpx", form_key: "goods_params_values"},
+                    goods_spec_list: {height: "82rpx", default: "82rpx", form_key: "goods_spec_values"}
                 }
             };
         },

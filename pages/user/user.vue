@@ -126,49 +126,19 @@
                 nav_title: "用户中心",
                 nickname: "用户名",
                 message_total: 0,
-                head_nav_list: [{
-                    name: "订单总数",
-                    url: "user-order",
-                    count: 0
-                }, {
-                    name: "商品收藏",
-                    url: "user-favor",
-                    count: 0
-                }, {
-                    name: "我的足迹",
-                    url: "user-goods-browse",
-                    count: 0
-                }, {
-                    name: "我的积分",
-                    url: "user-integral",
-                    count: 0
-                }],
-                user_order_status_list: [{
-                    name: "待付款",
-                    status: 1,
-                    count: 0,
-                    url: "/pages/user-order/user-order?status=1"
-                }, {
-                    name: "待发货",
-                    status: 2,
-                    count: 0,
-                    url: "/pages/user-order/user-order?status=2"
-                }, {
-                    name: "待收货",
-                    status: 3,
-                    count: 0,
-                    url: "/pages/user-order/user-order?status=3"
-                }, {
-                    name: "已完成",
-                    status: 4,
-                    count: 0,
-                    url: "/pages/user-order/user-order?status=4"
-                }, {
-                    name: "退款/售后",
-                    status: 101,
-                    count: 0,
-                    url: "/pages/user-orderaftersale/user-orderaftersale"
-                }],
+                head_nav_list: [
+                    { name: "订单总数", url: "user-order", count: 0 },
+                    { name: "商品收藏", url: "user-favor", count: 0 },
+                    { name: "我的足迹", url: "user-goods-browse", count: 0 },
+                    { name: "我的积分", url: "user-integral", count: 0 },
+                ],
+                user_order_status_list: [
+                    { name: "待付款", status: 1, count: 0, url: "/pages/user-order/user-order?status=1" },
+                    { name: "待发货", status: 2, count: 0, url: "/pages/user-order/user-order?status=2" },
+                    { name: "待收货", status: 3, count: 0, url: "/pages/user-order/user-order?status=3" },
+                    { name: "已完成", status: 4, count: 0, url: "/pages/user-order/user-order?status=4" },
+                    { name: "退款/售后", status: 101, count: 0, url: "/pages/user-orderaftersale/user-orderaftersale" },
+                ],
                 navigation_order: null,
                 // 远程自定义导航
                 navigation: [],

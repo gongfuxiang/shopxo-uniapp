@@ -8,12 +8,12 @@
                             <image class="dis-block address-logo radius" :src="item.logo" mode="widthFix"></image>
                         </view>
                         <view class="oh">
-                            <view class="base oh padding-vertical-main">
+                            <view class="base oh padding-bottom-main padding-top-xs">
                                 <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm">{{item.alias}}</text>
                                 <text>{{item.name}}</text>
                                 <text class="fr">{{item.tel}}</text>
                             </view>
-                            <view class="address oh padding-vertical-main">
+                            <view class="address oh padding-top-sm">
                                 <image class="item-icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                                 <view class="text fr">
                                     {{item.province_name || ''}}{{item.city_name || ''}}{{item.county_name || ''}}{{item.address || ''}}
@@ -21,13 +21,13 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="operation br-t oh padding-vertical-main">
+                    <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="operation br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
                             <text class="cr-gray">距离</text>
                             <text class="cr-base">{{item.distance_value}}</text>
                             <text class="cr-gray">{{item.distance_unit}}</text>
                         </view>
-                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr cr-base br margin-left-lg" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
+                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round cr-base br margin-left-lg" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
                     </view>
                 </view>
             </view>
@@ -92,10 +92,6 @@
         },
 
         onShow() {
-            uni.setNavigationBarTitle({
-                title: app.globalData.data.common_pages_title.extraction_address
-            });
-
             // 是否需要选择地理位置
             if (this.home_extraction_address_position == 1) {
                 // 首次不请求数据

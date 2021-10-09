@@ -243,8 +243,6 @@ button[disabled]..button-main {
     position: fixed;
     left: 0;
     bottom: 0;
-    background: #d2364c !important;
-    color: #fff !important;
     border: none;
     width: 100%;
 }
@@ -260,7 +258,7 @@ button[disabled]..button-main {
 
 /**
  * 统一颜色
- * 文本基础色、白色、黑色、灰色、浅灰色、红色、黄色、绿色、搭配色、次主色、主色
+ * 文本基础色、白色、黑色、灰色、浅灰色、红色、黄色、绿色、蓝色、搭配色、次主色、主色
  */
 .cr-base {
     color: #666 !important;
@@ -285,6 +283,9 @@ button[disabled]..button-main {
 }
 .cr-green {
     color: #1AAD19 !important;
+}
+.cr-blue {
+    color: #2196F3 !important;
 }
 .cr-main-pair {
     color: #795548 !important;

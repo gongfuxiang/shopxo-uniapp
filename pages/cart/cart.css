@@ -27,7 +27,6 @@
  * 错误提示
  */
 .goods-item .error-msg {
-    position: absolute;
     left: 104rpx;
     top: 78rpx;
     width: 142rpx;
@@ -48,7 +47,6 @@
 * 数量操作
 */
 .number-content {
-    position: absolute;
     right: 0;
     top: 0;
 }
@@ -134,8 +132,7 @@
     max-width: calc(100% - 40px);
 }
 .nav-remove-submit {
-    position: absolute;
-    top: 36rpx;
+    top: 38rpx;
     left: 66rpx;
     padding: 0rpx 20rpx;
     line-height: 36rpx;

@@ -29,7 +29,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view v-if="address == null" class="no-address cr-gray">
+                            <view v-if="address == null" class="padding-top-xl padding-bottom-xxxl cr-gray">
                                 {{(common_site_type == 0 || (common_site_type == 4 && site_model == 0)) ? '请选择收货地址' : '请选择取货地址'}}
                             </view>
                         </view>
@@ -109,8 +109,8 @@
                     </view>
 
                     <!-- 支付方式 -->
-                    <view v-if="payment_list.length > 0 && common_order_is_booking != 1" class="payment-list border-radius-main bg-white oh">
-                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
+                    <view v-if="payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
+                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl margin-bottom-main">
                             <view :class="'item-content radius br ' + (item.selected || '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{item.name}}</text>
@@ -202,13 +202,10 @@
                 common_site_type: 0,
                 extraction_address: [],
                 site_model: 0,
-                buy_header_nav: [{
-                    name: "快递邮寄",
-                    value: 0
-                }, {
-                    name: "自提点取货",
-                    value: 2
-                }],
+                buy_header_nav: [
+                    { name: "快递邮寄", value: 0 },
+                    { name: "自提点取货", value: 2 }
+                ],
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 common_order_is_booking: 0,
