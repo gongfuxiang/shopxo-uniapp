@@ -60,11 +60,7 @@
     height: 160rpx;
     margin-right: 20rpx;
 }
-.goods-price {
-    position: relative;
-}
 .buy-number {
-    position: absolute;
     right: 0;
     bottom: 0;
 }

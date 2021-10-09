@@ -58,39 +58,42 @@ button:before {
 }
 
 /**
- * 边框 红色、灰色（四边）、无边线、主色
+ * 边框 灰色（四边）、红色、黄色、绿色、主色、无边线
  */
 .br-red {
-    border: solid 1px #f00 !important;
+    border:1px  soli #f00 !important;
 }
 .br {
-    border: solid 1px #efefef !important;
+    border: 1px solid #efefef !important;
 }
 .br-b {
-    border-bottom: solid 1px #efefef !important;
+    border-bottom: 1px solid #efefef !important;
 }
 .br-t {
-    border-top: solid 1px #efefef !important;
+    border-top: 1px solid #efefef !important;
 }
 .br-l {
-    border-left: solid 1px #efefef !important;
+    border-left: 1px solid #efefef !important;
 }
 .br-r {
-    border-right: solid 1px #efefef !important;
+    border-right: 1px solid #efefef !important;
+}
+.br-yellow {
+    border: 1px solid #f6c133 !important;
+}
+.br-green {
+    border: 1px solid #1AAD19 !important;
 }
 .br-main {
-    border: solid 1px #f6c133 !important;
+    border: 1px solid #f6c133 !important;
 }
 .br-0 {
     border: 0 !important;
 }
 
 /**
- * 虚线边框 红色、灰色（四边）、主色
+ * 虚线边框、灰色（四边）、红色、黄色、绿色、主色
  */
-.br-dashed-red {
-    border: dashed 1px #f00 !important;
-}
 .br-dashed {
     border: dashed 1px #efefef !important;
 }
@@ -105,6 +108,15 @@ button:before {
 }
 .br-r-dashed {
     border-right: dashed 1px #efefef !important;
+}
+.br-dashed-red {
+    border: dashed 1px #f00 !important;
+}
+.br-dashed-yellow {
+    border: dashed 1px #f6c133 !important;
+}
+.br-dashed-green {
+    border: dashed 1px #1AAD19 !important;
 }
 .br-dashed-main {
     border: dashed 1px #f6c133 !important;
@@ -151,6 +163,12 @@ button:before {
 }
 .va-m {
     vertical-align: middle;
+}
+.pa {
+    position: absolute;
+}
+.pr {
+    position: relative;
 }
 .radius-0 {
     border-radius: 0 !important;
@@ -242,16 +260,13 @@ button[disabled]..button-main {
 
 /**
  * 统一颜色
- * 文本基础色、白色、绿色、黑色、灰色、浅灰色、红色、搭配色、次主色、主色
+ * 文本基础色、白色、黑色、灰色、浅灰色、红色、黄色、绿色、搭配色、次主色、主色
  */
 .cr-base {
     color: #666 !important;
 }
 .cr-white {
     color: #fff !important;
-}
-.cr-green {
-    color: #1AAD19 !important;
 }
 .cr-black {
     color: #000 !important;
@@ -264,6 +279,12 @@ button[disabled]..button-main {
 }
 .cr-red {
     color: #f00 !important;
+}
+.cr-yellow {
+    color: #f6c133 !important;
+}
+.cr-green {
+    color: #1AAD19 !important;
 }
 .cr-main-pair {
     color: #795548 !important;

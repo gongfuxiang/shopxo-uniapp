@@ -20,7 +20,6 @@
 .screening-submit {
     width: 50rpx;
     height: 50rpx;
-    position: absolute;
     top: 15rpx;
     right: 20rpx;
 }
@@ -64,18 +63,13 @@
     font-size: 26rpx;
     box-sizing: border-box;
 }
-.map-nav {
-    position: relative;
-}
 .map-nav text:first-child {
     font-weight: bold;
 }
 .map-nav .arrow-bottom {
-    position: absolute;
     top: 0;
     right: 10rpx;
     padding-right: 46rpx;
-    color: #999;
 }
 .map-item {
     line-height: 66rpx;
@@ -111,7 +105,6 @@
 .search-map .search-submit {
     height: 80rpx;
     line-height: 80rpx;
-    position: absolute;
     left: 0;
     bottom: 0;
     font-size: 32rpx;

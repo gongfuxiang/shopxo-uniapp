@@ -4,7 +4,7 @@
             <uni-swipe-action>
                 <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                     <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                        <view :class="'goods-item padding-main ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
+                        <view :class="'goods-item padding-main pr ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
                             <!-- 选择 -->
                             <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl selected">
                                 <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
@@ -28,14 +28,14 @@
                                         <view :class="'goods-title multi-text margin-bottom-sm '+((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{item.title}}</view>
                                     </navigator>
                                     <view v-if="item.spec != null" class="margin-bottom-sm">
-                                        <block v-for="(sv, si) in item.spec" :key="si" class="">
+                                        <block v-for="(sv, si) in item.spec" :key="si">
                                             <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                             <text class="cr-gray">{{sv.value}}</text>
                                         </block>
                                     </view>
 
                                     <!-- 底部内容 -->
-                                    <view class="goods-bottom margin-top-lg">
+                                    <view class="goods-bottom pr margin-top-lg">
                                         <!-- 价格 -->
                                         <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
                                     

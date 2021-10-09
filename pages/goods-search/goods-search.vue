@@ -10,7 +10,7 @@
                     </view>
                 </block>
             </view>
-            <image class="screening-submit" :src="static_url+'submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+            <image class="screening-submit pa" :src="static_url+'submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
         </view>
 
         <!-- 列表 -->
@@ -56,7 +56,7 @@
                     <view v-if="((search_map_list.brand_list || null) != null && search_map_list.brand_list.length > 0) || ((search_map_info.brand || null) != null)" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b">
                             <text>品牌</text>
-                            <text class="arrow-bottom" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
                         </view>
                         <view v-if="(search_map_info.brand || null) != null" class="map-content brand-info oh margin-top-lg">
                             <image v-if="(search_map_info.brand.logo || null) != null" :src="search_map_info.brand.logo" mode="aspectFit" class="fl"></image>
@@ -78,7 +78,7 @@
 
                     <!-- 分类 -->
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
-                        <view class="map-nav br-b">
+                        <view class="map-nav pr br-b">
                             <text>分类</text>
                             <text class="arrow-bottom" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
                         </view>
@@ -128,7 +128,7 @@
                         </view>
                     </view>
 
-                    <button form-type="submit" class="bg-main search-submit wh-auto radius-0 cr-white" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+                    <button form-type="submit" class="bg-main search-submit pa wh-auto radius-0 cr-white" :disabled="popup_form_loading_status" hover-class="none">确认</button>
                 </view>
             </form>
         </component-popup>

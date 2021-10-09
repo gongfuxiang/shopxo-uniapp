@@ -1,0 +1,87 @@
+/*
+* 导航
+*/
+.nav {
+    background: #eee;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 16.66%;
+}
+
+/*
+* 列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}
+.buy-number {
+    right: 0;
+    bottom: 0;
+}
+.warehouse-group-icon {
+    width: 30rpx;
+    height: 30rpx;
+}
+.item-operation button:not(:first-child) {
+    margin-left: 20rpx;
+}
+.item-operation button {
+    padding: 0 35rpx;
+}
+.orderaftersale-btn-text {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    color: #4d7fa7;
+}
+
+/**
+* 支付方式
+*/
+.payment-list {
+    padding: 40rpx 0;
+}
+.payment-list .item {
+    width: 50%;
+}
+.payment-list .item-content {
+    margin: 20rpx;
+    padding: 20rpx 10rpx;
+}
+.payment-list .item-content image {
+    width: 50rpx;
+    height: 50rpx !important;
+    vertical-align: middle;
+    margin-right: 10rpx;
+}
+
+/**
+* 选择
+*/
+.selected .icon {
+    width: 35rpx;
+    height: 35rpx !important;
+    margin: 0 20rpx 0 10rpx;
+    vertical-align: middle;
+}
+
+/**
+* 合并支付按钮
+*/
+.pay-merge-submit {
+    width: 220rpx;
+    height: 70rpx !important;
+    line-height: 74rpx !important;
+    left: calc(50% - 110rpx);
+    bottom: 50rpx;
+}

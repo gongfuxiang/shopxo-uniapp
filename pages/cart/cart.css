@@ -4,9 +4,6 @@
 .page {
     padding-bottom: 100rpx;
 }
-.goods-item {
-    position: relative;
-}
 .goods-title {
     line-height: 44rpx;
     min-height: 86rpx;
@@ -44,7 +41,6 @@
  * 底部
  */
 .goods-item .goods-bottom {
-    position: relative;
     height: 58rpx;
 }
 

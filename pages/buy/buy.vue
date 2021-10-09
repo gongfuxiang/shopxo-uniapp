@@ -61,10 +61,10 @@
                                     </block>
                                 </view>
                             </view>
-                            <view class="oh goods-price margin-top-sm">
+                            <view class="oh pr margin-top-sm">
                                 <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
                                 <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
-                                <text class="buy-number cr-gray">x{{item.stock}}</text>
+                                <text class="buy-number pa cr-gray">x{{item.stock}}</text>
                             </view>
                         </view>
                         <!-- 优惠劵 -->
