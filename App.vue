@@ -1001,10 +1001,12 @@
          */
         onLaunch(params) {
             // 启动参数处理
-            params = this.globalData.launch_params_handle(params); // 设置设备信息
+            params = this.globalData.launch_params_handle(params);
 
-            this.globalData.set_system_info(); // 初始化配置
-
+            // 设置设备信息
+            this.globalData.set_system_info();
+            
+            // 初始化配置
             this.globalData.init_config();
         },
 
@@ -1012,9 +1014,9 @@
     };
 </script>
 <style>
-    @import './common/css/lib.css';
     @import './common/css/page.css';
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/common.css';
+    @import './common/css/lib.css';
 </style>

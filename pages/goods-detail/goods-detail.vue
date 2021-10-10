@@ -696,7 +696,7 @@
                                     goods_spec_base_original_price: data.goods.original_price,
                                     goods_spec_base_inventory: data.goods.inventory,
                                     goods_spec_base_images: data.goods.images,
-                                    show_field_price_text: data.goods.show_field_price_text == '销售价' ? null : data.goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                                    show_field_price_text: data.goods.show_field_price_text == '价格' ? null : data.goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
                                     plugins_limitedtimediscount_data: data.plugins_limitedtimediscount_data || null,
                                     plugins_limitedtimediscount_is_valid: (data.plugins_limitedtimediscount_data || null) != null && (data.plugins_limitedtimediscount_data.is_valid || 0) == 1 ? 1 : 0,
                                     plugins_coupon_data: data.plugins_coupon_data || null,

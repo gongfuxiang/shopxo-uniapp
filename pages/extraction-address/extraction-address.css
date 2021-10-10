@@ -13,3 +13,8 @@
     line-height: 44rpx;
     width: calc(100% - 40rpx);
 }
+.operation button {
+    font-size: 22rpx;
+    padding: 5rpx 20rpx;
+    line-height: 40rpx;
+}

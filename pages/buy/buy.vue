@@ -62,7 +62,7 @@
                                 </view>
                             </view>
                             <view class="oh pr margin-top-sm">
-                                <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
+                                <text class="fw-b text-size">{{currency_symbol}}{{item.price}}</text>
                                 <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
                                 <text class="buy-number pa cr-gray">x{{item.stock}}</text>
                             </view>
@@ -80,7 +80,7 @@
                             </view>
                         </view>
                         <!-- 小计 -->
-                        <view class="oh tr goods-group-footer">
+                        <view class="oh tr goods-group-footer padding-top-main">
                             <text v-if="group.order_base.total_price != group.order_base.actual_price" class="original-price margin-right-sm">{{currency_symbol}}{{group.order_base.total_price}}</text>
                             <text class="sales-price">{{currency_symbol}}{{group.order_base.actual_price}}</text>
                         </view>

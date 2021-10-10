@@ -498,11 +498,11 @@
 }
 .plugins-salerecords-tips-top-left {
     left: 5%;
-    top: 5%;
+    top: 10%;
 }
 .plugins-salerecords-tips-top-right {
     right: 5%;
-    top: 5%;
+    top: 10%;
     left: auto;
 }
 .plugins-salerecords-tips-bottom-left {

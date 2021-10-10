@@ -45,8 +45,15 @@
  * 表单
  */
 .form-container .form-gorup {
-    padding: 20rpx 10rpx;
+    padding: 20rpx;
     margin-bottom: 20rpx;
+    border-radius: 20rpx;
+}
+.form-container .form-gorup:last-child {
+    padding: 20rpx 0;
+}
+.form-container .form-gorup:not(:last-child) {
+    background: #fff;
 }
 .form-container .form-gorup-title {
     margin-bottom: 5rpx;
@@ -67,7 +74,6 @@
     border-radius: 0;
     width: 100%;
     box-sizing: border-box;
-    padding: 0 10rpx;
     font-size: 28rpx;
 }
 .form-container .form-gorup input,
@@ -77,7 +83,8 @@
 }
 .form-container .form-gorup textarea {
     padding: 0;
-    min-height: 70rpx;
+    height: 150rpx !important;
+    margin-top: 20rpx;
 }
 .form-container .form-gorup-text {
     padding: 20rpx 10rpx;
@@ -89,34 +96,40 @@
 /**
  * 表单图片上传
  */
+.form-container-upload .form-gorup-title {
+    margin-bottom: 20rpx;
+}
 .form-container-upload .form-upload-data .item {
-    padding: 10rpx;
+    margin: 10rpx 10rpx 0 0;
     position: relative;
 }
 .form-container-upload .form-upload-data .delete-icon {
     position: absolute;
-    top: 15rpx;
-    right: 15rpx;
+    top: 0;
+    right: 0;
     color: #e5e5e5;
     background-color: #d9534f;
     padding: 5rpx 18rpx;
-    font-size: 30rpx;
-    border-style: solid;
-    border-width: 0 0 1px 1px;
-    border-color: #eee;
+    font-size: 36rpx;
+    border: 1px solid #eee;
+    border-radius: 50rpx;
+    line-height: 44rpx;
 }
 .form-container-upload .form-upload-data image {
-    width: 200rpx;
-    height: 200rpx;
+    width: 150rpx;
+    height: 150rpx;
     padding: 5rpx;
     border: 1px solid #eee;
     display: block;
+    border-radius: 10rpx;
 }
 .form-container-upload .upload-icon {
-    margin: 10rpx 0 0 10rpx;
-    width: 210rpx;
-    height: 210rpx;
+    margin-top: 10rpx;
+    width: 160rpx;
+    height: 160rpx;
     border: 1px dashed #e9e9e9;
+    display: block;
+    border-radius: 10rpx;
 }
 
 /**

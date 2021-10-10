@@ -1,0 +1,21 @@
+.goods-image {
+    width: 80rpx;
+    height: 80rpx;
+}
+.item-base .xingxing-icon {
+    width: 60rpx;
+    height: 60rpx;
+    margin: 0 15rpx;
+}
+.form-content textarea {
+    height: 160rpx !important;
+    min-height: 160rpx !important;
+}
+.form-container-upload .form-upload-data image {
+    width: 100rpx;
+    height: 100rpx;
+}
+.form-container-upload .upload-icon {
+    width: 110rpx;
+    height: 110rpx;
+}

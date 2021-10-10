@@ -1,0 +1,63 @@
+/**
+* 商品
+*/
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}
+.buy-number {
+    right: 0;
+    bottom: 0;
+}
+
+/**
+* 类型选择
+*/
+.choose-type .choose-item {
+    width: calc(50% - 55rpx);
+    -webkit-transition: border-color .2s ease-in;
+    -moz-transition: border-color .2s ease-in;
+    -ms-transition: border-color .2s ease-in;
+    -o-transition: border-color .2s ease-in;
+    transition: border-color .2s ease-in;
+}
+
+/*
+* 售后信息
+*/
+.msg-tips {
+    background: #caecff;
+    color: #0090dc;
+}
+.msg-tips-warning {
+    background-color: #ffe1ca;
+    color: #f37b1d;
+}
+.msg-tips-success {
+    background-color: #c0efbf;
+    color: #1AAD19;
+}
+.msg-tips-danger {
+    background-color: #ffe0de;
+    color: #dd514c;
+}
+.msg-tips .msg-a {
+    color: #d2354c;
+}
+.msg-tips-danger .msg-a {
+    color: #136ed9;
+}
+
+/*
+* 退货地址
+*/
+.msg-tips button {
+    height: 60rpx;
+    line-height: 60rpx;
+    padding: 0 20rpx;
+    font-size: 24rpx;
+}

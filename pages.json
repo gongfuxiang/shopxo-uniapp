@@ -58,7 +58,6 @@
 			"style": {
 				"enablePullDownRefresh": false,
                 "navigationBarTitleText": "安全支付"
-                
 			}
 		},
 		{
@@ -66,7 +65,6 @@
 			"style": {
 				"enablePullDownRefresh": true,
                 "navigationBarTitleText": "商品搜索"
-                
 			}
 		},
 		{
@@ -87,91 +85,107 @@
 		{
 			"path": "pages/user-address/user-address",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "我的地址"
 			}
 		},
 		{
 			"path": "pages/user-address-save/user-address-save",
 			"style": {
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+                "navigationBarTitleText": "地址编辑"
 			}
 		},
 		{
 			"path": "pages/user-order/user-order",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "我的订单"
 			}
 		},
 		{
 			"path": "pages/user-order-detail/user-order-detail",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "订单详情"
 			}
 		},
 		{
 			"path": "pages/user-order-comments/user-order-comments",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "订单评价"
 			}
 		},
 		{
 			"path": "pages/user-favor/user-favor",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "商品收藏"
 			}
 		},
 		{
 			"path": "pages/user-answer-list/user-answer-list",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "我的留言"
 			}
 		},
 		{
 			"path": "pages/answer-list/answer-list",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "问答"
 			}
 		},
 		{
 			"path": "pages/answer-form/answer-form",
 			"style": {
-				"enablePullDownRefresh": false
+				"enablePullDownRefresh": false,
+                "navigationBarTitleText": "留言"
 			}
 		},
 		{
 			"path": "pages/message/message",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "消息"
 			}
 		},
 		{
 			"path": "pages/user-integral/user-integral",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "积分明细"
 			}
 		},
 		{
 			"path": "pages/user-goods-browse/user-goods-browse",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "我的足迹"
 			}
 		},
 		{
 			"path": "pages/user-orderaftersale/user-orderaftersale",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "退款/售后"
 			}
 		},
 		{
 			"path": "pages/user-orderaftersale-detail/user-orderaftersale-detail",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "订单售后"
+                
 			}
 		},
 		{
 			"path": "pages/extraction-address/extraction-address",
 			"style": {
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": "自提地址"
 			}
 		},
 		{
@@ -185,10 +199,7 @@
 			"path": "pages/design/design",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#d2364c",
-				"backgroundColorTop": "#d2364c",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light"
+				"navigationBarTitleText": "页面设计"
 			}
 		},
 		{

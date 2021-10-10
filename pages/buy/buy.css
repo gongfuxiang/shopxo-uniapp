@@ -47,6 +47,7 @@
 .goods-group-map-submit {
     font-size: 22rpx;
     padding: 5rpx 20rpx;
+    line-height: 40rpx;
 }
 .goods-item {
     padding: 20rpx 0;

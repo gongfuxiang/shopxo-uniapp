@@ -60,9 +60,6 @@ button:before {
 /**
  * 边框 灰色（四边）、红色、黄色、绿色、主色、无边线
  */
-.br-red {
-    border:1px  soli #f00 !important;
-}
 .br {
     border: 1px solid #efefef !important;
 }
@@ -77,6 +74,9 @@ button:before {
 }
 .br-r {
     border-right: 1px solid #efefef !important;
+}
+.br-red {
+    border:1px  solid #f00 !important;
 }
 .br-yellow {
     border: 1px solid #f6c133 !important;
@@ -178,6 +178,9 @@ button:before {
 }
 .round {
     border-radius: 50rpx !important;
+}
+.fw-b {
+    font-weight: bold;
 }
 
 /**
@@ -327,7 +330,7 @@ button[disabled]..button-main {
 }
 button[disabled].bg-main {
     background-color: #fdd178 !important;
-    color: #ffe7b7 !important;
+    color: #fff7e7 !important;
 }
 button[disabled].bg-main-light {
     background-color: #fbebd6 !important;

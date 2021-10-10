@@ -36,21 +36,25 @@
                                             <text class="cr-gray">{{sv.value}}</text>
                                         </block>
                                     </view>
-                                    <view v-if="(item.is_can_launch_aftersale == 1 || (detail.orderaftersale || null) != null) && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
+                                    <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
                                 </view>
                                 <view class="oh pr margin-top-sm">
-                                    <text class="sales-price">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
+                                    <text class="fw-b text-size">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
                                     <text v-if="detail.original_price > 0" class="original-price margin-left-sm">{{item.currency_data.currency_symbol}}{{detail.original_price}}</text>
                                     <text class="buy-number pa">x{{detail.buy_number}}</text>
                                 </view>
                             </navigator>
                         </view>
-                        <view class="padding-vertical-main tr cr-base text-size-lg">{{item.describe}}</view>
-                        <view v-if="item.operate_data.is_cancel == 1 || item.operate_data.is_pay == 3 || item.operate_data.is_collect == 1 || item.operate_data.is_comments == 1 || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t padding-vertical-main">
+                        <view class="padding-vertical-main tr cr-base text-size">
+                            <text>共<text class="fw-b">{{item.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs text-size-lg">{{item.currency_data.currency_symbol}}{{item.total_price}}</text>元</text>
+                        </view>
+                        
+                        <view v-if="item.operate_data.is_cancel + item.operate_data.is_pay + item.operate_data.is_collect + item.operate_data.is_comments + item.operate_data.is_delete > 0 || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t padding-vertical-main">
                             <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                             <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">支付</button>
                             <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                             <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
+                            <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                             <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
                         </view>
                     </view>
@@ -485,6 +489,7 @@
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 5;
                                         temp_data_list[index]['status_name'] = '已取消';
+                                        temp_data_list[index]['operate_data']['is_cancel'] = 0;
                                         this.setData({
                                             data_list: temp_data_list
                                         });
@@ -533,6 +538,56 @@
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 4;
                                         temp_data_list[index]['status_name'] = '已完成';
+                                        temp_data_list[index]['operate_data']['is_collect'] = 0;
+                                        temp_data_list[index]['operate_data']['is_comments'] = 1;
+                                        temp_data_list[index]['operate_data']['is_delete'] = 1;
+                                        this.setData({
+                                            data_list: temp_data_list
+                                        });
+                                        app.globalData.showToast(res.data.msg, "success");
+                                    } else {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast("服务器请求出错");
+                                }
+                            });
+                        }
+                    }
+                });
+            },
+            
+            // 删除
+            delete_event(e) {
+                uni.showModal({
+                    title: "温馨提示",
+                    content: "删除后不可恢复，确定继续吗?",
+                    confirmText: "确认",
+                    cancelText: "不了",
+                    success: result => {
+                        if (result.confirm) {
+                            // 参数
+                            var id = e.currentTarget.dataset.value;
+                            var index = e.currentTarget.dataset.index;
+                            
+                            // 加载loding
+                            uni.showLoading({
+                                title: "处理中..."
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url("delete", "order"),
+                                method: "POST",
+                                data: {
+                                    id: id
+                                },
+                                dataType: "json",
+                                success: res => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        var temp_data_list = this.data_list;
+                                        temp_data_list.splice(index, 1);
                                         this.setData({
                                             data_list: temp_data_list
                                         });
