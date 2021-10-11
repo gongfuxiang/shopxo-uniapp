@@ -75,7 +75,6 @@
 }
 .no-data-box image {
     width: 160rpx;
-    margin-bottom: 20rpx;
 }
 .no-data-box .no-data-tips {
     font-size: 28rpx;
@@ -89,7 +88,6 @@
     height: 60rpx;
     line-height: 60rpx;
     font-size: 28rpx;
-    margin-top: 30rpx;
 }
 
 /**

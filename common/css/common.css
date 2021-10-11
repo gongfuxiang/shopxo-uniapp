@@ -205,7 +205,7 @@ button:before {
     color: #fff !important;
     border: none !important;
     background-color: #f6c133 !important;
-    border-radius: 2px;
+    border-radius: 10rpx;
 }
 button[disabled]..button-main {
     background-color: #fdd178 !important;

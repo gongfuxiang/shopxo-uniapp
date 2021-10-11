@@ -89,10 +89,10 @@
 
         <!-- 空购物车 -->
         <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="no-data-box tc">
-            <image :src="common_static_url+'cart-empty.png'" mode="widthFix"></image>
+            <image :src="common_static_url+'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
             <view class="no-data-tips">{{data_list_loding_msg || '购物车空空如也'}}</view>
             <navigator url="/pages/index/index" open-type="switchTab" hover-class="none">
-                <button type="default" class="button-main" hover-class="none">去逛逛</button>
+                <button type="default" class="button-main margin-top-xxl" hover-class="none">去逛逛</button>
             </navigator>
         </view>
         
