@@ -132,7 +132,6 @@
                             if (data.data.length > 0) {
                                 // 获取当前默认地址
                                 var is_default = 0;
-
                                 for (var i in data.data) {
                                     if (data.data[i]['is_default'] == 1) {
                                         is_default = data.data[i]['id'];

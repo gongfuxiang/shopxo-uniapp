@@ -55,7 +55,7 @@
                                     <view class="badge-icon pa">
                                         <component-badge :prop-number="items.count"></component-badge>
                                     </view>
-                                    <image :src="static_url+'order-icon-' + items.status + '.png'" class="item-icon" mode="aspectFill"></image>
+                                    <image class="item-icon margin-bottom-xs" :src="static_url+'order-icon-' + items.status + '.png'" mode="aspectFill"></image>
                                     <view class="item-name cr-base">{{items.name}}</view>
                                 </view>
                             </navigator>

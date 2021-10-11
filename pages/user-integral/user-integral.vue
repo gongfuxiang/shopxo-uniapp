@@ -2,18 +2,18 @@
     <view>
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="padding-main">
-                <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
+                <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white pr spacing-mb">
                     <view class="oh">
-                        <text class="fw-b">{{item.type_text}} {{item.operation_integral}}</text>
-                        <text class="fr cr-base">{{item.add_time_time}}</text>
+                        <view class="fl">
+                            <text class="cr-base">原始</text>
+                            <text class="cr-base fw-b margin-left-xs">{{item.original_integral}}</text>
+                            <text class="cr-base margin-left-lg">最新</text>
+                            <text class="cr-main fw-b margin-left-xs">{{item.new_integral}}</text>
+                        </view>
+                        <text class="fr cr-base ">{{item.add_time_time}}</text>
                     </view>
-                    <view class="margin-top-sm">
-                        <text class="cr-grey">原始</text>
-                        <text class="cr-base margin-left-xs">{{item.original_integral}}</text>
-                        <text class="cr-grey margin-left-xl">最新</text>
-                        <text class="cr-main margin-left-xs">{{item.new_integral}}</text>
-                    </view>
-                    <view class="cr-gray margin-top-lg">{{item.msg}}</view>
+                    <view class="cr-grey margin-top-lg">{{item.msg}}</view>
+                    <text :class="'fw-b pa item-value '+(item.type == 1 ? 'cr-green' : 'cr-red')">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</text>
                 </view>
             </view>
             <view v-else>
@@ -89,10 +89,6 @@
                     if (this.data_bottom_line_status == true) {
                         return false;
                     }
-                } else {
-                    this.setData({
-                        data_bottom_line_status: false
-                    });
                 }
                 
                 // 加载loding
@@ -135,11 +131,9 @@
                                 });
                                 
                                 // 是否还有数据
-                                if (this.data_page > 1 && this.data_page > this.data_page_total) {
-                                    this.setData({
-                                        data_bottom_line_status: true
-                                    });
-                                }
+                                this.setData({
+                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0
@@ -173,4 +167,5 @@
     };
 </script>
 <style>
+    @import './user-integral.css';
 </style>

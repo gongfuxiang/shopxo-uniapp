@@ -67,9 +67,8 @@
     width: 20%;
 }
 .nav-list-sub .item .item-icon {
-    width: 60rpx;
-    height: 60rpx;
-    margin-bottom: 6rpx;
+    width: 50rpx;
+    height: 50rpx;
 }
 .nav-list-sub .item .badge-icon {
     top: -2px;
@@ -84,8 +83,8 @@
     width: 25%;
 }
 .nav-box .nav-item .item-icon {
-    width: 50rpx;
-    height: 50rpx;
+    width: 45rpx;
+    height: 45rpx;
 }
 .nav-box .nav-item .item-desc {
     margin-right: 50rpx;

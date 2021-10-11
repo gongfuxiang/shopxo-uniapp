@@ -270,15 +270,9 @@
                                 });
 
                                 // 是否还有数据
-                                if (this.data_page > 1 && this.data_page > this.data_page_total) {
-                                    this.setData({
-                                        data_bottom_line_status: true
-                                    });
-                                } else {
-                                    this.setData({
-                                        data_bottom_line_status: false
-                                    });
-                                }
+                                this.setData({
+                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,

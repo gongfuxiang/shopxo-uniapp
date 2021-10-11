@@ -7,7 +7,7 @@
                         <text class="fw-b">{{item.title}}</text>
                         <text class="fr cr-base">{{item.add_time_time}}</text>
                     </view>
-                    <view class="cr-gray margin-top-sm">{{item.detail}}</view>
+                    <view class="cr-grey margin-top-lg">{{item.detail}}</view>
                 </view>
             </view>
             <view v-else>
@@ -87,10 +87,6 @@
                     if (this.data_bottom_line_status == true) {
                         return false;
                     }
-                } else {
-                    this.setData({
-                        data_bottom_line_status: false
-                    });
                 }
                 
                 // 加载loding
@@ -132,11 +128,9 @@
                                 });
                                 
                                 // 是否还有数据
-                                if (this.data_page > 1 && this.data_page > this.data_page_total) {
-                                    this.setData({
-                                        data_bottom_line_status: true
-                                    });
-                                }
+                                this.setData({
+                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                });
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0

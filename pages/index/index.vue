@@ -50,7 +50,6 @@
                                     <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
                                     <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
                                     <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
-                                    <!-- <button size="mini">抢</button> -->
                                     <uni-icons type="cart" size="16" color="#E02020" class="icon"></uni-icons>
                                 </view>
                             </navigator>
@@ -99,6 +98,10 @@
                     </view>
                 </block>
             </block>
+            <block v-else>
+                <!-- 提示信息 -->
+                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            </block>
             
             <!--- 底部购买记录 -->
             <view v-if="(plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
@@ -136,9 +139,6 @@
                     <image mode="widthFix" :src="static_url+'answer-form.jpg'" class="wh-auto border-radius-main"></image>
                 </navigator>
             </view>
-            
-            <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
 
             <!-- 结尾 -->
             <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
@@ -262,16 +262,11 @@
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_shop_notice: app.globalData.get_config('config.common_shop_notice'),
-                        home_index_floor_data_type: app.globalData.get_config(
-                            'config.home_index_floor_data_type'),
-                        common_app_is_enable_search: app.globalData.get_config(
-                            'config.common_app_is_enable_search'),
-                        common_app_is_enable_answer: app.globalData.get_config(
-                            'config.common_app_is_enable_answer'),
-                        common_app_is_header_nav_fixed: app.globalData.get_config(
-                            'config.common_app_is_header_nav_fixed'),
-                        common_app_is_online_service: app.globalData.get_config(
-                            'config.common_app_is_online_service')
+                        home_index_floor_data_type: app.globalData.get_config('config.home_index_floor_data_type'),
+                        common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
+                        common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
+                        common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service')
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -311,15 +306,9 @@
                                 navigation: data.navigation || [],
                                 data_list: data.data_list,
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
-                                plugins_limitedtimediscount_data: data
-                                    .plugins_limitedtimediscount_data || null,
-                                plugins_limitedtimediscount_is_valid: (data
-                                        .plugins_limitedtimediscount_data || null) != null && (data
-                                        .plugins_limitedtimediscount_data.is_valid || 0) == 1 ? 1 :
-                                    0,
-                                plugins_salerecords_data: (data.plugins_salerecords_data || null) ==
-                                    null || data.plugins_salerecords_data.length <= 0 ? null : data
-                                    .plugins_salerecords_data
+                                plugins_limitedtimediscount_data: data.plugins_limitedtimediscount_data || null,
+                                plugins_limitedtimediscount_is_valid: (data.plugins_limitedtimediscount_data || null) != null && (data.plugins_limitedtimediscount_data.is_valid || 0) == 1 ? 1 : 0,
+                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data
                             });
 
                             // 导航购物车处理
