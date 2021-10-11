@@ -9,9 +9,9 @@
                     </view>
                     <view class="margin-top-sm">
                         <text class="cr-grey">原始</text>
-                        <text class="cr-base fw-b margin-left-xs">{{item.original_integral}}</text>
+                        <text class="cr-base margin-left-xs">{{item.original_integral}}</text>
                         <text class="cr-grey margin-left-xl">最新</text>
-                        <text class="cr-main fw-b margin-left-xs">{{item.new_integral}}</text>
+                        <text class="cr-main margin-left-xs">{{item.new_integral}}</text>
                     </view>
                     <view class="cr-gray margin-top-lg">{{item.msg}}</view>
                 </view>

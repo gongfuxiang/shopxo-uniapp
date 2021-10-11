@@ -7,18 +7,18 @@
 
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
-                <view class="head-base oh">
+                <view class="pr oh">
                     <!-- 左侧头像 -->
-                    <view class="head-avatar oh tc fl">
-                        <image @tap="preview_event" @error="user_avatar_error" class="round bg-white va-m" :src="avatar" mode="widthFix"></image>
+                    <view class="padding-bottom-xxl oh tc fl">
+                        <image @tap="preview_event" @error="user_avatar_error" class="head-avatar round bg-white va-m" :src="avatar" mode="widthFix"></image>
                         <text class="item-name cr-white va-m margin-left-lg">{{nickname}}</text>
                     </view>
                     
                     <!-- 右上角消息 -->
-                    <view class="nav-message">
+                    <view class="nav-message pa">
                         <navigator url="/pages/message/message" hover-class="none">
                             <uni-icons type="chat" size="16" color="#e2e2e2"></uni-icons>
-                            <view class="badge-icon">
+                            <view class="badge-icon pa">
                                 <component-badge :prop-number="message_total"></component-badge>
                             </view>
                         </navigator>
@@ -30,7 +30,7 @@
                     <block v-for="(item, index) in head_nav_list" :key="index">
                         <navigator :url="'/pages/' + item.url + '/' + item.url" hover-class="none">
                             <view class="head-nav-item tc fl">
-                                <view class="nav-value">{{item.count}}</view>
+                                <view class="nav-value fw-b text-size">{{item.count}}</view>
                                 <view class="nav-name cr-gray">{{item.name}}</view>
                             </view>
                         </navigator>
@@ -51,8 +51,8 @@
                     <view class="nav-list-sub oh margin-top-sm">
                         <block v-for="(items, index) in user_order_status_list" :key="index">
                             <navigator :url="items.url" hover-class="none">
-                                <view class="item fl tc">
-                                    <view class="badge-icon">
+                                <view class="item pr fl tc">
+                                    <view class="badge-icon pa">
                                         <component-badge :prop-number="items.count"></component-badge>
                                     </view>
                                     <image :src="static_url+'order-icon-' + items.status + '.png'" class="item-icon" mode="aspectFill"></image>
@@ -65,7 +65,7 @@
                 
                 <!-- 聚合导航 -->
                 <view class="nav-box padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-main item-title">我的服务</view>
+                    <view class="br-b padding-main item-title fw-b text-size">我的服务</view>
                     <view class="oh margin-top-sm">
                         <block v-for="(item, index) in navigation" :key="index">
                             <!-- 这里不展示订单导航 -->
