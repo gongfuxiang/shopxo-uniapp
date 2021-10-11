@@ -2,22 +2,22 @@
     <view class="page">
         <form @submit="form_submit" class="form-container">
             <view class="padding-main oh">
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">别名<text class="form-group-tips">选填</text></view>
                     <input type="text" name="alias" :value="address_data.alias || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符">
                 </view>
 
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">联系人<text class="form-group-tips-must">必填</text></view>
                     <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间">
                 </view>
 
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">联系电话<text class="form-group-tips-must">必填</text></view>
                     <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机">
                 </view>
 
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
                     <view class="select-address oh">
                         <view class="section fl">
@@ -40,12 +40,12 @@
                     </view>
                 </view>
 
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">详细地址<text class="form-group-tips-must">必填</text></view>
                     <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间">
                 </view>
 
-                <view v-if="home_user_address_map_status == 1" class="form-gorup bg-white">
+                <view v-if="home_user_address_map_status == 1" class="form-gorup">
                     <view class="form-gorup-title">地理位置<text class="form-group-tips-must">必选</text></view>
                     <view @tap="choose_location_event" class="form-gorup-text">
                         <view v-if="(user_location || null) == null" class="cr-gray">请选择地理位置</view>
@@ -53,7 +53,7 @@
                     </view>
                 </view>
 
-                <view class="form-gorup bg-white">
+                <view class="form-gorup">
                     <view class="form-gorup-title">是否默认<text class="form-group-tips">选填</text></view>
                     <view class="switch">
                         <switch name="is_default" :checked="address_data.is_default == 1 ? true : false" color="#04BE02"></switch>
@@ -62,11 +62,11 @@
 
                 <!-- 身份证信息 -->
                 <view v-if="home_user_address_idcard_status == 1" class="idcard-container padding-horizontal-main padding-top-main border-radius-main oh">
-                    <view class="form-gorup bg-white">
+                    <view class="form-gorup">
                         <view class="form-gorup-title">身份证姓名<text class="form-group-tips-must">必填</text><text class="form-group-tips">请务必与上传的身份证件姓名保持一致</text></view>
                         <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="身份证姓名格式 2~16 个字符之间">
                     </view>
-                    <view class="form-gorup bg-white">
+                    <view class="form-gorup">
                         <view class="form-gorup-title">身份证号码<text class="form-group-tips-must">必填</text><text class="form-group-tips">请务必与上传的身份证件号码保持一致</text></view>
                         <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey" class="cr-base" placeholder="身份证号码格式最多18个字符">
                     </view>
@@ -75,11 +75,11 @@
                         <view class="form-upload-data">
                             <view class="item fl">
                                 <text v-if="(idcard_images_data.idcard_front || null) != null" class="delete-icon" @tap="upload_delete_event" data-value="idcard_front">x</text>
-                                <image :src="(idcard_images_data.idcard_front || null) != null ? idcard_images_data.idcard_front : '/static/images/default-idcard-front.jpg'" data-value="idcard_front" mode="aspectFill" @tap="file_upload_event"></image>
+                                <image :src="(idcard_images_data.idcard_front || null) != null ? idcard_images_data.idcard_front : common_static_url+'idcard-front.jpg'" data-value="idcard_front" mode="aspectFill" @tap="file_upload_event"></image>
                             </view>
                             <view class="item fl">
                                 <text v-if="(idcard_images_data.idcard_back || null) != null" class="delete-icon" @tap="upload_delete_event" data-value="idcard_back">x</text>
-                                <image :src="(idcard_images_data.idcard_back || null) != null ? idcard_images_data.idcard_back : '/static/images/default-idcard-back.jpg'" data-value="idcard_back" mode="aspectFill" @tap="file_upload_event"></image>
+                                <image :src="(idcard_images_data.idcard_back || null) != null ? idcard_images_data.idcard_back : common_static_url+'idcard-back.jpg'" data-value="idcard_back" mode="aspectFill" @tap="file_upload_event"></image>
                             </view>
                         </view>
                     </view>
@@ -94,9 +94,11 @@
 <script>
     const app = getApp();
 
+    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

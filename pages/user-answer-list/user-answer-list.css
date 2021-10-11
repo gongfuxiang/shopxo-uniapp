@@ -1,0 +1,10 @@
+.answer-add-submit {
+    position: fixed;
+    bottom: 50rpx;
+    right: 50rpx;
+    width: 100rpx;
+    height: 100rpx;
+    line-height: 86rpx;
+    box-shadow: 0 0 10px 2px #c4c4c4;
+    font-size: 76rpx;
+}

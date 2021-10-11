@@ -135,7 +135,7 @@
 			"path": "pages/answer-list/answer-list",
 			"style": {
 				"enablePullDownRefresh": true,
-                "navigationBarTitleText": "问答"
+                "navigationBarTitleText": "问答广场"
 			}
 		},
 		{

@@ -26,7 +26,7 @@
                                         </view>
                                     </block>
                                 </view>
-                                <image v-if="(form_images_list[index] || null) == null || form_images_list[index].length < 3" class="upload-icon" src="/static/images/default-upload-icon.png" mode="aspectFill" @tap="file_upload_event" :data-index="index"></image>
+                                <image v-if="(form_images_list[index] || null) == null || form_images_list[index].length < 3" class="upload-icon" :src="common_static_url+'upload-icon.png'" mode="aspectFill" @tap="file_upload_event" :data-index="index"></image>
                             </view>
                         </view>
                     </view>

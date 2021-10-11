@@ -54,7 +54,7 @@
 
                     <!-- 品牌 -->
                     <view v-if="((search_map_list.brand_list || null) != null && search_map_list.brand_list.length > 0) || ((search_map_info.brand || null) != null)" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
-                        <view class="map-nav br-b">
+                        <view class="map-nav br-b pr">
                             <text>品牌</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
                         </view>
@@ -80,7 +80,7 @@
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav pr br-b">
                             <text>分类</text>
-                            <text class="arrow-bottom" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
                         </view>
                         <view class="map-content map-text-items map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
@@ -91,9 +91,9 @@
 
                     <!-- 价格 -->
                     <view v-if="(search_map_list.screening_price_list || null) != null && search_map_list.screening_price_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
-                        <view class="map-nav br-b">
+                        <view class="map-nav br-b pr">
                             <text>价格</text>
-                            <text class="arrow-bottom" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
                         </view>
                         <view class="map-content map-text-items screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.screening_price_list" :key="index">
@@ -104,9 +104,9 @@
 
                     <!-- 属性 -->
                     <view v-if="(search_map_list.goods_params_list || null) != null && search_map_list.goods_params_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
-                        <view class="map-nav br-b">
+                        <view class="map-nav br-b pr">
                             <text>属性</text>
-                            <text class="arrow-bottom" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
                         </view>
                         <view class="map-content map-text-items goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_params_list" :key="index">
@@ -117,9 +117,9 @@
 
                     <!-- 规格 -->
                     <view v-if="(search_map_list.goods_spec_list || null) != null && search_map_list.goods_spec_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
-                        <view class="map-nav br-b">
+                        <view class="map-nav br-b pr">
                             <text>规格</text>
-                            <text class="arrow-bottom" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
                         </view>
                         <view class="map-content map-text-items goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_spec_list" :key="index">
@@ -128,7 +128,9 @@
                         </view>
                     </view>
 
-                    <button form-type="submit" class="bg-main search-submit pa wh-auto radius-0 cr-white" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+                    <view class="search-submit padding-main pa">
+                        <button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+                    </view>
                 </view>
             </form>
         </component-popup>

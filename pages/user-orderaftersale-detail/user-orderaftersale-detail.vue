@@ -132,7 +132,7 @@
                                     </view>
                                 </block>
                             </view>
-                            <image v-if="form_images_list.length < 3" class="upload-icon" src="/static/images/default-upload-icon.png" mode="aspectFill" @tap="file_upload_event"></image>
+                            <image v-if="(form_images_list[index] || null) == null || form_images_list.length < 3" class="upload-icon" :src="common_static_url+'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
@@ -184,9 +184,11 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
 
+    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

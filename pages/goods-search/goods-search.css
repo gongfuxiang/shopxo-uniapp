@@ -51,10 +51,13 @@
 * 条件
 */
 .search-map {
-    height: calc(100vh - 118rpx);
-    width: 660rpx;
+    height: calc(100vh - 160rpx);
     overflow-y: scroll;
     overflow-x: hidden;
+}
+.search-map,
+.search-map .search-submit {
+    width: 660rpx;
 }
 .map-keywords {
     padding: 0 20rpx;
@@ -103,11 +106,12 @@
     margin-top: 4rpx;
 }
 .search-map .search-submit {
-    height: 80rpx;
-    line-height: 80rpx;
     left: 0;
     bottom: 0;
-    font-size: 32rpx;
+}
+.search-map .search-submit button {
+    height: 80rpx;
+    line-height: 80rpx;
 }
 
 /**
