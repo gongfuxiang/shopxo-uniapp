@@ -14,7 +14,7 @@
                                 <text class="fr">{{item.tel}}</text>
                             </view>
                             <view class="address oh padding-top-sm">
-                                <image class="item-icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
+                                <image class="item-icon fl margin-top-xs" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                                 <view class="text fr">
                                     {{item.province_name || ''}}{{item.city_name || ''}}{{item.county_name || ''}}{{item.address || ''}}
                                 </view>
@@ -22,7 +22,7 @@
                         </view>
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="operation br-t oh padding-top-main margin-top-main">
-                        <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-sm">
+                        <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
                             <text class="cr-gray">距离</text>
                             <text class="cr-base">{{item.distance_value}}</text>
                             <text class="cr-gray">{{item.distance_unit}}</text>

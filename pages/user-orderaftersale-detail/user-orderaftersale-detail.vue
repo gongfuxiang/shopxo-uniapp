@@ -135,8 +135,8 @@
                             <image v-if="form_images_list.length < 3" class="upload-icon" src="/static/images/default-upload-icon.png" mode="aspectFill" @tap="file_upload_event"></image>
                         </view>
                     </view>
-                    <view class="form-gorup">
-                        <button class="bg-main cr-white radius submit-bottom" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                    <view class="form-gorup form-gorup-submit">
+                        <button class="bg-main cr-white round submit-bottom" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
                     </view>
                 </view>
             </view>
@@ -169,8 +169,8 @@
                             <view class="form-gorup-title">快递单号<text class="form-group-tips-must">必填</text></view>
                             <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入快递单号" :value="form_express_number">
                         </view>
-                        <view class="form-gorup">
-                            <button class="bg-main cr-white radius submit-bottom" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                        <view class="form-gorup form-gorup-submit">
+                            <button class="bg-main cr-white round submit-bottom" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
                         </view>
                     </view>
                 </view>

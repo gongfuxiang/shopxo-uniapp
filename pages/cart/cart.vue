@@ -56,20 +56,18 @@
             <!-- 操作导航 -->
             <view v-if="data_list.length > 0" class="buy-nav oh wh-auto">
                 <!-- 展示型 -->
-                <block v-if="common_site_type == 1">
-                    <view class="exhibition-mode padding-horizontal-main">
-                        <button class="bg-main cr-white round wh-auto text-size" type="default" @tap="exhibition_submit_event" hover-class="none">
-                            <view class="dis-inline-block va-m margin-right-xl">
-                                <uni-icons type="phone" size="14" color="#fff" />
-                            </view>
-                            <text class="va-m">{{common_is_exhibition_mode_btn_text}}</text>
-                        </button>
-                    </view>
-                </block>
+                <view v-if="common_site_type == 1" class="exhibition-mode padding-horizontal-main">
+                    <button class="bg-main cr-white round wh-auto text-size" type="default" @tap="exhibition_submit_event" hover-class="none">
+                        <view class="dis-inline-block va-m margin-right-xl">
+                            <uni-icons type="phone" size="14" color="#fff" />
+                        </view>
+                        <text class="va-m">{{common_is_exhibition_mode_btn_text}}</text>
+                    </button>
+                </view>
 
                 <!-- 销售,自提,虚拟销售 -->
-                <block v-else>
-                    <view class="nav-base bg-white fl br-t single-text">
+                <view v-else class="br-t bg-white wh-auto ht-auto">
+                    <view class="nav-base fl single-text padding-left">
                         <view @tap="selected_event" data-type="all" class="fl selected">
                             <image class="icon va-m" :src="common_static_url+'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             <text v-if="!already_selected_status" class="va-m cr-base">全选</text>
@@ -80,10 +78,10 @@
                             <view class="fr">合计：</view>
                         </view>
                     </view>
-                    <view class="fr nav-submit">
-                        <button class="bg-main wh-auto cr-white" type="default" @tap="buy_submit_event" :disabled="!already_selected_status" hover-class="none">结算</button>
+                    <view class="fr nav-submit padding-top padding-bottom padding-horizontal-main">
+                        <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="!already_selected_status" hover-class="none">结算</button>
                     </view>
-                </block>
+                </view>
             </view>
         </view>
 

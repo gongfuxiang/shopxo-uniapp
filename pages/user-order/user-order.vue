@@ -99,6 +99,7 @@
             return {
                 common_static_url: common_static_url,
                 data_list: [],
+                data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
                 data_list_loding_status: 1,
@@ -121,8 +122,7 @@
                 nav_status_index: 0,
                 order_select_ids: [],
                 // 基础配置
-                home_is_enable_order_bulk_pay: 0,
-                data_total: ""
+                home_is_enable_order_bulk_pay: 0
             };
         },
 

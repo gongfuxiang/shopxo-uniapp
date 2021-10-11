@@ -75,23 +75,19 @@
     bottom: 0;
 }
 .buy-nav,
-.nav-base,
-.nav-submit button {
+.nav-base {
     height: 100rpx;
-}
-.nav-base,
-.nav-submit button {
     line-height: 100rpx;
+}
+.nav-submit button {
+    height: 72rpx;
+    line-height: 72rpx;
 }
 .nav-base {
     width: calc(60% - 20rpx);
-    padding: 0 10rpx;
 }
 .nav-submit {
-    width: 40%;
-}
-.nav-submit button {
-    border-radius: 0;
+    width: calc(40% - 40rpx);
 }
 
 /**

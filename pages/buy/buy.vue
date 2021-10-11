@@ -120,13 +120,13 @@
                 </view>
                 
                 <!-- 导航 -->
-                <view class="buy-nav oh wh-auto">
-                    <view class="nav-base bg-white fl br-t single-text">
+                <view class="buy-nav oh wh-auto bg-white br-t">
+                    <view class="nav-base fl single-text padding-left-main">
                         <text>合计：</text>
                         <text class="sales-price">{{currency_symbol}}{{total_price}}</text>
                     </view>
-                    <view class="fr nav-submit">
-                        <button class="bg-main cr-white wh-auto" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">提交订单</button>
+                    <view class="fr nav-submit padding-top padding-bottom padding-horizontal-main">
+                        <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">提交订单</button>
                     </view>
                 </view>
             </view>

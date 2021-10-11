@@ -49,10 +49,10 @@
     margin-bottom: 20rpx;
     border-radius: 20rpx;
 }
-.form-container .form-gorup:last-child {
+.form-container .form-gorup-submit {
     padding: 20rpx 0;
 }
-.form-container .form-gorup:not(:last-child) {
+.form-container .form-gorup:not(.form-gorup-submit) {
     background: #fff;
 }
 .form-container .form-gorup-title {

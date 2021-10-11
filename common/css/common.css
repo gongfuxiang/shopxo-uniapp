@@ -248,6 +248,7 @@ button[disabled]..button-main {
     bottom: 0;
     border: none;
     width: 100%;
+    box-sizing: border-box;
 }
 
 /**
