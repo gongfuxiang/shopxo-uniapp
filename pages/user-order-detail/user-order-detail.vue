@@ -1,108 +1,110 @@
 <template>
     <view>
-        <view v-if="detail != null" class="padding-horizontal-main padding-top-main">
-            <!-- 地址 -->
-            <view v-if="detail.order_model == 0 || detail.order_model == 2" class="address bg-white padding-main border-radius-main spacing-mb">
-                <view class="address-base oh">
-                    <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
-                    <text>{{detail.address_data.name}}</text>
-                    <text class="fr">{{detail.address_data.tel}}</text>
-                </view>
-                <view class="address-detail oh">
-                    <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
-                    <view class="text fr">
-                        <text>{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
-                        <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0 && detail.address_data.lng != 0 && detail.address_data.lat != 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm" @tap="address_map_event">查看位置</text>
+        <block v-if="detail != null">
+            <view class="padding-horizontal-main padding-top-main">
+                <!-- 地址 -->
+                <view v-if="detail.order_model == 0 || detail.order_model == 2" class="address bg-white padding-main border-radius-main spacing-mb">
+                    <view class="address-base oh">
+                        <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
+                        <text>{{detail.address_data.name}}</text>
+                        <text class="fr">{{detail.address_data.tel}}</text>
+                    </view>
+                    <view class="address-detail oh">
+                        <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
+                        <view class="text fr">
+                            <text>{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0 && detail.address_data.lng != 0 && detail.address_data.lat != 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm" @tap="address_map_event">查看位置</text>
+                        </view>
                     </view>
                 </view>
-            </view>
 
-            <!-- 商品列表 -->
-            <view class="goods bg-white padding-main border-radius-main spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
-                <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
-                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                        <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
-                        <view class="goods-base pr">
-                            <view class="multi-text">{{item.title}}</view>
-                            <view v-if="item.spec != null" class="margin-top-sm">
-                                <block v-for="(sv, si) in item.spec" :key="si">
-                                    <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                    <text class="cr-gray">{{sv.value}}</text>
-                                </block>
+                <!-- 商品列表 -->
+                <view class="goods bg-white padding-main border-radius-main spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
+                        <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
+                            <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
+                            <view class="goods-base pr">
+                                <view class="multi-text">{{item.title}}</view>
+                                <view v-if="item.spec != null" class="margin-top-sm">
+                                    <block v-for="(sv, si) in item.spec" :key="si">
+                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                        <text class="cr-gray">{{sv.value}}</text>
+                                    </block>
+                                </view>
+                                <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
                             </view>
-                            <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
+                            <view class="oh pr margin-top-sm">
+                                <text class="fw-b text-size">{{detail.currency_data.currency_symbol}}{{item.price}}</text>
+                                <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{detail.currency_data.currency_symbol}}{{item.original_price}}</text>
+                                <text class="buy-number pa">x{{item.buy_number}}</text>
+                            </view>
+                        </navigator>
+                    </view>
+                    <view class="padding-top-main tr cr-base text-size">
+                        <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs text-size-lg">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
+                    </view>
+                </view>
+
+                <!-- 虚拟销售数据 -->
+                <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{site_fictitious.title || '密钥信息'}}</view>
+                    <view class="panel-content oh padding-top-main">
+                        <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
+                            <rich-text :nodes="site_fictitious.tips"></rich-text>
                         </view>
-                        <view class="oh pr margin-top-sm">
-                            <text class="fw-b text-size">{{detail.currency_data.currency_symbol}}{{item.price}}</text>
-                            <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{detail.currency_data.currency_symbol}}{{item.original_price}}</text>
-                            <text class="buy-number pa">x{{item.buy_number}}</text>
-                        </view>
-                    </navigator>
-                </view>
-                <view class="padding-top-main tr cr-base text-size">
-                    <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs text-size-lg">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
-                </view>
-            </view>
-
-            <!-- 虚拟销售数据 -->
-            <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">{{site_fictitious.title || '密钥信息'}}</view>
-                <view class="panel-content oh padding-top-main">
-                    <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
-                        <rich-text :nodes="site_fictitious.tips"></rich-text>
-                    </view>
-                    <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
-                        <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
-                        <view class="right-value fr">
-                            <rich-text v-if="(item.fictitious_goods_value || null) != null" :nodes="item.fictitious_goods_value"></rich-text>
-                            <text v-else class="cr-gray">未配置数据</text>
+                        <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
+                            <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
+                            <view class="right-value fr">
+                                <rich-text v-if="(item.fictitious_goods_value || null) != null" :nodes="item.fictitious_goods_value"></rich-text>
+                                <text v-else class="cr-gray">未配置数据</text>
+                            </view>
                         </view>
                     </view>
                 </view>
-            </view>
 
-            <!-- 自提信息 -->
-            <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">取货信息</view>
-                <view class="panel-content oh padding-top-main">
-                    <view>
-                        <text>取货码：</text>
-                        <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{detail.extraction_data.code || '取货码不存在、请联系管理员'}}</text>
-                    </view>
-                    <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
-                </view>
-            </view>
-
-            <!-- 订单基础数据 -->
-            <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
-                <view class="panel-content oh">
-                    <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                        <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                <!-- 自提信息 -->
+                <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">取货信息</view>
+                    <view class="panel-content oh padding-top-main">
+                        <view>
+                            <text>取货码：</text>
+                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{detail.extraction_data.code || '取货码不存在、请联系管理员'}}</text>
+                        </view>
+                        <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
                 </view>
-            </view>
 
-            <!-- 扩展数据 -->
-            <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">扩展数据</view>
-                <view class="panel-content oh">
-                    <view v-for="(item, index) in extension_data" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                        <view class="content fl br-l padding-left-main">{{item.tips}}</view>
+                <!-- 订单基础数据 -->
+                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
+                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 扩展数据 -->
+                <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">扩展数据</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
+                            <view class="content fl br-l padding-left-main">{{item.tips}}</view>
+                        </view>
                     </view>
                 </view>
             </view>
 
             <!-- 结尾 -->
             <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
     </view>
 </template>
 <script>

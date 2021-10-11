@@ -10,61 +10,57 @@
 
         <!-- 订单列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
-            <view class="list-content">
-                <block v-if="data_list.length > 0">
-                    <view v-for="(item, index) in data_list" :key="index" class="list-item bg-white spacing-mb" v-if="data_list.length > 0">
-                        <view class="item-base oh br-b">
-                            <text class="cr-base">{{item.add_time_time}}</text>
-                            <text class="fr cr-main">{{item.status_text}}</text>
-                        </view>
-                        <view class="goods-item oh">
-                            <navigator
-                                :url="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id"
-                                hover-class="none">
-                                <image class="goods-image fl" :src="item.order_data.items.images" mode="aspectFill"></image>
-                                <view class="goods-base">
-                                    <view class="goods-title multi-text">{{item.order_data.items.title}}</view>
-                                    <block v-if="item.order_data.items.spec != null">
-                                        <view v-for="(spec, index2) in item.order_data.items.spec" :key="index2" class="goods-spec cr-gray">
-                                            {{spec.type}}:{{spec.value}}
-                                        </view>
-                                    </block>
-                                    <view class="orderaftersale-btn-text" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="item.order_data.items.id">{{item.order_data.items.orderaftersale_btn_text}}</view>
-                                </view>
-                                <view class="oh goods-price">
-                                    <text class="sales-price">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.price}}</text>
-                                    <text v-if="item.order_data.items.original_price > 0" class="original-price">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.original_price}}</text>
-                                    <text class="buy-number">x{{item.order_data.items.buy_number}}</text>
-                                </view>
-                            </navigator>
-                        </view>
-                        <view class="item-describe">
-                            <text class="cr-base">{{item.type_text}}</text>
-                            <text class="cr-grey ds">/</text>
-                            <text class="cr-base">{{item.reason}}</text>
-                            <block v-if="item.price > 0">
-                                <text class="cr-grey ds">/</text>
-                                <text class="sales-price">{{item.order_data.currency_data.currency_symbol}}{{item.price}}</text>
-                            </block>
-                            <block v-if="item.number > 0">
-                                <text class="cr-grey ds">/</text>
-                                <text class="cr-main">{{item.number}}</text>
-                            </block>
-                        </view>
-                        <view v-if="item.status <= 2 || item.status == 4" class="item-operation tr br-t">
-                            <button v-if="item.status != 3 && item.status != 5" class="submit-cancel" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                            <button v-if="item.status == 1 && item.type == 1" class="submit-pay cr-base br" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">退货</button>
-                        </view>
+            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
+                    <view class="item-base oh br-b padding-bottom-main">
+                        <text class="cr-base">{{item.add_time_time}}</text>
+                        <text class="fr cr-red">{{item.status_text}}</text>
                     </view>
-                </block>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                    <view class="goods-item oh">
+                        <navigator :url="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" hover-class="none">
+                            <image class="goods-image fl radius" :src="item.order_data.items.images" mode="aspectFill"></image>
+                            <view class="goods-base pr">
+                                <view class="multi-text">{{item.order_data.items.title}}</view>
+                                <view v-if="item.order_data.items.spec != null" class="margin-top-sm">
+                                    <block v-for="(sv, si) in item.order_data.items.spec" :key="si">
+                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                        <text class="cr-gray">{{sv.value}}</text>
+                                    </block>
+                                </view>
+                            </view>
+                            <view class="oh pr">
+                                <text class="fw-b text-size">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.price}}</text>
+                                <text v-if="item.order_data.items.original_price > 0" class="original-price">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.original_price}}</text>
+                                <text class="buy-number pa">x{{item.order_data.items.buy_number}}</text>
+                            </view>
+                        </navigator>
+                    </view>
+                    <view class="item-describe padding-vertical-main">
+                        <text class="cr-base">{{item.type_text}}</text>
+                        <text class="cr-grey margin-left-sm margin-right-sm">/</text>
+                        <text class="cr-base">{{item.reason}}</text>
+                        <block v-if="item.price > 0">
+                            <text class="cr-grey margin-left-sm margin-right-sm">/</text>
+                            <text class="sales-price text-size-sm">{{item.order_data.currency_data.currency_symbol}}{{item.price}}</text>
+                        </block>
+                        <block v-if="item.number > 0">
+                            <text class="cr-grey margin-left-sm margin-right-sm">/</text>
+                            <text class="cr-main fw-b">{{item.number}}</text>
+                        </block>
+                    </view>
+                    <view v-if="item.status <= 2 || item.status == 4" class="item-operation tr br-t padding-vertical-main">
+                        <button v-if="item.status != 3 && item.status != 5" class="br-yellow cr-yellow bg-white round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                        <button v-if="item.status == 1 && item.type == 1" class="br-green cr-green bg-white round" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">退货</button>
+                    </view>
                 </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
             </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            </view>
+
+            <!-- 结尾 -->
+            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
     </view>
 </template>
@@ -333,10 +329,6 @@
                 uni.navigateTo({
                     url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" + did + "&is_delivery_popup=1"
                 });
-            },
-
-            orderaftersale_event() {
-                console.log("占位：函数 orderaftersale_event 未声明");
             }
         }
     };

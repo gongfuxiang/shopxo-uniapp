@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="order_data != null" class="padding-main">
+        <view v-if="order_data != null" class="padding-horizontal-main padding-top">
             <!-- 商品 -->
             <view class="goods padding-main border-radius-main bg-white spacing-mb">
                 <view class="goods-item oh">
@@ -31,7 +31,7 @@
                     <text class="msg-text">{{new_aftersale_data.tips_msg}}</text>
                     <text class="msg-a" @tap="show_aftersale_event">查看 >></text>
                     <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
-                        <button class="round dis-block fl" type="primary" size="mini" @tap="delivery_submit_event">立即退货</button>
+                        <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">立即退货</button>
                     </view>
                 </view>
 
