@@ -227,24 +227,24 @@
  * 字体大小
  */
 .text-size-xs {
-    font-size: 22rpx;
+    font-size: 22rpx !important;
 }
 .text-size-sm {
-    font-size: 26rpx;
+    font-size: 26rpx !important;
 }
 .text-size,
 .text-size-default {
-    font-size: 32rpx;
+    font-size: 32rpx !important;
 }
 .text-size-lg {
-    font-size: 36rpx;
+    font-size: 36rpx !important;
 }
 .text-size-xl {
-    font-size: 42rpx;
+    font-size: 42rpx !important;
 }
 .text-size-xxl {
-    font-size: 62rpx;
+    font-size: 62rpx !important;
 }
 .text-size-xxxl {
-    font-size: 82rpx;
+    font-size: 82rpx !important;
 }

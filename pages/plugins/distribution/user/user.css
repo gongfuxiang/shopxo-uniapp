@@ -1,0 +1,59 @@
+/*
+* 头部
+*/
+.head-box {
+    background-color: #ff6a80;
+}
+.head-item {
+    width: 260rpx;
+}
+.head-item .avatar,
+.head-item .avatar image {
+    width: 130rpx;
+    height: 130rpx !important;
+    margin: 0 auto;
+}
+.head-base {
+    width: calc(100% - 270rpx);
+}
+.head-base .level-name {
+    color: #fffbe0;
+}
+.head-base .level-icon {
+    width: 35rpx;
+    height: 35rpx !important;
+}
+.head-base .head-base-submit {
+    right: 20rpx;
+    bottom: 20rpx;
+}
+
+/*
+* 导航
+*/
+.nav .item {
+    width: calc(50% - 70rpx);
+    margin-bottom: 20rpx;
+}
+.nav .item:nth-child(2n) {
+    margin-right: 20rpx;
+    margin-left: 10rpx;
+}
+.nav .item:nth-child(2n+1) {
+    margin-left: 20rpx;
+    margin-right: 10rpx;
+}
+.nav .item image {
+    width: 80rpx;
+    height: 80rpx;
+    margin: 0 auto;
+}
+
+
+/*
+* 提示信息
+*/
+.not-vip-desc {
+    background: #ffffeb;
+    padding-left: 20rpx;
+}

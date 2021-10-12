@@ -1,0 +1,22 @@
+/*
+* 导航
+*/
+.nav {
+    background: #eee;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 16.66%;
+}
+
+/*
+* 列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.data-list .item .base .avatar {
+    width: 40rpx;
+    height: 40rpx !important;
+}

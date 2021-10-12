@@ -179,6 +179,9 @@ button:before {
 .round {
     border-radius: 50rpx !important;
 }
+.circle {
+    border-radius: 50% !important;
+}
 .fw-b {
     font-weight: bold;
 }

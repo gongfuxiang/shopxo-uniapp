@@ -21,7 +21,7 @@
                 // 获取位置选择缓存key
                 cache_userlocation_key: "cache_userlocation_key",
                 // 默认用户头像
-                default_user_head_src: "/static/images/yellow/common/user.png",
+                default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
                 default_round_success_icon: "/static/images/default-round-success-icon.png",
                 // 错误圆形提示图片
