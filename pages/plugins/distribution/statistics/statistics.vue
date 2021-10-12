@@ -1,53 +1,34 @@
 <template>
     <view>
-        <!-- 推广客户 -->
-        <view class="container user-container bg-white">
-            <view class="title">推广客户</view>
-            <view class="base-content oh tc">
-                <view class="item fl">
-                    <view class="name cr-base">已推广用户总数</view>
-                    <view class="value single-text">
-                        <text class="golden">{{user_total.user_count || 0}}</text>
-                        <text class="cr-gray">人</text>
-                    </view>
-                </view>
-                <view class="item fl">
-                    <view class="name cr-base">已消费用户总数</view>
-                    <view class="value single-text">
-                        <text class="green">{{user_total.valid_user_count || 0}}</text>
-                        <text class="cr-gray">人</text>
-                    </view>
+        <view class="padding-main">
+            <!-- 推广客户 -->
+            <view class="container padding-main border-radius-main bg-white">
+                <view class="title border-color-main padding-left-lg text-size fw-b">推广客户</view>
+                <view class="margin-top-lg oh tc">
+                    <block v-for="(item, index) in stats_user_data_list" :key="index">
+                        <view class="item fl padding-main">
+                            <view class="cr-base">{{item.name}}</view>
+                            <view class="single-text margin-top-sm">
+                                <text class="text-size">{{item.value}}</text>
+                                <text class="cr-gray margin-left-sm">人</text>
+                            </view>
+                        </view>
+                    </block>
                 </view>
             </view>
-        </view>
 
-        <!-- 返利概况 -->
-        <view class="container profit-container bg-white spacing-mt">
-            <view class="title">返利概况</view>
-            <view class="base-content oh tc">
-                <view class="item fl">
-                    <view class="name cr-base">返佣总额</view>
-                    <view class="value single-text">
-                        <text class="golden">{{currency_symbol}}{{user_profit_total_price || '0.00'}}</text>
-                    </view>
-                </view>
-                <view class="item fl">
-                    <view class="name cr-base">待生效</view>
-                    <view class="value single-text">
-                        <text class="yellow">{{currency_symbol}}{{user_profit_stay_price || '0.00'}}</text>
-                    </view>
-                </view>
-                <view class="item fl">
-                    <view class="name cr-base">待结算</view>
-                    <view class="value single-text">
-                        <text class="blue">{{currency_symbol}}{{user_profit_vaild_price || '0.00'}}</text>
-                    </view>
-                </view>
-                <view class="item fl">
-                    <view class="name cr-base">已结算</view>
-                    <view class="value single-text">
-                        <text class="green">{{currency_symbol}}{{user_profit_already_price || '0.00'}}</text>
-                    </view>
+            <!-- 返利概况 -->
+            <view class="container padding-main border-radius-main bg-white spacing-mt">
+                <view class="title border-color-main padding-left-lg text-size fw-b">返利概况</view>
+                <view class="margin-top-lg oh tc">
+                    <block v-for="(item, index) in stats_profit_data_list" :key="index">
+                        <view class="item fl padding-main">
+                            <view class="cr-base">{{item.name}}</view>
+                            <view class="single-text margin-top-sm">
+                                <text :class="'fw-b text-size '+item.ent">{{currency_symbol}}{{item.value}}</text>
+                            </view>
+                        </view>
+                    </block>
                 </view>
             </view>
         </view>
@@ -66,12 +47,17 @@
             return {
                 data_list_loding_status: 1,
                 data_list_loding_msg: '加载中...',
-                data_bottom_line_status: false,
-                user_total: null,
-                user_profit_stay_price: 0.00,
-                user_profit_vaild_price: 0.00,
-                user_profit_already_price: 0.00,
-                user_profit_total_price: 0.00,
+                data_bottom_line_status: true,
+                stats_user_data_list: [
+                    {name: "已推广用户总数", value: 0},
+                    {name: "已消费用户总数", value: 0}
+                ],
+                stats_profit_data_list: [
+                    {name: "返佣总额", value: '0.00', ent: "cr-base"},
+                    {name: "待生效", value: '0.00', ent: "cr-yellow"},
+                    {name: "待结算", value: '0.00', ent: "cr-blue"},
+                    {name: "已结算", value: '0.00', ent: "cr-green"}
+                ],
                 user_data: null,
                 profit_data: null,
                 // 基础配置
@@ -128,12 +114,23 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            
+                            // 用户统计
+                            var temp_stats_user = this.stats_user_data_list;
+                            temp_stats_user[0]['value'] = data.user_total.user_count || 0;
+                            temp_stats_user[1]['value'] = data.user_total.valid_user_count || 0;
+                            
+                            // 收益统计
+                            var temp_stats_profit = this.stats_profit_data_list;
+                            temp_stats_profit[0]['value'] = data.user_profit_total_price || '0.00';
+                            temp_stats_profit[1]['value'] = data.user_profit_stay_price || '0.00';
+                            temp_stats_profit[2]['value'] = data.user_profit_vaild_price || '0.00';
+                            temp_stats_profit[3]['value'] = data.user_profit_already_price || '0.00';
+                            
+                            // 数据设置
                             self.setData({
-                                user_total: data.user_total || null,
-                                user_profit_stay_price: data.user_profit_stay_price || 0.00,
-                                user_profit_vaild_price: data.user_profit_vaild_price || 0.00,
-                                user_profit_already_price: data.user_profit_already_price || 0.00,
-                                user_profit_total_price: data.user_profit_total_price || 0.00,
+                                stats_user_data_list: temp_stats_user,
+                                stats_profit_data_list: temp_stats_profit,
                                 user_data: data.user_chart || null,
                                 profit_data: data.profit_chart || null,
                                 data_list_loding_status: 3,
