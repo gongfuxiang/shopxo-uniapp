@@ -5,12 +5,17 @@ ShopXO免费开源商城uniapp端主题源码、支持各大平台小程序
 
 
 #### 安装教程
+
+
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
 2. 将该源码导入HBuilderX开发工具
 3. App.vue中修改 request_url 接口地址为自己的商城地址即可使用
 
 #### 源代码平台
 https://gitee.com/zongzhige/shopxo-uniapp
+
+#### 后端支持源代码平台
+https://gitee.com/zongzhige/shopxo
 
 #### 图片展示
 | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141656_d4ac101e_488475.jpeg "首页.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141756_abe0697d_488475.jpeg "分类.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141807_7604a0e1_488475.jpeg "购物车.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141819_bffb8d59_488475.jpeg "用户中心.jpg") |
