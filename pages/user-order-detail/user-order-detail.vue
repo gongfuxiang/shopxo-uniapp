@@ -32,17 +32,16 @@
                                         <text class="cr-gray">{{sv.value}}</text>
                                     </block>
                                 </view>
-                                <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
-                            </view>
-                            <view class="oh pr margin-top-sm">
-                                <text class="fw-b text-size">{{detail.currency_data.currency_symbol}}{{item.price}}</text>
-                                <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{detail.currency_data.currency_symbol}}{{item.original_price}}</text>
-                                <text class="buy-number pa">x{{item.buy_number}}</text>
+                                <view class="margin-top-sm">
+                                    <text class="fw-b">{{detail.currency_data.currency_symbol}}{{item.price}}</text>
+                                    <text class="margin-left-sm">x{{item.buy_number}}</text>
+                                </view>
+                                <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
                             </view>
                         </navigator>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs text-size-lg">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
+                        <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
                     </view>
                 </view>
 

@@ -24,10 +24,6 @@
     width: 160rpx;
     height: 160rpx;
 }
-.buy-number {
-    right: 0;
-    bottom: 0;
-}
 .warehouse-group-icon {
     width: 30rpx;
     height: 30rpx;
@@ -42,6 +38,7 @@
 .orderaftersale-btn-text {
     right: 0;
     bottom: 0;
+    z-index: 1;
 }
 
 /**

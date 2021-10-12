@@ -46,13 +46,10 @@
     width: 160rpx;
     height: 160rpx;
 }
-.buy-number {
-    right: 0;
-    bottom: 0;
-}
 .orderaftersale-btn-text {
     right: 0;
     bottom: 0;
+    z-index: 1;
 }
 
 /*

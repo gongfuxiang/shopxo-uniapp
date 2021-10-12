@@ -33,10 +33,6 @@
     width: 160rpx;
     height: 160rpx;
 }
-.buy-number {
-    right: 0;
-    bottom: 0;
-}
 .item-operation button:not(:first-child) {
     margin-left: 20rpx;
 }

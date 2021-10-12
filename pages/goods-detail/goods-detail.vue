@@ -1076,7 +1076,8 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
-                            var spec_type = res.data.data.spec_type;
+                            // 兼容老版本无spec_type二级参数的情况
+                            var spec_type = (res.data.data.spec_type || null) == null ? res.data.data : res.data.data.spec_type;
                             var spec_count = spec.length;
                             var index = spec_count > 0 ? spec_count : 0;
                             if (index < sku_count) {
@@ -1174,7 +1175,8 @@
             
             // 商品规格详情返回数据处理
             goods_spec_detail_back_handle(data) {
-                var spec_base = data.spec_base;
+                // 兼容老版本无spec_base二级参数的情况
+                var spec_base = (data.spec_base || null) == null ? data : data.spec_base;
                 var data = {
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price,
@@ -1201,7 +1203,7 @@
             goods_buy_number_event(e) {
                 var type = parseInt(e.currentTarget.dataset.type) || 0;
                 var temp_number = parseInt(this.buy_number);
-                var number = (type == 0) ? (temp_number - 1) : (temp_number + 1);
+                var number = (type == 0) ? temp_number - 1 : temp_number + 1;
                 this.goods_buy_number_func(number);
             },
 

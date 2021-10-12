@@ -6,7 +6,7 @@
                     <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh">
                         <view class="oh">
                             <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                                <image class="goods-image fl br radius margin-right-lg" :src="item.images" mode="aspectFill"></image>
+                                <image class="goods-image fl radius br margin-right-lg" :src="item.images" mode="aspectFill"></image>
                             </navigator>
                             <view class="item-base fl margin-top-sm">
                                 <block v-for="(item, tx) in [1,2,3,4,5]" :key="tx">

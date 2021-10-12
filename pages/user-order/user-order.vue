@@ -34,18 +34,17 @@
                                         <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
                                         <text class="cr-gray">{{sv.value}}</text>
                                     </block>
+                                </view>                            
+                                <view class="margin-top-sm">
+                                    <text class="fw-b">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
+                                    <text class="margin-left-sm">x{{detail.buy_number}}</text>
                                 </view>
-                                <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
-                            </view>
-                            <view class="oh pr margin-top-sm">
-                                <text class="fw-b text-size">{{item.currency_data.currency_symbol}}{{detail.price}}</text>
-                                <text v-if="detail.original_price > 0" class="original-price margin-left-sm">{{item.currency_data.currency_symbol}}{{detail.original_price}}</text>
-                                <text class="buy-number pa">x{{detail.buy_number}}</text>
+                                <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
                             </view>
                         </navigator>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{item.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs text-size-lg">{{item.currency_data.currency_symbol}}{{item.total_price}}</text>元</text>
+                        <text>共<text class="fw-b">{{item.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{item.currency_data.currency_symbol}}{{item.total_price}}</text>元</text>
                     </view>
                     
                     <view v-if="item.operate_data.is_cancel + item.operate_data.is_pay + item.operate_data.is_collect + item.operate_data.is_comments + item.operate_data.is_delete > 0 || (item.status == 2 && item.order_model != 2)" class="item-operation tr br-t padding-vertical-main">

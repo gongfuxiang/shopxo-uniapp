@@ -51,7 +51,7 @@
                         </view>
                         <!-- 商品 -->
                         <view v-for="(item, index2) in group.goods_items" :key="index2" class="goods-item oh">
-                            <image class="goods-image fl" :src="item.images" mode="aspectFill"></image>
+                            <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base">
                                 <view class="goods-title multi-text">{{item.title}}</view>
                                 <view v-if="item.spec != null" class="margin-top-xs cr-gray">
@@ -60,11 +60,11 @@
                                         <text>{{spec.value}}</text>
                                     </block>
                                 </view>
-                            </view>
-                            <view class="oh pr margin-top-sm">
-                                <text class="fw-b text-size">{{currency_symbol}}{{item.price}}</text>
-                                <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
-                                <text class="buy-number pa cr-gray">x{{item.stock}}</text>
+                                <view class="oh pr margin-top-sm">
+                                    <text class="fw-b">{{currency_symbol}}{{item.price}}</text>
+                                    <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
+                                    <text class="buy-number pa cr-gray">x{{item.stock}}</text>
+                                </view>
                             </view>
                         </view>
                         <!-- 优惠劵 -->

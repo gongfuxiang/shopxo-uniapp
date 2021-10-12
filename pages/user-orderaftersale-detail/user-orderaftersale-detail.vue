@@ -14,11 +14,10 @@
                                     <text class="cr-gray">{{sv.value}}</text>
                                 </block>
                             </view>
-                        </view>
-                        <view class="oh pr margin-top-sm">
-                            <text class="sales-price">{{order_data.currency_data.currency_symbol}}{{order_data.items.price}}</text>
-                            <text v-if="order_data.items.original_price > 0"  class="original-price margin-left-sm">{{order_data.currency_data.currency_symbol}}{{order_data.items.original_price}}</text>
-                            <text class="buy-number pa">x{{order_data.items.buy_number}}</text>
+                            <view class="margin-top-sm">
+                                <text class="fw-b">{{order_data.currency_data.currency_symbol}}{{order_data.items.price}}</text>
+                                <text class="margin-left-sm">x{{order_data.items.buy_number}}</text>
+                            </view>
                         </view>
                     </navigator>
                 </view>

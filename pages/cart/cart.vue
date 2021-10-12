@@ -14,7 +14,7 @@
                             <view class="items">
                                 <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
                                     <!-- 图片 -->
-                                    <image :class="'goods-image fl br radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                    <image :class="'goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                     <!-- 错误 -->
                                     <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc">
                                         <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
@@ -35,7 +35,7 @@
                                     </view>
 
                                     <!-- 底部内容 -->
-                                    <view class="goods-bottom pr margin-top-lg">
+                                    <view class="goods-bottom pr margin-top-sm">
                                         <!-- 价格 -->
                                         <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
                                     
@@ -229,7 +229,6 @@
                     dataType: "json",
                     success: res => {
                         uni.stopPullDownRefresh();
-
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -280,12 +279,8 @@
             goods_buy_number_event(e) {
                 var index = e.currentTarget.dataset.index || 0;
                 var type = parseInt(e.currentTarget.dataset.type) || 0;
-                var temp_buy_number = parseInt(this.data_list[index]['stock']);
-                if (type == 0) {
-                    var buy_number = temp_buy_number - 1;
-                } else {
-                    var buy_number = temp_buy_number + 1;
-                }
+                var temp_number = parseInt(this.data_list[index]['stock']);
+                var buy_number = (type == 0) ? temp_number - 1 : temp_number + 1;
                 this.goods_buy_number_func(index, buy_number);
             },
 

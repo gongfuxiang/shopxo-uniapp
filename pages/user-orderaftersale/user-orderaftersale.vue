@@ -27,11 +27,10 @@
                                         <text class="cr-gray">{{sv.value}}</text>
                                     </block>
                                 </view>
-                            </view>
-                            <view class="oh pr">
-                                <text class="fw-b text-size">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.price}}</text>
-                                <text v-if="item.order_data.items.original_price > 0" class="original-price">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.original_price}}</text>
-                                <text class="buy-number pa">x{{item.order_data.items.buy_number}}</text>
+                                <view class="margin-top-sm">
+                                    <text class="fw-b">{{item.order_data.currency_data.currency_symbol}}{{item.order_data.items.price}}</text>
+                                    <text class="margin-left-sm">x{{item.order_data.items.buy_number}}</text>
+                                </view>
                             </view>
                         </navigator>
                     </view>
