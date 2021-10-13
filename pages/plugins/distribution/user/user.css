@@ -48,12 +48,3 @@
     height: 80rpx;
     margin: 0 auto;
 }
-
-
-/*
-* 提示信息
-*/
-.not-vip-desc {
-    background: #ffffeb;
-    padding-left: 20rpx;
-}

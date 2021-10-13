@@ -528,57 +528,28 @@
                 var form_data = e.detail.value;
                 
                 // 数据校验
-                var validation = [{
-                    fields: "name",
-                    msg: "请填写联系人"
-                }, {
-                    fields: "tel",
-                    msg: "请填写联系电话"
-                }, {
-                    fields: "province",
-                    msg: "请选择省份"
-                }, {
-                    fields: "city",
-                    msg: "请选择城市"
-                }, {
-                    fields: "county",
-                    msg: "请选择区县"
-                }, {
-                    fields: "address",
-                    msg: "请填写详细地址"
-                }];
+                var validation = [
+                    { fields: "name", msg: "请填写联系人" },
+                    { fields: "tel", msg: "请填写联系电话" },
+                    { fields: "province", msg: "请选择省份" },
+                    { fields: "city", msg: "请选择城市" },
+                    { fields: "county", msg: "请选择区县" },
+                    { fields: "address", msg: "请填写详细地址" }
+                ];
                 
                 // 是否开启了地理位置选择
                 if (this.home_user_address_map_status == 1) {
-                    validation.push({
-                        fields: "lng",
-                        msg: "请选择地理位置"
-                    });
-                    validation.push({
-                        fields: "lat",
-                        msg: "请选择地理位置"
-                    });
+                    validation.push({ fields: "lng", msg: "请选择地理位置" });
+                    validation.push({ fields: "lat", msg: "请选择地理位置" });
                 }
                 
                 // 是否开启了用户身份证信息
                 if (this.home_user_address_idcard_status == 1) {
                     // 验证
-                    validation.push({
-                        fields: "idcard_name",
-                        msg: "请填写身份证姓名"
-                    });
-                    validation.push({
-                        fields: "idcard_number",
-                        msg: "请填写身份证号码"
-                    });
-                    validation.push({
-                        fields: "idcard_front",
-                        msg: "请上传身份证正面照片"
-                    });
-                    validation.push({
-                        fields: "idcard_back",
-                        msg: "请上传身份证背面照片"
-                    });
+                    validation.push({ fields: "idcard_name", msg: "请填写身份证姓名" });
+                    validation.push({ fields: "idcard_number", msg: "请填写身份证号码" });
+                    validation.push({ fields: "idcard_front", msg: "请上传身份证正面照片" });
+                    validation.push({ fields: "idcard_back", msg: "请上传身份证背面照片" });
                     
                     // 数据
                     form_data['idcard_front'] = this.idcard_images_data.idcard_front || '';

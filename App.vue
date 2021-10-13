@@ -940,12 +940,10 @@
             // 剪贴板
             text_copy_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-
                 if (value != null) {
                     var self = this;
                     uni.setClipboardData({
                         data: value,
-
                         success(res) {
                             uni.getClipboardData({
                                 success(res) {
@@ -954,7 +952,6 @@
 
                             });
                         }
-
                     });
                 } else {
                     this.showToast('复制内容为空');

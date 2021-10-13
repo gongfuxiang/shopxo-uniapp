@@ -1,0 +1,26 @@
+/*
+* 表单
+*/
+.page {
+    padding-bottom: 110rpx;
+}
+.submit-fixed {
+    z-index: 2;
+}
+
+/*
+* 三级联动
+*/
+.select-address {
+    box-sizing: border-box;
+    height: 70rpx;
+    line-height: 70rpx;
+    padding: 0 10rpx;
+}
+.select-address .section {
+    width: 33.33%;
+    box-sizing: border-box;
+}
+.select-address .section:not(:first-child) {
+    padding: 0 5rpx;
+}

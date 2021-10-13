@@ -145,6 +145,14 @@
     font-size: 26rpx;
     border-radius: 20rpx;
 }
+.notice-content-blue {
+    background: #def2fd;
+    border: 1px solid #cfeeff;
+    color: #1490d2;
+    padding: 10rpx 20rpx;
+    font-size: 26rpx;
+    border-radius: 22rpx;
+}
 
 /**
  * 箭头符号

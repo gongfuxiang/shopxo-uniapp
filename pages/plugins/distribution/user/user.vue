@@ -22,6 +22,13 @@
                 </view>
             </view>
         </view>
+        
+        <!-- 会员中心通知 -->
+        <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
+            <view class="notice-content">
+                <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
+            </view>
+        </view>
 
         <!-- 导航 -->
         <view v-if="nav_list.length > 0" class="nav oh">
@@ -34,17 +41,10 @@
                 </view>
             </block>
         </view>
-        
-        <!-- 会员中心通知 -->
-        <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
-            </view>
-        </view>
-        
+
         <!-- 不符合分销条件描述 -->
         <view v-if="(data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content not-vip-desc">
+            <view class="notice-content-blue">
                 <view v-for="(item, index) in data_base.non_conformity_desc" :key="index" class="item">{{item}}</view>
             </view>
         </view>
