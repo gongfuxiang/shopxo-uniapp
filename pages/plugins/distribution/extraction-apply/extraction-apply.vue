@@ -246,9 +246,6 @@
                     method: "POST",
                     data: {},
                     dataType: "json",
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -277,9 +274,6 @@
                             pid: self.province_id
                         },
                         dataType: "json",
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded'
-                        },
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -310,9 +304,6 @@
                             pid: self.city_id
                         },
                         dataType: "json",
-                        header: {
-                            'content-type': 'application/x-www-form-urlencoded'
-                        },
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -333,7 +324,6 @@
             // 省份事件
             select_province_event(e) {
                 var index = e.detail.value || 0;
-
                 if (index >= 0) {
                     var data = this.province_list[index];
                     this.setData({
@@ -351,7 +341,6 @@
             // 市事件
             select_city_event(e) {
                 var index = e.detail.value || 0;
-
                 if (index >= 0) {
                     var data = this.city_list[index];
                     this.setData({
@@ -367,7 +356,6 @@
             // 区/县事件
             select_county_event(e) {
                 var index = e.detail.value || 0;
-
                 if (index >= 0) {
                     var data = this.county_list[index];
                     this.setData({
@@ -404,7 +392,6 @@
                         lng: result.longitude || null
                     };
                 }
-
                 this.setData({
                     user_location: data
                 });

@@ -1,0 +1,36 @@
+/*
+* 导航
+*/
+.nav {
+    background: #eee;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 33.33%;
+}
+
+/*
+* 列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.data-list .item .operation button {
+    padding: 0 35rpx;
+    display: inline-flex;
+}
+
+/*
+* 搜索
+*/
+.search-drag {
+    width: 35px;
+    height: 35px;
+    line-height: 44px;
+    background: hsla(0, 0%, 0%, 0.01);
+    margin-top: calc(100vh - 260rpx);
+    margin-left: calc(50% - 17px);
+    box-shadow: 0px 3rpx 16rpx rgba(0, 0, 0, 0.2);
+    padding: 5px;
+}

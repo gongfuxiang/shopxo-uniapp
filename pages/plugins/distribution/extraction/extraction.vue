@@ -11,7 +11,7 @@
                     </view>
                     <view class="margin-top-xxxl">
                         <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                            <button class="bg-main cr-white br-main round wh-auto" type="default" size="mini" hover-class="none">立即申请</button>
+                            <button class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">立即申请</button>
                         </navigator>
                     </view>
                 </view>
@@ -20,73 +20,81 @@
                 <view v-else class="apply-already">
                     <!-- status 状态（0待审核, 1已通过, 2已拒绝 -->
                     <!-- 审核中 -->
-                    <view v-if="extraction.status == 0" class="waiting-audit bg-white">
-                        <view class="title-msg tc">申请信息正在审核中...</view>
-                        <view class="operation oh tc">
-                            <view class="cr-base mini-msg">你可以</view>
-                            <view class="to-submit tc">
-                                <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                    <button type="primary" size="mini" hover-class="none">编辑信息</button>
-                                </navigator>
-                            </view>
+                    <view v-if="extraction.status == 0">
+                        <view class="padding-main border-radius-main bg-white">
+                            <view class="cr-red tc text-size-lg">申请信息正在审核中...</view>
                         </view>
-
+                        <view class="margin-top-xxxl">
+                            <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
+                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">编辑</button>
+                            </navigator>
+                        </view>
                     </view>
 
                     <!-- 审核通过 -->
                     <view v-else-if="extraction.status == 1 || extraction.status == 3" class="valid">
-                        <view class="base br-b oh bg-white">
-                            <view class="base-title fl">取货点信息</view>
-                            <view class="fr edit-submit">
-                                <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">编辑信息</navigator>
-                            </view>
-                        </view>
-                        <view class="content bg-white" @tap="address_map_event">
-                            <text v-if="(extraction.alias || null) != null" class="alias">{{extraction.alias}}</text>
-                            <text class="cr-base">{{extraction.province_name}}{{extraction.city_name}}{{extraction.county_name}}{{extraction.address}}</text>
-                        </view>
-
-                        <view v-if="extraction.status == 1">
-                            <view class="base br-b oh bg-white spacing-mt">
-                                <view class="base-title fl">取货订单统计</view>
-                                <view class="fr edit-submit">
-                                    <navigator url="/pages/plugins/distribution/extraction-order/extraction-order" hover-class="none">查看取货订单</navigator>
+                        <view class="padding-main border-radius-main bg-white">
+                            <!-- 导航 -->
+                            <view class="padding-bottom-main br-b">
+                                <text class="fw-b">取货点信息</text>
+                                <view class="fr cr-blue">
+                                    <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">编辑信息</navigator>
                                 </view>
                             </view>
-                            <view class="content bg-white statistics oh">
-                                <view class="item fl tc" data-value="0" @tap="order_event">
-                                    <view class="title cr-base">待处理</view>
-                                    <view class="value single-text order-wait-value">{{statistical.order_wait || 0}}</view>
+                            <!-- 地址信息 -->
+                            <view class="margin-top-lg" @tap="address_map_event">
+                                <text v-if="(extraction.alias || null) != null" class="alias br-main cr-main bg-white round margin-right-sm">{{extraction.alias}}</text>
+                                <text class="cr-base">{{extraction.province_name}}{{extraction.city_name}}{{extraction.county_name}}{{extraction.address}}</text>
+                            </view>
+                        </view>
+                        <view v-if="extraction.status == 1" class="spacing-mt">
+                            <view class="padding-main border-radius-main bg-white">
+                                <!-- 导航 -->
+                                <view class="padding-bottom-main br-b">
+                                    <text class="fw-b">取货订单统计</text>
+                                    <view class="fr cr-blue">
+                                        <navigator url="/pages/plugins/distribution/extraction-order/extraction-order" hover-class="none">查看取货订单</navigator>
+                                    </view>
                                 </view>
-                                <view class="item fl tc br-l" data-value="1" @tap="order_event">
-                                    <view class="title cr-base">已处理</view>
-                                    <view class="value single-text order-already-value">{{statistical.order_already || 0}}</view>
+                                <!-- 自提地点统计 -->
+                                <view class="statistics oh padding-top-main">
+                                    <view class="item fl tc padding-main" data-value="0" @tap="order_event">
+                                        <view class="title cr-base">待处理</view>
+                                        <view class="single-text cr-red fw-b margin-top-sm">{{statistical.order_wait || 0}}</view>
+                                    </view>
+                                    <view class="item fl tc padding-main" data-value="1" @tap="order_event">
+                                        <view class="title cr-base">已处理</view>
+                                        <view class="single-text cr-green fw-b margin-top-sm">{{statistical.order_already || 0}}</view>
+                                    </view>
+                                </view>
+                            </view>
+                            <!-- 通知 -->
+                            <view v-if="(data_base || null) != null && (data_base.self_extraction_common_notice || null) != null && data_base.self_extraction_common_notice.length > 0" class="spacing-mt">
+                                <view class="notice-content">
+                                    <view v-for="(item, index) in data_base.self_extraction_common_notice" :key="index" class="item">
+                                        {{item}}
+                                    </view>
                                 </view>
                             </view>
                         </view>
-                        <view v-else class="spacing-mt relieve">
-                            <view class="tips">当前状态也解约，可重新编辑数据提交审核。</view>
-                        </view>
-                        <view v-if="extraction.status == 1 && (data_base || null) != null && (data_base.self_extraction_common_notice || null) != null && data_base.self_extraction_common_notice.length > 0" class="extraction-notice spacing-mt">
-                            <view class="tips">
-                                <view v-for="(item, index) in data_base.self_extraction_common_notice" :key="index" class="item">
-                                    {{item}}
-                                </view>
-                            </view>
+                        <!-- 已解约 -->
+                        <view v-else class="spacing-mt">
+                            <view class="notice-content-blue">当前状态也解约，可重新编辑数据提交审核。</view>
                         </view>
                     </view>
-
                     <!-- 审核失败 -->
-                    <view v-else="extraction.status == 2" class="refuse bg-white">
-                        <view class="title-msg tc">申请信息审核失败</view>
-                        <view v-if="(extraction.fail_reason || null) != null" class="fail-tips tips">原因：{{extraction.fail_reason}}</view>
-                        <view class="operation oh tc">
-                            <view class="cr-base mini-msg">你可以重新编辑信息提交</view>
-                            <view class="to-submit tc">
-                                <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                    <button type="primary" size="mini" hover-class="none">编辑信息</button>
-                                </navigator>
+                    <view v-else="extraction.status == 2">
+                        <view class="padding-main border-radius-main bg-white spacing-mb">
+                            <view class="cr-red tc text-size-lg">申请信息审核失败</view>
+                            <view v-if="(extraction.fail_reason || null) != null" class="margin-top-lg">
+                                <text class="fw-b">原因：</text>
+                                <text class="cr-gray">{{extraction.fail_reason}}</text>
                             </view>
+                        </view>
+                        <view class="margin-top-xxxl">
+                            <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
+                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">编辑</button>
+                            </navigator>
                         </view>
                     </view>
                 </view>
