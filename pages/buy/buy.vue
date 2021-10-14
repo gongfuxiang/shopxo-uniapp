@@ -143,12 +143,12 @@
                             <icon type="clear" size="20"></icon>
                         </view>
                     </view>
-                    <view v-if="plugins_coupon_list.length > 0" class="coupon-container oh br-b">
+                    <view v-if="plugins_coupon_list.length > 0" class="coupon-container padding-horizontal-main padding-bottom-main oh">
                         <view class="not-use-tips tc">
                             <text @tap="plugins_coupon_not_use_event">不使用优惠劵</text>
                         </view>
                         <block v-for="(item, index) in plugins_coupon_list" :key="index">
-                            <view :class="'item spacing-mt bg-white radius ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.coupon.bg_color_value + ';'">
+                            <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.coupon.bg_color_value + ';'">
                                 <view class="v-left fl">
                                     <view class="base single-text" :style="'color:' + item.coupon.bg_color_value + ';'">
                                         <text v-if="item.coupon.type == 0" class="symbol">{{currency_symbol}}</text>

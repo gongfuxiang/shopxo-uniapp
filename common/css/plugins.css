@@ -1,9 +1,6 @@
 /*
  * 优惠劵
  */
-.coupon-container {
-    padding: 0 10rpx;
-}
 .coupon-container .item {
     overflow: hidden;
     height: 180rpx;

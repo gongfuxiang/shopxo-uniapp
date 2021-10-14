@@ -165,7 +165,6 @@
     max-height: 80vh;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-bottom: 50rpx;
 }
 .coupon-container .item,
 .coupon-container .v-right,

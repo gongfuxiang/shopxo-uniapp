@@ -1,0 +1,22 @@
+/*
+* 导航
+*/
+.nav {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 33.33%;
+}
+
+/*
+* 数据列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.coupon-container .item,
+.coupon-container .v-right,
+.coupon-container .v-right .circle {
+    height: 230rpx;
+}
