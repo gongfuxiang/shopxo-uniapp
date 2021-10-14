@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav">
+        <view class="nav bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view v-if="nav_status_index == index" class="item fl tc cr-main" :data-index="index" @tap="nav_event">{{item.name}}</view>
                 <view v-else class="item fl tc" :data-index="index" @tap="nav_event">{{item.name}}</view>

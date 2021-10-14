@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 排序 -->
-        <view class="nav-sort oh">
+        <view class="nav-sort bg-white oh">
             <view class="nav-sort-content">
                 <block v-for="(item, index) in search_nav_sort_list" :key="index">
                     <view class="item tc fl" :data-index="index" @tap="nav_sort_event">

@@ -6,7 +6,7 @@
         <block v-else>
             <view v-if="goods_list.length > 0" class="page">
                 <!-- 销售+自提 模式选择 -->
-                <view v-if="common_site_type == 4" class="buy-header-nav oh tc">
+                <view v-if="common_site_type == 4" class="buy-header-nav bg-white oh tc">
                     <block v-for="(item, index) in buy_header_nav" :key="index">
                         <view :class="'item fl ' + (site_model == item.value ? 'cr-main' : 'cr-base')" :data-value="item.value" @tap="buy_header_nav_event">{{item.name}}</view>
                     </block>

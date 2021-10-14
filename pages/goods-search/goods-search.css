@@ -1,9 +1,6 @@
 /**
 * 排序导航
 */
-.nav-sort {
-    background: #eee;
-}
 .nav-sort-content .item {
     height: 80rpx;
     line-height: 80rpx;
