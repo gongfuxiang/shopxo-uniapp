@@ -218,9 +218,9 @@
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    min-height: 96rpx;
-    line-height: 48rpx;
-    font-size: 32rpx;
+    min-height: 77rpx;
+    line-height: 38rpx;
+    font-size: 28rpx;
     white-space: initial;
 }
 
