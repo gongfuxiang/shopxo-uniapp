@@ -3,7 +3,7 @@
         <image v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="wh-auto dis-block" :src="data_base.banner_images" mode="widthFix"></image>
 
         <!-- 优惠劵列表 -->
-        <view v-if="data_list.length > 0" class="coupon-container padding-main">
+        <view v-if="data_list.length > 0" class="coupon-container padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
                 <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
                     <view class="v-left fl">

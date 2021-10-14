@@ -206,14 +206,14 @@
 			"path": "pages/plugins/coupon/index/index",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "领劵中心"
+				"navigationBarTitleText": "领券中心"
 			}
 		},
 		{
 			"path": "pages/plugins/coupon/user/user",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "优惠劵"
+				"navigationBarTitleText": "我的卡券"
 			}
 		},
 		{
