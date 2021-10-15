@@ -76,7 +76,6 @@
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             self.setData({

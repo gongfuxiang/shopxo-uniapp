@@ -491,14 +491,14 @@
 			"path": "pages/plugins/excellentbuyreturntocash/profit/profit",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "返现明细"
+				"navigationBarTitleText": "优购返现明细"
 			}
 		},
 		{
 			"path": "pages/plugins/excellentbuyreturntocash/profit-detail/profit-detail",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "返现详情"
+				"navigationBarTitleText": "优购返现详情"
 			}
 		},
 		{
