@@ -540,7 +540,7 @@
 			"path": "pages/plugins/invoice/invoice/invoice",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "我的发票"
+				"navigationBarTitleText": "开票列表"
 			}
 		},
 		{

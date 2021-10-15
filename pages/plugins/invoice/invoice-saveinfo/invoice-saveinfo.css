@@ -1,0 +1,9 @@
+/*
+* 表单
+*/
+.page {
+    padding-bottom: 110rpx;
+}
+.submit-fixed {
+    z-index: 2;
+}

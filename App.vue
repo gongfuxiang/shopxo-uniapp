@@ -917,7 +917,6 @@
             // 链接地址事件
             url_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-
                 if (value != null) {
                     var temp = value.substr(0, 6);
 

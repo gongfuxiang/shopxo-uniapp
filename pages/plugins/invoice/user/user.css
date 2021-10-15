@@ -1,0 +1,20 @@
+/*
+* 导航
+*/
+.nav .item {
+    width: calc(50% - 70rpx);
+    margin-bottom: 20rpx;
+}
+.nav .item:nth-child(2n) {
+    margin-right: 20rpx;
+    margin-left: 10rpx;
+}
+.nav .item:nth-child(2n+1) {
+    margin-left: 20rpx;
+    margin-right: 10rpx;
+}
+.nav .item image {
+    width: 80rpx;
+    height: 80rpx;
+    margin: 0 auto;
+}
