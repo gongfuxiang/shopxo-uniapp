@@ -1,6 +1,8 @@
 <template>
     <view>
-        <image v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="wh-auto dis-block" :src="data_base.banner_images" mode="widthFix"></image>
+        <view v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="padding-horizontal-main padding-top-main">
+            <image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix"></image>
+        </view>
 
         <!-- 优惠劵列表 -->
         <view v-if="data_list.length > 0" class="coupon-container padding-horizontal-main padding-top-main">
