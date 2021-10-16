@@ -33,6 +33,9 @@
     bottom: 20rpx;
     right: 20rpx;
 }
+.submit-container button {
+    display: inline-flex;
+}
 .submit-container button:not(:first-child) {
     margin-left: 20rpx;
 }
