@@ -554,7 +554,7 @@
 			"path": "pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "开票"
+				"navigationBarTitleText": "开票编辑"
 			}
 		},
 		{
@@ -568,10 +568,6 @@
 			"path": "pages/plugins/signin/user/user",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "签到"
 			}
 		},
@@ -579,10 +575,6 @@
 			"path": "pages/plugins/signin/index-detail/index-detail",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "签到"
 			}
 		},
@@ -590,10 +582,6 @@
 			"path": "pages/plugins/signin/user-signin/user-signin",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "我的签到"
 			}
 		},
@@ -601,10 +589,6 @@
 			"path": "pages/plugins/signin/user-qrcode/user-qrcode",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "签到码管理"
 			}
 		},
@@ -612,10 +596,6 @@
 			"path": "pages/plugins/signin/user-qrcode-detail/user-qrcode-detail",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "签到码详情"
 			}
 		},
@@ -623,21 +603,13 @@
 			"path": "pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
-				"navigationBarTitleText": "签到码新增/编辑"
+				"navigationBarTitleText": "签到码编辑"
 			}
 		},
 		{
 			"path": "pages/plugins/signin/user-coming-list/user-coming-list",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#f6b015",
-				"backgroundColorTop": "#f6b015",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "用户签到"
 			}
 		},

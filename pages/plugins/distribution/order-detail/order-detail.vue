@@ -1,17 +1,19 @@
 <template>
     <view>
-        <view v-if="detail != null" class="padding-main">            
-            <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="panel-content oh">
-                    <view class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">用户头像</view>
-                        <view class="content fl br-l padding-left-main">
-                            <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
+        <view v-if="detail != null">
+            <view class="padding-horizontal-main padding-top-main">
+                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="panel-content oh">
+                        <view class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">用户头像</view>
+                            <view class="content fl br-l padding-left-main">
+                                <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
+                            </view>
                         </view>
-                    </view>
-                    <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                        <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
+                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        </view>
                     </view>
                 </view>
             </view>

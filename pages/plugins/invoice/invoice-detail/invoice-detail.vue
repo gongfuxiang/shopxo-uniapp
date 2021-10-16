@@ -1,36 +1,38 @@
 <template>
     <view>
-        <view v-if="detail != null" class="padding-main">
-            <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">申请信息</view>
-                <view class="panel-content oh">
-                    <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                        <view class="content fl br-l padding-left-main">{{item.value}}</view>
+        <view v-if="detail != null">
+            <view class="padding-horizontal-main padding-top-main">
+                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">申请信息</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
+                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        </view>
                     </view>
                 </view>
-            </view>
 
-            <!-- 快递信息 -->
-            <view v-if="detail.status == 2 && detail.invoice_type != 0 && express_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">快递信息</view>
-                <view class="panel-content oh">
-                    <view v-for="(item, index) in express_data" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                        <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                <!-- 快递信息 -->
+                <view v-if="detail.status == 2 && detail.invoice_type != 0 && express_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">快递信息</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in express_data" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
+                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                        </view>
                     </view>
                 </view>
-            </view>
 
-            <!-- 电子发票 -->
-            <view v-if="detail.status == 2 && detail.invoice_type == 0 && (detail.electronic_invoice || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                <view class="br-b padding-bottom-main fw-b text-size">电子发票</view>
-                <view class="panel-content oh">
-                    <view v-for="(item, index) in detail.electronic_invoice" :key="index" class="item br-b oh padding-vertical-main">
-                        <view class="content fl" @tap="electronic_invoice_event" :data-value="item.url">{{item.title}}</view>
+                <!-- 电子发票 -->
+                <view v-if="detail.status == 2 && detail.invoice_type == 0 && (detail.electronic_invoice || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">电子发票</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in detail.electronic_invoice" :key="index" class="item br-b oh padding-vertical-main">
+                            <view class="content fl" @tap="electronic_invoice_event" :data-value="item.url">{{item.title}}</view>
+                        </view>
                     </view>
+                    <view class="br-t cr-red padding-top-main margin-top-main">可点击发票名称复制后、到浏览器打开地址下载发票。</view>
                 </view>
-                <view class="br-t cr-red padding-top-main margin-top-main">可点击发票名称复制后、到浏览器打开地址下载发票。</view>
             </view>
 
             <!-- 结尾 -->

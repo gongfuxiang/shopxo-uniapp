@@ -185,6 +185,9 @@ button:before {
 .fw-b {
     font-weight: bold;
 }
+.auto {
+    margin: 0 auto;
+}
 
 /**
  * 透明度

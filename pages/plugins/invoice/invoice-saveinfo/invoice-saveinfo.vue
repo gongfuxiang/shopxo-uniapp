@@ -112,6 +112,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -138,7 +139,9 @@
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
         onLoad(params) {
@@ -146,6 +149,12 @@
                 params: params
             });
             this.init();
+        },
+        
+        onReady: function() {
+            uni.setNavigationBarTitle({
+                title: '开票'+(((this.params.id || null) == null) ? '添加' : '编辑')
+            });
         },
 
         onShow() {},

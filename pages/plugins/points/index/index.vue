@@ -35,7 +35,7 @@
                 <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
                     <view class="spacing-nav-title">
                         <text class="text-wrapper">商品兑换</text>
-                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多商品</navigator>
+                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view class="data-list oh">
                         <view v-for="(item, index) in data_base.goods_exchange_data" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main">
