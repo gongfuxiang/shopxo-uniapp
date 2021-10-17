@@ -1,0 +1,8 @@
+.verify-sub {
+    width: 35%;
+    height: 70rpx;
+    line-height: 70rpx !important;
+    top: 62rpx;
+    right: 20rpx;
+    z-index: 2;
+}

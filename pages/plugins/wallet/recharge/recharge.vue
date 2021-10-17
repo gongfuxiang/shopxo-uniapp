@@ -2,7 +2,7 @@
     <view>
         <view class="form-container padding-main">
             <view class="form-gorup padding-vertical-main">
-                <input type="digit" name="money" :value="recharge_money_value || ''" placeholder-class="cr-grey" class="cr-base text-size-xxl fw-b" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6">
+                <input type="digit" name="money" :value="recharge_money_value || ''" placeholder-class="cr-grey" class="cr-base text-size-xxl" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6">
             </view>
             <view class="form-gorup form-gorup-submit">
                 <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">提交</button>

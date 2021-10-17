@@ -43,14 +43,10 @@
 /**
 * 支付方式
 */
-.payment-list {
-    padding: 40rpx 0;
-}
 .payment-list .item {
     width: 50%;
 }
 .payment-list .item-content {
-    margin: 20rpx;
     padding: 20rpx 10rpx;
 }
 .payment-list .item-content image {

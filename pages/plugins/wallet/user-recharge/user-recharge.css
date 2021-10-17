@@ -1,0 +1,38 @@
+/*
+* 导航
+*/
+.nav {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 33.33%;
+}
+
+/*
+* 列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}
+.data-list .item .operation button:not(:first-child) {
+    margin-left: 20rpx;
+}
+.data-list .item .operation button {
+    padding: 0 35rpx;
+    display: inline-flex;
+}
+
+/**
+* 支付方式
+*/
+.payment-list .item {
+    width: 50%;
+}
+.payment-list .item-content {
+    padding: 20rpx 10rpx;
+}
+.payment-list .item-content image {
+    width: 50rpx;
+    height: 50rpx !important;
+}

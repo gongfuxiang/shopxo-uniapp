@@ -72,12 +72,11 @@
 
         <!-- 支付方式 popup -->
         <component-popup :prop-show="is_show_payment_popup" prop-position="bottom" @onclose="payment_popup_event_close">
-            <view v-if="payment_list.length > 0" class="payment-list oh bg-white">
+            <view v-if="payment_list.length > 0" class="payment-list oh bg-base padding-vertical-main">
                 <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
-                    <view class="item-content br" :data-value="item.id" @tap="popup_payment_event">
+                    <view class="item-content bg-white border-radius-main margin-main" :data-value="item.id" @tap="popup_payment_event">
                         <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
-                        <text>{{item.name}}
-                        </text>
+                        <text class="va-m">{{item.name}}</text>
                     </view>
                 </view>
             </view>
@@ -334,7 +333,6 @@
 
             // 支付方法
             pay_handle(order_ids) {
-                var self = this;
                 uni.showLoading({
                     title: "请求中..."
                 });
@@ -349,6 +347,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            var self = this;
                             // 是否直接支付成功
                             if ((res.data.data.is_success || 0) == 1) {
                                 self.order_item_pay_success_handle(order_ids);
