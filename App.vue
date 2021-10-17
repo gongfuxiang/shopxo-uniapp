@@ -155,8 +155,7 @@
                 var user = this.get_user_cache_info();
                 var token = user == false ? '' : user.token || '';
                 var uuid = this.request_uuid();
-                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params +
-                    "&application=app&application_client_type=weixin" + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
+                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type=weixin" + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
             },
 
             /**
@@ -171,9 +170,8 @@
                     // 唤醒用户授权
                     this.user_login(object, method);
                     return false;
-                } else {
-                    return user;
                 }
+                return user;
             },
 
             /**
@@ -207,7 +205,6 @@
                 uni.checkSession({
                     success: function() {
                         var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
-
                         if (login_data == null) {
                             self.user_login(object, method);
                         } else {
@@ -254,8 +251,7 @@
                                                     data: data,
                                                     success: res => {
                                                         if (typeof object ===
-                                                            'object' && (method ||
-                                                                null) != null) {
+                                                            'object' && (method || null) != null) {
                                                             object[method]();
                                                         }
                                                     },
@@ -374,14 +370,12 @@
                 for (var i in validation) {
                     var temp_value = data[validation[i]["fields"]];
                     var temp_is_can_zero = validation[i]["is_can_zero"] || null;
-
                     if (temp_value == undefined || temp_value.length == 0 || temp_value == -1 || temp_is_can_zero ==
                         null && temp_value == 0) {
                         this.showToast(validation[i]['msg']);
                         return false;
                     }
                 }
-
                 return true;
             },
 
@@ -408,15 +402,12 @@
                     "q+": Math.floor((d.getMonth() + 3) / 3),
                     "S+": d.getMilliseconds()
                 };
-
                 if (/(y+)/i.test(format)) {
                     format = format.replace(RegExp.$1, (d.getFullYear() + '').substr(4 - RegExp.$1.length));
                 }
-
                 for (var k in date) {
                     if (new RegExp("(" + k + ")").test(format)) {
-                        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr((
-                            "" + date[k]).length));
+                        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
                     }
                 }
 
@@ -429,19 +420,15 @@
              */
             get_length(obj) {
                 var obj_type = typeof obj;
-
                 if (obj_type == "string") {
                     return obj.length;
                 } else if (obj_type == "object") {
                     var obj_len = 0;
-
                     for (var i in obj) {
                         obj_len++;
                     }
-
                     return obj_len;
                 }
-
                 return false;
             },
 
@@ -451,24 +438,19 @@
              */
             price_two_decimal(x) {
                 var f_x = parseFloat(x);
-
                 if (isNaN(f_x)) {
                     return 0;
                 }
-
                 var f_x = Math.round(x * 100) / 100;
                 var s_x = f_x.toString();
                 var pos_decimal = s_x.indexOf('.');
-
                 if (pos_decimal < 0) {
                     pos_decimal = s_x.length;
                     s_x += '.';
                 }
-
                 while (s_x.length <= pos_decimal + 2) {
                     s_x += '0';
                 }
-
                 return s_x;
             },
             
@@ -490,14 +472,12 @@
                 if ((value || null) == null) {
                     return false;
                 }
-
                 var temp_tabbar_pages = this.data.tabbar_pages;
                 for (var i in temp_tabbar_pages) {
                     if (temp_tabbar_pages[i] == value) {
                         return true;
                     }
                 }
-
                 return false;
             },
 
@@ -507,15 +487,13 @@
             operation_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 var type = parseInt(e.currentTarget.dataset.type);
-
                 if (value != null) {
                     switch (type) {
                         // web
                         case 0:
                             this.open_web_view(value);
                             break;
-                            // 内部页面
-
+                        // 内部页面
                         case 1:
                             if (this.is_tabbar_pages(value)) {
                                 uni.switchTab({
@@ -526,29 +504,23 @@
                                     url: value
                                 });
                             }
-
                             break;
-                            // 跳转到外部小程序
-
+                        // 跳转到外部小程序
                         case 2:
                             uni.navigateToMiniProgram({
                                 appId: value
                             });
                             break;
-                            // 跳转到地图查看位置
-
+                        // 跳转到地图查看位置
                         case 3:
                             var values = value.split('|');
-
                             if (values.length != 4) {
                                 this.showToast('事件值格式有误');
                                 return false;
                             }
-
                             this.open_location(values[2], values[3], values[0], values[1]);
                             break;
-                            // 拨打电话
-
+                        // 拨打电话
                         case 4:
                             this.call_tel(value);
                             break;
@@ -634,15 +606,14 @@
                 // 用户信息是否正确
                 if (user == false) {
                     return true;
-                } // 是否需要绑定手机号码
-
-
+                }
+                
+                // 是否需要绑定手机号码
                 if ((user.is_mandatory_bind_mobile || 0) == 1) {
                     if ((user.mobile || null) == null) {
                         return true;
                     }
                 }
-
                 return false;
             },
 
@@ -651,7 +622,6 @@
              */
             url_params_to_json(url_params) {
                 var json = new Object();
-
                 if ((url_params || null) != null) {
                     var arr = url_params.split('&');
 
@@ -660,7 +630,6 @@
                         json[temp[0]] = temp[1];
                     }
                 }
-
                 return json;
             },
 
@@ -743,16 +712,13 @@
             get_config(key, default_value) {
                 var value = null;
                 var config = uni.getStorageSync(this.data.cache_config_info_key) || null;
-
                 if (config != null) {
                     // 数据读取
                     var arr = key.split('.');
-
                     if (arr.length == 1) {
                         value = config[key] == undefined ? null : config[key];
                     } else {
                         value = config;
-
                         for (var i in arr) {
                             if (value[arr[i]] != undefined) {
                                 value = value[arr[i]];
@@ -763,7 +729,6 @@
                         }
                     }
                 }
-
                 return value === null ? default_value === undefined ? value : default_value : value;
             },
 
@@ -810,7 +775,6 @@
                             object[method](true);
                         }
                     }
-
                     count++;
 
                     if (count >= 100) {
@@ -873,9 +837,9 @@
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
                     this.showToast('坐标有误');
                     return false;
-                } // 转换坐标打开位置
-
-
+                }
+                
+                // 转换坐标打开位置
                 var position = this.map_bd_to_gcj(lng, lat);
                 uni.openLocation({
                     name: name || '地理位置',
@@ -899,7 +863,6 @@
             // 获取当前uuid
             request_uuid() {
                 var uuid = uni.getStorageSync(this.data.cache_user_uuid_key) || null;
-
                 if (uuid == null) {
                     uuid = this.uuid();
                     uni.setStorage({
@@ -910,7 +873,6 @@
                         }
                     });
                 }
-
                 return uuid;
             },
 
@@ -919,7 +881,6 @@
                 var value = e.currentTarget.dataset.value || null;
                 if (value != null) {
                     var temp = value.substr(0, 6);
-
                     if (temp == 'http:/' || temp == 'https:') {
                         this.open_web_view(value);
                     } else {
@@ -948,7 +909,6 @@
                                 success(res) {
                                     self.showToast('复制成功', 'success');
                                 }
-
                             });
                         }
                     });
