@@ -1,0 +1,42 @@
+/**
+* banner
+*/
+.banner {
+    background-color: #1d1611;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    height: 1000rpx;
+}
+
+.banner-title {
+    color: #f9d681;
+}
+.banner-buy {
+    border: 1rpx solid #f9d681;
+    background-color: #f9d681 !important;
+    color: #351d06 !important;
+    width: 280rpx;
+    height: 80rpx;
+    line-height: 80rpx !important;
+}
+
+/**
+* 等级介绍
+*/
+.data-list .item {
+    width: calc(50% - 70rpx);
+    margin-bottom: 20rpx;
+}
+.data-list .item:nth-child(2n) {
+    margin-right: 20rpx;
+    margin-left: 10rpx;
+}
+.data-list .item:nth-child(2n+1) {
+    margin-left: 20rpx;
+    margin-right: 10rpx;
+}
+.data-list .item image {
+    width: 160rpx;
+    height: 160rpx !important;
+}

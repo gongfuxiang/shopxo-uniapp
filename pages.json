@@ -220,10 +220,6 @@
 			"path": "pages/plugins/membershiplevelvip/index/index",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "会员VIP"
 			}
 		},
@@ -231,21 +227,13 @@
 			"path": "pages/plugins/membershiplevelvip/buy/buy",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
-				"navigationBarTitleText": "开通时长"
+				"navigationBarTitleText": "开通会员"
 			}
 		},
 		{
 			"path": "pages/plugins/membershiplevelvip/user/user",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "我的会员"
 			}
 		},
@@ -253,10 +241,6 @@
 			"path": "pages/plugins/membershiplevelvip/order/order",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "订单列表"
 			}
 		},
@@ -264,10 +248,6 @@
 			"path": "pages/plugins/membershiplevelvip/order-detail/order-detail",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "订单详情"
 			}
 		},
@@ -275,10 +255,6 @@
 			"path": "pages/plugins/membershiplevelvip/profit/profit",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "收益明细"
 			}
 		},
@@ -286,10 +262,6 @@
 			"path": "pages/plugins/membershiplevelvip/profit-detail/profit-detail",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "收益详情"
 			}
 		},
@@ -297,10 +269,6 @@
 			"path": "pages/plugins/membershiplevelvip/statistics/statistics",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "数据统计"
 			}
 		},
@@ -308,10 +276,6 @@
 			"path": "pages/plugins/membershiplevelvip/poster/poster",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "推广返利"
 			}
 		},
@@ -319,10 +283,6 @@
 			"path": "pages/plugins/membershiplevelvip/team/team",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarBackgroundColor": "#1d1611",
-				"backgroundColorTop": "#1d1611",
-				"backgroundColorBottom": "#f5f5f5",
-				"backgroundTextStyle": "light",
 				"navigationBarTitleText": "我的团队"
 			}
 		},

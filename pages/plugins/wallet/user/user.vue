@@ -9,7 +9,7 @@
                     <view class="fl cr-gray unit">元</view>
                 </view>
                 <view class="item oh margin-top-sm">
-                    <view class="fl cr-bas">冻结</view>
+                    <view class="fl cr-base">冻结</view>
                     <view class="fl cr-red fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.frozen_money || '0.00'}}</view>
                     <view class="fl cr-gray unit">元</view>
                 </view>

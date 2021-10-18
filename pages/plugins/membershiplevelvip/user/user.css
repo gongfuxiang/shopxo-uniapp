@@ -1,0 +1,72 @@
+/*
+* 头部
+*/
+.head-box {
+    background-color: #3e2a1c;
+}
+.head-item {
+    width: 260rpx;
+}
+.head-item .avatar,
+.head-item .avatar image {
+    width: 130rpx;
+    height: 130rpx !important;
+    margin: 0 auto;
+}
+.head-base {
+    width: calc(100% - 270rpx);
+}
+.head-base .level-icon {
+    width: 35rpx;
+    height: 35rpx !important;
+}
+.head-base .level-name {
+    color: #e4cb96;
+}
+.head-base .submit-buy {
+    font-size: 26rpx;
+    height: 55rpx;
+    line-height: 55rpx;
+    border: 1px solid #f9d681;
+    background-color: #f9d681;
+    color: #351d06;
+    right: 20rpx;
+    bottom: 20rpx;
+    padding: 0 20rpx;
+}
+
+/*
+* 导航
+*/
+.nav .item {
+    width: calc(50% - 70rpx);
+    margin-bottom: 20rpx;
+}
+.nav .item:nth-child(2n) {
+    margin-right: 20rpx;
+    margin-left: 10rpx;
+}
+.nav .item:nth-child(2n+1) {
+    margin-left: 20rpx;
+    margin-right: 10rpx;
+}
+.nav .item image {
+    width: 80rpx;
+    height: 80rpx;
+    margin: 0 auto;
+}
+
+/*
+* 提示信息
+*/
+.tips-container .tips-item {
+    padding: 0 10rpx;
+}
+.tips-container .not-opening-vip-desc {
+    background: #def2fd;
+    border: 1px solid #cfeeff;
+    color: #1490d2;
+    padding: 10rpx;
+    font-size: 26rpx;
+    border-radius: 2px;
+}

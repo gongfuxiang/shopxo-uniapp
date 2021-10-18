@@ -1,0 +1,27 @@
+/**
+* common
+*/
+.page {
+    padding-bottom: 120rpx;
+}
+
+/**
+* 导航
+*/
+.nav {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+* 内容
+*/
+.data-list .item {
+    border: 1px solid #fff;
+}
+.data-list .item .number {
+    width: calc(40% - 40rpx);
+}
+.data-list .item .price {
+    width: calc(60% - 40rpx)
+}
