@@ -1,0 +1,42 @@
+/*
+* 导航
+*/
+.nav {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.nav .item {
+    width: 20%;
+}
+
+/**
+* 数据列表
+*/
+.data-list .item image {
+    width: 160rpx;
+    height: 160rpx !important;
+}
+.data-list .item .base {
+    width: calc(100% - 190rpx);
+    text-align: left;
+    padding: 0 10rpx 0 20rpx;
+}
+.data-list .item .base .time-title {
+    width: 60rpx;
+    background: #7ad2ff;
+    line-height: 30rpx;
+}
+.data-list .item .base .status {
+    right: 20rpx;
+    bottom: 20rpx;
+    color: #999;
+}
+.data-list .ite .status-0 {
+    color: #0e90d2;
+}
+.data-list .item .status-1 {
+    color: #5eb95e;
+}
+.data-list .item .status-2 {
+    color: #F37B1D;
+}
