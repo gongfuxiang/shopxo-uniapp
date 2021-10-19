@@ -97,7 +97,6 @@
 
             // 获取数据
             init() {
-                var self = this;
                 uni.showLoading({
                     title: "加载中..."
                 });
@@ -128,7 +127,7 @@
                             temp_stats_profit[3]['value'] = data.user_profit_already_price || '0.00';
                             
                             // 数据设置
-                            self.setData({
+                            this.setData({
                                 stats_user_data_list: temp_stats_user,
                                 stats_profit_data_list: temp_stats_profit,
                                 user_data: data.user_chart || null,
@@ -138,12 +137,12 @@
                                 data_list_loding_msg: ''
                             });
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_list_loding_status: 2,
                                 data_bottom_line_status: false,
                                 data_list_loding_msg: res.data.msg
                             });
-                            if (app.globalData.is_login_check(res.data, self, 'init')) {
+                            if (app.globalData.is_login_check(res.data, this, 'init')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -151,7 +150,7 @@
                     fail: () => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'

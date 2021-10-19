@@ -168,7 +168,6 @@
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
-
                                 this.setData({
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,

@@ -82,7 +82,6 @@
 
         methods: {
             init() {
-                var self = this;
                 uni.showLoading({
                     title: "加载中..."
                 });
@@ -101,7 +100,7 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            self.setData({
+                            this.setData({
                                 detail: data.data,
                                 detail_list: [
                                     { name: "是否启用", value: data.data.is_enable_name || '' },
@@ -118,12 +117,12 @@
                                 data_list_loding_msg: ''
                             });
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_list_loding_status: 2,
                                 data_bottom_line_status: false,
                                 data_list_loding_msg: res.data.msg
                             });
-                            if (app.globalData.is_login_check(res.data, self, 'init')) {
+                            if (app.globalData.is_login_check(res.data, this, 'init')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -131,7 +130,7 @@
                     fail: () => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'

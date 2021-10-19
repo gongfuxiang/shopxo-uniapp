@@ -14,8 +14,8 @@
                     <block v-if="selected_tabs_index == index">
                         <block v-if="(item.pay_period_rules || null) != null">
                             <view class="data-list padding-horizontal-main padding-top-main">
-                                <block v-for="(rules, index2) in item.pay_period_rules" :key="index2">
-                                    <view :class="'item padding-main border-radius-main bg-white oh tc spacing-mb ' + (selected_content_index === index ? 'border-color-main' : '')" @tap="content_event" :data-index="index">
+                                <block v-for="(rules, ri) in item.pay_period_rules" :key="ri">
+                                    <view :class="'item padding-main border-radius-main bg-white oh tc spacing-mb ' + (selected_content_index === ri ? 'border-color-main' : '')" @tap="content_event" :data-index="ri">
                                         <view class="fl number single-text">
                                             <text class="fw-b cr-base text-size">{{((rules.number || null) == null) ? '终身' : rules.value}}</text>
                                             <text v-if="(rules.unit || null) != null" class="cr-grey margin-left-sm">{{rules.unit}}</text>

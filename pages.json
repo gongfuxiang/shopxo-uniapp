@@ -241,7 +241,7 @@
 			"path": "pages/plugins/membershiplevelvip/order/order",
 			"style": {
 				"enablePullDownRefresh": true,
-				"navigationBarTitleText": "订单列表"
+				"navigationBarTitleText": "开通订单"
 			}
 		},
 		{

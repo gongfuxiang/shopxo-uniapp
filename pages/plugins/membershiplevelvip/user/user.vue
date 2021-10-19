@@ -12,27 +12,27 @@
                 <view class="head-base fr">
                     <block v-if="(user_vip || null) != null">
                         <block v-if="(user_vip.user_vip_model || null) == 'pay'">
-                            <view v-if="(user_vip || null) != null" class="single-text tr">
+                            <view v-if="(user_vip || null) != null" class="single-text tr margin-bottom-sm">
                                 <image v-if="(user_vip.icon || null) != null" class="level-icon va-m margin-right-sm" :src="user_vip.icon" mode="widthFix"></image>
                                 <text v-if="(user_vip.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_vip.level_name}}</text>
                             </view>
                             <view class="tr">
                                 <block v-if="(user_vip.is_permanent || 0) == 1">
-                                    <text class="title">有效期</text>
-                                    <text class="value cr-white">{{user_vip.permanent_value}}</text>
-                                    <text class="unit">{{user_vip.permanent_unit}}</text>
+                                    <text class="cr-grey">有效期</text>
+                                    <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.permanent_value}}</text>
+                                    <text class="cr-grey">{{user_vip.permanent_unit}}</text>
                                 </block>
                                 <block v-else>
-                                    <view v-if="(user_vip.surplus_time_number || 0) == 0" class="margin-top-sm">
-                                        <view class="cr-gray">会员已过期或未开通</view>
+                                    <block v-if="(user_vip.surplus_time_number || 0) == 0">
+                                        <view class="cr-grey">会员已过期或未开通</view>
                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                             <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy round pa" type="default" size="mini" hover-class="none">开通会员</button>
                                         </navigator>
-                                    </view>
-                                    <view v-else>
-                                        <text class="title">有效期</text>
-                                        <text class="value cr-white">{{user_vip.surplus_time_number}}</text>
-                                        <text class="unit">{{user_vip.surplus_time_unit}}</text>
+                                    </block>
+                                    <block v-else>
+                                        <text class="cr-grey">有效期</text>
+                                        <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.surplus_time_number}}</text>
+                                        <text class="cr-grey">{{user_vip.surplus_time_unit}}</text>
                                         <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
                                             <block v-if="(plugins_base.is_supported_renew_old_order || null) == 1">
                                                 <button size="mini" type="default" hover-class="none" class="renew-buy" @tap="uservip_renew_event" :disabled="submit_disabled_status">续费会员</button>
@@ -45,7 +45,7 @@
                                                 </block>
                                             </block>
                                         </block>
-                                    </view>
+                                    </block>
                                 </block>
                             </view>
                         </block>

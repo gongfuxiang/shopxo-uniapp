@@ -1,0 +1,11 @@
+.container .item {
+    width: 50%;
+    box-sizing: border-box;
+}
+.profit-container .item {
+    width: 33.33%;
+}
+.container .title {
+    border-style: solid;
+    border-width: 0 0 0 3px;
+}
