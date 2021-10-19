@@ -2,19 +2,17 @@
     <view>
         <view v-if="(data_base || null) != null">
             <!-- 分类 -->
-            <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0"
-                class="nav-list scroll-view-horizontal bg-white tc oh" scroll-x="true">
-                <view :class="'item cr-gray ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event"
-                    data-value="0">全部</view>
+            <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
+                <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
                 <block v-for="(item, index) in brand_category_list" :key="index">
-                    <view :class="'item cr-gray ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
+                    <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
                 </block>
             </scroll-view>
 
-            <!-- 品牌列表 -->
+            <!-- 列表 -->
             <view v-if="(brand_list || null) != null && brand_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in brand_list" :key="index">
-                    <view v-if="(item.is_not_show || 0) == 0" class="item border-radius-main bg-white spacing-mb">
+                    <view v-if="(item.is_not_show || 0) == 0" class="item border-radius-main bg-white oh spacing-mb">
                         <navigator :url="'/pages/goods-search/goods-search?brand_id=' + item.id" hover-class="none">
                             <image :src="item.logo" mode="aspectFit"></image>
                             <view class="padding-main tc">
