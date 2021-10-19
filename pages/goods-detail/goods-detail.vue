@@ -1233,13 +1233,26 @@
                     buy_number: number
                 });
                 
+                // 存在规格的时候是否已完全选择规格
+                var spec = this.goods_selected_spec();
+                var sku_count = this.goods_specifications_choose.length;
+                var active_count = spec.length;
+                if (sku_count > 0 && active_count < sku_count) {
+                    this.setData({
+                        goods_spec_base_price: this.goods.price,
+                        goods_spec_base_original_price: this.goods.original_price,
+                        goods_spec_base_inventory: this.goods.inventory
+                    });
+                    return false;
+                }
+                
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('stock', 'goods'),
                     method: 'POST',
                     data: {
                         "id": this.goods.id,
-                        "spec": this.goods_selected_spec(),
+                        "spec": spec,
                         "stock": this.buy_number,
                     },
                     dataType: 'json',
