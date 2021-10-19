@@ -1238,11 +1238,6 @@
                 var sku_count = this.goods_specifications_choose.length;
                 var active_count = spec.length;
                 if (sku_count > 0 && active_count < sku_count) {
-                    this.setData({
-                        goods_spec_base_price: this.goods.price,
-                        goods_spec_base_original_price: this.goods.original_price,
-                        goods_spec_base_inventory: this.goods.inventory
-                    });
                     return false;
                 }
                 
