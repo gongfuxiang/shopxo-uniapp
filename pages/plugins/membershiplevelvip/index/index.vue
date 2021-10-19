@@ -85,7 +85,7 @@
             return {
                 title: name,
                 desc: app.globalData.data.application_describe,
-                path: '/pages/index/index?referrer=' + user_id
+                path: '/pages/plugins/membershiplevelvip/index/index?referrer=' + user_id
             };
         },
 
