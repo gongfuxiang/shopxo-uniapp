@@ -41,6 +41,7 @@
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城",
+                application_type: "weixin",
                 // 版本号
                 version: "v2.2.1",
                 // 货币价格符号
@@ -129,7 +130,7 @@
                 var user = this.get_user_cache_info();
                 var token = user == false ? '' : user.token || '';
                 var uuid = this.request_uuid();
-                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type=weixin" + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
+                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ this.data.application_type + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
             },
 
             /**

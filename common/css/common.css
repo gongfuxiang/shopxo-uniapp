@@ -318,7 +318,7 @@ button[disabled]..button-main {
 
 /**
  * 统一背景色
- * 主色、次主色、搭配色、白色、绿色、红色、灰色
+ * 主色、次主色、搭配色、白色、绿色、红色、黄色、灰色
  */
 .bg-main {
     background-color: #f6c133 !important;
@@ -337,6 +337,9 @@ button[disabled]..button-main {
 }
 .bg-red {
     background-color: #E64340 !important;
+}
+.bg-yellow {
+    background-color: #f6c133 !important;
 }
 .bg-gray {
     background-color: #d6d6d6 !important;
@@ -367,6 +370,10 @@ button[disabled].bg-green {
 button[disabled].bg-red {
     background-color: #ffbaba !important;
     color: #ffdfdf !important;
+}
+button[disabled].bg-yellow {
+    background-color: #fff1cb !important;
+    color: #fbd777 !important;
 }
 button[disabled].bg-gray {
     background-color: #ececec !important;
