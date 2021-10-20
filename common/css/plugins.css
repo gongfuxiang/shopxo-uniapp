@@ -4,7 +4,6 @@
 .coupon-container .item {
     overflow: hidden;
     height: 180rpx;
-    border: 1px solid #D2364C;
 }
 .coupon-container .v-left {
     width: calc(100% - 140rpx);
@@ -63,7 +62,4 @@
     background: #dfdfdf !important;
     color: #c0c0c0 !important;
     cursor: no-drop !important;
-}
-.coupon-container .item-disabled {
-    border: 1px solid #dfdfdf !important;
 }

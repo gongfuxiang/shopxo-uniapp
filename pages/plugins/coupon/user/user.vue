@@ -12,7 +12,7 @@
                 <!-- 未使用 -->
                 <block v-if="(data_list.not_use || null) != null && data_list.not_use.length > 0 && nav_tabs_value == 'not_use'">
                     <block v-for="(item, index) in data_list.not_use" :key="index">
-                        <view class="item spacing-mb bg-white border-radius-main" :style="'border:1px solid ' + item.coupon.bg_color_value + ';'">
+                        <view class="item spacing-mb bg-white border-radius-main">
                             <view class="v-left fl">
                                 <view class="base single-text" :style="'color:' + item.coupon.bg_color_value + ';'">
                                     <text v-if="item.coupon.type == 0" class="symbol">{{currency_symbol}}</text>

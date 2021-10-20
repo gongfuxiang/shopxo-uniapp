@@ -1,0 +1,19 @@
+page {
+    background: #fff;
+}
+.content {
+    padding-top: 15%;
+}
+.content .pay-icon {
+    width: 200rpx;
+    height: 200rpx !important;
+    margin: 60rpx auto;
+}
+.btn-box {
+    margin-top: 150rpx;
+}
+.btn-box button {
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 300rpx;
+}

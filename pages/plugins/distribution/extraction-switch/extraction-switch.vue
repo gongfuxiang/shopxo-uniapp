@@ -89,11 +89,7 @@
             }
         },
 
-        onShow() {
-            uni.setNavigationBarTitle({
-                title: app.globalData.data.common_pages_title.extraction_address
-            });
-            
+        onShow() {            
             // 是否需要选择地理位置
             if (this.home_extraction_address_position == 1) {
                 // 首次不请求数据

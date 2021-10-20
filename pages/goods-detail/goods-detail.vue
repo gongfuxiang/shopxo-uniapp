@@ -367,7 +367,7 @@
             
             <!-- 优惠券弹层 -->
             <component-popup :prop-show="popup_coupon_status" prop-position="bottom" @onclose="popup_coupon_close_event">
-                <view class="padding-horizontal-main padding-top-main">
+                <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
                             <icon type="clear" size="20"></icon>
@@ -376,7 +376,7 @@
                     <view class="coupon-container padding-bottom-main">
                         <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.bg_color_value + ';'">
+                                <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')">
                                     <view class="v-left fl">
                                         <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
                                             <text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
@@ -548,10 +548,6 @@
         },
 
         onShow() {
-            uni.setNavigationBarTitle({
-                title: this.goods == null ? app.globalData.data.common_pages_title.goods_detail : this.goods.title
-            });
-
             // 初始化配置
             this.init_config();
 

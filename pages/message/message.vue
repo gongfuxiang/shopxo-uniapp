@@ -45,9 +45,6 @@
         props: {},
 
         onShow() {
-            uni.setNavigationBarTitle({
-                title: app.globalData.data.common_pages_title.message
-            });
             this.init();
         },
 

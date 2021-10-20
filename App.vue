@@ -23,9 +23,9 @@
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
-                default_round_success_icon: "/static/images/default-round-success-icon.png",
+                default_round_success_icon: "/static/images/common/round-success-icon.png",
                 // 错误圆形提示图片
-                default_round_error_icon: "/static/images/default-round-error-icon.png",
+                default_round_error_icon: "/static/images/common/round-error-icon.png",
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -33,32 +33,6 @@
                     "/pages/cart/cart",
                     "/pages/user/user"
                 ],
-                // 页面标题
-                common_pages_title: {
-                    "goods_search": "商品搜索",
-                    "goods_detail": "商品详情",
-                    "user_address": "我的地址",
-                    "user_address_save_add": "添加地址",
-                    "user_address_save_edit": "编辑地址",
-                    "buy": "订单确认",
-                    "user_order": "我的订单",
-                    "user_order_detail": "订单详情",
-                    "user_favor": "我的收藏",
-                    "answer_form": "留言",
-                    "answer_list": "问答",
-                    "user_answer_list": "我的留言",
-                    "user": "用户中心",
-                    "goods_category": "分类",
-                    "cart": "购物车",
-                    "message": "消息",
-                    "user_integral": "我的积分",
-                    "user_goods_browse": "我的足迹",
-                    "goods_comment": "商品评论",
-                    "user_orderaftersale": "退款/售后",
-                    "user_orderaftersale_detail": "订单售后",
-                    "user_order_comments": "订单评论",
-                    "extraction_address": "自提地址"
-                },
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
                 //request_url: 'http://shopxo.com/',

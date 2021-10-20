@@ -12,11 +12,6 @@
 .address-detail .text {
     width: calc(100% - 40rpx);
 }
-.address-divider {
-    height: 4px;
-    background-image: url("../../static/images/buy-address-divider.png");
-    background-repeat-y: no-repeat;
-}
 .address-detail .text {
     line-height: 36rpx;
 }
@@ -24,12 +19,13 @@
     height: 85rpx;
     line-height: 85rpx;
 }
-.address-alias {
-    padding: 2rpx 10rpx;
+.address-alias,
+.address-map-submit{
+    padding: 5rpx 15rpx;
+    line-height: 40rpx;
 }
 .address-map-submit {
-    padding: 2rpx 20rpx;
-    line-height: 40rpx;
+    
 }
 
 /*

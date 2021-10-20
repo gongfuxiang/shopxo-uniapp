@@ -18,7 +18,7 @@
                         <view class="address arrow-right" @tap="address_event">
                             <view v-if="address != null" class="padding-bottom-main">
                                 <view class="address-base">
-                                    <text v-if="(address.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm">{{address.alias}}</text>
+                                    <text v-if="(address.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm text-size-xs">{{address.alias}}</text>
                                     <text>{{address.name}}</text>
                                     <text class="fr">{{address.tel}}</text>
                                 </view>
@@ -43,10 +43,10 @@
                             <view class="fl" @tap="warehouse_group_event" :data-value="group.url || ''">
                                 <image v-if="(group.icon || null) != null" class="goods-group-icon va-m margin-right-xs" :src="group.icon" mode="aspectFit"></image>
                                 <text class="goods-group-title va-m">{{group.name}}</text>
-                                <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm">{{group.alias}}</text>
+                                <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm text-size-xs">{{group.alias}}</text>
                             </view>
                             <view v-if="(group.lng || 0) != 0 && (group.lat || 0) != 0" class="fr">
-                                <view class="goods-group-map-submit br round" :data-index="index" @tap="map_event">查看地图</view>
+                                <view class="goods-group-map-submit br round text-size-xs" :data-index="index" @tap="map_event">查看地图</view>
                             </view>
                         </view>
                         <!-- 商品 -->
@@ -137,7 +137,7 @@
 
             <!-- 优惠劵选择 -->
             <component-popup :prop-show="popup_plugins_coupon_status" prop-position="bottom" @onclose="plugins_coupon_close_event">
-                <view class="plugins-coupon-popup bg-white">
+                <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
                             <icon type="clear" size="20"></icon>
@@ -148,7 +148,7 @@
                             <text @tap="plugins_coupon_not_use_event">不使用优惠劵</text>
                         </view>
                         <block v-for="(item, index) in plugins_coupon_list" :key="index">
-                            <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')" :style="'border:1px solid ' + item.coupon.bg_color_value + ';'">
+                            <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
                                 <view class="v-left fl">
                                     <view class="base single-text" :style="'color:' + item.coupon.bg_color_value + ';'">
                                         <text v-if="item.coupon.type == 0" class="symbol">{{currency_symbol}}</text>

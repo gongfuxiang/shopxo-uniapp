@@ -58,7 +58,7 @@ button:before {
 }
 
 /**
- * 边框 灰色（四边）、红色、黄色、绿色、主色、灰色、无边线
+ * 边框 灰色（四边）、红色、黄色、绿色、主色、主反色、灰色、无边线
  */
 .br {
     border: 1px solid #efefef !important;
@@ -86,6 +86,9 @@ button:before {
 }
 .br-main {
     border: 1px solid #f6c133 !important;
+}
+.br-main-pair {
+    border: 1px solid #795548 !important;
 }
 .br-gray {
     border: solid 1px #d6d6d6 !important;

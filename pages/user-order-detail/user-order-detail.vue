@@ -3,19 +3,20 @@
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 地址 -->
-                <view v-if="detail.order_model == 0 || detail.order_model == 2" class="address bg-white padding-main border-radius-main spacing-mb">
+                <view v-if="detail.order_model == 0 || detail.order_model == 2" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
                     <view class="address-base oh">
                         <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
                         <text>{{detail.address_data.name}}</text>
                         <text class="fr">{{detail.address_data.tel}}</text>
                     </view>
-                    <view class="address-detail oh">
+                    <view class="address-detail oh margin-bottom-main">
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0 && detail.address_data.lng != 0 && detail.address_data.lat != 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm" @tap="address_map_event">查看位置</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0 && detail.address_data.lng != 0 && detail.address_data.lat != 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
                         </view>
                     </view>
+                    <view class="address-divider spacing-mb"></view>
                 </view>
 
                 <!-- 商品列表 -->
