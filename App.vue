@@ -551,7 +551,7 @@
                     });
                 } else {
                     uni.showToast({
-                        image: "/static/images/default-toast-error.png",
+                        image: "/static/images/common/toast-error.png",
                         title: msg,
                         duration: 3000
                     });

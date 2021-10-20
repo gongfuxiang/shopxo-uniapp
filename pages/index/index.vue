@@ -78,7 +78,7 @@
                                 <scroll-view scroll-x>
                                     <block v-if="floor.items.length > 0">
                                         <block v-for="(icv, icx) in floor.items" :key="icx">
-                                            <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light cr-main border-radius-main padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
+                                            <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
                                         </block>
                                     </block>
                                 </scroll-view>

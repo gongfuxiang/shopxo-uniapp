@@ -33,8 +33,8 @@
                     <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
                 </view>
                 <view class="goods-video-submit" :style="'top: calc(' + photo_height + ' - 110rpx) !important;'">
-                    <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="static_url+'video-play-icon.png'" mode="aspectFit"></image>
-                    <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="static_url+'video-close-icon.png'" mode="aspectFit"></image>
+                    <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
+                    <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
                 </view>
             </block>
             
@@ -64,7 +64,7 @@
                             <view class="goods-title fl" :style="'color:' + goods.title_color">{{goods.title}}</view>
                             <!-- 分享 -->
                             <view class="goods-share fr tc" @tap="popup_share_event">
-                                <image :src="static_url+'share-icon.png'" mode="scaleToFill" class="dis-block"></image>
+                                <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block"></image>
                                 <view class="cr-gray text-size-sm">分享</view>
                             </view>
                         </view>
@@ -164,7 +164,7 @@
                         <block v-if="((goods.comments_data || null) != null && goods.comments_data.length > 0)">
                             <view v-for="(item, index) in goods.comments_data" :key="index" class="goods-comment-item spacing-mb">
                                 <view class="oh nav br-b padding-bottom-sm">
-                                    <image class="avatar dis-block fl" :src="item.user.avatar || static_url+'default-user.png'" mode="aspectFit"></image>
+                                    <image class="avatar dis-block fl" :src="item.user.avatar || common_static_url+'default-user.png'" mode="aspectFit"></image>
                                     <view class="base-nav fr">
                                         <text class="va-m">{{item.user.user_name_view}}</text>
                                         <view class="dis-inline-block va-m margin-left-sm">
@@ -258,12 +258,12 @@
                             <view class="badge-icon">
                                 <component-badge :prop-number="quick_nav_cart_count"></component-badge>
                             </view>
-                            <image :src="static_url+'cart-icon.png'" mode="scaleToFill"></image>
+                            <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-gray">购物车</text>
                         </navigator>
                     </view>
                     <view class="item fl " @tap="goods_favor_event">
-                        <image :src="static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
+                        <image :src="common_static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                         <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
                     </view>
                 </view>
@@ -346,19 +346,19 @@
                     <view class="share-popup-content">
                         <view v-if="common_app_is_good_thing == 1" class="share-items oh">
                             <share-button :product="share_product" type="3" class="dis-block oh">
-                                <image class="fl" :src="static_url+'share-recomend-icon.png'" mode="scaleToFill">
+                                <image class="fl" :src="common_static_url+'share-recomend-icon.png'" mode="scaleToFill">
                                 </image>
                                 <view class="cr-gray single-text fl">好物推荐、和大家一起分享你发现的宝贝</view>
                             </share-button>
                         </view>
                         <view class="share-items oh">
                             <button class="dis-block" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
-                                <image :src="static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
+                                <image :src="common_static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
                                 <text class="cr-gray single-text">一键分享给好友、群聊</text>
                             </button>
                         </view>
                         <view v-if="common_app_is_poster_share == 1" class="share-items oh" @tap="poster_event">
-                            <image :src="static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
+                            <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
                         </view>
                     </view>
@@ -430,13 +430,11 @@
     import componentOnlineService from "../../components/online-service/online-service";
 
     var common_static_url = app.globalData.get_static_url('common');
-    var static_url = app.globalData.get_static_url('goods_detail');
     export default {
         data() {
             return {
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight')),
                 common_static_url: common_static_url,
-                static_url: static_url,
                 indicator_dots: false,
                 indicator_color: 'rgba(0, 0, 0, .3)',
                 indicator_active_color: '#e31c55',
@@ -467,7 +465,7 @@
                 // 导航首页按钮
                 nav_home_button_info: {
                     "text": "首页",
-                    "icon": static_url+"home-icon.png",
+                    "icon": common_static_url+"home-icon.png",
                     "value": "/pages/index/index"
                 },
                 // 导航收藏按钮

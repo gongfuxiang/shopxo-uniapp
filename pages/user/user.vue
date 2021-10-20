@@ -79,13 +79,13 @@
             
                         <!-- 清除缓存 -->
                         <view class="nav-item fl tc padding-main" @tap="clear_storage">
-                            <image :src="static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
+                            <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">清除缓存</view>
                         </view>
                 
                         <!-- 联系客服 -->
                         <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item fl tc padding-main" @tap="call_event">
-                            <image :src="static_url+'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
+                            <image :src="common_static_url+'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">联系客服</view>
                         </view>
                     </view>
@@ -117,10 +117,12 @@
     import componentCopyright from "../../components/copyright/copyright";
     import componentOnlineService from "../../components/online-service/online-service";
 
+    var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 nav_title: "用户中心",

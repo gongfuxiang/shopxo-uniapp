@@ -110,32 +110,3 @@
     height: 80rpx;
     line-height: 80rpx;
 }
-
-/**
-* 品牌基础信息
-*/
-.brand-info {
-    height: 160rpx;
-}
-.brand-info image,
-.brand-info .info-logo-empty {
-    width: 300rpx;
-    height: 130rpx;
-    border: 1px solid #eee;
-}
-.brand-info .info-logo-empty {
-    line-height: 130rpx;
-    font-weight: bold;
-}
-.brand-info .info-right {
-    width: calc(100% - 330rpx);
-}
-.brand-info .info-name {
-    line-height: 56rpx;
-    font-weight: bold;
-}
-.brand-info .info-desc {
-    font-size: 28rpx;
-    line-height: 40rpx;
-    min-height: 80rpx;
-}

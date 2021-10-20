@@ -6,17 +6,17 @@
                 <block v-for="(item, index) in search_nav_sort_list" :key="index">
                     <view class="item tc fl" :data-index="index" @tap="nav_sort_event">
                         <text class="cr-base">{{item.name}}</text>
-                        <image v-if="(item.icon || null) != null" class="icon" :src="static_url+ item.icon + '-icon.png'" mode="aspectFill"></image>
+                        <image v-if="(item.icon || null) != null" class="icon" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
                     </view>
                 </block>
             </view>
-            <image class="screening-submit pa" :src="static_url+'submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+            <image class="screening-submit pa" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
         </view>
 
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="items padding-main border-radius-main bg-white margin-bottom-main oh">
+                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main oh">
                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
                         <image :src="item.images" mode="aspectFit"></image>
                         <view class="base margin-top tl">
@@ -66,7 +66,7 @@
                                 <view v-if="(search_map_info.brand.describe || null) != null" class="info-desc multi-text cr-grey">{{search_map_info.brand.describe}}</view>
                             </view>
                         </view>
-                        <view v-else class="map-content map-images-text-items map-brand-container oh margin-top-lg" :style="'height:' + map_fields_list.brand_list.height + ';'">
+                        <view v-else class="map-content map-images-text-item map-brand-container oh margin-top-lg" :style="'height:' + map_fields_list.brand_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.brand_list" :key="index">
                                 <view :class="'item fl cr-base radius single-text tc ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="brand_list">
                                     <image v-if="(item.logo || null) != null" :src="item.logo" mode="aspectFit"></image>
@@ -82,7 +82,7 @@
                             <text>分类</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
                         </view>
-                        <view class="map-content map-text-items map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
+                        <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
                                 <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="category_list">{{item.name}}</view>
                             </block>
@@ -95,7 +95,7 @@
                             <text>价格</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
                         </view>
-                        <view class="map-content map-text-items screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
+                        <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.screening_price_list" :key="index">
                                 <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="screening_price_list">{{item.name}}</view>
                             </block>
@@ -108,7 +108,7 @@
                             <text>属性</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
                         </view>
-                        <view class="map-content map-text-items goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
+                        <view class="map-content map-text-item goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_params_list" :key="index">
                                 <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_params_list">{{item.value}}</view>
                             </block>
@@ -121,7 +121,7 @@
                             <text>规格</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
                         </view>
-                        <view class="map-content map-text-items goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
+                        <view class="map-content map-text-item goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_spec_list" :key="index">
                                 <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_spec_list">{{item.value}}</view>
                             </block>
@@ -139,7 +139,6 @@
         <component-quick-nav></component-quick-nav>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import componentQuickNav from "../../components/quick-nav/quick-nav";
@@ -147,11 +146,11 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
 
-    var static_url = app.globalData.get_static_url('goods_search');
+    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
-                static_url: static_url,
+                common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_list: [],
@@ -293,7 +292,8 @@
                 
                 // 获取数据
                 uni.showLoading({
-                    title: "加载中..."
+                    title: "加载中...",
+                    mask: true
                 });
                 var post_data = this.request_map_handle();
                 uni.request({
@@ -331,7 +331,6 @@
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
-
                                 this.setData({
                                     data_list: temp_data_list,
                                     data_total: data.total,
