@@ -16,8 +16,8 @@
                 <image class="login-logo circle auto" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
                 <view v-if="(user.nickname || null) != null" class="cr-base margin-top-sm">{{user.nickname}}</view>
                 <view class="margin-top-xxxl padding-top-xxxl">
-                    <button v-if="common_user_is_onekey_bind_mobile == 1" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
-                    <button class="margin-top-xxl bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" @tap="confirm_verify_event">验证码登录</button>
+                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" @tap="confirm_verify_event">验证码登录</button>
+                    <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
                 </view>
             </view>
         </view>
@@ -262,9 +262,10 @@
                                 setTimeout(function() {
                                     // 触发回调函数
                                     if (event_callback != null) {
-                                        getCurrentPages()[getCurrentPages().length - 2][
-                                            event_callback
-                                        ]();
+                                        var pages = getCurrentPages();
+                                        if((pages[pages.length-2][event_callback] || null) != null) {
+                                            pages[pages.length-2][event_callback]();
+                                        }
                                     }
                                     uni.navigateBack();
                                 }, 1000);
@@ -332,9 +333,10 @@
                                 setTimeout(function() {
                                     // 触发回调函数
                                     if (event_callback != null) {
-                                        getCurrentPages()[getCurrentPages().length - 2][
-                                            event_callback
-                                        ]();
+                                        var pages = getCurrentPages();
+                                        if((pages[pages.length-2][event_callback] || null) != null) {
+                                            pages[pages.length-2][event_callback]();
+                                        }
                                     }
                                     uni.navigateBack();
                                 }, 1000);
