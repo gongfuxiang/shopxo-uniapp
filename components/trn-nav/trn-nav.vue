@@ -74,9 +74,10 @@
         left: 0;
 	}
     .nav-title {
-        font-size: 42rpx;
+        font-size: 36rpx;
         text-align: left;
-        padding: 2px 250rpx 0 20rpx;
+        padding: 12px 250rpx 0 20rpx;
         height: 37px;
+        color: #000;
     }
 </style>
