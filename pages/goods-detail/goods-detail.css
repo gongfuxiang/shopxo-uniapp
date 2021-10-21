@@ -13,13 +13,13 @@
 }
 .top-nav-left-icon .icon {
     background: rgb(255 255 255 / 70%);
-    width: 50rpx;
-    height: 50rpx;
-    line-height: 50rpx;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
     display: block;
     float: left;
     text-align: center;
-    padding: 6rpx;
+    padding: 3px;
 }
 .top-nav {
     position: absolute;
@@ -44,6 +44,34 @@
     padding-bottom: 5rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
+}
+
+/**
+ * 顶部更多导航
+ */
+.nav-more-view {
+    position: fixed;
+    z-index: 20;
+    top: 62px;
+    left: 20rpx;
+}
+.nav-more-view .triangle {
+    width: 0;
+    height: 0;
+    border-width: 0 5px 5px 5px;
+    border-style: solid;
+    border-color: transparent transparent rgb(0 0 0 / 0.7) transparent;
+    top: -5px;
+    left: calc(20rpx + 42px);
+}
+.nav-more-view .content {
+    background: rgb(0 0 0 / 0.7);
+}
+.nav-more-view .content .item {
+    font-size: 12px;
+}
+.nav-more-view .content .item:not(:last-child) {
+    border-bottom: 1px solid #585858;
 }
 
 /**

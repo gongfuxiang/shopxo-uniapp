@@ -2,9 +2,24 @@
     <view>
         <!-- 顶部导航 -->
         <view v-if="goods != null" class="page">
+            <!-- 小导航 -->
             <view class="top-nav-left-icon" :style="'top:'+(status_bar_height+8)+'px;'">
                 <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @tap="top_nav_left_back_event"></uni-icons>
-                <uni-icons type="list" size="20" color="#333" class="icon round margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
+                <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
+            </view>
+            <!-- 更多导航 -->
+            <view v-if="nav_more_list.length > 0 && nav_more_status" class="nav-more-view tc" :style="'top:'+(status_bar_height+48)+'px;'">
+                <view class="triangle dis-inline-block pa"></view>
+                <view class="content radius padding-horizontal-main">
+                    <block v-for="(item,index) in nav_more_list" :key="index">
+                        <view class="item padding-main" :data-value="item.url" data-type="1" @tap="nav_more_event">
+                            <view class="va-m dis-inline-block">
+                                <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
+                            </view>
+                            <text class="cr-white va-m margin-left-sm">{{item.name}}</text>
+                        </view>
+                    </block>
+                </view>
             </view>
             <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
                 <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height">
@@ -462,6 +477,26 @@
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
                 popup_share_status: false,
+                // 更多导航
+                nav_more_status: false,
+                nav_more_timer: null,
+                nav_more_list: [
+                    {
+                        name: "我的收藏",
+                        url: "/pages/user-favor/user-favor",
+                        icon: "heart"
+                    },
+                    {
+                        name: "我浏览过",
+                        url: "/pages/user-goods-browse/user-goods-browse",
+                        icon: "eye"
+                    },
+                    {
+                        name: "回到首页",
+                        url: "/pages/index/index",
+                        icon: "home"
+                    }
+                ],
                 // 导航首页按钮
                 nav_home_button_info: {
                     "text": "首页",
@@ -568,7 +603,14 @@
         // 监听滚动
         onPageScroll(e) {
             // 位置记录
-            this.setData({scroll_value: e.scrollTop});
+            var upd_data = {scroll_value: e.scrollTop};
+            
+            // 更多导航状态处理
+            if(this.nav_more_status) {
+                upd_data['nav_more_status'] = false;
+                clearInterval(this.nav_more_timer);
+            }
+            this.setData(upd_data);
 
             // 顶部导航选中处理
             if (this.top_nav_title_scroll) {
@@ -772,7 +814,26 @@
             
             // 更多事件
             top_nav_left_more_event(e) {
-                app.globalData.showToast('更多列表开发中...');
+                if(this.nav_more_list.length <= 0) {
+                    app.globalData.showToast('无更多列表数据');
+                    return false;
+                }
+                
+                // 已开启则关闭并取消定时任务
+                var data = {};
+                clearInterval(this.nav_more_timer);
+                if(this.nav_more_status) {
+                    data['nav_more_status'] = false;
+                } else {
+                    var self = this;
+                    data['nav_more_status'] = true;
+                    data['nav_more_timer'] = setTimeout(function() {
+                        self.setData({
+                            nav_more_status: false,
+                        });
+                    }, 5000);
+                }
+                this.setData(data);
             },
             
             // 顶部导航事件
@@ -1542,6 +1603,12 @@
                     current: this.goods.comments_data[index]['images'][ix],
                     urls: this.goods.comments_data[index]['images']
                 });
+            },
+            
+            // 更多导航事件
+            nav_more_event(e) {
+                app.globalData.operation_event(e);
+                this.setData({nav_more_status: false});
             }
         }
     };
