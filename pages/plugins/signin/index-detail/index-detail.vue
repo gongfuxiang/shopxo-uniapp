@@ -74,7 +74,7 @@
                     <view class="icon-close-submit pa" @tap="coming_success_close_event">
                         <icon type="clear" size="20"></icon>
                     </view>
-                    <image src="/static/images/plugins/signin/coming-success-icon.png" mode="widthFix"></image>
+                    <image :src="static_url+'coming-success-icon.png'" mode="widthFix"></image>
                     <view class="coming-tips-content">
                         <text class="bg-white cr-red round padding-top-sm padding-bottom-sm padding-horizontal-main">获得 <text>{{coming_integral}}</text> 积分</text>
                     </view>
@@ -95,9 +95,11 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
+    var static_url = app.globalData.get_static_url('signin', true);
     export default {
         data() {
             return {
+                static_url: static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

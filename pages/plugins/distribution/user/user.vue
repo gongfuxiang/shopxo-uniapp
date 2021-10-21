@@ -1,57 +1,64 @@
 <template>
     <view>
-        <view class="padding-horizontal-main padding-top-main oh">
-            <!-- 头部 -->
-            <view class="head-box padding-main border-radius-main oh pr spacing-mb">
-                <view class="head-item tc fl">
-                    <view class="avatar bg-white circle">
-                        <image class="dis-block circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
+        <view v-if="(data_base || null) != null">
+            <view class="padding-horizontal-main padding-top-main oh">
+                <!-- 头部 -->
+                <view class="head-box padding-main border-radius-main oh pr spacing-mb">
+                    <view class="head-item tc fl">
+                        <view class="avatar bg-white circle">
+                            <image class="dis-block circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
+                        </view>
+                        <text class="margin-top-sm dis-block cr-white">{{nickname}}</text>
                     </view>
-                    <text class="margin-top-sm dis-block cr-white">{{nickname}}</text>
+                    <view class="head-base fr">
+                        <view v-if="(user_level || null) != null" class="single-text tr">
+                            <image v-if="(user_level.images_url || null) != null" class="level-icon va-m margin-right-sm" :src="user_level.images_url" mode="widthFix"></image>
+                            <text v-if="(user_level.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_level.name}}</text>
+                        </view>
+                        <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
+                            <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
+                                <button class="head-base-submit pa bg-white cr-main round text-size-sm" size="mini" type="default" hover-class="none">{{(extraction || null) == null ? '申请' : ''}}取货点</button>
+                            </navigator>
+                        </block>
+                    </view>
                 </view>
-                <view class="head-base fr">
-                    <view v-if="(user_level || null) != null" class="single-text tr">
-                        <image v-if="(user_level.images_url || null) != null" class="level-icon va-m margin-right-sm" :src="user_level.images_url" mode="widthFix"></image>
-                        <text v-if="(user_level.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_level.name}}</text>
-                    </view>
-                    <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
-                        <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
-                            <button class="head-base-submit pa bg-white cr-main round text-size-sm" size="mini" type="default" hover-class="none">{{(extraction || null) == null ? '申请' : ''}}取货点</button>
+            </view>
+            
+            <!-- 会员中心通知 -->
+            <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content">
+                    <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
+                </view>
+            </view>
+
+            <!-- 导航 -->
+            <view v-if="nav_list.length > 0" class="nav oh">
+                <block v-for="(item, index) in nav_list" :key="index">
+                    <view class="item fl tc padding-main border-radius-main bg-white">
+                        <navigator :url="item.url" hover-class="none">
+                            <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                            <view class="tc cr-base margin-top-lg">{{item.title}}</view>
                         </navigator>
-                    </block>
+                    </view>
+                </block>
+            </view>
+
+            <!-- 不符合分销条件描述 -->
+            <view v-if="(data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content-blue">
+                    <view v-for="(item, index) in data_base.non_conformity_desc" :key="index" class="item">{{item}}</view>
                 </view>
             </view>
         </view>
-        
-        <!-- 会员中心通知 -->
-        <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
-            </view>
-        </view>
-
-        <!-- 导航 -->
-        <view v-if="nav_list.length > 0" class="nav oh">
-            <block v-for="(item, index) in nav_list" :key="index">
-                <view class="item fl tc padding-main border-radius-main bg-white">
-                    <navigator :url="item.url" hover-class="none">
-                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                        <view class="tc cr-base margin-top-lg">{{item.title}}</view>
-                    </navigator>
-                </view>
-            </block>
-        </view>
-
-        <!-- 不符合分销条件描述 -->
-        <view v-if="(data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content-blue">
-                <view v-for="(item, index) in data_base.non_conformity_desc" :key="index" class="item">{{item}}</view>
-            </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -62,21 +69,19 @@
                 data_base: null,
                 user_level: null,
                 extraction: null,
+                superior: null,
+                nav_list: [],
                 avatar: app.globalData.data.default_user_head_src,
-                nickname: "用户名",
-                // 导航
-                nav_list: []
+                nickname: "用户名"
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
-        onLoad(params) {
-            this.setData({
-                nav_list: this.nav_list_data()
-            });
-        },
+        onLoad(params) {},
 
         onShow() {
             this.init();
@@ -125,31 +130,6 @@
                 }
             },
 
-            // 导航数据
-            nav_list_data() {
-                return [{
-                    icon: "/static/images/plugins/distribution/user-center-order-icon.png",
-                    title: "分销订单",
-                    url: "/pages/plugins/distribution/order/order"
-                }, {
-                    icon: "/static/images/plugins/distribution/user-center-profit-icon.png",
-                    title: "收益明细",
-                    url: "/pages/plugins/distribution/profit/profit"
-                }, {
-                    icon: "/static/images/plugins/distribution/user-center-team-icon.png",
-                    title: "我的团队",
-                    url: "/pages/plugins/distribution/team/team"
-                }, {
-                    icon: "/static/images/plugins/distribution/user-center-poster-icon.png",
-                    title: "推广返利",
-                    url: "/pages/plugins/distribution/poster/poster"
-                }, {
-                    icon: "/static/images/plugins/distribution/user-center-statistics-icon.png",
-                    title: "数据统计",
-                    url: "/pages/plugins/distribution/statistics/statistics"
-                }];
-            },
-
             // 获取数据
             get_data() {
                 uni.request({
@@ -161,30 +141,15 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var data_base = data.base || null;
-                            var user_level = data.user_level || null;
                             this.setData({
-                                data_base: data_base,
-                                user_level: user_level,
+                                data_base: data.base || null,
+                                user_level:  data.user_level || null,
                                 extraction: data.extraction || null,
+                                superior: data.superior || null,
+                                nav_list: data.nav_list || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false
-                            });
-                            
-                            // 导航
-                            var temp_data_list = this.nav_list_data();
-                            
-                            // 等级介绍
-                            if (data_base != null && (data_base.is_show_introduce || 0) == 1) {
-                                temp_data_list.push({
-                                    icon: "/static/images/plugins/distribution/user-center-introduce-icon.png",
-                                    title: "等级介绍",
-                                    url: "/pages/plugins/distribution/introduce/introduce"
-                                });
-                            }
-                            this.setData({
-                                nav_list: temp_data_list
                             });
                         } else {
                             this.setData({

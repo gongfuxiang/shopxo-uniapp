@@ -11,13 +11,13 @@
             <view class="padding-horizontal-main">
                 <view class="base padding-horizontal-main border-radius-main bg-white oh pr">
                     <view class="item padding-vertical-main">
-                        <image class="item-icon va-m margin-right-sm" src="/static/images/plugins/weixinliveplayer/detail-status-icon.png" mode="widthFix"></image>
+                        <image class="item-icon va-m margin-right-sm" :src="static_url+'detail-status-icon.png'" mode="widthFix"></image>
                         <text class="cr-gray va-m">直播状态</text>
                         <view :class="'fr status status-' + detail.status">{{detail.status_name}}</view>
                     </view>
                     <view class="item padding-vertical-main br-t oh">
                         <view class="fl margin-top-lg">
-                            <image class="item-icon va-m margin-right-sm" src="/static/images/plugins/weixinliveplayer/detail-time-icon.png" mode="widthFix"></image>
+                            <image class="item-icon va-m margin-right-sm" :src="static_url+'detail-time-icon.png'" mode="widthFix"></image>
                             <text class="cr-gray va-m">开播时间</text>
                         </view>
                         <view class="fr">
@@ -31,15 +31,15 @@
             <!-- 导航 -->
             <view class="nav wh-auto oh">
                 <button class="share-friend-submit fl cr-white text-size round margin-left-main" type="default" hover-class="none" open-type="share">
-                    <image class="item-icon va-m margin-right-sm" src="/static/images/plugins/weixinliveplayer/nav-share-friend-icon.png" mode="widthFix"></image>
+                    <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-share-friend-icon.png'" mode="widthFix"></image>
                     <text class="va-m">分享</text>
                 </button>
                 <button class="share-poster-submit fl cr-white text-size round margin-left-main" type="default" hover-class="none" @tap="share_poster_event">
-                    <image class="item-icon va-m margin-right-sm" src="/static/images/plugins/weixinliveplayer/nav-share-poster-icon.png" mode="widthFix"></image>
+                    <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-share-poster-icon.png'" mode="widthFix"></image>
                     <text class="va-m">海报</text>
                 </button>
                 <button class="player-submit fr cr-white text-size round margin-horizontal-main" type="default" hover-class="none" @tap="player_event">
-                    <image class="item-icon va-m margin-right-sm" src="/static/images/plugins/weixinliveplayer/nav-player-icon.png" mode="widthFix"></image>
+                    <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-player-icon.png'" mode="widthFix"></image>
                     <text class="va-m">进入直播</text>
                 </button>
             </view>
@@ -58,9 +58,11 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
+    var static_url = app.globalData.get_static_url('weixinliveplayer', true);
     export default {
         data() {
             return {
+                static_url: static_url+'app/',
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

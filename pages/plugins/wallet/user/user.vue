@@ -1,56 +1,63 @@
 <template>
     <view>
-        <!-- 钱包信息 -->
-        <view class="padding-main">
-            <view class="padding-main border-radius-main bg-white pr">
-                <view class="item oh">
-                    <view class="fl cr-base">有效</view>
-                    <view class="fl cr-main fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.normal_money || '0.00'}}</view>
-                    <view class="fl cr-gray unit">元</view>
-                </view>
-                <view class="item oh margin-top-sm">
-                    <view class="fl cr-base">冻结</view>
-                    <view class="fl cr-red fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.frozen_money || '0.00'}}</view>
-                    <view class="fl cr-gray unit">元</view>
-                </view>
-                <view class="item oh margin-top-sm">
-                    <view class="fl cr-base">赠送</view>
-                    <view class="fl cr-base fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.give_money || '0.00'}}</view>
-                    <view class="fl cr-gray unit">元</view>
-                </view>
-                <view class="submit-container pa">
-                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/recharge/recharge" hover-class="none">
-                        <button class="round cr-white bg-green br-green text-size-sm" size="mini" type="default" hover-class="none">充值</button>
-                    </navigator>
-                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none">
-                        <button class="round cr-white bg-main br-main text-size-sm margin-left-lg" size="mini" type="default" hover-class="none">提现</button>
-                    </navigator>
+        <view v-if="(data_base || null) != null">
+            <!-- 钱包信息 -->
+            <view class="padding-main">
+                <view class="padding-main border-radius-main bg-white pr">
+                    <view class="item oh">
+                        <view class="fl cr-base">有效</view>
+                        <view class="fl cr-main fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.normal_money || '0.00'}}</view>
+                        <view class="fl cr-gray unit">元</view>
+                    </view>
+                    <view class="item oh margin-top-sm">
+                        <view class="fl cr-base">冻结</view>
+                        <view class="fl cr-red fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.frozen_money || '0.00'}}</view>
+                        <view class="fl cr-gray unit">元</view>
+                    </view>
+                    <view class="item oh margin-top-sm">
+                        <view class="fl cr-base">赠送</view>
+                        <view class="fl cr-base fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.give_money || '0.00'}}</view>
+                        <view class="fl cr-gray unit">元</view>
+                    </view>
+                    <view class="submit-container pa">
+                        <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/recharge/recharge" hover-class="none">
+                            <button class="round cr-white bg-green br-green text-size-sm" size="mini" type="default" hover-class="none">充值</button>
+                        </navigator>
+                        <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none">
+                            <button class="round cr-white bg-main br-main text-size-sm margin-left-lg" size="mini" type="default" hover-class="none">提现</button>
+                        </navigator>
+                    </view>
                 </view>
             </view>
-        </view>
 
-        <!-- 导航 -->
-        <view v-if="nav_list.length > 0" class="nav oh">
-            <block v-for="(item, index) in nav_list" :key="index">
-                <view class="item fl tc padding-main border-radius-main bg-white">
-                    <navigator :url="item.url" hover-class="none">
-                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                        <view class="tc cr-base margin-top-lg">{{item.title}}</view>
-                    </navigator>
-                </view>
-            </block>
-        </view>
-        
-        <!-- 通知 -->
-        <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
+            <!-- 导航 -->
+            <view v-if="nav_list.length > 0" class="nav oh">
+                <block v-for="(item, index) in nav_list" :key="index">
+                    <view class="item fl tc padding-main border-radius-main bg-white">
+                        <navigator :url="item.url" hover-class="none">
+                            <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                            <view class="tc cr-base margin-top-lg">{{item.title}}</view>
+                        </navigator>
+                    </view>
+                </block>
             </view>
+            
+            <!-- 通知 -->
+            <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content">
+                    <view v-for="(item, index) in data_base.user_center_notice" :key="index" class="item">{{item}}</view>
+                </view>
+            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -60,19 +67,19 @@
                 data_list_loding_msg: '',
                 data_base: null,
                 user_wallet: null,
-                submit_disabled_status: false,
-                // 导航
-                nav_list: []
+                nav_list: [],
+                submit_disabled_status: false
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
         onLoad(params) {},
 
         onShow() {
-            this.set_nav_list();
             this.init();
         },
 
@@ -107,26 +114,6 @@
                 }
             },
 
-            // 导航
-            set_nav_list() {
-                var nav = [{
-                    icon: "/static/images/plugins/wallet/user-center-wallet-log-icon.png",
-                    title: "账户明细",
-                    url: "/pages/plugins/wallet/wallet-log/wallet-log"
-                }, {
-                    icon: "/static/images/plugins/wallet/user-center-recharge-icon.png",
-                    title: "充值记录",
-                    url: "/pages/plugins/wallet/user-recharge/user-recharge"
-                }, {
-                    icon: "/static/images/plugins/wallet/user-center-cash-icon.png",
-                    title: "提现记录",
-                    url: "/pages/plugins/wallet/user-cash/user-cash"
-                }];
-                this.setData({
-                    nav_list: nav
-                });
-            },
-
             // 获取数据
             get_data() {
                 uni.request({
@@ -141,6 +128,7 @@
                             this.setData({
                                 data_base: data.base || null,
                                 user_wallet: data.user_wallet || null,
+                                nav_list: data.nav_list || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false

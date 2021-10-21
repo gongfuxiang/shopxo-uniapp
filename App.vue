@@ -906,14 +906,20 @@
             },
 
             // 静态文件url地址
-            get_static_url(type) {
+            get_static_url(type, is_plugins) {
                 // 默认公共地址
                 if((type || null) == null) {
                     type = 'common';
                 }
-            
-                // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
-                return this.data.static_url+'static/app/'+this.data.default_theme+'/'+type+'/';
+                
+                // 是否插件
+                if((is_plugins || false) == true) {
+                    // 根据配置的静态url地址+插件标识符
+                    return this.data.static_url+'static/plugins/images/'+type+'/';
+                } else {
+                    // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
+                    return this.data.static_url+'static/app/'+this.data.default_theme+'/'+type+'/';
+                }
             },
             
             // rpx转px

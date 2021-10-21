@@ -1,27 +1,24 @@
 /**
 * 搜索
 */
-.search {
-    background: #d2364c;
-}
 .search input {
     width: calc(100% - 328rpx);
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
-}
-.search input,
-.search-btn button {
     height: 52rpx;
     line-height: 52rpx;
+    border-width: 1px;
+    border-style: solid;
 }
 .search-btn {
     top: 20rpx;
     right: 20rpx;
 }
 .search-btn button {
-    color: #fff;
     width: 150rpx;
     padding: 0;
+    height: 57rpx;
+    line-height: 57rpx;
 }
 .search-btn button:first-child {
     border-top-left-radius: 0 !important;
@@ -87,7 +84,8 @@
 */
 .nav {
     height: 70rpx;
-    border-bottom: 1px solid #d2364c;
+    border-width: 0 0 1px 0;
+    border-style: solid;
 }
 .nav .nav-scroll {
     float: right;

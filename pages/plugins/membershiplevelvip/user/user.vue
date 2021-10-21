@@ -1,101 +1,108 @@
 <template>
     <view>
-        <view class="padding-horizontal-main padding-top-main oh">
-            <!-- 头部 -->
-            <view class="head-box padding-main border-radius-main oh pr spacing-mb">
-                <view class="head-item tc fl">
-                    <view class="avatar bg-white circle">
-                        <image class="dis-block circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
+        <view v-if="(data_base || null) != null">
+            <view class="padding-horizontal-main padding-top-main oh">
+                <!-- 头部 -->
+                <view class="head-box padding-main border-radius-main oh pr spacing-mb">
+                    <view class="head-item tc fl">
+                        <view class="avatar bg-white circle">
+                            <image class="dis-block circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
+                        </view>
+                        <text class="margin-top-sm dis-block cr-white">{{nickname}}</text>
                     </view>
-                    <text class="margin-top-sm dis-block cr-white">{{nickname}}</text>
-                </view>
-                <view class="head-base fr">
-                    <block v-if="(user_vip || null) != null">
-                        <block v-if="(user_vip.user_vip_model || null) == 'pay'">
-                            <view v-if="(user_vip || null) != null" class="single-text tr margin-bottom-sm">
-                                <image v-if="(user_vip.icon || null) != null" class="level-icon va-m margin-right-sm" :src="user_vip.icon" mode="widthFix"></image>
-                                <text v-if="(user_vip.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_vip.level_name}}</text>
-                            </view>
-                            <view class="tr">
-                                <block v-if="(user_vip.is_permanent || 0) == 1">
-                                    <text class="cr-grey">有效期</text>
-                                    <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.permanent_value}}</text>
-                                    <text class="cr-grey">{{user_vip.permanent_unit}}</text>
-                                </block>
-                                <block v-else>
-                                    <block v-if="(user_vip.surplus_time_number || 0) == 0">
-                                        <view class="cr-grey">会员已过期或未开通</view>
-                                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                            <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy round pa" type="default" size="mini" hover-class="none">开通会员</button>
-                                        </navigator>
+                    <view class="head-base fr">
+                        <block v-if="(user_vip || null) != null">
+                            <block v-if="(user_vip.user_vip_model || null) == 'pay'">
+                                <view v-if="(user_vip || null) != null" class="single-text tr margin-bottom-sm">
+                                    <image v-if="(user_vip.icon || null) != null" class="level-icon va-m margin-right-sm" :src="user_vip.icon" mode="widthFix"></image>
+                                    <text v-if="(user_vip.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_vip.level_name}}</text>
+                                </view>
+                                <view class="tr">
+                                    <block v-if="(user_vip.is_permanent || 0) == 1">
+                                        <text class="cr-grey">有效期</text>
+                                        <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.permanent_value}}</text>
+                                        <text class="cr-grey">{{user_vip.permanent_unit}}</text>
                                     </block>
                                     <block v-else>
-                                        <text class="cr-grey">有效期</text>
-                                        <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.surplus_time_number}}</text>
-                                        <text class="cr-grey">{{user_vip.surplus_time_unit}}</text>
-                                        <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
-                                            <block v-if="(plugins_base.is_supported_renew_old_order || null) == 1">
-                                                <button size="mini" type="default" hover-class="none" class="renew-buy" @tap="uservip_renew_event" :disabled="submit_disabled_status">续费会员</button>
-                                            </block>
-                                            <block v-else>
-                                                <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                                    <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                                        <button class="submit-buy round pa" type="default" size="mini" hover-class="none">连续开通</button>
-                                                    </navigator>
+                                        <block v-if="(user_vip.surplus_time_number || 0) == 0">
+                                            <view class="cr-grey">会员已过期或未开通</view>
+                                            <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
+                                                <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy round pa" type="default" size="mini" hover-class="none">开通会员</button>
+                                            </navigator>
+                                        </block>
+                                        <block v-else>
+                                            <text class="cr-grey">有效期</text>
+                                            <text class="cr-white fw-b margin-left-xs margin-right-xs">{{user_vip.surplus_time_number}}</text>
+                                            <text class="cr-grey">{{user_vip.surplus_time_unit}}</text>
+                                            <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
+                                                <block v-if="(plugins_base.is_supported_renew_old_order || null) == 1">
+                                                    <button size="mini" type="default" hover-class="none" class="renew-buy" @tap="uservip_renew_event" :disabled="submit_disabled_status">续费会员</button>
+                                                </block>
+                                                <block v-else>
+                                                    <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
+                                                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
+                                                            <button class="submit-buy round pa" type="default" size="mini" hover-class="none">连续开通</button>
+                                                        </navigator>
+                                                    </block>
                                                 </block>
                                             </block>
                                         </block>
                                     </block>
-                                </block>
-                            </view>
+                                </view>
+                            </block>
+                            <block v-else>
+                                <view v-if="(user_vip || null) != null" class="single-text tr">
+                                    <image v-if="(user_vip.icon || null) != null" class="level-icon va-m margin-right-sm" :src="user_vip.icon" mode="widthFix"></image>
+                                    <text v-if="(user_vip.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_vip.level_name}}</text>
+                                </view>
+                            </block>
                         </block>
                         <block v-else>
-                            <view v-if="(user_vip || null) != null" class="single-text tr">
-                                <image v-if="(user_vip.icon || null) != null" class="level-icon va-m margin-right-sm" :src="user_vip.icon" mode="widthFix"></image>
-                                <text v-if="(user_vip.name || null) != null" class="level-name text-size-sm fw-b va-m">{{user_vip.level_name}}</text>
-                            </view>
+                            <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
+                                <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
+                                    <button class="submit-buy round pa" type="default" size="mini" hover-class="none">开通会员</button>
+                                </navigator>
+                            </block>
                         </block>
-                    </block>
-                    <block v-else>
-                        <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                            <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                <button class="submit-buy round pa" type="default" size="mini" hover-class="none">开通会员</button>
-                            </navigator>
-                        </block>
-                    </block>
+                    </view>
                 </view>
             </view>
-        </view>
 
-        <!-- 会员中心通知 -->
-        <view v-if="(user_vip || null) != null && (data_base.user_vip_center_notice || null) != null && data_base.user_vip_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.user_vip_center_notice" :key="index" class="item">{{item}}</view>
-            </view>
-        </view>
-        
-        <!-- 导航 -->
-        <view v-if="nav_list.length > 0" class="nav oh">
-            <block v-for="(item, index) in nav_list" :key="index">
-                <view class="item fl tc padding-main border-radius-main bg-white">
-                    <navigator :url="item.url" hover-class="none">
-                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                        <view class="tc cr-base margin-top-lg">{{item.title}}</view>
-                    </navigator>
+            <!-- 会员中心通知 -->
+            <view v-if="(user_vip || null) != null && (data_base.user_vip_center_notice || null) != null && data_base.user_vip_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content">
+                    <view v-for="(item, index) in data_base.user_vip_center_notice" :key="index" class="item">{{item}}</view>
                 </view>
-            </block>
-        </view>
-        
-        <!-- 会员中心通知 -->
-        <view v-if="(data_base.not_opening_vip_desc || null) != null && data_base.not_opening_vip_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content-blue">
-                <view v-for="(item, index) in data_base.not_opening_vip_desc" :key="index" class="item">{{item}}</view>
             </view>
+            
+            <!-- 导航 -->
+            <view v-if="nav_list.length > 0" class="nav oh">
+                <block v-for="(item, index) in nav_list" :key="index">
+                    <view class="item fl tc padding-main border-radius-main bg-white">
+                        <navigator :url="item.url" hover-class="none">
+                            <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                            <view class="tc cr-base margin-top-lg">{{item.title}}</view>
+                        </navigator>
+                    </view>
+                </block>
+            </view>
+            
+            <!-- 会员中心通知 -->
+            <view v-if="(data_base.not_opening_vip_desc || null) != null && data_base.not_opening_vip_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content-blue">
+                    <view v-for="(item, index) in data_base.not_opening_vip_desc" :key="index" class="item">{{item}}</view>
+                </view>
+            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -105,15 +112,16 @@
                 data_list_loding_msg: '',
                 data_base: null,
                 user_vip: null,
+                nav_list: [],
                 avatar: app.globalData.data.default_user_head_src,
                 nickname: "用户名",
-                submit_disabled_status: false,
-                // 导航
-                nav_list: []
+                submit_disabled_status: false
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
         onLoad(params) {},

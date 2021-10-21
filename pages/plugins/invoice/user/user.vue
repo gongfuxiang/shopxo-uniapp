@@ -1,27 +1,34 @@
 <template>
     <view>
-        <!-- 导航 -->
-        <view v-if="nav_list.length > 0" class="nav oh padding-top-main">
-            <block v-for="(item, index) in nav_list" :key="index">
-                <view class="item fl tc padding-main border-radius-main bg-white">
-                    <navigator :url="item.url" hover-class="none">
-                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                        <view class="tc cr-base margin-top-lg">{{item.title}}</view>
-                    </navigator>
-                </view>
-            </block>
-        </view>
-        
-        <!-- 通知 -->
-        <view v-if="(data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.invoice_desc" :key="index" class="item">{{item}}</view>
+        <view v-if="(data_base || null) != null">
+            <!-- 导航 -->
+            <view v-if="nav_list.length > 0" class="nav oh padding-top-main">
+                <block v-for="(item, index) in nav_list" :key="index">
+                    <view class="item fl tc padding-main border-radius-main bg-white">
+                        <navigator :url="item.url" hover-class="none">
+                            <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                            <view class="tc cr-base margin-top-lg">{{item.title}}</view>
+                        </navigator>
+                    </view>
+                </block>
             </view>
+            
+            <!-- 通知 -->
+            <view v-if="(data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content">
+                    <view v-for="(item, index) in data_base.invoice_desc" :key="index" class="item">{{item}}</view>
+                </view>
+            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -30,19 +37,13 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_base: null,
-                nav_list: [{
-                    icon: "/static/images/plugins/invoice/user-center-invoice-icon.png",
-                    title: "我的发票",
-                    url: "/pages/plugins/invoice/invoice/invoice"
-                }, {
-                    icon: "/static/images/plugins/invoice/user-center-order-icon.png",
-                    title: "订单开票",
-                    url: "/pages/plugins/invoice/order/order"
-                }]
+                nav_list: []
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
         onLoad(params) {},
@@ -95,6 +96,7 @@
                             var data = res.data.data;
                             this.setData({
                                 data_base: data.base || null,
+                                nav_list: data.nav_list || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false

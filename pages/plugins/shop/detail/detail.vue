@@ -2,11 +2,11 @@
     <view>
         <view v-if="(data || null) != null">
             <!-- 搜索 -->
-            <view class="search padding-main pr oh">
-                <input class="bg-white wh-auto fl padding-left-xxl text-size-xs round" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey" @input="search_keywords_event">
+            <view class="search padding-main bg-white pr oh br-b">
+                <input class="bg-white wh-auto fl padding-left-xxl text-size-xs round border-color-main" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey" @input="search_keywords_event">
                 <view class="search-btn pa">
-                    <button class="mini-btn round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
-                    <button class="mini-btn round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&'">搜本店</button>
+                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&'">搜本店</button>
+                    <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
                 </view>
             </view>
             <!-- 顶部 -->
@@ -49,7 +49,7 @@
                 </view>
             </view>
             <!-- 导航 -->
-            <view class="nav scroll-view-horizontal bg-white padding-top-lg">
+            <view class="nav scroll-view-horizontal bg-white padding-top-lg border-color-main">
                 <view class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b" @tap="nav_shop_category_event">查看商品分类</view>
                 <scroll-view scroll-x class="nav-scroll">
                     <block v-if="shop_navigation.length > 0">

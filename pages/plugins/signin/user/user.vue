@@ -1,27 +1,34 @@
 <template>
     <view>
-        <!-- 导航 -->
-        <view v-if="nav_list.length > 0" class="nav oh padding-top-main">
-            <block v-for="(item, index) in nav_list" :key="index">
-                <view class="item fl tc padding-main border-radius-main bg-white">
-                    <navigator :url="item.url" hover-class="none">
-                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                        <view class="tc cr-base margin-top-lg">{{item.title}}</view>
-                    </navigator>
-                </view>
-            </block>
-        </view>
-        
-        <!-- 通知 -->
-        <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
-            <view class="notice-content">
-                <view v-for="(item, index) in data_base.signin_desc" :key="index" class="item">{{item}}</view>
+        <view v-if="(data_base || null) != null">
+            <!-- 导航 -->
+            <view v-if="nav_list.length > 0" class="nav oh padding-top-main">
+                <block v-for="(item, index) in nav_list" :key="index">
+                    <view class="item fl tc padding-main border-radius-main bg-white">
+                        <navigator :url="item.url" hover-class="none">
+                            <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                            <view class="tc cr-base margin-top-lg">{{item.title}}</view>
+                        </navigator>
+                    </view>
+                </block>
             </view>
+            
+            <!-- 通知 -->
+            <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
+                <view class="notice-content">
+                    <view v-for="(item, index) in data_base.signin_desc" :key="index" class="item">{{item}}</view>
+                </view>
+            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
 
     export default {
         data() {
@@ -34,7 +41,9 @@
             };
         },
 
-        components: {},
+        components: {
+            componentNoData
+        },
         props: {},
 
         onLoad(params) {},
@@ -85,22 +94,9 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 是否开启组队
-                            var temp_nav_list = [{
-                                icon: "/static/images/plugins/signin/user-signin-icon.png",
-                                title: "我的签到",
-                                url: "/pages/plugins/signin/user-signin/user-signin"
-                            }];
-                            if ((data.base || null) != null && (data.base.is_team || 0) == 1) {
-                                temp_nav_list.push({
-                                    icon: "/static/images/plugins/signin/user-qrcode-icon.png",
-                                    title: "签到码管理",
-                                    url: "/pages/plugins/signin/user-qrcode/user-qrcode"
-                                });
-                            }
                             this.setData({
                                 data_base: data.base || null,
-                                nav_list: temp_nav_list,
+                                nav_list: data.nav_list || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false
