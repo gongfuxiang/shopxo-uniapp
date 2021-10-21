@@ -106,9 +106,19 @@
                         </view>
                     </view>
                 </view>
+                
+                <!-- 批发 -->
+                <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
+                    <view class="fl item-title">{{plugins_wholesale_data.title}}</view>
+                    <view class="fr column-right-view single-text" @tap="popup_wholesale_event">
+                        <block  v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
+                            <view class="item round dis-inline-block">{{item.msg}}</view>
+                        </block>
+                    </view>
+                </view>
             
                 <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="coupon-container-view oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
                     <view class="fl item-title">优惠券</view>
                     <view class="fr column-right-view single-text" @tap="popup_coupon_event">
                         <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
@@ -380,6 +390,34 @@
                 </view>
             </component-popup>
             
+            <!-- 批发弹层 -->
+            <component-popup :prop-show="popup_wholesale_status" prop-position="bottom" @onclose="popup_wholesale_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-base">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_wholesale_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="plugins-wholesale-container">
+                        <block v-if="(plugins_wholesale_data || null) != null">
+                            <text v-if="(plugins_wholesale_data.spec_tips || null) != null" class="spec-tips pa round">{{plugins_wholesale_data.spec_tips}}</text>
+                            <view class="oh">
+                                <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
+                                    <view class="item padding-main bg-white border-radius-main oh dis-inline-block tc">
+                                        <text class="cr-base">{{item.arr.msg}}</text>
+                                        <text class="margin-left-sm cr-main fw-b text-size-lg">{{item.arr.val}}</text>
+                                        <text class="cr-grey margin-left-xs">{{item.arr.unit}}</text>
+                                    </view>
+                                </block>
+                            </view>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无批发信息</view>
+                        </block>
+                    </view>
+                </view>
+            </component-popup>
+            
             <!-- 优惠券弹层 -->
             <component-popup :prop-show="popup_coupon_status" prop-position="bottom" @onclose="popup_coupon_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-base">
@@ -388,7 +426,7 @@
                             <icon type="clear" size="20"></icon>
                         </view>
                     </view>
-                    <view class="coupon-container padding-bottom-main">
+                    <view class="plugins-coupon-container padding-bottom-main">
                         <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                                 <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')">
@@ -551,6 +589,9 @@
                 plugins_salerecords_tips_ent: '',
                 // 多商户
                 plugins_shop_data: null,
+                // 批发
+                plugins_wholesale_data: null,
+                popup_wholesale_status: false,
             };
         },
 
@@ -718,8 +759,7 @@
                                     indicator_dots: data.goods.photo.length > 1,
                                     autoplay: data.goods.photo.length > 1,
                                     goods_photo: data.goods.photo,
-                                    goods_specifications_choose: data.goods.specifications.choose ||
-                                        [],
+                                    goods_specifications_choose: data.goods.specifications.choose || [],
                                     goods_content_app: data.goods.content_app || [],
                                     buy_number: data.goods.buy_min_number || 1,
                                     nav_favor_button_info: {
@@ -738,7 +778,8 @@
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     quick_nav_cart_count: data.common_cart_total || 0,
                                     plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
-                                    plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data
+                                    plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
+                                    plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
                                 });
 
                                 // 标题
@@ -1236,6 +1277,7 @@
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price,
                     goods_spec_base_inventory: spec_base.inventory,
+                    plugins_wholesale_data: data.plugins_wholesale_data || null,
                 };
 
                 // 已选数量是否超过规格库存
@@ -1609,7 +1651,21 @@
             nav_more_event(e) {
                 app.globalData.operation_event(e);
                 this.setData({nav_more_status: false});
-            }
+            },
+            
+            // 批发开启弹层
+            popup_wholesale_event(e) {
+                this.setData({
+                    popup_wholesale_status: true
+                });
+            },
+            
+            // 批发弹层关闭
+            popup_wholesale_close_event(e) {
+                this.setData({
+                    popup_wholesale_status: false
+                });
+            },
         }
     };
 </script>

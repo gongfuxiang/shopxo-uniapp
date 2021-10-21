@@ -332,7 +332,10 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            temp_data_list[index]['stock'] = buy_number;
+                            var data = res.data.data;
+                            temp_data_list[index]['stock'] = data.stock;
+                            temp_data_list[index]['original_price'] = data.original_price;
+                            temp_data_list[index]['price'] = data.price;
                             this.setData({
                                 data_list: temp_data_list
                             });

@@ -406,44 +406,6 @@
 }
 
 /*
-* 优惠劵 - 插件
-*/
-.coupon-container-view {
-    position: relative;
-}
-.coupon-container-view .item-title {
-    position: absolute;
-    top: calc(50% - 20rpx);
-}
-.coupon-container-view .item {
-    margin-bottom: 10rpx;
-    padding: 3rpx 15rpx;
-}
-.coupon-container-view .item:not(:last-child) {
-    margin-right: 10rpx;
-}
-.coupon-container {
-    max-height: 50vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-top: 20rpx;
-}
-.coupon-container .v-left {
-    padding: 20rpx 10rpx 20rpx 20rpx;
-}
-.coupon-container .item:not(:last-child) {
-    margin-bottom: 20rpx;
-}
-.coupon-container .item,
-.coupon-container .v-right,
-.coupon-container .v-right .circle {
-    height: 175rpx;
-}
-.coupon-container .v-left .base .price {
-    font-size: 46rpx;
-}
-
-/*
 * 商品参数
 */
 .parameters-base .content-item .item {
@@ -580,4 +542,80 @@
     font-size: 24rpx;
     min-height: 72rpx;
     line-height: 36rpx;
+}
+
+/*
+* 优惠劵 - 插件
+*/
+.plugins-coupon-container-view .item-title {
+    position: absolute;
+    top: calc(50% - 20rpx);
+}
+.plugins-coupon-container-view .item {
+    margin-bottom: 10rpx;
+    padding: 3rpx 15rpx;
+}
+.plugins-coupon-container-view .item:not(:last-child) {
+    margin-right: 10rpx;
+}
+.plugins-coupon-container {
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 20rpx;
+}
+.plugins-coupon-container .v-left {
+    padding: 20rpx 10rpx 20rpx 20rpx;
+}
+.plugins-coupon-container .item:not(:last-child) {
+    margin-bottom: 20rpx;
+}
+.plugins-coupon-container .item,
+.plugins-coupon-container .v-right,
+.plugins-coupon-container .v-right .circle {
+    height: 175rpx;
+}
+.plugins-coupon-container .v-left .base .price {
+    font-size: 46rpx;
+}
+
+/**
+ * 批发 - 插件
+ */
+.plugins-wholesale-container-view .item-title {
+    position: absolute;
+    top: calc(50% - 20rpx);
+}
+.plugins-wholesale-container-view .item {
+    margin-bottom: 10rpx;
+    padding: 3rpx 15rpx;
+    color: #ff6633;
+    border: 1px dashed #ff9e7e;
+}
+.plugins-wholesale-container-view .item:not(:last-child) {
+    margin-right: 10rpx;
+}
+.plugins-wholesale-container {
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-top: 20rpx;
+}
+.plugins-wholesale-container .item {
+    width: calc(50% - 50rpx);
+    margin-bottom: 20rpx;
+}
+.plugins-wholesale-container .item:nth-child(2n) {
+    margin-left: 10rpx;
+}
+.plugins-wholesale-container .item:nth-child(2n+1) {
+    margin-right: 10rpx;
+}
+.plugins-wholesale-container .spec-tips {
+    color: #ffbf00;
+    border: 1px solid #333;
+    background: #333;
+    padding: 2rpx 10rpx;
+    top: 22rpx;
+    left: 20rpx;
 }

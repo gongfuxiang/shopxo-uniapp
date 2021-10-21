@@ -34,7 +34,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'https://dev.shopxo.vip/',
                 //request_url: 'http://shopxo.com/',
                 // 静态资源地址
                 static_url: 'https://dev.shopxo.vip/',
@@ -310,7 +310,6 @@
                     dataType: 'json',
                     success: res => {
                         uni.hideLoading();
-
                         if (res.data.code == 0) {
                             uni.setStorage({
                                 key: self.data.cache_user_info_key,
