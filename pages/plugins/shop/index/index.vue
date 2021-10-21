@@ -10,31 +10,33 @@
             </scroll-view>
             
             <!-- 列表 -->
-            <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                <block v-for="(item, index) in data_list" :key="index">
-                    <view class="item border-radius-main bg-white oh spacing-mb">
-                        <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
-                            <image :src="item.logo_long" mode="aspectFit"></image>
-                            <view class="padding-main tc">
-                                <view class="single-text fw-b cr-base">{{item.name}}</view>
-                                <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
-                                <view class="oh margin-top-sm br-t-dashed padding-top-main">
-                                    <view class="fl cr-gray single-text">商品 {{item.goods_count}}</view>
-                                    <view class="fr cr-gray single-text">销量 {{item.goods_sales_count}}
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
+                    <block v-for="(item, index) in data_list" :key="index">
+                        <view class="item border-radius-main bg-white oh spacing-mb">
+                            <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
+                                <image :src="item.logo_long" mode="aspectFit"></image>
+                                <view class="padding-main tc">
+                                    <view class="single-text fw-b cr-base">{{item.name}}</view>
+                                    <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
+                                    <view class="oh margin-top-sm br-t-dashed padding-top-main">
+                                        <view class="fl cr-gray single-text">商品 {{item.goods_count}}</view>
+                                        <view class="fr cr-gray single-text">销量 {{item.goods_sales_count}}
+                                        </view>
                                     </view>
                                 </view>
-                            </view>
-                        </navigator>
-                    </view>
-                </block>
-            </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
-            </view>
+                            </navigator>
+                        </view>
+                    </block>
+                </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                </view>
 
-            <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+                <!-- 结尾 -->
+                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            </scroll-view>
         </view>
     </view>
 </template>
@@ -116,9 +118,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "shop"),
                     method: "POST",
-                    data: {
-                        category_id: this.nav_tab_value || 0
-                    },
+                    data: {},
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();
@@ -177,6 +177,7 @@
                     url: app.globalData.get_request_url("shoplist", "index", "shop"),
                     method: "POST",
                     data: {
+                        page: this.data_page,
                         category_id: this.nav_active_value || 0
                     },
                     dataType: "json",

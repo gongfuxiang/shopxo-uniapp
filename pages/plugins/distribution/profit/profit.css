@@ -8,3 +8,10 @@
 .nav .item {
     width: 20%;
 }
+
+/**
+* 数据列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}

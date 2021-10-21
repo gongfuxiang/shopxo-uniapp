@@ -324,7 +324,7 @@
                         <!-- 购买数量 -->
                         <view class="goods-buy-number oh">
                             <view class="title fl">购买数量</view>
-                            <view class="number-content tc oh radius">
+                            <view class="number-content tc oh round">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
                                 <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
