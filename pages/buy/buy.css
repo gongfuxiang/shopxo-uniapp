@@ -153,17 +153,17 @@
 .plugins-coupon-popup .close {
     margin-right: 20rpx;
 }
-.coupon-container {
+.plugins-coupon-container {
     max-height: 80vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.coupon-container .item,
-.coupon-container .v-right,
-.coupon-container .v-right .circle {
+.plugins-coupon-container .item,
+.plugins-coupon-container .v-right,
+.plugins-coupon-container .v-right .circle {
     height: 230rpx;
 }
-.coupon-container .not-use-tips {
+.plugins-coupon-container .not-use-tips {
     color: #f7b240;
     font-size: 32rpx;
 }

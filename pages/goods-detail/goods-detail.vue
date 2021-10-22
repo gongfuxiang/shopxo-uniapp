@@ -710,17 +710,12 @@
                 if ((status || false) == true) {
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        common_app_is_use_mobile_detail: app.globalData.get_config(
-                            'config.common_app_is_use_mobile_detail'),
-                        common_is_goods_detail_show_photo: app.globalData.get_config(
-                            'config.common_is_goods_detail_show_photo'),
-                        common_app_is_online_service: app.globalData.get_config(
-                            'config.common_app_is_online_service'),
+                        common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
+                        common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_is_good_thing: app.globalData.get_config('config.common_app_is_good_thing'),
-                        common_app_is_poster_share: app.globalData.get_config(
-                            'config.common_app_is_poster_share'),
-                        common_app_customer_service_tel: app.globalData.get_config(
-                            'config.common_app_customer_service_tel')
+                        common_app_is_poster_share: app.globalData.get_config('config.common_app_is_poster_share'),
+                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel')
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -1502,7 +1497,7 @@
                         });
                         setTimeout(function() {
                             self.setData({
-                                //plugins_salerecords_tips_content: null
+                                plugins_salerecords_tips_content: null
                             });
                         }, pause);
                         index++;
