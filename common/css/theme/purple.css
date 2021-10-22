@@ -1,0 +1,76 @@
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.border-color-main-pair {
+    border-color: #993399 !important;
+}
+.border-color-main-light {
+    border-color: #d6cbfb !important;
+}
+.border-color-main {
+    border-color: #623cec !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.br-main-pair {
+    border: 1px solid #993399 !important;
+}
+.br-dashed-main-light {
+    border: solid 1px #d6cbfb !important;
+}
+.br-main {
+    border: 1px solid #623cec !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.br-dashed-main-pair {
+    border: dashed 1px #993399 !important;
+}
+.br-dashed-main-light {
+    border: dashed 1px #d6cbfb !important;
+}
+.br-dashed-main {
+    border: dashed 1px #623cec !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.cr-main-pair {
+    color: #993399 !important;
+}
+.cr-main-light {
+    color: #d6cbfb !important;
+}
+.cr-main {
+    color: #623cec !important;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.bg-main-pair {
+    background-color: #993399 !important;
+}
+.bg-main-light {
+    background-color: #d6cbfb !important;
+}
+.bg-main {
+    background-color: #623cec !important;
+}
+button[disabled].bg-main-pair {
+    background-color: #d8aed8 !important;
+    color: #efe4ef !important;
+}
+button[disabled].bg-main-light {
+    background-color: #dcd6f1 !important;
+    color: #b2a7dc !important;
+}
+button[disabled].bg-main {
+    background-color: #bdb0ef !important;
+    color: #e7e4f1 !important;
+}

@@ -40,8 +40,8 @@
 
         <!-- 底部操作 -->
         <view class="submit-list submit-fixed padding-main">
-            <button class="submit-bottom bg-main cr-white round dis-inline-block tc fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
-            <button class="submit-bottom bg-green cr-white round dis-inline-block tc fr" type="default" hover-class="none" @tap="choose_system_address_event">导入微信地址</button>
+            <button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+            <button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入微信地址</button>
         </view>
     </view>
 </template>

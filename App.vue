@@ -34,7 +34,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://dev.shopxo.vip/',
+                request_url: 'https://d1.shopxo.vip/',
                 //request_url: 'http://shopxo.com/',
                 // 静态资源地址
                 static_url: 'https://dev.shopxo.vip/',
@@ -45,17 +45,17 @@
                 // 版本号
                 version: "v2.2.1",
                 // 货币价格符号
-                currency_symbol: "￥",
-                // 主题类型
-                // 黄色: yellow
-                // 红色: red
-                // 黑色: black
-                // 绿色: green
-                // 橙色: orange
-                // 蓝色: blue
-                // 棕色: brown
-                // 紫色: purple
-                default_theme: "yellow"
+                currency_symbol: "￥",                
+                // 主题类型        主题颜色
+                // 黄色 yellow    #f6c133
+                // 红色 red       #ff0036
+                // 黑色 black     #333333
+                // 绿色 green     #20a53a
+                // 橙色 orange    #fe6f04
+                // 蓝色 blue      #1677ff
+                // 棕色 brown     #8B4513
+                // 紫色 purple    #623cec
+                default_theme: "blue"
             },
 
             /**
@@ -953,6 +953,6 @@
     @import './common/css/page.css';
     @import './common/css/business.css';
     @import './common/css/plugins.css';
-    @import './common/css/common.css';
     @import './common/css/lib.css';
+    @import './common/css/theme/blue.css';
 </style>

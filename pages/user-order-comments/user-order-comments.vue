@@ -38,7 +38,7 @@
                     </view>
 
                     <view class="form-gorup form-gorup-submit">
-                        <button form-type="submit" class="bg-main cr-white round submit-bottom" type="default" hover-class="none" :disabled="form_button_disabled">提交</button>
+                        <button form-type="submit" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_button_disabled">提交</button>
                     </view>
                 </form>
             </view>

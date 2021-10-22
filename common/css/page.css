@@ -1,4 +1,348 @@
 /**
+ * 公共样式、框架样式覆盖
+ */
+page {
+    background: #f5f5f5;
+    color: #4a4a4a;
+}
+input[type="text"],
+input[type="number"],
+input[type="idcard"],
+input[type="digit"],
+textarea {
+    -webkit-appearance: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+page,
+textarea,
+.a-textarea-control textarea {
+    font-size: 28rpx;
+}
+button:after,
+button:before {
+    border: 0;
+    border-radius: 0;
+}
+
+/**
+ * 模块分割间距
+ */
+.spacing {
+    padding-top: 20rpx;
+}
+.spacing-10 {
+    padding-top: 10rpx;
+}
+.spacing-mb {
+    margin-bottom: 20rpx;
+}
+.spacing-mt {
+    margin-top: 20rpx;
+}
+
+/**
+ * 常用样式
+ */
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.wh-auto {
+    width: 100%;
+}
+.ht-auto {
+    height: 100%;
+}
+.tc {
+    text-align: center;
+}
+.tl {
+    text-align: left;
+}
+.tr {
+    text-align: right;
+}
+.oh {
+    overflow: hidden;
+}
+.dis-none {
+    display: none;
+}
+.dis-block {
+    display: block;
+}
+.dis-inline {
+    display: inline;
+}
+.dis-inline-block {
+    display: inline-block;
+}
+.va-m {
+    vertical-align: middle;
+}
+.pa {
+    position: absolute;
+}
+.pr {
+    position: relative;
+}
+.radius-0 {
+    border-radius: 0 !important;
+}
+.radius {
+    border-radius: 10rpx !important;
+}
+.round {
+    border-radius: 50rpx !important;
+}
+.circle {
+    border-radius: 50% !important;
+}
+.fw-b {
+    font-weight: bold;
+}
+.auto {
+    margin: 0 auto;
+}
+
+/**
+ * 透明度
+ */
+.opacity-min {
+    opacity: 0.3;
+}
+.opacity {
+    opacity: 0.5;
+}
+.opacity-max {
+    opacity: 0.8;
+}
+
+/**
+ * 底部浮动
+ */
+.submit-fixed {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+}
+
+/**
+ * 主要类样式
+ */
+.margin-main {
+    margin: 20rpx;
+}
+.margin-top-main {
+    margin-top: 20rpx;
+}
+.margin-right-main {
+    margin-right: 20rpx;
+}
+.margin-bottom-main {
+    margin-bottom: 20rpx;
+}
+.margin-left-main {
+    margin-left: 20rpx;
+}
+.margin-horizontal-main {
+    margin-left: 20rpx;
+    margin-right: 20rpx;
+}
+.margin-vertical-main {
+    margin-top: 20rpx;
+    margin-bottom: 20rpx;
+}
+.padding-main {
+    padding: 20rpx;
+}
+.padding-top-main {
+    padding-top: 20rpx;
+}
+.padding-right-main {
+    padding-right: 20rpx;
+}
+.padding-bottom-main {
+    padding-bottom: 20rpx;
+}
+.padding-left-main {
+    padding-left: 20rpx;
+}
+.padding-horizontal-main {
+    padding-left: 20rpx;
+    padding-right: 20rpx;
+}
+.padding-vertical-main {
+    padding-top: 20rpx;
+    padding-bottom: 20rpx;
+}
+.border-radius-main {
+    border-radius: 20rpx;
+}
+
+/**
+ * 价格
+ */
+.sales-price {
+    color: #f40;
+    font-weight: bold;
+    font-size: 36rpx;
+}
+.original-price {
+    color: #999;
+    font-size: 26rpx;
+    text-decoration: line-through;
+}
+
+/**
+ * 边框 灰色（四边）、红色、黄色、绿色、灰色、无边线
+ */
+.br {
+    border: 1px solid #efefef !important;
+}
+.br-b {
+    border-bottom: 1px solid #efefef !important;
+}
+.br-t {
+    border-top: 1px solid #efefef !important;
+}
+.br-l {
+    border-left: 1px solid #efefef !important;
+}
+.br-r {
+    border-right: 1px solid #efefef !important;
+}
+.br-red {
+    border:1px  solid #f00 !important;
+}
+.br-yellow {
+    border: 1px solid #f6c133 !important;
+}
+.br-green {
+    border: 1px solid #1AAD19 !important;
+}
+.br-gray {
+    border: solid 1px #d6d6d6 !important;
+}
+.br-0 {
+    border: 0 !important;
+}
+
+/**
+ * 虚线边框、灰色（四边）、红色、黄色、绿色、灰色
+ */
+.br-dashed {
+    border: dashed 1px #efefef !important;
+}
+.br-b-dashed {
+    border-bottom: dashed 1px #efefef !important;
+}
+.br-t-dashed {
+    border-top: dashed 1px #efefef !important;
+}
+.br-l-dashed {
+    border-left: dashed 1px #efefef !important;
+}
+.br-r-dashed {
+    border-right: dashed 1px #efefef !important;
+}
+.br-dashed-red {
+    border: dashed 1px #f00 !important;
+}
+.br-dashed-yellow {
+    border: dashed 1px #f6c133 !important;
+}
+.br-dashed-green {
+    border: dashed 1px #1AAD19 !important;
+}
+.br-dashed-gray {
+    border: dashed 1px #d6d6d6 !important;
+}
+
+/**
+ * 统一颜色
+ * 文本基础色、白色、黑色、灰色、浅灰色、红色、黄色、绿色、蓝色
+ */
+.cr-base {
+    color: #666 !important;
+}
+.cr-white {
+    color: #fff !important;
+}
+.cr-black {
+    color: #000 !important;
+}
+.cr-gray {
+    color: #888 !important;
+}
+.cr-grey {
+    color: #9A9A9A !important;
+}
+.cr-red {
+    color: #f00 !important;
+}
+.cr-yellow {
+    color: #f6c133 !important;
+}
+.cr-green {
+    color: #1AAD19 !important;
+}
+.cr-blue {
+    color: #2196F3 !important;
+}
+
+/**
+ * 统一背景色
+ * 白色、绿色、红色、黄色、灰色
+ */
+.bg-white {
+    background-color: #fff !important;
+}
+.bg-green {
+    background-color: #1AAD19 !important;
+}
+.bg-red {
+    background-color: #E64340 !important;
+}
+.bg-yellow {
+    background-color: #f6c133 !important;
+}
+.bg-gray {
+    background-color: #d6d6d6 !important;
+}
+.bg-base {
+    background-color: #f5f5f5 !important;
+}
+button[disabled].bg-white {
+    background-color: #fdfdfd !important;
+    color: #ccc !important;
+}
+button[disabled].bg-green {
+    background-color: #94de94 !important;
+    color: #d5f5d5 !important;
+}
+button[disabled].bg-red {
+    background-color: #ffbaba !important;
+    color: #ffdfdf !important;
+}
+button[disabled].bg-yellow {
+    background-color: #fff1cb !important;
+    color: #fbd777 !important;
+}
+button[disabled].bg-gray {
+    background-color: #ececec !important;
+    color: #ababab !important;
+}
+
+
+/**
  * 分享组建样式
  */
 .share-popup {

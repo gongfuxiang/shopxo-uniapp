@@ -40,7 +40,7 @@
                 </view>
 
                 <view class="submit-fixed padding-main">
-                    <button class="submit-bottom bg-main cr-white round" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
                 </view>
             </view>
         </form>

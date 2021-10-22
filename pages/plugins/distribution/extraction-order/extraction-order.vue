@@ -53,7 +53,7 @@
                     <input type="number" :value="extraction_code" placeholder-class="cr-grey" class="cr-base" placeholder="请输入取货码" maxlength="4" @input="extraction_code_input_event">
                 </view>
                 <view class="form-gorup form-gorup-submit">
-                    <button class="bg-main cr-white round submit-bottom" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_take_event">确认</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_take_event">确认</button>
                 </view>
             </view>
         </component-popup>
@@ -66,7 +66,7 @@
                     <input type="number" :value="search_keywords_value" placeholder-class="cr-grey" class="cr-base" placeholder="订单号/取货码" @input="search_input_keywords_event">
                 </view>
                 <view class="form-gorup form-gorup-submit">
-                    <button class="bg-main-pair cr-white round submit-bottom" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="search_submit_event">搜索</button>
+                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="search_submit_event">搜索</button>
                 </view>
             </view>
         </component-popup>

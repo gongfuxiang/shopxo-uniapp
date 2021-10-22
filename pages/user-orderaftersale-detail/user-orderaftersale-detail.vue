@@ -135,7 +135,7 @@
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
-                        <button class="bg-main cr-white round submit-bottom" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                        <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
                     </view>
                 </view>
             </view>
@@ -169,7 +169,7 @@
                             <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入快递单号" :value="form_express_number">
                         </view>
                         <view class="form-gorup form-gorup-submit">
-                            <button class="bg-main cr-white round submit-bottom" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
                         </view>
                     </view>
                 </view>
