@@ -630,31 +630,31 @@
     "subPackages": [],
 	"tabBar": {
 		"color": "#8a8a8a",
-		"selectedColor": "#333333",
+		"selectedColor": "#f6c133",
 		"backgroundColor": "#fff",
 		"list": [
 			{
 				"pagePath": "pages/index/index",
 				"iconPath": "/static/images/common/tabbar/home.png",
-				"selectedIconPath": "/static/images/black/tabbar/home.png",
+				"selectedIconPath": "/static/images/yellow/tabbar/home.png",
 				"text": "首页"
 			},
 			{
 				"pagePath": "pages/goods-category/goods-category",
 				"iconPath": "/static/images/common/tabbar/category.png",
-				"selectedIconPath": "/static/images/black/tabbar/category.png",
+				"selectedIconPath": "/static/images/yellow/tabbar/category.png",
 				"text": "分类"
 			},
 			{
 				"pagePath": "pages/cart/cart",
 				"iconPath": "/static/images/common/tabbar/cart.png",
-				"selectedIconPath": "/static/images/black/tabbar/cart.png",
+				"selectedIconPath": "/static/images/yellow/tabbar/cart.png",
 				"text": "购物车"
 			},
 			{
 				"pagePath": "pages/user/user",
 				"iconPath": "/static/images/common/tabbar/user.png",
-				"selectedIconPath": "/static/images/black/tabbar/user.png",
+				"selectedIconPath": "/static/images/yellow/tabbar/user.png",
 				"text": "我的"
 			}
 		]

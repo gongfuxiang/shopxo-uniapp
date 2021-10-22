@@ -15,8 +15,8 @@
 .scroll-box {
     height: calc(100vh - 80rpx);
 }
-.coupon-container .item,
-.coupon-container .v-right,
-.coupon-container .v-right .circle {
+.plugins-coupon-container .item,
+.plugins-coupon-container .v-right,
+.plugins-coupon-container .v-right .circle {
     height: 230rpx;
 }

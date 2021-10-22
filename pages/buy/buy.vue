@@ -143,7 +143,7 @@
                             <icon type="clear" size="20"></icon>
                         </view>
                     </view>
-                    <view v-if="plugins_coupon_list.length > 0" class="coupon-container padding-horizontal-main padding-bottom-main oh">
+                    <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
                         <view class="not-use-tips tc">
                             <text @tap="plugins_coupon_not_use_event">不使用优惠劵</text>
                         </view>

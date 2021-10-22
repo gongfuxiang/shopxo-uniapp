@@ -55,7 +55,7 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                default_theme: "blue"
+                default_theme: "yellow"
             },
 
             /**
@@ -954,5 +954,5 @@
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/lib.css';
-    @import './common/css/theme/blue.css';
+    @import './common/css/theme/yellow.css';
 </style>

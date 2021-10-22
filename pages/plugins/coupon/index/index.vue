@@ -5,7 +5,7 @@
         </view>
 
         <!-- 优惠劵列表 -->
-        <view v-if="data_list.length > 0" class="coupon-container padding-horizontal-main padding-top-main">
+        <view v-if="data_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
                 <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
                     <view class="v-left fl">
