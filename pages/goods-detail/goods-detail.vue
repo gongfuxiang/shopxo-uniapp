@@ -462,9 +462,14 @@
 
         <!-- 提示信息 -->
         <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
-        
+
         <!-- 在线客服 -->
-        <component-online-service :prop-is-nav="true"></component-online-service>
+        <block v-if="goods != null">
+            <component-online-service :prop-is-nav="true" :prop-card="true" :prop-title="goods.title" :prop-img="goods.images" :prop-path="'/pages/goods-detail/goods-detail?goods_id='+goods.id"></component-online-service>
+        </block>
+        <block v-else>
+            <component-online-service :prop-is-nav="true"></component-online-service>
+        </block>
 
         <!-- 快捷导航 -->
         <component-quick-nav :prop-is-nav="true"></component-quick-nav>
@@ -1497,7 +1502,7 @@
                         });
                         setTimeout(function() {
                             self.setData({
-                                plugins_salerecords_tips_content: null
+                                //plugins_salerecords_tips_content: null
                             });
                         }, pause);
                         index++;

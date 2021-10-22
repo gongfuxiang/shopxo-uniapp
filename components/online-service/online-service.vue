@@ -4,7 +4,7 @@
             <!-- 开启事件 -->
             <movable-area v-if="online_service_status == 1" class="nav-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
                 <movable-view direction="all" :x="x" :y="y" :animation="false" class="nav-event-submit">
-                    <button open-type="contact">
+                    <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
                     </button>
                 </movable-view>
@@ -12,7 +12,6 @@
         </block>
     </view>
 </template>
-
 <script>
     const app = getApp();
      var common_static_url = app.globalData.get_static_url('common');
@@ -33,6 +32,22 @@
             propIsNav: {
             	type: Boolean,
             	default: false
+            },
+            propCard: {
+            	type: Boolean,
+            	default: false
+            },
+            propTitle: {
+            	type: String,
+            	default: ''
+            },
+            propImg: {
+            	type: String,
+            	default: ''
+            },
+            propPath: {
+            	type: String,
+            	default: ''
             }
         },
 
