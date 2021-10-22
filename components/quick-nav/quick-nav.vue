@@ -33,7 +33,6 @@
         </component-popup>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import componentPopup from "../popup/popup";

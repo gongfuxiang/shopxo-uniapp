@@ -5,7 +5,6 @@
         </view>
     </view>
 </template>
-
 <script>
     export default {
         data() {
@@ -24,7 +23,6 @@
         position: relative;
         vertical-align: middle;
     }
-
     .am-badge-text {
         display: inline-block;
         position: absolute;
@@ -42,7 +40,6 @@
         font-size: 10px;
         padding: 1px 1px;
     }
-
     .am-badge-text-max {
         padding: 1px 2px;
     }

@@ -10,7 +10,6 @@
         </view>
     </view>
 </template>
-
 <script>
     const app = getApp();
 
