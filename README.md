@@ -1,25 +1,36 @@
 # ShopXO开源商城uniapp端
 
 #### 介绍
-ShopXO免费开源商城uniapp端主题源码、支持各大平台小程序
+* 后端支持依托于ShopXO免费开源电商系统开发的uniapp端主题源码、内置8中搭配主色(可自行扩展更多配色)、自由快捷切换适应各大行业需求
+* 目前仅支持微信小程序端、其他端正在紧急适配中、后续全面支持（微信、QQ、百度、支付宝、头条、H5、APP）
 
 
-#### 安装教程
-
-
+#### 使用教程
+`面向人群：该操作需要有一定的编程技术基础、如需要技术支持可以直接到官网联系客服(付费)` https://shopxo.net/
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
-2. 将该源码导入HBuilderX开发工具
+2. 将该源码导入HBuilderX开发工具、顶部工具栏 `运行->运行到小程序模拟器->(根据支持平台自行选择、如 微信开发者工具)`
 3. App.vue中修改 request_url 接口地址为自己的商城地址即可使用
+4. 主题默认为黄色(yellow)，如更改主题 App.vue文件中 default_theme + 底部css引入，pages.json文件中 tabBar选中图标+selectedColor选中颜色
+5. 发布、HBuilderX开发工具、顶部工具栏 `发行->(根据支持平台自行选择、如 微信开发者工具)`
 
-#### 源代码平台
-https://gitee.com/zongzhige/shopxo-uniapp
+#### 当前项目源代码平台
+* Gitee：https://gitee.com/zongzhige/shopxo-uniapp
+* GitHub：https://github.com/gongfuxiang/shopxo-uniapp
+* Coding：https://zongzhige.coding.net/public/shopxo/uniapp/git
+* CodeChina：https://codechina.csdn.net/zongzhige/shopxo-uniapp
 
-#### 后端支持源代码平台
-https://gitee.com/zongzhige/shopxo
+#### ShopXO后端源代码平台
+* Gitee：https://gitee.com/zongzhige/shopxo
+* GitHub：https://github.com/gongfuxiang/shopxo
+* Coding：https://zongzhige.coding.net/public/shopxo/shopxo/git
+* CodeChina：https://codechina.csdn.net/zongzhige/shopxo
 
-#### 图片展示
-| ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141656_d4ac101e_488475.jpeg "首页.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141756_abe0697d_488475.jpeg "分类.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141807_7604a0e1_488475.jpeg "购物车.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141819_bffb8d59_488475.jpeg "用户中心.jpg") |
-|----|----|----|----|
-| ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141847_92644847_488475.jpeg "商品搜索.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/142546_f02b3fde_488475.jpeg "商品详情.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141926_0b63d642_488475.jpeg "收货地址.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141941_01f96cf7_488475.jpeg "订单确认.jpg") |
-| ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/141959_638969e5_488475.jpeg "订单管理.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/145759_996cfc5b_488475.jpeg "订单详情.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/142504_816e4217_488475.jpeg "分类（一级）.jpg") | ![输入图片说明](https://images.gitee.com/uploads/images/2021/1012/142519_2fa7db1a_488475.jpeg "积分明细.jpg") |
+#### API接口文档
+* https://doc.shopxo.net/article/2.html
 
+#### 支持多种配色
+![多种配色](https://images.gitee.com/uploads/images/2021/1023/120323_b21ab261_488475.jpeg "配色.jpg")
+
+#### 效果图片
+![主要部分](https://images.gitee.com/uploads/images/2021/1023/120416_6b1ee3da_488475.jpeg "主要部分.jpg")
+![扩展部分](https://images.gitee.com/uploads/images/2021/1023/120432_e23e02dd_488475.jpeg "扩展部分.jpg")
