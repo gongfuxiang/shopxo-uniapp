@@ -40,16 +40,12 @@ page {
 }
 
 /**
-授权登录
-*/
-.user-login {
-    padding-top: 30%;
+ * 授权登录
+ */
+.login-base {
+    padding-top: 10%;
 }
-
-/**
-* 登录确认
-*/
-.confirm-container .login-logo {
+.login-logo {
     width: 200rpx;
     height: 200rpx !important;
 }

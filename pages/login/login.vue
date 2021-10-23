@@ -12,9 +12,9 @@
             </form>
 
             <!-- 确认绑定方式 -->
-            <view v-if="login_type_status == 0" class="tc confirm-container">
-                <image class="login-logo circle auto" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                <view v-if="(user.nickname || null) != null" class="cr-base margin-top-sm">{{user.nickname}}</view>
+            <view v-if="login_type_status == 0" class="login-base tc">
+                <image class="login-logo circle auto br margin-bottom-xxl" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                 <view class="margin-top-xxxl padding-top-xxxl">
                     <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" @tap="confirm_verify_event">验证码登录</button>
                     <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
@@ -23,7 +23,8 @@
         </view>
 
         <!-- 获取用户信息授权 -->
-        <view v-else class="user-login tc">
+        <view v-else class="login-base tc">
+            <image v-if="(home_site_logo_square || null) != null" class="login-logo circle auto br margin-bottom-xxl" :src="home_site_logo_square" mode="widthFix"></image>
             <view class="cr-base">确认登录授权，为您提供更优质的服务</view>
             <view class="margin-top-sm padding-bottom-xxl cr-gray">
                 阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
@@ -55,7 +56,8 @@
                 // 基础配置
                 // 0 确认绑定方式, 1 验证码绑定
                 login_type_status: 0,
-                common_user_is_onekey_bind_mobile: 0
+                common_user_is_onekey_bind_mobile: 0,
+                home_site_logo_square: null
             };
         },
 
@@ -85,8 +87,10 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        common_user_is_onekey_bind_mobile: app.globalData.get_config('config.common_user_is_onekey_bind_mobile')
+                        common_user_is_onekey_bind_mobile: app.globalData.get_config('config.common_user_is_onekey_bind_mobile'),
+                        home_site_logo_square: app.globalData.get_config('config.home_site_logo_square')
                     });
+                    console.log(this.home_site_logo_square)
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
