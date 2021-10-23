@@ -523,23 +523,7 @@
                 // 更多导航
                 nav_more_status: false,
                 nav_more_timer: null,
-                nav_more_list: [
-                    {
-                        name: "我的收藏",
-                        url: "/pages/user-favor/user-favor",
-                        icon: "heart"
-                    },
-                    {
-                        name: "我浏览过",
-                        url: "/pages/user-goods-browse/user-goods-browse",
-                        icon: "eye"
-                    },
-                    {
-                        name: "回到首页",
-                        url: "/pages/index/index",
-                        icon: "home"
-                    }
-                ],
+                nav_more_list: [],
                 // 导航首页按钮
                 nav_home_button_info: {
                     "text": "首页",
@@ -735,7 +719,6 @@
                         data_list_loding_msg: '商品ID有误'
                     });
                 } else {
-                    var self = this;
                     uni.showLoading({
                         title: '加载中...'
                     });
@@ -754,13 +737,14 @@
                             uni.hideLoading();
                             if (res.data.code == 0) {
                                 var data = res.data.data;
-                                self.setData({
+                                this.setData({
                                     data_bottom_line_status: true,
                                     data_list_loding_status: 3,
                                     goods: data.goods,
                                     indicator_dots: data.goods.photo.length > 1,
                                     autoplay: data.goods.photo.length > 1,
                                     goods_photo: data.goods.photo,
+                                    nav_more_list: data.nav_more_list || [],
                                     goods_specifications_choose: data.goods.specifications.choose || [],
                                     goods_content_app: data.goods.content_app || [],
                                     buy_number: data.goods.buy_min_number || 1,
@@ -822,7 +806,7 @@
                                 // 购买记录提示
                                 this.plugins_salerecords_tips_handle();
                             } else {
-                                self.setData({
+                                this.setData({
                                     data_bottom_line_status: false,
                                     data_list_loding_status: 0,
                                     data_list_loding_msg: res.data.msg
@@ -832,7 +816,7 @@
                         fail: () => {
                             uni.stopPullDownRefresh();
                             uni.hideLoading();
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: '服务器请求出错'
