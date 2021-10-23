@@ -30,11 +30,11 @@
 * https://doc.shopxo.net/article/2.html
 
 #### 支持多种配色
-![多种配色](https://images.gitee.com/uploads/images/2021/1023/120323_b21ab261_488475.jpeg "配色.jpg")
+![多种配色](https://doc.shopxo.net/upload/image/20211023/1634962774958024.jpg "配色.jpg")
 
 #### 效果图片
-![主要部分](https://images.gitee.com/uploads/images/2021/1023/120416_6b1ee3da_488475.jpeg "主要部分.jpg")
-![扩展部分](https://images.gitee.com/uploads/images/2021/1023/120432_e23e02dd_488475.jpeg "扩展部分.jpg")
+![主要部分](https://doc.shopxo.net/upload/image/20211023/1634962851731604.jpg "主要部分.jpg")
+![扩展部分](https://doc.shopxo.net/upload/image/20211023/1634962862173709.jpg "扩展部分.jpg")
 
 ### 如何参与项目
 非常欢迎您对ShopXO的开发作出贡献！你可以选择以下方式向ShopXO贡献：
