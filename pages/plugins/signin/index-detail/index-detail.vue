@@ -309,7 +309,7 @@
                                     // 需要填写联系人信息
                                     case 1:
                                         uni.navigateTo({
-                                            url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?is_team=1'
+                                            url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id='+res.data.data.qrcode_id+'&is_team=1'
                                         });
                                         break;
                                 }
