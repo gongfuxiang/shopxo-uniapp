@@ -34,3 +34,10 @@
 #### 效果图片
 ![主要部分](https://images.gitee.com/uploads/images/2021/1023/120416_6b1ee3da_488475.jpeg "主要部分.jpg")
 ![扩展部分](https://images.gitee.com/uploads/images/2021/1023/120432_e23e02dd_488475.jpeg "扩展部分.jpg")
+
+### 如何参与项目
+非常欢迎您对ShopXO的开发作出贡献！你可以选择以下方式向ShopXO贡献：
+- [Github - 发布issue进行问题反馈和建议](https://github.com/gongfuxiang/shopxo-uniapp/pulls)
+- [Gitee - 发布issue进行问题反馈和建议](https://gitee.com/zongzhige/shopxo-uniapp/pulls)
+- [CodeChina - 发布issue进行问题反馈和建议](https://codechina.csdn.net/zongzhige/shopxo-uniapp/merge_requests)
+> 通过Pull Request提交修复、完善我们的文档和例子
