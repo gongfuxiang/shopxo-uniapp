@@ -10,7 +10,7 @@
 `面向人群：该操作需要有一定的编程技术基础、如需要技术支持可以直接到官网联系客服(付费)` https://shopxo.net/
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
 2. 将该源码导入HBuilderX开发工具、顶部工具栏 `运行->运行到小程序模拟器->(根据支持平台自行选择、如 微信开发者工具)`
-3. App.vue中修改 request_url 接口地址为自己的商城地址即可使用
+3. App.vue中修改 request_url 和 static_url 地址为自己的商城地址即可使用
 4. 主题默认为黄色(yellow)，如更改主题 App.vue文件中 default_theme + 底部css引入，pages.json文件中 tabBar选中图标+selectedColor选中颜色
 5. 发布、HBuilderX开发工具、顶部工具栏 `发行->(根据支持平台自行选择、如 微信开发者工具)`
 
