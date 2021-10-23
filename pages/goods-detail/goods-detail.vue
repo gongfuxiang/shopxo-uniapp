@@ -178,7 +178,7 @@
                 </view>
 
                 <!-- 商品评价 -->
-                <view class="goods-comment spacing-mb">
+                <view  v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">商品评价</text>
@@ -560,6 +560,7 @@
                 common_app_is_online_service: 0,
                 common_app_is_use_mobile_detail: 0,
                 common_is_goods_detail_show_photo: 0,
+                common_is_show_goods_comments: 1,
                 common_app_customer_service_tel: null,
                 // 滚动监听值
                 scroll_value: 0,
@@ -712,10 +713,11 @@
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
+                        common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_is_good_thing: app.globalData.get_config('config.common_app_is_good_thing'),
                         common_app_is_poster_share: app.globalData.get_config('config.common_app_is_poster_share'),
-                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel')
+                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
