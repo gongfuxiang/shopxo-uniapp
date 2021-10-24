@@ -35,12 +35,11 @@
                 ],
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
-                //request_url: 'http://shopxo.com/',
                 // 静态资源地址
-                static_url: 'https://dev.shopxo.vip/',
+                static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
                 application_title: "ShopXO",
-                application_describe: "ShopXO开源商城",
+                application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
                 application_type: "weixin",
                 // 版本号
                 version: "v2.2.1",

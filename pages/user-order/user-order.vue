@@ -367,8 +367,9 @@
                                             success: function(res) {
                                                 // 数据设置
                                                 self.order_item_pay_success_handle(
-                                                order_ids); // 跳转支付页面
-
+                                                order_ids);
+                                                
+                                                // 跳转支付页面
                                                 uni.navigateTo({
                                                     url: "/pages/paytips/paytips?code=9000"
                                                 });
@@ -424,6 +425,8 @@
                 // 数据设置
                 for (var i in temp_data_list) {
                     if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
+                        temp_data_list[i]['operate_data']['is_pay'] = 0;
+                        temp_data_list[i]['operate_data']['is_cancel'] = 0;
                         switch (parseInt(temp_data_list[i]['order_model'])) {
                             // 销售模式
                             case 0:
@@ -479,6 +482,8 @@
                                         temp_data_list[index]['status'] = 5;
                                         temp_data_list[index]['status_name'] = '已取消';
                                         temp_data_list[index]['operate_data']['is_cancel'] = 0;
+                                        temp_data_list[index]['operate_data']['is_delete'] = 1;
+                                        temp_data_list[index]['is_can_launch_aftersale'] = 0;
                                         this.setData({
                                             data_list: temp_data_list
                                         });
@@ -577,8 +582,11 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list.splice(index, 1);
+                                        var len = temp_data_list.length;
                                         this.setData({
-                                            data_list: temp_data_list
+                                            data_list: temp_data_list,
+                                            data_list_loding_status: (len == 0) ? 0 : 3,
+                                            data_bottom_line_status: (len == 0) ? false : this.data_bottom_line_status,
                                         });
                                         app.globalData.showToast(res.data.msg, "success");
                                     } else {

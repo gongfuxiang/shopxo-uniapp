@@ -629,7 +629,7 @@
 	],
     "subPackages": [],
 	"globalStyle": {
-		"navigationBarTitleText": "ShopXO开源商城",
+		"navigationBarTitleText": "ShopXO",
         "navigationBarTextStyle": "black",
 		"navigationBarBackgroundColor": "#fff",
 		"backgroundColor": "#f5f5f5",
