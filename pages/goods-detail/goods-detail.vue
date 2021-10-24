@@ -1158,8 +1158,7 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
-                            // 兼容老版本无spec_type二级参数的情况
-                            var spec_type = (res.data.data.spec_type || null) == null ? res.data.data : res.data.data.spec_type;
+                            var spec_type = res.data.data.spec_type;
                             var spec_count = spec.length;
                             var index = spec_count > 0 ? spec_count : 0;
                             if (index < sku_count) {
@@ -1257,8 +1256,7 @@
             
             // 商品规格详情返回数据处理
             goods_spec_detail_back_handle(data) {
-                // 兼容老版本无spec_base二级参数的情况
-                var spec_base = (data.spec_base || null) == null ? data : data.spec_base;
+                var spec_base = data.spec_base;
                 var data = {
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price,
