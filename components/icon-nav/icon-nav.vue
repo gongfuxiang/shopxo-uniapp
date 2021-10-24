@@ -34,9 +34,9 @@
         margin-bottom: 20rpx;
     }
     .data-list .items {
-        width: calc(20% - 40rpx);
+        width: calc(20% - 20rpx);
         float: left;
-        padding: 20rpx 20rpx 0 20rpx;
+        padding: 20rpx 10rpx 0 10rpx;
     }
     .items-content {
         border-radius: 50%;
@@ -54,7 +54,7 @@
     }
     .data-list .items .title {
         margin-top: 6rpx;
-        font-size: 30rpx;
+        font-size: 28rpx;
         text-align: center;
         -o-text-overflow: ellipsis;
         text-overflow: ellipsis;
