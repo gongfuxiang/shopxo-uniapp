@@ -25,7 +25,7 @@
                         <view class="base-nav fr">
                             <text class="va-m">{{item.user.user_name_view}}</text>
                             <view class="dis-inline-block va-m margin-left-sm">
-                                <uni-rate :value="item.rating" :is-fill="false" :size="14" />
+                                <uni-rate :value="item.rating" :readonly="true" :is-fill="false" :size="14" />
                             </view>
                             <view class="fr">
                                 <text class="cr-grey">{{item.add_time_date}}</text>
