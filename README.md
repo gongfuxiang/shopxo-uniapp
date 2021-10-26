@@ -7,7 +7,8 @@
 
 
 #### 使用教程
-`面向人群：该操作需要有一定的编程技术基础、如需要技术支持可以直接到官网联系客服(付费)` https://shopxo.net/
+- 面向人群：该操作需要有一定的编程技术基础、如需要技术支持可以直接到官网联系客服(付费) https://shopxo.net/
+- 打包教程 https://doc.shopxo.net/article/1/293727233598554112.html
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
 2. 将该源码导入HBuilderX开发工具、顶部工具栏 `运行->运行到小程序模拟器->(根据支持平台自行选择、如 微信开发者工具)`
 3. App.vue中修改 request_url 和 static_url 地址为自己的商城地址即可使用
