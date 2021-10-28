@@ -207,6 +207,13 @@
 				"navigationBarTitleText": "页面设计"
 			}
 		},
+        {
+        	"path": "pages/plugins/seckill/index/index",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "限时秒杀"
+        	}
+        },
 		{
 			"path": "pages/plugins/coupon/index/index",
 			"style": {

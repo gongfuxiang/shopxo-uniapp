@@ -32,29 +32,32 @@
             <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
             <!-- 限时秒杀 -->
-            <view v-if="plugins_limitedtimediscount_is_valid == 1 && plugins_limitedtimediscount_data.goods.length > 0" class="limitedtimediscount spacing-mb">
+            <view v-if="plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
                 <view class="spacing-nav-title">
                     <text class="text-wrapper va-m">限时秒杀</text>
                     <view class="dis-inline-block va-m margin-left-sm">
-                        <component-countdown :prop-hour="plugins_limitedtimediscount_data.time.hours" :prop-minute="plugins_limitedtimediscount_data.time.minutes" :prop-second="plugins_limitedtimediscount_data.time.seconds"></component-countdown>
+                        <component-countdown :prop-hour="plugins_seckill_data.time.hours" :prop-minute="plugins_seckill_data.time.minutes" :prop-second="plugins_seckill_data.time.seconds"></component-countdown>
                     </view>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                    <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
                 <view class="goods-list scroll-view-horizontal border-radius-main oh">
-                    <scroll-view scroll-x>
-                        <view v-for="(item, index) in plugins_limitedtimediscount_data.goods" :key="index"
-                            class="item bg-white border-radius-main oh">
-                            <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                                <image class="dis-block" :src="item.images" mode="aspectFit"></image>
-                                <view class="goods-base padding-left padding-right">
-                                    <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                    <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
-                                    <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
-                                    <uni-icons type="cart" size="16" color="#E02020" class="icon"></uni-icons>
+                    <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="true" display-multiple-items="3" interval="3000">
+                        <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
+                            <swiper-item class="padding-right-main">
+                                <view class="item bg-white border-radius-main oh pr ht-auto">
+                                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
+                                        <image class="dis-block" :src="item.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-left padding-right">
+                                            <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
+                                            <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
+                                            <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
+                                            <uni-icons type="cart" size="16" color="#E02020" class="icon pa"></uni-icons>
+                                        </view>
+                                    </navigator>
                                 </view>
-                            </navigator>
-                        </view>
-                    </scroll-view>
+                            </swiper-item>
+                        </block>
+                    </swiper>
                 </view>
             </view>
 
@@ -110,7 +113,7 @@
                     <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
                 </view>
                 <view class="bg-white border-radius-main oh">
-                    <swiper vertical="true" autoplay="true" circular="true" display-multiple-items="6" interval="3000">
+                    <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="6" interval="3000">
                         <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
                             <swiper-item>
                                 <view class="item oh padding-lg">
@@ -193,8 +196,8 @@
                 common_app_is_header_nav_fixed: 0,
                 common_app_is_online_service: 0,
                 // 限时秒杀插件
-                plugins_limitedtimediscount_is_valid: 0,
-                plugins_limitedtimediscount_data: null,
+                plugins_seckill_is_valid: 0,
+                plugins_seckill_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 // 顶部+搜索样式配置
@@ -275,11 +278,9 @@
 
             // 获取数据
             init() {
-                var self = this;
                 this.setData({
                     data_list_loding_status: 1
                 });
-
                 uni.request({
                     url: app.globalData.get_request_url("index", "index"),
                     method: "POST",
@@ -287,27 +288,26 @@
                     dataType: "json",
                     success: res => {
                         uni.stopPullDownRefresh();
-
                         // 获取最新缓存
                         if (this.load_status == 0) {
-                            self.init_config(true);
+                            this.init_config(true);
                         }
 
                         // 设置首次加载状态
-                        self.setData({
+                        this.setData({
                             load_status: 1
                         });
 
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
                                 navigation: data.navigation || [],
                                 data_list: data.data_list,
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
-                                plugins_limitedtimediscount_data: data.plugins_limitedtimediscount_data || null,
-                                plugins_limitedtimediscount_is_valid: (data.plugins_limitedtimediscount_data || null) != null && (data.plugins_limitedtimediscount_data.is_valid || 0) == 1 ? 1 : 0,
+                                plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data
                             });
 
@@ -319,7 +319,7 @@
                                 app.globalData.set_tab_bar_badge(2, 1, cart_total);
                             }
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
@@ -328,7 +328,7 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: true,
                             load_status: 1

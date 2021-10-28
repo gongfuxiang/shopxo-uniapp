@@ -114,7 +114,7 @@
         onShareAppMessage() {
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
             return {
-                title: this.data_base.seo_title || '积分商城 - ' + app.globalData.data.application_title,
+                title: this.data_base.seo_title || this.data_base.application_name || '积分商城 - ' + app.globalData.data.application_title,
                 desc: this.data_base.seo_desc || '积分抵扣、兑换 - ' + app.globalData.data.application_describe,
                 path: '/pages/plugins/points/index/index?referrer=' + user_id
             };
@@ -124,7 +124,7 @@
         onShareTimeline() {
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
             return {
-                title: this.data_base.seo_title || '积分商城 - ' + app.globalData.data.application_title,
+                title: this.data_base.seo_title || this.data_base.application_name || '积分商城 - ' + app.globalData.data.application_title,
                 query: 'referrer=' + user_id,
                 imageUrl: this.data_base.right_images || ''
             };

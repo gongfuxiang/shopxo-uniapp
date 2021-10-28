@@ -54,9 +54,9 @@
             </block>
             
             <!-- 价格信息 -->
-            <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_limitedtimediscount_is_valid == 1) ? 'goods-base-price-countdown' : '')">
+            <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_seckill_is_valid == 1) ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg" :style="(plugins_limitedtimediscount_is_valid == 1) ? 'background-image: url('+plugins_limitedtimediscount_data.bg_img+')' : ''">
+                <view class="price-content padding-lg" :style="(plugins_seckill_is_valid == 1) ? 'background-image: url('+plugins_seckill_data.bg_img+')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon radius va-m">{{show_field_price_text}}</text>
                         <text class="sales-price va-m">{{currency_symbol}}{{goods.min_price}}</text>
@@ -64,9 +64,9 @@
                     <view v-if="(goods.min_original_price || null) != null && goods.min_original_price > 0" class="original-price margin-top-sm single-text">{{currency_symbol}}{{goods.min_original_price}}</view>
                 </view>
                 <!-- 秒杀 -->
-                <view v-if="plugins_limitedtimediscount_is_valid == 1" class="countdown-content padding-lg fr tc">
-                    <view class="time-title cr-white single-text">{{plugins_limitedtimediscount_data.title || '限时秒杀'}}</view>
-                    <component-countdown :prop-hour="plugins_limitedtimediscount_data.time.hours" :prop-minute="plugins_limitedtimediscount_data.time.minutes" :prop-second="plugins_limitedtimediscount_data.time.seconds" :prop-msec-show="true" prop-time-size="32" prop-time-padding="0" prop-time-weight="bold" prop-time-background-color="transparent" prop-time-color="#ffe500" prop-ds-color="#fff"></component-countdown>
+                <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-lg fr tc">
+                    <view class="time-title cr-white single-text">{{plugins_seckill_data.title || '限时秒杀'}}</view>
+                    <component-countdown :prop-hour="plugins_seckill_data.time.hours" :prop-minute="plugins_seckill_data.time.minutes" :prop-second="plugins_seckill_data.time.seconds" :prop-msec-show="true" prop-time-size="32" prop-time-padding="0" prop-time-weight="bold" prop-time-background-color="transparent" prop-time-color="#ffe500" prop-ds-color="#fff"></component-countdown>
                 </view>
             </view>
 
@@ -565,8 +565,8 @@
                     "brand_info": {}
                 },
                 // 限时秒杀插件
-                plugins_limitedtimediscount_is_valid: 0,
-                plugins_limitedtimediscount_data: null,
+                plugins_seckill_is_valid: 0,
+                plugins_seckill_data: null,
                 // 优惠劵
                 plugins_coupon_data: null,
                 temp_coupon_receive_index: null,
@@ -759,8 +759,8 @@
                                     goods_spec_base_inventory: data.goods.inventory,
                                     goods_spec_base_images: data.goods.images,
                                     show_field_price_text: data.goods.show_field_price_text == '价格' ? null : data.goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
-                                    plugins_limitedtimediscount_data: data.plugins_limitedtimediscount_data || null,
-                                    plugins_limitedtimediscount_is_valid: (data.plugins_limitedtimediscount_data || null) != null && (data.plugins_limitedtimediscount_data.is_valid || 0) == 1 ? 1 : 0,
+                                    plugins_seckill_data: data.plugins_seckill_data || null,
+                                    plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     quick_nav_cart_count: data.common_cart_total || 0,
                                     plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
