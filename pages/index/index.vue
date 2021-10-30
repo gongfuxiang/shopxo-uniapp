@@ -31,7 +31,7 @@
             <!-- 商城公告 -->
             <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
-            <!-- 限时秒杀 -->
+            <!-- 限时秒杀 - 插件 -->
             <view v-if="plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
                 <view class="spacing-nav-title">
                     <text class="text-wrapper va-m">限时秒杀</text>
@@ -61,6 +61,39 @@
                 </view>
             </view>
 
+            <!-- 活动信息-楼层顶部 - 插件 -->
+            <view v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0" class="activity">
+                <block v-for="(floor, index) in plugins_activity_data" :key="index">
+                    <view v-if="floor.goods_list.length > 0 && (floor.home_data_location || 0) == 0" class="floor">
+                        <view class="spacing-nav-title">
+                            <text class="text-wrapper" :style="'color:'+(floor.color || '#333')+';'">{{floor.title}}</text>
+                            <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.vice_title}}</text>
+                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                        </view>
+                        <view class="floor-list wh-auto oh">
+                            <view v-if="floor.keywords_arr.length > 0" class="word scroll-view-horizontal">
+                                <scroll-view scroll-x>
+                                    <block v-for="(kv, ki) in floor.keywords_arr" :key="ki">
+                                        <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
+                                    </block>
+                                </scroll-view>
+                            </view>
+                            <view class="goods-list margin-top-lg">
+                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh">
+                                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
+                                        <image :src="goods.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-left-lg padding-right-lg">
+                                            <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
+                                            <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
+                                        </view>
+                                    </navigator>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            
             <!-- 楼层数据 -->
             <block v-if="(data_list || nul) != null && data_list.length > 0">
                 <!-- 数据模式0,1自动+手动、2拖拽 -->
@@ -70,19 +103,17 @@
                 </block>
                 <block v-else>
                     <!-- 自动+手动 -->
-                    <view v-for="(floor, index) in data_list" :key="index" class="floor spacing-mb">
+                    <view v-for="(floor, index) in data_list" :key="index" class="floor">
                         <view class="spacing-nav-title">
-                            <text class="text-wrapper">{{floor.name}}</text>
-                            <text v-if="floor.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
+                            <text class="text-wrapper" :style="'color:'+(floor.bg_color || '#333')+';'">{{floor.name}}</text>
+                            <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
                             <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                         </view>
                         <view class="floor-list wh-auto oh">
-                            <view class="word scroll-view-horizontal">
+                            <view v-if="floor.items.length > 0" class="word scroll-view-horizontal">
                                 <scroll-view scroll-x>
-                                    <block v-if="floor.items.length > 0">
-                                        <block v-for="(icv, icx) in floor.items" :key="icx">
-                                            <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
-                                        </block>
+                                    <block v-for="(icv, icx) in floor.items" :key="icx">
+                                        <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
                                     </block>
                                 </scroll-view>
                             </view>
@@ -101,12 +132,41 @@
                     </view>
                 </block>
             </block>
-            <block v-else>
-                <!-- 提示信息 -->
-                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
-            </block>
             
-            <!--- 底部购买记录 -->
+            <!-- 活动信息-楼层底部 - 插件 -->
+            <view v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0" class="activity">
+                <block v-for="(floor, index) in plugins_activity_data" :key="index">
+                    <view v-if="floor.goods_list.length > 0 && (floor.home_data_location || 0) == 1" class="floor">
+                        <view class="spacing-nav-title">
+                            <text class="text-wrapper" :style="'color:'+(floor.color || '#333')+';'">{{floor.title}}</text>
+                            <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.vice_title}}</text>
+                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                        </view>
+                        <view class="floor-list wh-auto oh">
+                            <view v-if="floor.keywords_arr.length > 0" class="word scroll-view-horizontal">
+                                <scroll-view scroll-x>
+                                    <block v-for="(kv, ki) in floor.keywords_arr" :key="ki">
+                                        <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
+                                    </block>
+                                </scroll-view>
+                            </view>
+                            <view class="goods-list margin-top-lg">
+                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh">
+                                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
+                                        <image :src="goods.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-left-lg padding-right-lg">
+                                            <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
+                                            <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
+                                        </view>
+                                    </navigator>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+            </view>
+            
+            <!--- 底部购买记录 - 插件 -->
             <view v-if="(plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
                 <view class="spacing-nav-title">
                     <text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
@@ -142,14 +202,17 @@
                     <image mode="widthFix" :src="static_url+'answer-form.jpg'" class="wh-auto border-radius-main"></image>
                 </navigator>
             </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
-
-            <!-- 版权信息 -->
-            <view v-if="load_status == 1">
-                <component-copyright></component-copyright>
-            </view>
+        </view>
+        
+        <!-- 提示信息 -->
+        <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        
+        <!-- 结尾 -->
+        <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+        
+        <!-- 版权信息 -->
+        <view v-if="load_status == 1">
+            <component-copyright></component-copyright>
         </view>
         
         <!-- 在线客服 -->
@@ -195,17 +258,19 @@
                 common_app_is_enable_answer: 0,
                 common_app_is_header_nav_fixed: 0,
                 common_app_is_online_service: 0,
+                // 名称
+                application_title: app.globalData.data.application_title,
+                // 顶部+搜索样式配置
+                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+5)+'px;',
+                search_style: '',
+                search_is_fixed: 0,
                 // 限时秒杀插件
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
-                // 顶部+搜索样式配置
-                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+5)+'px;',
-                search_style: '',
-                search_is_fixed: 0,
-                // 名称
-                application_title: app.globalData.data.application_title,
+                // 活动插件
+                plugins_activity_data: null
             };
         },
 
@@ -308,7 +373,8 @@
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
-                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data
+                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
+                                plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data
                             });
 
                             // 导航购物车处理
@@ -321,6 +387,7 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
                                 data_bottom_line_status: true
                             });
                             app.globalData.showToast(res.data.msg);
@@ -330,6 +397,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: '服务器请求出错',
                             data_bottom_line_status: true,
                             load_status: 1
                         });

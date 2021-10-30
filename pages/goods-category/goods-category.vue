@@ -13,7 +13,7 @@
                     <block v-for="(v, index) in data_list" :key="index">
                         <view class="content-item padding-sm tc" :data-value="v.id" @tap="category_event">
                             <view class="content bg-white wh-auto border-radius-main">
-                                <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon"></image>
+                                <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon radius"></image>
                                 <view class="text single-text">{{v.name}}</view>
                             </view>
                         </view>
@@ -45,8 +45,7 @@
                                     <block v-for="(v, index) in data_content.items" :key="index">
                                         <view class="content-item padding-sm tc" :data-value="v.id" @tap="category_event">
                                             <view class="content wh-auto">
-                                                <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit"
-                                                    class="icon"></image>
+                                                <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon radius"></image>
                                                 <view class="text single-text">{{v.name}}</view>
                                             </view>
                                         </view>
@@ -61,12 +60,11 @@
                                         <text v-if="floor.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
                                         <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right-xxxl cr-gray fr">更多</view>
                                     </view>
-                                    <!-- <view class="tc two-name" :data-value="v.id" @tap="category_event">{{v.name}}</view> -->
                                     <view v-if="v.items.length > 0" class="bg-white oh padding-main border-radius-main spacing-mb">
                                         <block v-for="(vs, index2) in v.items" :key="index2">
                                             <view class="content-item padding-sm tc" :data-value="vs.id" @tap="category_event">
                                                 <view class="content wh-auto">
-                                                    <image v-if="(vs.icon || null) != null" :src="vs.icon" mode="aspectFit" class="icon"></image>
+                                                    <image v-if="(vs.icon || null) != null" :src="vs.icon" mode="aspectFit" class="icon radius"></image>
                                                     <view class="text single-text">{{vs.name}}</view>
                                                 </view>
                                             </view>

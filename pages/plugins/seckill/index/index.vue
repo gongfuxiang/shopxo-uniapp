@@ -39,6 +39,10 @@
                         </view>
                     </view>
                 </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data prop-status="0" prop-msg="没有相关商品"></component-no-data>
+                </view>
             </view>
 
             <!-- 结尾 -->
@@ -135,7 +139,7 @@
                                 is_valid: data.is_valid || 0,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
-                                data_bottom_line_status: true
+                                data_bottom_line_status: ((data.goods || null) != null && data.goods.length > 0)
                             });
                         } else {
                             this.setData({

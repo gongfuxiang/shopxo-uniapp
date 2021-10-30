@@ -632,7 +632,21 @@
 				"enablePullDownRefresh": true,
 				"navigationBarTitleText": "店铺收藏"
 			}
-		}
+		},
+        {
+        	"path": "pages/plugins/activity/index/index",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "所有活动"
+        	}
+        },
+        {
+        	"path": "pages/plugins/activity/detail/detail",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "活动详情"
+        	}
+        }
 	],
     "subPackages": [],
 	"globalStyle": {

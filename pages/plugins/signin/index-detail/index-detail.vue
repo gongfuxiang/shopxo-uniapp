@@ -166,7 +166,6 @@
         methods: {
             // 获取数据
             get_data() {
-                var self = this;
                 uni.request({
                     url: app.globalData.get_request_url("detail", "index", "signin"),
                     method: "POST",
@@ -178,7 +177,7 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            self.setData({
+                            this.setData({
                                 data_base: data.base || null,
                                 data: data.data || null,
                                 team_signin_data: data.team_signin_data || null,
@@ -189,7 +188,7 @@
                                 data_bottom_line_status: true
                             });
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg
@@ -198,7 +197,7 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
@@ -238,7 +237,6 @@
             // 签到
             coming_event(e) {
                 if (this.is_already_coming != 1 && this.init()) {
-                    var self = this;
                     uni.showLoading({
                         title: "处理中..."
                     });
@@ -259,7 +257,7 @@
                                 });
                                 this.get_data();
                             } else {
-                                if (app.globalData.is_login_check(res.data, self, 'team_request')) {
+                                if (app.globalData.is_login_check(res.data, this, 'team_request')) {
                                     app.globalData.showToast(res.data.msg);
                                 }
                             }

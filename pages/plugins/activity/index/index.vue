@@ -1,10 +1,15 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null">
+            <!-- 轮播 -->
+            <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
+                <component-banner :prop-data="slider_list" prop-size="mini"></component-banner>
+            </view>
+
             <!-- 分类 -->
-            <scroll-view v-if="(shop_category || null) != null && shop_category.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
+            <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
                 <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
-                <block v-for="(item, index) in shop_category" :key="index">
+                <block v-for="(item, index) in activity_category" :key="index">
                     <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
                 </block>
             </scroll-view>
@@ -14,15 +19,11 @@
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                     <block v-for="(item, index) in data_list" :key="index">
                         <view class="item border-radius-main bg-white oh spacing-mb">
-                            <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.logo_long" mode="aspectFit"></image>
+                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
+                                <image :src="item.cover" mode="aspectFit"></image>
                                 <view class="padding-main tc">
-                                    <view class="single-text fw-b cr-base">{{item.name}}</view>
+                                    <view class="single-text fw-b cr-base">{{item.title}}</view>
                                     <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
-                                    <view class="oh margin-top-sm br-t-dashed padding-top-main">
-                                        <view class="fl cr-gray single-text">商品 {{item.goods_count}}</view>
-                                        <view class="fr cr-gray single-text">销量 {{item.goods_sales_count}}</view>
-                                    </view>
                                 </view>
                             </navigator>
                         </view>
@@ -41,6 +42,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentBanner from "../../../../components/slider/slider";
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
@@ -56,12 +58,14 @@
                 data_page: 1,
                 params: null,
                 data_base: null,
-                shop_category: [],
+                slider_list: [],
+                activity_category: [],
                 nav_active_value: 0
             };
         },
 
         components: {
+            componentBanner,
             componentNoData,
             componentBottomLine
         },
@@ -95,7 +99,7 @@
             return {
                 title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
                 desc: this.data_base.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/shop/index/index?referrer=' + user_id
+                path: '/pages/plugins/activity/index/index?referrer=' + user_id
             };
         },
 
@@ -115,7 +119,7 @@
                     title: "加载中..."
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("index", "index", "shop"),
+                    url: app.globalData.get_request_url("index", "index", "activity"),
                     method: "POST",
                     data: {},
                     dataType: "json",
@@ -126,7 +130,8 @@
                             var data = res.data.data;
                             this.setData({
                                 data_base: data.base || null,
-                                shop_category: data.shop_category || []
+                                slider_list: data.slider_list || [],
+                                activity_category: data.activity_category || []
                             });
                             
                             // 标题名称
@@ -173,7 +178,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("shoplist", "index", "shop"),
+                    url: app.globalData.get_request_url("datalist", "index", "activity"),
                     method: "POST",
                     data: {
                         page: this.data_page,
@@ -239,7 +244,7 @@
 
             // 滚动加载
             scroll_lower(e) {
-                this.get_data_list(1);
+                this.get_data_list();
             },
 
             // 导航事件
@@ -248,7 +253,7 @@
                     nav_active_value: e.currentTarget.dataset.value || 0,
                     data_page: 1
                 });
-                this.get_data_list(11);
+                this.get_data_list(1);
             }
         }
     };
