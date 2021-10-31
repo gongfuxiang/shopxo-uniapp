@@ -70,14 +70,14 @@
 		{
 			"path": "pages/goods-detail/goods-detail",
 			"style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": "商品详情",
-                "navigationStyle": "custom",
-                // #ifdef MP-WEIXIN  
+                // #ifdef MP-WEIXIN
                 "usingComponents": {
                     "share-button": "plugin://goodsSharePlugin/share-button"
-                }
-                // #endif  
+                },
+                // #endif
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": "商品详情",
+                "navigationStyle": "custom"
             }
 		},
 		{
