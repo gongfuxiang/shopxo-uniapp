@@ -7,7 +7,8 @@
                     <image class="dis-block circle auto" :src="data.cover" mode="widthFix"></image>
                     <view class="cr-white margin-top-lg">{{data.describe}}</view>
                 </view>
-                
+
+                <!-- 关键字 -->
                 <view v-if="data.keywords_arr.length > 0" class="word-content scroll-view-horizontal margin-bottom-sm">
                     <scroll-view scroll-x>
                         <block v-for="(kv, ki) in data.keywords_arr" :key="ki">
