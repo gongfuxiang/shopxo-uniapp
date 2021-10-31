@@ -41,7 +41,7 @@
                     <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
                 <view class="goods-list scroll-view-horizontal border-radius-main oh">
-                    <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="true" display-multiple-items="3" interval="3000">
+                    <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="true" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
                         <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
                             <swiper-item class="padding-right-main">
                                 <view class="item bg-white border-radius-main oh pr ht-auto">
@@ -173,7 +173,7 @@
                     <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
                 </view>
                 <view class="bg-white border-radius-main oh">
-                    <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="6" interval="3000">
+                    <swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6" interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
                         <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
                             <swiper-item>
                                 <view class="item oh padding-lg">
@@ -205,7 +205,9 @@
         </view>
         
         <!-- 提示信息 -->
-        <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        <block v-if="load_status == 0">
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        </block>
         
         <!-- 结尾 -->
         <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
