@@ -55,10 +55,10 @@
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main">
+                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
                             <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
-                                <image :src="item.images" mode="aspectFit"></image>
-                                <view class="margin-top-sm">
+                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                <view class="padding-horizontal-main margin-top-sm">
                                     <view class="multi-text">{{item.title}}</view>
                                     <view class="sales-price single-text margin-top-sm">{{currency_symbol}}{{item.min_price}}</view>
                                 </view>

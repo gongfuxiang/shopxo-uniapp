@@ -37,7 +37,7 @@
 * 商品列表
 */
 .data-list .item {
-    width: calc(50% - 50rpx);
+    width: calc(50% - 10rpx);
 }
 .data-list .item:nth-child(2n) {
     float: right;
@@ -45,7 +45,7 @@
 .data-list .item:nth-child(2n+1) {
     float: left;
 }
-.data-list .item image {
+.data-list .item .goods-img {
     width: 100%;
     height: 380rpx !important;
 }

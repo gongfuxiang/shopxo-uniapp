@@ -16,10 +16,10 @@
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main oh">
+                <view v-for="(item, index) in data_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
-                        <image :src="item.images" mode="aspectFit"></image>
-                        <view class="base margin-top tl">
+                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                        <view class="base padding-horizontal-main margin-top">
                             <view class="multi-text">{{item.title}}</view>
                             <view class="price margin-top">
                                 <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
@@ -195,7 +195,7 @@
             // 获取数据
             init() {
                 // 获取数据
-                this.get_data_list();
+                this.get_data();
             },
 
             // 搜索
@@ -205,6 +205,58 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+            
+            // 初始化
+            get_data() {
+                uni.showLoading({
+                    title: "加载中...",
+                    mask: true
+                });
+                var post_data = this.request_map_handle();
+                uni.request({
+                    url: app.globalData.get_request_url("index", "search", "shop"),
+                    method: "POST",
+                    data: post_data,
+                    dataType: "json",
+                    success: res => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            // 首次分类选中处理
+                            var category = data.shop_goods_category || [];
+                            if((this.params.category_id || 0) != 0 && category.length > 0) {
+                                for(var i in category) {
+                                    category[i]['active'] = (category[i]['id'] == this.params.category_id) ? 1 : 0;
+                                }
+                            }
+                            this.setData({
+                                shop: data.shop || null,
+                                search_map_info: data.search_map_info || [],
+                                search_map_list: {
+                                    category_list: category
+                                }
+                            });
+            
+                            // 获取列表数据
+                            this.get_data_list(1);
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0
+                            });
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2
+                        });
+                        app.globalData.showToast("服务器请求出错");
+                    }
+                });
             },
 
             // 获取数据列表
@@ -224,7 +276,7 @@
                 });
                 var post_data = this.request_map_handle();
                 uni.request({
-                    url: app.globalData.get_request_url("index", "search", "shop"),
+                    url: app.globalData.get_request_url("datalist", "search", "shop"),
                     method: "POST",
                     data: post_data,
                     dataType: "json",

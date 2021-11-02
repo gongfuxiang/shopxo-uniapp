@@ -38,10 +38,10 @@
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data_base.goods_exchange_data" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main">
+                        <view v-for="(item, index) in data_base.goods_exchange_data" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
                             <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods.id" hover-class="none">
-                                <image :src="item.goods.images" mode="aspectFit"></image>
-                                <view class="margin-top-sm">
+                                <image class="goods-img dis-block" :src="item.goods.images" mode="aspectFit"></image>
+                                <view class="padding-horizontal-main margin-top-sm">
                                     <view class="multi-text">{{item.goods.title}}</view>
                                     <view class="single-text original-price margin-top-sm">{{currency_symbol}}{{item.goods.price}}</view>
                                     <view class="single-text">

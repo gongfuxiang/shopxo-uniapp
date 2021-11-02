@@ -25,10 +25,10 @@
                 <!-- 商品 -->
                 <view v-if="goods.length > 0">
                     <view class="data-list oh">
-                        <view v-for="(item, index) in goods" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main">
+                        <view v-for="(item, index) in goods" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
                             <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
-                                <image :src="item.images" mode="aspectFit"></image>
-                                <view class="margin-top-sm">
+                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                <view class="padding-horizontal-main margin-top-sm">
                                     <view class="multi-text">{{item.title}}</view>
                                     <view class="single-text margin-top-sm">
                                         <text v-if="time.status == 0 || time.status == 1" class="text-size-xs bg-red cr-white round padding-left-sm padding-right-sm padding-top-xs padding-bottom-xs">{{data_base.goods_detail_icon || '秒杀价'}}</text>
