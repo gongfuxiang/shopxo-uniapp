@@ -16,16 +16,26 @@
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main oh">
+                <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white padding-bottom-sm margin-bottom-main oh pr">
+                    <!-- 商品主体内容 -->
                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
-                        <image :src="item.images" mode="aspectFit"></image>
-                        <view class="base margin-top tl">
+                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                        <view class="base padding-horizontal-main margin-top-sm">
                             <view class="multi-text">{{item.title}}</view>
                             <view class="price margin-top">
                                 <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
                             </view>
                         </view>
                     </navigator>
+                    <!-- 标签插件 -->
+                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                            <navigator v-if="lv.goods_ids.indexOf(item.id) != -1" :url="lv.url" hover-class="none" class="fl">
+                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
+                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
+                            </navigator>
+                        </block>
+                    </view>
                 </view>
             </view>
             <view v-else>
@@ -185,7 +195,9 @@
                     screening_price_list: {height: "82rpx", default: "82rpx", form_key: "screening_price_values"},
                     goods_params_list: {height: "82rpx", default: "82rpx", form_key: "goods_params_values"},
                     goods_spec_list: {height: "82rpx", default: "82rpx", form_key: "goods_spec_values"}
-                }
+                },
+                // 标签插件
+                plugins_label_data: null
             };
         },
 
@@ -269,7 +281,7 @@
             // 获取数据
             init() {
                 // 获取数据
-                this.get_data_list();
+                this.get_data();
             },
 
             // 搜索
@@ -279,6 +291,55 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+            
+            // 初始化数据
+            get_data() {
+                uni.showLoading({
+                    title: "加载中...",
+                    mask: true
+                });
+                var post_data = this.request_map_handle();
+                uni.request({
+                    url: app.globalData.get_request_url("index", "search"),
+                    method: "POST",
+                    data: post_data,
+                    dataType: "json",
+                    success: res => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                search_map_info: data.search_map_info || [],
+                                search_map_list: {
+                                    brand_list: data.brand_list || [],
+                                    category_list: data.category_list || [],
+                                    screening_price_list: data.screening_price_list || [],
+                                    goods_params_list: data.goods_params_list || [],
+                                    goods_spec_list: data.goods_spec_list || []
+                                },
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
+                            });
+                            
+                            // 获取数据列表
+                            this.get_data_list(1);
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0
+                            });
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2
+                        });
+                        app.globalData.showToast("服务器请求出错");
+                    }
+                });
             },
 
             // 获取数据列表
@@ -298,7 +359,7 @@
                 });
                 var post_data = this.request_map_handle();
                 uni.request({
-                    url: app.globalData.get_request_url("index", "search"),
+                    url: app.globalData.get_request_url("datalist", "search"),
                     method: "POST",
                     data: post_data,
                     dataType: "json",
@@ -306,22 +367,7 @@
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            // 仅首次请求赋值条件数据
-                            if (this.data_list_loding_status == 1) {
-                                this.setData({
-                                    search_map_info: data.search_map_info || [],
-                                    search_map_list: {
-                                        brand_list: data.brand_list || [],
-                                        category_list: data.category_list || [],
-                                        screening_price_list: data.screening_price_list || [],
-                                        goods_params_list: data.goods_params_list || [],
-                                        goods_spec_list: data.goods_spec_list || []
-                                    }
-                                });
-                            }
-                            
-                            // 列表数据处理
+                            var data = res.data.data;                            
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;

@@ -45,15 +45,25 @@
                         <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
                             <swiper-item class="padding-right-main">
                                 <view class="item bg-white border-radius-main oh pr ht-auto">
+                                    <!-- 商品主体内容 -->
                                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                                        <image class="dis-block" :src="item.images" mode="aspectFit"></image>
-                                        <view class="goods-base padding-left padding-right">
+                                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-left padding-right margin-top-sm">
                                             <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
                                             <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
                                             <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
                                             <uni-icons type="cart" size="16" color="#E02020" class="icon pa"></uni-icons>
                                         </view>
                                     </navigator>
+                                    <!-- 标签插件 -->
+                                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                            <navigator v-if="lv.goods_ids.indexOf(item.goods_id) != -1" :url="lv.url" hover-class="none" class="fl">
+                                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
+                                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
+                                            </navigator>
+                                        </block>
+                                    </view>
                                 </view>
                             </swiper-item>
                         </block>
@@ -79,14 +89,24 @@
                                 </scroll-view>
                             </view>
                             <view class="goods-list margin-top-lg">
-                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh">
+                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh pr">
+                                    <!-- 商品主体内容 -->
                                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
-                                        <image :src="goods.images" mode="aspectFit"></image>
-                                        <view class="goods-base padding-left-lg padding-right-lg">
+                                        <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-horizontal-main margin-top-sm">
                                             <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
                                             <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
                                         </view>
                                     </navigator>
+                                    <!-- 标签插件 -->
+                                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                            <navigator v-if="lv.goods_ids.indexOf(goods.id) != -1" :url="lv.url" hover-class="none" class="fl">
+                                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
+                                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
+                                            </navigator>
+                                        </block>
+                                    </view>
                                 </view>
                             </view>
                         </view>
@@ -118,14 +138,24 @@
                                 </scroll-view>
                             </view>
                             <view v-if="floor.goods.length > 0" class="goods-list margin-top-lg">
-                                <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh">
+                                <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh pr">
+                                    <!-- 商品主体内容 -->
                                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
-                                        <image :src="goods.images" mode="aspectFit"></image>
-                                        <view class="goods-base padding-left-lg padding-right-lg">
+                                        <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-horizontal-main margin-top-sm">
                                             <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
                                             <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
                                         </view>
                                     </navigator>
+                                    <!-- 标签插件 -->
+                                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                            <navigator v-if="lv.goods_ids.indexOf(goods.id) != -1" :url="lv.url" hover-class="none" class="fl">
+                                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
+                                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
+                                            </navigator>
+                                        </block>
+                                    </view>
                                 </view>
                             </view>
                         </view>
@@ -151,14 +181,24 @@
                                 </scroll-view>
                             </view>
                             <view class="goods-list margin-top-lg">
-                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh">
+                                <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh pr">
+                                    <!-- 商品主体内容 -->
                                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
-                                        <image :src="goods.images" mode="aspectFit"></image>
-                                        <view class="goods-base padding-left-lg padding-right-lg">
+                                        <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
+                                        <view class="goods-base padding-horizontal-main margin-top-sm">
                                             <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
                                             <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
                                         </view>
                                     </navigator>
+                                    <!-- 标签插件 -->
+                                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                            <navigator v-if="lv.goods_ids.indexOf(goods.id) != -1" :url="lv.url" hover-class="none" class="fl">
+                                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
+                                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
+                                            </navigator>
+                                        </block>
+                                    </view>
                                 </view>
                             </view>
                         </view>
@@ -272,7 +312,9 @@
                 // 购买记录插件
                 plugins_salerecords_data: null,
                 // 活动插件
-                plugins_activity_data: null
+                plugins_activity_data: null,
+                // 标签插件
+                plugins_label_data: null
             };
         },
 
@@ -376,7 +418,8 @@
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
-                                plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data
+                                plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
                             });
 
                             // 导航购物车处理
