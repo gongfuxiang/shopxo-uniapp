@@ -5,8 +5,8 @@
             <view class="nav-sort-content">
                 <block v-for="(item, index) in search_nav_sort_list" :key="index">
                     <view class="item tc fl" :data-index="index" @tap="nav_sort_event">
-                        <text class="cr-base">{{item.name}}</text>
-                        <image v-if="(item.icon || null) != null" class="icon" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                        <text class="cr-base va-m">{{item.name}}</text>
+                        <image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
                     </view>
                 </block>
             </view>
@@ -92,6 +92,7 @@
                 data_page: 1,
                 params: null,
                 post_data: {},
+                shop: null,
                 is_show_popup_form: false,
                 popup_form_loading_status: false,
                 search_nav_sort_list: [
@@ -157,12 +158,12 @@
         // 自定义分享
         onShareAppMessage() {
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var shop_id = this.data.params['shop_id'] || 0;
-            var category_id = this.data.params['category_id'] || 0;
-            var keywords = this.data.params['keywords'] || '';
+            var shop_id = this.params.shop_id || 0;
+            var category_id = this.params.category_id || 0;
+            var keywords = this.params.keywords || '';
             return {
-                title: this.data.shop.name || app.globalData.data.application_title,
-                desc: this.data.shop.describe || app.globalData.data.application_describe,
+                title: this.shop.seo_title || this.shop.name || app.globalData.data.application_title,
+                desc: this.shop.seo_desc || this.shop.describe || app.globalData.data.application_describe,
                 path: '/pages/plugins/shop/search/search?shop_id='+shop_id+'&referrer=' + user_id+'&category_id='+category_id+'&keywords='+keywords
             };
         },
@@ -170,11 +171,11 @@
         // 分享朋友圈
         onShareTimeline() {
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var shop_id = this.data.params['shop_id'] || 0;
-            var category_id = this.data.params['category_id'] || 0;
-            var keywords = this.data.params['keywords'] || '';
+            var shop_id = this.params.shop_id || 0;
+            var category_id = this.params.category_id || 0;
+            var keywords = this.params.keywords || '';
             return {
-                title: this.data.shop.name || app.globalData.data.application_title,
+                title: this.shop.seo_title || this.shop.name || app.globalData.data.application_title,
                 query: 'shop_id='+shop_id+'&referrer=' + user_id+'&category_id='+category_id+'&keywords='+keywords
             };
         },
@@ -211,6 +212,7 @@
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
                         return false;
                     }
                 }
@@ -241,6 +243,7 @@
                                     }
                                 }
                                 this.setData({
+                                    shop: data.shop || null,
                                     search_map_info: data.search_map_info || [],
                                     search_map_list: {
                                         category_list: category

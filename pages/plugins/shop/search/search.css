@@ -10,10 +10,6 @@
     width: 30rpx;
     height: 30rpx;
 }
-.nav-sort-content .item text,
-.nav-sort-content .item image {
-    vertical-align: middle;
-}
 .screening-submit {
     width: 50rpx;
     height: 50rpx;

@@ -162,6 +162,7 @@
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
                         return false;
                     }
                 }

@@ -646,6 +646,13 @@
         		"enablePullDownRefresh": true,
         		"navigationBarTitleText": "活动详情"
         	}
+        },
+        {
+        	"path": "pages/plugins/label/detail/detail",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "标签详情"
+        	}
         }
 	],
     "subPackages": [],

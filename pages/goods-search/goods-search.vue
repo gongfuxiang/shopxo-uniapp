@@ -5,8 +5,8 @@
             <view class="nav-sort-content">
                 <block v-for="(item, index) in search_nav_sort_list" :key="index">
                     <view class="item tc fl" :data-index="index" @tap="nav_sort_event">
-                        <text class="cr-base">{{item.name}}</text>
-                        <image v-if="(item.icon || null) != null" class="icon" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                        <text class="cr-base va-m">{{item.name}}</text>
+                        <image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
                     </view>
                 </block>
             </view>
@@ -286,6 +286,7 @@
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
                         return false;
                     }
                 }
