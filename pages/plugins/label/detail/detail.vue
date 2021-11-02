@@ -3,8 +3,8 @@
         <block v-if="(label || null) != null">
             <!-- 基础 -->
             <view class="label-info bg-white padding-horizontal-main padding-top-main padding-bottom-sm">
-                <text class="round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs">{{label.name}}</text>
-                <text class="cr-gray margin-left-sm">共有<text class="cr-main fw-b margin-left-xs margin-right-xs">{{data_total}}</text>条相关商品</text>
+                <text class="round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs" :style="'background-color:'+ label.bg_color+' !important;'">{{label.name}}</text>
+                <text class="cr-gray margin-left-sm">共有<text class="cr-red fw-b margin-left-xs margin-right-xs">{{data_total}}</text>条相关商品</text>
             </view>
             
             <!-- 排序 -->
@@ -22,10 +22,10 @@
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main bg-white margin-bottom-main oh">
+                    <view v-for="(item, index) in data_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
                         <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
-                            <image :src="item.images" mode="aspectFit"></image>
-                            <view class="base margin-top tl">
+                            <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                            <view class="base padding-horizontal-main margin-top-sm">
                                 <view class="multi-text">{{item.title}}</view>
                                 <view class="price margin-top">
                                     <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
