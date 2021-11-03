@@ -46,7 +46,7 @@
                 <!-- 标签插件 -->
                 <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                     <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                        <view class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                        <view class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
                             <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
                             <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                         </view>
@@ -149,7 +149,7 @@
             <!-- icon -->
             <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container oh border-radius-main padding-horizontal-main margin-bottom-sm">
                 <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
-                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-url="item.url || ''" @tap="url_event">{{item.name}}</view>
+                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-value="item.url || ''" @tap="url_event">{{item.name}}</view>
                 </block>
             </view>
 
@@ -1668,12 +1668,7 @@
             
             // url事件
             url_event(e) {
-                var url = e.currentTarget.dataset.url || null;
-                if(url != null) {
-                    uni.navigateTo({
-                        url: url
-                    });
-                }
+                app.globalData.url_event(e);
             }
         }
     };

@@ -31,6 +31,13 @@
             <!-- 商城公告 -->
             <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
+            <!-- 首页中间广告 - 插件 -->
+            <view v-if="(plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
+                <view v-for="(item,index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh spacing-mb" :data-value="item.url || ''" @tap="url_event">
+                    <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"></image>
+                </view>
+            </view>
+            
             <!-- 限时秒杀 - 插件 -->
             <view v-if="plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
                 <view class="spacing-nav-title">
@@ -58,7 +65,7 @@
                                     <!-- 标签插件 -->
                                     <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                                         <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                            <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
                                                 <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
                                                 <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                                             </view>
@@ -101,7 +108,7 @@
                                     <!-- 标签插件 -->
                                     <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                                         <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
                                                 <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
                                                 <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                                             </view>
@@ -150,7 +157,7 @@
                                     <!-- 标签插件 -->
                                     <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                                         <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
                                                 <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
                                                 <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                                             </view>
@@ -193,7 +200,7 @@
                                     <!-- 标签插件 -->
                                     <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                                         <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                            <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
                                                 <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
                                                 <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                                             </view>
@@ -314,7 +321,9 @@
                 // 活动配置插件
                 plugins_activity_data: null,
                 // 标签插件
-                plugins_label_data: null
+                plugins_label_data: null,
+                // 首页中间广告插件
+                plugins_homemiddleadv_data: null,
             };
         },
 
@@ -419,7 +428,8 @@
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
-                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
+                                plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
                             });
 
                             // 导航购物车处理
@@ -464,12 +474,7 @@
             
             // url事件
             url_event(e) {
-                var url = e.currentTarget.dataset.url || null;
-                if(url != null) {
-                    uni.navigateTo({
-                        url: url
-                    });
-                }
+                app.globalData.url_event(e);
             }
         }
     };
