@@ -21,7 +21,7 @@
 
                 <!-- 广告图片 -->
                 <view  v-if="(data_base.right_images || null) != null" class="spacing-mb">
-                    <image class="wh-auto dis-block border-radius-main" :src="data_base.right_images" mode="widthFix" @tap="right_images_event"></image>
+                    <image class="wh-auto dis-block border-radius-main" :src="data_base.right_images" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
                 </view>
 
                 <!-- 公告信息 -->
@@ -196,13 +196,9 @@
                 });
             },
 
-            // 图片事件
-            right_images_event(e) {
-                if ((this.data_base.right_images_url || null) != null) {
-                    uni.navigateTo({
-                        url: this.data_base.right_images_url
-                    });
-                }
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             },
 
             // 头像查看
