@@ -34,20 +34,32 @@
             </block>
                      
             <!-- 轮播图片 -->
-            <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="goods-photo bg-white" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
-                <block v-for="(item, index) in goods_photo" :key="index">
-                    <swiper-item>
-                        <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="scaleToFill" :style="'height: ' + photo_height + ' !important;'"></image>
-                    </swiper-item>
-                </block>
-            </swiper>
+            <view class="goods-photo bg-white oh pr" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
+                <!-- 相册 -->
+                <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="swiper" :style="'height: ' + photo_height + ' !important;'">
+                    <block v-for="(item, index) in goods_photo" :key="index">
+                        <swiper-item>
+                            <image class="swiper-item wh-auto" @tap="goods_photo_view_event" :data-index="index" :src="item.images" mode="scaleToFill" :style="'height: ' + photo_height + ' !important;'"></image>
+                        </swiper-item>
+                    </block>
+                </swiper>
+                <!-- 标签插件 -->
+                <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                    <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                        <view class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                            <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                        </view>
+                    </block>
+                </view>
+            </view>
             
             <!-- 视频 -->
             <block v-if="goods.video.length > 0">
                 <view v-if="goods_video_is_autoplay" class="goods-video">
                     <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
                 </view>
-                <view class="goods-video-submit" :style="'top: calc(' + photo_height + ' - 110rpx) !important;'">
+                <view class="goods-video-submit" :style="'top: calc(' + photo_height + ' - 130rpx) !important;'">
                     <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
                     <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
                 </view>
@@ -137,7 +149,7 @@
             <!-- icon -->
             <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container oh border-radius-main padding-horizontal-main margin-bottom-sm">
                 <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
-                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')">{{item.name}}</view>
+                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-url="item.url || ''" @tap="url_event">{{item.name}}</view>
                 </block>
             </view>
 
@@ -567,21 +579,23 @@
                 // 限时秒杀插件
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
-                // 优惠劵
+                // 优惠劵插件
                 plugins_coupon_data: null,
                 temp_coupon_receive_index: null,
                 temp_coupon_receive_value: null,
                 popup_coupon_status: false,
-                // 购买记录
+                // 购买记录插件
                 plugins_salerecords_data: null,
                 plugins_salerecords_timer: null,
                 plugins_salerecords_tips_content: null,
                 plugins_salerecords_tips_ent: '',
-                // 多商户
+                // 多商户插件
                 plugins_shop_data: null,
-                // 批发
+                // 批发插件
                 plugins_wholesale_data: null,
                 popup_wholesale_status: false,
+                // 标签插件
+                plugins_label_data: null
             };
         },
 
@@ -766,6 +780,7 @@
                                     plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                     plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
                                     plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
+                                    plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
                                 });
 
                                 // 标题
@@ -1650,6 +1665,16 @@
                     popup_wholesale_status: false
                 });
             },
+            
+            // url事件
+            url_event(e) {
+                var url = e.currentTarget.dataset.url || null;
+                if(url != null) {
+                    uni.navigateTo({
+                        url: url
+                    });
+                }
+            }
         }
     };
 </script>

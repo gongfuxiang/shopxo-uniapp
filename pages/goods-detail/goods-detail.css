@@ -77,7 +77,7 @@
 /**
  * 相册
  */
-.goods-photo,
+.goods-photo .swiper,
 .goods-photo .swiper-item {
     height: 55vh !important;
     display: block;
@@ -203,7 +203,7 @@
 }
 .goods-video-submit {
     position: absolute;
-    left: 30rpx;
+    left: 50rpx;
     top: calc(55vh - 110rpx);
     z-index: 2;
 }
@@ -618,4 +618,27 @@
     padding: 2rpx 10rpx;
     top: 22rpx;
     left: 20rpx;
+}
+
+/**
+ * 标签 - 插件
+ */
+.plugins-label navigator:not(:last-child) {
+    margin-right: 20rpx;
+}
+.plugins-label navigator {
+    margin-bottom: 20rpx;
+}
+.plugins-label-top-left,
+.plugins-label-top-center,
+.plugins-label-top-right {
+    top: calc(var(--status-bar-height) + 130rpx);
+}
+.plugins-label-text {
+    padding: 20rpx 20rpx 0 20rpx;
+}
+.plugins-label-bottom-left,
+.plugins-label-bottom-center,
+.plugins-label-bottom-right {
+    bottom: 0;
 }

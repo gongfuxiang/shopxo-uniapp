@@ -30,10 +30,10 @@
                     <!-- 标签插件 -->
                     <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
                         <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                            <navigator v-if="lv.goods_ids.indexOf(item.id) != -1" :url="lv.url" hover-class="none" class="fl">
-                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="'background-color:'+ lv.bg_color+' !important;'">{{lv.name}}</view>
-                                <image v-else class="dis-block fl" :src="lv.icon" mode="scaleToFill"></image>
-                            </navigator>
+                            <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-url="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                            </view>
                         </block>
                     </view>
                 </view>
@@ -569,6 +569,16 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+            
+            // url事件
+            url_event(e) {
+                var url = e.currentTarget.dataset.url || null;
+                if(url != null) {
+                    uni.navigateTo({
+                        url: url
+                    });
+                }
             }
         }
     };

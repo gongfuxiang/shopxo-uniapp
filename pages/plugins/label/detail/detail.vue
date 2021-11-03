@@ -3,7 +3,7 @@
         <block v-if="(label || null) != null">
             <!-- 基础 -->
             <view class="label-info bg-white padding-horizontal-main padding-top-main padding-bottom-sm">
-                <text class="round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs" :style="'background-color:'+ label.bg_color+' !important;'">{{label.name}}</text>
+                <text class="round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs" :style="((label.bg_color || null) != null ? 'background-color:'+ label.bg_color+' !important;' : '')+((label.text_color || null) != null ? 'color:'+ label.text_color+' !important;' : '')">{{label.name}}</text>
                 <text class="cr-gray margin-left-sm">共有<text class="cr-red fw-b margin-left-xs margin-right-xs">{{data_total}}</text>条相关商品</text>
             </view>
             
@@ -34,14 +34,19 @@
                         </navigator>
                     </view>
                 </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                </view>
 
                 <!-- 结尾 -->
                 <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
             </scroll-view>
         </block>
-
-        <!-- 提示信息 -->
-        <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        </block>
     </view>
 </template>
 <script>
@@ -127,7 +132,7 @@
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
             var id = this.params.id || 0;
             return {
-                title: this.label.name || app.globalData.data.application_title,
+                title: this.label.seo_title ||this.label.name || app.globalData.data.application_title,
                 query: 'id='+id+'&referrer=' + user_id
             };
         },
@@ -163,14 +168,14 @@
                             this.setData({
                                 data_base: data.base || null,
                                 label: label,
-                                data_list_loding_status: (label == null) ? 0 : 3,
+                                data_list_loding_status: (label == null) ? 0 : 1,
                                 data_list_loding_msg: '标签数据不存在',
                             });
                             
                             // 标题名称
-                            if ((this.data_base || null) != null && (this.data_base.application_name || null) != null) {
+                            if (label != null && (label.name || null) != null) {
                                 uni.setNavigationBarTitle({
-                                    title: this.data_base.application_name
+                                    title: label.name
                                 });
                             }
                             

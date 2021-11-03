@@ -23,7 +23,7 @@
 .search-content-fixed {
     position: fixed;
     top: 0;
-    z-index: 2;
+    z-index: 11;
     padding-top: 25px;
     padding-bottom: 20rpx;
     width: 100%;

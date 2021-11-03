@@ -76,19 +76,19 @@
 .plugins-label-text {
     padding: 10rpx 10rpx 0 10rpx;
 }
-.plugins-label navigator:not(:last-child) {
+.plugins-label .lv:not(:last-child) {
     margin-right: 10rpx;
 }
-.plugins-label navigator {
+.plugins-label .lv {
     margin-bottom: 10rpx;
 }
-.plugins-label-img.plugins-label-bottom-left navigator,
-.plugins-label-img.plugins-label-bottom-center navigator,
-.plugins-label-img.plugins-label-bottom-right navigator {
+.plugins-label-img.plugins-label-bottom-left .lv,
+.plugins-label-img.plugins-label-bottom-center .lv,
+.plugins-label-img.plugins-label-bottom-right .lv {
     margin-bottom: 0;
     margin-top: 10rpx;
 }
-.plugins-label view {
+.plugins-label .lv view {
     padding: 4rpx 12rpx;
     -webkit-box-shadow: 0px 1px 2px -1px rgb(0 0 0 / 60%);
     box-shadow: 0px 1px 2px -1px rgb(0 0 0 / 60%);
