@@ -784,9 +784,7 @@
                                 });
 
                                 // 标题
-                                uni.setNavigationBarTitle({
-                                    title: data.goods.title
-                                });
+                                uni.setNavigationBarTitle({title: data.goods.title});
 
                                 // 好物分享
                                 this.setData({

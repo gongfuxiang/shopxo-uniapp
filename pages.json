@@ -71,9 +71,9 @@
 			"path": "pages/goods-detail/goods-detail",
 			"style": {
                 // #ifdef MP-WEIXIN
-                "usingComponents": {
-                    "share-button": "plugin://goodsSharePlugin/share-button"
-                },
+                // "usingComponents": {
+                //     "share-button": "plugin://goodsSharePlugin/share-button"
+                // },
                 // #endif
                 "enablePullDownRefresh": true,
                 "navigationBarTitleText": "商品详情",
@@ -207,6 +207,20 @@
 				"navigationBarTitleText": "页面设计"
 			}
 		},
+        {
+            "path": "pages/article-category/article-category",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "所有文章"
+            }
+        },
+        {
+            "path": "pages/article-detail/article-detail",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "文章详情"
+            }
+        },
         {
         	"path": "pages/plugins/seckill/index/index",
         	"style": {

@@ -1,0 +1,14 @@
+/**
+* 分类导航
+*/
+.nav-list {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+* 数据列表
+*/
+.scroll-box {
+    height: calc(100vh - 80rpx);
+}

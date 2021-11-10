@@ -1,50 +1,42 @@
 <template>
     <view>
-        <view v-if="(data_base || null) != null">
-            <!-- 轮播 -->
-            <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <component-banner :prop-data="slider_list" prop-size="mini"></component-banner>
+        <!-- 分类 -->
+        <scroll-view v-if="(category_list || null) != null && category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
+            <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
+            <block v-for="(item, index) in category_list" :key="index">
+                <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
+            </block>
+        </scroll-view>
+        
+        <!-- 列表 -->
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+            <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <view class="item padding-main border-radius-main bg-white oh spacing-mb">
+                        <navigator :url="item.url" hover-class="none">
+                            <view class="cr-base fw-b" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''">{{item.title}}</view>
+                            <view class="cr-grey oh margin-top-sm">
+                                <text class="fl">{{item.add_time}}</text>
+                                <text class="fr">浏览量 {{item.access_count}}</text>
+                            </view>
+                        </navigator>
+                    </view>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
             </view>
 
-            <!-- 分类 -->
-            <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
-                <block v-for="(item, index) in activity_category" :key="index">
-                    <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
-                </block>
-            </scroll-view>
-            
-            <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view class="item border-radius-main bg-white oh spacing-mb">
-                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.cover" mode="aspectFit"></image>
-                                <view class="padding-main tc">
-                                    <view class="single-text fw-b cr-base">{{item.title}}</view>
-                                    <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </block>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
-                </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
-            </scroll-view>
-        </view>
+            <!-- 结尾 -->
+            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentBanner from "../../../../components/slider/slider";
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentNoData from "../../components/no-data/no-data";
+    import componentBottomLine from "../../components/bottom-line/bottom-line";
 
     export default {
         data() {
@@ -57,15 +49,12 @@
                 data_page_total: 0,
                 data_page: 1,
                 params: null,
-                data_base: null,
-                slider_list: [],
-                activity_category: [],
+                category_list: [],
                 nav_active_value: 0
             };
         },
 
         components: {
-            componentBanner,
             componentNoData,
             componentBottomLine
         },
@@ -75,7 +64,8 @@
             // 启动参数处理
             params = app.globalData.launch_params_handle(params);
             this.setData({
-                params: params
+                params: params,
+                nav_active_value: params.id || 0
             });
             
             // 数据加载
@@ -99,7 +89,7 @@
             return {
                 title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
                 desc: this.data_base.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/activity/index/index?referrer=' + user_id
+                path: '/pages/article-category/article-category?id='+this.nav_active_value+'&referrer=' + user_id
             };
         },
 
@@ -108,7 +98,7 @@
             var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
             return {
                 title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
-                query: 'referrer=' + user_id
+                query: 'id='+this.nav_active_value+'&referrer=' + user_id
             };
         },
 
@@ -119,7 +109,7 @@
                     title: "加载中..."
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("index", "index", "activity"),
+                    url: app.globalData.get_request_url("index", "article"),
                     method: "POST",
                     data: {},
                     dataType: "json",
@@ -129,17 +119,8 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base || null,
-                                slider_list: data.slider_list || [],
-                                activity_category: data.activity_category || []
+                                category_list: data.category_list || []
                             });
-                            
-                            // 标题名称
-                            if ((this.data_base || null) != null && (this.data_base.application_name || null) != null) {
-                                uni.setNavigationBarTitle({
-                                    title: this.data_base.application_name
-                                });
-                            }
                             
                             // 获取列表数据
                             this.get_data_list(1);
@@ -179,11 +160,11 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("datalist", "index", "activity"),
+                    url: app.globalData.get_request_url("datalist", "article"),
                     method: "POST",
                     data: {
                         page: this.data_page,
-                        category_id: this.nav_active_value || 0
+                        id: this.nav_active_value || 0
                     },
                     dataType: "json",
                     success: res => {
@@ -260,5 +241,5 @@
     };
 </script>
 <style>
-    @import './index.css';
+    @import './article-category.css';
 </style>
