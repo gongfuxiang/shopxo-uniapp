@@ -31,6 +31,19 @@
             <!-- 商城公告 -->
             <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
+            <!-- 推荐文章 -->
+            <view v-if="article_list.length > 0" class="article-list border-radius-main bg-white oh br-main spacing-mb">
+                <text class="text-size-sm va-m fw-b bg-main cr-white padding-top-xl padding-bottom-xl padding-horizontal-main">商城资讯</text>
+                <swiper class="dis-inline-block va-m margin-left-lg margin-vertical-main" :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
+                    <block v-for="(item, index) in article_list" :key="index">
+                        <swiper-item class="single-text">
+                            <text class="cr-base" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
+                            <text class="margin-left-xs cr-base" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
+                        </swiper-item>
+                    </block>
+                </swiper>
+            </view>
+            
             <!-- 首页中间广告 - 插件 -->
             <view v-if="(plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
                 <view v-for="(item,index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh spacing-mb" :data-value="item.url || ''" @tap="url_event">
@@ -307,6 +320,7 @@
                 data_list: [],
                 banner_list: [],
                 navigation: [],
+                article_list: [],
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 common_shop_notice: null,
@@ -435,6 +449,7 @@
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
                                 navigation: data.navigation || [],
+                                article_list: data.article_list || [],
                                 data_list: data.data_list,
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_seckill_data: data.plugins_seckill_data || null,

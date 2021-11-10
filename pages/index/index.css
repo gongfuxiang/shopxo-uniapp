@@ -39,6 +39,14 @@
 }
 
 /**
+ * 推荐文章
+ */
+.article-list swiper {
+    height: 36rpx;
+    width: calc(100% - 175rpx);
+}
+
+/**
  * 楼层数据
  */
 .floor-list {
