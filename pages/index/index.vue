@@ -33,7 +33,7 @@
 
             <!-- 推荐文章 -->
             <view v-if="article_list.length > 0" class="article-list border-radius-main bg-white oh br-main spacing-mb">
-                <text class="text-size-sm va-m fw-b bg-main cr-white padding-top-xl padding-bottom-xl padding-horizontal-main">商城资讯</text>
+                <text class="text-size-sm va-m fw-b bg-main cr-white padding-top-xl padding-bottom-xl padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</text>
                 <swiper class="dis-inline-block va-m margin-left-lg margin-vertical-main" :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
                     <block v-for="(item, index) in article_list" :key="index">
                         <swiper-item class="single-text">
