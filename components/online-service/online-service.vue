@@ -4,7 +4,7 @@
             <!-- 开启事件 -->
             <movable-area v-if="online_service_status == 1" class="nav-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
                 <movable-view direction="all" :x="x" :y="y" :animation="false" class="nav-event-submit">
-                    <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                    <button :class="common_ent" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
                     </button>
                 </movable-view>
@@ -24,7 +24,8 @@
                 x: 0,
                 y: 0,
                 top: 0,
-                is_first: 1
+                is_first: 1,
+                common_ent: ''
             };
         },
         components: {},
@@ -48,9 +49,19 @@
             propPath: {
             	type: String,
             	default: ''
+            },
+            propIsGrayscale: {
+            	type:Number,
+            	default: 0
             }
         },
-
+        // 属性值改变监听
+        watch: {
+            // 是否灰度
+        	propIsGrayscale(value, old_value) {
+                this.common_ent = (value == 1) ? 'grayscale' : '';
+        	}
+        },
         // 页面被展示
         created: function(e) {
             this.init_config();

@@ -582,3 +582,13 @@ button[disabled].bg-gray {
     box-sizing: border-box;
     width: 100%;
 }
+/**
+ * 灰度样式
+ */
+.grayscale {
+    filter: grayscale(100%);
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%); 
+    -o-filter: grayscale(100%);
+}

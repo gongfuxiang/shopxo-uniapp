@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 开启事件 -->
-        <movable-area v-if="quick_status == 1" class="nav-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
+        <movable-area v-if="quick_status == 1" :class="'nav-movable-container '+ common_ent" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="nav-event-submit bg-main" @tap="quick_open_event">
                 <image :src="common_static_url+'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
@@ -9,7 +9,7 @@
 
         <!-- 弹窗 -->
         <component-popup :prop-show="popup_status" prop-position="bottom" @onclose="quick_close_event">
-            <view class="nav-popup-container">
+            <view :class="'nav-popup-container '+common_ent">
                 <view class="close oh">
                     <view class="icon-right" @tap.stop="quick_close_event">
                         <icon type="clear" size="20"></icon>
@@ -50,7 +50,8 @@
                 x: 0,
                 y: 0,
                 top: 0,
-                is_first: 1
+                is_first: 1,
+                common_ent: ''
             };
         },
         components: {
@@ -61,7 +62,18 @@
             propIsNav: {
             	type: Boolean,
             	default: false
+            },
+            propIsGrayscale: {
+            	type:Number,
+            	default: 0
             }
+        },
+        // 属性值改变监听
+        watch: {
+            // 是否灰度
+        	propIsGrayscale(value, old_value) {
+                this.common_ent = (value == 1) ? 'grayscale' : '';
+        	}
         },
         // 页面被展示
         created: function() {
