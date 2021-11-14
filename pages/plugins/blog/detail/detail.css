@@ -1,0 +1,27 @@
+/**
+ * 推荐博文
+ */
+.blog-list .blog-img {
+    width: 200rpx !important;
+    height: 170rpx !important;
+}
+.blog-list .base {
+    width: calc(100% - 220rpx);
+}
+
+/**
+ * 商品
+ */
+.goods-list .item {
+    width: calc(50% - 10rpx);
+}
+.goods-list .item:nth-child(2n) {
+    float: right;
+}
+.goods-list .item:nth-child(2n+1) {
+    float: left;
+}
+.goods-list .item .goods-img {
+    width: 100%;
+    height: 380rpx !important;
+}
