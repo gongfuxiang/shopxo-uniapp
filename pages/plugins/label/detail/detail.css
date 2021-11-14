@@ -24,9 +24,6 @@
 .scroll-box {
     height: calc(100vh - 150rpx);
 }
-.data-list {
-    overflow: hidden;
-}
 .data-list .item {
     width: calc(50% - 10rpx);
 }

@@ -5,7 +5,7 @@
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search></component-search>
+                    <component-search prop-placeholder="输入商品名称搜索"></component-search>
                 </view>
             </block>
 

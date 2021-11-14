@@ -2,7 +2,7 @@
     <view>
         <!-- 搜索框 -->
         <view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+5)+'px;'">
-            <component-search></component-search>
+            <component-search prop-placeholder="输入商品名称搜索"></component-search>
         </view>
     
         <!-- 分类内容 -->

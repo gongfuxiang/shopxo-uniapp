@@ -87,9 +87,12 @@
         },
 
         onShow() {
+            // 初始化配置
+            this.init_config();
+
             // 获取数据
             this.get_data();
-            
+
             // 显示分享菜单
             app.globalData.show_share_menu();
         },
@@ -120,6 +123,17 @@
         },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 获取数据
             get_data() {
                 uni.request({

@@ -59,7 +59,7 @@
                             <text class="fr cr-red" @tap="map_remove_event">清除</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="done" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
+                        <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
                     </view>
 
                     <!-- 品牌 -->

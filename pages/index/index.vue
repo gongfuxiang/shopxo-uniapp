@@ -11,7 +11,7 @@
                 <view v-if="load_status == 1" :class="search_is_fixed == 1 ? 'search-content-fixed bg-main' : ''" :style="search_is_fixed == 1 ? top_content_style : ''">
                     <view :style="search_style">
                         <view class="margin-horizontal-main">
-                            <component-search prop-bg-color="#fff"></component-search>
+                            <component-search prop-placeholder="输入商品名称搜索" prop-bg-color="#fff"></component-search>
                         </view>
                     </view>
                 </view>

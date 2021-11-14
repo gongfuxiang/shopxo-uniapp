@@ -667,6 +667,27 @@
         		"enablePullDownRefresh": true,
         		"navigationBarTitleText": "标签详情"
         	}
+        },
+        {
+        	"path": "pages/plugins/blog/index/index",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "博客"
+        	}
+        },
+        {
+        	"path": "pages/plugins/blog/search/search",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "博文搜索"
+        	}
+        },
+        {
+        	"path": "pages/plugins/blog/detail/detail",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "博文详情"
+        	}
         }
 	],
     "subPackages": [],

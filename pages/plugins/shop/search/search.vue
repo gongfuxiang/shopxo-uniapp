@@ -140,11 +140,11 @@
         },
 
         onShow() {
-            // 数据加载
-            this.init();
-            
             // 初始化配置
             this.init_config();
+
+            // 数据加载
+            this.init();
         },
 
         // 下拉刷新

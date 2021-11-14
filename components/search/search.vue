@@ -14,9 +14,17 @@
         },
         components: {},
         props: {
+            propUrl: {
+            	type: String,
+            	default: '/pages/goods-search/goods-search'
+            },
+            propFormName: {
+            	type: String,
+            	default: 'keywords'
+            },
             propPlaceholder: {
             	type: String,
-            	default: '输入商品名称搜索'
+            	default: '其实搜索很简单 ^_^!'
             },
             propBgColor: {
             	type: String,
@@ -38,7 +46,7 @@
             
                 // 进入搜索页面
                 uni.navigateTo({
-                    url: '/pages/goods-search/goods-search?keywords=' + keywords
+                    url: this.propUrl+'?'+this.propFormName+'=' + keywords
                 });
             },
         }
