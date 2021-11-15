@@ -41,9 +41,14 @@
 /**
  * 推荐文章
  */
-.article-list swiper {
-    height: 36rpx;
-    width: calc(100% - 175rpx);
+.article-list .left-content {
+    width: calc(25% - 40rpx);
+}
+.article-list .right-content {
+    width: calc(75% - 30rpx);
+}
+.article-list .right-content swiper {
+    height: 38rpx;
 }
 
 /**

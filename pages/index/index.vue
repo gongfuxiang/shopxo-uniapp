@@ -33,16 +33,18 @@
                 <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
                 <!-- 推荐文章 -->
-                <view v-if="article_list.length > 0" class="article-list border-radius-main bg-white oh br-main spacing-mb">
-                    <text class="text-size-sm va-m fw-b bg-main cr-white padding-top-xl padding-bottom-xl padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</text>
-                    <swiper class="dis-inline-block va-m margin-left-lg margin-vertical-main" :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
-                        <block v-for="(item, index) in article_list" :key="index">
-                            <swiper-item class="single-text">
-                                <text class="cr-base" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
-                                <text class="margin-left-xs cr-base" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
-                            </swiper-item>
-                        </block>
-                    </swiper>
+                <view v-if="article_list.length > 0" class="article-list border-radius-main bg-main oh br-main spacing-mb">
+                    <view class="left-content fl text-size-sm va-m tc fw-b cr-white padding-top-lg padding-bottom-lg padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</view>
+                    <view class="right-content fr bg-white va-m padding-left-lg padding-vertical-main">
+                        <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
+                            <block v-for="(item, index) in article_list" :key="index">
+                                <swiper-item class="single-text">
+                                    <text class="cr-base" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
+                                    <text class="margin-left-xs cr-base" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
+                                </swiper-item>
+                            </block>
+                        </swiper>
+                    </view>
                 </view>
                 
                 <!-- 首页中间广告 - 插件 -->

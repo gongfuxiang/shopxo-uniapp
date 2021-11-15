@@ -34,7 +34,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://dev.shopxo.vip/',
                 // 静态资源地址
                 static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
