@@ -16,16 +16,16 @@
                     </view>
                 </view>
                 
-                <!-- 轮播 拖拽模式下不展示 -->
-                <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0 && home_index_floor_data_type != 2">
+                <!-- 轮播 -->
+                <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
                     <component-banner :prop-data="banner_list"></component-banner>
                 </view>
             </view>
 
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
-                <!-- 导航 拖拽模式下不展示 -->
-                <view v-if="navigation.length > 0 && home_index_floor_data_type != 2">
+                <!-- 导航 -->
+                <view v-if="navigation.length > 0">
                     <component-icon-nav :prop-data="navigation"></component-icon-nav>
                 </view>
 
