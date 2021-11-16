@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 分类 -->
-        <scroll-view v-if="(category_list || null) != null && category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
+        <scroll-view v-if="(category_list || null) != null && category_list.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
             <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
             <block v-for="(item, index) in category_list" :key="index">
                 <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
@@ -9,7 +9,7 @@
         </scroll-view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
                     <view class="item padding-main border-radius-main bg-white oh spacing-mb">
@@ -241,5 +241,4 @@
     };
 </script>
 <style>
-    @import './article-category.css';
 </style>

@@ -568,27 +568,45 @@ button[disabled].bg-gray {
     white-space: initial;
 }
 
-/*
-  滚动标签高度
-*/
+/**
+ * 基础导航
+ */
+.nav-base {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+ * 滚动标签高度
+ */
 .scroll-box {
     height: 100vh;
 }
-/*
-  滚动水平左右滑动
-*/
+
+/**
+ * 存在基础导航
+ */
+.scroll-box-ece-nav {
+    height: calc(100vh - 80rpx);
+}
+
+/**
+ * 滚动水平左右滑动
+ */
 .scroll-view-horizontal {
     white-space: nowrap;
     box-sizing: border-box;
     width: 100%;
 }
+
 /**
- * 灰度样式
+ * 公共操作栏按钮样式
  */
-.grayscale {
-    filter: grayscale(100%);
-    -webkit-filter: grayscale(100%);
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%); 
-    -o-filter: grayscale(100%);
+.item-operation button:not(:first-child) {
+    margin-left: 20rpx;
+}
+.item-operation button {
+    padding: 0 35rpx;
+    line-height: 58rpx;
+    display: inline-flex;
 }

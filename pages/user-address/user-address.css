@@ -12,16 +12,9 @@
     line-height: 44rpx;
     width: calc(100% - 40rpx);
 }
-.operation .default image {
+.default-checkbox image {
     width: 35rpx;
     height: 35rpx !important;
-}
-.operation button {
-    padding: 0 35rpx;
-    display: inline-flex;
-}
-.operation .submit-items button:not(:first-child) {
-    margin-left: 20rpx;
 }
 .submit-list button {
     width: calc(50% - 10rpx);

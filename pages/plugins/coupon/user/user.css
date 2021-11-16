@@ -1,20 +1,13 @@
 /*
 * 导航
 */
-.nav {
-    height: 80rpx;
-    line-height: 80rpx;
-}
-.nav .item {
+.nav-base .item {
     width: 33.33%;
 }
 
 /*
 * 数据列表
 */
-.scroll-box {
-    height: calc(100vh - 80rpx);
-}
 .plugins-coupon-container .item,
 .plugins-coupon-container .v-right,
 .plugins-coupon-container .v-right .circle {

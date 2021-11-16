@@ -19,7 +19,7 @@
                                 </block>
                             </navigator>
                         </view>
-                        <view class="operation tr br-t padding-top-main margin-top-main">
+                        <view class="item-operation tr br-t padding-top-main margin-top-main">
                             <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">开票</button>
                         </view>
                     </view>

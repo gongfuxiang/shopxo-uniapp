@@ -1,14 +1,14 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav bg-white">
+        <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
             </block>
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
@@ -26,7 +26,7 @@
                             </block>
                         </navigator>
                     </view>
-                    <view class="operation tr br-t padding-top-main margin-top-main">
+                    <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">订单详情</button>
                         <button v-if="item.status == 2" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="list_submit_settlement_event">立即结算</button>
                     </view>

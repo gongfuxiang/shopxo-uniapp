@@ -19,7 +19,7 @@
                                 </block>
                             </navigator>
                         </view>
-                        <view class="operation tr br-t padding-top-main margin-top-main">
+                        <view class="item-operation tr br-t padding-top-main margin-top-main">
                             <button class="round bg-white cr-base br" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="show_event">签到</button>
                             <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="coming_event">用户</button>
                             <button class="round bg-white cr-green br-green" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="edit_event">编辑</button>

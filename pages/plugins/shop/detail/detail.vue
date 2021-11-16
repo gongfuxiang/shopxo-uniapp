@@ -89,7 +89,7 @@
                         </block>
                     </scroll-view>
                 </view>
-                <view class="data-list padding-horizontal-main">
+                <view class="data-list padding-horizontal-main oh">
                     <block v-if="goods_list.length > 0">
                         <block v-for="(item, index) in goods_list" :key="index">
                             <view v-if="item.active != 0" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">

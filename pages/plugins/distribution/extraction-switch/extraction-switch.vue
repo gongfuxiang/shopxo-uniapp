@@ -21,13 +21,13 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="operation br-t oh padding-top-main margin-top-main">
+                    <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
                             <text class="cr-gray">距离</text>
                             <text class="cr-base">{{item.distance_value}}</text>
                             <text class="cr-gray">{{item.distance_unit}}</text>
                         </view>
-                        <view class="fr oh button-list">
+                        <view class="item-operation fr oh">
                             <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">选择</button>
                             <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
                         </view>

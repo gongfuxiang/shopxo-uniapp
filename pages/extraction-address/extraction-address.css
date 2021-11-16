@@ -13,7 +13,3 @@
     line-height: 44rpx;
     width: calc(100% - 40rpx);
 }
-.operation button {
-    padding: 0 35rpx;
-    display: inline-flex;
-}

@@ -1,20 +1,13 @@
 /*
 * 导航
 */
-.nav {
-    height: 80rpx;
-    line-height: 80rpx;
-}
-.nav .item {
+.nav-base .item {
     width: 14.28%;
 }
 
 /*
 * 列表
 */
-.scroll-box {
-    height: calc(100vh - 80rpx);
-}
 .goods-base {
     min-height: 160rpx;
     margin-left: 180rpx;
@@ -31,11 +24,4 @@
 .goods-image {
     width: 160rpx;
     height: 160rpx;
-}
-.item-operation button:not(:first-child) {
-    margin-left: 20rpx;
-}
-.item-operation button {
-    padding: 0 35rpx;
-    display: inline-flex;
 }

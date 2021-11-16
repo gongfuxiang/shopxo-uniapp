@@ -1,12 +1,12 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav bg-white">
+        <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_tabs_list" :key="index">
                 <view :class="'item fl tc cr-gray ' + (item.value == nav_tabs_value ? 'cr-main' : '')" :data-index="index" :data-value="item.value" @tap="nav_tabs_event">{{item.name}}</view>
             </block>
         </view>
-        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" lower-threshold="30">
             <!-- 优惠劵列表 -->
             <view v-if="data_list != null" class="plugins-coupon-container padding-horizontal-main padding-top-main">
                 <!-- 未使用 -->

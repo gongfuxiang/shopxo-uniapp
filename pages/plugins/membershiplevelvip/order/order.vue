@@ -1,14 +1,14 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav bg-white">
+        <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
             </block>
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
@@ -26,7 +26,7 @@
                             </block>
                         </navigator>
                     </view>
-                    <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="operation tr br-t padding-top-main margin-top-main">
+                    <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">支付</button>
                         <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                         <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>

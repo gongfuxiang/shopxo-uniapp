@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav bg-white">
+        <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
             </block>
@@ -9,7 +9,7 @@
 
         <movable-area class="wh-auto ht-auto">
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b padding-bottom-main">
@@ -25,7 +25,7 @@
                                 </view>
                             </block>
                         </view>
-                        <view v-if="item.status == 0"  class="operation tr br-t-dashed padding-top-main margin-top-main">
+                        <view v-if="item.status == 0"  class="item-operation tr br-t-dashed padding-top-main margin-top-main">
                             <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" :data-index="index" :data-oid="item.order_id" :data-uid="item.order_user_id" @tap="list_submit_take_event">取货</button>
                         </view>
                     </view>

@@ -13,10 +13,3 @@
     line-height: 44rpx;
     width: calc(100% - 40rpx);
 }
-.operation .button-list button {
-    padding: 0 35rpx;
-    display: inline-flex;
-}
-.operation .button-list button:not(:last-child) {
-    margin-right: 20rpx;
-}

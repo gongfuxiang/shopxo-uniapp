@@ -14,8 +14,8 @@
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
+            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white padding-bottom-sm margin-bottom-main oh pr">
                     <!-- 商品主体内容 -->
                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">

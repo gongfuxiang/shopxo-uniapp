@@ -5,13 +5,6 @@
     width: 35rpx;
     height: 35rpx !important;
 }
-.data-list .item .operation button:not(:first-child) {
-    margin-left: 20rpx;
-}
-.data-list .item .operation button {
-    padding: 0 35rpx;
-    display: inline-flex;
-}
 
 /*
 * 合并按钮

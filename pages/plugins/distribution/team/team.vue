@@ -17,7 +17,7 @@
                             </view>
                         </block>
                     </view>
-                    <view class="operation tr br-t padding-top-main margin-top-main">
+                    <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">用户订单</button>
                     </view>
                 </view>

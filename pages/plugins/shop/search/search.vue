@@ -14,8 +14,8 @@
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
+            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
                         <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>

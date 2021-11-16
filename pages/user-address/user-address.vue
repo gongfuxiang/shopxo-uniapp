@@ -16,12 +16,12 @@
                             </view>
                         </view>
                     </view>
-                    <view class="operation br-t oh padding-vertical-main">
-                        <view class="default fl margin-top-sm" @tap="address_default_event" :data-value="item.id">
+                    <view class="br-t oh padding-vertical-main">
+                        <view class="default-checkbox fl margin-top-sm" @tap="address_default_event" :data-value="item.id">
                             <image class="va-m" :src="common_static_url+'select' + (is_default == item.id ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             <text class="va-m margin-left-sm">设为默认地址</text>
                         </view>
-                        <view class="fr oh submit-items">
+                        <view class="item-operation fr oh">
                             <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">位置</button>
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_edit_event" :data-index="index" hover-class="none">编辑</button>
                             <button class="round bg-white cr-red br-red" type="default" size="mini" @tap="address_delete_event" :data-index="index" :data-value="item.id" hover-class="none">删除</button>
@@ -301,54 +301,45 @@
 
             // 获取系统地址事件
             choose_system_address_event(e) {
-                var self = this;
-                uni.authorize({
-                    scope: 'scope.address',
-                    success: function(res) {
-                        uni.chooseAddress({
-                            success(res) {
-                                var data = {
-                                    "name": res.userName || '',
-                                    "tel": res.telNumber || '',
-                                    "province": res.provinceName || '',
-                                    "city": res.cityName || '',
-                                    "county": res.countyName || '',
-                                    "address": res.detailInfo || ''
-                                };
-                                
-                                // 加载loding
-                                uni.showLoading({
-                                    title: "处理中..."
-                                });
-                                
-                                // 获取数据
-                                uni.request({
-                                    url: app.globalData.get_request_url("outsystemadd", "useraddress"),
-                                    method: "POST",
-                                    data: data,
-                                    dataType: "json",
-                                    success: res => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            self.get_data_list();
-                                        } else {
-                                            if (app.globalData.is_login_check(res.data)) {
-                                                app.globalData.showToast(res.data.msg);
-                                            } else {
-                                                app.globalData.showToast('提交失败，请重试！');
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        uni.hideLoading();
-                                        app.globalData.showToast("服务器请求出错");
+                uni.chooseAddress({
+                    success(res) {
+                        var data = {
+                            "name": res.userName || '',
+                            "tel": res.telNumber || '',
+                            "province": res.provinceName || '',
+                            "city": res.cityName || '',
+                            "county": res.countyName || '',
+                            "address": res.detailInfo || ''
+                        };
+                        
+                        // 加载loding
+                        uni.showLoading({
+                            title: "处理中..."
+                        });
+                        
+                        // 获取数据
+                        uni.request({
+                            url: app.globalData.get_request_url("outsystemadd", "useraddress"),
+                            method: "POST",
+                            data: data,
+                            dataType: "json",
+                            success: res => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    this.get_data_list();
+                                } else {
+                                    if (app.globalData.is_login_check(res.data)) {
+                                        app.globalData.showToast(res.data.msg);
+                                    } else {
+                                        app.globalData.showToast('提交失败，请重试！');
                                     }
-                                });
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast("服务器请求出错");
                             }
                         });
-                    },
-                    fail: function(res) {
-                        app.globalData.showToast('取消选择');
                     }
                 });
             },

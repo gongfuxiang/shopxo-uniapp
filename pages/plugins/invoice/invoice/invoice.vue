@@ -1,14 +1,14 @@
 <template>
     <view>
         <!-- 导航 -->
-        <view class="nav bg-white">
+        <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
             </block>
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
@@ -26,7 +26,7 @@
                             </block>
                         </navigator>
                     </view>
-                    <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="operation tr br-t padding-top-main margin-top-main">
+                    <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="item.status == 0 || item.status == 3" class="round cr-base bg-white br" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
                         <button class="round cr-red br-red bg-white" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                     </view>
