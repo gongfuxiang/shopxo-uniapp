@@ -1,9 +1,6 @@
 /**
  * 搜索
  */
-.search-keywords {
-    background: #f0f0f0;
-}
 .search-keywords icon {
     position: absolute;
     left: 30rpx;
@@ -15,6 +12,7 @@
     box-sizing: border-box;
     height: 30px;
     line-height: 30px;
+    background: #f0f0f0;
 }
 
 /**

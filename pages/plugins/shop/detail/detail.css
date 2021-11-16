@@ -9,6 +9,8 @@
     line-height: 52rpx;
     border-width: 1px;
     border-style: solid;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 .search-btn {
     top: 20rpx;

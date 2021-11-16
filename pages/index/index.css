@@ -103,10 +103,7 @@
     height: 506rpx;
 }
 .plugins-salerecords swiper-item {
-    height: 100% !important;
-}
-.plugins-salerecords .item {
-    border-bottom: 1px solid #fbfbfb;
+    border-bottom: 1px solid #f7f7f7;
 }
 .plugins-salerecords image {
     width: 40rpx !important;

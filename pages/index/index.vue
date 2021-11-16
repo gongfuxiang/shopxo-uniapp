@@ -75,7 +75,9 @@
                                                 <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
                                                 <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
                                                 <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
-                                                <uni-icons type="cart" size="16" color="#E02020" class="icon pa"></uni-icons>
+                                                <view class="icon pa">
+                                                    <uni-icons type="cart" size="16" color="#E02020"></uni-icons>
+                                                </view>
                                             </view>
                                         </navigator>
                                         <!-- 标签插件 -->
@@ -235,11 +237,11 @@
                         <text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
                         <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
                     </view>
-                    <view class="bg-white border-radius-main oh">
+                    <view class="bg-white padding-horizontal-main border-radius-main oh">
                         <swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6" interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
                             <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
                                 <swiper-item>
-                                    <view class="item oh padding-lg">
+                                    <view class="item oh padding-vertical-main">
                                         <view class="item-content single-text fl">
                                             <image mode="widthFix" :src="item.user.avatar" class="va-m br"></image>
                                             <text class="margin-left-sm">{{item.user.user_name_view}}</text>

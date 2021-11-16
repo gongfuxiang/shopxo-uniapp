@@ -3,18 +3,30 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                "navigationStyle": "custom",
+                // #endif
+                // #ifdef MP-ALIPAY
+                "transparentTitle": "always",
+                "titlePenetrate": "YES",
+                // #endif
 				"enablePullDownRefresh": true,
-				"navigationStyle": "custom",
                 "navigationBarTextStyle": "white",
-                "navigationBarTitleText": "首页"
+                "navigationBarTitleText": ""
 			}
 		},
 		{
 			"path": "pages/goods-category/goods-category",
 			"style": {
-				"enablePullDownRefresh": true,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
                 "navigationStyle": "custom",
-                "navigationBarTitleText": "商品分类"
+                // #endif
+                // #ifdef MP-ALIPAY
+                "transparentTitle": "always",
+                "titlePenetrate": "YES",
+                // #endif
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": ""
 			}
 		},
 		{
@@ -27,9 +39,15 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-				"enablePullDownRefresh": true,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
                 "navigationStyle": "custom",
-                "navigationBarTitleText": "用户中心"
+                // #endif
+                // #ifdef MP-ALIPAY
+                "transparentTitle": "always",
+                "titlePenetrate": "YES",
+                // #endif
+				"enablePullDownRefresh": true,
+                "navigationBarTitleText": ""
 			}
 		},
 		{
@@ -75,9 +93,11 @@
                 //     "share-button": "plugin://goodsSharePlugin/share-button"
                 // },
                 // #endif
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                "navigationStyle": "custom",
+                // #endif
                 "enablePullDownRefresh": true,
-                "navigationBarTitleText": "商品详情",
-                "navigationStyle": "custom"
+                "navigationBarTitleText": "商品详情"
             }
 		},
 		{

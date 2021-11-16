@@ -2,8 +2,8 @@
     <view>
         <block>
             <!-- 开启事件 -->
-            <movable-area v-if="online_service_status == 1" class="nav-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
-                <movable-view direction="all" :x="x" :y="y" :animation="false" class="nav-event-submit">
+            <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
+                <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
                     <button :class="common_ent" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
                     </button>
@@ -98,7 +98,7 @@
     };
 </script>
 <style>
-    .nav-movable-container {
+    .online-service-movable-container {
         position: fixed;
         width: 100%;
         height: 100%;
@@ -108,23 +108,23 @@
         pointer-events: none;
         z-index: 2;
     }
-    .nav-event-submit {
+    .online-service-event-submit {
         pointer-events: auto;
     }
-    .nav-event-submit,
-    .nav-event-submit button{
+    .online-service-event-submit,
+    .online-service-event-submit button {
         width: 90rpx;
         height: 90rpx;
         border-radius: 50%;
     }
-    .nav-event-submit button {
+    .online-service-event-submit button {
         border: 0;
         padding: 15rpx;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         background: rgba(0, 0, 0, 0.6);
     }
-    .nav-event-submit image {
-        width: 60rpx;
-        height: 60rpx;
+    .online-service-event-submit image {
+        width: 60rpx !important;
+        height: 60rpx !important;
     }
 </style>

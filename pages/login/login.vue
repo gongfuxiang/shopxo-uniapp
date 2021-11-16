@@ -33,7 +33,15 @@
                 <navigator open-type="navigateBack" hover-class="none" class="dis-inline-block margin-right-lg">
                     <button class="bg-yellow br-yellow cr-white round" type="default" size="mini" hover-class="none">取消</button>
                 </navigator>
+                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
                 <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">同意授权登录</button>
+                <!-- #endif -->
+                <!-- #ifdef MP-QQ || MP-BAIDU -->
+                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">同意授权登录</button>
+                <!-- #endif -->
+                <!-- #ifdef MP-ALIPAY -->
+                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">同意授权登录</button>
+                <!-- #endif -->
             </view>
         </view>
     </view>
@@ -100,13 +108,67 @@
              * 登录授权事件
              */
             get_user_info_event(e) {
+                // #ifdef MP-WEIXIN
                 uni.getUserProfile({
-                    desc: '注册使用',
+                    desc: '用于完善会员资料',
                     lang: 'zh_CN',
-                    success: res => {
+                    success: (res) => {
                         this.user_auth_code(res.userInfo);
                     }
                 });
+                // #endif
+                // #ifdef MP-QQ
+                uni.getUserInfo({
+                    withCredentials: true,
+                    lang: 'zh_CN',
+                    success: (res) => {
+                        var userinfo = res.userInfo;
+                        userinfo['encrypted_data'] = res.encryptedData;
+                        userinfo['iv'] = res.iv;
+                        this.user_auth_code(userinfo);
+                    }
+                });
+                // #endif
+                // #ifdef MP-ALIPAY
+                uni.getOpenUserInfo({
+                    success: (res) => {
+                        var userinfo = JSON.parse(userinfo.response).response;
+                        this.user_auth_code(userinfo);
+                    }
+                });
+                // #endif
+                // #ifdef MP-BAIDU
+                var userinfo = e.detail.userInfo;
+                userinfo['encrypted_data'] = e.detail.encryptedData;
+                userinfo['iv'] = e.detail.iv;
+                this.user_auth_code(userinfo);
+                // #endif
+                // #ifdef MP-TOUTIAO
+                var self = this;
+                uni.getSetting({
+                    success(res) {
+                        if (!res.authSetting['scope.userInfo']) {
+                            uni.authorize({
+                                scope: 'scope.userInfo',
+                                success (res) {},
+                                fail (res) {
+                                    app.globalData.showToast('请同意用户授权');
+                                    setTimeout(function() {
+                                        uni.openSetting();
+                                    }, 1000);
+                                }
+                            });
+                        } else {
+                            uni.getUserInfo({
+                                success (res) {
+                                    var userinfo = JSON.parse(res.rawData);
+                                    self.user_auth_code(userinfo);
+                                }
+                            });
+                        }
+                    }
+                });
+                // #endif
             },
 
             /**
@@ -223,7 +285,7 @@
                 var params = uni.getStorageSync(app.globalData.data.cache_launch_info_key) || null;
                 
                 // 数据验证
-                var client_type = app.globalData.data.application_type;
+                var client_type = app.globalData.application_client_type();
                 var field_openid = client_type+'_openid';
                 var field_unionid = client_type+'_unionid';
                 var validation = [
@@ -301,7 +363,7 @@
                     var referrer = params == null ? this.user.referrer || 0 : params.referrer || 0;
                     
                     // 解密数据并绑定手机
-                    var client_type = app.globalData.data.application_type;
+                    var client_type = app.globalData.application_client_type();
                     var field_openid = client_type+'_openid';
                     var field_unionid = client_type+'_unionid';
                     var data = {

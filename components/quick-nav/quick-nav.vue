@@ -1,8 +1,8 @@
 <template>
     <view>
         <!-- 开启事件 -->
-        <movable-area v-if="quick_status == 1" :class="'nav-movable-container '+ common_ent" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
-            <movable-view direction="all" :x="x" :y="y" :animation="false" class="nav-event-submit bg-main" @tap="quick_open_event">
+        <movable-area v-if="quick_status == 1" :class="'quick-movable-container '+ common_ent" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
+            <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit bg-main" @tap="quick_open_event">
                 <image :src="common_static_url+'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
         </movable-area>
@@ -135,7 +135,7 @@
     /**
      * 按钮
      */
-    .nav-movable-container {
+    .quick-movable-container {
         position: fixed;
         width: 100%;
         height: 100%;
@@ -145,7 +145,7 @@
         pointer-events: none;
         z-index: 2;
     }
-    .nav-event-submit {
+    .quick-event-submit {
         pointer-events: auto;
         width: 100rpx;
         height: 100rpx;
@@ -153,9 +153,9 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         opacity: 0.8;
     }
-    .nav-event-submit image {
-        width: 50rpx;
-        height: 50rpx;
+    .quick-event-submit image {
+        width: 50rpx !important;
+        height: 50rpx !important;
         margin: 25rpx auto 25rpx auto;
         display: block;
     }

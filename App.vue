@@ -34,13 +34,12 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://dev.shopxo.vip/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址
                 static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
-                application_type: "weixin",
                 // 版本号
                 version: "v2.2.1",
                 // 货币价格符号
@@ -129,7 +128,8 @@
                 var user = this.get_user_cache_info();
                 var token = user == false ? '' : user.token || '';
                 var uuid = this.request_uuid();
-                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ this.data.application_type + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
+                var client_value = this.application_client_type();
+                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ client_value + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
             },
 
             /**
@@ -176,6 +176,7 @@
              */
             user_auth_login(object, method, auth_data) {
                 var self = this;
+                // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO
                 uni.checkSession({
                     success: function() {
                         var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
@@ -190,6 +191,15 @@
                         self.user_login(object, method);
                     }
                 });
+                // #endif
+                // #ifdef MP-ALIPAY
+                var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
+                if (login_data == null) {
+                    self.user_login(object, method);
+                } else {
+                    self.get_user_login_info(object, method, login_data, auth_data);
+                }
+                // #endif
             },
 
             /**
@@ -205,11 +215,15 @@
                     uni.showLoading({
                         title: "授权中..."
                     });
-                    uni.login({
+                    var action = 'login';
+                    // #ifdef MP-BAIDU
+                    action = 'getLoginCode';
+                    // #endif
+                    uni[action]({
                         success: res => {
                             if (res.code) {
                                 uni.request({
-                                    url: self.get_request_url('wechatuserauth', 'user'),
+                                    url: self.get_request_url('appminiuserauth', 'user'),
                                     method: 'POST',
                                     data: {
                                         authcode: res.code
@@ -224,8 +238,7 @@
                                                     key: self.data.cache_user_info_key,
                                                     data: data,
                                                     success: res => {
-                                                        if (typeof object ===
-                                                            'object' && (method || null) != null) {
+                                                        if (typeof object === 'object' && (method || null) != null) {
                                                             object[method]();
                                                         }
                                                     },
@@ -291,21 +304,25 @@
             get_user_login_info(object, method, login_data, auth_data) {
                 // 邀请人参数
                 var params = uni.getStorageSync(this.data.cache_launch_info_key) || null;
-                var referrer = params == null ? 0 : params.referrer || 0; // 用户信息处理
+                var referrer = params == null ? 0 : params.referrer || 0;
 
+                // 请求数据
+                var data = {
+                    "auth_data": JSON.stringify(auth_data),
+                    "openid": login_data.openid,
+                    "unionid": login_data.unionid,
+                    "referrer": referrer
+                };
+                
+                // 用户信息处理
                 uni.showLoading({
                     title: "授权中..."
                 });
                 var self = this;
                 uni.request({
-                    url: self.get_request_url('wechatuserinfo', 'user'),
+                    url: self.get_request_url('appminiuserinfo', 'user'),
                     method: 'POST',
-                    data: {
-                        "auth_data": JSON.stringify(auth_data),
-                        "openid": login_data.openid,
-                        "unionid": login_data.unionid,
-                        "referrer": referrer
-                    },
+                    data: data,
                     dataType: 'json',
                     success: res => {
                         uni.hideLoading();
@@ -314,8 +331,7 @@
                                 key: self.data.cache_user_info_key,
                                 data: res.data.data,
                                 success: res => {
-                                    if (typeof object === 'object' && (method || null) !=
-                                        null) {
+                                    if (typeof object === 'object' && (method || null) != null) {
                                         object[method]();
                                     }
                                 },
@@ -671,10 +687,12 @@
 
             // 显示分享菜单
             show_share_menu() {
+                // #ifdef MP-WEIXIN
                 uni.showShareMenu({
                     withShareTicket: true,
                     menus: ['shareAppMessage', 'shareTimeline']
                 });
+                // #endif
             },
 
             /**
@@ -929,6 +947,42 @@
             px_to_rpx(value) {
                 return ((value || 0) == 0) ? 0 : value * 750 / this.get_system_info('windowWidth');
             },
+            
+            // 终端类型
+            application_client() {
+                var type = '';
+                // #ifdef APP
+                    type = 'app';
+                //#endif
+                // #ifdef MP
+                    type = 'mp';
+                //#endif
+                return type;
+            },
+            
+            // 终端类型值
+            application_client_type() {
+                var value = '';
+                // #ifdef MP-WEIXIN
+                    value = 'weixin';
+                //#endif
+                // #ifdef MP-ALIPAY
+                    value = 'alipay';
+                //#endif
+                // #ifdef MP-BAIDU
+                    value = 'baidu';
+                //#endif
+                // #ifdef MP-QQ
+                    value = 'qq';
+                //#endif
+                // #ifdef MP-TOUTIAO
+                    value = 'toutiao';
+                //#endif
+                // #ifdef H5
+                    value = 'h5';
+                //#endif
+                return value;
+            }
         },
 
         /**

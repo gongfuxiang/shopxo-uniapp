@@ -3,9 +3,9 @@
         <view v-if="(data_base || null) != null">
             <!-- 搜索关键字 -->
             <view class="padding-horizontal-main padding-top-main padding-bottom-sm bg-white">
-                <view class="search-keywords round pr">
+                <view class="search-keywords pr">
                     <icon type="search" size="12"></icon>
-                    <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base" placeholder-class="cr-grey">
+                    <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base round wh-auto" placeholder-class="cr-grey">
                 </view>
             </view>
 

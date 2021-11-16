@@ -2,6 +2,7 @@
     <view>
         <!-- 顶部导航 -->
         <view v-if="goods != null" class="page">
+            <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO -->
             <!-- 小导航 -->
             <view class="top-nav-left-icon" :style="'top:'+(status_bar_height+8)+'px;'">
                 <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @tap="top_nav_left_back_event"></uni-icons>
@@ -21,6 +22,7 @@
                     </block>
                 </view>
             </view>
+            <!-- 顶部导航 -->
             <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
                 <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height">
                     <view class="top-nav padding-bottom padding-horizontal-main">
@@ -32,10 +34,21 @@
                     </view>
                 </component-trn-nav>
             </block>
+            <!-- #endif -->
                      
-            <!-- 轮播图片 -->
+            <!-- 相册 -->
             <view class="goods-photo bg-white oh pr" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
-                <!-- 相册 -->
+                <!-- 视频 -->
+                <block v-if="goods.video.length > 0">
+                    <view v-if="goods_video_is_autoplay" class="goods-video pa tc">
+                        <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
+                    </view>
+                    <view class="goods-video-submit pa">
+                        <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
+                        <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
+                    </view>
+                </block>
+                <!-- 相册内容 -->
                 <swiper :indicator-dots="indicator_dots" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="autoplay" :circular="circular" class="swiper" :style="'height: ' + photo_height + ' !important;'">
                     <block v-for="(item, index) in goods_photo" :key="index">
                         <swiper-item>
@@ -53,17 +66,6 @@
                     </block>
                 </view>
             </view>
-            
-            <!-- 视频 -->
-            <block v-if="goods.video.length > 0">
-                <view v-if="goods_video_is_autoplay" class="goods-video">
-                    <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
-                </view>
-                <view class="goods-video-submit" :style="'top: calc(' + photo_height + ' - 130rpx) !important;'">
-                    <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
-                    <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
-                </view>
-            </block>
             
             <!-- 价格信息 -->
             <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_seckill_is_valid == 1) ? 'goods-base-price-countdown' : '')">
@@ -120,9 +122,9 @@
                 </view>
                 
                 <!-- 批发 -->
-                <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
-                    <view class="fl item-title">{{plugins_wholesale_data.title}}</view>
-                    <view class="fr column-right-view single-text" @tap="popup_wholesale_event">
+                <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
+                    <view class="fl item-title margin-top-sm">{{plugins_wholesale_data.title}}</view>
+                    <view class="fr column-right-view border-radius-main single-text" @tap="popup_wholesale_event">
                         <block  v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
                             <view class="item round dis-inline-block">{{item.msg}}</view>
                         </block>
@@ -130,9 +132,9 @@
                 </view>
             
                 <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-horizontal-main padding-top-main padding-bottom-sm border-radius-main bg-white arrow-right spacing-mb">
-                    <view class="fl item-title">优惠券</view>
-                    <view class="fr column-right-view single-text" @tap="popup_coupon_event">
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
+                    <view class="fl item-title margin-top-sm">优惠券</view>
+                    <view class="fr column-right-view border-radius-main single-text" @tap="popup_coupon_event">
                         <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                             <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';'">{{item.desc || item.name}}</view>
                         </block>
@@ -142,7 +144,7 @@
                 <!-- 规格选择 -->
                 <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0) == 1 || (buy_button.is_cart || 0) == 1))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
                     <view class="fl item-title">规格</view>
-                    <view class="fr column-right-view cr-base single-text" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
+                    <view class="fr column-right-view border-radius-main cr-base single-text" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
                 </view>
             </view>
 
@@ -381,6 +383,7 @@
                         </view>
                     </view>
                     <view class="share-popup-content">
+                        <!-- #ifdef MP-WEIXIN -->
                         <view v-if="common_app_is_good_thing == 1" class="share-items oh">
                             <share-button :product="share_product" type="3" class="dis-block oh">
                                 <image class="fl" :src="common_static_url+'share-recomend-icon.png'" mode="scaleToFill">
@@ -388,12 +391,21 @@
                                 <view class="cr-gray single-text fl">好物推荐、和大家一起分享你发现的宝贝</view>
                             </share-button>
                         </view>
+                        <!-- #endif -->
+                        <!-- #ifdef MP-ALIPAY -->
+                        <view class="share-items oh" @tap="share_base_event">
+                            <image :src="common_static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-gray single-text">一键分享给好友、群聊</text>
+                        </view>
+                        <!-- #endif -->
+                        <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO -->
                         <view class="share-items oh">
-                            <button class="dis-block" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
+                            <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
                                 <image :src="common_static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
                                 <text class="cr-gray single-text">一键分享给好友、群聊</text>
                             </button>
                         </view>
+                        <!-- #endif -->
                         <view v-if="common_app_is_poster_share == 1" class="share-items oh" @tap="poster_event">
                             <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
@@ -620,7 +632,7 @@
             this.setData({
                 params: params,
                 system_info: system_info,
-                photo_height: (system_info || null) == null || (system_info.screenWidth || null) == null ? '55vh' : system_info.screenWidth + 'px'
+                photo_height: (system_info || null) == null ? '55vh' : (system_info.windowWidth || system_info.screenWidth) + 'px'
             });
 
             // 数据加载
@@ -782,9 +794,6 @@
                                     plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
                                     plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
                                 });
-
-                                // 标题
-                                uni.setNavigationBarTitle({title: data.goods.title});
 
                                 // 好物分享
                                 this.setData({
@@ -1472,41 +1481,21 @@
                     popup_share_status: false
                 });
             },
-
-            // 购买记录提示处理
-            plugins_salerecords_tips_handle() {
-                // 销毁之前的任务
-                clearInterval(this.plugins_salerecords_timer);
-                // 是否存在数据
-                var data = this.plugins_salerecords_data || null;
-                if (data != null && (data.data || null) != null && data.data.length > 0) {
-                    var self = this;
-                    var base = data.base || null;
-                    var location = base == null || (base.goods_detail_tips_location || null) == null ? '' : '-' + base.goods_detail_tips_location;
-                    var pause = (base == null ? 5 : base.goods_detail_time_pause || 5) * 1000;
-                    var interval = (base == null ? 10 : base.goods_detail_time_interval || 10) * 1000;
-                    var index = 0;
-                    var list = data.data;
-                    var count = list.length;
-                    var timer = setInterval(function() {
-                        self.setData({
-                            plugins_salerecords_tips_content: list[index]
-                        });
+            
+            // 基础分享事件
+            share_base_event() {
+                this.setData({
+                    popup_share_status: false
+                });
+                uni.pageScrollTo({
+                    scrollTop: 0,
+                    duration: 300,
+                    complete: res => {
                         setTimeout(function() {
-                            self.setData({
-                                plugins_salerecords_tips_content: null
-                            });
-                        }, pause);
-                        index++;
-                        if (index >= count) {
-                            index = 0;
-                        }
-                    }, interval);
-                    self.setData({
-                        plugins_salerecords_timer: timer,
-                        plugins_salerecords_tips_ent: location
-                    });
-                }
+                            uni.showShareMenu();
+                        }, 500);
+                    }
+                });
             },
 
             // 商品海报分享
@@ -1631,6 +1620,42 @@
                             }
                         });
                     }
+                }
+            },
+            
+            // 购买记录提示处理
+            plugins_salerecords_tips_handle() {
+                // 销毁之前的任务
+                clearInterval(this.plugins_salerecords_timer);
+                // 是否存在数据
+                var data = this.plugins_salerecords_data || null;
+                if (data != null && (data.data || null) != null && data.data.length > 0) {
+                    var self = this;
+                    var base = data.base || null;
+                    var location = base == null || (base.goods_detail_tips_location || null) == null ? '' : '-' + base.goods_detail_tips_location;
+                    var pause = (base == null ? 5 : base.goods_detail_time_pause || 5) * 1000;
+                    var interval = (base == null ? 10 : base.goods_detail_time_interval || 10) * 1000;
+                    var index = 0;
+                    var list = data.data;
+                    var count = list.length;
+                    var timer = setInterval(function() {
+                        self.setData({
+                            plugins_salerecords_tips_content: list[index]
+                        });
+                        setTimeout(function() {
+                            self.setData({
+                                plugins_salerecords_tips_content: null
+                            });
+                        }, pause);
+                        index++;
+                        if (index >= count) {
+                            index = 0;
+                        }
+                    }, interval);
+                    self.setData({
+                        plugins_salerecords_timer: timer,
+                        plugins_salerecords_tips_ent: location
+                    });
                 }
             },
             

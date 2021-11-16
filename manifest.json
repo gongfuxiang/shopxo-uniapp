@@ -61,30 +61,44 @@
                 "desc" : "你的位置将用于小程序中相应业务位置服务使用"
             }
         },
-        "plugins" : {
-            // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
-            // "live-player-plugin": {
-            //     "version": "1.3.0",
-            //     "provider": "wx2b03c6e691cd7370"
-            // },
-            // 好物推荐（需要开通权限 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx56c8f077de74b07c&token=1011820682&lang=zh_CN）
-            // "goodsSharePlugin": {
-            //     "version": "4.0.1",
-            //     "provider": "wx56c8f077de74b07c"
-            // }
-        }
+        "plugins" : {}
     },
+    // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
+    // "live-player-plugin": {
+    //     "version": "1.3.0",
+    //     "provider": "wx2b03c6e691cd7370"
+    // },
+    // 好物推荐（需要开通权限 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx56c8f077de74b07c&token=1011820682&lang=zh_CN）
+    // "goodsSharePlugin": {
+    //     "version": "4.0.1",
+    //     "provider": "wx56c8f077de74b07c"
+    // }
     "mp-alipay" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "appid" : "2021001173639600"
     },
     "mp-baidu" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "appid" : "16634987",
+        "setting" : {
+            "urlCheck" : false
+        }
     },
     "mp-toutiao" : {
-        "usingComponents" : true
+        "usingComponents" : true,
+        "appid" : "ttfb628ddf6458b04f",
+        "setting" : {
+            "urlCheck" : false
+        }
     },
     "networkTimeout" : {
         "request" : 10000,
         "downloadFile" : 10000
+    },
+    "mp-qq" : {
+        "appid" : "1110736292",
+        "setting" : {
+            "urlCheck" : false
+        }
     }
 }

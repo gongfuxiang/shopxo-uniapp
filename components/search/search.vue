@@ -1,8 +1,8 @@
 <template>
     <view>
-        <view class="search-content round" :style="'background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
+        <view class="search-content">
             <icon type="search" size="12"></icon>
-            <input type="text" confirm-type="search" :placeholder="propPlaceholder" placeholder-class="cr-grey" class="cr-base" @confirm="search_input_event">
+            <input type="text" confirm-type="search" :placeholder="propPlaceholder" placeholder-class="cr-grey" class="cr-base round wh-auto dis-block" @confirm="search_input_event" :style="'background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
         </view>
     </view>
 </template>

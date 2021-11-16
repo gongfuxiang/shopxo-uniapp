@@ -191,25 +191,23 @@
 */
 .goods-video {
     width: 100%;
-    position: absolute;
     top: 0;
     left: 0;
-    text-align: center;
     z-index: 1;
 }
 .goods-video video {
     width: 100%;
-    height: 55vh;
+    height: 55vh !important;
 }
 .goods-video-submit {
-    position: absolute;
     left: 50rpx;
-    top: calc(55vh - 110rpx);
+    top: auto;
+    bottom: 60rpx;
     z-index: 2;
 }
 .goods-video-submit image {
     width: 80rpx;
-    height: 80rpx;
+    height: 80rpx !important;
 }
 
 /**
@@ -401,8 +399,8 @@
  * 栏目右侧内容
  */
 .column-right-view {
-    width: calc(100% - 170rpx);
-    padding-right: 30rpx;
+    width: calc(100% - 190rpx);
+    margin-right: 50rpx;
 }
 
 /*
@@ -432,8 +430,9 @@
     background: #fff;
     border: 1px solid #3bb4f2;
     color: #3bb4f2;
-    padding: 3rpx 15rpx;
+    padding: 5rpx 15rpx;
     margin-bottom: 10rpx;
+    display: inline-table;
 }
 .goods-icon-container view:not(:last-child) {
     margin-right: 10rpx;
@@ -495,6 +494,20 @@
     top: 13%;
     left: auto;
 }
+.plugins-salerecords-tips-top-center {
+    top: 13%;
+}
+/* #ifdef MP-ALIPAY  */
+.plugins-salerecords-tips-top-left {
+    top: 5%;
+}
+.plugins-salerecords-tips-top-right {
+    top: 5%;
+}
+.plugins-salerecords-tips-top-center {
+    top: 5%;
+}
+/* #endif  */
 .plugins-salerecords-tips-bottom-left {
     left: 5%;
     bottom: 10%;
@@ -505,9 +518,6 @@
     bottom: 10%;
     left: auto;
     top: auto;
-}
-.plugins-salerecords-tips-top-center {
-    top: 5%;
 }
 .plugins-salerecords-tips-bottom-center {
     bottom: 10%;
@@ -547,13 +557,9 @@
 /*
 * 优惠劵 - 插件
 */
-.plugins-coupon-container-view .item-title {
-    position: absolute;
-    top: calc(50% - 20rpx);
-}
 .plugins-coupon-container-view .item {
-    margin-bottom: 10rpx;
-    padding: 3rpx 15rpx;
+    padding: 5rpx 15rpx;
+    display: inline-table;
 }
 .plugins-coupon-container-view .item:not(:last-child) {
     margin-right: 10rpx;
@@ -582,15 +588,11 @@
 /**
  * 批发 - 插件
  */
-.plugins-wholesale-container-view .item-title {
-    position: absolute;
-    top: calc(50% - 20rpx);
-}
 .plugins-wholesale-container-view .item {
-    margin-bottom: 10rpx;
-    padding: 3rpx 15rpx;
+    padding: 5rpx 15rpx;
     color: #ff6633;
     border: 1px dashed #ff9e7e;
+    display: inline-table;
 }
 .plugins-wholesale-container-view .item:not(:last-child) {
     margin-right: 10rpx;
