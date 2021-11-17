@@ -262,19 +262,17 @@
                         <!-- 是否详情展示相册 -->
                         <block v-if="common_is_goods_detail_show_photo == 1 && goods_photo.length > 0">
                             <view v-for="(item, index) in goods_photo" :key="index" class="goods-detail-photo">
-                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix">
-                                </image>
+                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                             </view>
                         </block>
                         <!-- web详情 -->
-                        <view v-if="common_app_is_use_mobile_detail == 0">
-                            <rich-text :nodes="goods.content_web || ''"></rich-text>
+                        <view v-if="common_app_is_use_mobile_detail == 0" class="padding-main">
+                            <rich-text :nodes="goods.content_web"></rich-text>
                         </view>
                         <!-- 手机独立详情 -->
                         <block v-if="common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0">
                             <view v-for="(item, index) in goods_content_app" :key="index" class="goods-detail-app">
-                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix">
-                                </image>
+                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                                 <view v-if="(item.content || null) != null" class="content-items">
                                     <view v-for="(items, index2) in item.content" :key="index2">{{items}}</view>
                                 </view>
@@ -501,9 +499,9 @@
         <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
 </template>
-
 <script>
     const app = getApp();
+    import htmlParser from '../../common/js/lib/html-parser.js';
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
@@ -765,28 +763,33 @@
                             uni.hideLoading();
                             if (res.data.code == 0) {
                                 var data = res.data.data;
+                                var goods = data.goods;
+                                // 富文本转nodes数组
+                                if((goods.content_web || null) != null) {
+                                    goods['content_web'] = htmlParser(goods.content_web);
+                                }
                                 this.setData({
                                     data_bottom_line_status: true,
                                     data_list_loding_status: 3,
-                                    goods: data.goods,
-                                    indicator_dots: data.goods.photo.length > 1,
-                                    autoplay: data.goods.photo.length > 1,
-                                    goods_photo: data.goods.photo,
+                                    goods: goods,
+                                    indicator_dots: goods.photo.length > 1,
+                                    autoplay: goods.photo.length > 1,
+                                    goods_photo: goods.photo,
                                     nav_more_list: data.nav_more_list || [],
-                                    goods_specifications_choose: data.goods.specifications.choose || [],
-                                    goods_content_app: data.goods.content_app || [],
-                                    buy_number: data.goods.buy_min_number || 1,
+                                    goods_specifications_choose: goods.specifications.choose || [],
+                                    goods_content_app: goods.content_app || [],
+                                    buy_number: goods.buy_min_number || 1,
                                     nav_favor_button_info: {
-                                        "text": (data.goods.is_favor == 1 ? '已' : '') + '收藏',
-                                        "status": data.goods.is_favor
+                                        "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
+                                        "status": goods.is_favor
                                     },
                                     buy_button: data.buy_button || null,
                                     top_nav_title_data: data.middle_tabs_nav || [],
-                                    goods_spec_base_price: data.goods.price,
-                                    goods_spec_base_original_price: data.goods.original_price,
-                                    goods_spec_base_inventory: data.goods.inventory,
-                                    goods_spec_base_images: data.goods.images,
-                                    show_field_price_text: data.goods.show_field_price_text == '价格' ? null : data.goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                                    goods_spec_base_price: goods.price,
+                                    goods_spec_base_original_price: goods.original_price,
+                                    goods_spec_base_inventory: goods.inventory,
+                                    goods_spec_base_images: goods.images,
+                                    show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
                                     plugins_seckill_data: data.plugins_seckill_data || null,
                                     plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
@@ -800,15 +803,15 @@
                                 // 好物分享
                                 this.setData({
                                     share_product: {
-                                        'item_code': data.goods.id.toString(),
-                                        'title': data.goods.title,
-                                        'image_list': data.goods.photo.map(function(v) {
+                                        'item_code': goods.id.toString(),
+                                        'title': goods.title,
+                                        'image_list': goods.photo.map(function(v) {
                                             return v.images;
                                         }),
-                                        'desc': data.goods.simple_desc,
-                                        'category_list': data.goods.category_names || [],
-                                        'src_mini_program_path': '/pages/goods-detail/goods-detail?goods_id=' + data.goods.id,
-                                        'brand_info.name': data.goods.brand_name,
+                                        'desc': goods.simple_desc,
+                                        'category_list': goods.category_names || [],
+                                        'src_mini_program_path': '/pages/goods-detail/goods-detail?goods_id=' + goods.id,
+                                        'brand_info.name': goods.brand_name,
                                     }
                                 });
 

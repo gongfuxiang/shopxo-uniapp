@@ -5,16 +5,16 @@
                 <view class="fw-b text-size-xl">{{data.title}}</view>
                 <view class="cr-grey margin-top-lg oh br-t padding-top-main">
                     <view class="fl">
-                        <text>发布时间：</text>
+                        <text>时间：</text>
                         <text>{{data.add_time}}</text>
                     </view>
                     <view class="fr">
-                        <text class="margin-left-xxxl">浏览次数：</text>
+                        <text class="margin-left-xxxl">浏览：</text>
                         <text>{{data.access_count}}</text>
                     </view>
                 </view>
             </view>
-            <view v-if="(data.content || null) != null" class="padding-main border-radius-main bg-white oh spacing-mb">
+            <view class="padding-main border-radius-main bg-white oh spacing-mb">
                 <rich-text :nodes="data.content"></rich-text>
             </view>
             <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
@@ -36,6 +36,7 @@
 </template>
 <script>
     const app = getApp();
+    import htmlParser from '../../common/js/lib/html-parser.js';
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
 
@@ -115,15 +116,19 @@
                         uni.stopPullDownRefresh();
                         var data = res.data.data;
                         if (res.data.code == 0 && (data.data || null) != null) {
+                            var article = data.data;
+                            if((article.content || null) != null) {
+                                article['content'] = htmlParser(article.content);
+                            }
                             this.setData({
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
-                                data: data.data,
+                                data: article,
                                 last_next: data.last_next || null
                             });
                             
                             // 标题
-                            uni.setNavigationBarTitle({title: data.data.title});
+                            uni.setNavigationBarTitle({title: article.title});
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,

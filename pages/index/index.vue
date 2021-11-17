@@ -34,13 +34,13 @@
 
                 <!-- 推荐文章 -->
                 <view v-if="article_list.length > 0" class="article-list border-radius-main bg-main oh br-main spacing-mb">
-                    <view class="left-content fl text-size-sm va-m tc fw-b cr-white padding-top-lg padding-bottom-lg padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</view>
+                    <view class="left-content fl text-size-sm va-m tc fw-b cr-white padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</view>
                     <view class="right-content fr bg-white va-m padding-left-lg padding-vertical-main">
                         <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
                             <block v-for="(item, index) in article_list" :key="index">
                                 <swiper-item class="single-text">
-                                    <text class="cr-base" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
-                                    <text class="margin-left-xs cr-base" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
+                                    <text class="cr-base text-size-sm" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
+                                    <text class="cr-base text-size-sm margin-left-xs" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
                                 </swiper-item>
                             </block>
                         </swiper>
@@ -338,7 +338,7 @@
                 // 名称
                 application_title: app.globalData.data.application_title,
                 // 顶部+搜索样式配置
-                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+5)+'px;',
+                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+8)+'px;',
                 search_style: '',
                 search_is_fixed: 0,
                 // 限时秒杀插件
@@ -506,7 +506,11 @@
             onPageScroll(e) {
                 var top = e.scrollTop > 35 ? 35 : e.scrollTop;
                 var num = top*7;
-                var val = (num > 220) ? 220 : num;
+                var base = 230;
+                // #ifdef MP-ALIPAY
+                    base = 235
+                // #endif
+                var val = (num > base) ? base : num;
                 this.setData({
                     search_style: 'width: calc(100% - '+val+'rpx);',
                     search_is_fixed: (top >= 35) ? 1 : 0,

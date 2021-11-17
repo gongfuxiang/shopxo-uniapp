@@ -2,19 +2,20 @@
  * 导航搜索、内容区域
  */
 .nav-search {
-    padding-right: 240rpx;
+    padding-right: 250rpx;
+    /* #ifdef MP-ALIPAY */
+    padding-right: 255rpx;
+    /* #endif */
     padding-bottom: 10px;
 }
 .category-content {
-    position: relative;
-    height: calc(100vh - 65px);
+    height: calc(100vh - 68px);
 }
 
 /**
 * 左侧导航
 */
 .left-nav {
-    background: #fff;
     width: 210rpx;
     height: 100%;
     overflow-x: hidden;
@@ -25,8 +26,6 @@
     line-height: 100rpx;
     font-size: 32rpx;
     padding: 0 10rpx;
-    text-align: center;
-    color: #666;
     border-left: 3px solid #fff;
     border-right: 3px solid #fff;
     overflow: hidden;
@@ -49,20 +48,15 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    position: absolute;
     top: 0;
     right: 0;
     background: #f5f5f5;
-}
-.one-vice-name {
-    font-weight: bold;
 }
 .content-item {
     display: -webkit-inline-box;
     width: calc(33.33% - 20rpx);
 }
 .content-item .content {
-    margin: 0 auto;
     padding: 15rpx 0;
 }
 .content-item .text {
@@ -72,9 +66,6 @@
 .content-item .icon {
     width: 100%;
     height: 120rpx;
-}
-.model-one {
-    padding: 10rpx;
 }
 .model-one .content-item:nth-child(3n) {
     border-right: 0;

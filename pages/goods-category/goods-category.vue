@@ -1,18 +1,18 @@
 <template>
     <view>
         <!-- 搜索框 -->
-        <view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+5)+'px;'">
+        <view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+8)+'px;'">
             <component-search propPlaceholder="输入商品名称搜索"></component-search>
         </view>
     
         <!-- 分类内容 -->
-        <view v-if="data_list.length > 0" class="category-content" :style="'height:calc(100vh - '+(status_bar_height+45)+'px);'">
+        <view v-if="data_list.length > 0" class="category-content pr" :style="'height:calc(100vh - '+(status_bar_height+48)+'px);'">
             <block v-if="category_show_level == 1">
                 <!-- 一级模式 -->
-                <view class="model-one  oh">
+                <view class="model-one padding-sm oh">
                     <block v-for="(v, index) in data_list" :key="index">
                         <view class="content-item padding-sm tc" :data-value="v.id" @tap="category_event">
-                            <view class="content bg-white wh-auto border-radius-main">
+                            <view class="content auto bg-white wh-auto border-radius-main">
                                 <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon radius"></image>
                                 <view class="text single-text">{{v.name}}</view>
                             </view>
@@ -22,19 +22,19 @@
             </block>
             <block v-else>
                 <!-- 一级内导航 -->
-                <view class="left-nav">
+                <view class="left-nav bg-white">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <view :class="'items ' + (item.active || '')" :data-index="index" @tap="nav_event">
+                        <view :class="'items tc cr-base ' + (item.active || '')" :data-index="index" @tap="nav_event">
                             <text>{{item.name}}</text>
                         </view>
                     </block>
                 </view>
-                <view class="right-container">
+                <view class="right-container pa">
                     <!-- 一级内基础容 -->
                     <view v-if="(data_content || null) != null" class="right-content padding-top-main padding-left-main padding-right-main">
                         <!-- 一级基础信息 --> 
                         <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" class="one-content bg-white padding-main border-radius-main spacing-mb" :data-value="data_content.id" @tap="category_event">
-                            <view v-if="(data_content.vice_name || null) != null" class="one-vice-name text-size" :style="'color:' + data_content.bg_color + ';'">{{data_content.vice_name}}</view>
+                            <view v-if="(data_content.vice_name || null) != null" class="text-size fw-b" :style="'color:' + data_content.bg_color + ';'">{{data_content.vice_name}}</view>
                             <view v-if="(data_content.describe || null) != null" class="cr-grey margin-top-sm">{{data_content.describe}}</view>
                         </view>
                         <!-- 一二级数据渲染 -->
