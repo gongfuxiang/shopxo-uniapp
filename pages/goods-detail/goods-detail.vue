@@ -138,7 +138,7 @@
                     <view class="fl item-title margin-top-sm">优惠券</view>
                     <view class="fr column-right-view border-radius-main single-text" @tap="popup_coupon_event">
                         <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                            <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';'">{{item.desc || item.name}}</view>
+                            <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{item.desc || item.name}}</view>
                         </block>
                     </view>
                 </view>
@@ -153,7 +153,7 @@
             <!-- icon -->
             <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container oh border-radius-main padding-horizontal-main margin-bottom-sm">
                 <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
-                    <view v-if="(item.name || null) != null" class="fl tc round" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-value="item.url || ''" @tap="url_event">{{item.name}}</view>
+                    <view v-if="(item.name || null) != null" class="fl tc round text-size-xs bg-white" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-value="item.url || ''" @tap="url_event">{{item.name}}</view>
                 </block>
             </view>
 
@@ -396,14 +396,14 @@
                         <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
                         <view class="share-items oh" @tap="share_base_event">
-                            <image :src="common_static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
+                            <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">一键分享给好友、群聊</text>
                         </view>
                         <!-- #endif -->
                         <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO -->
                         <view class="share-items oh">
                             <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
-                                <image :src="common_static_url+'share-weixin-icon.png'" mode="scaleToFill"></image>
+                                <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
                                 <text class="cr-gray single-text">一键分享给好友、群聊</text>
                             </button>
                         </view>
