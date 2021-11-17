@@ -1,7 +1,7 @@
 <template>
     <view>
-        <view class="search-content">
-            <icon type="search" size="12"></icon>
+        <view class="search-content pr">
+            <icon type="search" size="12" class="pa"></icon>
             <input type="text" confirm-type="search" :placeholder="propPlaceholder" placeholder-class="cr-grey" class="cr-base round wh-auto dis-block" @confirm="search_input_event" :style="'background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
         </view>
     </view>
@@ -53,13 +53,10 @@
     };
 </script>
 <style>
-    .search-content {
-        position: relative;
-    }
     .search-content icon {
-        position: absolute;
         left: 30rpx;
         top: calc(50% - 6px);
+        z-index: 1;
     }
     .search-content input {
         font-size: 26rpx;

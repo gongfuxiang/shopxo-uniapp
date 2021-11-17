@@ -51,7 +51,7 @@
                     </view>
                 </view>
             </view>
-            <view v-else class="payment-list oh bg-white tc cr-gray">没有支付方式</view>
+            <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-gray">没有支付方式</view>
         </component-popup>
     </view>
 </template>

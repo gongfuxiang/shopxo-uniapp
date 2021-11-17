@@ -2,9 +2,9 @@
  * 搜索
  */
 .search-keywords icon {
-    position: absolute;
     left: 30rpx;
     top: calc(50% - 6px);
+    z-index: 1;
 }
 .search-keywords input {
     font-size: 26rpx;
