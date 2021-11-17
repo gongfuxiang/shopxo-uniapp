@@ -32,11 +32,11 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                 </view>
                 
                 <!-- 结尾 -->
-                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </scroll-view>
 
             <!-- 拖拽按钮 -->
@@ -46,7 +46,7 @@
         </movable-area>
 
         <!-- 取货 popup -->
-        <component-popup :prop-show="is_show_take_popup" prop-position="bottom" @onclose="take_popup_event_close">
+        <component-popup :propShow="is_show_take_popup" propPosition="bottom" @onclose="take_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
                 <view class="form-gorup tc bg-white margin-top-lg">
                     <view class="form-gorup-title">取货码</view>
@@ -59,7 +59,7 @@
         </component-popup>
 
         <!-- 搜索 popup -->
-        <component-popup :prop-show="is_show_search_popup" prop-position="bottom" @onclose="search_popup_event_close">
+        <component-popup :propShow="is_show_search_popup" propPosition="bottom" @onclose="search_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
                 <view class="form-gorup tc bg-white margin-top-lg">
                     <view class="form-gorup-title">搜索条件</view>

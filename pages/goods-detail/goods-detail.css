@@ -278,18 +278,18 @@
     font-size: 36rpx;
 }
 .goods-spec-choose .item .spec button {
-    margin-top: 20rpx;
+    
     margin-right: 25rpx;
     padding: 0 30rpx;
     background-color: #f5f5f5;
     color: #666;
-    line-height: 22px;
-    height: 27px;
+    height: 60rpx;
+    line-height: 50rpx !important;
     border: 1px solid #ccc;
 }
 .goods-spec-choose .item .spec button image {
-    width: 20px;
-    height: 20px;
+    width: 40rpx;
+    height: 40rpx !important;
 }
 .spec-dont-choose {
     color: #b4b3b3 !important;

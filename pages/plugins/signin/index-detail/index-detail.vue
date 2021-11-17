@@ -82,11 +82,11 @@
             </view>
 
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>

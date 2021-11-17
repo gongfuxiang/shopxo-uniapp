@@ -30,11 +30,11 @@
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
             
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
     </view>
 </template>

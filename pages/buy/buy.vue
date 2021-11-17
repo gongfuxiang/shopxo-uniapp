@@ -1,7 +1,7 @@
 <template>
     <view>
         <block v-if="common_site_type == 1">
-            <component-no-data prop-status="2" prop-msg="展示型不允许提交订单"></component-no-data>
+            <component-no-data propStatus="2" propMsg="展示型不允许提交订单"></component-no-data>
         </block>
         <block v-else>
             <view v-if="goods_list.length > 0" class="page">
@@ -134,11 +134,11 @@
             </view>
 
             <view v-if="goods_list.length == 0">
-                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
 
             <!-- 优惠劵选择 -->
-            <component-popup :prop-show="popup_plugins_coupon_status" prop-position="bottom" @onclose="plugins_coupon_close_event">
+            <component-popup :propShow="popup_plugins_coupon_status" propPosition="bottom" @onclose="plugins_coupon_close_event">
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">

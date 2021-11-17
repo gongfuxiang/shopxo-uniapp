@@ -142,16 +142,16 @@
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
 
         <block v-if="new_aftersale_data != null && new_aftersale_data.status != 5">
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </block>
         
         <!-- 退货弹层 -->
-        <component-popup :prop-show="popup_delivery_status" prop-position="bottom" @onclose="popup_delivery_close_event">
+        <component-popup :propShow="popup_delivery_status" propPosition="bottom" @onclose="popup_delivery_close_event">
             <view class="delivery-popup bg-base padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">

@@ -3,12 +3,12 @@
         <view v-if="(data_base || null) != null">
             <!-- 搜索框 -->
             <view class="nav-search padding-horizontal-main padding-top-main">
-                <component-search prop-br-color="#efefef" prop-bg-color="#fff" prop-url="/pages/plugins/blog/search/search"></component-search>
+                <component-search propBrColor="#efefef" propBgColor="#fff" propUrl="/pages/plugins/blog/search/search"></component-search>
             </view>
 
             <!-- 轮播 -->
             <view v-if="slide_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <component-banner :prop-data="slide_list"></component-banner>
+                <component-banner :propData="slide_list"></component-banner>
             </view>
 
             <!-- 分类 -->
@@ -97,11 +97,11 @@
             </view>
 
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>

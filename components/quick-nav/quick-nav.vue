@@ -8,7 +8,7 @@
         </movable-area>
 
         <!-- 弹窗 -->
-        <component-popup :prop-show="popup_status" prop-position="bottom" @onclose="quick_close_event">
+        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
             <view :class="'nav-popup-container '+common_ent">
                 <view class="close oh">
                     <view class="icon-right" @tap.stop="quick_close_event">
@@ -26,7 +26,7 @@
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
-                        <component-no-data :prop-status="0"></component-no-data>
+                        <component-no-data :propStatus="0"></component-no-data>
                     </view>
                 </view>
             </view>

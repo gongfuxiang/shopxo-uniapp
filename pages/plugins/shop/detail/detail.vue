@@ -75,7 +75,7 @@
             <!-- 数据模式 -->
             <block v-if="(shop.data_model || 0) == 1">
                 <!-- 拖拽模式、引入拖拽数据模块 -->
-                <component-layout :prop-data="data"></component-layout>
+                <component-layout :propData="data"></component-layout>
             </block>
             <!-- 自动模式 -->
             <block v-else>
@@ -107,17 +107,17 @@
                     </block>
                     <block v-else>
                         <!-- 提示信息 -->
-                        <component-no-data prop-status="0"></component-no-data>
+                        <component-no-data propStatus="0"></component-no-data>
                     </block>
                 </view>
             </block>
 
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>

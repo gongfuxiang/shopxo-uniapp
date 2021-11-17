@@ -2,7 +2,7 @@
     <view>
         <!-- 搜索框 -->
         <view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+5)+'px;'">
-            <component-search prop-placeholder="输入商品名称搜索"></component-search>
+            <component-search propPlaceholder="输入商品名称搜索"></component-search>
         </view>
     
         <!-- 分类内容 -->
@@ -75,7 +75,7 @@
                         </block>
                         <block v-else>
                             <!-- 提示信息 -->
-                            <component-no-data prop-status="0" prop-msg="没有子分类数据"></component-no-data>
+                            <component-no-data propStatus="0" propMsg="没有子分类数据"></component-no-data>
                         </block>
                     </view>
                 </view>
@@ -84,7 +84,7 @@
 
         <view v-if="data_list.length == 0 && data_list_loding_status != 0">
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
         </view>
 
         <!-- 快捷导航 -->

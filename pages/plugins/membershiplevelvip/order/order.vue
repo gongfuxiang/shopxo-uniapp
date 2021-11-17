@@ -35,15 +35,15 @@
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
                     
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
 
         <!-- 支付方式 popup -->
-        <component-popup :prop-show="is_show_payment_popup" prop-position="bottom" @onclose="payment_popup_event_close">
+        <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
             <view v-if="payment_list.length > 0" class="payment-list oh bg-base padding-vertical-main">
                 <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
                     <view class="item-content bg-white border-radius-main margin-main" :data-value="item.id" @tap="popup_payment_event">

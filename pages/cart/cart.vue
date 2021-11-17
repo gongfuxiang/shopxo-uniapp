@@ -96,7 +96,7 @@
         
         <!-- 提示信息 -->
         <block v-if="data_list.length == 0 && data_list_loding_status != 0">
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
 
         <!-- 快捷导航 -->

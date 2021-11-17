@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 轮播 -->
                 <view v-if="slider.length > 0">
-                    <component-banner :prop-data="slider" prop-size="mini"></component-banner>
+                    <component-banner :propData="slider" propSize="mini"></component-banner>
                 </view>
                 
                 <!-- 公告信息 -->
@@ -18,7 +18,7 @@
                 <view class="oh spacing-mb">
                     <text :class="'va-m '+(is_valid == 1 ? 'cr-base' : 'cr-red')">{{time.msg}}</text>
                     <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                        <component-countdown :prop-hour="time.hours" :prop-minute="time.minutes" :prop-second="time.seconds"></component-countdown>
+                        <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds"></component-countdown>
                     </view>
                 </view>
 
@@ -41,16 +41,16 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data prop-status="0" prop-msg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
                 </view>
             </view>
 
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>

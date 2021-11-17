@@ -3,7 +3,7 @@
         <view v-if="(data_base || null) != null">
             <!-- 轮播 -->
             <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <component-banner :prop-data="slider_list" prop-size="mini"></component-banner>
+                <component-banner :propData="slider_list" propSize="mini"></component-banner>
             </view>
 
             <!-- 分类 -->
@@ -31,11 +31,11 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </view>
 
                 <!-- 结尾 -->
-                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </scroll-view>
         </view>
     </view>

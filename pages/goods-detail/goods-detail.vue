@@ -24,7 +24,7 @@
             </view>
             <!-- 顶部导航 -->
             <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
-                <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height">
+                <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height">
                     <view class="top-nav padding-bottom padding-horizontal-main">
                         <view class="top-nav-content tc">
                             <block v-for="(item, index) in top_nav_title_data" :key="index">
@@ -80,7 +80,7 @@
                 <!-- 秒杀 -->
                 <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-lg fr tc">
                     <view class="time-title cr-white single-text">{{plugins_seckill_data.title || '限时秒杀'}}</view>
-                    <component-countdown :prop-hour="plugins_seckill_data.time.hours" :prop-minute="plugins_seckill_data.time.minutes" :prop-second="plugins_seckill_data.time.seconds" :prop-msec-show="true" prop-time-size="32" prop-time-padding="0" prop-time-weight="bold" prop-time-background-color="transparent" prop-time-color="#ffe500" prop-ds-color="#fff"></component-countdown>
+                    <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds" :propMsecShow="true" propTimeSize="32" propTimePadding="0" propTimeWeight="bold" propTimeBackgroundColor="transparent" propTimeColor="#ffe500" propDsColor="#fff"></component-countdown>
                 </view>
             </view>
 
@@ -283,7 +283,7 @@
             </view>
             
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作 -->
             <view class="goods-buy-nav oh wh-auto bg-white br-t">
@@ -295,7 +295,7 @@
                     <view class="item fl">
                         <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
                             <view class="badge-icon">
-                                <component-badge :prop-number="quick_nav_cart_count"></component-badge>
+                                <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                             </view>
                             <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-gray">购物车</text>
@@ -321,7 +321,7 @@
             </view>
 
             <!-- 购买弹层 -->
-            <component-popup :prop-show="popup_status" prop-position="bottom" @onclose="popup_close_event">
+            <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
                 <view class="goods-popup padding-main bg-white">
                     <view class="close fr oh">
                         <view class="fr" @tap.stop="popup_close_event">
@@ -352,7 +352,7 @@
                                 <view v-if="item.value.length > 0" class="spec">
                                     <block v-for="(items, keys) in item.value" :key="keys">
                                         <button @tap.stop="goods_specifications_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m round margin-right-sm"></image>
+                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
                                             <text class="va-m">{{items.name}}</text>
                                         </button>
                                     </block>
@@ -375,7 +375,7 @@
             </component-popup>
 
             <!-- 分享弹层 -->
-            <component-popup :prop-show="popup_share_status" prop-position="bottom" @onclose="popup_share_close_event">
+            <component-popup :propShow="popup_share_status" propPosition="bottom" @onclose="popup_share_close_event">
                 <view class="share-popup bg-white">
                     <view class="close fr oh">
                         <view class="fr" @tap.stop="popup_share_close_event">
@@ -415,7 +415,7 @@
             </component-popup>
             
             <!-- 批发弹层 -->
-            <component-popup :prop-show="popup_wholesale_status" prop-position="bottom" @onclose="popup_wholesale_close_event">
+            <component-popup :propShow="popup_wholesale_status" propPosition="bottom" @onclose="popup_wholesale_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_wholesale_close_event">
@@ -443,7 +443,7 @@
             </component-popup>
             
             <!-- 优惠券弹层 -->
-            <component-popup :prop-show="popup_coupon_status" prop-position="bottom" @onclose="popup_coupon_close_event">
+            <component-popup :propShow="popup_coupon_status" propPosition="bottom" @onclose="popup_coupon_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
@@ -485,18 +485,18 @@
         </view>
 
         <!-- 提示信息 -->
-        <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 
         <!-- 在线客服 -->
         <block v-if="goods != null">
-            <component-online-service :prop-is-nav="true" :prop-card="true" :prop-title="goods.title" :prop-img="goods.images" :prop-path="'/pages/goods-detail/goods-detail?goods_id='+goods.id"></component-online-service>
+            <component-online-service :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?goods_id='+goods.id"></component-online-service>
         </block>
         <block v-else>
-            <component-online-service :prop-is-nav="true"></component-online-service>
+            <component-online-service :propIsNav="true"></component-online-service>
         </block>
 
         <!-- 快捷导航 -->
-        <component-quick-nav :prop-is-nav="true"></component-quick-nav>
+        <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
 </template>
 

@@ -33,23 +33,23 @@
                             </view>
 
                             <!-- 结尾 -->
-                            <component-bottom-line :prop-status="true"></component-bottom-line>
+                            <component-bottom-line :propStatus="true"></component-bottom-line>
                         </block>
                         <block v-else>
                             <!-- 提示信息 -->
-                            <component-no-data prop-status="0" prop-msg="购买时长未配置"></component-no-data>
+                            <component-no-data propStatus="0" propMsg="购买时长未配置"></component-no-data>
                         </block>
                     </block>
                 </block>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data prop-status="0" prop-msg="未配置会员等级"></component-no-data>
+                <component-no-data propStatus="0" propMsg="未配置会员等级"></component-no-data>
             </view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>

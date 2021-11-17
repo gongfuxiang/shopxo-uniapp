@@ -11,14 +11,14 @@
                 <view v-if="load_status == 1" :class="search_is_fixed == 1 ? 'search-content-fixed bg-main' : ''" :style="search_is_fixed == 1 ? top_content_style : ''">
                     <view :style="search_style">
                         <view class="margin-horizontal-main">
-                            <component-search prop-placeholder="输入商品名称搜索" prop-bg-color="#fff"></component-search>
+                            <component-search propPlaceholder="输入商品名称搜索" propBgColor="#fff"></component-search>
                         </view>
                     </view>
                 </view>
-                
+
                 <!-- 轮播 -->
                 <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
-                    <component-banner :prop-data="banner_list"></component-banner>
+                    <component-banner :propData="banner_list"></component-banner>
                 </view>
             </view>
 
@@ -26,7 +26,7 @@
             <view class="content padding-horizontal-main">
                 <!-- 导航 -->
                 <view v-if="navigation.length > 0">
-                    <component-icon-nav :prop-data="navigation"></component-icon-nav>
+                    <component-icon-nav :propData="navigation"></component-icon-nav>
                 </view>
 
                 <!-- 商城公告 -->
@@ -59,7 +59,7 @@
                     <view class="spacing-nav-title">
                         <text class="text-wrapper va-m">限时秒杀</text>
                         <view class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown :prop-hour="plugins_seckill_data.time.hours" :prop-minute="plugins_seckill_data.time.minutes" :prop-second="plugins_seckill_data.time.seconds"></component-countdown>
+                            <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds"></component-countdown>
                         </view>
                         <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
@@ -144,7 +144,7 @@
                     <!-- 数据模式0,1自动+手动、2拖拽 -->
                     <block v-if="home_index_floor_data_type == 2">
                         <!-- 引入拖拽数据模块 -->
-                        <component-layout :prop-data="data_list"></component-layout>
+                        <component-layout :propData="data_list"></component-layout>
                     </block>
                     <block v-else>
                         <!-- 自动+手动 -->
@@ -279,11 +279,11 @@
             
             <!-- 提示信息 -->
             <block v-if="load_status == 0">
-                <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </block>
             
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             
             <!-- 版权信息 -->
             <view v-if="load_status == 1">
@@ -292,10 +292,10 @@
         </view>
 
         <!-- 在线客服 -->
-        <component-online-service :prop-is-nav="true" :prop-is-grayscale="plugins_mourning_data || 0"></component-online-service>
+        <component-online-service :propIsNav="true" :propIsGrayscale="plugins_mourning_data || 0"></component-online-service>
         
         <!-- 快捷导航 -->
-        <component-quick-nav :prop-is-nav="true" :prop-is-grayscale="plugins_mourning_data || 0"></component-quick-nav>
+        <component-quick-nav :propIsNav="true" :propIsGrayscale="plugins_mourning_data || 0"></component-quick-nav>
     </view>
 </template>
 

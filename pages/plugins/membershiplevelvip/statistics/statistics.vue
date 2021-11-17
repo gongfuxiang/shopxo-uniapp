@@ -34,7 +34,7 @@
         </view>
 
         <!-- 结尾 -->
-        <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
     </view>
 </template>
 

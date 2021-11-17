@@ -3,7 +3,7 @@
         <!-- 顶部内容 -->
         <view class="top-content" :style="top_content_style">  
             <!-- 导航标题 -->
-            <component-trn-nav :prop-scroll="scroll_value" :prop-height="top_nav_height" :prop-title="nav_title"></component-trn-nav>
+            <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height" :propTitle="nav_title"></component-trn-nav>
 
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
@@ -19,7 +19,7 @@
                         <navigator url="/pages/message/message" hover-class="none">
                             <uni-icons type="chat" size="16" color="#e2e2e2"></uni-icons>
                             <view class="badge-icon pa">
-                                <component-badge :prop-number="message_total"></component-badge>
+                                <component-badge :propNumber="message_total"></component-badge>
                             </view>
                         </navigator>
                     </view>
@@ -53,7 +53,7 @@
                             <navigator :url="items.url" hover-class="none">
                                 <view class="item pr fl tc">
                                     <view class="badge-icon pa">
-                                        <component-badge :prop-number="items.count"></component-badge>
+                                        <component-badge :propNumber="items.count"></component-badge>
                                     </view>
                                     <image class="item-icon margin-bottom-xs" :src="static_url+'order-icon-' + items.status + '.png'" mode="aspectFill"></image>
                                     <view class="item-name cr-base">{{items.name}}</view>
@@ -99,10 +99,10 @@
         </view>
 
         <!-- 在线客服 -->
-        <component-online-service :prop-is-nav="true"></component-online-service>
+        <component-online-service :propIsNav="true"></component-online-service>
 
         <!-- 快捷导航 -->
-        <component-quick-nav :prop-is-nav="true"></component-quick-nav>
+        <component-quick-nav :propIsNav="true"></component-quick-nav>
 
         <!-- 版权信息 -->
         <component-copyright></component-copyright>

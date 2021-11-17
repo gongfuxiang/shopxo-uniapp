@@ -30,15 +30,15 @@
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
 
             <!-- 结尾 -->
-            <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
 
         <!-- 筛选条件 popup -->
-        <component-popup :prop-show="is_show_popup_form" prop-position="left" @onclose="popup_form_event_close">
+        <component-popup :propShow="is_show_popup_form" propPosition="left" @onclose="popup_form_event_close">
             <form @submit="form_submit_event" class="popup-form oh">
                 <view class="search-map padding-main bg-base">
                     <view class="padding-main border-radius-main bg-white">

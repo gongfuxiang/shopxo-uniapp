@@ -24,7 +24,7 @@
         </form>
         <view v-else>
             <!-- 提示信息 -->
-            <component-no-data :prop-status="data_list_loding_status"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
         </view>
     </view>
 </template>

@@ -5,21 +5,21 @@
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search prop-placeholder="输入商品名称搜索"></component-search>
+                    <component-search propPlaceholder="输入商品名称搜索"></component-search>
                 </view>
             </block>
 
             <!-- 拖拽模式、引入拖拽数据模块 -->
-            <component-layout :prop-data="layout_data"></component-layout>
+            <component-layout :propData="layout_data"></component-layout>
 
             <!-- 结尾 -->
             <block v-if="(data.is_footer || 0) == 1">
                 <!-- 结尾 -->
-                <component-bottom-line :prop-status="data_bottom_line_status"></component-bottom-line>
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </block>
         </view>
         <view v-else>
-            <component-no-data :prop-status="data_list_loding_status" :prop-msg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
