@@ -89,9 +89,8 @@
                 content_list: [
                     {name: "开通单号", field: "payment_user_order_no"},
                     {name: "开通时长", field: "period_unit"},
-                    {name: "充值金额", field: "price", unit: "元"},
-                    {name: "支付金额", field: "pay_price", unit: "元"},
-                    {name: "结算状态", field: "settlement_status_name"}
+                    {name: "订单金额", field: "price", unit: "元"},
+                    {name: "支付金额", field: "pay_price", unit: "元"}
                 ]
             };
         },
@@ -290,7 +289,6 @@
 
             // 支付方法
             pay_handle(order_id, index) {
-                var self = this;
                 uni.showLoading({
                     title: "请求中..."
                 });
@@ -305,26 +303,13 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            var data = res.data.data.data;
-                            uni.requestPayment({
-                                timeStamp: data.timeStamp,
-                                nonceStr: data.nonceStr,
-                                package: data.package,
-                                signType: data.signType,
-                                paySign: data.paySign,
-                                success: function(res) {
-                                    // 数据设置
-                                    self.order_item_pay_success_handle(index);
-                                    
-                                    // 跳转支付页面
-                                    uni.navigateTo({
-                                        url: "/pages/paytips/paytips?code=9000&total_price=" + self.data_list[index]['price']
-                                    });
-                                },
-                                fail: function(res) {
-                                    app.globalData.showToast('支付失败');
-                                }
-                            });
+                            var data = res.data.data;
+                            // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+                            this.common_pay_handle(this, data, index);
+                            // #endif
+                            // #ifdef MP-QQ
+                            this.qq_pay_handle(this, data, index);
+                            // #endif
                         } else {
                             app.globalData.showToast(res.data.msg);
                         }
@@ -335,11 +320,79 @@
                     }
                 });
             },
+            
+            // 微信、支付宝、百度、头条、QQ支付处理
+            common_pay_handle(self, data, index) {
+                uni.requestPayment({
+                    // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+                    orderInfo: data.data,
+                    // #endif
+                    // #ifdef MP-QQ
+                    package: data.data,
+                    // #endif
+                    // #ifdef MP-WEIXIN
+                    timeStamp: data.data.timeStamp,
+                    nonceStr: data.data.nonceStr,
+                    package: data.data.package,
+                    signType: data.data.signType,
+                    paySign: data.data.paySign,
+                    // #endif
+                    // #ifdef MP-TOUTIAO
+                    service: 5,
+                    // #endif
+                    success: res => {
+                        // #ifdef MP-ALIPAY
+                        if (res.resultCode != 9000) {
+                            app.globalData.showToast(res.memo || '支付失败');
+                            return false;
+                        }
+                        // #endif
+                        // #ifdef MP-TOUTIAO
+                        if (res.code != 0) {
+                            app.globalData.showToast('支付失败');
+                            return false;
+                        }
+                        // #endif
+            
+                        // 数据设置
+                        self.order_item_pay_success_handle(index);
+                    
+                        // 跳转支付页面
+                        uni.navigateTo({
+                            url: "/pages/paytips/paytips?code=9000"
+                        });
+                    },
+                    fail: res => {
+                        app.globalData.showToast('支付失败');
+                    }
+                });
+            },
+            
+            // QQ支付处理
+            qq_pay_handle(self, data, index) {
+                // 是否微信支付
+                if(data.payment.payment == 'Weixin') {
+                    uni.requestWxPayment({
+                        url: data.data,
+                        referer: app.globalData.data.request_url,
+                        success: function(res) {
+                            app.globalData.alert({msg: '支付成功后、请不要重复支付、如果订单状态未成功请联系客服处理', is_show_cancel: 0});
+                            self.get_data_list();
+                        },
+                        fail: function (res) {
+                            app.globalData.showToast('支付失败');
+                        }
+                    });
+                } else {
+                    self.common_pay_handle(self, data, index);
+                }
+            },
 
             // 支付成功数据设置
             order_item_pay_success_handle(index) {
                 // 数据设置
                 var temp_data_list = this.data_list;
+                temp_data_list[index]['pay_price'] = temp_data_list[index]['price'];
                 temp_data_list[index]['status'] = 1;
                 temp_data_list[index]['status_name'] = '已支付';
                 this.setData({

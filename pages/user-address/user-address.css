@@ -6,7 +6,7 @@
     height: 35rpx !important;
 }
 .address-alias {
-    padding: 2rpx 10rpx;
+    padding: 0 10rpx;
 }
 .address .text {
     line-height: 44rpx;

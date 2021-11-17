@@ -19,14 +19,14 @@
 .address-alias,
 .goods-group-alias,
 .goods-group-map-submit {
-    padding: 5rpx 15rpx;
+    padding: 0 15rpx;
     line-height: 40rpx;
 }
 
 /**
 * 商品
 */
-.goods-group-list .goods-item:not(:last-child) {
+.goods-group-list .goods-content .goods-item:not(:last-child) {
     border-bottom: 1px dashed #efefef;
 }
 .goods-group-icon {
@@ -40,9 +40,6 @@
 .goods-group-alias {
     border: 1px solid #3bb4f2;
     color: #3bb4f2;
-}
-.goods-item {
-    padding: 20rpx 0;
 }
 .goods-image {
     width: 160rpx;

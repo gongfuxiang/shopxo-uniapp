@@ -607,6 +607,7 @@ button[disabled].bg-gray {
 }
 .item-operation button {
     padding: 0 35rpx;
+    height: 58rpx;
     line-height: 58rpx;
     display: inline-flex;
 }

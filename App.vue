@@ -535,12 +535,13 @@
             showToast(msg, status) {
                 if ((status || 'error') == 'success') {
                     uni.showToast({
+                        icon: 'success',
                         title: msg,
                         duration: 3000
                     });
                 } else {
                     uni.showToast({
-                        image: "/static/images/common/toast-error.png",
+                        icon: 'none',
                         title: msg,
                         duration: 3000
                     });

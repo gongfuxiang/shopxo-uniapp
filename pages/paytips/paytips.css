@@ -15,5 +15,7 @@ page {
 .btn-box button {
     height: 80rpx;
     line-height: 80rpx;
+    padding-top: 0;
+    padding-bottom: 0;
     width: 300rpx;
 }

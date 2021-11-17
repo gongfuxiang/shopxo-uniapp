@@ -19,12 +19,12 @@
                         <view class="fl cr-base fw-b single-text margin-left-sm margin-right-sm">{{user_wallet.give_money || '0.00'}}</view>
                         <view class="fl cr-gray unit">元</view>
                     </view>
-                    <view class="submit-container pa">
+                    <view class="submit-container pa oh">
                         <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/recharge/recharge" hover-class="none">
-                            <button class="round cr-white bg-green br-green text-size-sm" size="mini" type="default" hover-class="none">充值</button>
+                            <button class="round cr-white bg-green br-green text-size-sm fl" size="mini" type="default" hover-class="none">充值</button>
                         </navigator>
                         <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" class="dis-inline" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none">
-                            <button class="round cr-white bg-main br-main text-size-sm margin-left-lg" size="mini" type="default" hover-class="none">提现</button>
+                            <button class="round cr-white bg-main br-main text-size-sm fl margin-left-lg" size="mini" type="default" hover-class="none">提现</button>
                         </navigator>
                     </view>
                 </view>
