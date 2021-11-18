@@ -1,6 +1,6 @@
 <template>
     <view>
-        <block>
+        <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY -->
             <!-- 开启事件 -->
             <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
                 <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
@@ -9,7 +9,7 @@
                     </button>
                 </movable-view>
             </movable-area>
-        </block>
+        <!-- #endif -->
     </view>
 </template>
 <script>
