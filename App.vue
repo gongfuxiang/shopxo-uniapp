@@ -43,7 +43,7 @@
                 // 版本号
                 version: "v2.2.1",
                 // 货币价格符号
-                currency_symbol: "￥",                
+                currency_symbol: "￥",
                 // 主题类型        主题颜色
                 // 黄色 yellow    #f6c133
                 // 红色 red       #ff0036
@@ -597,7 +597,6 @@
                 if (user == false) {
                     return true;
                 }
-                
                 // 是否需要绑定手机号码
                 if ((user.is_mandatory_bind_mobile || 0) == 1) {
                     if ((user.mobile || null) == null) {
@@ -614,7 +613,6 @@
                 var json = new Object();
                 if ((url_params || null) != null) {
                     var arr = url_params.split('&');
-
                     for (var i = 0; i < arr.length; i++) {
                         var temp = arr[i].split('=');
                         json[temp[0]] = temp[1];
@@ -983,6 +981,35 @@
                     value = 'h5';
                 //#endif
                 return value;
+            },
+
+            // 授权验证
+            auth_check(object, method, scope, msg) {
+                var self = this;
+                uni.getSetting({
+                    success(res) {
+                        if (!res.authSetting[scope]) {
+                            uni.authorize({
+                                scope: scope,
+                                success (res) {
+                                    if (typeof object === 'object' && (method || null) != null) {
+                                        object[method](1);
+                                    }
+                                },
+                                fail (res) {
+                                    self.showToast(msg || '请打开授权');
+                                    setTimeout(function() {
+                                        uni.openSetting();
+                                    }, 1000);
+                                }
+                            });
+                        } else {
+                            if (typeof object === 'object' && (method || null) != null) {
+                                object[method](1);
+                            }
+                        }
+                    }
+                });
             }
         },
 

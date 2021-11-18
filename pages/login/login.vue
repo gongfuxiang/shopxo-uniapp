@@ -17,7 +17,9 @@
                 <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                 <view class="margin-top-xxxl padding-top-xxxl">
                     <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" @tap="confirm_verify_event">验证码登录</button>
+                    <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
                     <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
+                    <!-- #endif -->
                 </view>
             </view>
         </view>
@@ -98,7 +100,6 @@
                         common_user_is_onekey_bind_mobile: app.globalData.get_config('config.common_user_is_onekey_bind_mobile'),
                         home_site_logo_square: app.globalData.get_config('config.home_site_logo_square')
                     });
-                    console.log(this.home_site_logo_square)
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -144,30 +145,17 @@
                 this.user_auth_code(userinfo);
                 // #endif
                 // #ifdef MP-TOUTIAO
-                var self = this;
-                uni.getSetting({
-                    success(res) {
-                        if (!res.authSetting['scope.userInfo']) {
-                            uni.authorize({
-                                scope: 'scope.userInfo',
-                                success (res) {},
-                                fail (res) {
-                                    app.globalData.showToast('请同意用户授权');
-                                    setTimeout(function() {
-                                        uni.openSetting();
-                                    }, 1000);
-                                }
-                            });
-                        } else {
-                            uni.getUserInfo({
-                                success (res) {
-                                    var userinfo = JSON.parse(res.rawData);
-                                    self.user_auth_code(userinfo);
-                                }
-                            });
+                if(e == 1) {
+                    var self = this;
+                    uni.getUserInfo({
+                        success (res) {
+                            var userinfo = JSON.parse(res.rawData);
+                            self.user_auth_code(userinfo);
                         }
-                    }
-                });
+                    });
+                } else {
+                    app.globalData.auth_check(this, 'get_user_info_event', 'scope.userInfo');
+                }
                 // #endif
             },
 
