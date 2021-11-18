@@ -1,7 +1,9 @@
 <template>
-    <view v-if="propNumber > 0" class="am-badge">
-        <view :class="'am-badge-text ' + ((propNumber > 99) ? 'am-badge-text-max' : '')">
-            <text>{{(propNumber > 99) ? '99+' : propNumber}}</text>
+    <view>
+        <view v-if="propNumber > 0" class="am-badge">
+            <view :class="'am-badge-text ' + ((propNumber > 99) ? 'am-badge-text-max' : '')">
+                <text>{{(propNumber > 99) ? '99+' : propNumber}}</text>
+            </view>
         </view>
     </view>
 </template>
@@ -12,7 +14,10 @@
         },
         components: {},
         props: {
-            propNumber: Number
+            propNumber: {
+            	type:[Number,String],
+            	default: 0
+            }
         },
         methods: {}
     };

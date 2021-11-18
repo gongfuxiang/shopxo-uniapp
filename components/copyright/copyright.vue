@@ -1,6 +1,8 @@
 <template>
-    <view class="copyright">
-        <view class="text">Powered by ShopXO {{version}}</view>
+    <view>
+        <view class="copyright">
+            <view class="text">Powered by ShopXO {{version}}</view>
+        </view>
     </view>
 </template>
 <script>

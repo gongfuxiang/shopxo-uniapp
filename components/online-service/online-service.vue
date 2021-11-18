@@ -1,15 +1,18 @@
 <template>
     <view>
-        <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY -->
-            <!-- 开启事件 -->
-            <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
-                <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
-                    <button :class="common_ent" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                        <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
-                    </button>
-                </movable-view>
-            </movable-area>
-        <!-- #endif -->
+        <!-- 开启事件 -->
+        <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
+            <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
+                <button :class="common_ent" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                    <!-- #ifdef MP-ALIPAY -->
+                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="60rpx*60rpx" />
+                    <!-- #endif -->
+                    <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
+                    <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
+                    <!-- #endif -->
+                </button>
+            </movable-view>
+        </movable-area>
     </view>
 </template>
 <script>
@@ -20,6 +23,9 @@
             return {
                 common_static_url: common_static_url,
                 online_service_status: 0,
+                mini_alipay_tnt_inst_id: null,
+                mini_alipay_scene: null,
+                mini_alipay_openid: null,
                 system: null,
                 x: 0,
                 y: 0,
@@ -87,9 +93,24 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    // #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY
                     this.setData({
                         online_service_status: app.globalData.get_config('config.common_app_is_online_service') || 0
                     });
+                    // #endif
+
+                    // #ifdef MP-ALIPAY
+                    // 在线客服开启，获取用户openid
+                    if(this.online_service_status == 1)
+                    {
+                        this.setData({
+                            mini_alipay_tnt_inst_id: app.globalData.get_config('config.common_app_mini_alipay_tnt_inst_id'),
+                            mini_alipay_scene: app.globalData.get_config('config.common_app_mini_alipay_scene'),
+                            mini_alipay_openid: app.globalData.get_user_cache_info('alipay_openid')
+                        });
+                    }
+                    // #endif
+                    console.log(this.mini_alipay_tnt_inst_id, this.mini_alipay_scene, this.mini_alipay_openid)
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -127,4 +148,10 @@
         width: 60rpx !important;
         height: 60rpx !important;
     }
+    /* #ifdef MP-ALIPAY */
+    .online-service-event-submit contact-button {
+        line-height: initial;
+        display: block;
+    }
+    /* #endif */
 </style>

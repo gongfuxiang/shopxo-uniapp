@@ -1,6 +1,6 @@
 <template>
-    <view v-if="propData.length > 0">
-        <view class="data-list">
+    <view>
+        <view v-if="propData.length > 0" class="data-list">
             <view v-for="(item, index) in propData" :key="index" class="items">
                 <view class="items-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
                     <image :src="item.images_url" mode="aspectFit"></image>

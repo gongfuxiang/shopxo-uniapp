@@ -1,8 +1,10 @@
 <template>
-    <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
-        <view class="popup-mask" v-if="propMask || true" @tap="onMaskTap"></view>
-        <view :class="'popup-content popup-' + propPosition || 'bottom'">
-            <slot></slot>
+    <view>
+        <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
+            <view class="popup-mask" v-if="propMask || true" @tap="onMaskTap"></view>
+            <view :class="'popup-content popup-' + propPosition || 'bottom'">
+                <slot></slot>
+            </view>
         </view>
     </view>
 </template>
