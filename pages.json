@@ -708,6 +708,13 @@
         		"enablePullDownRefresh": true,
         		"navigationBarTitleText": "博文详情"
         	}
+        },
+        {
+        	"path": "pages/plugins/express/detail/detail",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "物流详情"
+        	}
         }
 	],
     "subPackages": [],

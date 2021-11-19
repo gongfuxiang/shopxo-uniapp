@@ -18,7 +18,7 @@
                             <image class="icon va-m" :src="common_static_url+'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                         </view>
                         <!-- 基础信息 -->
-                        <view class="fl" @tap="warehouse_group_event" :data-value="item.warehouse_url || ''">
+                        <view class="fl" @tap="url_event" :data-value="item.warehouse_url || ''">
                             <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-sm" :src="item.warehouse_icon" mode="aspectFit"></image>
                             <text class="cr-base va-m">{{item.warehouse_name}}</text>
                         </view>
@@ -50,9 +50,10 @@
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                         <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
+                        <button v-if="(item.plugins_express_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id='+item.id" hover-class="none">物流</button>
                         <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
-                        <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                         <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
+                        <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                     </view>
                 </view>
             </view>
@@ -721,8 +722,8 @@
                 });
             },
 
-            // 仓库事件
-            warehouse_group_event(e) {
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
             }
         }

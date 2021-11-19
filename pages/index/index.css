@@ -43,14 +43,14 @@
  */
 .article-list .left-content {
     width: calc(25% - 40rpx);
-    height: 68rpx;
-    line-height: 68rpx;
+    height: 78rpx;
+    line-height: 78rpx;
 }
 .article-list .right-content {
     width: calc(75% - 30rpx);
 }
 .article-list .right-content swiper {
-    height: 28rpx;
+    height: 40rpx;
 }
 
 /**
