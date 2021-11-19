@@ -110,7 +110,6 @@
                         });
                     }
                     // #endif
-                    console.log(this.mini_alipay_tnt_inst_id, this.mini_alipay_scene, this.mini_alipay_openid)
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
