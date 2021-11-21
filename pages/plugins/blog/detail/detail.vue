@@ -121,7 +121,8 @@
             return {
                 title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
                 desc: this.data.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/blog/detail/detail?id='+blog_id+'&referrer=' + user_id
+                path: '/pages/plugins/blog/detail/detail?id='+blog_id+'&referrer=' + user_id,
+                imageUrl: this.data.cover
             };
         },
 
@@ -131,7 +132,8 @@
             var blog_id = this.params.id || 0;
             return {
                 title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
-                query: 'id='+blog_id+'&referrer=' + user_id
+                query: 'id='+blog_id+'&referrer=' + user_id,
+                imageUrl: this.data.cover
             };
         },
 
