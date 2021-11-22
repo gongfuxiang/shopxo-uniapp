@@ -1,45 +1,51 @@
 # ShopXO开源商城uniapp端
 
 #### 介绍
+
 * 后端支持依托于ShopXO免费开源电商系统开发的uniapp端主题源码
 * 内置8中搭配主色(可自行扩展更多配色)、自由快捷切换适应各大行业需求
-* 目前仅支持微信小程序端、其他端正在紧急适配中、后续全面支持（微信、QQ、百度、支付宝、头条、H5、APP）
-
+* 已支持（微信、QQ、百度、支付宝、头条&抖音），（H5+APP正在紧急适配中）
 
 #### 使用教程
-- 该操作需要有一定的编程技术基础、如需要技术支持可以直接到官网联系客服(付费) https://shopxo.net/
-- 打包教程 https://doc.shopxo.net/article/1/293727233598554112.html
+
+`程序打包操作需要有一定的编程技术基础、如需帮助请到git平台提issues寻求帮助`
+
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
 2. 将该源码导入HBuilderX开发工具、顶部工具栏 `运行->运行到小程序模拟器->(根据支持平台自行选择、如 微信开发者工具)`
 3. App.vue中修改 request_url 和 static_url 地址为自己的商城地址即可使用
 4. 主题默认为黄色(yellow)，如更改主题 App.vue文件中 default_theme + 底部css引入，pages.json文件中 tabBar选中图标+selectedColor选中颜色
 5. 发布、HBuilderX开发工具、顶部工具栏 `发行->(根据支持平台自行选择、如 微信开发者工具)`
 
+#### 小程序体验
+
+![小程序.jpg](https://doc.shopxo.net/upload/image/20210727/1627370121546835.jpeg)
+
+
+
 #### 当前项目源代码平台
+
 * Gitee：https://gitee.com/zongzhige/shopxo-uniapp
 * GitHub：https://github.com/gongfuxiang/shopxo-uniapp
 * Coding：https://zongzhige.coding.net/public/shopxo/uniapp/git
 * CodeChina：https://codechina.csdn.net/zongzhige/shopxo-uniapp
+* uni-app：https://ext.dcloud.net.cn/plugin?id=6380
 
 #### ShopXO后端源代码平台
+
 * Gitee：https://gitee.com/zongzhige/shopxo
 * GitHub：https://github.com/gongfuxiang/shopxo
 * Coding：https://zongzhige.coding.net/public/shopxo/shopxo/git
 * CodeChina：https://codechina.csdn.net/zongzhige/shopxo
 
 #### API接口文档
+
 * https://doc.shopxo.net/article/2.html
 
 #### 支持多种配色
-![多种配色](https://doc.shopxo.net/upload/image/20211023/1634962774958024.jpg "配色.jpg")
+
+![配色.jpg](https://doc.shopxo.net/upload/image/20211023/1634962774958024.jpg)
 
 #### 效果图片
-![主要部分](https://doc.shopxo.net/upload/image/20211023/1634962851731604.jpg "主要部分.jpg")
-![扩展部分](https://doc.shopxo.net/upload/image/20211023/1634962862173709.jpg "扩展部分.jpg")
 
-### 如何参与项目
-非常欢迎您对ShopXO的开发作出贡献！你可以选择以下方式向ShopXO贡献：
-- [Github - 发布issue进行问题反馈和建议](https://github.com/gongfuxiang/shopxo-uniapp/pulls)
-- [Gitee - 发布issue进行问题反馈和建议](https://gitee.com/zongzhige/shopxo-uniapp/pulls)
-- [CodeChina - 发布issue进行问题反馈和建议](https://codechina.csdn.net/zongzhige/shopxo-uniapp/merge_requests)
-> 通过Pull Request提交修复、完善我们的文档和例子
+![主要部分.jpg](https://doc.shopxo.net/upload/image/20211023/1634962851731604.jpg)
+![扩展部分.jpg](https://doc.shopxo.net/upload/image/20211023/1634962862173709.jpg)
