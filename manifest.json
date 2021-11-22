@@ -1,9 +1,9 @@
 {
     "name" : "shopxo",
     "appid" : "",
-    "description" : "",
+    "description" : "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
     "versionName" : "1.0.0",
-    "versionCode" : "100",
+    "versionCode" : 100,
     "transformPx" : false,
     "app-plus" : {
         "usingComponents" : true,
@@ -100,5 +100,24 @@
         "setting" : {
             "urlCheck" : false
         }
-    }
+    },
+    "h5" : {
+        "sdkConfigs" : {
+            "maps" : {
+                "qqmap" : {
+                    "key" : ""
+                }
+            }
+        },
+        "devServer" : {
+            "https" : true,
+            "port" : 8082
+        },
+        "router" : {
+            "mode" : "history",
+            "base" : "./"
+        },
+        "title" : "ShopXO"
+    },
+    "vueVersion" : "2"
 }

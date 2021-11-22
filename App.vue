@@ -41,7 +41,7 @@
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
                 // 版本号
-                version: "v2.2.1",
+                version: "v2.2.2",
                 // 货币价格符号
                 currency_symbol: "￥",
                 // 主题类型        主题颜色
@@ -304,6 +304,7 @@
             get_user_login_info(object, method, login_data, auth_data) {
                 // 邀请人参数
                 var params = uni.getStorageSync(this.data.cache_launch_info_key) || null;
+                console.log(params);
                 var referrer = params == null ? 0 : params.referrer || 0;
 
                 // 请求数据
