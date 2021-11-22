@@ -78,9 +78,6 @@
         props: {},
 
         onLoad(params) {
-            // 启动参数处理
-            params = app.globalData.launch_params_handle(params);
-            //params['id'] = 1;
             this.setData({
                 params: params
             });

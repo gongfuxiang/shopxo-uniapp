@@ -68,10 +68,7 @@
         },
         props: {},
 
-        onLoad(params) {
-            // 启动参数处理
-            params = app.globalData.launch_params_handle(params);
-            
+        onLoad(params) {            
             // 是否指定状态
             var nav_status_index = 0;
             if ((params.status || null) != null) {

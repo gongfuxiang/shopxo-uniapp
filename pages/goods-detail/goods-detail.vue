@@ -623,11 +623,6 @@
         },
 
         onLoad(params) {
-            // 启动参数处理
-            params = app.globalData.launch_params_handle(params);
-            //params['goods_id']=12;
-
-            // 参数赋值,初始化
             var system_info = app.globalData.get_system_info();
             this.setData({
                 params: params,
