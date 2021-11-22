@@ -9,6 +9,7 @@
 #### 使用教程
 
 `程序打包操作需要有一定的编程技术基础、如需帮助请到git平台提issues寻求帮助`
+* 打包教程 https://doc.shopxo.net/article/1/293727233598554112.html
 
 1. 先安装ShopXO免费开源系统 http://install.shopxo.net/
 2. 将该源码导入HBuilderX开发工具、顶部工具栏 `运行->运行到小程序模拟器->(根据支持平台自行选择、如 微信开发者工具)`
