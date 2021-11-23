@@ -234,7 +234,7 @@
                                     category_list: category
                                 }
                             });
-            
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
@@ -281,25 +281,6 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 仅首次请求赋值条件数据
-                            if (this.data_list_loding_status == 1) {
-                                // 首次分类选中处理
-                                var category = data.shop_goods_category || [];
-                                if((this.params.category_id || 0) != 0 && category.length > 0) {
-                                    for(var i in category) {
-                                        category[i]['active'] = (category[i]['id'] == this.params.category_id) ? 1 : 0;
-                                    }
-                                }
-                                this.setData({
-                                    shop: data.shop || null,
-                                    search_map_info: data.search_map_info || [],
-                                    search_map_list: {
-                                        category_list: category
-                                    }
-                                });
-                            }
-
-                            // 列表数据处理
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
