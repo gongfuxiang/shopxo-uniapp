@@ -625,7 +625,7 @@
         onLoad(params) {
             var system_info = app.globalData.get_system_info();
             this.setData({
-                params: params,
+                params: app.globalData.launch_params_handle(params),
                 system_info: system_info,
                 photo_height: (system_info || null) == null ? '55vh' : (system_info.windowWidth || system_info.screenWidth) + 'px'
             });

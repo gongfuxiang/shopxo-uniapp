@@ -60,19 +60,12 @@
              * 启动参数处理
              */
             launch_params_handle(params) {
-                // 启动参数处理
                 if ((params.query || null) != null) {
                     params = params.query;
                 }
                 if ((params.scene || null) != null) {
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
-
-                // 缓存启动参数
-                uni.setStorage({
-                    key: this.data.cache_launch_info_key,
-                    data: params
-                });
                 return params;
             },
 
@@ -304,7 +297,6 @@
             get_user_login_info(object, method, login_data, auth_data) {
                 // 邀请人参数
                 var params = uni.getStorageSync(this.data.cache_launch_info_key) || null;
-                console.log(params);
                 var referrer = params == null ? 0 : params.referrer || 0;
 
                 // 请求数据
@@ -1018,8 +1010,12 @@
          * 小程序初始化
          */
         onLaunch(params) {
-            // 启动参数处理
+            // 启动参数处理+缓存
             params = this.globalData.launch_params_handle(params);
+            uni.setStorage({
+                key: this.globalData.data.cache_launch_info_key,
+                data: params
+            });
 
             // 设置设备信息
             this.globalData.set_system_info();
