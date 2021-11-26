@@ -57,7 +57,7 @@
                                 <block v-for="(v, index) in data_content.items" :key="index">
                                     <view class="spacing-nav-title">
                                         <text class="text-wrapper">{{v.name}}</text>
-                                        <text v-if="floor.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
+                                        <text v-if="v.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{v.describe}}</text>
                                         <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right-xxxl cr-gray fr">更多</view>
                                     </view>
                                     <view v-if="v.items.length > 0" class="bg-white oh padding-main border-radius-main spacing-mb">
@@ -88,7 +88,7 @@
         </view>
 
         <!-- 快捷导航 -->
-        <component-quick-nav></component-quick-nav>
+        <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
     </view>
 </template>
 

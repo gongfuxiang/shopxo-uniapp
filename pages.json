@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
                 "navigationStyle": "custom",
                 // #endif
                 // #ifdef MP-ALIPAY
@@ -18,7 +18,7 @@
 		{
 			"path": "pages/goods-category/goods-category",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
                 "navigationStyle": "custom",
                 // #endif
                 // #ifdef MP-ALIPAY
@@ -39,7 +39,7 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
                 "navigationStyle": "custom",
                 // #endif
                 // #ifdef MP-ALIPAY
@@ -93,7 +93,7 @@
                 //     "share-button": "plugin://goodsSharePlugin/share-button"
                 // },
                 // // #endif
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,

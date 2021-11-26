@@ -50,4 +50,7 @@
  */
 .scroll-box {
     height: calc(100vh - 146rpx);
+    /* #ifdef H5 || APP */
+    height: calc(100vh - 146rpx - 46px);
+    /* #endif */
 }

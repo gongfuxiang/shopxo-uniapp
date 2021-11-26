@@ -6,10 +6,16 @@
     /* #ifdef MP-ALIPAY */
     padding-right: 255rpx;
     /* #endif */
+    /* #ifdef H5 || APP */
+    padding-right: 20rpx;
+    /* #endif */
     padding-bottom: 10px;
 }
 .category-content {
     height: calc(100vh - 68px);
+    /* #ifdef H5 || APP */
+    height: calc(100vh - 98px) !important;
+    /* #endif */
 }
 
 /**

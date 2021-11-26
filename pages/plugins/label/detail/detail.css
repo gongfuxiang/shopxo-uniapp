@@ -22,7 +22,12 @@
 * 商品列表
 */
 .scroll-box {
+    /* #ifdef MP */
     height: calc(100vh - 150rpx);
+    /* #endif */
+    /* #ifdef H5 */
+    height: calc(100vh - 150rpx - 44px);
+    /* #endif */
 }
 .data-list .item {
     width: calc(50% - 10rpx);

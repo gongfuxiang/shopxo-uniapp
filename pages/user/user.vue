@@ -99,10 +99,10 @@
         </view>
 
         <!-- 在线客服 -->
-        <component-online-service :propIsNav="true"></component-online-service>
+        <component-online-service :propIsNav="true" :propIsBar="true"></component-online-service>
 
         <!-- 快捷导航 -->
-        <component-quick-nav :propIsNav="true"></component-quick-nav>
+        <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
 
         <!-- 版权信息 -->
         <component-copyright></component-copyright>

@@ -4,7 +4,7 @@
 .nav-sort-content .item {
     height: 80rpx;
     line-height: 80rpx;
-    width: 130rpx;
+    width: calc(20% - 25rpx);
 }
 .nav-sort-content .item .icon {
     width: 30rpx;

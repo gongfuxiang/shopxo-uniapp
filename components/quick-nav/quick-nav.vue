@@ -1,7 +1,7 @@
 <template>
     <view>
         <!-- 开启事件 -->
-        <movable-area v-if="quick_status == 1" :class="'quick-movable-container '+ common_ent" :style="'height: calc(100% - '+top+'rpx);top:'+top+'rpx;'">
+        <movable-area v-if="quick_status == 1" :class="'quick-movable-container '+ common_ent" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit bg-main" @tap="quick_open_event">
                 <image :src="common_static_url+'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
@@ -50,6 +50,7 @@
                 x: 0,
                 y: 0,
                 top: 0,
+                height_dec: 0,
                 is_first: 1,
                 common_ent: ''
             };
@@ -59,6 +60,10 @@
             componentNoData
         },
         props: {
+            propIsBar: {
+            	type: Boolean,
+            	default: false
+            },
             propIsNav: {
             	type: Boolean,
             	default: false
@@ -80,7 +85,13 @@
             this.init_config();
             
             // 页面是否定义导航
-            this.top = this.propIsNav ? 150 : 0;
+            var value = this.propIsNav ? 170 : 0;
+            this.top = value
+            this.height_dec = value;
+            // #ifdef H5 || APP
+            this.top = 90;
+            this.height_dec = this.propIsBar ? 190 : 90;
+            // #endif
 
             // 非首次进入则重新初始化配置接口
             if (this.is_first == 0) {

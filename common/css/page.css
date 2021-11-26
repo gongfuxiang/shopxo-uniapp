@@ -1,3 +1,38 @@
+/* #ifdef H5 */
+body {
+    background: #333 !important;
+}
+page {
+    min-height: 100%;
+}
+page,
+iframe,
+.uni-page-head,
+.uni-tabbar,
+.open-location,
+.home-top-nav-content,
+.search-content-fixed,
+.trn-nav-top,
+.goods-buy-nav,
+.popup-bottom,
+.popup-top,
+.quick-movable-container,
+.online-service-movable-container {
+    max-width: 800px !important;
+    margin: 0 auto !important;
+}
+.trn-nav-top,
+.goods-buy-nav,
+.nav-more-view,
+.quick-movable-container,
+.online-service-movable-container {
+    left: auto !important;
+}
+iframe {
+    right: 0 !important;
+}
+/* #endif */
+
 /**
  * 公共样式、框架样式覆盖
  */
@@ -82,6 +117,9 @@ button:before {
 }
 .va-m {
     vertical-align: middle;
+}
+.pf {
+    position: fixed;
 }
 .pa {
     position: absolute;
@@ -581,6 +619,9 @@ button[disabled].bg-gray {
  */
 .scroll-box {
     height: 100vh;
+    /* #ifdef H5 */
+    height: calc(100vh - 44px);
+    /* #endif */
 }
 
 /**
@@ -588,6 +629,9 @@ button[disabled].bg-gray {
  */
 .scroll-box-ece-nav {
     height: calc(100vh - 80rpx);
+    /* #ifdef H5 */
+    height: calc(100vh - 80rpx - 44px);
+    /* #endif */
 }
 
 /**

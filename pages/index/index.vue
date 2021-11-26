@@ -2,18 +2,32 @@
     <view>
         <view :class="(plugins_mourning_data || 0) == 1 ? 'grayscale' : ''">
             <!-- 顶部内容 -->
-            <view v-if="load_status == 1" class="top-content" :style="top_content_style">
+            <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
                 <!-- 标题 -->
-                <view class="nav-top-title cr-white single-text">{{application_title}}</view>
+                <view class="home-top-nav-title cr-white single-text">{{application_title}}</view>
 
                 <!-- 搜索 -->
                 <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
-                <view v-if="load_status == 1" :class="search_is_fixed == 1 ? 'search-content-fixed bg-main' : ''" :style="search_is_fixed == 1 ? top_content_style : ''">
+                <view v-if="load_status == 1" :class="'pr '+(search_is_fixed == 1 ? 'search-content-fixed bg-main' : '')" :style="search_is_fixed == 1 ? top_content_style : ''">
                     <view :style="search_style">
                         <view class="margin-horizontal-main">
                             <component-search propPlaceholder="输入商品名称搜索" propBgColor="#fff"></component-search>
                         </view>
                     </view>
+
+                    <!-- #ifdef H5 || APP -->
+                    <!-- 右上角icon列表 -->
+                    <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
+                        <block v-for="(item,index) in right_icon_list">
+                            <view class="item dis-inline-block" :data-value="item.url || ''" @tap="url_event">
+                                <uni-icons :type="item.icon" size="18" color="#f1f1f1"></uni-icons>
+                                <view v-if="(item.badge || null) != null" class="badge-icon pa">
+                                    <component-badge :propNumber="item.badge"></component-badge>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                    <!-- #endif -->
                 </view>
 
                 <!-- 轮播 -->
@@ -292,10 +306,10 @@
         </view>
 
         <!-- 在线客服 -->
-        <component-online-service :propIsNav="true" :propIsGrayscale="plugins_mourning_data || 0"></component-online-service>
+        <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data || 0"></component-online-service>
         
         <!-- 快捷导航 -->
-        <component-quick-nav :propIsNav="true" :propIsGrayscale="plugins_mourning_data || 0"></component-quick-nav>
+        <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data || 0"></component-quick-nav>
     </view>
 </template>
 
@@ -307,6 +321,7 @@
     import componentBanner from "../../components/slider/slider";
     import componentCountdown from "../../components/countdown/countdown";
     import componentLayout from "../../components/layout/layout";
+    import componentBadge from "../../components/badge/badge";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentCopyright from "../../components/copyright/copyright";
@@ -314,6 +329,7 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight'));
     export default {
         data() {
             return {
@@ -327,6 +343,9 @@
                 banner_list: [],
                 navigation: [],
                 article_list: [],
+                cart_total: 0,
+                message_total: 0,
+                right_icon_list: [],
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 common_shop_notice: null,
@@ -338,7 +357,7 @@
                 // 名称
                 application_title: app.globalData.data.application_title,
                 // 顶部+搜索样式配置
-                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+8)+'px;',
+                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(bar_height+8)+'px;',
                 search_style: '',
                 search_is_fixed: 0,
                 // 限时秒杀插件
@@ -369,6 +388,7 @@
             componentBanner,
             componentCountdown,
             componentLayout,
+            componentBadge,
             componentNoData,
             componentBottomLine,
             componentCopyright,
@@ -459,6 +479,9 @@
                                 navigation: data.navigation || [],
                                 article_list: data.article_list || [],
                                 data_list: data.data_list,
+                                cart_total: (data.common_cart_total || 0) == 0 ? 0 : data.common_cart_total,
+                                message_total: (data.common_message_total || 0) == 0 ? 0 : data.common_message_total,
+                                right_icon_list: data.right_icon_list || [],
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
@@ -474,11 +497,10 @@
                             this.plugins_popupscreen_handle();
 
                             // 导航购物车处理
-                            var cart_total = data.common_cart_total || 0;
-                            if (cart_total <= 0) {
+                            if (this.cart_total <= 0) {
                                 app.globalData.set_tab_bar_badge(2, 0);
                             } else {
-                                app.globalData.set_tab_bar_badge(2, 1, cart_total);
+                                app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
                             }
                         } else {
                             this.setData({
@@ -509,6 +531,10 @@
                 var base = 230;
                 // #ifdef MP-ALIPAY
                     base = 235
+                // #endif
+                // #ifdef H5 || APP
+                    var len = (this.right_icon_list || []).length;
+                    base = (len <= 0) ? 0 : 66*len;
                 // #endif
                 var val = (num > base) ? base : num;
                 this.setData({

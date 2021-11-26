@@ -5,13 +5,20 @@
 /**
  * 顶部导航内容
  */
-.top-nav-left-icon {
-    position: fixed;
+.top-nav-left-icon,
+.top-nav-right-icon {
     top: 28px;
-    left: 20rpx;
     z-index: 11;
 }
-.top-nav-left-icon .icon {
+.top-nav-left-icon {
+    left: auto;
+    margin-left: 20rpx;
+}
+.top-nav-right-icon {
+    right: 20rpx;
+}
+.top-nav-left-icon .icon,
+.top-nav-right-icon .icon {
     background: rgb(255 255 255 / 70%);
     width: 25px;
     height: 25px;
@@ -25,6 +32,10 @@
     position: absolute;
     bottom: 24rpx;
     width: calc(100% - 40rpx);
+    /* #ifdef H5 || APP */
+    bottom: 6px;
+    padding-bottom: 5px;
+    /* #endif */
 }
 .top-nav-content {
     margin: 0 auto;
@@ -33,17 +44,23 @@
 }
 .top-nav-content text {
     font-size: 32rpx;
+    /* #ifdef H5 || APP */
+    font-size: 14px;
+    /* #endif */
 }
 .top-nav-content text:not(:last-child) {
     margin-right: 30rpx;
 }
 .top-nav-content .nav-active {
     font-weight: 700;
-    font-size: 34rpx;
     padding-bottom: 5rpx;
     padding-bottom: 5rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
+    font-size: 34rpx;
+    /* #ifdef H5 || APP */
+    font-size: 16px;
+    /* #endif */
 }
 
 /**
@@ -91,6 +108,7 @@
     left: 0;
     bottom: 0;
     height: 100rpx;
+    z-index: 2;
 }
 .goods-buy-nav .bus-items {
     width: 40%;

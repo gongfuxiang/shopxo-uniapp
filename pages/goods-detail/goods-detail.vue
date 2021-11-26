@@ -2,16 +2,16 @@
     <view>
         <!-- 顶部导航 -->
         <view v-if="goods != null" class="page">
-            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO -->
+            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
             <!-- 小导航 -->
-            <view class="top-nav-left-icon" :style="'top:'+(status_bar_height+8)+'px;'">
+            <view class="top-nav-left-icon pf" :style="'top:'+top_nav_icon_top_value+'px;'">
                 <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @tap="top_nav_left_back_event"></uni-icons>
                 <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
             </view>
             <!-- #endif -->
-            <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO -->
+            <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP -->
             <!-- 更多导航 -->
-            <view v-if="nav_more_list.length > 0 && nav_more_status" class="nav-more-view tc" :style="'top:'+(status_bar_height+48)+'px;'">
+            <view v-if="nav_more_list.length > 0 && nav_more_status" class="nav-more-view tc" :style="'top:'+top_nav_more_top_value+'px;'">
                 <view class="triangle dis-inline-block pa"></view>
                 <view class="content radius padding-horizontal-main">
                     <block v-for="(item,index) in nav_more_list" :key="index">
@@ -27,7 +27,7 @@
             <!-- 顶部导航 -->
             <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
                 <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height">
-                    <view class="top-nav padding-bottom padding-horizontal-main">
+                    <view class="top-nav padding-bottom padding-horizontal-main pr">
                         <view class="top-nav-content tc">
                             <block v-for="(item, index) in top_nav_title_data" :key="index">
                                 <text @tap="top_nav_title_event" :data-index="index" :data-value="item.ent" :class="top_nav_title_index == index ? 'nav-active border-color-main' : ''">{{item.name}}</text>
@@ -37,7 +37,13 @@
                 </component-trn-nav>
             </block>
             <!-- #endif -->
-                     
+            <!-- #ifdef H5 || APP -->
+            <!-- 右侧icon -->
+            <view class="top-nav-right-icon pf" :style="'top:'+top_nav_icon_top_value+'px;left:'+top_nav_right_icon_left_value+'px;'">
+                <uni-icons type="redo" size="20" color="#333" class="icon round" @tap="popup_share_event"></uni-icons>
+            </view>
+            <!-- #endif -->
+
             <!-- 相册 -->
             <view class="goods-photo bg-white oh pr" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
                 <!-- 视频 -->
@@ -512,10 +518,13 @@
     import componentOnlineService from "../../components/online-service/online-service";
 
     var common_static_url = app.globalData.get_static_url('common');
+    var system_info = app.globalData.get_system_info();
+    var bar_height = parseInt(system_info.statusBarHeight);
+    var win_width = parseInt(system_info.windowWidth || system_info.screenWidth);
     export default {
         data() {
             return {
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight')),
+                status_bar_height: bar_height,
                 common_static_url: common_static_url,
                 indicator_dots: false,
                 indicator_color: 'rgba(0, 0, 0, .2)',
@@ -526,8 +535,8 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 params: null,
-                system_info: null,
-                photo_height: '55vh',
+                system_info: system_info,
+                photo_height: (win_width <= 0) ? '55vh' : app.globalData.window_width_handle(win_width) + 'px',
                 goods: null,
                 goods_photo: [],
                 goods_specifications_choose: [],
@@ -573,6 +582,15 @@
                 // 滚动监听值
                 scroll_value: 0,
                 // 顶部导航信息
+                // #ifdef MP
+                top_nav_icon_top_value: bar_height+8,
+                top_nav_more_top_value: bar_height+48,
+                // #endif
+                // #ifdef H5 || APP
+                top_nav_icon_top_value: 6,
+                top_nav_more_top_value: 50,
+                top_nav_right_icon_left_value: (win_width <= 800) ? win_width-40 : win_width-((win_width-800)/2)-40,
+                // #endif
                 top_nav_height: 50,
                 top_nav_title_index: 0,
                 top_nav_title_scroll: true,
@@ -623,11 +641,8 @@
         },
 
         onLoad(params) {
-            var system_info = app.globalData.get_system_info();
             this.setData({
-                params: app.globalData.launch_params_handle(params),
-                system_info: system_info,
-                photo_height: (system_info || null) == null ? '55vh' : (system_info.windowWidth || system_info.screenWidth) + 'px'
+                params: app.globalData.launch_params_handle(params)
             });
 
             // 数据加载

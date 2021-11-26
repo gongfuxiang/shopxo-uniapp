@@ -3,7 +3,7 @@
  */
 .top-content {
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: 100% auto;
     width: 100%;
     min-height: 300rpx;
 }

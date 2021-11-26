@@ -35,7 +35,7 @@
     .popup-content {
         position: fixed;
         background: #fff;
-        z-index: 101;
+        z-index: 1001;
         overflow: hidden;
     }
     .popup-mask {
@@ -47,7 +47,7 @@
         background-color: rgba(0, 0, 0, 0.6);
         opacity: 0;
         pointer-events: none;
-        z-index: 100;
+        z-index: 1000;
     }
     .popup-left {
         transform: translateX(-100%);

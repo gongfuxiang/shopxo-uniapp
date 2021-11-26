@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view :style="'background:'+(propBackgroundColor || '#fff')+';'+nav_style" :class="'nav '+propEnt">
-            <view v-if="(propTitle || null) != null" class="nav-title single-text">{{propTitle}}</view>
+		<view :style="'background:'+(propBackgroundColor || '#fff')+';'+nav_style" :class="'trn-nav-top '+(propEnt || '')">
+            <view v-if="(propTitle || null) != null" class="trn-nav-top-title single-text">{{propTitle}}</view>
 			<slot></slot>
 		</view>
 	</view>
@@ -52,7 +52,13 @@
 				}
 
                 // 设置样式
-                this.nav_style = 'opacity:'+opacity+';height:'+(this.propHeight+this.statusbar_height)+'rpx;';
+                this.nav_style = 'opacity:'+opacity+';';
+                // #ifdef MP
+                this.nav_style += 'height:'+(this.propHeight+this.statusbar_height)+'rpx;';
+                // #endif
+                // #ifdef H5
+                this.nav_style += 'height:44px;';
+                // #endif
 			}
 		},
 		methods: {
@@ -64,7 +70,7 @@
 	}
 </script>
 <style>
-	.nav {
+	.trn-nav-top {
 		padding-top: var(--status-bar-height);
         opacity: 0;
 		width: 100%;
@@ -73,7 +79,7 @@
         top: 0;
         left: 0;
 	}
-    .nav-title {
+    .trn-nav-top .trn-nav-top-title {
         font-size: 36rpx;
         text-align: left;
         padding: 12px 250rpx 0 20rpx;

@@ -15,7 +15,12 @@
             </scroll-view>
             
             <!-- 列表 -->
+            <!-- #ifdef MP -->
             <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
+            <!-- #endif -->
+            <!-- #ifdef H5 || APP -->
+            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx - 44px);' : ''">
+            <!-- #endif -->
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                     <block v-for="(item, index) in data_list" :key="index">
                         <view class="item border-radius-main bg-white oh spacing-mb">

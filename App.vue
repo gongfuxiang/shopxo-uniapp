@@ -35,6 +35,10 @@
                 ],
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
+                // h5跨域处理，在manifest.json文件中devServer下配置接口地址
+                // #ifdef H5
+                request_url: 'api',
+                // #endif
                 // 静态资源地址
                 static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
@@ -1003,6 +1007,16 @@
                         }
                     }
                 });
+            },
+            
+            // 窗口宽度处理
+            window_width_handle(width) {
+                // #ifdef H5 || APP
+                if(width > 800) {
+                    width = 800;
+                }
+                // #endif
+                return width;
             }
         },
 

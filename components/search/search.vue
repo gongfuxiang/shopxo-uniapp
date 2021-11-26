@@ -54,13 +54,13 @@
 </script>
 <style>
     .search-content icon {
-        left: 30rpx;
+        left: 15px;
         top: calc(50% - 6px);
         z-index: 1;
     }
     .search-content input {
-        font-size: 26rpx;
-        padding: 0 30rpx 0 76rpx;
+        font-size: 12px;
+        padding: 0 15px 0 38px;
         box-sizing: border-box;
         height: 30px;
         line-height: 30px;
