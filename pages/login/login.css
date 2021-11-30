@@ -1,51 +1,56 @@
 page {
     background: #fff;
-    position: relative;
-    height: 100vh;
+    
 }
+/**
+ * 基础
+ */
 .content {
-    padding: 25% 40rpx 0 40rpx;
+    padding-top: 8%;
 }
-.content .mobile {
-    width: 100%;
-    margin: 20rpx 0;
+.content .icon {
+    width: 200rpx;
+    height: 200rpx !important;
 }
-.content .mobile,
-.content .code {
+
+/**
+ * 表单内容
+ */
+.form-content {
+    padding: 2% 40rpx 0 40rpx;
+}
+.form-content .form-item,
+.form-content .code,
+.form-content .verify {
     border-bottom: solid 1px #eee;
 }
-.content input {
+.form-content .form-item,
+.form-content .code input,
+.form-content .verify input {
     font-size: 28rpx;
     color: #4e4e4e;
     height: 40px;
     line-height: 40px;
+    border-radius: 0;
 }
-.content .code {
-    margin: 20rpx 0;
-}
-.content .code .verify {
+.form-content .code input,
+.form-content .verify input {
     width: 63%;
 }
-.content .code .verify-sub {
+.form-content .code .verify-submit {
     width: 35%;
     height: 35px;
-    line-height: 35px;;
+    line-height: 35px;
     top: 0;
     right: 0;
 }
-.content .submit {
-    left: 20rpx;
-    right: 20rpx;
-    bottom: 20rpx;
+.form-content .verify .verify-image {
+    width: 35%;
+    height: 35px;
+    line-height: 35px;
+    top: 0;
+    right: 0;
 }
-
-/**
- * 授权登录
- */
-.login-base {
-    padding-top: 10%;
-}
-.login-logo {
-    width: 200rpx;
-    height: 200rpx !important;
+.opt-type-list text:not(:last-child) {
+    margin-right: 50rpx;
 }

@@ -35,10 +35,6 @@
                 ],
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
-                // h5跨域处理，在manifest.json文件中devServer下配置接口地址
-                // #ifdef H5
-                request_url: 'api',
-                // #endif
                 // 静态资源地址
                 static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
@@ -138,8 +134,28 @@
             get_user_info(object, method) {
                 var user = this.get_user_cache_info();
                 if (user == false) {
-                    // 唤醒用户授权
+                    // #ifdef MP
+                    // 小程序唤醒用户授权
                     this.user_login(object, method);
+                    // #endif
+                    
+                    // #ifdef H5 || APP
+                    // h5、app登陆注册
+                    uni.showModal({
+                        title: '温馨提示',
+                        content: '请先登陆或注册',
+                        confirmText: '确认',
+                        cancelText: '暂不',
+                        success: result => {
+                            if (result.confirm) {
+                                uni.navigateTo({
+                                    url: "/pages/login/login"
+                                });
+                            }
+                        }
+                    });
+                    // #endif
+
                     return false;
                 }
                 return user;
@@ -166,6 +182,20 @@
             },
 
             /**
+             * 系统参数
+             */
+            get_launch_cache_info() {
+                return uni.getStorageSync(this.data.cache_launch_info_key) || null;
+            },
+
+            /**
+             * 获取登陆授权数据
+             */
+            get_login_cache_info() {
+                return uni.getStorageSync(this.data.cache_user_login_key) || null;
+            },
+
+            /**
              * 用户登录
              * object     回调操作对象
              * method     回调操作对象的函数
@@ -176,7 +206,7 @@
                 // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO
                 uni.checkSession({
                     success: function() {
-                        var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
+                        var login_data = self.get_login_cache_info();
                         if (login_data == null) {
                             self.user_login(object, method);
                         } else {
@@ -190,7 +220,7 @@
                 });
                 // #endif
                 // #ifdef MP-ALIPAY
-                var login_data = uni.getStorageSync(self.data.cache_user_login_key) || null;
+                var login_data = self.get_login_cache_info();
                 if (login_data == null) {
                     self.user_login(object, method);
                 } else {
@@ -300,7 +330,7 @@
              */
             get_user_login_info(object, method, login_data, auth_data) {
                 // 邀请人参数
-                var params = uni.getStorageSync(this.data.cache_launch_info_key) || null;
+                var params = this.get_launch_cache_info();
                 var referrer = params == null ? 0 : params.referrer || 0;
 
                 // 请求数据
@@ -520,7 +550,7 @@
              */
             open_web_view(value) {
                 uni.navigateTo({
-                    url: '/pages/web-view/web-view?url=' + encodeURIComponent(value)
+                    url: "/pages/web-view/web-view?url=" + encodeURIComponent(value)
                 });
             },
 
