@@ -68,7 +68,7 @@
 
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1">
-            <button class="submit-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
+            <button class="bottom-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
 
         <!-- 支付方式 popup -->

@@ -71,7 +71,7 @@
                 <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="notice-content-blue spacing-mb">
                     注意：编辑信息将重新审核后方可生效
                 </view>
-                <view class="submit-fixed padding-main">
+                <view class="bottom-fixed padding-main">
                     <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
                 </view>
             </view>

@@ -185,14 +185,10 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        common_app_customer_service_tel: app.globalData.get_config(
-                            'config.common_app_customer_service_tel'),
-                        common_user_center_notice: app.globalData.get_config(
-                            'config.common_user_center_notice'),
-                        common_app_is_online_service: app.globalData.get_config(
-                            'config.common_app_is_online_service'),
-                        common_app_is_head_vice_nav: app.globalData.get_config(
-                            'config.common_app_is_head_vice_nav')
+                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                        common_user_center_notice: app.globalData.get_config('config.common_user_center_notice'),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
+                        common_app_is_head_vice_nav: app.globalData.get_config('config.common_app_is_head_vice_nav')
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');

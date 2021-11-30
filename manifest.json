@@ -106,23 +106,13 @@
         "sdkConfigs" : {
             "maps" : {
                 "qqmap" : {
-                    "key" : ""
+                    "key" : "56SBZ-PCC3G-US2QM-IXYFE-4DE5H-GRBDK"
                 }
             }
         },
         "devServer" : {
             "https" : false,
-            "port" : 8082,
-            "proxy" : {
-                "/api" : {
-                    "target" : "https://d1.shopxo.vip",
-                    "ws" : true,
-                    "changeOrigin" : true,
-                    "pathRewrite" : {
-                        "^/api" : ""
-                    }
-                }
-            }
+            "port" : 8082
         },
         "router" : {
             "mode" : "history",
@@ -132,5 +122,3 @@
     },
     "vueVersion" : "2"
 }
-//d1.shopxo.vip',
-

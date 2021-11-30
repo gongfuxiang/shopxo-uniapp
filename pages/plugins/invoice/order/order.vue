@@ -25,7 +25,7 @@
                     </view>
 
                     <!-- 合并开票 -->
-                    <button v-if="select_ids.length > 0" class="submit-fixed invoice-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
+                    <button v-if="select_ids.length > 0" class="bottom-fixed invoice-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->

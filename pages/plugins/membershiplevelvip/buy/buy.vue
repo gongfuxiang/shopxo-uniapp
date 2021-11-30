@@ -27,7 +27,7 @@
                                         </view>
                                     </view>
                                 </block>
-                                <view class="submit-fixed">
+                                <view class="bottom-fixed">
                                     <button class="bg-main br-main cr-white round text-size margin-horizontal-main margin-bottom-main" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">确认支付</button>
                                 </view>
                             </view>

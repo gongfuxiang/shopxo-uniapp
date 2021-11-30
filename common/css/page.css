@@ -17,7 +17,8 @@ iframe,
 .popup-bottom,
 .popup-top,
 .quick-movable-container,
-.online-service-movable-container {
+.online-service-movable-container,
+.bottom-fixed {
     max-width: 800px !important;
     margin: 0 auto !important;
 }
@@ -28,7 +29,8 @@ iframe,
 .online-service-movable-container {
     left: auto !important;
 }
-iframe {
+iframe,
+.bottom-fixed {
     right: 0 !important;
 }
 /* #endif */
@@ -162,7 +164,7 @@ button:before {
 /**
  * 底部浮动
  */
-.submit-fixed {
+.bottom-fixed {
     position: fixed;
     left: 0;
     bottom: 0;
