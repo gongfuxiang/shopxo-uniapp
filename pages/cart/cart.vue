@@ -1,57 +1,60 @@
 <template>
     <view>
-        <view v-if="data_list.length > 0" class="page padding-main">
-            <uni-swipe-action>
-                <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
-                    <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                        <view :class="'goods-item padding-main pr ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
-                            <!-- 选择 -->
-                            <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl selected">
-                                <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
-                                <text v-if="(item.is_error || 0) == 1" class="cr-grey">失效</text>
-                            </view>
+        <view v-if="data_list.length > 0" class="page">
+            <!-- 数据列表 -->
+            <view class="padding-horizontal-main padding-top-main">
+                <uni-swipe-action>
+                    <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
+                        <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
+                            <view :class="'goods-item padding-main pr ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
+                                <!-- 选择 -->
+                                <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl selected">
+                                    <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
+                                    <text v-if="(item.is_error || 0) == 1" class="cr-grey">失效</text>
+                                </view>
 
-                            <view class="items">
-                                <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                                    <!-- 图片 -->
-                                    <image :class="'goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                    <!-- 错误 -->
-                                    <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc">
-                                        <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
-                                    </view>
-                                </navigator>
-
-                                <!-- 基础 -->
-                                <view class="goods-base">
-                                    <!-- 标题、规格 -->
+                                <view class="items">
                                     <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
-                                        <view :class="'goods-title multi-text margin-bottom-sm '+((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{item.title}}</view>
+                                        <!-- 图片 -->
+                                        <image :class="'goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                        <!-- 错误 -->
+                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc">
+                                            <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
+                                        </view>
                                     </navigator>
-                                    <view v-if="item.spec != null" class="margin-bottom-sm">
-                                        <block v-for="(sv, si) in item.spec" :key="si">
-                                            <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                            <text class="cr-gray">{{sv.value}}</text>
-                                        </block>
-                                    </view>
 
-                                    <!-- 底部内容 -->
-                                    <view class="goods-bottom pr margin-top-sm">
-                                        <!-- 价格 -->
-                                        <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
-                                    
-                                        <!-- 数量 -->
-                                        <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="number-content pa tc oh round br">
-                                            <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="0">-</view>
-                                            <input @blur="goods_buy_number_blur" class="tc cr-gray fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index">
-                                            <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="1">+</view>
+                                    <!-- 基础 -->
+                                    <view class="goods-base">
+                                        <!-- 标题、规格 -->
+                                        <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
+                                            <view :class="'goods-title multi-text margin-bottom-sm '+((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{item.title}}</view>
+                                        </navigator>
+                                        <view v-if="item.spec != null" class="margin-bottom-sm">
+                                            <block v-for="(sv, si) in item.spec" :key="si">
+                                                <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                                <text class="cr-gray">{{sv.value}}</text>
+                                            </block>
+                                        </view>
+
+                                        <!-- 底部内容 -->
+                                        <view class="goods-bottom pr margin-top-sm">
+                                            <!-- 价格 -->
+                                            <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
+                                        
+                                            <!-- 数量 -->
+                                            <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="number-content pa tc oh round br">
+                                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="0">-</view>
+                                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index">
+                                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="1">+</view>
+                                            </view>
                                         </view>
                                     </view>
                                 </view>
                             </view>
-                        </view>
-                    </uni-swipe-action-item>
-                </view>
-            </uni-swipe-action>
+                        </uni-swipe-action-item>
+                    </view>
+                </uni-swipe-action>
+            </view>
 
             <!-- 操作导航 -->
             <view v-if="data_list.length > 0" class="buy-nav oh wh-auto">

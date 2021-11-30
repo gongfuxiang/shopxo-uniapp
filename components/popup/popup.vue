@@ -2,7 +2,7 @@
     <view>
         <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
             <view class="popup-mask" v-if="propMask || true" @tap="onMaskTap"></view>
-            <view :class="'popup-content popup-' + propPosition || 'bottom'">
+            <view :class="'popup-content popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')">
                 <slot></slot>
             </view>
         </view>
@@ -15,12 +15,34 @@
         },
         components: {},
         props: {
-            propClassname: String,
-            propShow: Boolean,
-            propPosition: String,
-            propMask: Boolean,
-            propAnimation: Boolean,
-            propDisablescroll: Boolean
+            propClassname: {
+            	type: String,
+            	default: ''
+            },
+            propShow: {
+            	type: Boolean,
+            	default: false
+            },
+            propPosition: {
+            	type: String,
+            	default: 'bottom'
+            },
+            propMask: {
+            	type: Boolean,
+            	default: true
+            },
+            propAnimation: {
+            	type: Boolean,
+            	default: true
+            },
+            propDisablescroll: {
+            	type: Boolean,
+            	default: false
+            },
+            propIsBar: {
+            	type: Boolean,
+            	default: false
+            }
         },
         methods: {
             onMaskTap: function onMaskTap() {
@@ -99,5 +121,10 @@
     .popup-right {
         border-top-left-radius: 20rpx;
         border-bottom-left-radius: 20rpx;
+    }
+    .popup-bar {
+        /* #ifdef H5 || APP */
+        bottom: var(--window-bottom) !important;
+        /* #endif */
     }
 </style>

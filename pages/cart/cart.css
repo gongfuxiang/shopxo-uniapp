@@ -82,9 +82,12 @@
 */
 .buy-nav {
     position: fixed;
+    z-index: 2;
     left: 0;
     bottom: 0;
-    z-index: 2;
+    /* #ifdef H5 || APP */
+    bottom: var(--window-bottom);
+    /* #endif */
 }
 .buy-nav,
 .nav-base {

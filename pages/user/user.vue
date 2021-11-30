@@ -7,10 +7,10 @@
 
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
-                <view class="pr oh">
+                <view class="head-base pr oh">
                     <!-- 左侧头像 -->
                     <view class="padding-bottom-xxl oh tc fl">
-                        <image @tap="preview_event" @error="user_avatar_error" class="head-avatar round bg-white va-m" :src="avatar" mode="widthFix"></image>
+                        <image @tap="preview_event" @error="user_avatar_error" class="head-avatar circle bg-white va-m" :src="avatar" mode="widthFix"></image>
                         <text class="item-name cr-white va-m margin-left-lg">{{nickname}}</text>
                     </view>
                     

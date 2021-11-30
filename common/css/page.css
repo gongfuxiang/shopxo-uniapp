@@ -5,6 +5,9 @@ body {
 page {
     min-height: 100%;
 }
+/**
+ * 页面宽度最大800px、并居中
+ */
 page,
 iframe,
 .uni-page-head,
@@ -18,7 +21,8 @@ iframe,
 .popup-top,
 .quick-movable-container,
 .online-service-movable-container,
-.bottom-fixed {
+.bottom-fixed,
+.buy-nav {
     max-width: 800px !important;
     margin: 0 auto !important;
 }
@@ -26,12 +30,44 @@ iframe,
 .goods-buy-nav,
 .nav-more-view,
 .quick-movable-container,
-.online-service-movable-container {
+.online-service-movable-container,
+.buy-nav {
     left: auto !important;
 }
 iframe,
 .bottom-fixed {
     right: 0 !important;
+}
+/**
+ * 隐藏导航栏内容、仅展示返回按钮
+ */
+uni-page-head {
+    position: absolute;
+    margin-top: -999999px;
+    z-index: 99;
+}
+.uni-page-head-bd {
+    display: none !important;
+}
+.uni-page-head-btn {
+    position: fixed;
+    left: auto;
+    bottom: 60px;
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 10px rgb(0 0 0 / 30%);
+    margin: 0 0 0 10px;
+    border-radius: 50px;
+    width: 31px;
+    height: 31px;
+    text-align: center;
+    padding: 2px 3px 0 0;
+}
+.uni-page-head-btn .uni-btn-icon {
+    color: #fff !important;
+}
+.uni-app--showtabbar uni-page-wrapper,
+uni-page-head[uni-page-head-type=default]~uni-page-wrapper {
+    height: calc(100% - var(--window-bottom)) !important;
 }
 /* #endif */
 
@@ -621,9 +657,6 @@ button[disabled].bg-gray {
  */
 .scroll-box {
     height: 100vh;
-    /* #ifdef H5 */
-    height: calc(100vh - 44px);
-    /* #endif */
 }
 
 /**
@@ -631,9 +664,6 @@ button[disabled].bg-gray {
  */
 .scroll-box-ece-nav {
     height: calc(100vh - 80rpx);
-    /* #ifdef H5 */
-    height: calc(100vh - 80rpx - 44px);
-    /* #endif */
 }
 
 /**

@@ -19,7 +19,7 @@
                                 </view>
                                 <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认绑定</button>
                             </view>
-                            <view class="bottom-fixed padding-horizontal-main padding-bottom-xxxl tc">
+                            <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
                                 <text class="cr-blue" data-value="bind" @tap="opt_form_event">返回上一页</text>
                             </view>
                         </form>
@@ -27,26 +27,32 @@
 
                     <!-- 确认绑定方式 -->
                     <view v-if="current_opt_form == 'bind'" class="form-content">
-                        <view class="tc">
-                            <image class="icon circle auto dis-block margin-bottom-xxl" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                            <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
-                        </view>
-                        <view class="margin-top-xxxl padding-top-xxxl">
-                            <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
-                            <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
-                            <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
-                            <!-- #endif -->
-                        </view>
-                        <!-- 当前还没有账号的情况下才可以操作登陆和注册绑定 -->
-                        <view v-if="(user || null) == null || (user.id || null) == null" class="bottom-fixed padding-horizontal-main padding-bottom-main">
-                            <!-- 登录 -->
-                            <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
+                        <block v-if="(user.mobile || null) == null">
+                            <view class="tc">
+                                <image class="icon circle auto dis-block margin-bottom-xxl" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                             </view>
-                            <!-- 注册 -->
-                            <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                                <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
+                            <view class="margin-top-xxxl padding-top-xxxl">
+                                <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
+                                <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
+                                <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
+                                <!-- #endif -->
                             </view>
+                            <!-- 当前还没有账号的情况下才可以操作登陆和注册绑定 -->
+                            <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
+                                <!-- 登录 -->
+                                <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
+                                    <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
+                                </view>
+                                <!-- 注册 -->
+                                <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
+                                    <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
+                                </view>
+                            </view>
+                        </block>
+                        <view v-else class="tc">
+                            <view class="cr-base">已成功登陆、请点击进入首页</view>
+                            <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xxxl">进入首页</navigator>
                         </view>
                     </view>
                 </block>
@@ -60,7 +66,7 @@
                         <!-- 账号密码 -->
                         <block v-if="current_opt_type == 'login_username'">
                             <input type="text" placeholder="输入用户名/手机/邮箱" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                             <view  v-if="home_user_login_img_verify_state == 1" class="verify pr margin-vertical-main">
                                 <input type="text" placeholder="验证码" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event">
                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_login" @tap="image_verify_event"></image>
@@ -97,7 +103,7 @@
                         <view class="margin-top-xxl tr">
                             <text class="cr-gray" data-value="forget" @tap="opt_form_event">找回密码</text>
                         </view>
-                        <view class="bottom-fixed padding-horizontal-main padding-bottom-main">
+                        <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
                             <!-- 小程序授权登陆 -->
                             <view class="margin-bottom-xxxl tc">
@@ -125,7 +131,7 @@
                         <!-- 账号密码 -->
                         <block v-if="current_opt_type == 'reg_username'">
                             <input type="text" placeholder="输入用户名" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                             <view  v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-main">
                                 <input type="text" placeholder="验证码" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event">
                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_reg" @tap="image_verify_event"></image>
@@ -138,7 +144,7 @@
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                             </view>
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                         </block>
                         <!-- 邮箱 -->
                         <block v-if="current_opt_type == 'reg_email'">
@@ -147,7 +153,7 @@
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                             </view>
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                         </block>
                         <!-- 协议 -->
                         <view class="margin-top-xxxl cr-gray">
@@ -161,7 +167,7 @@
                             </view>
                         </view>
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认注册</button>
-                        <view class="bottom-fixed padding-horizontal-main padding-bottom-main">
+                        <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
                             <!-- 小程序授权登陆 -->
                             <view class="margin-bottom-xxxl tc">
@@ -191,9 +197,9 @@
                             <input type="number" placeholder="验证码" name="verify" maxlength="4">
                             <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                         </view>
-                        <input type="text" placeholder="设置登录密码" minlength="6" maxlength="18" name="pwd" class="form-item margin-vertical-main wh-auto">
+                        <input type="text" placeholder="设置登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认提交</button>
-                        <view class="bottom-fixed padding-horizontal-main padding-bottom-main">
+                        <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
                             <!-- 小程序授权登陆 -->
                             <view class="margin-bottom-xxxl tc">
@@ -241,7 +247,7 @@
                         <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">使用授权自动登录</button>
                         <!-- #endif -->
                     </view>
-                    <view class="bottom-fixed padding-horizontal-main padding-bottom-main">
+                    <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                         <!-- 登录 -->
                         <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
                             <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">已有账号？立即登录</text>

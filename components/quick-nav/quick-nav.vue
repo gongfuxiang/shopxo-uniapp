@@ -8,7 +8,7 @@
         </movable-area>
 
         <!-- 弹窗 -->
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="quick_close_event">
+        <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
             <view :class="'nav-popup-container '+common_ent">
                 <view class="close oh">
                     <view class="icon-right" @tap.stop="quick_close_event">
@@ -103,8 +103,8 @@
             this.setData({
                 is_first: 0,
                 system: system,
-                x: 5,
-                y: (system.windowHeight || 450) - 200
+                x: 12,
+                y: (system.windowHeight || 450) - 260
             });
         },
         methods: {
@@ -158,16 +158,16 @@
     }
     .quick-event-submit {
         pointer-events: auto;
-        width: 100rpx;
-        height: 100rpx;
+        width: 31px;
+        height: 31px;
         border-radius: 50%;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         opacity: 0.8;
     }
     .quick-event-submit image {
-        width: 50rpx !important;
-        height: 50rpx !important;
-        margin: 25rpx auto 25rpx auto;
+        width: 17px !important;
+        height: 17px !important;
+        margin: 7px auto 7px auto;
         display: block;
     }
 

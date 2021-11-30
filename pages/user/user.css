@@ -6,17 +6,23 @@
     background-size: 100% auto;
     width: 100%;
     min-height: 300rpx;
+    padding-top: var(--status-bar-height);
 }
 .content {
-    padding-top: var(--status-bar-height);
+    padding-top: 35rpx;
 }
 
 /**
  * 头像
  */
+/* #ifdef H5 || APP */
+.head-base {
+    margin-bottom: 25rpx;
+}
+/* #endif */
 .head-avatar {
-    width: 100rpx;
-    height: 100rpx;
+    width: 120rpx;
+    height: 120rpx !important;
 }
 
 /**
@@ -33,9 +39,12 @@
  * 消息
  */
 .nav-message {
-    top: 55rpx;
-    right: 30rpx;
     z-index: 10;
+    right: 30rpx;
+    top: 60rpx;
+    /* #ifdef H5 || APP */
+    top: 0;
+    /* #endif */
 }
 .nav-message .badge-icon {
     top: -10px;

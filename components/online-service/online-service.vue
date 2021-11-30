@@ -97,7 +97,7 @@
             this.setData({
                 is_first: 0,
                 system: system,
-                x: win_width-52,
+                x: win_width-43,
                 y: (system.windowHeight || 450) - 380
             });
         },
@@ -145,19 +145,19 @@
     }
     .online-service-event-submit,
     .online-service-event-submit button {
-        width: 90rpx;
-        height: 90rpx;
+        width: 31px;
+        height: 31px;
         border-radius: 50%;
     }
     .online-service-event-submit button {
         border: 0;
-        padding: 15rpx;
+        padding: 5px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         background: rgba(0, 0, 0, 0.6);
     }
     .online-service-event-submit image {
-        width: 60rpx !important;
-        height: 60rpx !important;
+        width: 21px !important;
+        height: 21px !important;
     }
     /* #ifdef MP-ALIPAY */
     .online-service-event-submit contact-button {
