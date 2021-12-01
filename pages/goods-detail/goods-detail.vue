@@ -1130,7 +1130,7 @@
                     this.setData({
                         goods_specifications_choose: temp_data,
                         goods_spec_base_images: temp_images,
-                        //buy_number: this.goods.buy_min_number || 1,
+                        buy_number: parseInt(this.goods.buy_min_number) || 1,
                     });
 
                     // 不能选择规格处理
@@ -1297,13 +1297,13 @@
                 var data = {
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price,
-                    goods_spec_base_inventory: spec_base.inventory,
+                    goods_spec_base_inventory: parseInt(spec_base.inventory),
                     plugins_wholesale_data: data.plugins_wholesale_data || null,
                 };
 
                 // 已选数量是否超过规格库存
-                if(this.buy_number > spec_base.inventory) {
-                    data['buy_number'] = spec_base.inventory;
+                if(this.buy_number > data.goods_spec_base_inventory) {
+                    data['buy_number'] = data.goods_spec_base_inventory;
                 }
                 this.setData(data);
             },
@@ -1332,16 +1332,19 @@
                 var inventory = parseInt(this.goods_spec_base_inventory);
                 var inventory_unit = this.goods.inventory_unit;
 
+                // 最小起购数量
                 if (number < buy_min_number) {
                     number = buy_min_number;
                     app.globalData.showToast('起购' + buy_min_number + inventory_unit);
                 }
 
+                // 最大购买数量
                 if (buy_max_number > 0 && number > buy_max_number) {
                     number = buy_max_number;
                     app.globalData.showToast('限购' + buy_max_number + inventory_unit);
                 }
 
+                // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
                     app.globalData.showToast('库存数量' + inventory + inventory_unit);
