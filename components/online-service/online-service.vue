@@ -92,13 +92,14 @@
             }
 
             // 数据设置
-            var system = app.globalData.get_system_info();
-            var win_width = app.globalData.window_width_handle(system.windowWidth);
+            var system = app.globalData.get_system_info(null, null, true);
+            var width = app.globalData.window_width_handle(system.windowWidth);
+            var height = app.globalData.window_height_handle(system);
             this.setData({
                 is_first: 0,
                 system: system,
-                x: win_width-43,
-                y: (system.windowHeight || 450) - 380
+                x: width - 43,
+                y: height - 380
             });
         },
         methods: {

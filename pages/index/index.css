@@ -192,7 +192,7 @@
     top: 0;
 }
 .plugins-popupscreen .content {
-    margin-top: calc(50vh - 200rpx);
+    margin-top: calc(50vh - 200rpx) !important;
 }
 .plugins-popupscreen .content image {
     width: 600rpx;

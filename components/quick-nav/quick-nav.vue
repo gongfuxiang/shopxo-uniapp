@@ -99,12 +99,13 @@
             }
 
             // 数据设置
-            var system = app.globalData.get_system_info();
+            var system = app.globalData.get_system_info(null, null, true);
+            var height = app.globalData.window_height_handle(system);
             this.setData({
                 is_first: 0,
                 system: system,
                 x: 12,
-                y: (system.windowHeight || 450) - 260
+                y: height - 180
             });
         },
         methods: {

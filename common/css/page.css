@@ -22,7 +22,8 @@ iframe,
 .quick-movable-container,
 .online-service-movable-container,
 .bottom-fixed,
-.buy-nav {
+.buy-nav,
+.plugins-popupscreen .content {
     max-width: 800px !important;
     margin: 0 auto !important;
 }
@@ -52,7 +53,7 @@ uni-page-head {
 .uni-page-head-btn {
     position: fixed;
     left: auto;
-    bottom: 60px;
+    bottom: 70px;
     background: rgba(0, 0, 0, 0.6);
     box-shadow: 0 0 10px rgb(0 0 0 / 30%);
     margin: 0 0 0 10px;

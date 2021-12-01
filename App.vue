@@ -71,13 +71,18 @@
 
             /**
              * 获取设备信息
+             * key      指定key
+             * dv       默认数据（不存在则读取、默认null）
+             * is_real  是否实时读取
              */
-            get_system_info(key) {
-                var info = uni.getStorageSync(this.data.cache_system_info_key) || null;
-                if (info == null) {
+            get_system_info(key, dv, is_real) {
+                var info = null;
+                if((is_real || false) == true) {
                     info = this.set_system_info();
+                } else {
+                    info = uni.getStorageSync(this.data.cache_system_info_key) || null;
                 }
-                return (key|| null) == null ? info : (info[key] == undefined) ? null : info[key];
+                return ((key|| null) == null) ? info : ((info[key] == undefined) ? (dv || null) : info[key]);
             },
 
             /**
@@ -1047,6 +1052,24 @@
                 }
                 // #endif
                 return width;
+            },
+            
+            // 窗口高度处理
+            window_height_handle(system) {
+                var height = system.windowHeight;
+                // 状态栏
+                if(system.statusBarHeight > 0) {
+                    height += system.statusBarHeight;
+                }
+                // 导航栏
+                if(system.windowTop > 0) {
+                    height += system.windowTop;
+                }
+                // 底部菜单
+                if(system.windowBottom > 0) {
+                    height += system.windowBottom;
+                }
+                return height;
             }
         },
 
