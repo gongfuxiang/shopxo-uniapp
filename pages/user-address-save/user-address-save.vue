@@ -22,18 +22,18 @@
                     <view class="select-address oh">
                         <view class="section fl">
                             <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
-                                <view :class="'name ' + ((province_value == null) ? 'cr-grey' : 'cr-base' )">{{province_list[province_value].name || default_province}}</view>
+                                <view :class="'name ' + ((province_value == null) ? 'cr-grey' : 'cr-base' )">{{((province_list[city_value] || null) == null) ? default_province : province_list[city_value]['name']}}</view>
                             </picker>
                         </view>
                         <view class="section fl">
                             <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
-                                <view :class="'name ' + ((city_value == null) ? 'cr-grey' : 'cr-base' )">{{city_list[city_value].name || default_city}}</view>
+                                <view :class="'name ' + ((city_value == null) ? 'cr-grey' : 'cr-base' )">{{((city_list[city_value] || null) == null) ? default_city : city_list[city_value]['name']}}</view>
                             </picker>
                             <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择省份">请先选择省份</text>
                         </view>
                         <view class="section fl">
                             <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
-                                <view :class="'name ' + ((county_value == null) ? 'cr-grey' : 'cr-base' )">{{county_list[county_value].name || default_county}}</view>
+                                <view :class="'name ' + ((county_value == null) ? 'cr-grey' : 'cr-base' )">{{((county_list[city_value] || null) == null) ? default_county : county_list[city_value]['name']}}</view>
                             </picker>
                             <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择城市">请先选择城市</text>
                         </view>
@@ -103,7 +103,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 editor_path_type: '',
-                address_data: null,
+                address_data: {},
                 province_list: [],
                 city_list: [],
                 county_list: [],
@@ -210,7 +210,7 @@
                                 idcard_back: ads_data == null ? '' : ads_data.idcard_back || ''
                             };
                             self.setData({
-                                address_data: ads_data,
+                                address_data: ads_data || {},
                                 idcard_images_data: idcard_images,
                                 editor_path_type: data.editor_path_type || ''
                             });

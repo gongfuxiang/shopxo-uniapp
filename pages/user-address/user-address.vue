@@ -39,9 +39,16 @@
         </view>
 
         <!-- 底部操作 -->
-        <view class="submit-list bottom-fixed padding-main">
-            <button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
-            <button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
+        <view class="bottom-fixed padding-main">
+            <!-- #ifdef MP -->
+            <view class="submit-list">
+                <button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+                <button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
+            </view>
+            <!-- #endif -->
+            <!-- #ifdef H5 || APP -->
+            <button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+            <!-- #endif -->
         </view>
     </view>
 </template>
@@ -301,9 +308,7 @@
 
             // 获取系统地址事件
             choose_system_address_event(e) {
-                console.log(e);
                 if(e == 1) {
-                    console.log(0);
                     uni.chooseAddress({
                         success(res) {
                             var data = {
@@ -344,7 +349,6 @@
                         }
                     });
                 } else {
-                    console.log(1);
                     app.globalData.auth_check(this, 'choose_system_address_event', 'scope.address');
                 }
             },
