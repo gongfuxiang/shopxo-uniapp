@@ -512,119 +512,111 @@
                 if(typeof data.data == 'string') {
                     window.location.href = data.data;
                 } else {
-                    switch(data.payment.payment) {
-                        // 展示支付二维码，定时校验支持状态
-                        // 支付宝当面付、QQ支付
-                        case 'AlipayFace' :
-                        case 'QQ' :
-                            // 必要参数
-                            if((data.data.qrcode_url || null) == null || (data.data.name || null) == null || (data.data.check_url || null) == null || (data.data.order_no || null) == null) {
-                                app.globalData.showToast('支付插件返回参数有误');
-                                return false;
+                    var status = false;
+                    // 微信jsapi
+                    if(data.payment.payment == 'Weixin' && (data.data.appId || null) != null && (data.data.timeStamp || null) != null && (data.data.nonceStr || null) != null && (data.data.package || null) != null && (data.data.signType || null) != null && (data.data.paySign || null) != null) {
+                        status = true;
+                        function onBridgeReady() {
+                            WeixinJSBridge.invoke("getBrandWCPayRequest", {
+                                appId: data.data.appId,
+                                timeStamp: data.data.timeStamp,
+                                nonceStr: data.data.nonceStr,
+                                package: data.data.package,
+                                signType: data.data.signType,
+                                paySign: data.data.paySign
+                            },
+                            function(res) {
+                                if(res.err_msg == "get_brand_wcpay_request:ok") {
+                                    // 数据设置
+                                    self.order_item_pay_success_handle(order_ids);
+                                    
+                                    // 跳转支付页面
+                                    uni.navigateTo({
+                                        url: "/pages/paytips/paytips?code=9000"
+                                    });
+                                }
+                            });
+                        }
+                        if(typeof WeixinJSBridge == "undefined") {
+                            if(document.addEventListener) {
+                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                            } else if (document.attachEvent) {
+                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
                             }
-                            // 显示支付窗口
-                            this.setData({
-                                popup_view_pay_data: data.data,
-                                popup_view_pay_is_show: true
-                            });
-                            // 定时校验支付状态
-                            var timer = setInterval(function() {
-                                uni.request({
-                                    url: app.globalData.get_request_url("paycheck", "order"),
-                                    method: "POST",
-                                    data: {
-                                        order_no: self.popup_view_pay_data.order_no,
-                                    },
-                                    dataType: "json",
-                                    success: res => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            // 清除定时和支付数据
-                                            clearInterval(self.popup_view_pay_timer);
-                                            self.setData({
-                                                popup_view_pay_data: null,
-                                                popup_view_pay_is_show: false
-                                            });
+                        } else {
+                            onBridgeReady();
+                        }
+                    }
 
-                                            // 数据设置
-                                            self.order_item_pay_success_handle(order_ids);
-
-                                            // 跳转支付页面
-                                            uni.navigateTo({
-                                                url: "/pages/paytips/paytips?code=9000"
-                                            });
-                                        } else {
-                                            // -300支付中、其它状态则提示错误
-                                            if(res.data.code != -300) {
-                                                clearInterval(self.popup_view_pay_timer);
-                                                app.globalData.showToast(res.data.msg);
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        clearInterval(self.popup_view_pay_timer);
-                                        app.globalData.showToast("服务器请求出错");
-                                    }
-                                });
-                            }, 3000);
-                            self.setData({
-                                popup_view_pay_timer: timer
-                            });
-                            break;
-
-                        // 微信
-                        case 'Weixin' :
-                            function onBridgeReady() {
-                                WeixinJSBridge.invoke("getBrandWCPayRequest", {
-                                    appId: data.data.appId,
-                                    timeStamp: data.data.timeStamp,
-                                    nonceStr: data.data.nonceStr,
-                                    package: data.data.package,
-                                    signType: data.data.signType,
-                                    paySign: data.data.paySign
+                    // 二维码展示
+                    if((data.data.qrcode_url || null) != null && (data.data.name || null) != null && (data.data.check_url || null) != null && (data.data.order_no || null) != null) {
+                        status = true;
+                        // 显示支付窗口
+                        this.setData({
+                            popup_view_pay_data: data.data,
+                            popup_view_pay_is_show: true
+                        });
+                        // 定时校验支付状态
+                        var timer = setInterval(function() {
+                            uni.request({
+                                url: app.globalData.get_request_url("paycheck", "order"),
+                                method: "POST",
+                                data: {
+                                    order_no: self.popup_view_pay_data.order_no,
                                 },
-                                function(res) {
-                                    if(res.err_msg == "get_brand_wcpay_request:ok") {
+                                dataType: "json",
+                                success: res => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        // 清除定时和支付数据
+                                        clearInterval(self.popup_view_pay_timer);
+                                        self.setData({
+                                            popup_view_pay_data: null,
+                                            popup_view_pay_is_show: false
+                                        });
+                    
                                         // 数据设置
                                         self.order_item_pay_success_handle(order_ids);
-                                        
+                    
                                         // 跳转支付页面
                                         uni.navigateTo({
                                             url: "/pages/paytips/paytips?code=9000"
                                         });
+                                    } else {
+                                        // -300支付中、其它状态则提示错误
+                                        if(res.data.code != -300) {
+                                            clearInterval(self.popup_view_pay_timer);
+                                            app.globalData.showToast(res.data.msg);
+                                        }
                                     }
-                                });
-                            }
-                            if(typeof WeixinJSBridge == "undefined") {
-                                if(document.addEventListener) {
-                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                                } else if (document.attachEvent) {
-                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                                },
+                                fail: () => {
+                                    clearInterval(self.popup_view_pay_timer);
+                                    app.globalData.showToast("服务器请求出错");
                                 }
-                            } else {
-                                onBridgeReady();
-                            }
-                            break;
+                            });
+                        }, 3000);
+                        self.setData({
+                            popup_view_pay_timer: timer
+                        });
+                    }
 
-                        // 支付宝
-                        case 'Alipay' :
-                            if((data.data.html || null) != null) {
-                                var div = document.createElement('paydivform');
-                                div.innerHTML= data.data.html;
-                                document.body.appendChild(div);
-                                var fm = document.forms;
-                                if(fm.length > 0) {
-                                    fm[0].submit();
-                                }
-                            } else {
-                                app.globalData.showToast('支付插件未返回html表单');
-                            }
-                            break;
+                    // 返回html表单
+                    if((data.data.html || null) != null) {
+                        status = true;
+                        var div = document.createElement('paydivform');
+                        div.innerHTML= data.data.html;
+                        document.body.appendChild(div);
+                        var fm = document.forms;
+                        if(fm.length > 0) {
+                            fm[0].submit();
+                        }
+                    }
 
-                        // 默认
-                        default :
-                            app.globalData.showToast(data.payment.name+'支付方式还未适配');
+                    // 未匹配到的支付处理方式
+                    if(!status) {
+                        app.globalData.showToast(data.payment.name+'支付方式还未适配');
                     }
                 }
             },
