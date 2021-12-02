@@ -8,13 +8,13 @@
     min-height: 300rpx;
     padding-top: var(--status-bar-height);
 }
-.content {
-    padding-top: 35rpx;
-}
 
 /**
- * 头像
+ * 头部
  */
+.head-base {
+    padding-top: 35rpx;
+}
 /* #ifdef H5 || APP */
 .head-base {
     margin-bottom: 25rpx;
@@ -42,9 +42,6 @@
     z-index: 10;
     right: 30rpx;
     top: 60rpx;
-    /* #ifdef H5 || APP */
-    top: 0;
-    /* #endif */
 }
 .nav-message .badge-icon {
     top: -10px;
@@ -83,6 +80,7 @@
 .nav-list-sub .item .badge-icon {
     top: -2px;
     left: calc(50% + 35rpx);
+    z-index: 1;
 }
 
 /**

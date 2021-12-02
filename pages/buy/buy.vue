@@ -464,17 +464,13 @@
                         dataType: "json",
                         success: res => {
                             uni.hideLoading();
-
                             if (res.data.code == 0) {
                                 if (res.data.data.order_status == 1) {
-                                    uni.redirectTo({
-                                        url: '/pages/user-order/user-order?is_pay=1&order_ids=' + res.data.data.order_ids.join(',')
-                                    });
-                                } else {
-                                    uni.redirectTo({
-                                        url: '/pages/user-order/user-order'
-                                    });
+                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.order_ids.join(','));
                                 }
+                                uni.redirectTo({
+                                    url: '/pages/user-order/user-order'
+                                });
                             } else {
                                 app.globalData.showToast(res.data.msg);
                                 this.setData({

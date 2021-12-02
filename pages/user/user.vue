@@ -177,7 +177,7 @@
 
         // 下拉刷新
         onPullDownRefresh(e) {
-            this.init(e);
+            this.get_data();
         },
 
         methods: {

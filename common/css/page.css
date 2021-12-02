@@ -5,6 +5,9 @@ body {
 page {
     min-height: 100%;
 }
+a {
+    text-decoration: none;
+}
 /**
  * 页面宽度最大800px、并居中
  */
@@ -118,6 +121,18 @@ button:before {
 /**
  * 常用样式
  */
+.max-w {
+    max-width: 100%;
+}
+.max-h {
+    max-height: 100%;
+}
+.min-w {
+    min-width: 100%;
+}
+.min-h {
+    min-height: 100%;
+}
 .fl {
     float: left;
 }
@@ -535,6 +550,7 @@ button[disabled].bg-gray {
     border: 1px solid #eee;
     border-radius: 50rpx;
     line-height: 44rpx;
+    z-index: 1;
 }
 .form-container-upload .form-upload-data image {
     width: 150rpx;

@@ -145,6 +145,7 @@
     position: absolute;
     top: 2rpx;
     left: calc(50% + 25rpx);
+    z-index: 1;
 }
 .goods-buy-nav-btn-number-0 .item,
 .goods-buy-nav-btn-number-1 .item {

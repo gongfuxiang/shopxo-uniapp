@@ -20,6 +20,8 @@
                 cache_launch_info_key: "cache_shop_launch_info_key",
                 // 获取位置选择缓存key
                 cache_userlocation_key: "cache_userlocation_key",
+                // 页面支付临时缓存key
+                cache_page_pay_key: "cache_page_pay_key",
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
@@ -1070,7 +1072,14 @@
                     height += system.windowBottom;
                 }
                 return height;
-            }
+            },
+            
+            // 获取当前页面地址、不含?后面的参数
+            get_page_url() {
+                var url = window.location.href;
+                url = url.split('?');
+                return url[0];
+            },
         },
 
         /**
