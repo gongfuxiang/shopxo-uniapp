@@ -3,14 +3,21 @@
         <!-- 开启事件 -->
         <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
-                <button :class="common_ent" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                    <!-- #ifdef MP-ALIPAY -->
-                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="60rpx*60rpx" />
-                    <!-- #endif -->
-                    <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || H5 || APP -->
+                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
+                <button open-type="contact" :class="common_ent">
                     <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
-                    <!-- #endif -->
                 </button>
+                <!-- #endif -->
+                <!-- #ifdef MP-ALIPAY -->
+                <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="60rpx*60rpx" />
+                </button>
+                <!-- #endif -->
+                <!-- #ifdef H5 || APP -->
+                <button type="default" :class="common_ent" @tap="call_event">
+                    <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
+                </button>
+                <!-- #endif -->
             </movable-view>
         </movable-area>
     </view>
@@ -22,6 +29,7 @@
         data() {
             return {
                 common_static_url: common_static_url,
+                common_app_customer_service_tel: null,
                 online_service_status: 0,
                 mini_alipay_tnt_inst_id: null,
                 mini_alipay_scene: null,
@@ -108,8 +116,17 @@
                 if ((status || false) == true) {
                     // #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY || H5 || APP
                     this.setData({
+                        common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         online_service_status: app.globalData.get_config('config.common_app_is_online_service') || 0
                     });
+                    // #endif
+                    
+                    // #ifdef H5 || APP
+                    if((this.common_app_customer_service_tel || null) == null) {
+                        this.setData({
+                            online_service_status: 0
+                        });
+                    }
                     // #endif
 
                     // #ifdef MP-ALIPAY
@@ -125,6 +142,15 @@
                     // #endif
                 } else {
                     app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 客服电话
+            call_event() {
+                if (this.common_app_customer_service_tel == null) {
+                    app.globalData.showToast("客服电话有误");
+                } else {
+                    app.globalData.call_tel(this.common_app_customer_service_tel);
                 }
             }
         }
