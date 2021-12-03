@@ -417,7 +417,7 @@
                     self.common_pay_handle(self, data, index);
                 }
             },
-            
+
             // h5支付处理
             h5_pay_handle(self, data, index) {
                 // 字符串则为跳转地址直接进入

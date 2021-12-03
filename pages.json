@@ -3,30 +3,32 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP
                 "navigationStyle": "custom",
+                "navigationBarTitleText": "首页",
                 // #endif
                 // #ifdef MP-ALIPAY
                 "transparentTitle": "always",
                 "titlePenetrate": "YES",
+                "navigationBarTitleText": "",
                 // #endif
 				"enablePullDownRefresh": true,
-                "navigationBarTextStyle": "white",
-                "navigationBarTitleText": ""
+                "navigationBarTextStyle": "white"
 			}
 		},
 		{
 			"path": "pages/goods-category/goods-category",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP
                 "navigationStyle": "custom",
+                "navigationBarTitleText": "商品分类",
                 // #endif
                 // #ifdef MP-ALIPAY
                 "transparentTitle": "always",
                 "titlePenetrate": "YES",
+                "navigationBarTitleText": "",
                 // #endif
-				"enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -39,15 +41,16 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP
                 "navigationStyle": "custom",
+                "navigationBarTitleText": "用户中心",
                 // #endif
                 // #ifdef MP-ALIPAY
                 "transparentTitle": "always",
                 "titlePenetrate": "YES",
+                "navigationBarTitleText": "",
                 // #endif
-				"enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -93,7 +96,7 @@
                 //     "share-button": "plugin://goodsSharePlugin/share-button"
                 // },
                 // // #endif
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,
