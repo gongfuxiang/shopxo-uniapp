@@ -63,14 +63,14 @@
         },
         "plugins" : {
             // // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
-            // "live-player-plugin": {
-            //     "version": "1.3.0",
-            //     "provider": "wx2b03c6e691cd7370"
+            // "live-player-plugin" : {
+            //     "version" : "1.3.0",
+            //     "provider" : "wx2b03c6e691cd7370"
             // },
             // // 好物推荐（需要开通权限 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx56c8f077de74b07c&token=1011820682&lang=zh_CN）
-            // "goodsSharePlugin": {
-            //     "version": "4.0.1",
-            //     "provider": "wx56c8f077de74b07c"
+            // "goodsSharePlugin" : {
+            //     "version" : "4.0.1",
+            //     "provider" : "wx56c8f077de74b07c"
             // }
         }
     },
@@ -118,7 +118,8 @@
             "mode" : "history",
             "base" : "./"
         },
-        "title" : "ShopXO"
+        "title" : "ShopXO",
+        "template" : "template.h5.html"
     },
     "vueVersion" : "2"
 }
