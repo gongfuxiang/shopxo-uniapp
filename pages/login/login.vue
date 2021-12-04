@@ -90,11 +90,13 @@
                         </block>
                         <!-- 协议 -->
                         <view class="margin-top-xxxl cr-gray">
-                            <radio-group class="dis-inline-block va-m" @tap="agreement_change" style="transform:scale(0.6)">
-                                <label>
-                                    <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                                </label>
-                            </radio-group>
+                            <view class="dis-inline-block va-m" @tap="agreement_change">
+                                <radio-group class="dis-inline-block va-m" style="transform:scale(0.6)">
+                                    <label>
+                                        <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                    </label>
+                                </radio-group>
+                            </view>
                             <view class="dis-inline-block va-m">
                                 阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
                             </view>
@@ -157,11 +159,13 @@
                         </block>
                         <!-- 协议 -->
                         <view class="margin-top-xxxl cr-gray">
-                            <radio-group class="dis-inline-block va-m" @tap="agreement_change" style="transform:scale(0.6)">
-                                <label>
-                                    <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                                </label>
-                            </radio-group>
+                            <view class="dis-inline-block va-m" @tap="agreement_change">
+                                <radio-group class="dis-inline-block va-m" style="transform:scale(0.6)">
+                                    <label>
+                                        <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                    </label>
+                                </radio-group>
+                            </view>
                             <view class="dis-inline-block va-m">
                                 阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
                             </view>
@@ -224,11 +228,13 @@
                 <view v-if="current_opt_form == 'auth' && (user || null) == null" class="margin-top-xxxl tc">
                     <view class="cr-base">确认登录授权，为您提供更优质的服务</view>
                     <view class="margin-top-sm cr-gray">
-                        <radio-group class="dis-inline-block va-m" @tap="agreement_change" style="transform:scale(0.6)">
-                            <label>
-                                <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                            </label>
-                        </radio-group>
+                        <view class="dis-inline-block va-m" @tap="agreement_change">
+                            <radio-group style="transform:scale(0.6)">
+                                <label>
+                                    <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                </label>
+                            </radio-group>
+                        </view>
                         <view class="dis-inline-block va-m">
                             阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
                         </view>
@@ -445,7 +451,7 @@
                 // #ifdef MP-ALIPAY
                 uni.getOpenUserInfo({
                     success: (res) => {
-                        var userinfo = JSON.parse(userinfo.response).response;
+                        var userinfo = JSON.parse(res.response).response;
                         this.user_auth_code(userinfo);
                     }
                 });
