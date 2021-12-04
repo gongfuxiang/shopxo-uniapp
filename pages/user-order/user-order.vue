@@ -71,8 +71,8 @@
             <button class="bottom-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
         
-        <!-- 支付信息展示 -->
-        <component-popup :propShow="popup_view_pay_is_show" propPosition="bottom" @onclose="popup_view_pay_event_close">
+        <!-- 支付二维码展示 -->
+        <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
             <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
                 <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.check_url || null) == null || (popup_view_pay_data.order_no || null) == null">
                     <text class="cr-gray">无支付信息</text>
@@ -86,6 +86,18 @@
                         <a :href="popup_view_pay_data.pay_url" target="_blank" class="dis-inline-block cr-green">尝试点击去支付</a>
                     </view>
                     <!-- #endif -->
+                </block>
+            </view>
+        </component-popup>
+        
+        <!-- 支付html展示 -->
+        <component-popup :propShow="popup_view_pay_html_is_show" propPosition="bottom" @onclose="popup_view_pay_html_event_close">
+            <view class="popup-pay-html-content padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
+                <block v-if="(popup_view_pay_data || null) == null">
+                    <text class="cr-gray">无支付信息</text>
+                </block>
+                <block v-else>
+                    <rich-text :nodes="popup_view_pay_data"></rich-text>
                 </block>
             </view>
         </component-popup>
@@ -109,6 +121,7 @@
 <script>
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
+    import htmlParser from '../../common/js/lib/html-parser.js';
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
@@ -142,8 +155,9 @@
                 nav_status_index: 0,
                 order_select_ids: [],
                 // 支付信息
+                popup_view_pay_html_is_show: false,
+                popup_view_pay_qrcode_is_show: false,
                 popup_view_pay_data: null,
-                popup_view_pay_is_show: false,
                 popup_view_pay_timer: null,
                 // 基础配置
                 home_is_enable_order_bulk_pay: 0
@@ -429,7 +443,15 @@
                                 }
                             }
                         } else {
-                            app.globalData.showToast(res.data.msg);
+                            // 是否返回html代码展示、则提示错误
+                            if(res.data.code == -6666 && (res.data.data || null) != null) {
+                                this.setData({
+                                    popup_view_pay_data: htmlParser(res.data.data),
+                                    popup_view_pay_html_is_show: true
+                                });
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
                         }
                     },
                     fail: () => {
@@ -555,7 +577,7 @@
                         // 显示支付窗口
                         this.setData({
                             popup_view_pay_data: data.data,
-                            popup_view_pay_is_show: true
+                            popup_view_pay_qrcode_is_show: true
                         });
                         // 定时校验支付状态
                         var timer = setInterval(function() {
@@ -573,7 +595,7 @@
                                         clearInterval(self.popup_view_pay_timer);
                                         self.setData({
                                             popup_view_pay_data: null,
-                                            popup_view_pay_is_show: false
+                                            popup_view_pay_qrcode_is_show: false
                                         });
                     
                                         // 数据设置
@@ -877,12 +899,19 @@
                 app.globalData.url_event(e);
             },
             
-            // 支付信息展示窗口事件
-            popup_view_pay_event_close(e) {
+            // 支付二维码展示窗口事件
+            popup_view_pay_qrcode_event_close(e) {
                 this.setData({
-                    popup_view_pay_is_show: false
+                    popup_view_pay_qrcode_is_show: false
                 });
                 clearInterval(this.popup_view_pay_timer);
+            },
+            
+            // 支付html展示窗口事件
+            popup_view_pay_html_event_close(e) {
+                this.setData({
+                    popup_view_pay_html_is_show: false
+                });
             },
             
             // 页面卸载

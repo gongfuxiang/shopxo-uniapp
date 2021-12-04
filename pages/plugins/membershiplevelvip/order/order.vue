@@ -42,8 +42,8 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
         
-        <!-- 支付信息展示 -->
-        <component-popup :propShow="popup_view_pay_is_show" propPosition="bottom" @onclose="popup_view_pay_event_close">
+        <!-- 支付二维码展示 -->
+        <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
             <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
                 <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.check_url || null) == null || (popup_view_pay_data.order_no || null) == null">
                     <text class="cr-gray">无支付信息</text>
@@ -115,8 +115,8 @@
                     {name: "支付金额", field: "pay_price", unit: "元"}
                 ],
                 // 支付信息
+                popup_view_pay_qrcode_is_show: false,
                 popup_view_pay_data: null,
-                popup_view_pay_is_show: false,
                 popup_view_pay_timer: null
             };
         },
@@ -471,7 +471,7 @@
                         // 显示支付窗口
                         this.setData({
                             popup_view_pay_data: data.data,
-                            popup_view_pay_is_show: true
+                            popup_view_pay_qrcode_is_show: true
                         });
                         // 定时校验支付状态
                         var timer = setInterval(function() {
@@ -489,7 +489,7 @@
                                         clearInterval(self.popup_view_pay_timer);
                                         self.setData({
                                             popup_view_pay_data: null,
-                                            popup_view_pay_is_show: false
+                                            popup_view_pay_qrcode_is_show: false
                                         });
                                     
                                         // 数据设置
@@ -659,10 +659,10 @@
                 this.get_data_list(1);
             },
 
-            // 支付信息展示窗口事件
-            popup_view_pay_event_close(e) {
+            // 支付二维码展示窗口事件
+            popup_view_pay_qrcode_event_close(e) {
                 this.setData({
-                    popup_view_pay_is_show: false
+                    popup_view_pay_qrcode_is_show: false
                 });
                 clearInterval(this.popup_view_pay_timer);
             },
