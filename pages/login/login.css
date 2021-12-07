@@ -54,3 +54,26 @@ page {
 .opt-type-list text:not(:last-child) {
     margin-right: 50rpx;
 }
+
+/**
+ * 第三方登录 - 插件
+ */
+.plugins-thirdpartylogin .item {
+    width: 35rpx;
+    height: 35rpx;
+    padding: 5rpx;
+}
+.plugins-thirdpartylogin .item:not(:last-child) {
+    margin-right: 10rpx;
+}
+.plugins-thirdpartylogin .item image {
+    width: 25rpx !important;
+    height: 25rpx !important;
+}
+.plugins-thirdpartylogin-bind image {
+    width: 40rpx !important;
+    height: 40rpx !important;
+}
+.plugins-thirdpartylogin-bind button {
+    line-height: 40rpx;
+}

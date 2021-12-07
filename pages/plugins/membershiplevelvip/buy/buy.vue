@@ -201,9 +201,9 @@
                             submit_disabled_status: false
                         });
                         if (res.data.code == 0) {
-                            // 进入以后会员中心并发起支付
+                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
                             uni.redirectTo({
-                                url: '/pages/plugins/membershiplevelvip/order/order?is_pay=1&order_id=' + res.data.data.id
+                                url: '/pages/plugins/membershiplevelvip/order/order'
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'submit_event')) {

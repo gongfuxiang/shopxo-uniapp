@@ -8,7 +8,7 @@
                     <view v-if="current_opt_form == 'bind_verify'" class="form-content">
                         <form @submit="formBind">
                             <view class="tc">
-                                <image class="icon circle auto dis-block margin-bottom-xxl" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
                                 <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                             </view>
                             <view class="margin-top-xxxl padding-top-xxxl">
@@ -26,12 +26,12 @@
                     </view>
 
                     <!-- 确认绑定方式 -->
-                    <view v-if="current_opt_form == 'bind'" class="form-content">
-                        <block v-if="(user.mobile || null) == null">
-                            <view class="tc">
-                                <image class="icon circle auto dis-block margin-bottom-xxl" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
-                            </view>
+                    <view class="form-content">
+                        <view class="tc">
+                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                            <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
+                        </view>
+                        <block v-if="current_opt_form == 'bind'">
                             <view class="margin-top-xxxl padding-top-xxxl">
                                 <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
                                 <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
@@ -50,15 +50,32 @@
                                 </view>
                             </view>
                         </block>
-                        <view v-else class="tc">
-                            <view class="cr-base">已成功登陆、请点击进入首页</view>
-                            <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xxxl">进入首页</navigator>
+                        <view v-else class="tc margin-top-xxxl">
+                            <view class="cr-green">已成功登陆、请点击进入首页</view>
+                            <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
                         </view>
                     </view>
                 </block>
 
                 <!-- 站点logo -->
-                <image v-if="current_opt_form != 'bind' && current_opt_form != 'bind_verify'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                <image v-if="current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                
+                <!-- 非登录成功则需要展示的数据 -->
+                <block v-if="current_opt_form != 'success'">
+                    <!-- 错误提示信息 -->
+                    <view v-if="(error_msg || null) != null" class="margin-top-xxxl margin-bottom-lg tc padding-horizontal-main">
+                        <icon type="warn" size="16" color="#f00" class="va-m" />
+                        <text class="cr-red va-m margin-left-sm">{{error_msg}}</text>
+                    </view>
+
+                    <!-- 绑定账号提示 -->
+                    <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xxxl">
+                        <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
+                        <text class="cr-blue margin-left-sm">{{plugins_thirdpartylogin_user.nickname}}</text>
+                        <text class="va-m margin-left-lg cr-grey">登录帐号将自动绑定{{plugins_thirdpartylogin_user.platform_name}}用户</text>
+                        <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">取消</button>
+                    </view>
+                </block>
 
                 <!-- 登录 -->
                 <view v-if="current_opt_form == 'login'" class="form-content">
@@ -102,8 +119,17 @@
                             </view>
                         </view>
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认登录</button>
-                        <view class="margin-top-xxl tr">
-                            <text class="cr-gray" data-value="forget" @tap="opt_form_event">找回密码</text>
+                        <view class="margin-top-xxl oh">
+                            <!-- #ifdef H5 || APP -->
+                            <view v-if="(plugins_thirdpartylogin_data || null) != null && (plugins_thirdpartylogin_config || null) != null" class="plugins-thirdpartylogin fl">
+                                <block v-for="(item,index) in plugins_thirdpartylogin_data">
+                                    <view class="item dis-inline-block round" :style="'background-color:'+item.bg_color+';'" :data-type="index" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
+                                        <image :src="item.icon" mode="aspectFit" class="dis-block auto margin-top-xs"></image>
+                                    </view>
+                                </block>
+                            </view>
+                            <!-- #endif -->
+                            <text class="cr-gray fr" data-value="forget" @tap="opt_form_event">找回密码</text>
                         </view>
                         <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
@@ -297,6 +323,7 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '../../common/js/lib/base64.js';
     import componentPopup from "../../components/popup/popup";
 
     export default {
@@ -339,8 +366,14 @@
                     reg_username: "账号密码注册",
                     reg_sms: "手机验证码注册",
                     reg_email: "邮箱验证码注册",
-                    forget: "密码找回"
-                }
+                    forget: "密码找回",
+                    success: "登录成功",
+                },
+                // 第三方登录
+                plugins_thirdpartylogin_data: null,
+                plugins_thirdpartylogin_user: null,
+                // 错误提示信息
+                error_msg: null
             };
         },
 
@@ -350,10 +383,30 @@
         props: {},
 
         // 页面加载初始化
-        onLoad(option) {
+        onLoad(params) {
             this.setData({
-                params: option
+                params: params
             });
+            
+            // 错误提示信息
+            if((params.msg || null) != null) {
+                var msg = base64.decode(decodeURIComponent(params.msg));
+                this.setData({
+                    error_msg: msg
+                });
+            }
+            
+            // 第三方登录成功处理
+            if((params.thirdpartylogin || null) != null) {
+                var user = JSON.parse(base64.decode(decodeURIComponent(params.thirdpartylogin)));
+                this.setData({
+                    plugins_thirdpartylogin_user: user
+                });
+                // 是否需要绑定账号
+                if((user.is_force_bind_user || 0) != 1) {
+                    uni.setStorageSync(app.globalData.data.cache_user_info_key, user);
+                }
+            }
 
             // 数据初始化
             this.init();
@@ -390,6 +443,12 @@
                             this.image_verify_event('user_login');
                         }
                     }
+                } else {
+                    // 是否需要绑定手机
+                    if (type == 'bind' && !app.globalData.user_is_need_login(user)) {
+                        type = 'success';
+                        form = 'success';
+                    }
                 }
                 // #endif
                 uni.setNavigationBarTitle({
@@ -412,7 +471,9 @@
                         home_user_reg_type: app.globalData.get_config('config.home_user_reg_type'),
                         home_user_login_img_verify_state: app.globalData.get_config('config.home_user_login_img_verify_state'),
                         home_user_register_img_verify_state: app.globalData.get_config('config.home_user_register_img_verify_state'),
-                        common_img_verify_state: app.globalData.get_config('config.common_img_verify_state')
+                        common_img_verify_state: app.globalData.get_config('config.common_img_verify_state'),
+                        plugins_thirdpartylogin_config: app.globalData.get_config('plugins_base.thirdpartylogin.data'),
+                        plugins_thirdpartylogin_data: app.globalData.get_config('plugins_thirdpartylogin_data')
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -724,8 +785,7 @@
                         data: e.detail.value,
                         dataType: 'json',
                         success: res => {
-                            uni.hideLoading();
-                            this.login_reg_success_handle(res);
+                            this.user_success_handle(res);
                         },
                         fail: () => {
                             uni.hideLoading();
@@ -773,8 +833,7 @@
                         data: data,
                         dataType: 'json',
                         success: res => {
-                            uni.hideLoading();
-                            this.login_reg_success_handle(res);
+                            this.user_success_handle(res);
                         },
                         fail: () => {
                             uni.hideLoading();
@@ -842,8 +901,7 @@
                         data: e.detail.value,
                         dataType: 'json',
                         success: res => {
-                            uni.hideLoading();
-                            this.login_reg_success_handle(res);
+                            this.user_success_handle(res);
                         },
                         fail: () => {
                             uni.hideLoading();
@@ -923,8 +981,7 @@
                         data: e.detail.value,
                         dataType: 'json',
                         success: res => {
-                            uni.hideLoading();
-                            this.login_reg_success_handle(res);
+                            this.user_success_handle(res);
                         },
                         fail: () => {
                             uni.hideLoading();
@@ -995,32 +1052,68 @@
                 }
             },
             
-            // 登录和注册成功处理
-            login_reg_success_handle(res) {
+            // 登录和注册成功回调处理
+            user_success_handle(res) {
                 if (res.data.code == 0 && (res.data.data || null) != null) {
+                    // 清除定时任务并存储用户信息
                     clearInterval(this.temp_clear_time);
-                    app.globalData.showToast(res.data.msg, 'success');
-                    uni.setStorage({
-                        key: app.globalData.data.cache_user_info_key,
-                        data: res.data.data
-                    });
-                    var event_callback = this.params.event_callback || null;
-                    setTimeout(function() {
-                        // 触发回调函数
-                        if (event_callback != null) {
-                            var pages = getCurrentPages();
-                            if((pages[pages.length-2][event_callback] || null) != null) {
-                                pages[pages.length-2][event_callback]();
+                    uni.setStorageSync(app.globalData.data.cache_user_info_key, res.data.data);
+
+                    // 是否强制绑定账号处理
+                    if((this.plugins_thirdpartylogin_user || null) != null && (this.plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1) {
+                        uni.request({
+                            url: app.globalData.get_request_url('bind', 'index', 'thirdpartylogin'),
+                            method: 'POST',
+                            data: this.plugins_thirdpartylogin_user,
+                            dataType: 'json',
+                            success: res => {
+                                if(res.data.code == 0) {
+                                    uni.hideLoading();
+                                    uni.setStorageSync(app.globalData.data.cache_user_info_key, res.data.data);
+                                    this.success_back_handle(res);
+                                } else {
+                                    uni.hideLoading();
+                                    this.setData({
+                                        form_submit_loading: false
+                                    });
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                this.setData({
+                                    form_submit_loading: false
+                                });
+                                app.globalData.showToast("服务器请求出错");
                             }
-                        }
-                        uni.navigateBack();
-                    }, 1000);
+                        });
+                    } else {
+                        uni.hideLoading();
+                        this.success_back_handle(res);
+                    }
                 } else {
+                    uni.hideLoading();
                     this.setData({
                         form_submit_loading: false
                     });
                     app.globalData.showToast(res.data.msg);
                 }
+            },
+            
+            // 成功后处理
+            success_back_handle(res) {
+                app.globalData.showToast(res.data.msg, 'success');
+                var event_callback = this.params.event_callback || null;
+                setTimeout(function() {
+                    // 触发回调函数
+                    if (event_callback != null) {
+                        var pages = getCurrentPages();
+                        if((pages[pages.length-2][event_callback] || null) != null) {
+                            pages[pages.length-2][event_callback]();
+                        }
+                    }
+                    uni.navigateBack();
+                }, 1000);
             },
 
             // 协议事件
@@ -1150,6 +1243,26 @@
                     self.init();
                     uni.hideLoading();
                 }, 3000);
+            },
+            
+            // 第三方登录事件
+            plugins_thirdpartylogin_event(e) {
+                // 是否已同意协议
+                if(!this.agreement_status) {
+                    app.globalData.showToast('请先同意协议');
+                    return false;
+                }
+                // 直接跳转到登录地址、这里还可以根据终端类型进行处理业务逻辑
+                var type = e.currentTarget.dataset.type || null;
+                var url = e.currentTarget.dataset.url || null;
+                window.location.href = url;
+            },
+            
+            // 第三方登录绑定账号取消
+            plugins_thirdpartylogin_cancel_event(e) {
+                uni.redirectTo({
+                    url: '/pages/login/login'
+                });
             }
         }
     };

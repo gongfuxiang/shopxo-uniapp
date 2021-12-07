@@ -1,4 +1,5 @@
 <script>
+    import base64 from './common/js/lib/base64.js';
     export default {
         globalData: {
             data: {
@@ -105,8 +106,9 @@
              * c              控制器
              * plugins        插件标记（传参则表示为插件请求）
              * params         url请求参数
+             * group          组名称（默认 api）
              */
-            get_request_url(a, c, plugins, params) {
+            get_request_url(a, c, plugins, params, group) {
                 a = a || "index";
                 c = c || "index";
                 
@@ -129,7 +131,7 @@
                 var token = user == false ? '' : user.token || '';
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
-                return this.data.request_url + "api.php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ client_value + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
+                return this.data.request_url + (group || "api")+".php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ client_value + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
             },
 
             /**
@@ -762,7 +764,7 @@
                 uni.request({
                     url: this.get_request_url('common', 'base'),
                     method: 'POST',
-                    data: {},
+                    data: {is_key: 1},
                     dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
@@ -1045,7 +1047,7 @@
                     }
                 });
             },
-            
+
             // 窗口宽度处理
             window_width_handle(width) {
                 // #ifdef H5 || APP
@@ -1055,7 +1057,7 @@
                 // #endif
                 return width;
             },
-            
+
             // 窗口高度处理
             window_height_handle(system) {
                 var height = system.windowHeight;
@@ -1073,13 +1075,71 @@
                 }
                 return height;
             },
-            
+
             // 获取当前页面地址、不含?后面的参数
-            get_page_url() {
+            get_page_url(is_whole) {
                 var url = window.location.href;
-                url = url.split('?');
-                return url[0];
+                if(is_whole == false) {
+                    var temp = url.split('?');
+                    url = temp[0];
+                }
+                return url;
             },
+
+            // 是否微信环境
+            is_weixin() {
+                var agent = navigator.userAgent.toLowerCase();
+                if(agent.match(/MicroMessenger/i) == 'micromessenger') {
+                    return true;
+                }
+                return false;
+            },
+
+            // 用户微信webopenid是否存在
+            is_user_weixin_web_openid(order_ids) {
+                // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
+                if(this.is_weixin()) {
+                    var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
+                    if(web_openid == null) {
+                        // 已经授权则重新刷新用户信息
+                        var params = this.get_launch_cache_info();
+                        if(params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
+                            uni.showLoading({
+                                title: "处理中..."
+                            });
+                            uni.request({
+                                url: this.get_request_url("tokenuserinfo", "user"),
+                                method: "POST",
+                                data: {},
+                                dataType: "json",
+                                success: res => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+                                    } else {
+                                        this.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    this.showToast("服务器请求出错");
+                                }
+                            });
+                            return true;
+                        } else {
+                            uni.setStorageSync(this.data.cache_page_pay_key, (typeof order_ids == 'array') ? order_ids.join(',') : order_ids);
+                            var page_url = this.get_page_url();
+                                page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
+                                page_url += 'is_weixin_auth_web_openid=1';
+                            var request_url = encodeURIComponent(base64.encode(page_url));
+                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');                        
+                            window.location.href = url;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            }
         },
 
         /**

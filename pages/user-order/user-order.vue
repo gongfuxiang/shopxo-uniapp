@@ -107,7 +107,7 @@
             <view v-if="payment_list.length > 0" class="payment-list oh bg-base padding-main">
                 <view class="padding-top-main padding-left-main">
                     <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
-                        <view class="item-content bg-white border-radius-main margin-right-main margin-bottom-main" :data-value="item.id" @tap="popup_payment_event">
+                        <view class="item-content bg-white border-radius-main margin-right-main margin-bottom-main" :data-value="item.id" :data-type="item.payment" @tap="popup_payment_event">
                             <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                             <text class="va-m">{{item.name}}</text>
                         </view>
@@ -143,6 +143,7 @@
                 is_show_payment_popup: false,
                 payment_list: [],
                 payment_id: 0,
+                payment_type: '',
                 temp_pay_value: '',
                 nav_status_list: [
                     { name: "全部", value: "-1" },
@@ -287,10 +288,10 @@
                                     // 下订单支付处理
                                     if (this.load_status == 0) {
                                         var ck = app.globalData.data.cache_page_pay_key;
-                                        var cache_oids = uni.getStorageSync(ck) || null;
-                                        if (cache_oids != null) {
+                                        var cache_ids = uni.getStorageSync(ck) || null;
+                                        if (cache_ids != null) {
                                             uni.removeStorageSync(ck);
-                                            this.pay_handle(cache_oids);
+                                            this.pay_handle(cache_ids);
                                         }
                                     }
                                 } else {
@@ -369,8 +370,10 @@
             // 支付弹窗发起支付
             popup_payment_event(e) {
                 var payment_id = e.currentTarget.dataset.value || 0;
+                var payment_type = e.currentTarget.dataset.type || '';
                 this.setData({
-                    payment_id: payment_id
+                    payment_id: payment_id,
+                    payment_type: payment_type
                 });
                 this.payment_popup_event_close();
                 this.pay_handle(this.temp_pay_value);
@@ -378,6 +381,14 @@
 
             // 支付方法
             pay_handle(order_ids) {
+                // #ifdef H5
+                // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
+                if(!app.globalData.is_user_weixin_web_openid(order_ids)) {
+                    return false;
+                }
+                // #endif
+
+                // 请求支付接口
                 uni.showLoading({
                     title: "请求中..."
                 });
@@ -386,7 +397,7 @@
                     method: "POST",
                     data: {
                         // #ifdef H5
-                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url()+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
+                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
                         // #endif
                         ids: order_ids,
                         payment_id: this.payment_id

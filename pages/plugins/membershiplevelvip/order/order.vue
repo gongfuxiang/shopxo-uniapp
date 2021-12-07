@@ -217,12 +217,14 @@
                             if (res.data.data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = res.data.data.data;
-                                    
                                     // 下订单支付处理
                                     if (this.load_status == 0) {
-                                        if ((this.params.is_pay || 0) == 1 && (this.params.order_id || 0) != 0) {
+                                        var ck = app.globalData.data.cache_page_pay_key;
+                                        var order_id = uni.getStorageSync(ck) || null;
+                                        if (order_id != null) {
+                                            uni.removeStorageSync(ck);
                                             for (var i in temp_data_list) {
-                                                if (this.params.order_id == temp_data_list[i]['id']) {
+                                                if (order_id == temp_data_list[i]['id']) {
                                                     this.setData({
                                                         is_show_payment_popup: true,
                                                         temp_pay_value: temp_data_list[i]['id'],
@@ -317,6 +319,14 @@
 
             // 支付方法
             pay_handle(order_id, index) {
+                // #ifdef H5
+                // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
+                if(!app.globalData.is_user_weixin_web_openid(order_id)) {
+                    return false;
+                }
+                // #endif
+
+                // 请求支付接口
                 uni.showLoading({
                     title: "请求中..."
                 });
@@ -325,7 +335,7 @@
                     method: "POST",
                     data: {
                         // #ifdef H5
-                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url()+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
+                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
                         // #endif
                         id: order_id,
                         payment_id: this.payment_id
