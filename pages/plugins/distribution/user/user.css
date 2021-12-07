@@ -2,7 +2,7 @@
 * 头部
 */
 .head-box {
-    background-color: #ff6a80;
+    background-color: #e91e63;
 }
 .head-item {
     width: 260rpx;
@@ -26,6 +26,21 @@
 .head-base .head-base-submit {
     right: 20rpx;
     bottom: 20rpx;
+}
+
+/**
+ * 上级用户
+ */
+.superior .superior-title {
+    padding: 22rpx 20rpx;
+    background-color: #9c27b0;
+}
+.superior .superior-content {
+    width: calc(100% - 200rpx);
+}
+.superior .superior-content image {
+    width: 40rpx !important;
+    height: 40rpx !important;
 }
 
 /*

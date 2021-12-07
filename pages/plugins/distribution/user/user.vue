@@ -24,6 +24,15 @@
                 </view>
             </view>
             
+            <!-- 上级用户 -->
+            <view v-if="(superior || null) != null" class="superior bg-white border-radius-main margin-horizontal-main margin-bottom-main oh">
+                <view class="superior-title cr-white fw-b va-m fl">上级用户</view>
+                <view class="superior-content fl padding-main single-text">
+                    <image :src="superior.avatar" mode="aspectFit" class="circle va-m"></image>
+                    <text class="cr-gray va-m margin-left-sm">{{superior.user_name_view}}</text>
+                </view>
+            </view>
+
             <!-- 会员中心通知 -->
             <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
                 <view class="notice-content">
@@ -42,12 +51,18 @@
                     </view>
                 </block>
             </view>
-
+            
             <!-- 不符合分销条件描述 -->
-            <view v-if="(data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
+            <view v-if="(user_level || null) == null && (data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main padding-bottom-main">
                 <view class="notice-content-blue">
                     <view v-for="(item, index) in data_base.non_conformity_desc" :key="index" class="item">{{item}}</view>
                 </view>
+            </view>
+            
+            <!-- 阶梯返佣提示 -->
+            <view v-if="(profit_ladder || null) != null" class="padding-horizontal-main padding-bottom-main">
+                <text class="cr-blue">{{profit_ladder.msg}}</text>
+                <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="bg-green cr-white dis-inline-block round padding-top-xs padding-bottom-xs padding-horizontal-main">去推广</navigator>
             </view>
         </view>
         <view v-else>
@@ -70,6 +85,7 @@
                 user_level: null,
                 extraction: null,
                 superior: null,
+                profit_ladder: null,
                 nav_list: [],
                 avatar: app.globalData.data.default_user_head_src,
                 nickname: "用户名"
@@ -146,6 +162,7 @@
                                 user_level:  data.user_level || null,
                                 extraction: data.extraction || null,
                                 superior: data.superior || null,
+                                profit_ladder: data.profit_ladder || null,
                                 nav_list: data.nav_list || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
