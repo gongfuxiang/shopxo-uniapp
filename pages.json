@@ -231,6 +231,13 @@
 			}
 		},
         {
+        	"path": "pages/error/error",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "温馨提示"
+        	}
+        },
+        {
             "path": "pages/article-category/article-category",
             "style": {
             	"enablePullDownRefresh": true,
