@@ -17,7 +17,7 @@
                         </view>
                         <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
                     </view>
-                    <view class="v-right fr" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
+                    <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
                         <text class="circle"></text>
                         <text>{{item.is_operable_name}}</text>
                     </view>

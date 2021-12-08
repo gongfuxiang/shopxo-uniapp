@@ -18,7 +18,7 @@
                             <image class="icon va-m" :src="common_static_url+'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                         </view>
                         <!-- 基础信息 -->
-                        <view class="fl" @tap="url_event" :data-value="item.warehouse_url || ''">
+                        <view class="fl cp" @tap="url_event" :data-value="item.warehouse_url || ''">
                             <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-sm" :src="item.warehouse_icon" mode="aspectFit"></image>
                             <text class="cr-base va-m">{{item.warehouse_name}}</text>
                         </view>

@@ -74,13 +74,12 @@
 /**
  * 推荐文章
  */
-.article-list .left-content {
-    width: calc(25% - 40rpx);
-    height: 78rpx;
-    line-height: 78rpx;
+.article-list .new-icon {
+    width: 130rpx !important;
+    height: 42rpx !important;
 }
 .article-list .right-content {
-    width: calc(75% - 30rpx);
+    width: calc(100% - 150rpx);
 }
 .article-list .right-content swiper {
     height: 40rpx;

@@ -8,14 +8,14 @@
                 <!-- 销售+自提 模式选择 -->
                 <view v-if="common_site_type == 4" class="buy-header-nav bg-white oh tc">
                     <block v-for="(item, index) in buy_header_nav" :key="index">
-                        <view :class="'item fl ' + (site_model == item.value ? 'cr-main' : 'cr-base')" :data-value="item.value" @tap="buy_header_nav_event">{{item.name}}</view>
+                        <view :class="'item fl cp ' + (site_model == item.value ? 'cr-main' : 'cr-base')" :data-value="item.value" @tap="buy_header_nav_event">{{item.name}}</view>
                     </block>
                 </view>
 
                 <view class="padding-horizontal-main padding-top-main">
                     <!-- 地址 -->
                     <view v-if="common_site_type == 0 || common_site_type == 2 || common_site_type == 4" class="padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
-                        <view class="address arrow-right" @tap="address_event">
+                        <view class="address arrow-right cp" @tap="address_event">
                             <view v-if="address != null" class="padding-bottom-main">
                                 <view class="address-base">
                                     <text v-if="(address.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm text-size-xs">{{address.alias}}</text>
@@ -40,7 +40,7 @@
                     <view v-for="(group, index) in goods_list" :key="index" class="goods-group-list padding-main border-radius-main bg-white spacing-mb">
                         <!-- 仓库分组 -->
                         <view class="goods-group-hd oh br-b padding-bottom-main">
-                            <view class="fl" @tap="warehouse_group_event" :data-value="group.url || ''">
+                            <view class="fl cp" @tap="warehouse_group_event" :data-value="group.url || ''">
                                 <image v-if="(group.icon || null) != null" class="goods-group-icon va-m margin-right-xs" :src="group.icon" mode="aspectFit"></image>
                                 <text class="goods-group-title va-m">{{group.name}}</text>
                                 <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm text-size-xs">{{group.alias}}</text>
@@ -72,7 +72,7 @@
                         <!-- 优惠劵 -->
                         <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="plugins-coupon bg-white spacing-mb arrow-right" :data-index="index" @tap="plugins_coupon_open_event">
                             <text class="cr-base">优惠劵</text>
-                            <text class="cr-grey fr">{{((plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null) ? plugins_choice_coupon_value[group.id] : '请选择优惠券'}}</text>
+                            <text class="cr-grey fr cp">{{((plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null) ? plugins_choice_coupon_value[group.id] : '请选择优惠券'}}</text>
                         </view>
                         <!-- 扩展数据展示 -->
                         <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius spacing-mb">
@@ -100,7 +100,7 @@
                             <text v-if="plugins_points_data.discount_type == 1">使用{{plugins_points_data.use_integral}}个积分兑换商品</text>
                             <text v-else>使用积分{{plugins_points_data.use_integral}}个</text>
                             <text class="sales-price">-{{currency_symbol}}{{plugins_points_data.discount_price}}</text>
-                            <view @tap="points_event" class="fr">
+                            <view @tap="points_event" class="fr cp">
                                 <image class="icon" :src="common_static_url+'select' + (plugins_points_status ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             </view>
                         </view>
@@ -112,7 +112,7 @@
 
                     <!-- 支付方式 -->
                     <view v-if="payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
-                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl margin-bottom-main">
+                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-main">
                             <view :class="'item-content radius br ' + (item.selected || '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{item.name}}</text>
@@ -147,7 +147,7 @@
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
                         <view class="not-use-tips tc">
-                            <text @tap="plugins_coupon_not_use_event">不使用优惠劵</text>
+                            <text class="cp" @tap="plugins_coupon_not_use_event">不使用优惠劵</text>
                         </view>
                         <block v-for="(item, index) in plugins_coupon_list" :key="index">
                             <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
@@ -161,7 +161,7 @@
                                     <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.coupon.use_limit_type_name}}</view>
                                     <view class="base-time cr-gray single-text">{{item.time_start_text}} 至 {{item.time_end_text}}</view>
                                 </view>
-                                <view class="v-right fr" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
+                                <view :class="'v-right fr '+((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
                                     <text class="circle"></text>
                                     <text>{{(item.is_active || 0) == 1 ? '已选' : '选择'}}</text>
                                 </view>

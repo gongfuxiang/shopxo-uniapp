@@ -4,13 +4,13 @@
         <view class="nav-sort bg-white oh pr">
             <view class="nav-sort-content">
                 <block v-for="(item, index) in search_nav_sort_list" :key="index">
-                    <view class="item tc fl" :data-index="index" @tap="nav_sort_event">
+                    <view class="item tc fl cp" :data-index="index" @tap="nav_sort_event">
                         <text class="cr-base va-m">{{item.name}}</text>
                         <image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
                     </view>
                 </block>
             </view>
-            <image class="screening-submit pa" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+            <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
         </view>
 
         <!-- 列表 -->
@@ -56,7 +56,7 @@
                             <text>筛选出</text>
                             <text class="cr-main"> {{data_total}} </text>
                             <text>条数据</text>
-                            <text class="fr cr-red" @tap="map_remove_event">清除</text>
+                            <text class="fr cr-red cp" @tap="map_remove_event">清除</text>
                         </view>
                         <!-- 搜索关键字 -->
                         <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
@@ -66,7 +66,7 @@
                     <view v-if="((search_map_list.brand_list || null) != null && search_map_list.brand_list.length > 0) || ((search_map_info.brand || null) != null)" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>品牌</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
                         </view>
                         <view v-if="(search_map_info.brand || null) != null" class="map-content brand-info oh margin-top-lg">
                             <image v-if="(search_map_info.brand.logo || null) != null" :src="search_map_info.brand.logo" mode="aspectFit" class="fl"></image>
@@ -78,7 +78,7 @@
                         </view>
                         <view v-else class="map-content map-images-text-item map-brand-container oh margin-top-lg" :style="'height:' + map_fields_list.brand_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.brand_list" :key="index">
-                                <view :class="'item fl cr-base radius single-text tc ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="brand_list">
+                                <view :class="'item fl cr-base radius cp single-text tc ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="brand_list">
                                     <image v-if="(item.logo || null) != null" :src="item.logo" mode="aspectFit"></image>
                                     <text v-else>{{item.name}}</text>
                                 </view>
@@ -90,11 +90,11 @@
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav pr br-b">
                             <text>分类</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
                         </view>
                         <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="category_list">{{item.name}}</view>
+                                <view :class="'item fl cr-base radius cp ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="category_list">{{item.name}}</view>
                             </block>
                         </view>
                     </view>
@@ -103,11 +103,11 @@
                     <view v-if="(search_map_list.screening_price_list || null) != null && search_map_list.screening_price_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>价格</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
                         </view>
                         <view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.screening_price_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="screening_price_list">{{item.name}}</view>
+                                <view :class="'item fl cr-base radius cp ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="screening_price_list">{{item.name}}</view>
                             </block>
                         </view>
                     </view>
@@ -116,11 +116,11 @@
                     <view v-if="(search_map_list.goods_params_list || null) != null && search_map_list.goods_params_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>属性</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
                         </view>
                         <view class="map-content map-text-item goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_params_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_params_list">{{item.value}}</view>
+                                <view :class="'item fl cr-base radius cp ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_params_list">{{item.value}}</view>
                             </block>
                         </view>
                     </view>
@@ -129,11 +129,11 @@
                     <view v-if="(search_map_list.goods_spec_list || null) != null && search_map_list.goods_spec_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav br-b pr">
                             <text>规格</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
+                            <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
                         </view>
                         <view class="map-content map-text-item goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.goods_spec_list" :key="index">
-                                <view :class="'item fl cr-base radius ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_spec_list">{{item.value}}</view>
+                                <view :class="'item fl cr-base radius cp ' + (item.active == 1 ? 'cr-main br-main' : '')" @tap="map_item_event" :data-index="index" data-field="goods_spec_list">{{item.value}}</view>
                             </block>
                         </view>
                     </view>

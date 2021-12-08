@@ -5,8 +5,8 @@
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
             <!-- 小导航 -->
             <view class="top-nav-left-icon pf" :style="'top:'+top_nav_icon_top_value+'px;'">
-                <uni-icons type="arrowleft" size="20" color="#333" class="icon round" @tap="top_nav_left_back_event"></uni-icons>
-                <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
+                <uni-icons type="arrowleft" size="20" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
+                <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round cp margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
             </view>
             <!-- #endif -->
             <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP -->
@@ -15,7 +15,7 @@
                 <view class="triangle dis-inline-block pa"></view>
                 <view class="content radius padding-horizontal-main">
                     <block v-for="(item,index) in nav_more_list" :key="index">
-                        <view class="item padding-main" :data-value="item.url" data-type="1" @tap="nav_more_event">
+                        <view class="item padding-main cp" :data-value="item.url" data-type="1" @tap="nav_more_event">
                             <view class="va-m dis-inline-block">
                                 <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
                             </view>
@@ -30,7 +30,7 @@
                     <view class="top-nav padding-bottom padding-horizontal-main pr">
                         <view class="top-nav-content tc">
                             <block v-for="(item, index) in top_nav_title_data" :key="index">
-                                <text @tap="top_nav_title_event" :data-index="index" :data-value="item.ent" :class="top_nav_title_index == index ? 'nav-active border-color-main' : ''">{{item.name}}</text>
+                                <text :class="'cp '+(top_nav_title_index == index ? 'nav-active border-color-main' : '')" :data-index="index" :data-value="item.ent" @tap="top_nav_title_event">{{item.name}}</text>
                             </block>
                         </view>
                     </view>
@@ -40,7 +40,7 @@
             <!-- #ifdef H5 || APP -->
             <!-- 右侧icon -->
             <view class="top-nav-right-icon pf" :style="'top:'+top_nav_icon_top_value+'px;left:'+top_nav_right_icon_left_value+'px;'">
-                <uni-icons type="redo" size="20" color="#333" class="icon round" @tap="popup_share_event"></uni-icons>
+                <uni-icons type="redo" size="20" color="#333" class="icon round cp" @tap="popup_share_event"></uni-icons>
             </view>
             <!-- #endif -->
 
@@ -52,8 +52,8 @@
                         <video :src="goods.video" :autoplay="goods_video_is_autoplay" :show-center-play-btn="true" :controls="false" :show-play-btn="false" :enable-progress-gesture="false" :show-fullscreen-btn="false" :style="'height: ' + photo_height + ' !important;'"></video>
                     </view>
                     <view class="goods-video-submit pa">
-                        <image v-if="!goods_video_is_autoplay" class="goods-video-play" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
-                        <image v-if="goods_video_is_autoplay" class="goods-video-close" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
+                        <image v-if="!goods_video_is_autoplay" class="goods-video-play cp" @tap="goods_video_play_event" :src="common_static_url+'video-play-icon.png'" mode="aspectFit"></image>
+                        <image v-if="goods_video_is_autoplay" class="goods-video-close cp" @tap="goods_video_close_event" :src="common_static_url+'video-close-icon.png'" mode="aspectFit"></image>
                     </view>
                 </block>
                 <!-- 相册内容 -->
@@ -100,7 +100,7 @@
                             <!-- 标题 -->
                             <view class="goods-title fl" :style="'color:' + goods.title_color">{{goods.title}}</view>
                             <!-- 分享 -->
-                            <view class="goods-share fr tc" @tap="popup_share_event">
+                            <view class="goods-share fr tc cp" @tap="popup_share_event">
                                 <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block"></image>
                                 <view class="cr-gray text-size-sm">分享</view>
                             </view>
@@ -142,7 +142,7 @@
                 <!-- 优惠券 -->
                 <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
                     <view class="fl item-title margin-top-sm">优惠券</view>
-                    <view class="fr column-right-view border-radius-main single-text" @tap="popup_coupon_event">
+                    <view class="fr column-right-view border-radius-main single-text cp" @tap="popup_coupon_event">
                         <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                             <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{item.desc || item.name}}</view>
                         </block>
@@ -152,7 +152,7 @@
                 <!-- 规格选择 -->
                 <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0) == 1 || (buy_button.is_cart || 0) == 1))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
                     <view class="fl item-title">规格</view>
-                    <view class="fr column-right-view border-radius-main cr-base single-text" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
+                    <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
                 </view>
             </view>
 
@@ -294,11 +294,11 @@
             <!-- 底部操作 -->
             <view class="goods-buy-nav oh wh-auto bg-white br-t">
                 <view class="bus-items fl tc">
-                    <view class="item fl" @tap="shop_event">
+                    <view class="item fl cp" @tap="shop_event">
                         <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
                         <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
                     </view>
-                    <view class="item fl">
+                    <view class="item fl cp">
                         <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
                             <view class="badge-icon">
                                 <component-badge :propNumber="quick_nav_cart_count"></component-badge>
@@ -307,7 +307,7 @@
                             <text class="dis-block text-size-xs cr-gray">购物车</text>
                         </navigator>
                     </view>
-                    <view class="item fl " @tap="goods_favor_event">
+                    <view class="item fl cp " @tap="goods_favor_event">
                         <image :src="common_static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                         <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
                     </view>
@@ -390,7 +390,7 @@
                     </view>
                     <view class="share-popup-content">
                         <!-- #ifdef MP-WEIXIN -->
-                        <view v-if="common_app_is_good_thing == 1" class="share-items oh">
+                        <view v-if="common_app_is_good_thing == 1" class="share-items oh cp">
                             <share-button :product="share_product" type="3" class="dis-block oh">
                                 <image class="fl" :src="common_static_url+'share-recomend-icon.png'" mode="scaleToFill">
                                 </image>
@@ -399,20 +399,20 @@
                         </view>
                         <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
-                        <view class="share-items oh" @tap="share_base_event">
+                        <view class="share-items oh cp" @tap="share_base_event">
                             <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">一键分享给好友、群聊</text>
                         </view>
                         <!-- #endif -->
                         <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO -->
-                        <view class="share-items oh">
+                        <view class="share-items oh cp">
                             <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
                                 <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
                                 <text class="cr-gray single-text">一键分享给好友、群聊</text>
                             </button>
                         </view>
                         <!-- #endif -->
-                        <view v-if="common_app_is_poster_share == 1" class="share-items oh" @tap="poster_event">
+                        <view v-if="common_app_is_poster_share == 1" class="share-items oh cp" @tap="poster_event">
                             <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
                         </view>
@@ -469,7 +469,7 @@
                                         <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
                                         <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text">{{item.desc}}</view>
                                     </view>
-                                    <view class="v-right fr" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
+                                    <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
                                         <text class="circle"></text>
                                         <text>{{item.is_operable_name}}</text>
                                     </view>

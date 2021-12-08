@@ -75,7 +75,7 @@
                             <image class="icon va-m" :src="common_static_url+'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                             <text v-if="!already_selected_status" class="va-m cr-base">全选</text>
                         </view>
-                        <view v-if="already_selected_status" @tap="cart_all_remove_event" class="nav-remove-submit pa bg-white cr-red br-red round">删除</view>
+                        <view v-if="already_selected_status" @tap="cart_all_remove_event" class="nav-remove-submit pa bg-white cr-red br-red round cp">删除</view>
                         <view class="fr price">
                             <view class="sales-price single-text fr">{{currency_symbol}}{{total_price}}</view>
                             <view class="fr">合计：</view>

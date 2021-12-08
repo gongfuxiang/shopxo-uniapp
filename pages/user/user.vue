@@ -40,7 +40,7 @@
                 <!-- 订单导航 -->
                 <view v-if="(navigation_order || null) != null" class="nav-list bg-white bg-white padding-main border-radius-main spacing-mb">
                     <!-- 主导航 -->
-                    <view :data-value="navigation_order.event_value" :data-type="navigation_order.event_type" @tap="navigation_event" class="nav-item br-b">
+                    <view :data-value="navigation_order.event_value" :data-type="navigation_order.event_type" @tap="navigation_event" class="nav-item br-b cp">
                         <view class="arrow-right">
                             <image :src="navigation_order.images_url" class="item-icon va-m" mode="widthFix"></image>
                             <text class="item-name va-m cr-base margin-left-sm">{{navigation_order.name}}</text>
@@ -70,7 +70,7 @@
                         <block v-for="(item, index) in navigation" :key="index">
                             <!-- 这里不展示订单导航 -->
                             <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item fl tc padding-main">
+                                <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item padding-main fl tc cp">
                                     <image :src="item.images_url" class="item-icon" mode="widthFix"></image>
                                     <view class="item-name single-text cr-base">{{item.name}}</view>
                                 </view>
@@ -78,13 +78,13 @@
                         </block>
             
                         <!-- 清除缓存 -->
-                        <view class="nav-item fl tc padding-main" @tap="clear_storage">
+                        <view class="nav-item padding-main fl tc cp" @tap="clear_storage">
                             <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">清除缓存</view>
                         </view>
                 
                         <!-- 联系客服 -->
-                        <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item fl tc padding-main" @tap="call_event">
+                        <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
                             <image :src="common_static_url+'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">联系客服</view>
                         </view>

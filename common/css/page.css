@@ -199,6 +199,11 @@ button:before {
 .auto {
     margin: 0 auto;
 }
+.cp {
+    /* #ifdef H5 */
+    cursor: pointer;
+    /* #endif */
+}
 
 /**
  * 透明度
@@ -667,6 +672,11 @@ button[disabled].bg-gray {
 .nav-base {
     height: 80rpx;
     line-height: 80rpx;
+}
+.nav-base .item {
+    /* #ifdef H5 */
+    cursor: pointer;
+    /* #endif */
 }
 
 /**

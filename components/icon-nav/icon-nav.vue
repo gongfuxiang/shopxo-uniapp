@@ -1,8 +1,8 @@
 <template>
     <view>
         <view v-if="propData.length > 0" class="data-list">
-            <view v-for="(item, index) in propData" :key="index" class="items">
-                <view class="items-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
+            <view v-for="(item, index) in propData" :key="index" class="item">
+                <view class="item-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
                     <image :src="item.images_url" mode="aspectFit"></image>
                 </view>
                 <view class="title">{{item.name}}</view>
@@ -33,12 +33,15 @@
         overflow: hidden;
         margin-bottom: 20rpx;
     }
-    .data-list .items {
+    .data-list .item {
         width: calc(20% - 20rpx);
         float: left;
         padding: 20rpx 10rpx 0 10rpx;
+        /* #ifdef H5 */
+        cursor: pointer;
+        /* #endif */
     }
-    .items-content {
+    .item-content {
         border-radius: 50%;
         padding: 20rpx;
         text-align: center;
@@ -48,11 +51,11 @@
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
-    .data-list .items image {
+    .data-list .item image {
         width: 50rpx !important;
         height: 50rpx !important;
     }
-    .data-list .items .title {
+    .data-list .item .title {
         margin-top: 6rpx;
         font-size: 28rpx;
         text-align: center;

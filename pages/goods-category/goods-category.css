@@ -27,7 +27,7 @@
     overflow-x: hidden;
     overflow-y: auto;
 }
-.left-nav .items {
+.left-nav .item {
     height: 100rpx;
     line-height: 100rpx;
     font-size: 32rpx;
@@ -36,7 +36,7 @@
     border-right: 3px solid #fff;
     overflow: hidden;
 }
-.left-nav .items:not(:last-child) {
+.left-nav .item:not(:last-child) {
     border-bottom: 1px solid #f1f1f1 !important;
 }
 .nav-active {

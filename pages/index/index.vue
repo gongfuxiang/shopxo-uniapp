@@ -19,7 +19,7 @@
                     <!-- 右上角icon列表 -->
                     <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
                         <block v-for="(item,index) in right_icon_list">
-                            <view class="item dis-inline-block" :data-value="item.url || ''" @tap="url_event">
+                            <view class="item dis-inline-block cp" :data-value="item.url || ''" @tap="url_event">
                                 <uni-icons :type="item.icon" size="18" color="#f1f1f1"></uni-icons>
                                 <view v-if="(item.badge || null) != null" class="badge-icon pa">
                                     <component-badge :propNumber="item.badge"></component-badge>
@@ -47,14 +47,14 @@
                 <view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">{{common_shop_notice}}</view>
 
                 <!-- 推荐文章 -->
-                <view v-if="article_list.length > 0" class="article-list border-radius-main bg-main oh br-main spacing-mb">
-                    <view class="left-content fl text-size-sm va-m tc fw-b cr-white padding-horizontal-main" data-value="/pages/article-category/article-category" @tap="url_event">商城资讯</view>
-                    <view class="right-content fr bg-white va-m padding-left-lg padding-vertical-main">
+                <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
+                    <image :src="static_url+'new-icon.png'" mode="aspectFit" class="new-icon va-m fl cp" data-value="/pages/article-category/article-category" @tap="url_event"></image>
+                    <view class="right-content fr va-m">
                         <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
                             <block v-for="(item, index) in article_list" :key="index">
                                 <swiper-item class="single-text">
-                                    <text class="cr-base text-size-sm" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
-                                    <text class="cr-base text-size-sm margin-left-xs" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
+                                    <text class="cr-base text-size-sm cp" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
+                                    <text class="cr-base text-size-sm margin-left-xs cp" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''" :data-value="item.url" @tap="url_event">{{item.title}}</text>
                                 </swiper-item>
                             </block>
                         </swiper>
@@ -63,7 +63,7 @@
                 
                 <!-- 首页中间广告 - 插件 -->
                 <view v-if="(plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
-                    <view v-for="(item,index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh spacing-mb" :data-value="item.url || ''" @tap="url_event">
+                    <view v-for="(item,index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''" @tap="url_event">
                         <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"></image>
                     </view>
                 </view>
