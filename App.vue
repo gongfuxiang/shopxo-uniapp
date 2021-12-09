@@ -1148,7 +1148,13 @@
 
             // 获取当前页面地址、不含?后面的参数
             get_page_url(is_whole) {
+                // #ifdef MP || APP
+                var pages = getCurrentPages();
+                var url = pages[pages.length-1].$page.fullPath;
+                // #endif
+                // #ifdef H5
                 var url = window.location.href;
+                // #endif
                 if(is_whole == false) {
                     var temp = url.split('?');
                     url = temp[0];
@@ -1222,7 +1228,10 @@
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_config('config.home_site_logo_square')
                 };
-                result['url'] = this.get_page_url().split('#')[0] + '#' + ((result.path.substr(0 ,1) == '/') ? '' : '/') + result.path + result.query;
+                result['url'] = this.get_page_url();
+                // #ifdef H5
+                result['url'] = result.url.split('#')[0] + '#' + ((result.path.substr(0 ,1) == '/') ? '' : '/') + result.path + result.query;
+                // #endif
                 return result;
             },
 

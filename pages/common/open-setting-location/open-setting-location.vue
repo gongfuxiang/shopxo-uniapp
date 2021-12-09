@@ -38,6 +38,7 @@
         methods: {
             // 获取权限
             init() {
+                // #ifdef MP
                 var self = this;
                 uni.getSetting({
                     success(res) {
@@ -61,6 +62,10 @@
                         app.globalData.showToast("请先获取授权");
                     }
                 });
+                // #endif
+                // #ifdef H5 || APP
+                this.choose_location();
+                // #endif
             },
 
             // 位置服务回调方法
