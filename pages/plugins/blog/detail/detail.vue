@@ -78,11 +78,13 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
+                currency_symbol: app.globalData.data.currency_symbol,
                 params: null,
                 data_base: null,
                 data: null,
                 right_list: [],
-                currency_symbol: app.globalData.data.currency_symbol
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -102,37 +104,11 @@
 
             // 数据加载
             this.get_data();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var blog_id = this.params.id || 0;
-            return {
-                title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
-                desc: this.data.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/blog/detail/detail?id='+blog_id+'&referrer=' + user_id,
-                imageUrl: this.data.cover
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var blog_id = this.params.id || 0;
-            return {
-                title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
-                query: 'id='+blog_id+'&referrer=' + user_id,
-                imageUrl: this.data.cover
-            };
         },
 
         methods: {
@@ -175,9 +151,20 @@
                                 data: blog,
                                 right_list: data.right_list || []
                             });
-                            
+
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    title: this.data.seo_title || this.data.title,
+                                    desc: this.data.seo_desc || this.data.describe,
+                                    path: '/pages/plugins/blog/detail/detail',
+                                    query: 'id='+this.data.id,
+                                    img: this.data.cover
+                                }
+                            });
+
                             // 标题
-                            uni.setNavigationBarTitle({title: blog.title});
+                            uni.setNavigationBarTitle({title: this.data.title});
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -185,6 +172,9 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

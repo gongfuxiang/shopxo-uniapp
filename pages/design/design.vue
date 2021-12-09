@@ -38,7 +38,9 @@
                 data_list_loding_msg: '',
                 params: null,
                 data: null,
-                layout_data: []
+                layout_data: [],
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -58,34 +60,11 @@
 
         onShow() {
             this.get_data();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.name || this.data.seo_title || app.globalData.data.application_title,
-                desc: this.data.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/design/design?id=' + this.data.id + '&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.name || this.data.seo_title || app.globalData.data.application_title,
-                query: 'id=' + this.data.id + '&referrer=' + user_id,
-                imageUrl: this.data.logo || ''
-            };
         },
 
         methods: {
@@ -109,13 +88,27 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
-                            
-                            // 标题名称
+
                             if ((this.data || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data.seo_title || this.data.name,
+                                        desc: this.data.seo_desc,
+                                        path: '/pages/design/design',
+                                        query: 'id='+this.data.id,
+                                        img: this.data.logo
+                                    }
+                                });
+
+                                // 标题名称
                                 uni.setNavigationBarTitle({
                                     title: this.data.name
                                 });
                             }
+                            
+                            // 显示分享菜单
+                            app.globalData.show_share_menu();
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,

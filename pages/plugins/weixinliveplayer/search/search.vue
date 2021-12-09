@@ -43,14 +43,15 @@
     export default {
         data() {
             return {
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                params: null,
+                load_status: 0,
                 data_list: [],
                 data_base: null,
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
-                data_list_loding_status: 1,
-                data_bottom_line_status: false,
-                params: null,
                 nav_status_list: [
                     { name: "全部", value: "-1" },
                     { name: "未开始", value: "0" },
@@ -58,7 +59,9 @@
                     { name: "暂停中", value: "2" },
                     { name: "已结束", value: "3" },
                 ],
-                nav_status_index: 0
+                nav_status_index: 0,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -84,9 +87,6 @@
                 nav_status_index: nav_status_index
             });
             this.init();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         onShow() {},
@@ -97,27 +97,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var name = (this.data_base || null) != null && (this.data_base.application_name || null) != null ? this.data_base.application_name : app.globalData.data.application_title;
-            return {
-                title: name,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/plugins/weixinliveplayer/search/search?referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var name = (this.data_base || null) != null && (this.data_base.application_name || null) != null ? this.data_base.application_name : app.globalData.data.application_title;
-            return {
-                title: name,
-                query: 'referrer=' + user_id
-            };
         },
 
         methods: {
@@ -145,8 +124,9 @@
                 });
                 
                 // 参数
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value']; // 获取数据
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
 
+                // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "search", "weixinliveplayer"),
                     method: "POST",
@@ -178,11 +158,28 @@
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1
                                 });
-                                
+
                                 // 是否还有数据
                                 this.setData({
                                     data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
                                 });
+
+                                // 首次设置首次加载状态
+                                if(this.load_status == 0) {
+                                    // 基础自定义分享
+                                    this.setData({
+                                        load_status: 1,
+                                        share_info: {
+                                            title: this.data_base.seo_title || this.data_base.application_name,
+                                            desc: this.data_base.seo_desc,
+                                            path: '/pages/plugins/weixinliveplayer/search/search',
+                                            query: 'status='+this.nav_status_index
+                                        }
+                                    });
+
+                                    // 显示分享菜单
+                                    app.globalData.show_share_menu();
+                                }
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,

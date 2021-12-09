@@ -722,11 +722,81 @@
 
             // 显示分享菜单
             show_share_menu() {
+                // 当前页面
+                var pages = getCurrentPages();
+                var obj = pages[pages.length-1];
+
+                // 分享信息
+                var share = this.share_content_handle(obj.share_info || {});
+
                 // #ifdef MP-WEIXIN
+                // 微信小程序展示系统分享好友和朋友圈按钮
+                // 其他端小程序不用展示会调起分享窗口
                 uni.showShareMenu({
                     withShareTicket: true,
+                    title: share.title,
+                    desc: share.desc,
+                    path: share.path + share.query,
+                    imageUrl: share.img,
                     menus: ['shareAppMessage', 'shareTimeline']
                 });
+                // #endif
+                // #ifdef H5
+                // H5处理微信环境分享自定义信息
+                if(this.is_weixin()) {
+                    var page_url = this.get_page_url();
+                    uni.request({
+                        url: this.get_request_url("signpackage", "index", "share"),
+                        method: "POST",
+                        data: {
+                            url: encodeURIComponent(page_url)
+                        },
+                        dataType: "json",
+                        success: res => {
+                            if (res.data.code == 0 && (res.data.data.package || null) != null) {
+                                var data = res.data.data.package;
+                                var wx = require('jweixin-module');                                
+                                wx.config({
+                                    debug: false,
+                                    appId: data.appId,
+                                    timestamp: data.timestamp,
+                                    nonceStr: data.nonceStr,
+                                    signature: data.signature,
+                                    jsApiList: [
+                                        'updateAppMessageShareData',
+                                        'updateTimelineShareData',
+                                        'onMenuShareWeibo'
+                                    ]
+                                });
+                                wx.ready(function () {
+                                    // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+                                    wx.updateAppMessageShareData({
+                                        title: share.title,
+                                        desc: share.desc,
+                                        link: share.url,
+                                        imgUrl: share.img
+                                    });
+                                    // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+                                    wx.updateTimelineShareData({ 
+                                        title: share.title,
+                                        link: share.url,
+                                        imgUrl: share.img
+                                    });
+                                    // 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+                                    wx.onMenuShareWeibo({
+                                        title: share.title,
+                                        desc: share.desc,
+                                        link: share.url,
+                                        imgUrl: share.img
+                                    });
+                                });
+                            }
+                        },
+                        fail: () => {
+                            this.showToast("服务器请求出错");
+                        }
+                    });
+                }
                 // #endif
             },
 
@@ -1139,6 +1209,33 @@
                     }
                 }
                 return true;
+            },
+            
+            // 分享内容处理
+            share_content_handle(data) {
+                // 获取插件配置信息
+                var share_config = this.get_config('plugins_base.share.data') || {};
+                var result = {
+                    title: data.title || share_config.title || this.data.application_title,
+                    desc: data.desc || share_config.desc || this.data.application_describe,
+                    path: data.path || '/pages/index/index',
+                    query: this.share_query_handle(data.query || ''),
+                    img: data.img || share_config.pic || this.get_config('config.home_site_logo_square')
+                };
+                result['url'] = this.get_page_url().split('#')[0] + '#' + ((result.path.substr(0 ,1) == '/') ? '' : '/') + result.path + result.query;
+                return result;
+            },
+
+            // 分享参数处理
+            share_query_handle(query) {
+                if((query || null) == null || query.indexOf('referrer') == -1) {
+                    var user_id = parseInt(this.get_user_cache_info('id', 0)) || 0;
+                    if(user_id > 0) {
+                        var join = ((query || null) == null) ? '' : '&';
+                        query += join+'referrer='+user_id;
+                    }
+                }
+                return ((query || null) == null) ? '' : '?'+query;
             }
         },
 

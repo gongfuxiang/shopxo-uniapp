@@ -62,6 +62,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
+                currency_symbol: app.globalData.data.currency_symbol,
                 params: null,
                 data_list: [],
                 data_total: 0,
@@ -76,8 +77,8 @@
                     { name: "最新", field: "new", sort: "asc", "icon": "default" }
                 ],
                 search_nav_sort_value: '',
-                // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -91,9 +92,6 @@
             this.setData({
                 params: params
             });
-
-            // 分享菜单
-            app.globalData.show_share_menu();
         },
 
         onShow() {
@@ -110,27 +108,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var id = this.params.id || 0;
-            return {
-                title: this.label.seo_title || this.label.name || app.globalData.data.application_title,
-                desc: this.label.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/label/detail/detail?id='+id+'&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var id = this.params.id || 0;
-            return {
-                title: this.label.seo_title ||this.label.name || app.globalData.data.application_title,
-                query: 'id='+id+'&referrer=' + user_id
-            };
         },
 
         methods: {
@@ -167,12 +144,23 @@
                                 data_list_loding_status: (label == null) ? 0 : 1,
                                 data_list_loding_msg: '标签数据不存在',
                             });
-                            
-                            // 标题名称
-                            if (label != null && (label.name || null) != null) {
-                                uni.setNavigationBarTitle({
-                                    title: label.name
+
+                            if (this.label != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.label.seo_title || this.label.name,
+                                        desc: this.label.seo_desc,
+                                        path: '/pages/plugins/label/detail/detail'
+                                    }
                                 });
+
+                                // 标题名称
+                                if((this.label.name || null) != null) {
+                                    uni.setNavigationBarTitle({
+                                        title: this.label.name
+                                    });
+                                }
                             }
                             
                             // 获取列表数据
@@ -184,6 +172,9 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+                        
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

@@ -106,6 +106,9 @@
             this.setData({
                 is_first: 0
             });
+            
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         // 下拉刷新

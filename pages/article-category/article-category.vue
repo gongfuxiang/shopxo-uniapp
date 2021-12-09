@@ -50,7 +50,9 @@
                 data_page: 1,
                 params: null,
                 category_list: [],
-                nav_active_value: 0
+                nav_active_value: 0,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -68,9 +70,6 @@
             
             // 数据加载
             this.get_data();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
@@ -79,25 +78,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
-                desc: this.data_base.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/article-category/article-category?id='+this.nav_active_value+'&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
-                query: 'id='+this.nav_active_value+'&referrer=' + user_id
-            };
         },
 
         methods: {
@@ -119,7 +99,15 @@
                             this.setData({
                                 category_list: data.category_list || []
                             });
-                            
+
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    path: '/pages/article-category/article-category',
+                                    query: 'id='+this.nav_active_value
+                                }
+                            });
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
@@ -129,6 +117,9 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+                        
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

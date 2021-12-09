@@ -103,6 +103,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
                 params: null,
                 user: null,
                 data_base: null,
@@ -112,7 +113,8 @@
                 is_already_coming: 0,
                 is_success_tips: 0,
                 coming_integral: 0,
-                currency_symbol: app.globalData.data.currency_symbol
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -133,34 +135,11 @@
         onShow() {
             // 获取数据
             this.get_data();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.seo_title || '签到 - ' + app.globalData.data.application_title,
-                desc: this.data.seo_desc || '签到获得积分奖励 - ' + app.globalData.data.application_describe,
-                path: '/pages/plugins/signin/index-detail/index-detail?id=' + this.data.id + '&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.seo_title || '签到 - ' + app.globalData.data.application_title,
-                query: 'id=' + this.data.id + '&referrer=' + user_id,
-                imageUrl: this.data.right_images || ''
-            };
         },
 
         methods: {
@@ -187,6 +166,19 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
+
+                            if ((this.data || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data.seo_title || '签到',
+                                        desc: this.data.seo_desc,
+                                        path: '/pages/plugins/signin/index-detail/index-detail',
+                                        query: 'id='+this.data.id,
+                                        img: this.data.right_images
+                                    }
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -194,6 +186,9 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

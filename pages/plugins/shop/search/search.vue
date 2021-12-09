@@ -86,6 +86,7 @@
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
+                currency_symbol: app.globalData.data.currency_symbol,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -102,15 +103,15 @@
                     { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
                     { name: "最新", field: "id", sort: "asc", "icon": "default" }
                 ],
-                // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
                 // 搜素条件
                 search_map_list: {
                     category_list: []
                 },
                 map_fields_list: {
                     category_list: {height: "82rpx", default: "82rpx", form_key: "category_ids"}
-                }
+                },
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -130,9 +131,6 @@
                     category_ids: ((params.category_id || 0) == 0) ? '' : JSON.stringify({"0":params.category_id})
                 }
             });
-
-            // 分享菜单
-            app.globalData.show_share_menu();
         },
 
         onShow() {
@@ -149,31 +147,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var shop_id = this.params.shop_id || 0;
-            var category_id = this.params.category_id || 0;
-            var keywords = this.params.keywords || '';
-            return {
-                title: this.shop.seo_title || this.shop.name || app.globalData.data.application_title,
-                desc: this.shop.seo_desc || this.shop.describe || app.globalData.data.application_describe,
-                path: '/pages/plugins/shop/search/search?shop_id='+shop_id+'&referrer=' + user_id+'&category_id='+category_id+'&keywords='+keywords
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var shop_id = this.params.shop_id || 0;
-            var category_id = this.params.category_id || 0;
-            var keywords = this.params.keywords || '';
-            return {
-                title: this.shop.seo_title || this.shop.name || app.globalData.data.application_title,
-                query: 'shop_id='+shop_id+'&referrer=' + user_id+'&category_id='+category_id+'&keywords='+keywords
-            };
         },
 
         methods: {
@@ -220,7 +193,7 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 首次分类选中处理
+                            // 分类选中处理
                             var category = data.shop_goods_category || [];
                             if((this.params.category_id || 0) != 0 && category.length > 0) {
                                 for(var i in category) {
@@ -235,14 +208,38 @@
                                 }
                             });
 
-                            // 获取列表数据
-                            this.get_data_list(1);
+                            if((this.shop || null) != null) {
+                                // 基础自定义分享
+                                var shop_id = this.shop.id;
+                                var category_id = this.params.category_id || 0;
+                                var keywords = this.params.keywords || '';
+                                this.setData({
+                                    share_info: {
+                                        title: this.shop.seo_title || this.shop.name,
+                                        desc: this.shop.seo_desc || this.shop.describe,
+                                        path: '/pages/plugins/shop/search/search',
+                                        query: 'shop_id='+shop_id+'&category_id='+category_id+'&keywords='+keywords,
+                                        img: this.shop.logo
+                                    }
+                                });
+
+                                // 获取列表数据
+                                this.get_data_list(1);
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_bottom_line_status: false
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

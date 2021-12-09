@@ -121,6 +121,9 @@
             
             // 初始化配置
             this.init_config();
+            
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         // 下拉刷新

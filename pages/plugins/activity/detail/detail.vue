@@ -65,11 +65,13 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
                 params: null,
                 user: null,
                 data_base: null,
                 data: null,
-                currency_symbol: app.globalData.data.currency_symbol
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -92,34 +94,11 @@
 
             // 获取数据
             this.get_data();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.seo_title || this.data.title || '活动详情 - ' + app.globalData.data.application_title,
-                desc: this.data.seo_desc || this.data.describe || '天天活动、优惠不断 - ' + app.globalData.data.application_describe,
-                path: '/pages/plugins/activity/detail/detail?id=' + this.data.id + '&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data.seo_title || this.data.title || '活动详情 - ' + app.globalData.data.application_title,
-                query: 'id=' + this.data.id + '&referrer=' + user_id,
-                imageUrl: this.data.right_images || ''
-            };
         },
 
         methods: {
@@ -155,11 +134,24 @@
                                 data_bottom_line_status: ((data.data || null) != null && (data.data.goods_list || null) != null && data.data.goods_list.length > 0)
                             });
                             
-                            // 标题名称
-                            if ((this.data || null) != null && (this.data.title || null) != null) {
-                                uni.setNavigationBarTitle({
-                                    title: this.data.title
+                            if ((this.data || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data.seo_title || this.data.title,
+                                        desc: this.data.seo_desc,
+                                        path: '/pages/plugins/activity/detail/detail',
+                                        query: 'id='+this.data.id,
+                                        img: this.data.right_images || ''
+                                    }
                                 });
+
+                                // 标题
+                                if((this.data.title || null) != null) {
+                                    uni.setNavigationBarTitle({
+                                        title: this.data.title
+                                    });
+                                }
                             }
                         } else {
                             this.setData({
@@ -168,6 +160,9 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

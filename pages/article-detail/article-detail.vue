@@ -48,7 +48,9 @@
                 data_bottom_line_status: false,
                 params: null,
                 data: null,
-                last_next: null
+                last_next: null,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -65,35 +67,11 @@
             
             // 数据加载
             this.get_data();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var article_id = this.params.id || 0;
-            return {
-                title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
-                desc: this.data.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/article-detail/article-detail?id='+article_id+'&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var article_id = this.params.id || 0;
-            return {
-                title: this.data.seo_title || this.data.title || app.globalData.data.application_title,
-                query: 'id='+article_id+'&referrer=' + user_id
-            };
         },
 
         methods: {
@@ -124,6 +102,16 @@
                                 data: article,
                                 last_next: data.last_next || null
                             });
+
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    title: this.data.seo_title || this.data.title,
+                                    desc: this.data.seo_desc,
+                                    path: '/pages/article-detail/article-detail',
+                                    query: 'id='+this.data.id
+                                }
+                            });
                             
                             // 标题
                             uni.setNavigationBarTitle({title: article.title});
@@ -134,6 +122,9 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+                        
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

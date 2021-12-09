@@ -135,6 +135,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
                 params: null,
                 user: null,
                 data_base: null,
@@ -144,8 +145,6 @@
                 shop_goods_category: [],
                 data: null,
                 goods_list: [],
-                // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
                 search_keywords_value: '',
                 header_service_status: false,
                 nav_category_status: false,
@@ -154,7 +153,9 @@
                     "text": "收藏",
                     "status": 0,
                     "count": 0
-                }
+                },
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -177,34 +178,11 @@
 
             // 初始化配置
             this.init_config();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.shop.name || this.shop.seo_title || app.globalData.data.application_title,
-                desc: this.shop.describe || this.shop.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/shop/detail/detail?id=' + this.shop.id + '&referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.shop.name || this.shop.seo_title || app.globalData.data.application_title,
-                query: 'id=' + this.shop.id + '&referrer=' + user_id,
-                imageUrl: this.shop.logo || ''
-            };
         },
 
         methods: {
@@ -244,14 +222,14 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
-                            
-                            // 自动模式数据、商品列表切换处理
-                            if ((this.shop || null) != null && (this.shop.data_model || 0) == 0) {
-                                this.shop_category_tab_handle();
-                            }
-                            
-                            // 收藏信息
+
                             if ((this.shop || null) != null) {
+                                // 自动模式数据、商品列表切换处理
+                                if ((this.shop.data_model || 0) == 0) {
+                                    this.shop_category_tab_handle();
+                                }
+
+                                // 收藏信息
                                 var status = this.shop_favor_user.indexOf(this.shop.id) != -1 ? 1 : 0;
                                 this.setData({
                                     shop_favor_info: {
@@ -260,10 +238,19 @@
                                         "text": (status == 1 ? '已' : '') + '收藏'
                                     }
                                 });
-                            }
-                            
-                            // 标题名称
-                            if ((this.shop || null) != null) {
+
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data.seo_title || this.data.name,
+                                        desc: this.data.seo_desc || this.shop.describe,
+                                        path: '/pages/plugins/shop/detail/detail',
+                                        query: 'id='+this.shop.id,
+                                        img: this.shop.logo
+                                    }
+                                });
+
+                                // 标题名称
                                 uni.setNavigationBarTitle({
                                     title: this.shop.name
                                 });
@@ -275,6 +262,9 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

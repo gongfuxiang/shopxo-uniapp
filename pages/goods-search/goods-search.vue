@@ -171,6 +171,8 @@
                 post_data: {},
                 is_show_popup_form: false,
                 popup_form_loading_status: false,
+                // 自定义分享信息
+                share_info: {},
                 search_nav_sort_list: [
                     { name: "综合", field: "default", sort: "asc", "icon": null },
                     { name: "销量", field: "sales_count", sort: "asc", "icon": "default" },
@@ -216,9 +218,6 @@
                     wd: params.keywords || ''
                 }
             });
-
-            // 分享菜单
-            app.globalData.show_share_menu();
         },
 
         onShow() {
@@ -235,31 +234,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var category_id = this.params['category_id'] || 0;
-            var brand_id = this.params['brand_id'] || 0;
-            var keywords = this.params['keywords'] || '';
-            return {
-                title: app.globalData.data.application_title,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/goods-search/goods-search?referrer=' + user_id + '&category_id=' + category_id + '&brand_id=' + brand_id + '&keywords=' + keywords
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var category_id = this.params['category_id'] || 0;
-            var brand_id = this.params['brand_id'] || 0;
-            var keywords = this.params['keywords'] || '';
-            return {
-                title: app.globalData.data.application_title,
-                query: 'referrer=' + user_id + '&category_id=' + category_id + '&brand_id=' + brand_id + '&keywords=' + keywords
-            };
         },
 
         methods: {
@@ -326,6 +300,20 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 基础自定义分享
+                        var category_id = this.params.category_id || 0;
+                        var brand_id = this.params.brand_id || 0;
+                        var keywords = this.params.keywords || '';
+                        this.setData({
+                            share_info: {
+                                path: '/pages/goods-search/goods-search',
+                                query: 'category_id=' + category_id + '&brand_id=' + brand_id + '&keywords=' + keywords
+                            }
+                        });
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

@@ -108,7 +108,9 @@
                 data_content: null,
                 // 基础配置
                 category_show_level: 3,
-                data_bottom_line_status: false
+                data_bottom_line_status: false,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -125,33 +127,11 @@
 
             // 初始化配置
             this.init_config();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.init();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: app.globalData.data.application_title,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/goods-category/goods-category?referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: app.globalData.data.application_title,
-                query: 'referrer=' + user_id
-            };
         },
 
         methods: {
@@ -199,6 +179,16 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 基础自定义分享
+                        this.setData({
+                            share_info: {
+                                path: '/pages/goods-category/goods-category'
+                            }
+                        });
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

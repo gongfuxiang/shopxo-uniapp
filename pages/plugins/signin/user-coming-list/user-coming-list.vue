@@ -65,7 +65,10 @@
             this.init();
         },
 
-        onShow() {},
+        onShow() {
+            // 显示分享菜单
+            app.globalData.show_share_menu();
+        },
 
         // 下拉刷新
         onPullDownRefresh() {

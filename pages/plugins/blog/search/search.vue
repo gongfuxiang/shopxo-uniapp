@@ -61,7 +61,9 @@
                 data_base: null,
                 category: [],
                 nav_active_value: 0,
-                search_keywords_value: ''
+                search_keywords_value: '',
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -80,9 +82,6 @@
 
             // 数据加载
             this.get_data();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
@@ -91,25 +90,6 @@
                 data_page: 1
             });
             this.get_data_list(1);
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
-                desc: this.data_base.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/blog/search/search?referrer=' + user_id+'&id=' +this.nav_active_value + '&keywords=' + this.search_keywords_value
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || app.globalData.data.application_title,
-                query: 'referrer=' + user_id+'&id='+this.nav_active_value + '&keywords=' + this.search_keywords_value
-            };
         },
 
         methods: {
@@ -132,6 +112,16 @@
                                 data_base: data.base || null,
                                 category: data.category || []
                             });
+
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    title: this.data_base.seo_title || this.data_base.application_name,
+                                    desc: this.data_base.seo_desc,
+                                    path: '/pages/plugins/blog/search/search',
+                                    query: 'id=' +this.nav_active_value + '&keywords=' + this.search_keywords_value
+                                }
+                            });
                             
                             // 获取列表数据
                             this.get_data_list(1);
@@ -142,6 +132,9 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

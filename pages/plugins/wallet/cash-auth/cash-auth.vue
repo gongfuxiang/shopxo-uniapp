@@ -89,6 +89,9 @@
 
         onShow() {
             this.init();
+
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         methods: {

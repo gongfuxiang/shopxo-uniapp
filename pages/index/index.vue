@@ -335,10 +335,11 @@
             return {
                 common_static_url: common_static_url,
                 static_url: static_url,
-                load_status: 0,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
+                load_status: 0,
+                currency_symbol: app.globalData.data.currency_symbol,
                 data_list: [],
                 banner_list: [],
                 navigation: [],
@@ -347,7 +348,6 @@
                 message_total: 0,
                 right_icon_list: [],
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
                 common_shop_notice: null,
                 home_index_floor_data_type: 0,
                 common_app_is_enable_search: 0,
@@ -402,7 +402,7 @@
 
             // 初始化配置
             this.init_config();
-
+            
             // 显示分享菜单
             app.globalData.show_share_menu();
         },
@@ -410,25 +410,6 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.init();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: app.globalData.data.application_title,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/index/index?referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: app.globalData.data.application_title,
-                query: 'referrer=' + user_id
-            };
         },
 
         methods: {

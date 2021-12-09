@@ -54,9 +54,14 @@
             this.setData({
                 params: params
             });
-
+        },
+        
+        onShow() {
             // 数据加载
             this.get_data();
+
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         // 下拉刷新

@@ -54,7 +54,9 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_list: [],
-                data_base: null
+                data_base: null,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -66,9 +68,6 @@
 
         onLoad(params) {
             this.init();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         onShow() {},
@@ -76,27 +75,6 @@
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data_list();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var name = (this.data_base || null) != null && (this.data_base.application_name || null) != null ? this.data_base.application_name : app.globalData.data.application_title;
-            return {
-                title: name,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/plugins/membershiplevelvip/index/index?referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            var name = (this.data_base || null) != null && (this.data_base.application_name || null) != null ? this.data_base.application_name : app.globalData.data.application_title;
-            return {
-                title: name,
-                query: 'referrer=' + user_id
-            };
         },
 
         methods: {
@@ -133,12 +111,23 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
-                            
-                            // 导航名称
-                            if ((data.base || null) != null && (data.base.application_name || null) != null) {
-                                uni.setNavigationBarTitle({
-                                    title: data.base.application_name
+
+                            if ((this.data_base || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data_base.seo_title || this.data_base.application_name,
+                                        desc: this.data_base.seo_desc,
+                                        path: '/pages/plugins/membershiplevelvip/index/index'
+                                    }
                                 });
+
+                                // 导航名称
+                                if((this.data_base.application_name || null) != null) {
+                                    uni.setNavigationBarTitle({
+                                        title: this.data_base.application_name
+                                    });
+                                }
                             }
                         } else {
                             self.setData({
@@ -150,6 +139,9 @@
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
+                        
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.hideLoading();

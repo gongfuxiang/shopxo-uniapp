@@ -596,6 +596,8 @@
                 top_nav_title_scroll: true,
                 top_nav_title_timer: null,
                 top_nav_title_data: [],
+                // 自定义分享信息
+                share_info: {},
                 // 好物圈分享信息
                 share_product: {
                     "item_code": "",
@@ -652,21 +654,18 @@
         onShow() {
             // 初始化配置
             this.init_config();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.init();
         },
-        
+
         // 页面销毁时执行
         onUnload: function() {
             clearInterval(this.plugins_salerecords_timer);
         },
-        
+
         // 监听滚动
         onPageScroll(e) {
             // 位置记录
@@ -702,27 +701,6 @@
                     }
                 });
             }
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.goods.title + '-' + app.globalData.data.application_title,
-                desc: app.globalData.data.application_describe,
-                path: '/pages/goods-detail/goods-detail?goods_id=' + this.goods.id + '&referrer=' + user_id,
-                imageUrl: this.goods.images
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.goods.title + '-' + app.globalData.data.application_title,
-                query: 'goods_id=' + this.goods.id + '&referrer=' + user_id,
-                imageUrl: this.goods.images
-            };
         },
 
         methods: {
@@ -810,18 +788,29 @@
                                     plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
                                 });
 
-                                // 好物分享
+                                // 分享配置
                                 this.setData({
+                                    // 基础自定义分享
+                                    share_info: {
+                                        title: goods.title,
+                                        desc: goods.simple_desc || goods.seo_desc,
+                                        path: '/pages/goods-detail/goods-detail',
+                                        query: 'goods_id=' + goods.id,
+                                        img: goods.images
+                                    },
+                                    // 好物分享
                                     share_product: {
-                                        'item_code': goods.id.toString(),
-                                        'title': goods.title,
-                                        'image_list': goods.photo.map(function(v) {
+                                        item_code: goods.id.toString(),
+                                        title: goods.title,
+                                        image_list: goods.photo.map(function(v) {
                                             return v.images;
                                         }),
-                                        'desc': goods.simple_desc,
-                                        'category_list': goods.category_names || [],
-                                        'src_mini_program_path': '/pages/goods-detail/goods-detail?goods_id=' + goods.id,
-                                        'brand_info.name': goods.brand_name,
+                                        desc: goods.simple_desc || goods.seo_desc,
+                                        category_list: goods.category_names || [],
+                                        src_mini_program_path: '/pages/goods-detail/goods-detail?goods_id=' + goods.id,
+                                        brand_info: {
+                                            name: goods.brand_name || ''
+                                        }
                                     }
                                 });
 
@@ -849,6 +838,9 @@
                                     data_list_loding_msg: res.data.msg
                                 });
                             }
+                            
+                            // 显示分享菜单
+                            app.globalData.show_share_menu();
                         },
                         fail: () => {
                             uni.stopPullDownRefresh();

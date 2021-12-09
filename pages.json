@@ -63,7 +63,7 @@
 		{
 			"path": "pages/web-view/web-view",
 			"style": {
-				"navigationBarTitleText": "加载中...",
+				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false
 			}
 		},

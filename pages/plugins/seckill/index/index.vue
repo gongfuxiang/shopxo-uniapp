@@ -67,12 +67,14 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
                 data_base: null,
                 time: null,
                 goods: [],
                 slider: [],
                 is_valid: 0,
-                currency_symbol: app.globalData.data.currency_symbol
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -92,34 +94,11 @@
 
             // 获取数据
             this.get_data();
-
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
-        },
-
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || '限时秒杀 - ' + app.globalData.data.application_title,
-                desc: this.data_base.seo_desc || '限时秒杀 - ' + app.globalData.data.application_describe,
-                path: '/pages/plugins/seckill/index/index?referrer=' + user_id
-            };
-        },
-        
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || this.data_base.application_name || '限时秒杀 - ' + app.globalData.data.application_title,
-                query: 'referrer=' + user_id,
-                imageUrl: this.data_base.right_images || ''
-            };
         },
 
         methods: {
@@ -155,6 +134,25 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: ((data.goods || null) != null && data.goods.length > 0)
                             });
+
+                            if ((this.data_base || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data_base.seo_title || this.data_base.application_name,
+                                        desc: this.data_base.seo_desc,
+                                        path: '/pages/plugins/seckill/index/index',
+                                        img: ((this.slider || null) != null && this.slider.length > 0) ? this.slider[0]['images_url'] : ''
+                                    }
+                                });
+
+                                // 导航名称
+                                if((this.data_base.application_name || null) != null) {
+                                    uni.setNavigationBarTitle({
+                                        title: this.data_base.application_name
+                                    });
+                                }
+                            }
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -162,6 +160,9 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

@@ -48,7 +48,9 @@
                 data_base: null,
                 brand_list: [],
                 brand_category_list: [],
-                nav_active_value: 0
+                nav_active_value: 0,
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
@@ -66,9 +68,6 @@
 
         onShow() {
             this.get_data();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
@@ -76,30 +75,9 @@
             this.get_data();
         },
 
-        // 自定义分享
-        onShareAppMessage() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || '品牌 - ' + app.globalData.data.application_title,
-                desc: this.data_base.seo_desc || app.globalData.data.application_describe,
-                path: '/pages/plugins/brand/index/index?referrer=' + user_id
-            };
-        },
-
-        // 分享朋友圈
-        onShareTimeline() {
-            var user_id = app.globalData.get_user_cache_info('id', 0) || 0;
-            return {
-                title: this.data_base.seo_title || '品牌 - ' + app.globalData.data.application_title,
-                query: 'referrer=' + user_id,
-                imageUrl: this.data_base.right_images || ''
-            };
-        },
-
         methods: {
             // 获取数据
             get_data() {
-                var self = this;
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "brand"),
                     method: "POST",
@@ -110,7 +88,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var brand_list = data.brand_list || [];
-                            self.setData({
+                            this.setData({
                                 data_base: data.base || null,
                                 brand_list: brand_list,
                                 brand_category_list: data.brand_category_list || [],
@@ -118,11 +96,23 @@
                                 data_list_loding_status: brand_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: brand_list.length > 0
                             });
-                            
+
+                            // 基础自定义分享
+                            this.setData({
+                                share_info: {
+                                    title: this.data_base.seo_title || this.data_base.application_name,
+                                    desc: this.data_base.seo_desc,
+                                    path: '/pages/plugins/brand/index/index'
+                                }
+                            });
+
                             // 导航选中处理
-                            self.nav_active_handle();
+                            this.nav_active_handle();
+
+                            // 显示分享菜单
+                            app.globalData.show_share_menu();
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg
@@ -131,7 +121,7 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'

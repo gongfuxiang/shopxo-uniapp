@@ -128,6 +128,9 @@
 
         onShow() {
             this.user_location_init();
+
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         methods: {

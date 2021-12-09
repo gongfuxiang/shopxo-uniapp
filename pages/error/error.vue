@@ -39,7 +39,10 @@
         },
 
         // 页面显示
-        onShow() {},
+        onShow() {
+            // 显示分享菜单
+            app.globalData.show_share_menu();
+        },
 
         // 方法
         methods: {

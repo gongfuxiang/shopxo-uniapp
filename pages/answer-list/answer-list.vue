@@ -52,6 +52,9 @@
 
         onShow() {
             this.get_data_list();
+            
+            // 显示分享菜单
+            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
