@@ -20,7 +20,7 @@
 </script>
 <style>
     .copyright {
-        color: #a5a5a5;
+        color: #cfcfcf;
         text-align: center;
         padding: 20rpx 0;
     }

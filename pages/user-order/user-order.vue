@@ -97,7 +97,7 @@
                     <text class="cr-gray">无支付信息</text>
                 </block>
                 <block v-else>
-                    <rich-text :nodes="popup_view_pay_data"></rich-text>
+                    <mp-html :content="popup_view_pay_data" />
                 </block>
             </view>
         </component-popup>
@@ -121,7 +121,6 @@
 <script>
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
-    import htmlParser from '../../common/js/lib/html-parser.js';
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
@@ -460,7 +459,7 @@
                             // 是否返回html代码展示、则提示错误
                             if(res.data.code == -6666 && (res.data.data || null) != null) {
                                 this.setData({
-                                    popup_view_pay_data: htmlParser(res.data.data),
+                                    popup_view_pay_data: res.data.data,
                                     popup_view_pay_html_is_show: true
                                 });
                             } else {

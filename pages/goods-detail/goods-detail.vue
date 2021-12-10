@@ -273,7 +273,7 @@
                         </block>
                         <!-- web详情 -->
                         <view v-if="common_app_is_use_mobile_detail == 0" class="padding-main">
-                            <rich-text :nodes="goods.content_web"></rich-text>
+                            <mp-html :content="goods.content_web" />
                         </view>
                         <!-- 手机独立详情 -->
                         <block v-if="common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0">
@@ -507,7 +507,6 @@
 </template>
 <script>
     const app = getApp();
-    import htmlParser from '../../common/js/lib/html-parser.js';
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
@@ -752,10 +751,6 @@
                             if (res.data.code == 0) {
                                 var data = res.data.data;
                                 var goods = data.goods;
-                                // 富文本转nodes数组
-                                if((goods.content_web || null) != null) {
-                                    goods['content_web'] = htmlParser(goods.content_web);
-                                }
                                 this.setData({
                                     data_bottom_line_status: true,
                                     data_list_loding_status: 3,

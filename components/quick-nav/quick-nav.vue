@@ -17,8 +17,8 @@
                 </view>
                 <view class="nav-popup-content">
                     <view v-if="data_list.length > 0" class="nav-data-list">
-                        <view v-for="(item, index) in data_list" :key="index" class="items">
-                            <view class="items-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
+                        <view v-for="(item, index) in data_list" :key="index" class="item cp">
+                            <view class="item-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
                                 <image :src="item.images_url" mode="aspectFit"></image>
                             </view>
                             <view class="title">{{item.name}}</view>
@@ -199,12 +199,12 @@
         overflow: hidden;
         background: #fff;
     }
-    .nav-data-list .items {
+    .nav-data-list .item {
         width: calc(25% - 60rpx);
         float: left;
         padding: 30rpx;
     }
-    .nav-data-list .items-content {
+    .nav-data-list .item-content {
         border-radius: 50%;
         padding: 20rpx;
         text-align: center;
@@ -214,12 +214,12 @@
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
-    .nav-data-list .items image {
+    .nav-data-list .item image {
         width: 60rpx !important;
         height: 60rpx !important;
         margin-top: 5rpx;
     }
-    .nav-data-list .items .title {
+    .nav-data-list .item .title {
         margin-top: 10rpx;
         font-size: 28rpx !important;
         text-align: center;

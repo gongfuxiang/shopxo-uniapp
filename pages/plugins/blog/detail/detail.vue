@@ -15,7 +15,7 @@
                 </view>
             </view>
             <view class="padding-main border-radius-main bg-white oh spacing-mb">
-                <rich-text :nodes="data.content"></rich-text>
+                <mp-html :content="data.content" />
             </view>
             
             <!-- 推荐博文 -->
@@ -68,7 +68,6 @@
 </template>
 <script>
     const app = getApp();
-    import htmlParser from '../../../../common/js/lib/html-parser.js';
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
@@ -141,9 +140,6 @@
                         var data = res.data.data;
                         if (res.data.code == 0 && (data.data || null) != null) {
                             var blog = data.data;
-                            if((blog.content || null) != null) {
-                                blog['content'] = htmlParser(blog.content);
-                            }
                             this.setData({
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
