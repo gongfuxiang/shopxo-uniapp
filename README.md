@@ -20,9 +20,9 @@
 #### 官方QQ群、答案`shopxo.net`
 * 官方uniapp群：679303149
 
-#### 小程序体验
+#### 体验码
 
-![小程序.jpg](https://doc.shopxo.net/upload/image/20210727/1627370121546835.jpeg)
+![二维码.jpg](https://doc.shopxo.net/upload/image/20211211/1639234221484373.jpg)
 
 
 #### 当前项目源代码平台
@@ -30,7 +30,7 @@
 * Gitee：[https://gitee.com/zongzhige/shopxo-uniapp](https://gitee.com/zongzhige/shopxo-uniapp)
 * GitHub：[https://github.com/gongfuxiang/shopxo-uniapp](https://github.com/gongfuxiang/shopxo-uniapp)
 * Coding：[https://zongzhige.coding.net/public/shopxo/uniapp/git](https://zongzhige.coding.net/public/shopxo/uniapp/git)
-* Gitcode：[https://gitcode.net/zongzhige/shopxo-uniapp](https://gitcode.net/zongzhige/shopxo-uniapp)
+* GitCode：[https://gitcode.net/zongzhige/shopxo-uniapp](https://gitcode.net/zongzhige/shopxo-uniapp)
 * uni-app：[https://ext.dcloud.net.cn/plugin?id=6380](https://ext.dcloud.net.cn/plugin?id=6380)
 
 #### ShopXO后端源代码平台
@@ -38,7 +38,7 @@
 * Gitee：[https://gitee.com/zongzhige/shopxo](https://gitee.com/zongzhige/shopxo)
 * GitHub：[https://github.com/gongfuxiang/shopxo](https://github.com/gongfuxiang/shopxo)
 * Coding：[https://zongzhige.coding.net/public/shopxo/shopxo/git](https://zongzhige.coding.net/public/shopxo/shopxo/git)
-* Gitcode：[https://gitcode.net/zongzhige/shopxo](https://gitcode.net/zongzhige/shopxo)
+* GitCode：[https://gitcode.net/zongzhige/shopxo](https://gitcode.net/zongzhige/shopxo)
 
 #### API接口文档
 
