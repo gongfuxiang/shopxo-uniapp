@@ -278,7 +278,7 @@
                 <!-- 弹屏广告 - 插件 -->
                 <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
                     <view class="content pr">
-                        <icon type="clear" size="20" class="close pa" @tap.stop="plugins_popupscreen_close_event"></icon>
+                        <icon type="clear" size="20" class="close pa cp" @tap.stop="plugins_popupscreen_close_event"></icon>
                         <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
                     </view>
                 </view>

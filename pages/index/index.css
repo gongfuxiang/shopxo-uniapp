@@ -189,6 +189,7 @@
 .plugins-popupscreen .close {
     right: 10%;
     top: 0;
+    z-index: 1;
 }
 .plugins-popupscreen .content {
     margin-top: calc(50vh - 200rpx) !important;
