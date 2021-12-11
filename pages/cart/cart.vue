@@ -400,7 +400,7 @@
                     success: result => {
                         if (result.confirm) {
                             var data = [];
-                            var temp_data_list = this.data_list;
+                            var temp_data_list = this.data_list || [];
                             for (var i in temp_data_list) {                
                                 if ((temp_data_list[i]['selected'] || false) == true) {
                                     data.push(temp_data_list[i]['id']);
@@ -555,15 +555,13 @@
             buy_submit_event(e) {
                 var selected_count = 0;
                 var ids = [];
-                var temp_data_list = this.data_list;
-
+                var temp_data_list = this.data_list || [];
                 for (var i in temp_data_list) {
                     if ((temp_data_list[i]['selected'] || false) == true) {
                         ids.push(temp_data_list[i]['id']);
                         selected_count++;
                     }
                 }
-
                 if (selected_count <= 0) {
                     app.globalData.showToast("请选择商品");
                     return false;

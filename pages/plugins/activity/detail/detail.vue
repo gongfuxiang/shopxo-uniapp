@@ -139,10 +139,10 @@
                                 this.setData({
                                     share_info: {
                                         title: this.data.seo_title || this.data.title,
-                                        desc: this.data.seo_desc,
+                                        desc: this.data.seo_desc || this.data.describe,
                                         path: '/pages/plugins/activity/detail/detail',
                                         query: 'id='+this.data.id,
-                                        img: this.data.right_images || ''
+                                        img: this.data.cover
                                     }
                                 });
 

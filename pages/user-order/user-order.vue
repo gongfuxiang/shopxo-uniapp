@@ -297,7 +297,7 @@
                                         }
                                     }
                                 } else {
-                                    var temp_data_list = this.data_list;
+                                    var temp_data_list = this.data_list || [];
                                     var temp_data = res.data.data.data;
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);

@@ -29,7 +29,7 @@
             <!-- 富文本 -->
             <view v-if="(data_base.banner_bottom_content || null) != null" class="padding-main spacing-mt">
                 <view class="border-radius-main bg-white oh">
-                    <rich-text :nodes="data_base.banner_bottom_content"></rich-text>
+                    <mp-html :content="data_base.banner_bottom_content" />
                 </view>
             </view>
         </view>

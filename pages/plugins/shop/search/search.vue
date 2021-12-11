@@ -138,7 +138,7 @@
             this.init_config();
 
             // 数据加载
-            this.init();
+            this.get_data();
         },
 
         // 下拉刷新
@@ -159,12 +159,6 @@
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
-            },
-
-            // 获取数据
-            init() {
-                // 获取数据
-                this.get_data();
             },
 
             // 搜索
@@ -282,7 +276,7 @@
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
                                 } else {
-                                    var temp_data_list = this.data_list;
+                                    var temp_data_list = this.data_list || [];
                                     var temp_data = data.data;
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);
