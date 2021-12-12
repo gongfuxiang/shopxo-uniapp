@@ -157,9 +157,6 @@
 
             // 初始化配置
             this.init_config();
-            
-            // 显示分享菜单
-            app.globalData.show_share_menu();
         },
 
         // 下拉刷新
@@ -188,6 +185,7 @@
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
+                        uni.stopPullDownRefresh();
                         uni.showModal({
                             title: '温馨提示',
                             content: '绑定手机号码',
@@ -207,6 +205,9 @@
                                 }
                             }
                         });
+
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
                     } else {
                         this.get_data();
                     }
@@ -217,6 +218,9 @@
                         data_bottom_line_status: false,
                         data_list_loding_msg: '请先授权用户信息'
                     });
+
+                    // 显示分享菜单
+                    app.globalData.show_share_menu();
                 }
             },
 
@@ -261,6 +265,11 @@
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
+
+                        // 显示分享菜单、延时执行，确保基础数据已加载完成
+                        setTimeout(function() {
+                            app.globalData.show_share_menu();
+                        }, 1000);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
