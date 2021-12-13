@@ -519,11 +519,14 @@
                     var len = (this.right_icon_list || []).length;
                     base = (len <= 0) ? 0 : 66*len;
                 // #endif
-                var val = (num > base) ? base : num;
-                this.setData({
-                    search_style: 'width: calc(100% - '+val+'rpx);',
-                    search_is_fixed: (top >= 35) ? 1 : 0,
-                });
+                // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
+                if((this.plugins_mourning_data || 0) != 1) {
+                    var val = (num > base) ? base : num;
+                    this.setData({
+                        search_style: 'width: calc(100% - '+val+'rpx);',
+                        search_is_fixed: (top >= 35) ? 1 : 0,
+                    });
+                }
             },
             
             // url事件
