@@ -24,37 +24,38 @@
                             </view>
                         </form>
                     </view>
-
-                    <!-- 确认绑定方式 -->
-                    <view class="form-content">
-                        <view class="tc">
-                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                            <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
-                        </view>
-                        <block v-if="current_opt_form == 'bind'">
-                            <view class="margin-top-xxxl padding-top-xxxl">
-                                <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
-                                <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
-                                <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
-                                <!-- #endif -->
+                    <block v-else>
+                        <!-- 确认绑定方式 -->
+                        <view class="form-content">
+                            <view class="tc">
+                                <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                             </view>
-                            <!-- 当前还没有账号的情况下才可以操作登陆和注册绑定 -->
-                            <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
-                                <!-- 登录 -->
-                                <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                    <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
+                            <block v-if="current_opt_form == 'bind'">
+                                <view class="margin-top-xxxl padding-top-xxxl">
+                                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
+                                    <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
+                                    <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
+                                    <!-- #endif -->
                                 </view>
-                                <!-- 注册 -->
-                                <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                                    <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
+                                <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
+                                <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
+                                    <!-- 登录 -->
+                                    <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
+                                        <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
+                                    </view>
+                                    <!-- 注册 -->
+                                    <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
+                                        <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
+                                    </view>
                                 </view>
+                            </block>
+                            <view v-else class="tc margin-top-xxxl">
+                                <view class="cr-green">已成功登录、请点击进入首页</view>
+                                <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
                             </view>
-                        </block>
-                        <view v-else class="tc margin-top-xxxl">
-                            <view class="cr-green">已成功登陆、请点击进入首页</view>
-                            <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
                         </view>
-                    </view>
+                    </block>
                 </block>
 
                 <!-- 站点logo -->
@@ -133,7 +134,7 @@
                         </view>
                         <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
-                            <!-- 小程序授权登陆 -->
+                            <!-- 小程序授权登录 -->
                             <view class="margin-bottom-xxxl tc">
                                 <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">使用授权自动登录</text>
                                 <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">返回上一页</text>
@@ -199,7 +200,7 @@
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认注册</button>
                         <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
-                            <!-- 小程序授权登陆 -->
+                            <!-- 小程序授权登录 -->
                             <view class="margin-bottom-xxxl tc">
                                 <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">使用授权自动登录</text>
                                 <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">返回上一页</text>
@@ -231,7 +232,7 @@
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认提交</button>
                         <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
                             <!-- #ifdef MP -->
-                            <!-- 小程序授权登陆 -->
+                            <!-- 小程序授权登录 -->
                             <view class="margin-bottom-xxxl tc">
                                 <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">使用授权自动登录</text>
                                 <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">返回上一页</text>
@@ -435,7 +436,7 @@
                 var form = type;
                 // #ifdef H5 || APP
                 if(user == null) {
-                    // 非小程序：如果开启登陆则取第一个登录方式
+                    // 非小程序：如果开启登录则取第一个登录方式
                     if((this.home_user_login_type || null) != null && this.home_user_login_type.length > 0) {
                         // 开启登录则取第一个
                         form = 'login';
@@ -770,9 +771,11 @@
                 e.detail.value['referrer'] = (params == null) ? ((this.user || null) == null ? 0 : this.user.referrer || 0) : params.referrer || 0;
                 var validation = [
                     {fields: 'mobile', msg: '请填写手机号码'},
-                    {fields: 'verify', msg: '请填写验证码'},
-                    {fields: field_openid, msg: '授权id不能为空'}
+                    {fields: 'verify', msg: '请填写验证码'}
                 ];
+                // #ifdef MP
+                validation.push({fields: field_openid, msg: '授权id不能为空'});
+                // #endif
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
                         title: '处理中...'
