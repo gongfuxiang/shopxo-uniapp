@@ -38,7 +38,7 @@
                             <view v-if="(data_content.describe || null) != null" class="cr-grey margin-top-sm">{{data_content.describe}}</view>
                         </view>
                         <!-- 一二级数据渲染 -->
-                        <block v-if="data_content.items.length > 0">
+                        <block v-if="(data_content.items || null) != null && data_content.items.length > 0">
                             <!-- 二级模式 -->
                             <block v-if="category_show_level == 2">
                                 <view class="two-content bg-white oh padding-main border-radius-main spacing-mb">
@@ -57,10 +57,10 @@
                                 <block v-for="(v, index) in data_content.items" :key="index">
                                     <view class="spacing-nav-title">
                                         <text class="text-wrapper">{{v.name}}</text>
-                                        <text v-if="v.describe.length > 0" class="vice-name margin-left-lg cr-gray">{{v.describe}}</text>
+                                        <text v-if="(v.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{v.describe}}</text>
                                         <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right-xxxl cr-gray fr cp">更多</view>
                                     </view>
-                                    <view v-if="v.items.length > 0" class="bg-white oh padding-main border-radius-main spacing-mb">
+                                    <view v-if="(v.items || null) != null && v.items.length > 0" class="bg-white oh padding-main border-radius-main spacing-mb">
                                         <block v-for="(vs, index2) in v.items" :key="index2">
                                             <view class="content-item padding-sm tc cp" :data-value="vs.id" @tap="category_event">
                                                 <view class="content wh-auto">
@@ -77,6 +77,10 @@
                             <!-- 提示信息 -->
                             <component-no-data propStatus="0" propMsg="没有子分类数据"></component-no-data>
                         </block>
+                    </view>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data propStatus="0" propMsg="没有子分类数据"></component-no-data>
                     </view>
                 </view>
             </block>
@@ -159,12 +163,12 @@
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var category = res.data.data.category;
-                            var data_content = [];
+                            var category = res.data.data.category || [];
+                            var data_content = null;
                             var index = this.nav_active_index || 0;
                             if (category.length > 0) {
                                 category[index]['active'] = 'nav-active cr-main border-color-main';
-                                data_content = category[index];
+                                data_content = category[index] || null;
                             }
                             this.setData({
                                 data_list: category,
