@@ -10,7 +10,7 @@
                 <!-- #endif -->
                 <!-- #ifdef MP-ALIPAY -->
                 <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="60rpx*60rpx" />
+                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="21px*21px" />
                 </button>
                 <!-- #endif -->
                 <!-- #ifdef H5 || APP -->
