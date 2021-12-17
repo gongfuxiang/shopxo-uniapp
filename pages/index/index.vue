@@ -329,7 +329,7 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
-    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight'));
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     export default {
         data() {
             return {

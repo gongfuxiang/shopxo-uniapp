@@ -65,7 +65,7 @@
 		},
 		mounted() {
             // 获取系统状态栏高度
-			this.statusbar_height = app.globalData.px_to_rpx(app.globalData.get_system_info('statusBarHeight'));
+			this.statusbar_height = app.globalData.px_to_rpx(app.globalData.get_system_info('statusBarHeight', 0));
 		}
 	}
 </script>

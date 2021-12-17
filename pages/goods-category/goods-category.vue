@@ -105,7 +105,7 @@
     export default {
         data() {
             return {
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight')),
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 data_list_loding_status: 1,
                 nav_active_index: 0,
                 data_list: [],

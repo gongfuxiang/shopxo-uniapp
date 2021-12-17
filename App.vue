@@ -1045,12 +1045,12 @@
             
             // rpx转px
             rpx_to_px(value) {
-                return ((value || 0) == 0) ? 0 : value / 750 * this.get_system_info('windowWidth');
+                return ((value || 0) == 0) ? 0 : parseInt(value) / 750 * parseInt(this.get_system_info('windowWidth', 0));
             },
             
             // px转rpx
             px_to_rpx(value) {
-                return ((value || 0) == 0) ? 0 : value * 750 / this.get_system_info('windowWidth');
+                return ((value || 0) == 0) ? 0 : parseInt(value) * 750 / parseInt(this.get_system_info('windowWidth', 0));
             },
             
             // 终端类型

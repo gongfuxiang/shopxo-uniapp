@@ -150,7 +150,7 @@
                 common_app_is_online_service: 0,
                 common_app_is_head_vice_nav: 0,
                 // 顶部样式配置
-                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight'))+5)+'px;',
+                top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight', 0))+5)+'px;',
                 // 滚动监听值
                 scroll_value: 0,
                 // 顶部导航信息

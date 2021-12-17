@@ -517,9 +517,9 @@
     import componentOnlineService from "../../components/online-service/online-service";
 
     var common_static_url = app.globalData.get_static_url('common');
-    var system_info = app.globalData.get_system_info();
-    var bar_height = parseInt(system_info.statusBarHeight);
-    var win_width = parseInt(system_info.windowWidth || system_info.screenWidth);
+    var system_info = app.globalData.get_system_info() || {};
+    var bar_height = parseInt(system_info.statusBarHeight || 0);
+    var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
     export default {
         data() {
             return {
@@ -686,7 +686,7 @@
                     query.select(data[i]['ent']).boundingClientRect();
                 }
                 query.exec(function(res) {
-                    var bar_h = app.globalData.get_system_info('statusBarHeight') || 0;
+                    var bar_h = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
                     var nav_h = self.top_nav_height;
                     var length = res.length-1;
                     for (var i=length; i>=0; i--) {
@@ -906,7 +906,7 @@
                     self.top_nav_title_index = index;
 
                     // 距离计算
-                    var bar_h = app.globalData.get_system_info('statusBarHeight') || 0;
+                    var bar_h = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
                     var nav_h = self.top_nav_height;
                     var top = res[0].top+res[1].scrollTop-nav_h-bar_h;
                     uni.pageScrollTo({
