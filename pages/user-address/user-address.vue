@@ -311,49 +311,55 @@
 
             // 获取系统地址事件
             choose_system_address_event(e) {
-                if(e == 1) {
-                    uni.chooseAddress({
-                        success(res) {
-                            var data = {
-                                "name": res.userName || '',
-                                "tel": res.telNumber || '',
-                                "province": res.provinceName || '',
-                                "city": res.cityName || '',
-                                "county": res.countyName || '',
-                                "address": res.detailInfo || ''
-                            };
-                            
-                            // 加载获取数据
-                            uni.showLoading({
-                                title: "处理中..."
-                            });
-                            uni.request({
-                                url: app.globalData.get_request_url("outsystemadd", "useraddress"),
-                                method: "POST",
-                                data: data,
-                                dataType: "json",
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        this.get_data_list();
-                                    } else {
-                                        if (app.globalData.is_login_check(res.data)) {
-                                            app.globalData.showToast(res.data.msg);
-                                        } else {
-                                            app.globalData.showToast('提交失败，请重试！');
-                                        }
-                                    }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
-                                }
-                            });
-                        }
-                    });
-                } else {
+                // 百度、头条则需要验证授权
+                // #ifdef MP-BAIDU || MP-TOUTIAO
+                // 去验证授权
+                if(e != 1) {
                     app.globalData.auth_check(this, 'choose_system_address_event', 'scope.address');
+                    return false;
                 }
+                // #endif
+                
+                // 获取地址授权信息
+                uni.chooseAddress({
+                    success(res) {
+                        var data = {
+                            "name": res.userName || '',
+                            "tel": res.telNumber || '',
+                            "province": res.provinceName || '',
+                            "city": res.cityName || '',
+                            "county": res.countyName || '',
+                            "address": res.detailInfo || ''
+                        };
+                        
+                        // 加载获取数据
+                        uni.showLoading({
+                            title: "处理中..."
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url("outsystemadd", "useraddress"),
+                            method: "POST",
+                            data: data,
+                            dataType: "json",
+                            success: res => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    this.get_data_list();
+                                } else {
+                                    if (app.globalData.is_login_check(res.data)) {
+                                        app.globalData.showToast(res.data.msg);
+                                    } else {
+                                        app.globalData.showToast('提交失败，请重试！');
+                                    }
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast("服务器请求出错");
+                            }
+                        });
+                    }
+                });
             },
             
             // 添加地址事件
