@@ -81,11 +81,14 @@
             get_system_info(key, dv, is_real) {
                 var info = null;
                 if((is_real || false) == true) {
-                    info = this.set_system_info();
+                    info = this.set_system_info() || null;
                 } else {
                     info = uni.getStorageSync(this.data.cache_system_info_key) || null;
                 }
-                return ((key|| null) == null) ? info : ((info[key] == undefined) ? (dv || null) : info[key]);
+                if(info == null || (key|| null) == null) {
+                    return info;
+                }
+                return (info[key] == undefined) ? (dv == undefined ? null : dv) : info[key];
             },
 
             /**
