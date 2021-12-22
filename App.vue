@@ -828,7 +828,20 @@
                         }
                     }
                 }
-                return value === null ? default_value === undefined ? value : default_value : value;
+                // 默认值
+                if(value == null && default_value != undefined) {
+                    value = default_value;
+                }
+                // 无数据则处理自定义字段定义的数据
+                if(value == null) {
+                    switch(key) {
+                        // 货币符号
+                        case 'currency_symbol' :
+                            value = this.data.currency_symbol;
+                            break;
+                    }
+                }
+                return value;
             },
 
             // 初始化 配置信息
