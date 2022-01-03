@@ -51,12 +51,12 @@
                     <view class="br-b padding-bottom-main fw-b text-size">{{site_fictitious.title || '密钥信息'}}</view>
                     <view class="panel-content oh padding-top-main">
                         <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
-                            <rich-text :nodes="site_fictitious.tips"></rich-text>
+                            <mp-html :content="site_fictitious.tips" />
                         </view>
                         <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
                             <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="right-value fr">
-                                <rich-text v-if="(item.fictitious_goods_value || null) != null" :nodes="item.fictitious_goods_value"></rich-text>
+                                <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
                                 <text v-else class="cr-gray">未配置数据</text>
                             </view>
                         </view>
