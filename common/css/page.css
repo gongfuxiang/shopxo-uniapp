@@ -714,3 +714,10 @@ button[disabled].bg-gray {
     line-height: 58rpx;
     display: inline-flex;
 }
+
+/**
+ * 单页预览
+ */
+.single-page-top {
+    padding-top: 110rpx;
+}

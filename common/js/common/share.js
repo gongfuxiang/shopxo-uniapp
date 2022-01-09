@@ -32,7 +32,7 @@ export default {
         var share = app.globalData.share_content_handle(this.share_info || {});
         return {
             title: share.title,
-            query: share.query,
+            query: ((share.query || null) != null && share.query.substr(0, 1) == '?') ? share.query.slice(1) : share.query,
             imageUrl: share.img
         };
     }

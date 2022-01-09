@@ -41,7 +41,7 @@
 .nav-message {
     z-index: 10;
     right: 30rpx;
-    top: 80rpx;
+    top: 110rpx;
 }
 .nav-message .badge-icon {
     top: -10px;

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view :class="(plugins_mourning_data || 0) == 1 ? 'grayscale' : ''">
+        <view :class="((plugins_mourning_data || 0) == 1 ? ' grayscale' : '')+((is_single_page || 0) == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
                 <!-- 标题 -->
@@ -377,7 +377,9 @@
                 plugins_popupscreen_cache_key: 'plugins_popupscreen_cache_key',
                 plugins_popupscreen_timer: null,
                 // 哀悼灰度插件
-                plugins_mourning_data: 0
+                plugins_mourning_data: 0,
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page()
             };
         },
 
@@ -402,6 +404,9 @@
 
             // 初始化配置
             this.init_config();
+            
+            
+            console.log(this.is_single_page);
         },
 
         // 下拉刷新

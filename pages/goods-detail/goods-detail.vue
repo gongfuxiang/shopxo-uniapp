@@ -1,48 +1,51 @@
 <template>
     <view>
         <!-- 顶部导航 -->
-        <view v-if="goods != null" class="page">
-            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
-            <!-- 小导航 -->
-            <view class="top-nav-left-icon pf" :style="'top:'+top_nav_icon_top_value+'px;'">
-                <uni-icons type="arrowleft" size="20" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
-                <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round cp margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
-            </view>
-            <!-- #endif -->
-            <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP -->
-            <!-- 更多导航 -->
-            <view v-if="nav_more_list.length > 0 && nav_more_status" class="nav-more-view tc" :style="'top:'+top_nav_more_top_value+'px;'">
-                <view class="triangle dis-inline-block pa"></view>
-                <view class="content radius padding-horizontal-main">
-                    <block v-for="(item,index) in nav_more_list" :key="index">
-                        <view class="item padding-main cp" :data-value="item.url" data-type="1" @tap="nav_more_event">
-                            <view class="va-m dis-inline-block">
-                                <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
-                            </view>
-                            <text class="cr-white va-m margin-left-sm">{{item.name}}</text>
-                        </view>
-                    </block>
+        <view v-if="goods != null" :class="'page '+((is_single_page || 0) == 1 ? ' single-page-top' : '')">
+            <!-- 单页模式不展示导航栏 -->
+            <block v-if="(is_single_page || 0) == 0">
+                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
+                <!-- 小导航 -->
+                <view class="top-nav-left-icon pf" :style="'top:'+top_nav_icon_top_value+'px;'">
+                    <uni-icons type="arrowleft" size="20" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
+                    <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round cp margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
                 </view>
-            </view>
-            <!-- 顶部导航 -->
-            <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
-                <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height">
-                    <view class="top-nav padding-bottom padding-horizontal-main pr">
-                        <view class="top-nav-content tc">
-                            <block v-for="(item, index) in top_nav_title_data" :key="index">
-                                <text :class="'cp '+(top_nav_title_index == index ? 'nav-active border-color-main' : '')" :data-index="index" :data-value="item.ent" @tap="top_nav_title_event">{{item.name}}</text>
-                            </block>
-                        </view>
+                <!-- #endif -->
+                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || H5 || APP -->
+                <!-- 更多导航 -->
+                <view v-if="nav_more_list.length > 0 && nav_more_status" class="nav-more-view tc" :style="'top:'+top_nav_more_top_value+'px;'">
+                    <view class="triangle dis-inline-block pa"></view>
+                    <view class="content radius padding-horizontal-main">
+                        <block v-for="(item,index) in nav_more_list" :key="index">
+                            <view class="item padding-main cp" :data-value="item.url" data-type="1" @tap="nav_more_event">
+                                <view class="va-m dis-inline-block">
+                                    <uni-icons :type="item.icon" size="16" color="#fff"></uni-icons>
+                                </view>
+                                <text class="cr-white va-m margin-left-sm">{{item.name}}</text>
+                            </view>
+                        </block>
                     </view>
-                </component-trn-nav>
+                </view>
+                <!-- 顶部导航 -->
+                <block v-if="(top_nav_title_data || null) != null && top_nav_title_data.length > 0">
+                    <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height">
+                        <view class="top-nav padding-bottom padding-horizontal-main pr">
+                            <view class="top-nav-content tc">
+                                <block v-for="(item, index) in top_nav_title_data" :key="index">
+                                    <text :class="'cp '+(top_nav_title_index == index ? 'nav-active border-color-main' : '')" :data-index="index" :data-value="item.ent" @tap="top_nav_title_event">{{item.name}}</text>
+                                </block>
+                            </view>
+                        </view>
+                    </component-trn-nav>
+                </block>
+                <!-- #endif -->
+                <!-- #ifdef H5 || APP -->
+                <!-- 右侧icon -->
+                <view class="top-nav-right-icon pf" :style="'top:'+top_nav_icon_top_value+'px;left:'+top_nav_right_icon_left_value+'px;'">
+                    <uni-icons type="redo" size="20" color="#333" class="icon round cp" @tap="popup_share_event"></uni-icons>
+                </view>
+                <!-- #endif -->
             </block>
-            <!-- #endif -->
-            <!-- #ifdef H5 || APP -->
-            <!-- 右侧icon -->
-            <view class="top-nav-right-icon pf" :style="'top:'+top_nav_icon_top_value+'px;left:'+top_nav_right_icon_left_value+'px;'">
-                <uni-icons type="redo" size="20" color="#333" class="icon round cp" @tap="popup_share_event"></uni-icons>
-            </view>
-            <!-- #endif -->
 
             <!-- 相册 -->
             <view class="goods-photo bg-white oh pr" v-if="goods_photo.length > 0" :style="'height: ' + photo_height + ' !important;'">
@@ -626,7 +629,9 @@
                 plugins_wholesale_data: null,
                 popup_wholesale_status: false,
                 // 标签插件
-                plugins_label_data: null
+                plugins_label_data: null,
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page()
             };
         },
 

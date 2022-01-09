@@ -3,6 +3,8 @@
     export default {
         globalData: {
             data: {
+                // 场景值
+                cache_scene_key: "cache_scene_key",
                 // uuid缓存key
                 cache_user_uuid_key: "cache_user_uuid_key",
                 // 配置信息缓存key
@@ -70,6 +72,29 @@
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
                 return params;
+            },
+            
+            /**
+             * 当前是否单页模式
+             */
+            is_current_single_page() {
+                var scene = this.get_scene_data();
+                return (scene == 1154 || scene == 1155) ? 1 : 0;
+            },
+            
+            /**
+             * 场景值获取
+             */
+            get_scene_data() {
+                return uni.getStorageSync(this.data.cache_scene_key) || 0;
+            },
+            
+            /**
+             * 场景值设置
+             */
+            set_scene_data(params) {
+                var scene = ((params.scene || null) == null) ? 0 : parseInt(params.scene);
+                uni.setStorageSync(this.data.cache_scene_key, scene);
             },
 
             /**
@@ -1207,7 +1232,7 @@
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
-                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+                                        uni.setStorageSync(this.data.cache_sthis.data.cache_user_info_key, res.data.data);
                                     } else {
                                         this.showToast(res.data.msg);
                                     }
@@ -1269,10 +1294,9 @@
          */
         onLaunch(params) {
             // 启动参数处理+缓存
-            params = this.globalData.launch_params_handle(params);
             uni.setStorage({
                 key: this.globalData.data.cache_launch_info_key,
-                data: params
+                data: this.globalData.launch_params_handle(params)
             });
 
             // 设置设备信息
@@ -1280,6 +1304,9 @@
             
             // 初始化配置
             this.globalData.init_config();
+            
+            // 场景值
+            this.globalData.set_scene_data(params);
         },
 
         methods: {}
