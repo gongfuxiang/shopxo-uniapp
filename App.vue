@@ -764,7 +764,6 @@
                 // 微信小程序展示系统分享好友和朋友圈按钮
                 // 其他端小程序不用展示会调起分享窗口
                 var not_pages = ['/pages/user/user', '/pages/cart/cart'];
-                var menu = ['shareAppMessage', 'shareTimeline'];
                 if(not_pages.indexOf(share.url) == -1) {
                     uni.showShareMenu({
                         withShareTicket: true,
@@ -772,7 +771,7 @@
                         desc: share.desc,
                         path: share.path + share.query,
                         imageUrl: share.img,
-                        menus: menu
+                        menus: ['shareAppMessage', 'shareTimeline']
                     });
                 } else {
                     wx.hideShareMenu({
