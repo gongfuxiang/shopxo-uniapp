@@ -4,12 +4,12 @@
         <movable-area v-if="online_service_status == 1" class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
                 <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
-                <button open-type="contact" :class="common_ent">
+                <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                     <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
                 </button>
                 <!-- #endif -->
                 <!-- #ifdef MP-ALIPAY -->
-                <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                <button open-type="contact" :class="common_ent">
                     <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="21px*21px" />
                 </button>
                 <!-- #endif -->
