@@ -1,9 +1,9 @@
 <template>
     <view>
         <!-- 顶部导航 -->
-        <view v-if="goods != null" :class="'page '+((is_single_page || 0) == 1 ? ' single-page-top' : '')">
+        <view v-if="goods != null" :class="'page '+(is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 单页模式不展示导航栏 -->
-            <block v-if="(is_single_page || 0) == 0">
+            <block v-if="is_single_page == 0">
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
                 <!-- 小导航 -->
                 <view class="top-nav-left-icon pf" :style="'top:'+top_nav_icon_top_value+'px;'">
@@ -631,7 +631,7 @@
                 // 标签插件
                 plugins_label_data: null,
                 // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page()
+                is_single_page: app.globalData.is_current_single_page() || 0
             };
         },
 
@@ -976,9 +976,12 @@
 
             // 导航购买按钮事件
             nav_buy_submit_event(e) {
+                if(this.is_single_page == 1) {
+                    app.globalData.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
                 var type = e.currentTarget.dataset.type || 'buy';
                 var value = e.currentTarget.dataset.value || null;
-
                 switch (type) {
                     // 展示型、拨打电话
                     case 'show':
@@ -1000,6 +1003,10 @@
 
             // 收藏事件
             goods_favor_event(e) {
+                if(this.is_single_page == 1) {
+                    app.globalData.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
                 var user = app.globalData.get_user_info(this, 'goods_favor_event');
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
@@ -1480,6 +1487,10 @@
 
             // 分享开启弹层
             popup_share_event(e) {
+                if(this.is_single_page == 1) {
+                    app.globalData.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
                 this.setData({
                     popup_share_status: true
                 });
@@ -1554,6 +1565,10 @@
             
             // 优惠券开启弹层
             popup_coupon_event(e) {
+                if(this.is_single_page == 1) {
+                    app.globalData.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
                 this.setData({
                     popup_coupon_status: true
                 });

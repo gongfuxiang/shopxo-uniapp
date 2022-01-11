@@ -79,7 +79,10 @@
              */
             is_current_single_page() {
                 var scene = this.get_scene_data();
-                return (scene == 1154 || scene == 1155) ? 1 : 0;
+                // #ifdef MP-WEIXIN
+                return (scene == 1154) ? 1 : 0;
+                // #endif
+                return 0;
             },
             
             /**
@@ -760,14 +763,22 @@
                 // #ifdef MP-WEIXIN
                 // 微信小程序展示系统分享好友和朋友圈按钮
                 // 其他端小程序不用展示会调起分享窗口
-                uni.showShareMenu({
-                    withShareTicket: true,
-                    title: share.title,
-                    desc: share.desc,
-                    path: share.path + share.query,
-                    imageUrl: share.img,
-                    menus: ['shareAppMessage', 'shareTimeline']
-                });
+                var not_pages = ['/pages/user/user', '/pages/cart/cart'];
+                var menu = ['shareAppMessage', 'shareTimeline'];
+                if(not_pages.indexOf(share.url) == -1) {
+                    uni.showShareMenu({
+                        withShareTicket: true,
+                        title: share.title,
+                        desc: share.desc,
+                        path: share.path + share.query,
+                        imageUrl: share.img,
+                        menus: menu
+                    });
+                } else {
+                    wx.hideShareMenu({
+                      menus: ['shareTimeline']
+                    });
+                }
                 // #endif
                 // #ifdef H5
                 // H5处理微信环境分享自定义信息
