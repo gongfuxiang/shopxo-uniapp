@@ -1242,7 +1242,7 @@
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
-                                        uni.setStorageSync(this.data.cache_sthis.data.cache_user_info_key, res.data.data);
+                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
                                     } else {
                                         this.showToast(res.data.msg);
                                     }
