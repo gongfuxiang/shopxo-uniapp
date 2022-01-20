@@ -976,8 +976,7 @@
 
             // 导航购买按钮事件
             nav_buy_submit_event(e) {
-                if(this.is_single_page == 1) {
-                    app.globalData.showToast('请前往小程序使用完整服务');
+                if(!this.is_single_page_check()) {
                     return false;
                 }
                 var type = e.currentTarget.dataset.type || 'buy';
@@ -1003,8 +1002,7 @@
 
             // 收藏事件
             goods_favor_event(e) {
-                if(this.is_single_page == 1) {
-                    app.globalData.showToast('请前往小程序使用完整服务');
+                if(!this.is_single_page_check()) {
                     return false;
                 }
                 var user = app.globalData.get_user_info(this, 'goods_favor_event');
@@ -1487,8 +1485,7 @@
 
             // 分享开启弹层
             popup_share_event(e) {
-                if(this.is_single_page == 1) {
-                    app.globalData.showToast('请前往小程序使用完整服务');
+                if(!this.is_single_page_check()) {
                     return false;
                 }
                 this.setData({
@@ -1565,8 +1562,7 @@
             
             // 优惠券开启弹层
             popup_coupon_event(e) {
-                if(this.is_single_page == 1) {
-                    app.globalData.showToast('请前往小程序使用完整服务');
+                if(!this.is_single_page_check()) {
                     return false;
                 }
                 this.setData({
@@ -1717,6 +1713,15 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            
+            // 是否朋友圈单页访问提示
+            is_single_page_check() {
+                if(this.is_single_page == 1) {
+                    app.globalData.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
+                return true;
             }
         }
     };
