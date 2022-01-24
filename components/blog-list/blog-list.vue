@@ -1,12 +1,12 @@
 <template>
     <view>
-        <view v-if="(propConfig || null) != null && (propData || []).length > 0">
+        <view v-if="(propConfig || null) != null && (propData || null) != null && propData.length > 0">
             <block v-for="(floor, index) in propData" :key="index">
                 <block v-if="floor.blog_list.length > 0 && floor.home_data_location == propLocation">
                     <view class="spacing-nav-title">
                         <text class="text-wrapper" :style="'color:'+(floor.color || '#333')+';'">{{floor.title}}</text>
                         <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.vice_title}}</text>
-                        <navigator :url="'/pages/plugins/blog/search/search?id=' + floor.more_category_id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                        <navigator :url="floor.more_url" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view class="wh-auto oh pr">
                         <view v-if="floor.keywords_arr.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">

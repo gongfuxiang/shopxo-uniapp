@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="(propData || []).length > 0">
+        <view v-if="(propData || null) != null && propData.length > 0">
             <block v-for="(floor, index) in propData" :key="index">
                 <block v-if="floor.goods_list.length > 0 && floor.home_data_location == propLocation">
                     <view class="spacing-nav-title">
