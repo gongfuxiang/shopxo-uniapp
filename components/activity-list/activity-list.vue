@@ -17,7 +17,7 @@
                             </scroll-view>
                         </view>
                         <view class="goods-list">
-                            <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh pr">
+                            <view v-for="(goods, index2) in floor.goods_list" :key="vi" class="goods bg-white border-radius-main oh pr">
                                 <!-- 商品主体内容 -->
                                 <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
                                     <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
