@@ -8,31 +8,6 @@
 }
 
 /**
- * 博客列表
- */
-.blog-list .blog-img {
-    width: 200rpx !important;
-    height: 170rpx !important;
-}
-.blog-list .base {
-    width: calc(100% - 220rpx);
-}
-
-/*
- * 博客滚动
- */
-.hot-list swiper,
-.hot-list .item .blog-img {
-    height: 180rpx !important;
-}
-.hot-list .item .blog-title {
-    left: 0;
-    bottom: 0;
-    width: calc(100% - 36rpx);
-    background-color: rgba(0,0,0,.5);
-}
-
-/**
  * 推荐博文
  */
 .right-list .item .blog-title {

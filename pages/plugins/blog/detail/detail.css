@@ -1,15 +1,4 @@
 /**
- * 推荐博文
- */
-.blog-list .blog-img {
-    width: 200rpx !important;
-    height: 170rpx !important;
-}
-.blog-list .base {
-    width: calc(100% - 220rpx);
-}
-
-/**
  * 商品
  */
 .goods-list .item {

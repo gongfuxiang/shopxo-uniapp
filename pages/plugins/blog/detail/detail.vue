@@ -19,7 +19,7 @@
             </view>
             
             <!-- 推荐博文 -->
-            <view v-if="right_list.length > 0" class="blog-list">
+            <view v-if="right_list.length > 0" class="plugins-blog-list">
                 <view class="spacing-nav-title">
                     <text class="text-wrapper">推荐博文</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>

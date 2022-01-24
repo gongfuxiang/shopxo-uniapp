@@ -67,7 +67,7 @@
                         <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"></image>
                     </view>
                 </view>
-                
+
                 <!-- 限时秒杀 - 插件 -->
                 <view v-if="plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
                     <view class="spacing-nav-title">
@@ -109,50 +109,17 @@
                         </swiper>
                     </view>
                 </view>
-
-                <!-- 活动信息-楼层顶部 - 插件 -->
-                <view v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0" class="activity">
-                    <block v-for="(floor, index) in plugins_activity_data" :key="index">
-                        <view v-if="floor.goods_list.length > 0 && (floor.home_data_location || 0) == 0" class="floor">
-                            <view class="spacing-nav-title">
-                                <text class="text-wrapper" :style="'color:'+(floor.color || '#333')+';'">{{floor.title}}</text>
-                                <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.vice_title}}</text>
-                                <navigator :url="'/pages/plugins/activity/detail/detail?id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                            </view>
-                            <view class="floor-list wh-auto oh">
-                                <view v-if="floor.keywords_arr.length > 0" class="word scroll-view-horizontal">
-                                    <scroll-view scroll-x>
-                                        <block v-for="(kv, ki) in floor.keywords_arr" :key="ki">
-                                            <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
-                                        </block>
-                                    </scroll-view>
-                                </view>
-                                <view class="goods-list margin-top-lg">
-                                    <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh pr">
-                                        <!-- 商品主体内容 -->
-                                        <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
-                                            <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
-                                            <view class="goods-base padding-horizontal-main margin-top-sm">
-                                                <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
-                                                <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
-                                            </view>
-                                        </navigator>
-                                        <!-- 标签插件 -->
-                                        <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                                            <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                                <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                    <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                </view>
-                                            </block>
-                                        </view>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </block>
-                </view>
                 
+                <!-- 活动配置-楼层顶部 - 插件 -->
+                <block v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0">
+                    <component-activity-list :propData="plugins_activity_data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                </block>
+                
+                <!-- 博客-楼层顶部 - 插件 -->
+                <block v-if="(plugins_blog_data || null) != null">
+                    <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
+                </block>
+
                 <!-- 楼层数据 -->
                 <block v-if="(data_list || nul) != null && data_list.length > 0">
                     <!-- 数据模式0,1自动+手动、2拖拽 -->
@@ -168,15 +135,15 @@
                                 <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
                                 <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
-                            <view class="floor-list wh-auto oh">
-                                <view v-if="floor.items.length > 0" class="word scroll-view-horizontal">
+                            <view class="floor-list wh-auto oh pr">
+                                <view v-if="floor.items.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
                                     <scroll-view scroll-x>
                                         <block v-for="(icv, icx) in floor.items" :key="icx">
                                             <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
                                         </block>
                                     </scroll-view>
                                 </view>
-                                <view v-if="floor.goods.length > 0" class="goods-list margin-top-lg">
+                                <view v-if="floor.goods.length > 0" class="goods-list">
                                     <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh pr">
                                         <!-- 商品主体内容 -->
                                         <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
@@ -201,49 +168,16 @@
                         </view>
                     </block>
                 </block>
+
+                <!-- 活动配置-楼层底部 - 插件 -->
+                <block v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0">
+                    <component-activity-list :propData="plugins_activity_data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                </block>
                 
-                <!-- 活动信息-楼层底部 - 插件 -->
-                <view v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0" class="activity">
-                    <block v-for="(floor, index) in plugins_activity_data" :key="index">
-                        <view v-if="floor.goods_list.length > 0 && (floor.home_data_location || 0) == 1" class="floor">
-                            <view class="spacing-nav-title">
-                                <text class="text-wrapper" :style="'color:'+(floor.color || '#333')+';'">{{floor.title}}</text>
-                                <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.vice_title}}</text>
-                                <navigator :url="'/pages/plugins/activity/detail/detail?id=' + floor.id" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                            </view>
-                            <view class="floor-list wh-auto oh">
-                                <view v-if="floor.keywords_arr.length > 0" class="word scroll-view-horizontal">
-                                    <scroll-view scroll-x>
-                                        <block v-for="(kv, ki) in floor.keywords_arr" :key="ki">
-                                            <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
-                                        </block>
-                                    </scroll-view>
-                                </view>
-                                <view class="goods-list margin-top-lg">
-                                    <view v-for="(goods, index2) in floor.goods_list" :key="index2" class="goods bg-white border-radius-main oh pr">
-                                        <!-- 商品主体内容 -->
-                                        <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + goods.id" hover-class="none">
-                                            <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
-                                            <view class="goods-base padding-horizontal-main margin-top-sm">
-                                                <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
-                                                <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
-                                            </view>
-                                        </navigator>
-                                        <!-- 标签插件 -->
-                                        <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                                            <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                                <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                    <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                </view>
-                                            </block>
-                                        </view>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </block>
-                </view>
+                <!-- 博客-楼层底部 - 插件 -->
+                <block v-if="(plugins_blog_data || null) != null">
+                    <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
+                </block>
                 
                 <!--- 底部购买记录 - 插件 -->
                 <view v-if="(plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
@@ -326,6 +260,8 @@
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentCopyright from "../../components/copyright/copyright";
     import componentOnlineService from "../../components/online-service/online-service";
+    import componentActivityList from "../../components/activity-list/activity-list";
+    import componentBlogList from "../../components/blog-list/blog-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
@@ -360,6 +296,8 @@
                 top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(bar_height+8)+'px;',
                 search_style: '',
                 search_is_fixed: 0,
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page() || 0,
                 // 限时秒杀插件
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
@@ -378,8 +316,8 @@
                 plugins_popupscreen_timer: null,
                 // 哀悼灰度插件
                 plugins_mourning_data: 0,
-                // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page() || 0
+                // 标签插件
+                plugins_blog_data: null
             };
         },
 
@@ -394,7 +332,9 @@
             componentNoData,
             componentBottomLine,
             componentCopyright,
-            componentOnlineService
+            componentOnlineService,
+            componentActivityList,
+            componentBlogList
         },
         props: {},
 
@@ -470,7 +410,8 @@
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
                                 plugins_popupscreen_data: data.plugins_popupscreen_data || null,
-                                plugins_mourning_data: data.plugins_mourning_data || 0
+                                plugins_mourning_data: data.plugins_mourning_data || 0,
+                                plugins_blog_data: data.plugins_blog_data || null
                             });
 
                             // 弹屏广告插件处理

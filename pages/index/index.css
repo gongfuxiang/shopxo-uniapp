@@ -85,36 +85,6 @@
     height: 40rpx;
 }
 
-/**
- * 楼层数据
- */
-.floor-list {
-    position: relative;
-}
-.floor-list .word .word-icon:not(:last-child) {
-    margin-right: 20rpx;
-}
-.floor-list .word image {
-    max-width: 100%;
-    margin: 0 auto;
-}
-.floor-list .goods-list .goods {
-    width: calc(50% - 10rpx);
-    float: left;
-    padding-bottom: 10rpx;
-    margin-bottom: 20rpx;
-}
-.floor-list .goods-list .goods:nth-of-type(2n + 1) {
-    margin-right: 10rpx;
-}
-.floor-list .goods-list .goods:nth-of-type(2n) {
-    margin-left: 10rpx;
-}
-.floor-list .goods-list .goods .goods-img {
-    width: 100%;
-    height: 380rpx !important;
-}
-
 /*
  * 限时秒杀 - 插件
  */

@@ -135,3 +135,47 @@
     -ms-filter: grayscale(100%); 
     -o-filter: grayscale(100%);
 }
+
+
+/**
+ * 博客 - 列表
+ */
+.plugins-blog-list .blog-img {
+    width: 200rpx !important;
+    height: 170rpx !important;
+}
+.plugins-blog-list .base {
+    width: calc(100% - 220rpx);
+}
+/*
+ * 博客 - 滚动
+ */
+.plugins-blog-rolling-list swiper,
+.plugins-blog-rolling-list .item .blog-img {
+    height: 180rpx !important;
+}
+.plugins-blog-rolling-list .item .blog-title {
+    left: 0;
+    bottom: 0;
+    width: calc(100% - 36rpx);
+    background-color: rgba(0,0,0,.5);
+}
+/**
+ * 博客 - 九方格
+ */
+.plugins-blog-grid-list .item {
+    width: calc(50% - 10rpx);
+    float: left;
+    padding-bottom: 10rpx;
+    margin-bottom: 20rpx;
+}
+.plugins-blog-grid-list .item:nth-of-type(2n + 1) {
+    margin-right: 10rpx;
+}
+.plugins-blog-grid-list .item:nth-of-type(2n) {
+    margin-left: 10rpx;
+}
+.plugins-blog-grid-list .item .blog-img {
+    width: 100%;
+    height: 230rpx !important;
+}

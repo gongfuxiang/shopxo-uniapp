@@ -29,10 +29,3 @@
 .scroll-box {
     height: calc(100vh - 110rpx - 30px);
 }
-.blog-list .blog-img {
-    width: 200rpx !important;
-    height: 170rpx !important;
-}
-.blog-list .base {
-    width: calc(100% - 220rpx);
-}
