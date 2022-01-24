@@ -752,3 +752,10 @@ button[disabled].bg-gray {
 .single-page-top {
     padding-top: 110rpx;
 }
+
+/**
+ * 上一篇、下一篇
+ */
+.last-next-data navigator {
+    width: calc(100% - 120rpx);
+}

@@ -15,7 +15,22 @@
                 </view>
             </view>
             <view class="padding-main border-radius-main bg-white oh spacing-mb">
+                <view v-if="(data.video_url || null) != null && (data.is_live_play || 0) == 0">
+                    <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                </view>
                 <mp-html :content="data.content" />
+            </view>
+            
+            <!-- 上一篇、下一篇 -->
+            <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
+                <view v-if="(last_next.last || null) != null">
+                    <text class="cr-gray va-m">上一篇：</text>
+                    <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.last.title}}</navigator>
+                </view>
+                <view v-if="(last_next.next || null) != null" class="margin-top-sm">
+                    <text class="cr-gray va-m">下一篇：</text>
+                    <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.next.title}}</navigator>
+                </view>
             </view>
             
             <!-- 推荐博文 -->
@@ -82,6 +97,7 @@
                 data_base: null,
                 data: null,
                 right_list: [],
+                last_next: null,
                 // 自定义分享信息
                 share_info: {}
             };
@@ -145,7 +161,8 @@
                                 data_list_loding_status: 3,
                                 data_base: data.base || null,
                                 data: blog,
-                                right_list: data.right_list || []
+                                right_list: data.right_list || [],
+                                last_next: data.last_next || null
                             });
 
                             // 基础自定义分享

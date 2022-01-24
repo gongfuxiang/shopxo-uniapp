@@ -78,7 +78,7 @@
                         <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view class="goods-list scroll-view-horizontal border-radius-main oh">
-                        <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="true" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
+                        <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
                             <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
                                 <swiper-item class="padding-right-main">
                                     <view class="item bg-white border-radius-main oh pr ht-auto">

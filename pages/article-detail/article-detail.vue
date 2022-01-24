@@ -17,6 +17,8 @@
             <view class="padding-main border-radius-main bg-white oh spacing-mb">
                 <mp-html :content="data.content" />
             </view>
+            
+            <!-- 上一篇、下一篇 -->
             <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
                 <view v-if="(last_next.last || null) != null">
                     <text class="cr-gray va-m">上一篇：</text>
