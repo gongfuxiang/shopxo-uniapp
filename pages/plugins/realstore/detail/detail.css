@@ -25,16 +25,14 @@
     /* #endif */
     padding-bottom: 10px;
 }
-.nav-location {
-    width: 180rpx;
+.nav-back {
+    width: 30px;
     background: rgb(0 0 0 / 60%);
     height: 30px;
     line-height: 30px;
-    font-size: 12px;
-    padding: 0 10rpx;
 }
 .nav-search {
-    width: calc(100% - 220rpx);
+    width: calc(100% - 90rpx);
 }
 
 /**

@@ -241,7 +241,7 @@
                     nav_active_value: e.currentTarget.dataset.value || 0,
                     data_page: 1
                 });
-                this.get_data_list(11);
+                this.get_data_list(1);
             }
         }
     };

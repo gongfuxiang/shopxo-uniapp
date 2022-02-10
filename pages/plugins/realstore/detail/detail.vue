@@ -6,18 +6,12 @@
                 <view class="header" :style="'background-image: url('+info.banner+');'">
                     <!-- 顶部 -->
                     <view class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
-                        <!-- 位置 -->
-                        <view class="nav-location dis-inline-block round single-text cr-white va-m margin-right-sm" @tap="choose_location_event">
-                            <view class="dis-inline-block va-m">
-                                <uni-icons type="map-pin-ellipse" size="12" color="#fff"></uni-icons>
-                            </view>
-                            <text class="va-m margin-left-xs">
-                                <block v-if="(user_location || null) != null">{{user_location.name || ''}}{{user_location.address || ''}}</block>
-                                <block v-else>未选择位置</block>
-                            </text>
+                        <!-- 返回 -->
+                        <view class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
+                            <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
                         </view>
                         <!-- 搜索 -->
-                        <view class="nav-search dis-inline-block va-m">
+                        <view class="nav-search fr va-m">
                             <!-- #ifndef H5 || MP-KUAISHOU -->
                             <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgb(0 0 0 / 60%)" propBrColor="rgb(78 78 78)"></component-search>
                             <!-- #endif -->
@@ -208,7 +202,7 @@
                         <text class="text-size-sm">{{currency_symbol}}</text>
                         <text class="text-size-lg">{{(cart || null) == null ? 0 : (cart.total_price || 0)}}</text>
                     </view>
-                    <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm pa radius-0 '+((info.status_info.status == 1) ? 'bg-main cr-white' : 'bg-gray cr-gray')">{{info.status_info.msg}}</button>
+                    <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm pa radius-0 '+((info.status_info.status == 1) ? 'bg-main cr-white' : 'bg-gray cr-gray')">{{info.status_info.status == 1 ? '去结算' : info.status_info.msg}}</button>
                 </view>
             </view>
         </view>
@@ -388,8 +382,8 @@
                     url: app.globalData.get_request_url("detaildata", "index", "realstore"),
                     method: "POST",
                     data: this.request_params_merge({
-                        "id": this.params.id || 0,
-                        "keywords": this.search_keywords_value
+                        id: this.params.id || 0,
+                        keywords: this.search_keywords_value
                     }, 'data'),
                     dataType: "json",
                     success: res => {
@@ -427,7 +421,7 @@
                 });
             },
 
-            // 店铺收藏事件
+            // 收藏事件
             favor_event(e) {
                 var user = app.globalData.get_user_info(this, 'favor_event');
                 if (user != false) {
@@ -902,11 +896,16 @@
                 });
             },
             
-            // 选择地理位置
-            choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location'
-                });
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: '/pages/index/index'
+                    });
+                } else {
+                    uni.navigateBack();
+                }
             },
             
             // 地址信息初始化
