@@ -426,7 +426,7 @@
                             </button>
                         </view>
                         <!-- #endif -->
-                        <view v-if="common_app_is_poster_share == 1" class="share-items oh cp" @tap="poster_event">
+                        <view v-if="plugins_is_goods_detail_poster == 1" class="share-items oh cp" @tap="poster_event">
                             <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
                             <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
                         </view>
@@ -585,7 +585,7 @@
                 quick_nav_cart_count: 0,
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
-                common_app_is_poster_share: 0,
+                plugins_is_goods_detail_poster: 0,
                 common_app_is_good_thing: 0,
                 common_app_is_online_service: 0,
                 common_app_is_use_mobile_detail: 0,
@@ -734,8 +734,8 @@
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_is_good_thing: app.globalData.get_config('config.common_app_is_good_thing'),
-                        common_app_is_poster_share: app.globalData.get_config('config.common_app_is_poster_share'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                        plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
