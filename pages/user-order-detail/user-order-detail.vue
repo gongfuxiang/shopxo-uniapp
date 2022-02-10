@@ -3,7 +3,7 @@
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 地址 -->
-                <view v-if="detail.order_model == 0 || detail.order_model == 2" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
+                <view v-if="(detail.order_model == 0 || detail.order_model == 2) && (detail.address_data || null) != null" class="address bg-white padding-horizontal-main padding-top-main border-radius-main spacing-mb">
                     <view class="address-base oh">
                         <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
                         <text>{{detail.address_data.name}}</text>

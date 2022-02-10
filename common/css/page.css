@@ -328,6 +328,9 @@ button:before {
 .br-gray {
     border: solid 1px #d6d6d6 !important;
 }
+.br-blue {
+    border: solid 1px #2196F3 !important;
+}
 .br-0 {
     border: 0 !important;
 }
@@ -416,6 +419,9 @@ button:before {
 }
 .bg-base {
     background-color: #f5f5f5 !important;
+}
+.bg-blue {
+    background-color: #2196F3 !important;
 }
 button[disabled].bg-white {
     background-color: #fdfdfd !important;

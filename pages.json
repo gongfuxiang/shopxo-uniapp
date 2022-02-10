@@ -725,6 +725,58 @@
         		"enablePullDownRefresh": true,
         		"navigationBarTitleText": "物流详情"
         	}
+        },
+        {
+            "path": "pages/plugins/realstore/index/index",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "门店首页"
+            }
+        },
+        {
+        	"path": "pages/plugins/realstore/detail/detail",
+        	"style": {
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
+                "navigationStyle": "custom",
+                // #endif
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": "门店详情"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/orderallot-list/orderallot-list",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "子订单列表"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/orderallot-detail/orderallot-detail",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "子订单详情"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/batchorder-list/batchorder-list",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "批次订单"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/frequencycard-list/frequencycard-list",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "次卡"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/frequencycard-used/frequencycard-used",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "次卡使用记录"
+            }
         }
 	],
     "subPackages": [],

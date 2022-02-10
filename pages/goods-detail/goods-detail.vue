@@ -296,20 +296,31 @@
 
             <!-- 底部操作 -->
             <view class="goods-buy-nav oh wh-auto bg-white br-t">
-                <view class="bus-items fl tc">
-                    <view class="item fl cp" @tap="shop_event">
-                        <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
-                        <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
-                    </view>
-                    <view class="item fl cp">
-                        <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
-                            <view class="badge-icon">
-                                <component-badge :propNumber="quick_nav_cart_count"></component-badge>
-                            </view>
-                            <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
-                            <text class="dis-block text-size-xs cr-gray">购物车</text>
-                        </navigator>
-                    </view>
+                <view :class="'bus-items fl tc '+((params.is_opt_back || 0) != 0 ? 'bus-items-2' : '')">
+                    <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
+                    <block v-if="(params.is_opt_back || 0) != 0">
+                        <view class="item fl cp">
+                            <navigator open-type="navigateBack" hover-class="none">
+                                <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
+                                <text class="dis-block text-size-xs cr-gray">返回</text>
+                            </navigator>
+                        </view>
+                    </block>
+                    <block v-else>
+                        <view class="item fl cp" @tap="shop_event">
+                            <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
+                            <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
+                        </view>
+                        <view class="item fl cp">
+                            <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
+                                <view class="badge-icon">
+                                    <component-badge :propNumber="quick_nav_cart_count"></component-badge>
+                                </view>
+                                <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
+                                <text class="dis-block text-size-xs cr-gray">购物车</text>
+                            </navigator>
+                        </view>
+                    </block>
                     <view class="item fl cp " @tap="goods_favor_event">
                         <image :src="common_static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                         <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
@@ -647,8 +658,13 @@
         },
 
         onLoad(params) {
+            var params = app.globalData.launch_params_handle(params);
             this.setData({
-                params: app.globalData.launch_params_handle(params)
+                params: params,
+                // 是否自定义购买事件
+                buy_event_type: params.opt_buy_event_type || 'buy',
+                // 是否指定开启购买弹窗、默认0否、1是
+                popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1
             });
 
             // 数据加载
@@ -1076,7 +1092,6 @@
                             dataType: 'json',
                             success: res => {
                                 uni.hideLoading();
-
                                 if (res.data.code == 0) {
                                     this.setData({
                                         quick_nav_cart_count: res.data.data

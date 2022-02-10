@@ -403,7 +403,7 @@
             cart_all_remove_event(e) {
                 uni.showModal({
                     title: '温馨提示',
-                    content: '挑了这么久，真的要删除吗',
+                    content: '挑了这么久，真的要删除吗？',
                     confirmText: '确认',
                     cancelText: '暂不',
                     success: result => {

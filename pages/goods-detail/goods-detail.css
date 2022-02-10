@@ -117,6 +117,9 @@
     width: 33.33%;
     position: relative;
 }
+.goods-buy-nav .bus-items-2 .item {
+    width: 50%;
+}
 .goods-buy-nav .btn-items {
     width: calc(60% - 10rpx);
     padding: 10rpx 0;

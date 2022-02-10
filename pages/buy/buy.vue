@@ -87,13 +87,7 @@
                             <text class="sales-price">{{currency_symbol}}{{group.order_base.actual_price}}</text>
                         </view>
                     </view>
-
-                    <!-- 留言 -->
-                    <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
-                        <textarea v-if="user_note_status" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="60" placeholder="留言"></textarea>
-                        <view v-else @tap="bind_user_note_tap_event" :class="(user_note_value || null) == null ? 'cr-gray' : ''">{{user_note_value || '留言'}}</view>
-                    </view>
-
+                    
                     <!-- 积分 -->
                     <view v-if="(plugins_points_data || null) != null && (plugins_points_data.discount_price || 0) > 0" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <view class="select oh">
@@ -110,8 +104,25 @@
                         </view>
                     </view>
 
+                    <!-- 时间选择 -->
+                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item bg-white border-radius-main spacing-mb arrow-right">
+                        <text class="cr-base">{{buy_datetime_info.title}}</text>
+                        <view class="right-value dis-inline-block fr tr">
+                            <component-time-select :propTitle="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
+                                <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey">{{buy_datetime_info.placeholder}}</text>
+                                <text v-else class="cr-base">{{buy_datetime_info.value}}</text>
+                            </component-time-select>
+                        </view>
+                    </view>
+
+                    <!-- 留言 -->
+                    <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
+                        <textarea v-if="user_note_status" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="60" placeholder="留言"></textarea>
+                        <view v-else @tap="bind_user_note_tap_event" :class="(user_note_value || null) == null ? 'cr-gray' : ''">{{user_note_value || '留言'}}</view>
+                    </view>
+
                     <!-- 支付方式 -->
-                    <view v-if="payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
+                    <view v-if="total_price > 0 && payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
                         <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-main">
                             <view :class="'item-content radius br ' + (item.selected || '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
@@ -181,6 +192,7 @@
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
+    import componentTimeSelect from "../../components/time-select/time-select";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -211,6 +223,8 @@
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 common_order_is_booking: 0,
+                // 下单时间选择
+                buy_datetime_info: {},
                 // 优惠劵
                 plugins_coupon_data: null,
                 plugins_coupon_list: [],
@@ -227,7 +241,8 @@
         components: {
             componentQuickNav,
             componentPopup,
-            componentNoData
+            componentNoData,
+            componentTimeSelect
         },
         props: {},
 
@@ -325,6 +340,35 @@
                                     data_list_loding_status: 0
                                 });
                             } else {
+                                // 下单选择时间
+                                var data_dt = this.buy_datetime_info || {};
+                                var temp_dt = data.buy_datetime_info || {};
+                                var datetime = {
+                                    // 是否开启时间选择
+                                    is_select: (temp_dt.is_select || 0) == 1,
+                                    // 是否必选
+                                    required: (temp_dt.required || 0) == 1,
+                                    // 状态
+                                    status: data_dt.status || (temp_dt.status || 0) == 1 || false,
+                                    // 默认值
+                                    value: data_dt.value || temp_dt.value || '',
+                                    // 标题
+                                    title: temp_dt.title || '时间',
+                                    // 占位文本及标题
+                                    placeholder: temp_dt.placeholder || '选择时间',
+                                    // 天起始时间
+                                    time_start: temp_dt.time_start || '',
+                                    // 天结束时间
+                                    time_end: temp_dt.time_end || '',
+                                    // 可选最大天数
+                                    range_day: temp_dt.range_day || 2,
+                                    // 禁止选择的时间
+                                    disabled: temp_dt.disabled || '',
+                                    // 未选择错误提示
+                                    error_msg: temp_dt.error_msg || '请选择时间'
+                                };
+
+                                // 设置数据
                                 this.setData({
                                     goods_list: data.goods_list,
                                     total_price: data.base.actual_price,
@@ -332,6 +376,7 @@
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],
+                                    buy_datetime_info: datetime,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null
                                 });
@@ -445,14 +490,29 @@
                     });
                 }
 
-                if (this.common_order_is_booking != 1) {
-                    validation.push({
-                        fields: 'payment_id',
-                        msg: '请选择支付方式'
-                    });
-                }
-
                 if (app.globalData.fields_check(data, validation)) {
+                    // 请求参数处理
+                    data = this.request_data_ext_params_merge(data);
+
+                    // 是否需要选择时间
+                    var datetime = this.buy_datetime_info || {};
+                    if((datetime.is_select || false) == true) {
+                        // 是否必选
+                        if((datetime.required || false) == true && (datetime.value || null) == null) {
+                            app.globalData.showToast(datetime.error_msg || '请选择时间');
+                            return false;
+                        }
+                        data['buy_datetime_value'] = datetime.value || '';
+                    }
+
+                    // 是否需要选择支付方式
+                    if (this.total_price > 0 && this.common_order_is_booking != 1) {
+                        if((data.payment_id || null) == null) {
+                            app.globalData.showToast('请选择支付方式');
+                            return false;
+                        }
+                    }
+
                     // 加载loding
                     uni.showLoading({
                         title: '提交中...'
@@ -463,7 +523,7 @@
                     uni.request({
                         url: app.globalData.get_request_url("add", "buy"),
                         method: "POST",
-                        data: this.request_data_ext_params_merge(data),
+                        data: data,
                         dataType: "json",
                         success: res => {
                             uni.hideLoading();
@@ -644,6 +704,18 @@
             // 仓库事件
             warehouse_group_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 下单选择时间
+            buy_datetime_event(e) {
+                var temp = this.buy_datetime_info;
+                temp['status'] = !temp.status;
+                if((e || null) != null) {
+                    temp['value'] = e._date || '';
+                }
+                this.setData({
+                    buy_datetime_info: temp
+                })
             }
         }
     };

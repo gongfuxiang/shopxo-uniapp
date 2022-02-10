@@ -135,6 +135,18 @@
     width: 50%;
 }
 
+/**
+ * 数据列表项
+ */
+.buy-data-item {
+    padding: 0 40rpx 0 20rpx;
+    line-height: 80rpx;
+}
+.buy-data-item .right-value {
+    width: calc(100% - 160rpx);
+    min-height: 80rpx;
+}
+
 /*
 * 插件样式区域
 */
