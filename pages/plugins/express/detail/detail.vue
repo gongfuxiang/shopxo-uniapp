@@ -81,12 +81,11 @@
                 uni.showLoading({
                     title: "加载中..."
                 });
+                // 是否指定方法
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "express"),
                     method: "POST",
-                    data: {
-                        id: this.params.id || 0,
-                    },
+                    data: this.params,
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();

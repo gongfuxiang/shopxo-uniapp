@@ -1,0 +1,223 @@
+/**
+ * 头部
+ */
+.header {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-bottom-left-radius: 100rpx;
+    border-bottom-right-radius: 100rpx;
+    height: 310rpx;
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO */
+    height: 360rpx;
+    /* #endif */
+}
+/**
+ * 顶部
+ */
+.header-top {
+    padding-right: 250rpx;
+    /* #ifdef MP-ALIPAY */
+    padding-right: 255rpx;
+    /* #endif */
+    /* #ifdef H5 || APP */
+    padding-right: 20rpx;
+    /* #endif */
+    padding-bottom: 10px;
+}
+.nav-location {
+    width: 180rpx;
+    background: rgb(0 0 0 / 60%);
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    padding: 0 10rpx;
+}
+.nav-search {
+    width: calc(100% - 220rpx);
+}
+
+/**
+ * 头部内容
+ */
+.header-content {
+    top: 140rpx;
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO */
+    top: 200rpx;
+    /* #endif */
+    width: calc(100% - 80rpx);
+    box-shadow: 0 0 8px rgb(0 0 0 / 6%);
+}
+.header-content .address-content {
+    width: calc(100% - 220rpx);
+}
+.header-content .icon-list {
+    right: 20rpx;
+    bottom: 20rpx;
+}
+.header-content .icon-list .icon-item {
+    width: 50rpx;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+.header-content .icon-item .badge-icon {
+    top: -10px;
+    right: 2px;
+}
+.header-content .icon-list .icon-item:not(:last-child) {
+    margin-right: 15rpx;
+}
+.header-content .logo {
+    width: 110rpx;
+    height: 110rpx !important;
+}
+.header-content .base-right {
+    width: calc(100% - 130rpx);
+}
+.header-content .base-right .title-length-limit {
+    width: calc(100% - 110rpx);
+}
+.header-content .base-right .use-type-icon {
+    border-top-left-radius: 50rpx;
+    border-bottom-left-radius: 50rpx;
+    top: 20rpx;
+    right: -1px;
+    padding: 5rpx 20rpx;
+    box-shadow: -1px 1px 3px rgb(0 0 0 / 10%);
+}
+
+/**
+ * 桌码
+ */
+.tablecode {
+    background: rgb(255 255 255 / 60%);
+    padding: 2rpx 20rpx;
+}
+
+/**
+ * 中间内容
+ */
+.content {
+    margin-top: 80rpx;
+    height: calc(100vh - 440rpx);
+    /* #ifdef H5 || APP */
+    height: calc(100vh - 390rpx);
+    /* #endif */
+}
+
+/**
+* 左侧导航
+*/
+.left-content {
+    width: 180rpx;
+    height: calc(100% - 120rpx);
+    padding-bottom: 120rpx;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.left-content .item {
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0 10rpx;
+    border-left: 3px solid #fff;
+    border-right: 3px solid #fff;
+    overflow: hidden;
+}
+.left-content .item:not(:last-child) {
+    border-bottom: 1px solid #f1f1f1 !important;
+}
+.left-content .active {
+    background: #f5f5f5;
+    border-width: 0 0 0 3px;
+    border-right: 3px solid #f5f5f5 !important;
+}
+.left-content .badge-icon {
+    top: -16rpx;
+    right: 26rpx;
+}
+
+/**
+*  右侧内容
+*/
+.right-content {
+    width: calc(100% - 220rpx);
+    height: calc(100% - 110rpx);
+    padding-bottom: 110rpx;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.goods-list .goods-img {
+    width: 160rpx;
+    height: 160rpx !important;
+}
+.goods-list .goods-base {
+    width: calc(100% - 180rpx);
+}
+.goods-list .goods-base-content {
+    min-height: 100rpx;
+}
+.goods-list .goods-base .simple-desc {
+    line-height: 30rpx;
+    min-height: 30rpx;
+    max-height: 58rpx;
+}
+.goods-list .goods-base .sales-price {
+    width: calc(100% - 160rpx);
+}
+.goods-list .goods-base .buy-number {
+    min-width: 32rpx;
+}
+
+/**
+ * 底部导航
+ */
+.botton-nav {
+    width: calc(100% - 40rpx);
+    left: 20rpx;
+    bottom: 20rpx;
+    line-height: 80rpx;
+    z-index: 2;
+}
+.botton-nav .cart .badge-icon {
+    top: -20rpx;
+    right: -2rpx;
+}
+.botton-nav .cart-total-price {
+    width: calc(100% - 260rpx);
+}
+.botton-nav button {
+    top: 0;
+    right: 0;
+    line-height: 88rpx;
+}
+
+/**
+ * 购物车
+ */
+.cart-mask {
+    left: 0;
+    top: 0;
+    background: rgb(0, 0, 0, 0.6);
+    z-index: 1;
+}
+.cart-content {
+    left: 20rpx;
+    bottom: 130rpx;
+    width: calc(100% - 40rpx);
+    z-index: 2;
+}
+.cart-content .cart-list {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 60vh;
+}
+.cart-content .cart-list .goods-img {
+    width: 120rpx;
+    height: 120rpx !important;
+}
+.cart-content .cart-list .goods-base {
+    width: calc(100% - 140rpx);
+}
+.cart-content .cart-list .goods-base-content {
+    min-height: 60rpx;
+}

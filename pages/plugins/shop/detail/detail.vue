@@ -242,8 +242,8 @@
                                 // 基础自定义分享
                                 this.setData({
                                     share_info: {
-                                        title: this.data.seo_title || this.shop.name,
-                                        desc: this.data.seo_desc || this.shop.describe,
+                                        title: this.shop.seo_title || this.shop.name,
+                                        desc: this.shop.seo_desc || this.shop.describe,
                                         path: '/pages/plugins/shop/detail/detail',
                                         query: 'id='+this.shop.id,
                                         img: this.shop.logo
