@@ -65,12 +65,23 @@
              * 启动参数处理
              */
             launch_params_handle(params) {
+                // 原有缓存
+                var cache_params = this.get_launch_cache_info();
+                
+                // 当前参数、从query读取覆盖
                 if ((params.query || null) != null) {
                     params = params.query;
                 }
+                // query下scene参数解析处理
                 if ((params.scene || null) != null) {
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
+                
+                // 原始缓存是否存在邀请id、邀请使用最开始的用户id
+                if(cache_params != null && (cache_params.referrer || null) != null) {
+                    params['referrer'] = cache_params.referrer;
+                }
+
                 return params;
             },
             
@@ -98,6 +109,7 @@
             set_scene_data(params) {
                 var scene = ((params.scene || null) == null) ? 0 : parseInt(params.scene);
                 uni.setStorageSync(this.data.cache_scene_key, scene);
+                return scene;
             },
 
             /**
@@ -124,10 +136,7 @@
              */
             set_system_info() {
                 var system_info = uni.getSystemInfoSync();
-                uni.setStorage({
-                    key: this.data.cache_system_info_key,
-                    data: system_info
-                });
+                uni.setStorageSync(this.data.cache_system_info_key, system_info);
                 return system_info;
             },
 
@@ -222,10 +231,19 @@
             },
 
             /**
-             * 系统参数
+             * 系统参数获取
              */
             get_launch_cache_info() {
                 return uni.getStorageSync(this.data.cache_launch_info_key) || null;
+            },
+            
+            /**
+             * 系统参数设置
+             */
+            set_launch_cache_info(params) {
+                params = this.launch_params_handle(params);
+                uni.setStorageSync(this.data.cache_launch_info_key, params);
+                return params;
             },
 
             /**
@@ -1302,19 +1320,21 @@
         /**
          * 小程序初始化
          */
-        onLaunch(params) {
-            // 启动参数处理+缓存
-            uni.setStorage({
-                key: this.globalData.data.cache_launch_info_key,
-                data: this.globalData.launch_params_handle(params)
-            });
+        onLaunch(params) {},
+        
+        /**
+         * 小程序页面显示
+         */
+        onShow(params) {
+            // 初始化配置
+            this.globalData.init_config();
 
             // 设置设备信息
             this.globalData.set_system_info();
-            
-            // 初始化配置
-            this.globalData.init_config();
-            
+
+            // 参数处理+缓存
+            this.globalData.set_launch_cache_info(params);
+
             // 场景值
             this.globalData.set_scene_data(params);
         },
