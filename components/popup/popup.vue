@@ -100,10 +100,8 @@
         opacity: 1;
         pointer-events: auto;
     }
+    .popup.animation .popup-mask,
     .popup.animation .popup-content {
-        transition: all 0.25s linear;
-    }
-    .popup.animation .popup-mask {
         transition: all 0.25s linear;
     }
     .popup-top {

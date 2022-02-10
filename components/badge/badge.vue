@@ -15,7 +15,7 @@
         components: {},
         props: {
             propNumber: {
-            	type:[Number,String],
+            	type: [Number,String],
             	default: 0
             }
         },
@@ -44,6 +44,7 @@
         color: #fff;
         font-size: 10px;
         padding: 1px 1px;
+        box-shadow: 0 0 5px rgb(0 0 0 / 60%);
     }
     .am-badge-text-max {
         padding: 1px 2px;

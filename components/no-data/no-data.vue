@@ -28,8 +28,14 @@
         },
         components: {},
         props: {
-            propStatus: Number,
-            propMsg: String
+            propStatus: {
+            	type: [Number,String],
+            	default: 0
+            },
+            propMsg: {
+            	type: String,
+            	default: '没有相关数据'
+            }
         },
         methods: {}
     };
