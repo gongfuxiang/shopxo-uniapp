@@ -42,7 +42,7 @@
                                         <text class="va-m">{{item.name}}</text>
                                     </view>
                                     <view class="margin-top-xs text-size-xs cr-grey">
-                                        <view>营业时间：{{item.open_time || '00:00'}} ~ {{item.close_time || '00:00'}}</view>
+                                        <view>营业时间：{{item.open_time || '00:00'}} ~ {{item.close_time || '00:00'}}（{{item.open_week_name}}至{{item.close_week_name}}）</view>
                                         <view v-if="(item.distance || null) != null">距离您{{item.distance}}</view>
                                     </view>
                                 </view>
