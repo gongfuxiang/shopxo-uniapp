@@ -13,10 +13,10 @@
                         <!-- 搜索 -->
                         <view class="nav-search fr va-m">
                             <!-- #ifndef H5 || MP-KUAISHOU -->
-                            <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgb(0 0 0 / 60%)" propBrColor="rgb(78 78 78)"></component-search>
+                            <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
                             <!-- #ifdef H5 || MP-KUAISHOU -->
-                            <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgb(0 0 0 / 60%)" propBrColor="rgb(78 78 78)"></component-search>
+                            <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
                         </view>
                     </view>
@@ -75,68 +75,73 @@
             <!-- 内容 -->
             <view class="content oh">
                 <block v-if="(data || null) != null && data.length > 0">
-                    <view class="left-content fl bg-white">
-                        <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" @tap="nav_event">全部</view>
-                        <block v-for="(item, ni) in data" :key="ni">
-                            <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == ni ? 'active cr-main border-color-main fw-b' : '')" :data-index="ni" @tap="nav_event">
-                                <text>{{item.name}}</text>
-                                <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
-                                    <component-badge :propNumber="item.buy_number"></component-badge>
+                    <scroll-view :scroll-y="true" class="left-content fl ht-auto bg-white">
+                        <view class="left-content-actual">
+                            <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" @tap="nav_event">全部</view>
+                            <block v-for="(item, ni) in data" :key="ni">
+                                <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == ni ? 'active cr-main border-color-main fw-b' : '')" :data-index="ni" @tap="nav_event">
+                                    <text>{{item.name}}</text>
+                                    <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
+                                        <component-badge :propNumber="item.buy_number"></component-badge>
+                                    </view>
                                 </view>
-                            </view>
-                        </block>
-                    </view>
-                    <view class="right-content padding-right-main fr goods-list">
-                        <block v-if="goods_count > 0">
-                            <block v-for="(item, index) in data" :key="index">
-                                <block v-if="nav_active_index == -1 || nav_active_index == index">
-                                    <block v-if="(item.goods_list || null) != null && item.goods_list.length > 0">
-                                        <view v-if="nav_active_index == -1" class="text-size-sm fw-b padding-bottom-sm">{{item.name}}</view>
-                                        <view v-for="(goods, gindex) in item.goods_list" :key="goods.id" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                            <navigator :url="'/pages/goods-detail/goods-detail?is_opt_back=1&goods_id='+goods.id" hover-class="none">
-                                                <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                                <view class="goods-base fr">
-                                                    <view class="goods-base-content">
-                                                        <view class="goods-title text-size-sm single-text">{{goods.title}}</view>
-                                                        <view v-if="(goods.simple_desc || null) != null" class="simple-desc cr-red text-size-xs margin-top-xs multi-text">{{goods.simple_desc}}</view>
-                                                    </view>
-                                                    <view class="margin-top-sm oh">
-                                                        <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.min_price}}</view>
-                                                        <view class="tc fr">
-                                                            <block v-if="(goods.is_alone_buy || 0) == 0">
-                                                                <view v-if="(goods.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="0" @tap.stop="buy_number_event">
-                                                                    <uni-icons type="minus" size="22" color="#f00" ></uni-icons>
-                                                                </view>
-                                                                <view v-if="(goods.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.buy_number}}</view>
-                                                                <view class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="1" @tap.stop="buy_number_event">
-                                                                    <uni-icons type="plus" size="22" color="#1AAD19" ></uni-icons>
-                                                                </view>
-                                                            </block>
-                                                            <block v-else>
-                                                                <text class="cr-grey text-size-xs">{{goods.is_alone_buy_msg}}</text>
-                                                            </block>
+                            </block>
+                        </view>
+                    </scroll-view>
+                    <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list">
+                        <view class="right-content-actual">
+                            <block v-if="goods_count > 0">
+                                <block v-for="(item, index) in data" :key="index">
+                                    <block v-if="nav_active_index == -1 || nav_active_index == index">
+                                        <block v-if="(item.goods_list || null) != null && item.goods_list.length > 0">
+                                            <view v-if="nav_active_index == -1" class="text-size-sm fw-b padding-bottom-sm">{{item.name}}</view>
+                                            <view v-for="(goods, gindex) in item.goods_list" :key="goods.id" class="item bg-white padding-main border-radius-main oh spacing-mb">
+                                                <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index" hover-class="none">
+                                                    <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
+                                                    <view class="goods-base fr">
+                                                        <view class="goods-base-content">
+                                                            <view class="goods-title text-size-sm single-text">{{goods.title}}</view>
+                                                            <view v-if="(goods.simple_desc || null) != null" class="simple-desc cr-red text-size-xs margin-top-xs multi-text">{{goods.simple_desc}}</view>
+                                                        </view>
+                                                        <view class="margin-top-sm oh">
+                                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.min_price}}</view>
+                                                            <view class="tc fr">
+                                                                <block v-if="(goods.is_error || 0) == 0">
+                                                                    <view v-if="(goods.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="0" @tap.stop="buy_number_event">
+                                                                        <uni-icons type="minus" size="22" color="#f00" ></uni-icons>
+                                                                    </view>
+                                                                    <view v-if="(goods.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.buy_number}}</view>
+                                                                    <view class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="1" @tap.stop="buy_number_event">
+                                                                        <uni-icons type="plus" size="22" color="#1AAD19" ></uni-icons>
+                                                                    </view>
+                                                                </block>
+                                                                <block v-else>
+                                                                    <text class="cr-grey text-size-xs">{{goods.is_error_msg}}</text>
+                                                                </block>
+                                                            </view>
                                                         </view>
                                                     </view>
-                                                </view>
-                                            </navigator>
-                                        </view>
-                                    </block>
-                                    <block v-else-if="nav_active_index != -1">
-                                        <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
+                                                </navigator>
+                                            </view>
+                                        </block>
+                                        <block v-else-if="nav_active_index != -1">
+                                            <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
+                                        </block>
                                     </block>
                                 </block>
                             </block>
-                        </block>
-                        <block v-else>
-                            <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
-                        </block>
-                    </view>
+                            <block v-else>
+                                <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
+                            </block>
+                        </view>
+                    </scroll-view>
                 </block>
                 <block v-else>
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
                 </block>
             </view>
+            
             
             <view class="pr">
                 <!-- 购物车 -->
@@ -153,9 +158,9 @@
                                     <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
                                 </view>
                             </view>
-                            <view class="cart-list goods-list">
+                            <scroll-view :scroll-y="true" class="cart-list goods-list">
                                 <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                    <navigator :url="'/pages/goods-detail/goods-detail?is_opt_back=1&goods_id='+goods.goods_id" hover-class="none">
+                                    <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.goods_id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index" hover-class="none">
                                         <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
                                         <view class="goods-base fr">
                                             <view class="goods-base-content">
@@ -182,7 +187,7 @@
                                         </view>
                                     </navigator>
                                 </view>
-                            </view>
+                            </scroll-view>
                         </block>
                         <block v-else>
                             <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
@@ -493,7 +498,7 @@
                             } else {
                                 // 进入商品详情选择规格操作
                                 uni.navigateTo({
-                                    url: '/pages/goods-detail/goods-detail?is_opt_back=1&is_opt_buy_status=1&opt_buy_event_type=cart&goods_id='+temp_goods.id
+                                    url: '/pages/goods-detail/goods-detail?id='+temp_goods.id+'&is_opt_back=1&is_opt_buy_status=1&opt_buy_event_type=cart&buy_use_type_index='+this.buy_use_type_index
                                 });
                                 return false;
                             }
@@ -802,8 +807,8 @@
                                         for(var k in temp_data[i]['goods_list']) {
                                             if(temp_data[i]['goods_list'][k]['id'] == value) {
                                                 // 是否仅单独购买
-                                                if((temp_data[i]['goods_list'][k]['is_alone_buy'] || 0) != 0) {
-                                                    app.globalData.showToast(temp_data[i]['goods_list'][k]['is_alone_buy_msg']);
+                                                if((temp_data[i]['goods_list'][k]['is_error'] || 0) != 0) {
+                                                    app.globalData.showToast(temp_data[i]['goods_list'][k]['is_error_msg']);
                                                     return false;
                                                 }
                                                 goods_id = value;

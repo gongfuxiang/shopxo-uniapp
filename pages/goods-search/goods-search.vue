@@ -18,7 +18,7 @@
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white padding-bottom-sm margin-bottom-main oh pr">
                     <!-- 商品主体内容 -->
-                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
+                    <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.id" hover-class="none">
                         <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                         <view class="base padding-horizontal-main margin-top-sm">
                             <view class="multi-text">{{item.title}}</view>

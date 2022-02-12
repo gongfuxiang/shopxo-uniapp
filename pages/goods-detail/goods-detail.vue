@@ -509,7 +509,7 @@
 
         <!-- 在线客服 -->
         <block v-if="goods != null">
-            <component-online-service :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?goods_id='+goods.id"></component-online-service>
+            <component-online-service :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id"></component-online-service>
         </block>
         <block v-else>
             <component-online-service :propIsNav="true"></component-online-service>
@@ -744,132 +744,120 @@
 
             // 获取数据
             init() {
-                // 参数校验
-                if ((this.params.goods_id || null) == null) {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: '商品ID有误'
-                    });
-                } else {
-                    uni.showLoading({
-                        title: '加载中...'
-                    });
-                    this.setData({
-                        data_list_loding_status: 1
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url("detail", "goods"),
-                        method: "POST",
-                        data: {
-                            goods_id: this.params.goods_id
-                        },
-                        dataType: "json",
-                        success: res => {
-                            uni.stopPullDownRefresh();
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
-                                var data = res.data.data;
-                                var goods = data.goods;
-                                this.setData({
-                                    data_bottom_line_status: true,
-                                    data_list_loding_status: 3,
-                                    goods: goods,
-                                    indicator_dots: goods.photo.length > 1,
-                                    autoplay: goods.photo.length > 1,
-                                    goods_photo: goods.photo,
-                                    nav_more_list: data.nav_more_list || [],
-                                    goods_specifications_choose: goods.specifications.choose || [],
-                                    goods_content_app: goods.content_app || [],
-                                    buy_number: goods.buy_min_number || 1,
-                                    nav_favor_button_info: {
-                                        "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
-                                        "status": goods.is_favor
-                                    },
-                                    buy_button: data.buy_button || null,
-                                    top_nav_title_data: data.middle_tabs_nav || [],
-                                    goods_spec_base_price: goods.price,
-                                    goods_spec_base_original_price: goods.original_price,
-                                    goods_spec_base_inventory: goods.inventory,
-                                    goods_spec_base_images: goods.images,
-                                    show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
-                                    plugins_seckill_data: data.plugins_seckill_data || null,
-                                    plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
-                                    plugins_coupon_data: data.plugins_coupon_data || null,
-                                    quick_nav_cart_count: data.common_cart_total || 0,
-                                    plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
-                                    plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
-                                    plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
-                                    plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
-                                });
+                uni.showLoading({
+                    title: '加载中...'
+                });
+                this.setData({
+                    data_list_loding_status: 1
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("detail", "goods"),
+                    method: "POST",
+                    data: this.params,
+                    dataType: "json",
+                    success: res => {
+                        uni.stopPullDownRefresh();
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var goods = data.goods;
+                            this.setData({
+                                data_bottom_line_status: true,
+                                data_list_loding_status: 3,
+                                goods: goods,
+                                indicator_dots: goods.photo.length > 1,
+                                autoplay: goods.photo.length > 1,
+                                goods_photo: goods.photo,
+                                nav_more_list: data.nav_more_list || [],
+                                goods_specifications_choose: goods.specifications.choose || [],
+                                goods_content_app: goods.content_app || [],
+                                buy_number: goods.buy_min_number || 1,
+                                nav_favor_button_info: {
+                                    "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
+                                    "status": goods.is_favor
+                                },
+                                buy_button: data.buy_button || null,
+                                top_nav_title_data: data.middle_tabs_nav || [],
+                                goods_spec_base_price: goods.price,
+                                goods_spec_base_original_price: goods.original_price,
+                                goods_spec_base_inventory: goods.inventory,
+                                goods_spec_base_images: goods.images,
+                                show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                                plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
+                                plugins_coupon_data: data.plugins_coupon_data || null,
+                                quick_nav_cart_count: data.common_cart_total || 0,
+                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
+                                plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
+                                plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
+                            });
 
-                                // 分享配置
-                                this.setData({
-                                    // 基础自定义分享
-                                    share_info: {
-                                        title: goods.title,
-                                        desc: goods.simple_desc || goods.seo_desc,
-                                        path: '/pages/goods-detail/goods-detail',
-                                        query: 'goods_id=' + goods.id,
-                                        img: goods.images
-                                    },
-                                    // 好物分享
-                                    share_product: {
-                                        item_code: goods.id.toString(),
-                                        title: goods.title,
-                                        image_list: goods.photo.map(function(v) {
-                                            return v.images;
-                                        }),
-                                        desc: goods.simple_desc || goods.seo_desc,
-                                        category_list: goods.category_names || [],
-                                        src_mini_program_path: '/pages/goods-detail/goods-detail?goods_id=' + goods.id,
-                                        brand_info: {
-                                            name: goods.brand_name || ''
-                                        }
+                            // 分享配置
+                            this.setData({
+                                // 基础自定义分享
+                                share_info: {
+                                    title: goods.title,
+                                    desc: goods.simple_desc || goods.seo_desc,
+                                    path: '/pages/goods-detail/goods-detail',
+                                    query: 'id=' + goods.id,
+                                    img: goods.images
+                                },
+                                // 好物分享
+                                share_product: {
+                                    item_code: goods.id.toString(),
+                                    title: goods.title,
+                                    image_list: goods.photo.map(function(v) {
+                                        return v.images;
+                                    }),
+                                    desc: goods.simple_desc || goods.seo_desc,
+                                    category_list: goods.category_names || [],
+                                    src_mini_program_path: '/pages/goods-detail/goods-detail?id=' + goods.id,
+                                    brand_info: {
+                                        name: goods.brand_name || ''
                                     }
-                                });
-
-                                // 导航首页按钮、多商户
-                                if (this.plugins_shop_data != null) {
-                                    this.setData({
-                                        nav_home_button_info: {
-                                            "text": "店铺",
-                                            "icon": this.plugins_shop_data.shop_icon,
-                                            "value": "/pages/plugins/shop/detail/detail?id=" + this
-                                                .plugins_shop_data.id
-                                        }
-                                    });
                                 }
-                                
-                                // 不能选择规格处理
-                                this.goods_specifications_choose_handle_dont(0);
-                                
-                                // 购买记录提示
-                                this.plugins_salerecords_tips_handle();
-                            } else {
+                            });
+
+                            // 导航首页按钮、多商户
+                            if (this.plugins_shop_data != null) {
                                 this.setData({
-                                    data_bottom_line_status: false,
-                                    data_list_loding_status: 0,
-                                    data_list_loding_msg: res.data.msg
+                                    nav_home_button_info: {
+                                        "text": "店铺",
+                                        "icon": this.plugins_shop_data.shop_icon,
+                                        "value": "/pages/plugins/shop/detail/detail?id=" + this
+                                            .plugins_shop_data.id
+                                    }
                                 });
                             }
                             
-                            // 显示分享菜单
-                            app.globalData.show_share_menu();
-                        },
-                        fail: () => {
-                            uni.stopPullDownRefresh();
-                            uni.hideLoading();
+                            // 不能选择规格处理
+                            this.goods_specifications_choose_handle_dont(0);
+                            
+                            // 购买记录提示
+                            this.plugins_salerecords_tips_handle();
+                        } else {
                             this.setData({
                                 data_bottom_line_status: false,
-                                data_list_loding_status: 2,
-                                data_list_loding_msg: '服务器请求出错'
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg
                             });
-                            app.globalData.showToast("服务器请求出错");
                         }
-                    });
-                }
+                        
+                        // 显示分享菜单
+                        app.globalData.show_share_menu();
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        uni.hideLoading();
+                        this.setData({
+                            data_bottom_line_status: false,
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: '服务器请求出错'
+                        });
+                        app.globalData.showToast("服务器请求出错");
+                    }
+                });
             },
 
             // 返回事件
@@ -1078,17 +1066,17 @@
                         });
                         return false;
                     } else {
+                        var data = this.params;
+                        data['goods_id'] = this.goods.id;
+                        data['spec'] = JSON.stringify(spec);
+                        data['stock'] = this.buy_number;
                         uni.showLoading({
                             title: '处理中...'
                         });
                         uni.request({
                             url: app.globalData.get_request_url('save', 'cart'),
                             method: 'POST',
-                            data: {
-                                "goods_id": this.goods.id,
-                                "stock": this.buy_number,
-                                "spec": JSON.stringify(spec)
-                            },
+                            data: data,
                             dataType: 'json',
                             success: res => {
                                 uni.hideLoading();
@@ -1195,15 +1183,15 @@
                 if (spec.length <= 0) {
                     return false;
                 }
-                var self = this;
+
                 // 获取数据
+                var data = this.params;
+                data['id'] = this.goods.id;
+                data['spec'] = JSON.stringify(spec);
                 uni.request({
                     url: app.globalData.get_request_url('spectype', 'goods'),
                     method: 'POST',
-                    data: {
-                        "id": this.goods.id,
-                        "spec": JSON.stringify(spec)
-                    },
+                    data: data,
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
@@ -1263,14 +1251,14 @@
                 }
                 
                 // 获取数据
+                var data = this.params;
+                data['id'] = this.goods.id;
+                data['spec'] = JSON.stringify(spec);
+                data['stock'] = this.buy_number;
                 uni.request({
                     url: app.globalData.get_request_url('specdetail', 'goods'),
                     method: 'POST',
-                    data: {
-                        "id": this.goods.id,
-                        "spec": JSON.stringify(spec),
-                        "stock": this.buy_number,
-                    },
+                    data: data,
                     dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
@@ -1375,14 +1363,14 @@
                 }
                 
                 // 获取数据
+                var data = this.params;
+                data['id'] = this.goods.id;
+                data['spec'] = spec;
+                data['stock'] = this.buy_number;
                 uni.request({
                     url: app.globalData.get_request_url('stock', 'goods'),
                     method: 'POST',
-                    data: {
-                        "id": this.goods.id,
-                        "spec": spec,
-                        "stock": this.buy_number,
-                    },
+                    data: data,
                     dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {

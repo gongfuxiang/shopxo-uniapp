@@ -56,7 +56,7 @@
                     </view>
                     <view class="data-list oh">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
-                            <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.id" hover-class="none">
+                            <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.id" hover-class="none">
                                 <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                                 <view class="padding-horizontal-main margin-top-sm">
                                     <view class="multi-text">{{item.title}}</view>

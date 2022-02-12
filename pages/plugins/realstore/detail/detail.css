@@ -106,12 +106,11 @@
 /**
 * 左侧导航
 */
+.left-content-actual {
+    padding-bottom: 120rpx;
+}
 .left-content {
     width: 180rpx;
-    height: calc(100% - 120rpx);
-    padding-bottom: 120rpx;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 .left-content .item {
     height: 80rpx;
@@ -137,12 +136,11 @@
 /**
 *  右侧内容
 */
+.right-content-actual {
+    padding-bottom: 105rpx;
+}
 .right-content {
-    width: calc(100% - 220rpx);
-    height: calc(100% - 110rpx);
-    padding-bottom: 110rpx;
-    overflow-x: hidden;
-    overflow-y: auto;
+    width: calc(100% - 220rpx);    
 }
 .goods-list .goods-img {
     width: 160rpx;
@@ -205,8 +203,6 @@
     z-index: 2;
 }
 .cart-content .cart-list {
-    overflow-x: hidden;
-    overflow-y: auto;
     max-height: 60vh;
 }
 .cart-content .cart-list .goods-img {

@@ -3,7 +3,7 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
-                    <navigator :url="'/pages/goods-detail/goods-detail?goods_id=' + item.goods_id" hover-class="none">
+                    <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.goods_id" hover-class="none">
                         <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                         <view class="goods-base">
                             <view class="goods-title multi-text">{{item.title}}</view>
