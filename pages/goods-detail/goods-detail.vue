@@ -658,7 +658,7 @@
         },
 
         onLoad(params) {
-            var params = app.globalData.launch_params_handle(params);
+            params = app.globalData.launch_params_handle(params);
             this.setData({
                 params: params,
                 // 是否自定义购买事件

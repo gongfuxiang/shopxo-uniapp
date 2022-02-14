@@ -67,7 +67,7 @@
             launch_params_handle(params) {
                 // 原有缓存
                 var cache_params = this.get_launch_cache_info();
-                
+
                 // 当前参数、从query读取覆盖
                 if ((params.query || null) != null) {
                     params = params.query;

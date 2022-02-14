@@ -271,7 +271,7 @@
 
         onLoad(params) {
             this.setData({
-                params: params,
+                params: app.globalData.launch_params_handle(params),
                 user: app.globalData.get_user_cache_info()
             });
         },
