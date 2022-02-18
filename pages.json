@@ -730,7 +730,14 @@
             "path": "pages/plugins/realstore/index/index",
             "style": {
             	"enablePullDownRefresh": true,
-            	"navigationBarTitleText": "所有门店"
+            	"navigationBarTitleText": "门店"
+            }
+        },
+        {
+            "path": "pages/plugins/realstore/search/search",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "门店搜索"
             }
         },
         {

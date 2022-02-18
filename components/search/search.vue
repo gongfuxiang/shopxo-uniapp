@@ -4,7 +4,7 @@
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <uni-icons :type="propIcon" size="12" :color="propIconColor"></uni-icons>
             </view>
-            <input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" @confirm="search_input_event" :style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
+            <input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" :value="propDefaultValue" @confirm="search_input_event" :style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
         </view>
     </view>
 </template>
@@ -27,6 +27,10 @@
             propPlaceholder: {
             	type: String,
             	default: '其实搜索很简单 ^_^!'
+            },
+            propDefaultValue: {
+            	type: String,
+            	default: ''
             },
             propPlaceholderClass: {
             	type: String,

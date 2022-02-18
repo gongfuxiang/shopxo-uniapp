@@ -1314,6 +1314,15 @@
                     }
                 }
                 return ((query || null) == null) ? '' : '?'+query;
+            },
+
+            // 是否朋友圈单页访问提示
+            is_single_page_check() {
+                if(this.is_current_single_page() == 1) {
+                    this.showToast('请前往小程序使用完整服务');
+                    return false;
+                }
+                return true;
             }
         },
 

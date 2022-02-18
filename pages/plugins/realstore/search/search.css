@@ -14,6 +14,9 @@
 /**
 * 数据列表
 */
+.scroll-box {
+    height: calc(100vh - 180rpx);
+}
 .data-list .item .address-content {
     width: calc(100% - 220rpx);
 }

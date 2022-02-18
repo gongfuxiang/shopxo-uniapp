@@ -53,7 +53,7 @@
                     uni.navigateBack();
                 } else {
                     uni.switchTab({
-                        url: '/pages/index/index'
+                        url: app.globalData.data.tabbar_pages[0]
                     })
                 }
             }

@@ -52,7 +52,7 @@
                             </block>
                             <view v-else class="tc margin-top-xxxl">
                                 <view class="cr-green">已成功登录、请点击进入首页</view>
-                                <navigator open-type="switchTab" url="/pages/index/index" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
+                                <navigator open-type="switchTab" :url="home_page_url" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
                             </view>
                         </view>
                     </block>
@@ -374,7 +374,9 @@
                 plugins_thirdpartylogin_data: null,
                 plugins_thirdpartylogin_user: null,
                 // 错误提示信息
-                error_msg: null
+                error_msg: null,
+                // 首页地址
+                home_page_url: app.globalData.data.tabbar_pages[0]
             };
         },
 

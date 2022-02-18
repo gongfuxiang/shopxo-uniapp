@@ -5,7 +5,7 @@
                 <!-- 头部 -->
                 <view class="header" :style="'background-image: url('+info.banner+');'">
                     <!-- 顶部 -->
-                    <view class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
+                    <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
                         <!-- 返回 -->
                         <view class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
                             <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
@@ -31,18 +31,18 @@
                         <!-- 基础内容 -->
                         <image :src="info.logo" mode="widthFix" class="logo circle fl br" :data-value="info.logo" @tap="image_show_event"></image>
                         <view class="base-right fr">
-                            <view v-if="(buy_use_type_list || null) != null && buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
-                                <text class="va-m margin-right-xs">{{buy_use_type_list[buy_use_type_index]['name']}}</text>
+                            <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
+                                <text class="va-m margin-right-xs">{{info.buy_use_type_list[buy_use_type_index]['name']}}</text>
                                 <view class="dis-inline-block va-m">
                                     <uni-icons type="arrowdown" size="12" color="#fff"></uni-icons>
                                 </view>
                             </view>
-                            <view :class="'title fw-b text-size single-text '+((buy_use_type_list || null) != null && buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
+                            <view :class="'title fw-b text-size single-text '+((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
                                 <text v-if="(info.alias || null) != null" class="va-m title-icon round br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{info.alias}}</text>
                                 <text class="va-m">{{info.name}}</text>
                             </view>
                             <view class="margin-top-xs text-size-xs cr-grey">
-                                <view>营业时间：{{info.open_time || '00:00'}} ~ {{info.close_time || '00:00'}}（{{info.open_week_name}}至{{info.close_week_name}}）</view>
+                                <view v-if="(info.status_info.time || null) != null">营业时间：{{info.status_info.time}}</view>
                                 <view v-if="(info.distance || null) != null">距离您{{info.distance}}</view>
                             </view>
                         </view>
@@ -233,7 +233,6 @@
                 data_list_loding_msg: '',
                 currency_symbol: app.globalData.data.currency_symbol,
                 cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
-                buy_use_type_list: null,
                 buy_use_type_index: 0,
                 params: null,
                 user: null,
@@ -258,7 +257,9 @@
                 // 用户位置信息
                 user_location: null,
                 // 自定义分享信息
-                share_info: {}
+                share_info: {},
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page() || 0
             };
         },
 
@@ -312,7 +313,7 @@
             // 获取数据-初始化
             get_detail_init() {
                 uni.request({
-                    url: app.globalData.get_request_url("detailinit", "index", "realstore"),
+                    url: app.globalData.get_request_url("index", "detail", "realstore"),
                     method: "POST",
                     data: this.request_params_merge({
                         "id": this.params.id || 0
@@ -322,13 +323,17 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            this.setData({
+                            var upd_data = {
                                 data_base: data.base || null,
                                 info: data.info || null,
                                 favor_user: data.favor_user || [],
-                                tablecode: data.tablecode || null,
-                                buy_use_type_list: data.buy_use_type_list || null
-                            });
+                                tablecode: data.tablecode || null
+                            };
+                            // 下单类型是否存在索引
+                            if(upd_data.info != null && upd_data.info.buy_use_type_list[this.buy_use_type_index] == undefined) {
+                                upd_data['buy_use_type_index'] = 0;
+                            }
+                            this.setData(upd_data);
 
                             if ((this.info || null) != null) {
                                 // 收藏信息
@@ -384,7 +389,7 @@
             // 获取数据-获取数据
             get_detail_data() {
                 uni.request({
-                    url: app.globalData.get_request_url("detaildata", "index", "realstore"),
+                    url: app.globalData.get_request_url("data", "detail", "realstore"),
                     method: "POST",
                     data: this.request_params_merge({
                         id: this.params.id || 0,
@@ -428,6 +433,9 @@
 
             // 收藏事件
             favor_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
                 var user = app.globalData.get_user_info(this, 'favor_event');
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
@@ -471,6 +479,9 @@
 
             // 列表数据操作
             buy_number_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
@@ -541,6 +552,9 @@
             
             // 购物车数量操作
             cart_buy_number_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
@@ -839,8 +853,19 @@
             
             // 购物车结算
             buy_submit_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+
                 // 门店状态
                 if(!this.is_status_check()) {
+                    return false;
+                }
+                
+                // 起步价
+                var starting_price = parseFloat(this.info.starting_price) || 0;
+                if(starting_price > 0 && this.cart.total_price < starting_price) {
+                    app.globalData.showToast("起步价"+starting_price+"元");
                     return false;
                 }
 
@@ -906,7 +931,7 @@
                 var pages = getCurrentPages();
                 if (pages.length <= 1) {
                     uni.switchTab({
-                        url: '/pages/index/index'
+                        url: app.globalData.data.tabbar_pages[0]
                     });
                 } else {
                     uni.navigateBack();
@@ -934,7 +959,7 @@
             buy_use_type_event(e) {
                 var self = this;
                 uni.showActionSheet({
-                    itemList: this.buy_use_type_list.map(function(v) {return v.name}),
+                    itemList: this.info.buy_use_type_list.map(function(v) {return v.name}),
                     success: function (res) {
                         self.setData({
                             buy_use_type_index: res.tapIndex
@@ -949,16 +974,15 @@
             get_buy_use_type_index() {
                 return uni.getStorageSync(this.cache_buy_use_type_index_key) || 0;
             },
-            
+
             // 请求参数处理
             // 默认增加使用类型参数
             // 下单 buy / 初始化 init / 获取数据 data
             request_params_merge(data, type = 'init') {
                 // 用户使用类型
                 var index = this.buy_use_type_index;
-                var list = this.buy_use_type_list;
-                if((list || null) != null && list.length > 0) {
-                    if(list[index] == undefined) {
+                if((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
+                    if(this.info.buy_use_type_list[index] == undefined) {
                         index = 0;
                     }
                     data['buy_use_type_index'] = this.buy_use_type_index;

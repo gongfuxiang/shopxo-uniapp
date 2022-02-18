@@ -23,7 +23,7 @@
                                 <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.coupon.use_limit_type_name}}</view>
                                 <view class="base-time cr-gray single-text">{{item.time_start_text}} 至{{item.time_end_text}}</view>
                             </view>
-                            <navigator url="/pages/index/index" open-type="switchTab" hover-class="none">
+                            <navigator :url="home_page_url" open-type="switchTab" hover-class="none">
                                 <view class="v-right fr" :style="'background:' + item.coupon.bg_color_value + ';'">
                                     <text class="circle"></text>
                                     <text>去使用</text>
@@ -105,7 +105,9 @@
                 ],
                 nav_tabs_value: 'not_use',
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol
+                currency_symbol: app.globalData.data.currency_symbol,
+                // 首页地址
+                home_page_url: app.globalData.data.tabbar_pages[0]
             };
         },
 

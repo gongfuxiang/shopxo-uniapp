@@ -12,7 +12,7 @@
                         <view v-if="floor.keywords_arr.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
                             <scroll-view scroll-x>
                                 <block v-for="(kv, ki) in floor.keywords_arr" :key="ki">
-                                    <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
+                                    <navigator v-if="(kv || null) != null" :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
                                 </block>
                             </scroll-view>
                         </view>
