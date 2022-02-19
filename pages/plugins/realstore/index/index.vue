@@ -38,6 +38,15 @@
                     <text class="text-wrapper">{{data_base.home_data_list_title || '最新门店'}}</text>
                     <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
+
+                <!-- 分类 -->
+                <view v-if="category.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
+                    <scroll-view scroll-x>
+                        <block v-for="(cv, ci) in category" :key="ci">
+                            <navigator v-if="(cv.name || null) != null" :url="'/pages/plugins/realstore/search/search?category_id=' + cv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{cv.name}}</navigator>
+                        </block>
+                    </scroll-view>
+                </view>
         
                 <!-- 数据列表 -->
                 <view class="data-list oh">
@@ -108,6 +117,7 @@
                 data_base: null,
                 search_keywords_value: '',
                 favor_user: [],
+                category: [],
                 slider_list: [],
                 icon_list: [],
                 data_list: [],
@@ -179,6 +189,7 @@
                             this.setData({
                                 data_base: data.base || null,
                                 favor_user: favor_user,
+                                category: data.category || [],
                                 slider_list: data.slider_list || [],
                                 icon_list: data.icon_list || [],
                                 data_list: data_list,
