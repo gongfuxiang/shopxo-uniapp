@@ -403,15 +403,6 @@
                         </view>
                     </view>
                     <view class="share-popup-content">
-                        <!-- #ifdef MP-WEIXIN -->
-                        <view v-if="common_app_is_good_thing == 1" class="share-items oh cp">
-                            <share-button :product="share_product" type="3" class="dis-block oh">
-                                <image class="fl" :src="common_static_url+'share-recomend-icon.png'" mode="scaleToFill">
-                                </image>
-                                <view class="cr-gray single-text fl">好物推荐、和大家一起分享你发现的宝贝</view>
-                            </share-button>
-                        </view>
-                        <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
                         <view class="share-items oh cp" @tap="share_base_event">
                             <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
@@ -586,7 +577,6 @@
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 plugins_is_goods_detail_poster: 0,
-                common_app_is_good_thing: 0,
                 common_app_is_online_service: 0,
                 common_app_is_use_mobile_detail: 0,
                 common_is_goods_detail_show_photo: 0,
@@ -611,16 +601,6 @@
                 top_nav_title_data: [],
                 // 自定义分享信息
                 share_info: {},
-                // 好物圈分享信息
-                share_product: {
-                    "item_code": "",
-                    "title": "",
-                    "desc": "",
-                    "category_list": [],
-                    "image_list": [],
-                    "src_mini_program_path": "",
-                    "brand_info": {}
-                },
                 // 限时秒杀插件
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
@@ -733,7 +713,6 @@
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
-                        common_app_is_good_thing: app.globalData.get_config('config.common_app_is_good_thing'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });
@@ -802,20 +781,6 @@
                                     path: '/pages/goods-detail/goods-detail',
                                     query: 'id=' + goods.id,
                                     img: goods.images
-                                },
-                                // 好物分享
-                                share_product: {
-                                    item_code: goods.id.toString(),
-                                    title: goods.title,
-                                    image_list: goods.photo.map(function(v) {
-                                        return v.images;
-                                    }),
-                                    desc: goods.simple_desc || goods.seo_desc,
-                                    category_list: goods.category_names || [],
-                                    src_mini_program_path: '/pages/goods-detail/goods-detail?id=' + goods.id,
-                                    brand_info: {
-                                        name: goods.brand_name || ''
-                                    }
                                 }
                             });
 

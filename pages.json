@@ -91,11 +91,6 @@
 		{
 			"path": "pages/goods-detail/goods-detail",
 			"style": {
-                // // #ifdef MP-WEIXIN
-                // "usingComponents": {
-                //     "share-button": "plugin://goodsSharePlugin/share-button"
-                // },
-                // // #endif
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO
                 "navigationStyle": "custom",
                 // #endif
