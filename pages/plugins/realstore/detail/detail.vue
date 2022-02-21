@@ -96,7 +96,7 @@
                                         <block v-if="(item.goods_list || null) != null && item.goods_list.length > 0">
                                             <view v-if="nav_active_index == -1" class="text-size-sm fw-b padding-bottom-sm">{{item.name}}</view>
                                             <view v-for="(goods, gindex) in item.goods_list" :key="goods.id" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                                <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index" hover-class="none">
+                                                <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
                                                     <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
                                                     <view class="goods-base fr">
                                                         <view class="goods-base-content">
@@ -108,11 +108,11 @@
                                                             <view class="tc fr">
                                                                 <block v-if="(goods.is_error || 0) == 0">
                                                                     <view v-if="(goods.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="0" @tap.stop="buy_number_event">
-                                                                        <uni-icons type="minus" size="22" color="#f00" ></uni-icons>
+                                                                        <uni-icons type="minus" size="22" color="#f00"></uni-icons>
                                                                     </view>
                                                                     <view v-if="(goods.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.buy_number}}</view>
                                                                     <view class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="1" @tap.stop="buy_number_event">
-                                                                        <uni-icons type="plus" size="22" color="#1AAD19" ></uni-icons>
+                                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                                                     </view>
                                                                 </block>
                                                                 <block v-else>
@@ -153,14 +153,14 @@
                                 <text class="va-m text-size-xs cr-base">已选商品</text>
                                 <view class="fr cp" @tap="cart_all_delete_event">
                                     <view class="dis-inline-block va-m">
-                                        <uni-icons type="trash" size="12" color="#f00" ></uni-icons>
+                                        <uni-icons type="trash" size="12" color="#f00"></uni-icons>
                                     </view>
                                     <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
                                 </view>
                             </view>
                             <scroll-view :scroll-y="true" class="cart-list goods-list">
                                 <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                    <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.goods_id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index" hover-class="none">
+                                    <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.goods_id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
                                         <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
                                         <view class="goods-base fr">
                                             <view class="goods-base-content">
@@ -176,11 +176,11 @@
                                                 <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.price}}</view>
                                                 <view class="tc fr">
                                                     <view v-if="(goods.stock || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                        <uni-icons type="minus" size="22" color="#f00" ></uni-icons>
+                                                        <uni-icons type="minus" size="22" color="#f00"></uni-icons>
                                                     </view>
                                                     <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.stock}}</view>
                                                     <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                        <uni-icons type="plus" size="22" color="#1AAD19" ></uni-icons>
+                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                                     </view>
                                                 </view>
                                             </view>
@@ -509,7 +509,7 @@
                             } else {
                                 // 进入商品详情选择规格操作
                                 uni.navigateTo({
-                                    url: '/pages/goods-detail/goods-detail?id='+temp_goods.id+'&is_opt_back=1&is_opt_buy_status=1&opt_buy_event_type=cart&buy_use_type_index='+this.buy_use_type_index
+                                    url: '/pages/goods-detail/goods-detail?id='+temp_goods.id+'&is_opt_back=1&is_opt_buy_status=1&opt_buy_event_type=cart&buy_use_type_index='+this.buy_use_type_index+'&realstore_id='+this.info.id
                                 });
                                 return false;
                             }
@@ -668,7 +668,7 @@
             },
             
             // 购物车添加
-            cart_save(goods_id, buy_number) {
+            cart_save(goods_id, buy_number, spec = '') {
                 uni.showLoading({
                     title: '处理中...'
                 });
@@ -678,7 +678,7 @@
                     data: {
                         "goods_id": goods_id,
                         "stock": buy_number,
-                        "spec": ''
+                        "spec": spec
                     },
                     dataType: 'json',
                     success: res => {
@@ -806,38 +806,39 @@
                         var self = this;
                         uni.scanCode({
                             success: function (res) {
-                                var value = parseInt(res.result) || 0;
-                                if(value <= 0) {
-                                    app.globalData.showToast("请扫码商品");
-                                    return false;
-                                }
-                                
-                                // 在当前商品列表中查找
-                                var temp_data = self.data;
-                                var goods_id = 0;
-                                outer :
-                                for(var i in temp_data) {
-                                    if((temp_data[i]['goods_list'] || null) != null && temp_data[i]['goods_list'].length > 0) {
-                                        for(var k in temp_data[i]['goods_list']) {
-                                            if(temp_data[i]['goods_list'][k]['id'] == value) {
-                                                // 是否仅单独购买
-                                                if((temp_data[i]['goods_list'][k]['is_error'] || 0) != 0) {
-                                                    app.globalData.showToast(temp_data[i]['goods_list'][k]['is_error_msg']);
-                                                    return false;
-                                                }
-                                                goods_id = value;
-                                                break outer;
+                                uni.showLoading({
+                                    title: '处理中...',
+                                    mask: true
+                                });
+                                uni.request({
+                                    url: app.globalData.get_request_url("scan", "detail", "realstore"),
+                                    method: 'POST',
+                                    data: self.request_params_merge({
+                                        value: res.result
+                                    }, 'buy'),
+                                    dataType: 'json',
+                                    success: res => {
+                                        uni.hideLoading();
+                                        if (res.data.code == 0) {
+                                            if(res.data.data.is_error == 1) {
+                                                app.globalData.showToast(res.data.data.is_error_msg);
+                                            } else {
+                                                // 加入购物车
+                                                self.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
+                                            }
+                                        } else {
+                                            if (app.globalData.is_login_check(res.data)) {
+                                                app.globalData.showToast(res.data.msg);
+                                            } else {
+                                                app.globalData.showToast('提交失败，请重试！');
                                             }
                                         }
+                                    },
+                                    fail: () => {
+                                        uni.hideLoading();
+                                        app.globalData.showToast("服务器请求出错");
                                     }
-                                }
-                                if(goods_id == 0) {
-                                    app.globalData.showToast("商品不在当前门店中");
-                                    return false;
-                                }
-                                
-                                // 加入购物车
-                                self.cart_save(goods_id, 1);
+                                });
                             }
                         });
                     }
@@ -1013,7 +1014,7 @@
                 if(type == 'buy') {
                     // 门店id
                     data['realstore_id'] = this.info.id;
-                    
+
                     // 桌码
                     if((this.tablecode || null) != null) {
                         data['tablecode_id'] = this.tablecode.id;
