@@ -740,7 +740,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var goods = data.goods;
-                            this.setData({
+                            var upd_data = {
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
                                 goods: goods,
@@ -770,7 +770,12 @@
                                 plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
                                 plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
-                            });
+                            };
+                            // 导航首页按钮
+                            if ((data.nav_home_button_info || null) != null) {
+                                upd_data['nav_home_button_info'] = data.nav_home_button_info;
+                            }
+                            this.setData(upd_data);
 
                             // 分享配置
                             this.setData({
@@ -783,18 +788,6 @@
                                     img: goods.images
                                 }
                             });
-
-                            // 导航首页按钮、多商户
-                            if (this.plugins_shop_data != null) {
-                                this.setData({
-                                    nav_home_button_info: {
-                                        "text": "店铺",
-                                        "icon": this.plugins_shop_data.shop_icon,
-                                        "value": "/pages/plugins/shop/detail/detail?id=" + this
-                                            .plugins_shop_data.id
-                                    }
-                                });
-                            }
                             
                             // 不能选择规格处理
                             this.goods_specifications_choose_handle_dont(0);

@@ -2,60 +2,59 @@
     <view>
         <view class="content">
             <block v-if="(home_site_logo_square || null) != null">
+                <!-- 表单验证码 -->
+                <view v-if="current_opt_form == 'bind_verify'" class="form-content">
+                    <form @submit="formBind">
+                        <view class="tc">
+                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                            <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
+                        </view>
+                        <view class="margin-top-xxxl padding-top-xxxl">
+                            <input type="number" placeholder="输入手机号码" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
+                            <view class="code pr margin-vertical-main">
+                                <input type="number" placeholder="验证码" name="verify" maxlength="4">
+                                <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
+                            </view>
+                            <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认绑定</button>
+                        </view>
+                        <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
+                            <text class="cr-blue" data-value="bind" @tap="opt_form_event">返回上一页</text>
+                        </view>
+                    </form>
+                </view>
+
                 <!-- 存在用户信息 -->
                 <block v-if="user != null">
-                    <!-- 表单验证码 -->
-                    <view v-if="current_opt_form == 'bind_verify'" class="form-content">
-                        <form @submit="formBind">
-                            <view class="tc">
-                                <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
-                            </view>
-                            <view class="margin-top-xxxl padding-top-xxxl">
-                                <input type="number" placeholder="输入手机号码" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
-                                <view class="code pr margin-vertical-main">
-                                    <input type="number" placeholder="验证码" name="verify" maxlength="4">
-                                    <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
-                                </view>
-                                <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认绑定</button>
-                            </view>
-                            <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
-                                <text class="cr-blue" data-value="bind" @tap="opt_form_event">返回上一页</text>
-                            </view>
-                        </form>
-                    </view>
-                    <block v-else>
-                        <!-- 确认绑定方式 -->
-                        <view class="form-content">
-                            <view class="tc">
-                                <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
-                            </view>
-                            <block v-if="current_opt_form == 'bind'">
-                                <view class="margin-top-xxxl padding-top-xxxl">
-                                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
-                                    <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
-                                    <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
-                                    <!-- #endif -->
-                                </view>
-                                <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
-                                <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
-                                    <!-- 登录 -->
-                                    <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                        <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
-                                    </view>
-                                    <!-- 注册 -->
-                                    <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                                        <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
-                                    </view>
-                                </view>
-                            </block>
-                            <view v-else class="tc margin-top-xxxl">
-                                <view class="cr-green">已成功登录、请点击进入首页</view>
-                                <navigator open-type="switchTab" :url="home_page_url" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
-                            </view>
+                    <!-- 确认绑定方式 -->
+                    <view v-if="current_opt_form == 'bind' || current_opt_form == 'success'" class="form-content">
+                        <view class="tc">
+                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                            <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                         </view>
-                    </block>
+                        <block v-if="current_opt_form == 'bind'">
+                            <view class="margin-top-xxxl padding-top-xxxl">
+                                <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
+                                <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
+                                <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
+                                <!-- #endif -->
+                            </view>
+                            <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
+                            <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
+                                <!-- 登录 -->
+                                <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
+                                    <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">绑定已有账号</text>
+                                </view>
+                                <!-- 注册 -->
+                                <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
+                                    <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">注册账号并绑定</text>
+                                </view>
+                            </view>
+                        </block>
+                        <view v-if="current_opt_form == 'success'" class="tc margin-top-xxxl">
+                            <view class="cr-green">已成功登录、请点击进入首页</view>
+                            <navigator open-type="switchTab" :url="home_page_url" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
+                        </view>
+                    </view>
                 </block>
 
                 <!-- 站点logo -->
@@ -390,7 +389,7 @@
             this.setData({
                 params: params
             });
-            
+
             // 错误提示信息
             if((params.msg || null) != null) {
                 var msg = base64.decode(decodeURIComponent(params.msg));
@@ -460,11 +459,23 @@
                 uni.setNavigationBarTitle({
                     title: this.current_opt_type_title[type]
                 });
+                
+                // 是否参数指定类型和表单
+                if((this.params.opt_type || null) != null)
+                {
+                    type = this.params.opt_type;
+                }
+                if((this.params.opt_form || null) != null)
+                {
+                    form = this.params.opt_form;
+                }
+
                 this.setData({
                     user: user,
                     current_opt_type: type,
                     current_opt_form: form
                 });
+                console.log(this.current_opt_form)
             },
 
             // 初始化配置
