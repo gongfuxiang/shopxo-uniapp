@@ -37,7 +37,7 @@
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
-                    <navigator url="/pages/login/login" hover-class="none">
+                    <navigator url="/pages/login/login?opt_form=bind_verify" hover-class="none">
                         <button class="bg-main br-main cr-white text-size round" type="default">绑定手机号码</button>
                     </navigator>
                 </view>
