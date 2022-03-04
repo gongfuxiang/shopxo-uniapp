@@ -724,6 +724,7 @@
                                         temp_data_list[index]['status'] = 5;
                                         temp_data_list[index]['status_name'] = '已取消';
                                         temp_data_list[index]['operate_data']['is_cancel'] = 0;
+                                        temp_data_list[index]['operate_data']['is_pay'] = 0;
                                         temp_data_list[index]['operate_data']['is_delete'] = 1;
                                         temp_data_list[index]['is_can_launch_aftersale'] = 0;
                                         this.setData({

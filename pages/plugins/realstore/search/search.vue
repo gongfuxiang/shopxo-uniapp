@@ -171,13 +171,6 @@
                                         path: '/pages/plugins/realstore/search/search'
                                     }
                                 });
-
-                                // 导航名称
-                                if((this.data_base.application_name || null) != null) {
-                                    uni.setNavigationBarTitle({
-                                        title: this.data_base.application_name
-                                    });
-                                }
                             }
                             
                             // 获取列表数据
