@@ -49,6 +49,9 @@
 .panel-item .panel-content .item .content {
     line-height: 46rpx;
 }
+.panel-item-only .panel-content .item .content {
+    width: 100%;
+}
 
 /*
 * 面板信息 - 图片

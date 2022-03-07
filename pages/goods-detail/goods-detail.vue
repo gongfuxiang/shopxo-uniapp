@@ -131,6 +131,20 @@
                         </view>
                     </view>
                 </view>
+
+                <!-- 智能工具-基础提示信息 -->
+                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
+                    <view class="notice-content">
+                        <view class="va-m dis-inline-block margin-right-xs">
+                            <uni-icons type="notification" size="18" color="#dd514c"></uni-icons>
+                        </view>
+                        <block v-if="(plugins_intellectstools_data.base_bottom.title || null) != null">
+                            <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{plugins_intellectstools_data.base_bottom.title}}</text>
+                            <view></view>
+                        </block>
+                        <text>{{plugins_intellectstools_data.base_bottom.msg}}</text>
+                    </view>
+                </view>
                 
                 <!-- 批发 -->
                 <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
@@ -242,7 +256,17 @@
                         </block>
                     </view>
                 </view>
-                
+
+                <!-- 智能工具-详情顶部提示信息 -->
+                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.content_top || null) != null" class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main spacing-mb">
+                    <view v-if="((plugins_intellectstools_data.content_top.title || null) != null)" class="panel-title padding-bottom-main fw-b text-size margin-bottom-main">{{plugins_intellectstools_data.content_top.title}}</view>
+                    <view class="panel-content oh">
+                        <view v-for="(item, index) in plugins_intellectstools_data.content_top.msg" :key="index" class="item padding-vertical-main">
+                            <view class="content">{{item}}</view>
+                        </view>
+                    </view>
+                </view>
+
                 <!-- 商品详情参数 -->
                 <view v-if="(goods.parameters || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
                     <view class="spacing-nav-title">
@@ -621,6 +645,8 @@
                 popup_wholesale_status: false,
                 // 标签插件
                 plugins_label_data: null,
+                // 智能工具插件
+                plugins_intellectstools_data: null,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0
             };
@@ -769,7 +795,8 @@
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
                                 plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
-                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
+                                plugins_intellectstools_data: data.plugins_intellectstools_data || null
                             };
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {

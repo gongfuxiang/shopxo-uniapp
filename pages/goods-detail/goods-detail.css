@@ -667,3 +667,25 @@
 .plugins-label-bottom-right {
     bottom: 0;
 }
+
+/**
+ * 智能工具 - 插件
+ */
+.plugins-intellectstools-base-bottom-container .notice-content {
+    padding: 10rpx 20rpx;
+    background: #fff1f0;
+    border-color: #ffe2e0;
+    color: #dd514c;
+}
+.plugins-intellectstools-content-top-container {
+    background: #f0f8ff;
+    color: #2b6e8f;
+    border: 1px solid #dff2ff;
+}
+.plugins-intellectstools-content-top-container .panel-content .item:first-child {
+    padding-top: 0 !important;
+}
+.plugins-intellectstools-content-top-container .panel-title,
+.plugins-intellectstools-content-top-container .panel-content .item:not(:last-child) {
+    border-bottom: 1px solid #e0f1ff !important;
+}
