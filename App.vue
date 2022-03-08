@@ -31,6 +31,8 @@
                 default_round_success_icon: "/static/images/common/round-success-icon.png",
                 // 错误圆形提示图片
                 default_round_error_icon: "/static/images/common/round-error-icon.png",
+                // 分享及转发使用页面设置的默认图片及系统默认图片（true 是, false 否）
+                is_share_use_image: true,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
