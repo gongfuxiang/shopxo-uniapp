@@ -678,14 +678,14 @@
     color: #dd514c;
 }
 .plugins-intellectstools-content-top-container {
-    background: #f0f8ff;
+    background: #daeeff;
     color: #2b6e8f;
-    border: 1px solid #dff2ff;
+    border: 1px solid #c9e9ff;
 }
 .plugins-intellectstools-content-top-container .panel-content .item:first-child {
     padding-top: 0 !important;
 }
 .plugins-intellectstools-content-top-container .panel-title,
 .plugins-intellectstools-content-top-container .panel-content .item:not(:last-child) {
-    border-bottom: 1px solid #e0f1ff !important;
+    border-bottom: 1px solid #c8e4fb !important;
 }
