@@ -168,11 +168,12 @@
                                     share_info: {
                                         title: this.search_keywords_value || this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
-                                        path: '/pages/plugins/realstore/search/search'
+                                        path: '/pages/plugins/realstore/search/search',
+                                        query: 'category_id='+this.nav_active_value+'&keywords='+this.search_keywords_value
                                     }
                                 });
                             }
-                            
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
