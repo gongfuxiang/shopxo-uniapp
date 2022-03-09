@@ -133,7 +133,7 @@
                 </view>
 
                 <!-- 智能工具-基础提示信息 -->
-                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
+                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
                     <view class="notice-content">
                         <view class="va-m dis-inline-block margin-right-xs">
                             <uni-icons type="notification" size="18" color="#dd514c"></uni-icons>
@@ -258,7 +258,7 @@
                 </view>
 
                 <!-- 智能工具-详情顶部提示信息 -->
-                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.content_top || null) != null" class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main spacing-mb">
+                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.content_top || null) != null && (plugins_intellectstools_data.content_top.msg || null) != null && plugins_intellectstools_data.content_top.msg.length > 0" class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main spacing-mb">
                     <view v-if="((plugins_intellectstools_data.content_top.title || null) != null)" class="panel-title padding-bottom-main fw-b text-size margin-bottom-main">{{plugins_intellectstools_data.content_top.title}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in plugins_intellectstools_data.content_top.msg" :key="index" class="item padding-vertical-main">
