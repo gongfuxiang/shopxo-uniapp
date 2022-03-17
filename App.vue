@@ -34,7 +34,7 @@
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
                 is_share_use_image: 1,
                 // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
-                is_goods_bottom_opt_cart: 0,
+                is_goods_bottom_opt_cart: 1,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
