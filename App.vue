@@ -31,8 +31,10 @@
                 default_round_success_icon: "/static/images/common/round-success-icon.png",
                 // 错误圆形提示图片
                 default_round_error_icon: "/static/images/common/round-error-icon.png",
-                // 分享及转发使用页面设置的默认图片及系统默认图片（true 是, false 否）
-                is_share_use_image: true,
+                // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
+                is_share_use_image: 1,
+                // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
+                is_goods_bottom_opt_cart: 0,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",

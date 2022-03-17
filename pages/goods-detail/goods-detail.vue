@@ -320,7 +320,7 @@
 
             <!-- 底部操作 -->
             <view class="goods-buy-nav oh wh-auto bg-white br-t">
-                <view :class="'bus-items fl tc '+((params.is_opt_back || 0) != 0 ? 'bus-items-2' : '')">
+                <view :class="'bus-items fl tc '+(((params.is_opt_back || 0) == 1 || is_opt_cart == 0) ? 'bus-items-2' : '')">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
                     <block v-if="(params.is_opt_back || 0) != 0">
                         <view class="item fl cp">
@@ -335,7 +335,7 @@
                             <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
                         </view>
-                        <view class="item fl cp">
+                        <view v-if="is_opt_cart == 1" class="item fl cp">
                             <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
                                 <view class="badge-icon">
                                     <component-badge :propNumber="quick_nav_cart_count"></component-badge>
@@ -648,7 +648,9 @@
                 // 智能工具插件
                 plugins_intellectstools_data: null,
                 // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page() || 0
+                is_single_page: app.globalData.is_current_single_page() || 0,
+                // 是否开启购物车
+                is_opt_cart: app.globalData.data.is_goods_bottom_opt_cart || 0,
             };
         },
 
@@ -670,8 +672,13 @@
                 // 是否自定义购买事件
                 buy_event_type: params.opt_buy_event_type || 'buy',
                 // 是否指定开启购买弹窗、默认0否、1是
-                popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1
+                popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1,
             });
+
+            // 是否自定义购物车状态
+            if(params.is_opt_cart !== undefined) {
+                this.setData({is_opt_cart: params.is_opt_cart || 0});
+            }
 
             // 数据加载
             this.init();
