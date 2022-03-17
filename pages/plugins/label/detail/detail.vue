@@ -151,7 +151,8 @@
                                     share_info: {
                                         title: this.label.seo_title || this.label.name,
                                         desc: this.label.seo_desc,
-                                        path: '/pages/plugins/label/detail/detail'
+                                        path: '/pages/plugins/label/detail/detail',
+                                        query: 'id='+this.label.id
                                     }
                                 });
 
