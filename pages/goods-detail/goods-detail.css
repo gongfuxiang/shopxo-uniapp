@@ -111,27 +111,38 @@
     z-index: 2;
 }
 .goods-buy-nav .bus-items {
-    width: 40%;
+    width: 45%;
 }
 .goods-buy-nav .bus-items .item  {
-    width: 33.33%;
     position: relative;
+}
+.goods-buy-nav .bus-items-1 .item {
+    width: 100%;
 }
 .goods-buy-nav .bus-items-2 .item {
     width: 50%;
 }
+.goods-buy-nav .bus-items-3 .item {
+    width: 33.33%;
+}
+.goods-buy-nav .bus-items-4 .item {
+    width: 25%;
+}
+.goods-buy-nav .bus-items-5 .item {
+    width: 20%;
+}
 .goods-buy-nav .btn-items {
-    width: calc(60% - 10rpx);
-    padding: 10rpx 0;
+    width: calc(55% - 10rpx);
+    padding: 15rpx 0;
 }
 .goods-buy-nav .bus-items,
 .goods-buy-nav .btn-items {
     height: 100rpx;
 }
 .goods-buy-nav .btn-items .item {
-    height: 80rpx;
-    line-height: 80rpx;
-    font-size: 30rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 24rpx;
     padding: 0 10rpx;
     margin-right: 15rpx;
     position: relative;

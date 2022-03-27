@@ -217,7 +217,7 @@
                 </view>
 
                 <!-- 商品评价 -->
-                <view  v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
+                <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">商品评价</text>
@@ -320,9 +320,11 @@
 
             <!-- 底部操作 -->
             <view class="goods-buy-nav oh wh-auto bg-white br-t">
-                <view :class="'bus-items fl tc '+(((params.is_opt_back || 0) == 1 || is_opt_cart == 0) ? 'bus-items-2' : '')">
+                <!-- 左侧集合操作 -->
+                <view :class="'bus-items fl tc bus-items-'+bottom_nav_bus_number">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
                     <block v-if="(params.is_opt_back || 0) != 0">
+                        <!-- 返回操作 -->
                         <view class="item fl cp">
                             <navigator open-type="navigateBack" hover-class="none">
                                 <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
@@ -331,10 +333,14 @@
                         </view>
                     </block>
                     <block v-else>
+                        <!-- 首页 -->
                         <view class="item fl cp" @tap="shop_event">
                             <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
                         </view>
+                        <!-- 客服 -->
+                        <component-online-service v-if="online_service_status == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
+                        <!-- 购物车 -->
                         <view v-if="is_opt_cart == 1" class="item fl cp">
                             <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
                                 <view class="badge-icon">
@@ -345,11 +351,13 @@
                             </navigator>
                         </view>
                     </block>
-                    <view class="item fl cp " @tap="goods_favor_event">
+                    <!-- 收藏 -->
+                    <view class="item fl cp" @tap="goods_favor_event">
                         <image :src="common_static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                         <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-gray')">{{nav_favor_button_info.text}}</text>
                     </view>
                 </view>
+                <!-- 右侧主操作 -->
                 <view :class="'btn-items fr goods-buy-nav-btn-number-' + buy_button.count || 0">
                     <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
                         <block v-for="(item, index) in buy_button.data" :key="index">
@@ -522,14 +530,6 @@
         <!-- 提示信息 -->
         <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 
-        <!-- 在线客服 -->
-        <block v-if="goods != null">
-            <component-online-service :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id"></component-online-service>
-        </block>
-        <block v-else>
-            <component-online-service :propIsNav="true"></component-online-service>
-        </block>
-
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
@@ -606,6 +606,16 @@
                 common_is_goods_detail_show_photo: 0,
                 common_is_show_goods_comments: 1,
                 common_app_customer_service_tel: null,
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page() || 0,
+                // 底部导航业务操作按钮数量
+                bottom_nav_bus_number: 4,
+                // 是否开启客服
+                online_service_status: 0,
+                // 是否底部导航展示返回按钮
+                is_opt_back: 0,
+                // 是否开启购物车
+                is_opt_cart: 1,
                 // 滚动监听值
                 scroll_value: 0,
                 // 顶部导航信息
@@ -647,10 +657,8 @@
                 plugins_label_data: null,
                 // 智能工具插件
                 plugins_intellectstools_data: null,
-                // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page() || 0,
-                // 是否开启购物车
-                is_opt_cart: app.globalData.data.is_goods_bottom_opt_cart || 0,
+                // 客服插件
+                plugins_chat_data: null,
             };
         },
 
@@ -673,12 +681,11 @@
                 buy_event_type: params.opt_buy_event_type || 'buy',
                 // 是否指定开启购买弹窗、默认0否、1是
                 popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1,
+                // 是否底部导航展示返回按钮
+                is_opt_back: params.is_opt_back || 0,
+                // 是否自定义购物车状态
+                is_opt_cart: (params.is_opt_cart === undefined) ? (app.globalData.data.is_goods_bottom_opt_cart || 0) : (params.is_opt_cart || 0),
             });
-
-            // 是否自定义购物车状态
-            if(params.is_opt_cart !== undefined) {
-                this.setData({is_opt_cart: params.is_opt_cart || 0});
-            }
 
             // 数据加载
             this.init();
@@ -742,6 +749,7 @@
                 if ((status || false) == true) {
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
+                        online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
@@ -749,6 +757,20 @@
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                     });
+                    
+                    // 底部业务导航按钮数量处理
+                    var value = 4;
+                    if(this.is_opt_back == 1) {
+                        value = 2;
+                    } else {
+                        if(this.is_opt_cart != 1) {
+                            value--;
+                        }
+                        if(this.online_service_status != 1) {
+                            value--;
+                        }
+                    }
+                    this.setData({bottom_nav_bus_number: value});
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -799,11 +821,12 @@
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 quick_nav_cart_count: data.common_cart_total || 0,
-                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
-                                plugins_shop_data: (data.plugins_shop_data || null) == null || data.plugins_shop_data.length <= 0 ? null : data.plugins_shop_data,
+                                plugins_salerecords_data: data.plugins_salerecords_data || null,
+                                plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
-                                plugins_intellectstools_data: data.plugins_intellectstools_data || null
+                                plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                                plugins_chat_data: data.plugins_chat_data || null
                             };
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {

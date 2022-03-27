@@ -43,9 +43,9 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
@@ -170,12 +170,24 @@
                     params = "&" + params;
                 }
 
+                // 参数处理
+                var url = this.data.request_url + (group || "api")+".php?s=" + c + "/" + a + plugins_params;
+                return this.request_params_handle(url) + "&ajax=ajax" + params;
+            },
+            
+            /**
+             * 请求参数处理
+             * url     url地址
+             */
+            request_params_handle(url) {
                 // 用户信息
                 var user = this.get_user_cache_info();
                 var token = user == false ? '' : user.token || '';
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
-                return this.data.request_url + (group || "api")+".php?s=" + c + "/" + a + plugins_params + "&application=app&application_client_type="+ client_value + "&token=" + token + "&ajax=ajax" + "&uuid=" + uuid + params;
+                // 拼接标识
+                var join = (url.indexOf('?') == -1) ? '?' : '&';
+                return url + join + "application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
             },
 
             /**
@@ -1327,6 +1339,35 @@
                     return false;
                 }
                 return true;
+            },
+
+            // 进入客服
+            chat_entry_handle(url) {
+                if((url || null) == null) {
+                    this.showToast("客服地址有误");
+                } else {
+                    // 拼接基础参数
+                    url = this.request_params_handle(url);
+
+                    // 来源地址、拼接当前小程序页面
+                    var pages = getCurrentPages();
+                    var page = pages[pages.length-1];
+                    var route = page.route;
+                    var options = page.options || {};
+                    var query = '';
+                    if(JSON.stringify(options) != '{}') {
+                        for(var i in options) {
+                            query += '&'+i+'='+options[i];
+                        }
+                    }
+                    if((query || null) != null) {
+                        route += '?'+query.substr(1);
+                    }
+                    url += '&source='+encodeURIComponent(base64.encode(route).replace(new RegExp(/=/g), ''));
+
+                    // 打开webview
+                    this.open_web_view(url);
+                }
             }
         },
 
