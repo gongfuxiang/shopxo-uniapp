@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="(data || null) != null">
+        <view v-if="(data || null) != null" class="pr">
             <!-- 头部 -->
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索 -->
@@ -13,18 +13,18 @@
                 </view>
                 <!-- 顶部 -->
                 <view class="header bg-white oh">
-                    <image :src="shop.logo_long" mode="widthFix" class="shop-logo fl br-r padding-right-lg margin-top-xs"></image>
+                    <image :src="shop.logo_long" mode="widthFix" class="shop-logo fl br-r padding-right-lg margin-top-xs cp"></image>
                     <view class="base fr">
                         <view class="shop-title single-text">
                             <text v-if="((data_base.is_auth_fill_info || 0) == 1 || (data_base.is_auth_upload_pic || 0) == 1) && shop.auth_type == 1 && (shop.auth_type_name || null) != null" class="shop-auth-icon round fw-b margin-right-sm">{{shop.auth_type_name}}</text>
                             <text>{{shop.name}}</text>
                         </view>
                         <view class="base-bottom oh margin-top-sm">
-                            <view v-if="(data_base.is_service_info || 0) == 1" class="fl margin-right-xxl" @tap="header_service_event">
+                            <view v-if="(data_base.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="header_service_event">
                                 <image class="va-m margin-right-sm" :src="common_static_url+'customer-service-icon.png'" mode="scaleToFill"></image>
                                 <text class="va-m cr-base">在线客服</text>
                             </view>
-                            <view class="fl single-text" @tap="shop_favor_event">
+                            <view class="fl single-text cp" @tap="shop_favor_event">
                                 <image class="va-m margin-right-sm" :src="common_static_url+'favor'+(shop_favor_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                                 <text :class="'va-m ' + (shop_favor_info.status == 1 ? 'cr-main' : '')">{{shop_favor_info.text}}({{shop_favor_info.count}})</text>
                             </view>
@@ -32,31 +32,38 @@
                     </view>
                 </view>
                 <!-- 在线客服 -->
-                <view v-if="header_service_status && (data_base.is_service_info || 0) == 1" class="header-service pa border-radius-main oh padding-top-xxl bg-white br">
-                    <view v-if="(shop.service_weixin_qrcode || null) != null" class="tc margin-bottom-sm">
-                        <image class="radius" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
+                <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (shop.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
+                    <view v-if="(shop.chat_info || null) != null" class="item padding-main br-t single-text">
+                        <text class="va-m">客服：</text>
+                        <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                            <image class="dis-inline-block va-m" :src="shop.chat_info.icon" mode="scaleToFill"></image>
+                            <text class="margin-left-sm va-m cr-blue" :data-value="shop.chat_info.chat_url">{{shop.chat_info.name}}</text>
+                        </view>
+                    </view>
+                    <view v-if="(shop.service_weixin_qrcode || null) != null" class="item br-t tc padding-top-lg padding-bottom-lg">
+                        <image class="radius cp" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
                         <view>点击长按微信咨询</view>
                     </view>
                     <view v-if="(shop.service_qq || null) != null" class="item padding-main br-t single-text">
                         <text>QQ：</text>
-                        <text @tap="text_copy_event" :data-value="shop.service_qq">{{shop.service_qq}}</text>
+                        <text class="cp" @tap="text_copy_event" :data-value="shop.service_qq">{{shop.service_qq}}</text>
                     </view>
                     <view v-if="(shop.service_tel || null) != null" class="item padding-main br-t single-text">
                         <text>电话：</text>
-                        <text @tap="tel_event" :data-value="shop.service_tel">{{shop.service_tel}}</text>
+                        <text class="cp" @tap="tel_event" :data-value="shop.service_tel">{{shop.service_tel}}</text>
                     </view>
                     <view v-if="(shop.open_week_name || null) != null && (shop.close_week_name || null) != null" class="item padding-main br-t single-text">
                         <text>时间：</text>
-                        <text @tap="text_copy_event" :data-value="shop.open_week_name + '至' + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{shop.open_week_name}}至{{shop.close_week_name}}，{{shop.open_time}}-{{shop.close_time}}</text>
+                        <text class="cp" @tap="text_copy_event" :data-value="shop.open_week_name + '至' + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{shop.open_week_name}}至{{shop.close_week_name}}，{{shop.open_time}}-{{shop.close_time}}</text>
                     </view>
                 </view>
                 <!-- 导航 -->
                 <view class="nav scroll-view-horizontal bg-white padding-top-lg border-color-main">
-                    <view class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b" @tap="nav_shop_category_event">查看商品分类</view>
+                    <view class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b cp" @tap="nav_shop_category_event">查看商品分类</view>
                     <scroll-view scroll-x class="nav-scroll">
                         <block v-if="shop_navigation.length > 0">
                             <block v-for="(item, index) in shop_navigation" :key="index">
-                                <view class="item dis-inline-block fw-b" @tap="nav_event" :data-value="item.url" :data-index="index">{{item.name}}</view>
+                                <view class="item dis-inline-block fw-b cp" @tap="nav_event" :data-value="item.url" :data-index="index">{{item.name}}</view>
                             </block>
                         </block>
                     </scroll-view>
@@ -64,7 +71,7 @@
                         <scroll-view scroll-y class="category-scroll">
                             <block v-if="shop_goods_category.length > 0">
                                 <block v-for="(item, index) in shop_goods_category" :key="index">
-                                    <view class="item dis-block cr-base single-text" @tap="shop_category_event" :data-value="item.id">{{item.name}}</view>
+                                    <view class="item dis-block cr-base single-text cp" @tap="shop_category_event" :data-value="item.id">{{item.name}}</view>
                                 </block>
                             </block>
                             <block v-else>
@@ -328,6 +335,11 @@
             // 图片预览
             image_show_event(e) {
                 app.globalData.image_show_event(e);
+            },
+            
+            // 进入客服系统
+            chat_event() {
+                app.globalData.chat_entry_handle(this.shop.chat_info.chat_url);
             }
         }
     };
