@@ -4,14 +4,14 @@
         <view v-if="propIsGoods == true" class="goods-chat-container item fl cp">
             <block v-if="is_chat == 1">
                 <view @tap="chat_event">
-                    <image :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
-                    <text class="dis-block text-size-xs cr-gray">客服</text>
+                    <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                    <text class="text dis-block text-size-xs cr-gray">客服</text>
                 </view>
             </block>
             <block v-else>
                 <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
                 <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                    <image :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                    <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                 <!-- #endif -->
                 <!-- #ifdef MP-ALIPAY -->
                 <button open-type="contact">
@@ -19,9 +19,9 @@
                 <!-- #endif -->
                 <!-- #ifdef H5 || APP -->
                 <button type="default" @tap="call_event">
-                    <image :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                    <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                 <!-- #endif -->
-                    <text class="dis-block text-size-xs cr-gray">客服</text>
+                    <text class="text dis-block text-size-xs cr-gray">客服</text>
                 </button>
             </block>
         </view>
@@ -31,13 +31,13 @@
                 <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
                     <block v-if="is_chat == 1">
                         <button type="default" :class="common_ent" @tap="chat_event">
-                            <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
+                            <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                         </button>
                     </block>
                     <block v-else>
                         <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
                         <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                            <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
+                            <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                         </button>
                         <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
@@ -47,7 +47,7 @@
                         <!-- #endif -->
                         <!-- #ifdef H5 || APP -->
                         <button type="default" :class="common_ent" @tap="call_event">
-                            <image :src="common_static_url+'online-service-icon.png'" class="dis-block"></image>
+                            <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                         </button>
                         <!-- #endif -->
                     </block>
@@ -253,7 +253,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         background: rgba(0, 0, 0, 0.6);
     }
-    .online-service-event-submit image {
+    .online-service-event-submit .icon {
         width: 21px !important;
         height: 21px !important;
     }
@@ -270,12 +270,12 @@
         font-size: 24rpx;
         background: transparent;
     }
-    .goods-chat-container image {
+    .goods-chat-container .icon {
         width: 40rpx;
         height: 40rpx;
         margin: 10rpx 0 5rpx 0;
     }
-    .goods-chat-container .dis-block {
+    .goods-chat-container .text {
         margin-top: -10rpx;
     }
 </style>

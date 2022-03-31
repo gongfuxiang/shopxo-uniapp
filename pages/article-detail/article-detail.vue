@@ -14,7 +14,7 @@
                     </view>
                 </view>
             </view>
-            <view class="padding-main border-radius-main bg-white oh spacing-mb">
+            <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
                 <mp-html :content="data.content" />
             </view>
             

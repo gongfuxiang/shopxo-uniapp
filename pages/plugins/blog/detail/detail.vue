@@ -14,7 +14,7 @@
                     </view>
                 </view>
             </view>
-            <view class="padding-main border-radius-main bg-white oh spacing-mb">
+            <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
                 <view v-if="(data.video_url || null) != null && (data.is_live_play || 0) == 0">
                     <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
                 </view>

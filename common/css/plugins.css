@@ -179,3 +179,44 @@
     width: 100%;
     height: 230rpx !important;
 }
+
+/**
+* 门店 - 数据列表
+*/
+.plugins-realstore-data-list .item .address-content {
+    width: calc(100% - 220rpx);
+}
+.plugins-realstore-data-list .item .icon-list {
+    right: 20rpx;
+    bottom: 20rpx;
+}
+.plugins-realstore-data-list .item .icon-list .icon-item {
+    width: 50rpx;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+.plugins-realstore-data-list .item .icon-item .badge-icon {
+    top: -10px;
+    right: 2px;
+}
+.plugins-realstore-data-list .item .icon-list .icon-item:not(:last-child) {
+    margin-right: 15rpx;
+}
+.plugins-realstore-data-list .item .logo {
+    width: 110rpx;
+    height: 110rpx !important;
+}
+.plugins-realstore-data-list .item .base-right {
+    width: calc(100% - 130rpx);
+}
+.plugins-realstore-data-list .item .base-right .title {
+    width: calc(100% - 110rpx);
+}
+.plugins-realstore-data-list .item .base-right .status-icon {
+    border-top-left-radius: 50rpx;
+    border-bottom-left-radius: 50rpx;
+    top: 20rpx;
+    right: -1px;
+    padding: 5rpx 20rpx;
+    box-shadow: -1px 1px 3px rgb(0 0 0 / 10%);
+}

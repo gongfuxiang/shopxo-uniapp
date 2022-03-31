@@ -42,6 +42,10 @@ iframe,
 .bottom-fixed {
     right: 0 !important;
 }
+.web-html-content iframe {
+    width: 100% !important;
+    max-height: 500rpx !important;
+}
 /**
  * 隐藏导航栏内容、仅展示返回按钮
  */

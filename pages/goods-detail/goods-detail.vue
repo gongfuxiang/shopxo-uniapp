@@ -199,9 +199,17 @@
                         </block>
                     </view>
                 </view>
-            </view>
 
-            <view class="padding-horizontal-main">
+                <!-- 门店 -->
+                <view v-if="plugins_realstore_data != null" class="plugins-realstore-container">
+                    <view class="spacing-nav-title">
+                        <text class="line"></text>
+                        <text class="text-wrapper">相关门店</text>
+                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                    </view>
+                    <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
+                </view>
+
                 <!-- 多商户 -->
                 <view v-if="plugins_shop_data != null" class="plugins-shop-container oh border-radius-main padding-main bg-white arrow-right spacing-mb">
                     <navigator :url="'/pages/plugins/shop/detail/detail?id=' + plugins_shop_data.id" hover-class="none">
@@ -299,7 +307,7 @@
                             </view>
                         </block>
                         <!-- web详情 -->
-                        <view v-if="common_app_is_use_mobile_detail == 0" class="padding-main">
+                        <view v-if="common_app_is_use_mobile_detail == 0" class="padding-main web-html-content">
                             <mp-html :content="goods.content_web" />
                         </view>
                         <!-- 手机独立详情 -->
@@ -519,6 +527,25 @@
                     </view>
                 </view>
             </component-popup>
+            
+            <!-- 门店弹层 -->
+            <component-popup :propShow="popup_realstore_status" propPosition="bottom" @onclose="popup_realstore_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-base">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_realstore_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="plugins-realstore-popup">
+                        <block v-if="(plugins_realstore_data || null) != null && plugins_realstore_data.length > 0">
+                            <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关门店信息</view>
+                        </block>
+                    </view>
+                </view>
+            </component-popup>
 
             <!-- 购买记录 -->
             <view v-if="(plugins_salerecords_tips_content || null) != null" :class="'plugins-salerecords-tips' + plugins_salerecords_tips_ent">
@@ -544,6 +571,7 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentOnlineService from "../../components/online-service/online-service";
+    import componentRealstoreList from "../../components/realstore-list/realstore-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -659,6 +687,9 @@
                 plugins_intellectstools_data: null,
                 // 客服插件
                 plugins_chat_data: null,
+                // 门店插件
+                plugins_realstore_data: null,
+                popup_realstore_status: false
             };
         },
 
@@ -670,7 +701,8 @@
             componentNoData,
             componentTrnNav,
             componentBottomLine,
-            componentOnlineService
+            componentOnlineService,
+            componentRealstoreList
         },
 
         onLoad(params) {
@@ -826,7 +858,8 @@
                                 plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                plugins_chat_data: data.plugins_chat_data || null
+                                plugins_chat_data: data.plugins_chat_data || null,
+                                plugins_realstore_data: data.plugins_realstore_data || null,
                             };
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {
@@ -1005,7 +1038,7 @@
                     case 'show':
                         app.globalData.call_tel(value || this.common_app_customer_service_tel);
                         break;
-                        // 购买、加入购物车
+                    // 购买、加入购物车
                     case 'buy':
                     case 'cart':
                         this.setData({
@@ -1013,7 +1046,13 @@
                             buy_event_type: type
                         });
                         break;
-                        // 默认
+                    // 门店
+                    case 'plugins-realstore' :
+                        this.setData({
+                            popup_realstore_status: true
+                        });
+                        break;
+                    // 默认
                     default:
                         app.globalData.showToast('事件未处理');
                 }
@@ -1696,6 +1735,13 @@
                         plugins_salerecords_tips_ent: location
                     });
                 }
+            },
+            
+            // 门店弹层关闭
+            popup_realstore_close_event(e) {
+                this.setData({
+                    popup_realstore_status: false
+                });
             },
             
             // 评价图片预览
