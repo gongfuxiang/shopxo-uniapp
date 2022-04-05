@@ -167,7 +167,7 @@
                 });
 
                 // 获取数据
-                var data = {};
+                var data = this.params || {};
 
                 // 是否有坐标
                 if ((this.user_location || null) != null) {

@@ -709,13 +709,25 @@
 
             // 地址选择事件
             address_event(e) {
+                // 带上参数
+                var json = this.params || null;
+                if(json != null) {
+                    var params = '&'+Object.keys(json).map(function(key) {
+                            var temp_val = (json[key] === undefined || json[key] === null) ? '' : json[key];
+                            return encodeURIComponent(key) + '=' + encodeURIComponent(temp_val);
+                        }).join('&');
+                } else {
+                    var params = '';
+                }
+
+                // 仅自提和快递需要选择地址
                 if (this.common_site_type == 0 || this.common_site_type == 4 && this.site_model == 0) {
                     uni.navigateTo({
-                        url: '/pages/user-address/user-address?is_back=1'
+                        url: '/pages/user-address/user-address?is_back=1'+params
                     });
                 } else if (this.common_site_type == 2 || this.common_site_type == 4 && this.site_model == 2) {
                     uni.navigateTo({
-                        url: '/pages/extraction-address/extraction-address?is_back=1&is_buy=1'
+                        url: '/pages/extraction-address/extraction-address?is_back=1&is_buy=1'+params
                     });
                 } else {
                     app.globalData.showToast('当前模式不允许使用地址');

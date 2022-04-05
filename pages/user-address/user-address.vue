@@ -12,7 +12,8 @@
                         <view class="address oh padding-bottom-lg">
                             <image class="item-icon fl margin-top-xs" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                             <view class="text fr">
-                                {{item.province_name || ''}}{{item.city_name || ''}}{{item.county_name || ''}}{{item.address || ''}}
+                                <text>{{item.province_name || ''}}{{item.city_name || ''}}{{item.county_name || ''}}{{item.address || ''}}</text>
+                                <text v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null)" class="cr-grey margin-left-lg fr">距离<text class="cr-base">{{item.distance_value}}</text>{{item.distance_unit}}</text>
                             </view>
                         </view>
                     </view>
@@ -132,7 +133,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("index", "useraddress"),
                     method: "POST",
-                    data: {},
+                    data: this.params,
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();
