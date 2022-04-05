@@ -26,9 +26,6 @@
 /**
 * 商品
 */
-.goods-group-list .goods-content .goods-item:not(:last-child) {
-    border-bottom: 1px dashed #efefef;
-}
 .goods-group-icon {
     width: 30rpx;
     height: 30rpx;
@@ -142,8 +139,11 @@
     padding: 0 40rpx 0 20rpx;
     line-height: 80rpx;
 }
+.buy-data-item-group {
+    padding: 0 40rpx 0 0;
+}
 .buy-data-item .right-value {
-    width: calc(100% - 160rpx);
+    width: calc(100% - 300rpx);
     min-height: 80rpx;
 }
 
@@ -153,9 +153,6 @@
 /*
 * 优惠劵
 */
-.plugins-coupon {
-    padding: 25rpx 40rpx 25rpx 10rpx;
-}
 .plugins-coupon-popup {
     padding-top: 20rpx;
 }
@@ -195,4 +192,51 @@
 }
 .plugins-points-buy-container .desc {
     color: #F37B1D;
+}
+
+/**
+ * 门店次卡-页面选择
+ */
+.plugins-realstore-container-view .image {
+    width: 40rpx;
+    height: 40rpx !important;
+}
+/*
+ * 门店次卡-弹窗选择
+ */
+.plugins-realstore-container {
+    max-height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.plugins-realstore-container .item {
+    overflow: hidden;
+    height: 220rpx;
+}
+.plugins-realstore-container .v-left {
+    width: calc(100% - 140rpx);
+    padding: 30rpx 0 30rpx 20rpx;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.plugins-realstore-container .v-left .base {
+    font-family: arial;
+    color: #D2364C;
+}
+.plugins-realstore-container .v-right {
+    width: 140rpx;
+    height: 220rpx;
+    font-weight: 500;
+}
+.plugins-realstore-container .v-right:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+.plugins-realstore-container .item-disabled .v-right {
+    background: #dfdfdf !important;
+    color: #c0c0c0 !important;
+    cursor: no-drop !important;
 }

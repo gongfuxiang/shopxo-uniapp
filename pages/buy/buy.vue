@@ -50,8 +50,8 @@
                             </view>
                         </view>
                         <!-- 商品 -->
-                        <view class="goods-content">
-                            <view v-for="(item, index2) in group.goods_items" :key="index2" class="goods-item padding-vertical-main oh">
+                        <view class="goods-content margin-bottom-sm">
+                            <view v-for="(item, index2) in group.goods_items" :key="index2" class="goods-item padding-vertical-main oh br-b-dashed">
                                 <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                                 <view class="goods-base">
                                     <view class="goods-title multi-text">{{item.title}}</view>
@@ -70,24 +70,37 @@
                             </view>
                         </view>
                         <!-- 优惠劵 -->
-                        <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="plugins-coupon bg-white spacing-mb arrow-right" :data-index="index" @tap="plugins_coupon_open_event">
+                        <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item buy-data-item-group arrow-right" :data-index="index" @tap="plugins_coupon_open_event">
                             <text class="cr-base">优惠劵</text>
                             <text class="cr-grey fr cp">{{((plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null) ? plugins_choice_coupon_value[group.id] : '请选择优惠券'}}</text>
                         </view>
+                        <!-- 门店次卡 -->
+                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[group.id] || null) != null" class="plugins-realstore-container-view">
+                            <block v-for="(item, index2) in plugins_realstore_data[group.id]['data']" :key="index2">
+                                <view class="buy-data-item buy-data-item-group arrow-right">
+                                    <text class="cr-base va-m">门店次卡</text>
+                                    <image class="image circle br va-m margin-left-lg" :src="item.images" mode="aspectFill"></image>
+                                    <text class="cr-grey va-m margin-left-xs text-size-xs">x{{item.stock}}</text>
+                                    <view class="right-value single-text dis-inline-block fr tr" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
+                                        <text class="cr-grey">{{item.tips_msg}}</text>
+                                    </view>
+                                </view>
+                            </block>
+                        </view>
                         <!-- 扩展数据展示 -->
-                        <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius spacing-mb">
+                        <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
                             <view v-for="(item, index2) in group.order_base.extension_data" :key="index2" class="item oh padding-main">
                                 <text class="cr-base fl">{{item.name}}</text>
                                 <text class="text-tips fr">{{item.tips}}</text>
                             </view>
                         </view>
                         <!-- 小计 -->
-                        <view class="oh tr goods-group-footer padding-top-main">
+                        <view class="oh tr goods-group-footer padding-top-xl">
                             <text v-if="group.order_base.total_price != group.order_base.actual_price" class="original-price margin-right-sm">{{currency_symbol}}{{group.order_base.total_price}}</text>
                             <text class="sales-price">{{currency_symbol}}{{group.order_base.actual_price}}</text>
                         </view>
                     </view>
-                    
+
                     <!-- 积分 -->
                     <view v-if="(plugins_points_data || null) != null && (plugins_points_data.discount_price || 0) > 0" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <view class="select oh">
@@ -107,7 +120,7 @@
                     <!-- 时间选择 -->
                     <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item bg-white border-radius-main spacing-mb arrow-right">
                         <text class="cr-base">{{buy_datetime_info.title}}</text>
-                        <view class="right-value dis-inline-block fr tr">
+                        <view class="right-value single-text dis-inline-block fr tr">
                             <component-time-select :propTitle="buy_datetime_info.title" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
                                 <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey">{{buy_datetime_info.placeholder}}</text>
                                 <text v-else class="cr-base">{{buy_datetime_info.value}}</text>
@@ -181,15 +194,48 @@
                     </view>
                 </view>
             </component-popup>
+            
+            <!-- 次卡选择 -->
+            <component-popup :propShow="popup_plugins_realstore_status" propPosition="bottom" @onclose="plugins_realstore_close_event">
+                <view class="bg-base padding-top-lg">
+                    <view class="close oh margin-right-lg padding-bottom-sm">
+                        <view class="fr" @tap.stop="plugins_realstore_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">
+                        <view class="not-use-tips tc">
+                            <text class="cp cr-yellow text-size-sm" data-type="0" @tap="plugins_realstore_use_event">不使用次卡</text>
+                        </view>
+                        <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[popup_plugins_realstore_group_id] || null) != null">
+                            <block v-for="(item, index) in plugins_realstore_data[popup_plugins_realstore_group_id]['data'][popup_plugins_realstore_card_index]['user_card']" :key="index">
+                                <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
+                                    <view class="v-left fl">
+                                        <view class="base single-text">
+                                            <text class="value fw-b text-size-xxl">{{item.valid_number}}</text>
+                                            <text class="unit margin-left-xs">次</text>
+                                            <text v-if="(item.name || null) != null" class="cr-base margin-left-lg">{{item.name}}</text>
+                                        </view>
+                                        <view v-if="(item.describe || null) != null" class="margin-top-sm cr-grey single-text">{{item.describe}}</view>
+                                        <view class="margin-top-sm cr-gray single-text text-size-xs">{{item.start_time}} 至 {{item.end_time}}</view>
+                                    </view>
+                                    <view v-if="(item.is_active || 0) == 1" class="v-right bg-main fr tc cr-white">
+                                        <text>已选</text>
+                                    </view>
+                                    <view v-else class="v-right bg-main fr tc cr-white cp" :data-index="index" :data-value="item.id" data-type="1" @tap="plugins_realstore_use_event">
+                                        <text>选择</text>
+                                    </view>
+                                </view>
+                            </block>
+                        </view>
+                    </view>
+                </view>
+            </component-popup>
         </block>
-
-        <!-- 快捷导航 -->
-        <component-quick-nav></component-quick-nav>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentTimeSelect from "../../components/time-select/time-select";
@@ -234,12 +280,17 @@
                 popup_plugins_coupon_index: null,
                 // 积分
                 plugins_points_data: null,
-                plugins_points_status: false
+                plugins_points_status: false,
+                // 门店
+                plugins_realstore_data: [],
+                plugins_choice_realstore_value: {},
+                popup_plugins_realstore_status: false,
+                popup_plugins_realstore_group_id: 0,
+                popup_plugins_realstore_card_index: 0
             };
         },
 
         components: {
-            componentQuickNav,
             componentPopup,
             componentNoData,
             componentTimeSelect
@@ -378,7 +429,8 @@
                                     extraction_address: data.base.extraction_address || [],
                                     buy_datetime_info: datetime,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
-                                    plugins_points_data: data.plugins_points_data || null
+                                    plugins_points_data: data.plugins_points_data || null,
+                                    plugins_realstore_data: data.plugins_realstore_data || null
                                 });
 
                                 // 优惠劵选择处理
@@ -444,7 +496,18 @@
                         data['coupon_id_' + i] = coupon_ids[i];
                     }
                 }
-                
+
+                // 门店次卡
+                var key = 'realstore_card_value';
+                var realstore_value = this.plugins_choice_realstore_value;
+                if(Object.keys(realstore_value).length > 0) {
+                    data[key] = realstore_value;
+                } else {
+                    if(data[key] != undefined) {
+                        delete data[key];
+                    }
+                }
+
                 // 积分
                 data['is_points'] = this.plugins_points_status === true ? 1 : 0;
                 return data;
@@ -716,6 +779,53 @@
                 this.setData({
                     buy_datetime_info: temp
                 })
+            },
+
+            // 打开次卡选择
+            plugins_realstore_open_event(e) {
+                this.setData({
+                    popup_plugins_realstore_status: true,
+                    popup_plugins_realstore_group_id: e.currentTarget.dataset.groupid || 0,
+                    popup_plugins_realstore_card_index: e.currentTarget.dataset.index || 0,
+                });
+            },
+
+            // 关闭次卡选择
+            plugins_realstore_close_event(e) {
+                this.setData({
+                    popup_plugins_realstore_status: false
+                });
+            },
+
+            // 次卡选择事件
+            plugins_realstore_use_event(e) {
+                var type = e.currentTarget.dataset.type;
+                var group_id = this.popup_plugins_realstore_group_id;
+                var card_index = this.popup_plugins_realstore_card_index;
+                var id = this.plugins_realstore_data[group_id]['data'][card_index]['id'];
+                var temp = this.plugins_choice_realstore_value;
+                if(type == 1) {
+                    if(temp[group_id] == undefined) {
+                        temp[group_id] = {};
+                    }
+                    temp[group_id][id] = {
+                        group_id: group_id,
+                        data_id: id,
+                        card_id: e.currentTarget.dataset.value
+                    };
+                } else {
+                    if(temp[group_id] != undefined && temp[group_id][id] != undefined) {
+                        delete temp[group_id][id];
+                        if(Object.keys(temp[group_id]).length <= 0) {
+                            delete temp[group_id];
+                        }
+                    }
+                }
+                this.setData({
+                    plugins_choice_realstore_value: temp,
+                    popup_plugins_realstore_status: false
+                });
+                this.init();
             }
         }
     };
