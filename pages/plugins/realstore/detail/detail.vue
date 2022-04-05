@@ -74,75 +74,62 @@
             
             <!-- 内容 -->
             <view class="content oh">
-                <block v-if="(data || null) != null && data.length > 0">
-                    <scroll-view :scroll-y="true" class="left-content fl ht-auto bg-white">
-                        <view class="left-content-actual">
-                            <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" @tap="nav_event">全部</view>
-                            <block v-for="(item, ni) in data" :key="ni">
-                                <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == ni ? 'active cr-main border-color-main fw-b' : '')" :data-index="ni" @tap="nav_event">
+                <!-- 左侧 -->
+                <scroll-view :scroll-y="true" class="left-content fl ht-auto bg-white">
+                    <view class="left-content-actual">
+                        <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" @tap="nav_event">全部</view>
+                        <block v-if="(goods_category || null) != null && goods_category.length > 0">
+                            <block v-for="(item, index) in goods_category" :key="index">
+                                <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == index ? 'active cr-main border-color-main fw-b' : '')" :data-index="index" @tap="nav_event">
                                     <text>{{item.name}}</text>
                                     <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
                                         <component-badge :propNumber="item.buy_number"></component-badge>
                                     </view>
                                 </view>
                             </block>
-                        </view>
-                    </scroll-view>
-                    <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list">
-                        <view class="right-content-actual">
-                            <block v-if="goods_count > 0">
-                                <block v-for="(item, index) in data" :key="index">
-                                    <block v-if="nav_active_index == -1 || nav_active_index == index">
-                                        <block v-if="(item.goods_list || null) != null && item.goods_list.length > 0">
-                                            <view v-if="nav_active_index == -1" class="text-size-sm fw-b padding-bottom-sm">{{item.name}}</view>
-                                            <view v-for="(goods, gindex) in item.goods_list" :key="goods.id" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                                <navigator :url="'/pages/goods-detail/goods-detail?id='+goods.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
-                                                    <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                                    <view class="goods-base fr">
-                                                        <view class="goods-base-content">
-                                                            <view class="goods-title text-size-sm single-text">{{goods.title}}</view>
-                                                            <view v-if="(goods.simple_desc || null) != null" class="simple-desc cr-red text-size-xs margin-top-xs multi-text">{{goods.simple_desc}}</view>
-                                                        </view>
-                                                        <view class="margin-top-sm oh">
-                                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.min_price}}</view>
-                                                            <view class="tc fr">
-                                                                <block v-if="(goods.is_error || 0) == 0">
-                                                                    <view v-if="(goods.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="0" @tap.stop="buy_number_event">
-                                                                        <uni-icons type="minus" size="22" color="#f00"></uni-icons>
-                                                                    </view>
-                                                                    <view v-if="(goods.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.buy_number}}</view>
-                                                                    <view class="dis-inline-block va-m cp" :data-index="index" :data-gindex="gindex" data-type="1" @tap.stop="buy_number_event">
-                                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
-                                                                    </view>
-                                                                </block>
-                                                                <block v-else>
-                                                                    <text class="cr-grey text-size-xs">{{goods.is_error_msg}}</text>
-                                                                </block>
-                                                            </view>
-                                                        </view>
+                        </block>
+                    </view>
+                </scroll-view>
+                <!-- 右侧 -->
+                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" @scrolltolower="scroll_lower" lower-threshold="30">
+                    <view class="right-content-actual">
+                        <block v-if="(data_list || null) != null && data_list.length > 0">
+                            <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
+                                <navigator :url="'/pages/goods-detail/goods-detail?id='+item.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
+                                    <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
+                                    <view class="goods-base fr">
+                                        <view class="goods-base-content">
+                                            <view class="goods-title text-size-sm single-text">{{item.title}}</view>
+                                            <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-red text-size-xs margin-top-xs multi-text">{{item.simple_desc}}</view>
+                                        </view>
+                                        <view class="margin-top-sm oh">
+                                            <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{item.min_price}}</view>
+                                            <view class="tc fr">
+                                                <block v-if="(item.is_error || 0) == 0">
+                                                    <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                        <uni-icons type="minus" size="22" color="#f00"></uni-icons>
                                                     </view>
-                                                </navigator>
+                                                    <view v-if="(item.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{item.buy_number}}</view>
+                                                    <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                    </view>
+                                                </block>
+                                                <block v-else>
+                                                    <text class="cr-grey text-size-xs">{{item.is_error_msg}}</text>
+                                                </block>
                                             </view>
-                                        </block>
-                                        <block v-else-if="nav_active_index != -1">
-                                            <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
-                                        </block>
-                                    </block>
-                                </block>
-                            </block>
-                            <block v-else>
-                                <component-no-data propStatus="0" propMsg="无相关数据"></component-no-data>
-                            </block>
-                        </view>
-                    </scroll-view>
-                </block>
-                <block v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                </block>
+                                        </view>
+                                    </view>
+                                </navigator>
+                            </view>
+                        </block>
+                        <block v-else>
+                            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                        </block>
+                    </view>
+                </scroll-view>
             </view>
-            
-            
+
             <view class="pr">
                 <!-- 购物车 -->
                 <block v-if="cart_status">
@@ -235,9 +222,14 @@
                 cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
                 buy_use_type_index: 0,
                 params: null,
+                is_first: 1,
                 user: null,
                 info: null,
-                data: [],
+                goods_category: [],
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
                 cart: null,
                 goods_count: 0,
                 data_base: null,
@@ -295,6 +287,9 @@
 
         // 下拉刷新
         onPullDownRefresh() {
+            this.setData({
+                data_page: 1
+            });
             this.get_detail_init();
         },
 
@@ -326,6 +321,8 @@
                             var upd_data = {
                                 data_base: data.base || null,
                                 info: data.info || null,
+                                goods_category: data.goods_category || [],
+                                cart: data.cart || null,
                                 favor_user: data.favor_user || [],
                                 tablecode: data.tablecode || null
                             };
@@ -362,8 +359,14 @@
                                     title: this.info.name
                                 });
                                 
-                                // 获取数据
-                                this.get_detail_data();
+                                // 获取数据、仅首次调用列表接口
+                                if(this.is_first == 1) {
+                                    this.setData({is_first: 0});
+                                    this.get_data_list();
+                                } else {
+                                    // 购物车更新列表数据处理
+                                    this.cart_data_list_handle();
+                                }
                             }
                         } else {
                             this.setData({
@@ -385,42 +388,84 @@
                     }
                 });
             },
-            
+
             // 获取数据-获取数据
-            get_detail_data() {
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
+                    }
+                }
+
+                // 加载loding
+                uni.showLoading({
+                    title: "加载中..."
+                });
+
+                // 分类id
+                var category_id = (this.nav_active_index == -1) ? 0 : this.goods_category[this.nav_active_index]['id'];
+
+                // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url("data", "detail", "realstore"),
+                    url: app.globalData.get_request_url("datalist", "detail", "realstore"),
                     method: "POST",
                     data: this.request_params_merge({
                         id: this.params.id || 0,
-                        keywords: this.search_keywords_value
+                        page: this.data_page,
+                        keywords: this.search_keywords_value,
+                        category_id: category_id
                     }, 'data'),
                     dataType: "json",
                     success: res => {
+                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var upd_data = {
-                                info: data.info || null,
-                                data: data.data || [],
-                                cart: data.cart || null,
-                                goods_count: data.goods_count || 0,
-                                data_list_loding_msg: '',
-                                data_list_loding_status: 0
-                            };
-                            // 购物车窗口打开、没有购物车数据则关闭
-                            if(this.cart_status && upd_data.cart != null && ((upd_data.cart.data || null) == null || upd_data.cart.data.length <= 0)) {
-                                upd_data['cart_status'] = false;
+                            if (data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: data.total,
+                                    data_page_total: data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1
+                                });
+                                
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0
+                                });
+                                if (this.data_page <= 1) {
+                                    this.setData({
+                                        data_list: [],
+                                        data_bottom_line_status: false
+                                    });
+                                }
                             }
-                            this.setData(upd_data);
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg
                             });
+                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
+                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
@@ -492,10 +537,8 @@
                         return false;
                     } else {
                         var index = e.currentTarget.dataset.index;
-                        var gindex = e.currentTarget.dataset.gindex;
                         var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_data = this.data;
-                        var temp_goods = temp_data[index]['goods_list'][gindex];
+                        var temp_goods = this.data_list[index];
 
                         // 是否存在多规格
                         if((temp_goods.is_exist_many_spec || 0) != 0) {
@@ -684,7 +727,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            this.get_detail_data();
+                            this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -716,7 +759,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            this.get_detail_data();
+                            this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -748,7 +791,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            this.get_detail_data();
+                            this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -761,6 +804,52 @@
                         uni.hideLoading();
                         app.globalData.showToast("服务器请求出错");
                     }
+                });
+            },
+
+            // 获取购物车数据
+            get_cart_data() {
+                uni.request({
+                    url: app.globalData.get_request_url("cartdata", "detail", "realstore"),
+                    method: 'POST',
+                    data: this.request_params_merge({
+                        "id": this.params.id || 0
+                    }, 'init'),
+                    dataType: 'json',
+                    success: res => {
+                        if (res.data.code == 0) {
+                            this.setData({
+                                cart: res.data.data
+                            });
+                            this.cart_data_list_handle();
+                        } else {
+                            app.globalData.showToast('请求失败，请重试！');
+                        }
+                    },
+                    fail: () => {
+                        app.globalData.showToast("服务器请求出错");
+                    }
+                });
+            },
+
+            // 购物车更新列表数据处理
+            cart_data_list_handle() {
+                var temp_cart = this.cart;
+                var temp_data_list = this.data_list;
+                if(temp_data_list.length > 0) {
+                    for(var i in temp_data_list) {
+                        temp_data_list[i]['buy_number'] = 0;
+                        if(temp_cart.data.length > 0) {
+                            for(var k in temp_cart.data) {
+                                if(temp_cart.data[k]['goods_id'] == temp_data_list[i]['id']) {
+                                    temp_data_list[i]['buy_number'] += parseInt(temp_cart.data[k]['stock']);
+                                }
+                            }
+                        }
+                    }
+                }
+                this.setData({
+                    data_list: temp_data_list
                 });
             },
 
@@ -781,9 +870,10 @@
             // 搜索事件
             search_button_event(e) {
                 this.setData({
-                    search_keywords_value: e || ''
+                    search_keywords_value: e || '',
+                    data_page: 1
                 });
-                this.get_detail_data();
+                this.get_data_list(1);
             },
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
@@ -862,13 +952,6 @@
                 if(!this.is_status_check()) {
                     return false;
                 }
-                
-                // 起步价
-                var starting_price = parseFloat(this.info.starting_price) || 0;
-                if(starting_price > 0 && this.cart.total_price < starting_price) {
-                    app.globalData.showToast("起步价"+starting_price+"元");
-                    return false;
-                }
 
                 // 获取购物车数据
                 var ids = [];
@@ -878,6 +961,13 @@
                 }
                 if (ids.length <= 0) {
                     app.globalData.showToast("请先选购商品");
+                    return false;
+                }
+
+                // 起步价
+                var starting_price = parseFloat(this.info.starting_price) || 0;
+                if(starting_price > 0 && this.cart.total_price < starting_price) {
+                    app.globalData.showToast("起步价"+starting_price+"元");
                     return false;
                 }
 
@@ -921,10 +1011,16 @@
             
             // 导航事件
             nav_event(e) {
-                var index = e.currentTarget.dataset.index;
                 this.setData({
-                    nav_active_index: index
+                    nav_active_index: e.currentTarget.dataset.index,
+                    data_page: 1
                 });
+                this.get_data_list(1);
+            },
+            
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
             },
             
             // 顶部返回操作
@@ -963,10 +1059,11 @@
                     itemList: this.info.buy_use_type_list.map(function(v) {return v.name}),
                     success: function (res) {
                         self.setData({
-                            buy_use_type_index: res.tapIndex
+                            buy_use_type_index: res.tapIndex,
+                            data_page: 1
                         });
                         uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
-                        self.get_detail_data();
+                        self.get_data_list(1);
                     }
                 });
             },
