@@ -30,7 +30,7 @@
 .plugins-coupon-container .v-left .base .desc {
     margin-left: 20rpx;
 }
-.plugins-coupon-container .v-left base-tips,
+.plugins-coupon-container .v-left .base-tips,
 .plugins-coupon-container .v-left .base-time {
     margin-top: 10rpx;
 }
