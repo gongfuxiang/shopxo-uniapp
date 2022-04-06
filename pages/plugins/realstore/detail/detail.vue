@@ -318,20 +318,21 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var upd_data = {
+                            this.setData({
                                 data_base: data.base || null,
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
                                 cart: data.cart || null,
                                 favor_user: data.favor_user || [],
                                 tablecode: data.tablecode || null
-                            };
-                            // 下单类型是否存在索引
-                            if(upd_data.info != null && upd_data.info.buy_use_type_list[this.buy_use_type_index] == undefined) {
-                                upd_data['buy_use_type_index'] = 0;
-                            }
-                            this.setData(upd_data);
+                            });
 
+                            // 下单类型是否存在索引
+                            this.setData({
+                                buy_use_type_index: this.get_buy_use_type_index()
+                            });
+
+                            // 收藏处理
                             if ((this.info || null) != null) {
                                 // 收藏信息
                                 var status = this.favor_user.indexOf(this.info.id) != -1 ? 1 : 0;
@@ -1070,7 +1071,22 @@
 
             // 获取使用类型数据索引、默认在店0
             get_buy_use_type_index() {
-                return uni.getStorageSync(this.cache_buy_use_type_index_key) || 0;
+                var index = uni.getStorageSync(this.cache_buy_use_type_index_key);
+                if((this.info || null) != null) {
+                    // 用户未设置类型则使用默认的
+                    if(index === null || index === '') {
+                        // 是否默认类型
+                        if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
+                            index = this.info.default_buy_use_type;
+                        }
+                    }
+
+                    // 不在店铺设置的类型列表则默认0
+                    if(this.info.buy_use_type_list[index] == undefined) {
+                        index = 0;
+                    }
+                }
+                return index || 0;
             },
 
             // 请求参数处理
