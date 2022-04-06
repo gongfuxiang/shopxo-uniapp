@@ -43,9 +43,9 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://d1.shopxo.vip/',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
