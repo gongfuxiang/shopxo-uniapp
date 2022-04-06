@@ -18,7 +18,8 @@
 .header-top {
     padding-right: 250rpx;
     /* #ifdef MP-ALIPAY */
-    padding-right: 255rpx;
+    padding-top: 20rpx !important;
+    padding-right: 20rpx;
     /* #endif */
     /* #ifdef H5 || APP */
     padding-right: 20rpx;
@@ -33,6 +34,9 @@
 }
 .nav-search {
     width: calc(100% - 90rpx);
+    /* #ifdef MP-ALIPAY */
+    width: 100%;
+    /* #endif */
 }
 
 /**
@@ -90,6 +94,9 @@
 .tablecode {
     background: rgb(255 255 255 / 60%);
     padding: 2rpx 20rpx;
+    /* #ifdef MP-ALIPAY */
+    margin-top: 15rpx;
+    /* #endif */
 }
 
 /**
@@ -100,6 +107,9 @@
     height: calc(100vh - 440rpx);
     /* #ifdef H5 || APP */
     height: calc(100vh - 390rpx);
+    /* #endif */
+    /* #ifdef MP-ALIPAY */
+    height: calc(100vh - 400rpx);
     /* #endif */
 }
 
@@ -185,6 +195,8 @@
     top: 0;
     right: 0;
     line-height: 88rpx;
+    height: 88rpx;
+    border: 0;
 }
 
 /**

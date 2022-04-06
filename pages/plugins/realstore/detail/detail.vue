@@ -7,9 +7,11 @@
                     <!-- 顶部 -->
                     <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
                         <!-- 返回 -->
+                        <!-- #ifndef MP-ALIPAY -->
                         <view class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
                             <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
                         </view>
+                        <!-- #endif -->
                         <!-- 搜索 -->
                         <view class="nav-search fr va-m">
                             <!-- #ifndef H5 || MP-KUAISHOU -->

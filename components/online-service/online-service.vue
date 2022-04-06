@@ -14,8 +14,8 @@
                     <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                 <!-- #endif -->
                 <!-- #ifdef MP-ALIPAY -->
-                <button open-type="contact">
-                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="21px*21px" />
+                <button open-type="contact" class="alipay-contact">
+                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="40rpx*40rpx" />
                 <!-- #endif -->
                 <!-- #ifdef H5 || APP -->
                 <button type="default" @tap="call_event">
@@ -41,8 +41,8 @@
                         </button>
                         <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
-                        <button open-type="contact" :class="common_ent">
-                            <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="21px*21px" />
+                        <button open-type="contact" :class="'alipay-contact '+common_ent">
+                            <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="40rpx*40rpx" />
                         </button>
                         <!-- #endif -->
                         <!-- #ifdef H5 || APP -->
@@ -257,12 +257,6 @@
         width: 21px !important;
         height: 21px !important;
     }
-    /* #ifdef MP-ALIPAY */
-    .online-service-event-submit contact-button {
-        line-height: initial;
-        display: block;
-    }
-    /* #endif */
     .goods-chat-container button {
         padding: 0;
         border: 0;
@@ -278,4 +272,16 @@
     .goods-chat-container .text {
         margin-top: -10rpx;
     }
+    /* #ifdef MP-ALIPAY */
+    .goods-chat-container .alipay-contact {
+        margin-top: 10rpx;
+    }
+    .goods-chat-container .alipay-contact .text {
+        margin-top: -5rpx;
+    }
+    .online-service-event-submit contact-button {
+        line-height: initial;
+        display: block;
+    }
+    /* #endif */
 </style>

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="propData.length > 0" class="data-list">
+        <view v-if="propData.length > 0" class="icon-nav-list">
             <view v-for="(item, index) in propData" :key="index" class="item">
                 <view class="item-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
                     <image :src="item.images_url" mode="aspectFit"></image>
@@ -29,11 +29,11 @@
     };
 </script>
 <style>
-    .data-list {
+    .icon-nav-list {
         overflow: hidden;
         margin-bottom: 20rpx;
     }
-    .data-list .item {
+    .icon-nav-list .item {
         width: calc(20% - 20rpx);
         float: left;
         padding: 20rpx 10rpx 0 10rpx;
@@ -41,7 +41,7 @@
         cursor: pointer;
         /* #endif */
     }
-    .item-content {
+    .icon-nav-list .item .item-content {
         border-radius: 50%;
         padding: 20rpx;
         text-align: center;
@@ -51,11 +51,11 @@
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
-    .data-list .item image {
+    .icon-nav-list .item image {
         width: 50rpx !important;
         height: 50rpx !important;
     }
-    .data-list .item .title {
+    .icon-nav-list .item .title {
         margin-top: 6rpx;
         font-size: 28rpx;
         text-align: center;
