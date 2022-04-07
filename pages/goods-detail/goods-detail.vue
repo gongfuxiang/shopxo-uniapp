@@ -300,24 +300,29 @@
                         <text class="text-wrapper">商品详情</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
-                        <!-- 是否详情展示相册 -->
-                        <block v-if="common_is_goods_detail_show_photo == 1 && goods_photo.length > 0">
-                            <view v-for="(item, index) in goods_photo" :key="index" class="goods-detail-photo">
-                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
-                            </view>
-                        </block>
-                        <!-- web详情 -->
-                        <view v-if="common_app_is_use_mobile_detail == 0" class="padding-main web-html-content">
-                            <mp-html :content="goods.content_web" />
-                        </view>
-                        <!-- 手机独立详情 -->
-                        <block v-if="common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0">
-                            <view v-for="(item, index) in goods_content_app" :key="index" class="goods-detail-app">
-                                <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
-                                <view v-if="(item.content || null) != null" class="content-items">
-                                    <view v-for="(items, index2) in item.content" :key="index2">{{items}}</view>
+                        <block v-if="(common_is_goods_detail_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
+                            <!-- 是否详情展示相册 -->
+                            <block v-if="common_is_goods_detail_show_photo == 1 && goods_photo.length > 0">
+                                <view v-for="(item, index) in goods_photo" :key="index" class="goods-detail-photo">
+                                    <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
                                 </view>
+                            </block>
+                            <!-- web详情 -->
+                            <view v-if="common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null" class="padding-main web-html-content">
+                                <mp-html :content="goods.content_web" />
                             </view>
+                            <!-- 手机独立详情 -->
+                            <block v-if="common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0">
+                                <view v-for="(item, index) in goods_content_app" :key="index" class="goods-detail-app">
+                                    <image v-if="(item.images || null) != null" @tap="goods_detail_images_view_event" :data-value="item.images" class="wh-auto dis-block" :src="item.images" mode="widthFix"></image>
+                                    <view v-if="(item.content || null) != null" class="content-items">
+                                        <view v-for="(items, index2) in item.content" :key="index2">{{items}}</view>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">暂无详情数据</view>
                         </block>
                     </view>
                 </view>

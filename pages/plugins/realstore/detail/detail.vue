@@ -93,7 +93,7 @@
                     </view>
                 </scroll-view>
                 <!-- 右侧 -->
-                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" @scrolltolower="scroll_lower" lower-threshold="30">
+                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
                     <view class="right-content-actual">
                         <block v-if="(data_list || null) != null && data_list.length > 0">
                             <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
@@ -225,6 +225,8 @@
                 buy_use_type_index: 0,
                 params: null,
                 is_first: 1,
+                scroll_top: 0,
+                scroll_top_old: 0,
                 user: null,
                 info: null,
                 goods_category: [],
@@ -292,6 +294,7 @@
             this.setData({
                 data_page: 1
             });
+            this.reset_scroll();
             this.get_detail_init();
         },
 
@@ -404,7 +407,8 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: "加载中...",
+                    mask: true
                 });
 
                 // 分类id
@@ -876,6 +880,7 @@
                     search_keywords_value: e || '',
                     data_page: 1
                 });
+                this.reset_scroll();
                 this.get_data_list(1);
             },
 
@@ -1018,7 +1023,27 @@
                     nav_active_index: e.currentTarget.dataset.index,
                     data_page: 1
                 });
+                this.reset_scroll();
                 this.get_data_list(1);
+            },
+            
+            // 重置滑动位置
+            reset_scroll() {
+                this.setData({
+                    scroll_top: this.scroll_top_old
+                });
+                this.$nextTick(() => {
+                    this.setData({
+                        scroll_top: 0
+                    });
+                });
+            },
+            
+            // 滑动事件位置记录
+            scroll_event(e) {
+                this.setData({
+                    scroll_top_old: e.detail.scrollTop
+                });
             },
             
             // 滚动加载
@@ -1066,6 +1091,7 @@
                             data_page: 1
                         });
                         uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
+                        this.reset_scroll();
                         self.get_data_list(1);
                     }
                 });
