@@ -871,11 +871,13 @@
                             this.setData({
                                 // 基础自定义分享
                                 share_info: {
-                                    title: goods.title,
-                                    desc: goods.simple_desc || goods.seo_desc,
+                                    title: goods.seo_title || goods.title,
+                                    kds: goods.seo_keywords || goods.simple_desc,
+                                    desc: goods.seo_desc || goods.simple_desc,
                                     path: '/pages/goods-detail/goods-detail',
                                     query: 'id=' + goods.id,
-                                    img: goods.images
+                                    img: goods.images,
+                                    video: goods.video
                                 }
                             });
                             
@@ -892,8 +894,8 @@
                             });
                         }
                         
-                        // 显示分享菜单
-                        app.globalData.show_share_menu();
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

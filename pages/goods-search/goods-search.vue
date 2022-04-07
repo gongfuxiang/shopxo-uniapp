@@ -312,8 +312,8 @@
                             }
                         });
 
-                        // 显示分享菜单
-                        app.globalData.show_share_menu();
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.hideLoading();

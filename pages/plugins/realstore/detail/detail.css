@@ -197,6 +197,10 @@
     line-height: 88rpx;
     height: 88rpx;
     border: 0;
+    /* #ifdef MP-QQ */
+    padding-top: 0;
+    padding-bottom: 0;
+    /* #endif */
 }
 
 /**

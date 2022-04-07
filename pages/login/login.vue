@@ -419,8 +419,8 @@
             // 异步初始化配置
             this.init_config();
             
-            // 显示分享菜单
-            app.globalData.show_share_menu();
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
         methods: {

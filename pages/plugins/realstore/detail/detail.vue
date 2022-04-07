@@ -7,7 +7,7 @@
                     <!-- 顶部 -->
                     <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
                         <!-- 返回 -->
-                        <!-- #ifndef MP-ALIPAY -->
+                        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
                         <view class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
                             <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
                         </view>
@@ -368,7 +368,7 @@
                                     this.get_data_list();
                                 } else {
                                     // 购物车更新列表数据处理
-                                    this.cart_data_list_handle();
+                                    this.cart_data_list_handle(this.share_info);
                                 }
                             }
                         } else {
@@ -378,8 +378,8 @@
                             });
                         }
 
-                        // 显示分享菜单
-                        app.globalData.show_share_menu();
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

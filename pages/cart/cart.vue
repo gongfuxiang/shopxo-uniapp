@@ -208,8 +208,8 @@
                             }
                         });
 
-                        // 显示分享菜单
-                        app.globalData.show_share_menu();
+                        // 分享菜单处理
+                        app.globalData.page_share_handle();
                     } else {
                         this.get_data();
                     }
@@ -221,8 +221,8 @@
                         data_list_loding_msg: '请先授权用户信息'
                     });
 
-                    // 显示分享菜单
-                    app.globalData.show_share_menu();
+                    // 分享菜单处理
+                    app.globalData.page_share_handle();
                 }
             },
 
@@ -268,9 +268,9 @@
                             }
                         }
 
-                        // 显示分享菜单、延时执行，确保基础数据已加载完成
+                        // 分享菜单处理、延时执行，确保基础数据已加载完成
                         setTimeout(function() {
-                            app.globalData.show_share_menu();
+                            app.globalData.page_share_handle();
                         }, 1000);
                     },
                     fail: () => {

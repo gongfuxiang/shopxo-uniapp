@@ -218,8 +218,8 @@
                             }
                         });
 
-                        // 显示分享菜单
-                        app.globalData.show_share_menu();
+                        // 分享菜单处理
+                        app.globalData.page_share_handle();
                     } else {
                         this.set_user_base(user);
                         this.get_data();
@@ -227,8 +227,8 @@
                 } else {
                     uni.stopPullDownRefresh();
 
-                    // 显示分享菜单
-                    app.globalData.show_share_menu();
+                    // 分享菜单处理
+                    app.globalData.page_share_handle();
                 }
             },
             
@@ -316,9 +316,9 @@
                             }
                         }
                         
-                        // 显示分享菜单、延时执行，确保基础数据已加载完成
+                        // 分享菜单处理、延时执行，确保基础数据已加载完成
                         setTimeout(function() {
-                            app.globalData.show_share_menu();
+                            app.globalData.page_share_handle();
                         }, 1000);
                     },
                     fail: () => {

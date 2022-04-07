@@ -60,8 +60,8 @@
             // 数据加载
             this.get_data();
 
-            // 显示分享菜单
-            app.globalData.show_share_menu();
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
         // 下拉刷新
