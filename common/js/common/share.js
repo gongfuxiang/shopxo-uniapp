@@ -3,13 +3,15 @@ export default {
         return {
             // 设置默认的分享参数、页面可自定义以下数据
             // 如果页面不设置share，就触发这个默认的分享
-            // 标题、描述、地址、参数、封面图片
+            // 标题、关键字、描述、地址、参数、封面图片、视频
             share_info: {
                 title: '',
+                kds: '',
                 desc: '',
                 path: '',
                 query: '',
-                img: ''
+                img: '',
+                video: ''
             }
         }
     },

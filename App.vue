@@ -785,14 +785,22 @@
                 }
             },
 
-            // 显示分享菜单
-            show_share_menu() {
+            // 页面分享处理
+            page_share_handle(share = null) {
                 // 当前页面
                 var pages = getCurrentPages();
                 var obj = pages[pages.length-1];
 
-                // 分享信息
-                var share = this.share_content_handle(obj.share_info || {});
+                // 分享信息、是否指定参数
+                if((share || null) == null) {
+                    share = {}
+                }
+                // 从页面对象获取参数
+                if(Object.keys(share).length <= 0) {
+                    share = obj.share_info || {};
+                }
+                // 参数处理
+                share = this.share_content_handle(share);
 
                 // #ifdef MP-WEIXIN
                 // 微信小程序展示系统分享好友和朋友圈按钮
@@ -869,6 +877,22 @@
                         }
                     });
                 }
+                // #endif
+                
+                // #ifdef MP-BAIDU
+                // 百度小程序wab化搜索引擎数据设置
+                uni.setPageInfo({
+                  title: share.title,
+                  keywords: share.kds || share.desc,
+                  articleTitle: share.title,
+                  description: share.desc,
+                  image: share.img,
+                  video: ((share.video || null) == null) ? [] : [{
+                            url: share.video,
+                            duration: '100',
+                            image: share.img
+                        }]
+                });
                 // #endif
             },
 
@@ -1234,8 +1258,7 @@
             // 获取当前页面地址、不含?后面的参数
             get_page_url(is_whole) {
                 // #ifdef MP || APP
-                var pages = getCurrentPages();
-                var url = pages[pages.length-1].$page.fullPath;
+                var url = this.current_page();
                 // #endif
                 // #ifdef H5
                 var url = window.location.href;
@@ -1341,6 +1364,25 @@
                 return true;
             },
 
+            // 当前页面地址
+            current_page() {
+                // 来源地址、拼接当前小程序页面
+                var pages = getCurrentPages();
+                var page = pages[pages.length-1];
+                var route = page.route;
+                var options = page.options || {};
+                var query = '';
+                if(JSON.stringify(options) != '{}') {
+                    for(var i in options) {
+                        query += '&'+i+'='+options[i];
+                    }
+                }
+                if((query || null) != null) {
+                    route += '?'+query.substr(1);
+                }
+                return route;
+            },
+
             // 进入客服
             chat_entry_handle(url) {
                 if((url || null) == null) {
@@ -1349,20 +1391,8 @@
                     // 拼接基础参数
                     url = this.request_params_handle(url);
 
-                    // 来源地址、拼接当前小程序页面
-                    var pages = getCurrentPages();
-                    var page = pages[pages.length-1];
-                    var route = page.route;
-                    var options = page.options || {};
-                    var query = '';
-                    if(JSON.stringify(options) != '{}') {
-                        for(var i in options) {
-                            query += '&'+i+'='+options[i];
-                        }
-                    }
-                    if((query || null) != null) {
-                        route += '?'+query.substr(1);
-                    }
+                    // 拼接当前页面地址
+                    var route = this.current_page();
                     url += '&source='+encodeURIComponent(base64.encode(route).replace(new RegExp(/=/g), ''));
 
                     // 打开webview
