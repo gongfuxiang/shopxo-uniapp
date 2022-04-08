@@ -1091,7 +1091,7 @@
                             data_page: 1
                         });
                         uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
-                        this.reset_scroll();
+                        self.reset_scroll();
                         self.get_data_list(1);
                     }
                 });

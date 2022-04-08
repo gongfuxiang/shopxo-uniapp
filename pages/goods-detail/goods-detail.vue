@@ -167,9 +167,9 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0) == 1 || (buy_button.is_cart || 0) == 1))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
+                <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0)+(buy_button.is_cart || 0)+(buy_button.is_show || 0) > 0))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
                     <view class="fl item-title">规格</view>
-                    <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" data-type="buy">{{goods_spec_selected_text}}</view>
+                    <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="((buy_button.is_buy || 0) == 1) ? 'buy' : (((buy_button.is_cart || 0) == 1) ? 'cart' : 'show')">{{goods_spec_selected_text}}</view>
                 </view>
             </view>
 
