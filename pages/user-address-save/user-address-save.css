@@ -22,6 +22,30 @@
     padding: 0 5rpx;
 }
 
+/**
+ * 地址信息
+ */
+.default-checkbox image {
+    width: 35rpx;
+    height: 35rpx !important;
+}
+.address-value {
+    padding-right: 110rpx;
+}
+.map-icon {
+    bottom: 0;
+    right: 0;
+    width: 90rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+.auto-discern {
+    bottom: 20rpx;
+    right: 20rpx;
+    line-height: inherit;
+    padding: 5rpx 20rpx;
+}
+
 /*
 * 身份信息
 */

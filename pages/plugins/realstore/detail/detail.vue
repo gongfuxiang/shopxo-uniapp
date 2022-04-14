@@ -327,7 +327,6 @@
                                 data_base: data.base || null,
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
-                                cart: data.cart || null,
                                 favor_user: data.favor_user || [],
                                 tablecode: data.tablecode || null
                             });
@@ -365,13 +364,19 @@
                                     title: this.info.name
                                 });
                                 
-                                // 获取数据、仅首次调用列表接口
+                                // 获取数据、仅首次调用
+                                // 获取列表接口和购物车
                                 if(this.is_first == 1) {
                                     this.setData({is_first: 0});
                                     this.get_data_list();
+                                    this.get_cart_data();
                                 } else {
+                                    // 非首次赋值购物车数据
+                                    this.setData({
+                                        cart: data.cart || null,
+                                    });
                                     // 购物车更新列表数据处理
-                                    this.cart_data_list_handle(this.share_info);
+                                    this.cart_data_list_handle();
                                 }
                             }
                         } else {
@@ -821,7 +826,7 @@
                     method: 'POST',
                     data: this.request_params_merge({
                         "id": this.params.id || 0
-                    }, 'init'),
+                    }, 'cart'),
                     dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
@@ -841,23 +846,25 @@
 
             // 购物车更新列表数据处理
             cart_data_list_handle() {
-                var temp_cart = this.cart;
-                var temp_data_list = this.data_list;
-                if(temp_data_list.length > 0) {
-                    for(var i in temp_data_list) {
-                        temp_data_list[i]['buy_number'] = 0;
-                        if(temp_cart.data.length > 0) {
-                            for(var k in temp_cart.data) {
-                                if(temp_cart.data[k]['goods_id'] == temp_data_list[i]['id']) {
-                                    temp_data_list[i]['buy_number'] += parseInt(temp_cart.data[k]['stock']);
+                var temp_cart = this.cart || null;
+                if(temp_cart != null) {
+                    var temp_data_list = this.data_list;
+                    if(temp_data_list.length > 0) {
+                        for(var i in temp_data_list) {
+                            temp_data_list[i]['buy_number'] = 0;
+                            if(temp_cart.data.length > 0) {
+                                for(var k in temp_cart.data) {
+                                    if(temp_cart.data[k]['goods_id'] == temp_data_list[i]['id']) {
+                                        temp_data_list[i]['buy_number'] += parseInt(temp_cart.data[k]['stock']);
+                                    }
                                 }
                             }
                         }
                     }
+                    this.setData({
+                        data_list: temp_data_list
+                    });
                 }
-                this.setData({
-                    data_list: temp_data_list
-                });
             },
 
             // 门店状态判断
@@ -1093,6 +1100,7 @@
                         uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
                         self.reset_scroll();
                         self.get_data_list(1);
+                        self.get_cart_data();
                     }
                 });
             },
@@ -1119,7 +1127,7 @@
 
             // 请求参数处理
             // 默认增加使用类型参数
-            // 下单 buy / 初始化 init / 获取数据 data
+            // 下单 buy / 初始化 init / 获取数据 data / 获取购物车 cart
             request_params_merge(data, type = 'init') {
                 // 用户使用类型
                 var index = this.buy_use_type_index;
@@ -1139,7 +1147,7 @@
                 }
 
                 // 初始化、获取数据
-                if(type == 'init' || type == 'data') {
+                if(type == 'init' || type == 'data' || type == 'cart') {
                     // 用户选择的位置
                     var lng = 0;
                     var lat = 0;

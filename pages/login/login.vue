@@ -34,9 +34,7 @@
                         <block v-if="current_opt_form == 'bind'">
                             <view class="margin-top-xxxl padding-top-xxxl">
                                 <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">手机验证码</button>
-                                <!-- #ifdef MP-WEIXIN || MP-BAIDU -->
-                                <button v-if="common_user_is_onekey_bind_mobile == 1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
-                                <!-- #endif -->
+                                <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">获取手机号码一键登录</button>
                             </view>
                             <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
                             <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
@@ -345,13 +343,14 @@
                 verify_image_url: null,
                 popup_image_verify_status: false,
                 // 基础配置
-                common_user_is_onekey_bind_mobile: 0,
+                common_user_onekey_bind_mobile_list: [],
                 home_site_logo_square: null,
                 home_user_login_type: [],
                 home_user_reg_type: [],
                 home_user_login_img_verify_state: 0,
                 home_user_register_img_verify_state: 0,
                 common_img_verify_state: 0,
+                client_value: app.globalData.application_client_type(),
                 // 0 确认绑定方式, 1 验证码绑定
                 current_login_bind_type: 0,
                 // 当前操作方式
@@ -397,7 +396,7 @@
                     error_msg: msg
                 });
             }
-            
+
             // 第三方登录成功处理
             if((params.thirdpartylogin || null) != null) {
                 var user = JSON.parse(base64.decode(decodeURIComponent(params.thirdpartylogin)));
@@ -418,7 +417,7 @@
         onShow() {            
             // 异步初始化配置
             this.init_config();
-            
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
@@ -442,7 +441,7 @@
                         // 开启登录则取第一个
                         form = 'login';
                         type = 'login_'+this.home_user_login_type[0];
-                        
+
                         // 用户登录和验证码获取开启图片验证码
                         if(this.home_user_login_img_verify_state == 1 || this.common_img_verify_state == 1) {
                             this.image_verify_event('user_login');
@@ -459,7 +458,7 @@
                 uni.setNavigationBarTitle({
                     title: this.current_opt_type_title[type]
                 });
-                
+
                 // 是否参数指定类型和表单
                 if((this.params.opt_type || null) != null)
                 {
@@ -475,14 +474,13 @@
                     current_opt_type: type,
                     current_opt_form: form
                 });
-                console.log(this.current_opt_form)
             },
 
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
-                        common_user_is_onekey_bind_mobile: app.globalData.get_config('config.common_user_is_onekey_bind_mobile'),
+                        common_user_onekey_bind_mobile_list: app.globalData.get_config('config.common_user_onekey_bind_mobile_list', []),
                         home_site_logo_square: app.globalData.get_config('config.home_site_logo_square'),
                         home_user_login_type: app.globalData.get_config('config.home_user_login_type'),
                         home_user_reg_type: app.globalData.get_config('config.home_user_reg_type'),

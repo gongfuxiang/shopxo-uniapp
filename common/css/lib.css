@@ -1,6 +1,9 @@
 /**
  * 公共类样式
  */
+.margin-0 {
+    margin: 0 !important;
+}
 .margin-xs {
     margin: 5rpx;
 }
@@ -112,6 +115,9 @@
     margin-bottom: 40rpx;
 }
 
+.padding-0 {
+    padding: 0 !important;
+}
 .padding-xs {
     padding: 5rpx;
 }

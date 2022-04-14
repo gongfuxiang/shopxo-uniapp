@@ -205,14 +205,14 @@
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">相关门店</text>
-                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                        <text class="arrow-right padding-right-xxxl cr-gray fr" data-value="/pages/plugins/realstore/index/index" @tap="url_event">更多</text>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
                 </view>
 
                 <!-- 多商户 -->
                 <view v-if="plugins_shop_data != null" class="plugins-shop-container oh border-radius-main padding-main bg-white arrow-right spacing-mb">
-                    <navigator :url="'/pages/plugins/shop/detail/detail?id=' + plugins_shop_data.id" hover-class="none">
+                    <view :data-value="'/pages/plugins/shop/detail/detail?id=' + plugins_shop_data.id" @tap="url_event">
                         <image :src="plugins_shop_data.logo" mode="aspectFit" class="plugins-shop-logo fl radius"></image>
                         <view class="plugins-shop-base column-right-view fr">
                             <view class="plugins-shop-title single-text">
@@ -221,7 +221,7 @@
                             </view>
                             <view class="plugins-shop-desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}</view>
                         </view>
-                    </navigator>
+                    </view>
                 </view>
 
                 <!-- 商品评价 -->

@@ -10,3 +10,21 @@
 .nav-search {
     width: calc(100% - 210rpx);
 }
+
+/**
+* 位置选择提示
+*/
+.choice-location-tips {
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.choice-location-tips .content {
+    margin-top: 42%;
+    width: 520rpx;
+}
+.choice-location-tips .content .close {
+    top: 20rpx;
+    right: 20rpx;
+}

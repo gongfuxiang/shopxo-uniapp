@@ -185,6 +185,9 @@ button:before {
 .pr {
     position: relative;
 }
+.bs-bb {
+    box-sizing: border-box;
+}
 .radius-0 {
     border-radius: 0 !important;
 }
@@ -499,6 +502,19 @@ button[disabled].bg-gray {
     padding: 20rpx;
     margin-bottom: 20rpx;
     border-radius: 20rpx;
+}
+.form-container .form-gorup .form-gorup-item-left {
+    float: left;
+    padding-right: 20rpx;
+}
+.form-container .form-gorup .form-gorup-item-right {
+    float: right;
+    padding-left: 20rpx;
+    border-left: 1px solid #eee;
+}
+.form-container .form-gorup .form-gorup-item-left,
+.form-container .form-gorup .form-gorup-item-right {
+    width: calc(50% - 20rpx - 1px);
 }
 .form-container .form-gorup-submit {
     padding: 20rpx 0;

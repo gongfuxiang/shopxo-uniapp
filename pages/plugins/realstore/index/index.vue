@@ -53,6 +53,22 @@
             </view>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            
+            <!-- 位置选择提示 -->
+            <view v-if="location_tips_close_status && (data_base.is_home_choice_location || 0) == 1 && ((data_base.home_choice_location_images || null) != null || (data_base.home_choice_location_msg || null) != null)" class="choice-location-tips pf wh-auto ht-auto tc bs-bb">
+                <view class="content bg-white auto padding-xxxl pr radius">
+                    <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
+                        <view @tap="location_tips_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="padding-lg">
+                        <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w margin-top-sm" :src="data_base.home_choice_location_images" mode="widthFix"></image>
+                        <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{data_base.home_choice_location_msg}}</view>
+                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_location_event">选择位置</button>
+                    </view>
+                </view>
+            </view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -76,6 +92,7 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 params: null,
+                is_first: 1,
                 data_base: null,
                 search_keywords_value: '',
                 favor_user: [],
@@ -85,6 +102,7 @@
                 data_list: [],
                 // 用户位置信息
                 user_location: null,
+                location_tips_close_status: false,
                 // 自定义分享信息
                 share_info: {}
                 
@@ -156,6 +174,7 @@
                                 slider_list: data.slider_list || [],
                                 icon_list: data.icon_list || [],
                                 data_list: data_list,
+                                is_first: 0,
                                 data_list_loding_status: data_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: true,
                             });
@@ -216,17 +235,28 @@
             // 地址信息初始化
             user_location_init() {
                 var result = uni.getStorageSync(app.globalData.data.cache_userlocation_key) || null;
-                var data = null;
+                var upd_data = {};
                 if (result != null) {
-                    data = {
+                    upd_data['user_location'] = {
                         name: result.name || null,
                         address: result.address || null,
                         lat: result.latitude || null,
                         lng: result.longitude || null
                     };
+                    upd_data['location_tips_close_status'] = false;
+                } else {
+                    upd_data['user_location'] = null;
+                    if(this.is_first == 1) {
+                        upd_data['location_tips_close_status'] = true;
+                    }
                 }
+                this.setData(upd_data);
+            },
+            
+            // 地址选择提示关闭事件
+            location_tips_close_event(e) {
                 this.setData({
-                    user_location: data
+                    location_tips_close_status: false
                 });
             }
         }

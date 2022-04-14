@@ -67,6 +67,15 @@
             	default: () => []
             }
         },
+        // 属性值改变监听
+        watch: {
+            // 数据列表
+        	propDataList(value, old_value) {
+                this.setData({
+                    data_list: value
+                });
+        	}
+        },
         // 页面被展示
         created: function(e) {        
             this.setData({

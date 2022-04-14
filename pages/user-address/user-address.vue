@@ -41,15 +41,15 @@
 
         <!-- 底部操作 -->
         <view class="bottom-fixed padding-main">
-            <!-- #ifdef MP -->
-            <view class="submit-list">
-                <button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
-                <button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
-            </view>
-            <!-- #endif -->
-            <!-- #ifdef H5 || APP -->
-            <button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
-            <!-- #endif -->
+            <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
+                <view class="submit-list">
+                    <button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+                    <button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
+                </view>
+            </block>
+            <block v-else>
+                <button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+            </block>
         </view>
     </view>
 </template>
@@ -66,6 +66,8 @@
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
+                common_user_address_platform_import_list: [],
+                client_value: app.globalData.application_client_type(),
                 data_list: [],
                 params: null,
                 is_default: 0
@@ -85,6 +87,10 @@
         },
 
         onShow() {
+            // 异步初始化配置
+            this.init_config();
+
+            // 数据初始化
             this.init();
             
             // 分享菜单处理
@@ -97,6 +103,17 @@
         },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        common_user_address_platform_import_list: app.globalData.get_config('config.common_user_address_platform_import_list', [])
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, "init");
