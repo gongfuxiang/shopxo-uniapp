@@ -1,3 +1,18 @@
+.title-content .blog-title {
+    width: calc(100% - 70rpx);
+}
+.title-content .blog-share {
+    top: calc(50% - 20rpx);
+    right: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+}
+.title-content .blog-share image {
+    width: 40rpx;
+    height: 40rpx;
+}
+
 /**
  * 商品
  */

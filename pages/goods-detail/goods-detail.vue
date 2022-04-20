@@ -103,8 +103,8 @@
                             <!-- 标题 -->
                             <view class="goods-title fl" :style="'color:' + goods.title_color">{{goods.title}}</view>
                             <!-- 分享 -->
-                            <view class="goods-share fr tc cp" @tap="popup_share_event">
-                                <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block"></image>
+                            <view class="goods-share tc cp pa" @tap="popup_share_event">
+                                <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                                 <view class="cr-gray text-size-sm">分享</view>
                             </view>
                         </view>

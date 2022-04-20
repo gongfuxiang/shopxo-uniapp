@@ -2,7 +2,17 @@
     <view>        
         <view v-if="(data || null) != null" class="padding-horizontal-main padding-top-main">
             <view class="padding-main border-radius-main bg-white spacing-mb">
-                <view class="fw-b text-size-xl">{{data.title}}</view>
+                <view class="title-content pr">
+                    <!-- #ifndef MP -->
+                    <view class="fw-b text-size-xl">{{data.title}}</view>
+                    <!-- #endif -->
+                    <!-- #ifdef MP -->
+                    <view class="blog-title fw-b text-size-xl">{{data.title}}</view>
+                    <button class="blog-share tr cp pa br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none">
+                        <image :src="common_static_url+'share-icon.png'" mode="scaleToFill"></image>
+                    </button>
+                    <!-- #endif -->
+                </view>
                 <view class="cr-grey margin-top-lg oh br-t padding-top-main">
                     <view class="fl">
                         <text>时间：</text>
@@ -86,9 +96,11 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
+    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,

@@ -207,7 +207,6 @@
     width: calc(100% - 100rpx);
 }
 .goods-base-content .goods-share {
-    position: absolute;
     top: calc(50% - 40rpx);
     right: 20rpx;
 }
