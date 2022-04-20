@@ -9,7 +9,7 @@
                 <!-- 搜索 -->
                 <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
                 <view v-if="load_status == 1" :class="'pr '+(search_is_fixed == 1 ? 'search-content-fixed bg-main' : '')" :style="search_is_fixed == 1 ? top_content_style : ''">
-                    <view :style="search_style">
+                    <view v-if="common_app_is_enable_search == 1" :style="search_style">
                         <view class="margin-horizontal-main">
                             <component-search propPlaceholder="输入商品名称搜索" propBgColor="#fff"></component-search>
                         </view>
@@ -452,23 +452,25 @@
             
             // 页面滚动监听
             onPageScroll(e) {
-                var top = e.scrollTop > 35 ? 35 : e.scrollTop;
-                var num = top*7;
-                var base = 230;
-                // #ifdef MP-ALIPAY
-                    base = 235
-                // #endif
-                // #ifdef H5 || APP
-                    var len = (this.right_icon_list || []).length;
-                    base = (len <= 0) ? 0 : 66*len;
-                // #endif
-                // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
-                if((this.plugins_mourning_data || 0) != 1) {
-                    var val = (num > base) ? base : num;
-                    this.setData({
-                        search_style: 'width: calc(100% - '+val+'rpx);',
-                        search_is_fixed: (top >= 35) ? 1 : 0,
-                    });
+                if(this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
+                    var top = e.scrollTop > 35 ? 35 : e.scrollTop;
+                    var num = top*7;
+                    var base = 230;
+                    // #ifdef MP-ALIPAY
+                        base = 235
+                    // #endif
+                    // #ifdef H5 || APP
+                        var len = (this.right_icon_list || []).length;
+                        base = (len <= 0) ? 0 : 66*len;
+                    // #endif
+                    // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
+                    if((this.plugins_mourning_data || 0) != 1) {
+                        var val = (num > base) ? base : num;
+                        this.setData({
+                            search_style: 'width: calc(100% - '+val+'rpx);',
+                            search_is_fixed: (top >= 35) ? 1 : 0,
+                        });
+                    }
                 }
             },
             
