@@ -49,8 +49,8 @@
                             </view>
                         </block>
                         <view v-if="current_opt_form == 'success'" class="tc margin-top-xxxl">
-                            <view class="cr-green">已成功登录、请点击进入首页</view>
-                            <navigator open-type="switchTab" :url="home_page_url" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl">进入首页</navigator>
+                            <view class="cr-green">已成功登录、请点击返回上一页</view>
+                            <button type="default" size="mini" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="success_event">返回上一页</button>
                         </view>
                     </view>
                 </block>
@@ -329,6 +329,7 @@
             return {
                 params: null,
                 user: null,
+                prev_page: null,
                 form_input_mobile_value: '',
                 form_input_email_value: '',
                 form_input_accounts_value: '',
@@ -373,8 +374,6 @@
                 plugins_thirdpartylogin_user: null,
                 // 错误提示信息
                 error_msg: null,
-                // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0]
             };
         },
 
@@ -388,6 +387,12 @@
             this.setData({
                 params: params
             });
+
+            // 上一个页面记录
+            var page = app.globalData.prev_page();
+            if(page != null) {
+                uni.setStorageSync(app.globalData.data.cache_prev_page_key, page);
+            }
 
             // 错误提示信息
             if((params.msg || null) != null) {
@@ -474,6 +479,17 @@
                     current_opt_type: type,
                     current_opt_form: form
                 });
+
+                // 登录成功
+                if(this.current_opt_form == 'success') {
+                    var page = uni.getStorageSync(app.globalData.data.cache_prev_page_key) || null;
+                    if(page != null) {
+                        this.setData({prev_page: page});
+                        setTimeout(function() {
+                            app.globalData.url_open('/'+page, true);
+                        }, 2000);
+                    }
+                }
             },
 
             // 初始化配置
@@ -1274,12 +1290,18 @@
                 var url = e.currentTarget.dataset.url || null;
                 window.location.href = url;
             },
-            
+
             // 第三方登录绑定账号取消
             plugins_thirdpartylogin_cancel_event(e) {
                 uni.redirectTo({
                     url: '/pages/login/login'
                 });
+            },
+
+            // 返回上一页
+            success_event(e) {
+                var url = (this.prev_page == null) ? app.globalData.data.tabbar_pages[0] : this.prev_page;
+                app.globalData.url_open(url, true);
             }
         }
     };

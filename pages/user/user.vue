@@ -79,8 +79,14 @@
             
                         <!-- 清除缓存 -->
                         <view class="nav-item padding-main fl tc cp" @tap="clear_storage">
+                            <!-- #ifndef MP -->
+                            <image :src="common_static_url+'logout-icon.png'" class="item-icon" mode="widthFix"></image>
+                            <view class="item-name single-text cr-base">退出登录</view>
+                            <!-- #endif -->
+                            <!-- #ifdef MP -->
                             <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">清除缓存</view>
+                            <!-- #endif -->
                         </view>
                 
                         <!-- 联系客服 -->
@@ -328,14 +334,13 @@
                 });
             },
 
-            // 清除缓存
+            // 退出/清除缓存
             clear_storage(e) {
                 // 获取uuid重新存储缓存，一定情况下确保用户的uuid不改变
                 var uuid = uni.getStorageSync(app.globalData.data.cache_user_uuid_key) || null;
 
                 // 清除所有缓存
                 uni.clearStorage();
-                app.globalData.showToast("清除缓存成功", "success");
                 
                 // 重新存储用户uuid缓存
                 if (uuid != null) {
@@ -344,6 +349,21 @@
                         data: uuid
                     });
                 }
+
+                // #ifdef MP
+                // 小程序提示缓存清除成功
+                app.globalData.showToast("清除成功", "success");
+                // #endif
+
+                // #ifndef MP
+                // 非小程序则两秒后回到首页
+                app.globalData.showToast("退出成功", "success");
+                setTimeout(function() {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0]
+                    });
+                }, 2000);
+                // #endif
             },
 
             // 客服电话

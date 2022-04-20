@@ -25,6 +25,8 @@
                 cache_userlocation_key: "cache_userlocation_key",
                 // 页面支付临时缓存key
                 cache_page_pay_key: "cache_page_pay_key",
+                // 上一页地址缓存key
+                cache_prev_page_key: 'cache_prev_page_key',
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
@@ -43,9 +45,11 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'http://shopxo.com/',
+                // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
+                system_type: 'yifan',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
@@ -187,7 +191,7 @@
                 var client_value = this.application_client_type();
                 // 拼接标识
                 var join = (url.indexOf('?') == -1) ? '?' : '&';
-                return url + join + "application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
+                return url + join + "system_type="+ this.data.system_type +"&application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
             },
 
             /**
@@ -823,7 +827,7 @@
                 // #endif
                 // #ifdef H5
                 // H5处理微信环境分享自定义信息
-                if(this.is_weixin()) {
+                if(this.is_weixin_env()) {
                     var page_url = this.get_page_url();
                     uni.request({
                         url: this.get_request_url("signpackage", "index", "share"),
@@ -939,7 +943,6 @@
 
             // 初始化 配置信息
             init_config() {
-                var self = this;
                 uni.request({
                     url: this.get_request_url('common', 'base'),
                     method: 'POST',
@@ -954,6 +957,9 @@
                                     this.showToast('配置信息缓存失败');
                                 }
                             });
+                            
+                            // 用户自动登录处理
+                            this.user_auto_login_handle();
                         } else {
                             this.showToast(res.data.msg);
                         }
@@ -1084,6 +1090,11 @@
             // 链接地址事件
             url_event(e) {
                 var value = e.currentTarget.dataset.value || null;
+                this.url_open(value);
+            },
+
+            // url打开
+            url_open(value, is_redirect = false) {
                 if (value != null) {
                     var temp = value.substr(0, 6);
                     if (temp == 'http:/' || temp == 'https:') {
@@ -1094,9 +1105,15 @@
                                 url: value
                             });
                         } else {
-                            uni.navigateTo({
-                                url: value
-                            });
+                            if(is_redirect) {
+                                uni.redirectTo({
+                                    url: value
+                                });
+                            } else {
+                                uni.navigateTo({
+                                    url: value
+                                });
+                            }
                         }
                     }
                 }
@@ -1271,7 +1288,7 @@
             },
 
             // 是否微信环境
-            is_weixin() {
+            is_weixin_env() {
                 var agent = navigator.userAgent.toLowerCase();
                 if(agent.match(/MicroMessenger/i) == 'micromessenger') {
                     return true;
@@ -1282,7 +1299,7 @@
             // 用户微信webopenid是否存在
             is_user_weixin_web_openid(order_ids) {
                 // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
-                if(this.is_weixin()) {
+                if(this.is_weixin_env()) {
                     var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
                     if(web_openid == null) {
                         // 已经授权则重新刷新用户信息
@@ -1369,6 +1386,22 @@
                 // 来源地址、拼接当前小程序页面
                 var pages = getCurrentPages();
                 var page = pages[pages.length-1];
+                return this.page_url_handle(page);
+            },
+            
+            // 上一页页面地址
+            prev_page() {
+                var value = null;
+                var pages = getCurrentPages();
+                var length = pages.length;
+                if(length > 1) {
+                    value = this.page_url_handle(pages[length-2]);
+                }
+                return value;
+            },
+            
+            // 页面地址处理
+            page_url_handle(page) {
                 var route = page.route;
                 var options = page.options || {};
                 var query = '';
@@ -1398,6 +1431,38 @@
                     // 打开webview
                     this.open_web_view(url);
                 }
+            },
+            
+            // 用户自动登录处理
+            user_auto_login_handle() {
+                // #ifdef H5
+                var user = this.get_user_cache_info() || null;
+                if(user == null) {
+                    var config = this.get_config('plugins_base.thirdpartylogin.data');
+                    var data = this.get_config('plugins_thirdpartylogin_data');
+                    var url = null;
+                    // 是否微信环境
+                    if(this.is_weixin_env()) {
+                        var is_auto = config.weixin_is_env_auto_login || 0;
+                        var weixin = data.weixin || null;
+                        if(is_auto != 0 && weixin != null) {
+                            url = weixin.login_url;
+                        }
+                    }
+
+                    // 存在登录url则跳转登录
+                    if(url != null) {
+                        // 上一个页面记录
+                        var page = this.current_page();
+                        if(page != null) {
+                            uni.setStorageSync(this.data.cache_prev_page_key, page);
+                        }
+
+                        // 跳转登录
+                        window.location.href = url;
+                    }
+                }
+                // #endif
             }
         },
 
