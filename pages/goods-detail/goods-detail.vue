@@ -338,11 +338,9 @@
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
                     <block v-if="(params.is_opt_back || 0) != 0">
                         <!-- 返回操作 -->
-                        <view class="item fl cp">
-                            <navigator open-type="navigateBack" hover-class="none">
-                                <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
-                                <text class="dis-block text-size-xs cr-gray">返回</text>
-                            </navigator>
+                        <view class="item fl cp" @tap="bottom_nav_back_event">
+                            <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
+                            <text class="dis-block text-size-xs cr-gray">返回</text>
                         </view>
                     </block>
                     <block v-else>
@@ -1707,7 +1705,7 @@
                     }
                 }
             },
-            
+
             // 购买记录提示处理
             plugins_salerecords_tips_handle() {
                 // 销毁之前的任务
@@ -1743,14 +1741,14 @@
                     });
                 }
             },
-            
+
             // 门店弹层关闭
             popup_realstore_close_event(e) {
                 this.setData({
                     popup_realstore_status: false
                 });
             },
-            
+
             // 评价图片预览
             comment_images_show_event(e) {
                 var index = e.currentTarget.dataset.index;
@@ -1760,30 +1758,50 @@
                     urls: this.goods.comments_data[index]['images']
                 });
             },
-            
+
             // 更多导航事件
             nav_more_event(e) {
                 app.globalData.operation_event(e);
                 this.setData({nav_more_status: false});
             },
-            
+
             // 批发开启弹层
             popup_wholesale_event(e) {
                 this.setData({
                     popup_wholesale_status: true
                 });
             },
-            
+
             // 批发弹层关闭
             popup_wholesale_close_event(e) {
                 this.setData({
                     popup_wholesale_status: false
                 });
             },
-            
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 底部导航操作返回事件
+            bottom_nav_back_event(e) {
+                var pages = getCurrentPages();
+                if(pages.length > 1) {
+                    uni.navigateBack();
+                } else {
+                    // 默认首页
+                    var url = app.globalData.data.tabbar_pages[0];
+
+                    // 是否有参数定义
+                    if((this.params.is_opt_back || 0) == 1) {
+                        // 门店详情来源
+                        if((this.params.realstore_id || null) != null) {
+                            url = '/pages/plugins/realstore/detail/detail?id='+this.params.realstore_id;
+                        }
+                    }
+                    app.globalData.url_open(url);
+                }
             }
         }
     };
