@@ -57,7 +57,9 @@
                 <!-- 智能识别 -->
                 <view v-if="is_user_address_discern == 1" class="form-gorup pr br-main-pair">
                     <textarea @input="address_discern_value_event" class="margin-0" placeholder="粘贴整段地址，自动拆分姓名、电话及地址" placeholder-class="cr-grey" />
-                    <button type="default" size="mini" class="auto-discern round pa bg-main-pair cr-white br-main-pair" @tap="address_discern_submit_event">识别</button>
+                    <cover-view class="auto-discern pa">
+                        <button type="default" size="mini" class="round bg-main-pair cr-white br-main-pair" @tap="address_discern_submit_event">识别</button>
+                    </cover-view>
                 </view>
 
                 <!-- 身份证信息 -->
@@ -465,7 +467,7 @@
 
                 // 是否开启地理位置选择后自动识别
                 if(result != null && this.is_user_address_location_discern == 1) {
-                    this.address_discern_handle(result.address, 0, 1);
+                    this.address_discern_handle(result, 0, 1);
                 }
             },
 
@@ -581,13 +583,15 @@
                 }
 
                 // 地址识别处理
-                this.address_discern_handle(this.address_discern_value, 1, 0);
+                this.address_discern_handle({address: this.address_discern_value}, 1, 0);
             },
 
             // 地址识别处理
+            // data 地址信息
             // is_user 是否解析用户信息（0, 1）
             // type 0 用户输入地址信息识别, 1用户选择地理位置识别
-            address_discern_handle(address, is_user = 0, type = 0) {
+            address_discern_handle(data, is_user = 0, type = 0) {
+                data['is_user'] = is_user;
                 uni.showLoading({
                     title: "处理中...",
                     mask: true
@@ -595,7 +599,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("address", "index", "intellectstools"),
                     method: "POST",
-                    data: {address: address, is_user: is_user},
+                    data: data,
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();

@@ -42,8 +42,11 @@
 .auto-discern {
     bottom: 20rpx;
     right: 20rpx;
+    z-index: 2;
+}
+.auto-discern button {
     line-height: inherit;
-    padding: 5rpx 20rpx;
+    padding: 5rpx 20rpx !important;
 }
 
 /*
