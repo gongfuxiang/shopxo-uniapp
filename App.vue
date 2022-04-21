@@ -37,6 +37,8 @@
                 is_share_use_image: 1,
                 // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
                 is_goods_bottom_opt_cart: 1,
+                // 门店详情顶部导航返回按钮（0 否, 1 是）
+                is_realstore_top_nav_back: 1,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",

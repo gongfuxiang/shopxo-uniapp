@@ -8,12 +8,12 @@
                     <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
                         <!-- 返回 -->
                         <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
-                        <view class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
+                        <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
                             <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
                         <!-- 搜索 -->
-                        <view class="nav-search fr va-m">
+                        <view :class="'fr va-m '+(is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
                             <!-- #ifndef H5 || MP-KUAISHOU -->
                             <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
@@ -255,7 +255,9 @@
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page() || 0
+                is_single_page: app.globalData.is_current_single_page() || 0,
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
             };
         },
 
