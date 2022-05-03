@@ -78,7 +78,7 @@
                         </block>
             
                         <!-- 清除缓存 -->
-                        <view class="nav-item padding-main fl tc cp" @tap="clear_storage">
+                        <view class="nav-item padding-main fl tc cp" @tap="logout_event">
                             <!-- #ifndef MP -->
                             <image :src="common_static_url+'logout-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">退出登录</view>
@@ -334,21 +334,12 @@
                 });
             },
 
-            // 退出/清除缓存
-            clear_storage(e) {
-                // 获取uuid重新存储缓存，一定情况下确保用户的uuid不改变
-                var uuid = uni.getStorageSync(app.globalData.data.cache_user_uuid_key) || null;
-
-                // 清除所有缓存
-                uni.clearStorage();
-                
-                // 重新存储用户uuid缓存
-                if (uuid != null) {
-                    uni.setStorage({
-                        key: app.globalData.data.cache_user_uuid_key,
-                        data: uuid
-                    });
-                }
+            // 退出
+            logout_event(e) {
+                // 用户登录缓存
+                uni.removeStorageSync(app.globalData.data.cache_user_login_key);
+                // 用户信息缓存
+                uni.removeStorageSync(app.globalData.data.cache_user_info_key);
 
                 // #ifdef MP
                 // 小程序提示缓存清除成功

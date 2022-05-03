@@ -390,7 +390,7 @@
 
             // 上一个页面记录
             var page = app.globalData.prev_page();
-            if(page != null) {
+            if(page != null && page != 'pages/login/login') {
                 uni.setStorageSync(app.globalData.data.cache_prev_page_key, page);
             }
 
@@ -835,7 +835,8 @@
             confirm_phone_number_event(e) {
                 var encrypted_data = e.detail.encryptedData || null;
                 var iv = e.detail.iv || null;
-                if (encrypted_data != null && iv != null) {
+                var code = e.detail.code || null;
+                if ((encrypted_data != null && iv != null) || code != null) {
                     // 系统参数、邀请人id
                     var params = app.globalData.get_launch_cache_info();
                     var referrer = (params == null) ? ((this.user || null) == null ? 0 : this.user.referrer || 0) : params.referrer || 0;
@@ -847,6 +848,7 @@
                     var data = {
                         "encrypted_data": encrypted_data,
                         "iv": iv,
+                        "code": code,
                         "openid": this.user[field_openid] || '',
                         "nickname": this.user.nickname || '',
                         "avatar": this.user.avatar || '',

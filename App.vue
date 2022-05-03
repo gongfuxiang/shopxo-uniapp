@@ -13,8 +13,6 @@
                 cache_user_login_key: "cache_user_login_key",
                 // 用户信息缓存key
                 cache_user_info_key: "cache_shop_user_info_key",
-                // 用户站点信息缓存key
-                cache_user_merchant_key: "cache_shop_user_merchant_key",
                 // 设备信息缓存key
                 cache_system_info_key: "cache_shop_system_info_key",
                 // 用户地址选择缓存key
@@ -1440,11 +1438,12 @@
                 // #ifdef H5
                 var user = this.get_user_cache_info() || null;
                 if(user == null) {
-                    var config = this.get_config('plugins_base.thirdpartylogin.data');
-                    var data = this.get_config('plugins_thirdpartylogin_data');
+                    var params = this.get_launch_cache_info() || {};
+                    var config = this.get_config('plugins_base.thirdpartylogin.data') || null;
+                    var data = this.get_config('plugins_thirdpartylogin_data') || null;
                     var url = null;
                     // 是否微信环境
-                    if(this.is_weixin_env()) {
+                    if((params.thirdpartylogin || null) == null && config != null && data != null && this.is_weixin_env()) {
                         var is_auto = config.weixin_is_env_auto_login || 0;
                         var weixin = data.weixin || null;
                         if(is_auto != 0 && weixin != null) {
