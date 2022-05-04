@@ -121,7 +121,7 @@
                 </block>
 
                 <!-- 楼层数据 -->
-                <block v-if="(data_list || nul) != null && data_list.length > 0">
+                <block v-if="(data_list || null) != null && data_list.length > 0">
                     <!-- 数据模式0,1自动+手动、2拖拽 -->
                     <block v-if="home_index_floor_data_type == 2">
                         <!-- 引入拖拽数据模块 -->
