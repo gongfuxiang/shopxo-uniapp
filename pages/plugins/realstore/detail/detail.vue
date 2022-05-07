@@ -79,10 +79,10 @@
                 <!-- 左侧 -->
                 <scroll-view :scroll-y="true" class="left-content fl ht-auto bg-white">
                     <view class="left-content-actual">
-                        <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" @tap="nav_event">全部</view>
+                        <view :class="'item tc cr-base text-size-xs cp ' + (nav_active_index == -1 ? 'active cr-main border-color-main fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">全部</view>
                         <block v-if="(goods_category || null) != null && goods_category.length > 0">
                             <block v-for="(item, index) in goods_category" :key="index">
-                                <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == index ? 'active cr-main border-color-main fw-b' : '')" :data-index="index" @tap="nav_event">
+                                <view :class="'item tc cr-base text-size-xs pr cp ' + (nav_active_index == index ? 'active cr-main border-color-main fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
                                     <text>{{item.name}}</text>
                                     <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
                                         <component-badge :propNumber="item.buy_number"></component-badge>
@@ -94,7 +94,17 @@
                 </scroll-view>
                 <!-- 右侧 -->
                 <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
-                    <view class="right-content-actual">
+                    <view class="right-content-actual pr">
+                        <!-- 二级分类 -->
+                        <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal">
+                            <scroll-view scroll-x>
+                                <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_index == -1) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
+                                    <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_index != -1 && nav_active_item_index == ci) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{cv.name}}</view>
+                                </block>
+                            </scroll-view>
+                        </view>
+                        <!-- 右侧商品列表 -->
                         <block v-if="(data_list || null) != null && data_list.length > 0">
                             <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
                                 <navigator :url="'/pages/goods-detail/goods-detail?id='+item.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
@@ -243,6 +253,7 @@
                 goods_list: [],
                 search_keywords_value: '',
                 nav_active_index: -1,
+                nav_active_item_index: -1,
                 cart_status: false,
                 // 收藏信息
                 favor_info: {
@@ -419,7 +430,12 @@
                 });
 
                 // 分类id
-                var category_id = (this.nav_active_index == -1) ? 0 : this.goods_category[this.nav_active_index]['id'];
+                var temp_category = this.goods_category;
+                if(this.nav_active_item_index != -1) {
+                    var category_id = temp_category[this.nav_active_index]['items'][this.nav_active_item_index]['id'];
+                } else {
+                    var category_id = (this.nav_active_index == -1) ? 0 : temp_category[this.nav_active_index]['id'];
+                }
 
                 // 获取数据
                 uni.request({
@@ -1030,6 +1046,7 @@
             nav_event(e) {
                 this.setData({
                     nav_active_index: e.currentTarget.dataset.index,
+                    nav_active_item_index: e.currentTarget.dataset.itemindex,
                     data_page: 1
                 });
                 this.reset_scroll();
