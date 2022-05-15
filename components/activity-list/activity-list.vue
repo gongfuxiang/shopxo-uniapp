@@ -16,81 +16,86 @@
                                 </block>
                             </scroll-view>
                         </view>
-                        <block v-if="floor.style_type == 0">
-                            <view v-if="floor.goods_list.length > 0" class="plugins-activity-list">
-                                <view v-for="(item, index) in floor.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
-                                    <!-- 商品主体内容 -->
-                                    <navigator :url="item.goods_url" hover-class="none">
-                                        <image class="activity-img fl radius" :src="item.images" mode="aspectFit"></image>
-                                        <view class="base fr">
-                                            <view class="multi-text">{{item.title}}</view>
-                                            <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
-                                            <view class="sales-price margin-top-sm">{{propCurrencySymbol}}{{item.min_price}}</view>
-                                        </view>
-                                    </navigator>
-                                    <!-- 标签插件 -->
-                                    <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
-                                        <block v-for="(lv,li) in propLabel.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                        <block v-if="floor.goods_list.length > 0">
+                            <!-- 默认图文 -->
+                            <block v-if="(floor.style_type || 0) == 0">
+                                <view class="plugins-activity-list">
+                                    <view v-for="(item, index) in floor.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
+                                        <!-- 商品主体内容 -->
+                                        <navigator :url="item.goods_url" hover-class="none">
+                                            <image class="activity-img fl radius" :src="item.images" mode="aspectFit"></image>
+                                            <view class="base fr">
+                                                <view class="multi-text">{{item.title}}</view>
+                                                <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
+                                                <view class="sales-price margin-top-sm">{{propCurrencySymbol}}{{item.min_price}}</view>
                                             </view>
-                                        </block>
-                                    </view>
-                                </view>
-                            </view>
-                        </block>
-                        <block v-else-if="floor.style_type == 1">
-                            <view v-if="floor.goods_list.length > 0" class="plugins-activity-grid-list">
-                                <view v-for="(item, index) in floor.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
-                                    <!-- 商品主体内容 -->
-                                    <navigator :url="item.goods_url" hover-class="none">
-                                        <image class="activity-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                        <view class="base padding-horizontal-main margin-top-sm">
-                                            <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                            <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
-                                        </view>
-                                    </navigator>
-                                    <!-- 标签插件 -->
-                                    <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
-                                        <block v-for="(lv,li) in propLabel.data" :key="li">
-                                            <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                            </view>
-                                        </block>
-                                    </view>
-                                </view>
-                            </view>
-                        </block>
-                        <block v-else-if="floor.style_type == 2">
-                            <view class="plugins-activity-rolling-list scroll-view-horizontal border-radius-main oh spacing-mb">
-                                <swiper :vertical="false" :autoplay="(propConfig.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="floor.goods_list.length < 3 ? floor.goods_list.length : 3" interval="3000">
-                                    <block v-for="(item, index) in floor.goods_list" :key="index">
-                                        <swiper-item class="padding-right-main">
-                                            <view class="item bg-white border-radius-main oh pr ht-auto pr">
-                                                <!-- 商品主体内容 -->
-                                                <navigator :url="item.goods_url" hover-class="none">
-                                                    <image class="activity-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
-                                                    <view class="padding-left-sm padding-right-sm margin-top-sm">
-                                                        <view class="multi-text margin-bottom-sm">{{item.title}}</view>
-                                                        <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
-                                                    </view>
-                                                </navigator>
-                                                <!-- 标签插件 -->
-                                                <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
-                                                    <block v-for="(lv,li) in propLabel.data" :key="li">
-                                                        <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                            <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                            <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                        </view>
-                                                    </block>
+                                        </navigator>
+                                        <!-- 标签插件 -->
+                                        <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
+                                            <block v-for="(lv,li) in propLabel.data" :key="li">
+                                                <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                    <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                                                 </view>
+                                            </block>
+                                        </view>
+                                    </view>
+                                </view>
+                            </block>
+                            <!-- 九方格 -->
+                            <block v-else-if="floor.style_type == 1">
+                                <view class="plugins-activity-grid-list">
+                                    <view v-for="(item, index) in floor.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
+                                        <!-- 商品主体内容 -->
+                                        <navigator :url="item.goods_url" hover-class="none">
+                                            <image class="activity-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                            <view class="base padding-horizontal-main margin-top-sm">
+                                                <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
+                                                <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
                                             </view>
-                                        </swiper-item>
-                                    </block>
-                                </swiper>
-                            </view>
+                                        </navigator>
+                                        <!-- 标签插件 -->
+                                        <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
+                                            <block v-for="(lv,li) in propLabel.data" :key="li">
+                                                <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                    <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                </view>
+                                            </block>
+                                        </view>
+                                    </view>
+                                </view>
+                            </block>
+                            <!-- 滚动 -->
+                            <block v-else-if="floor.style_type == 2">
+                                <view class="plugins-activity-rolling-list scroll-view-horizontal border-radius-main oh spacing-mb">
+                                    <swiper :vertical="false" :autoplay="(propConfig.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="floor.goods_list.length < 3 ? floor.goods_list.length : 3" interval="3000">
+                                        <block v-for="(item, index) in floor.goods_list" :key="index">
+                                            <swiper-item class="padding-right-main">
+                                                <view class="item bg-white border-radius-main oh pr ht-auto pr">
+                                                    <!-- 商品主体内容 -->
+                                                    <navigator :url="item.goods_url" hover-class="none">
+                                                        <image class="activity-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
+                                                        <view class="padding-left-sm padding-right-sm margin-top-sm">
+                                                            <view class="multi-text margin-bottom-sm">{{item.title}}</view>
+                                                            <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                                        </view>
+                                                    </navigator>
+                                                    <!-- 标签插件 -->
+                                                    <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
+                                                        <block v-for="(lv,li) in propLabel.data" :key="li">
+                                                            <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((propLabel.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                                <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                            </view>
+                                                        </block>
+                                                    </view>
+                                                </view>
+                                            </swiper-item>
+                                        </block>
+                                    </swiper>
+                                </view>
+                            </block>
                         </block>
                     </view>
                 </block>
