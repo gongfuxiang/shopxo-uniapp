@@ -111,8 +111,8 @@
                 </view>
                 
                 <!-- 活动配置-楼层顶部 - 插件 -->
-                <block v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0">
-                    <component-activity-list :propData="plugins_activity_data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                <block v-if="(plugins_activity_data || null) != null">
+                    <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
                 </block>
                 
                 <!-- 博客-楼层顶部 - 插件 -->
@@ -170,8 +170,8 @@
                 </block>
 
                 <!-- 活动配置-楼层底部 - 插件 -->
-                <block v-if="(plugins_activity_data || null) != null && plugins_activity_data.length > 0">
-                    <component-activity-list :propData="plugins_activity_data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                <block v-if="(plugins_activity_data || null) != null">
+                    <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
                 </block>
                 
                 <!-- 博客-楼层底部 - 插件 -->

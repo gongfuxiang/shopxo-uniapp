@@ -44,7 +44,7 @@
                             </view>
                         </block>
                         <block v-else-if="floor.style_type == 2">
-                            <view class="plugins-blog-rolling-list scroll-view-horizontal border-radius-main oh">
+                            <view class="plugins-blog-rolling-list scroll-view-horizontal border-radius-main oh spacing-mb">
                                 <swiper :vertical="false" :autoplay="(propConfig.is_home_hot_auto_play || 0) == 1" :circular="false" :display-multiple-items="floor.blog_list.length < 3 ? floor.blog_list.length : 3" interval="3000">
                                     <block v-for="(item, index) in floor.blog_list" :key="index">
                                         <swiper-item class="padding-right-main">
