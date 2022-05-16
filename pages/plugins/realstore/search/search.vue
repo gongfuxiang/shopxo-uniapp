@@ -206,14 +206,10 @@
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;
-                                    for(var i in temp_data_list) {
-                                        temp_data_list[i]['is_favor'] = (this.favor_user.indexOf(temp_data_list[i]['id']) == -1) ? 0 : 1;
-                                    }
                                 } else {
                                     var temp_data_list = this.data_list || [];
                                     var temp_data = data.data;
                                     for (var i in temp_data) {
-                                        temp_data[i]['is_favor'] = (this.favor_user.indexOf(temp_data[i]['id']) == -1) ? 0 : 1;
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }

@@ -2,7 +2,7 @@
     <view>
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item bg-white padding-main border-radius-main pr spacing-mb" :data-value="'/pages/plugins/realstore/detail/detail?id='+item.id" @tap="url_event">
+                <view class="item bg-white padding-main border-radius-main pr spacing-mb" :data-value="item.url" @tap="url_event">
                     <view class="base oh">
                         <!-- 基础内容 -->
                         <image :src="item.logo" mode="widthFix" class="logo circle fl br"></image>
@@ -44,7 +44,6 @@
 </template>
 <script>
     const app = getApp();
-
     export default {
         data() {
             return {
@@ -74,6 +73,7 @@
                 this.setData({
                     data_list: value
                 });
+                this.data_list_handle();
         	}
         },
         // 页面被展示
@@ -82,8 +82,20 @@
                 data_list: this.propDataList,
                 favor_user: this.propFavorUser
             });
+            this.data_list_handle();
         },
         methods: {
+            // 数据列表处理
+            data_list_handle() {
+                var temp_data_list = this.data_list;
+                for(var i in temp_data_list) {
+                    temp_data_list[i]['is_favor'] = (this.favor_user.indexOf(temp_data_list[i]['id']) == -1) ? 0 : 1;
+                }
+                this.setData({
+                    data_list: temp_data_list
+                });
+            },
+
             // 收藏事件
             favor_event(e) {
                 if(!app.globalData.is_single_page_check()) {
@@ -128,7 +140,7 @@
                                     this.setData({
                                         data_list: temp_data,
                                         favor_user: temp_favor
-                                    })
+                                    });
                                     app.globalData.showToast(res.data.msg, "success");
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
@@ -143,21 +155,6 @@
                         });
                     }
                 }
-            },
-            
-            // 搜索事件
-            search_button_event(e) {
-                var params = (e || null) == null ? '' : '?keywords='+e;
-                uni.navigateTo({
-                    url: '/pages/plugins/realstore/search/search'+params
-                })
-            },
-            
-            // 选择地理位置
-            choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location'
-                });
             },
             
             // 剪切板

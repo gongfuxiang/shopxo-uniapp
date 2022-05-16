@@ -271,3 +271,30 @@
     padding: 5rpx 20rpx;
     box-shadow: -1px 1px 3px rgb(0 0 0 / 10%);
 }
+
+/**
+ * 多商户 - 数据列表
+ */
+.plugins-shop-data-list .item {
+    
+}
+.plugins-shop-data-list .item .logo {
+    width: 120rpx;
+    height: 120rpx !important;
+}
+.plugins-shop-data-list .item .right-content {
+    width: calc(100% - 190rpx);
+    margin-right: 50rpx;
+}
+.plugins-shop-data-list .item .auth-icon {
+    background-color: #f4c985;
+    border: 1px solid #e7ba77;
+    color: #856651;
+    padding: 2rpx 12rpx;
+}
+.plugins-shop-data-list .item .desc {
+    color: #888;
+    font-size: 24rpx;
+    min-height: 72rpx;
+    line-height: 36rpx;
+}

@@ -160,20 +160,13 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var data_list = data.data_list || [];
-                            var favor_user = data.favor_user || [];
-                            if(favor_user.length > 0) {
-                                for(var i in data_list) {
-                                    data_list[i]['is_favor'] = (favor_user.indexOf(data_list[i]['id']) == -1) ? 0 : 1;
-                                }
-                            }
                             this.setData({
                                 data_base: data.base || null,
-                                favor_user: favor_user,
+                                favor_user: data.favor_user || [],
                                 category: data.category || [],
                                 slider_list: data.slider_list || [],
                                 icon_list: data.icon_list || [],
-                                data_list: data_list,
+                                data_list: data.data_list || [],
                                 is_first: 0,
                                 data_list_loding_status: data_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: true,

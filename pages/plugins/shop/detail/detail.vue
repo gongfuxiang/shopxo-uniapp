@@ -14,7 +14,7 @@
                 <image :src="shop.logo_long" mode="widthFix" class="shop-logo fl br-r padding-right-lg margin-top-xs cp"></image>
                 <view class="base fr">
                     <view class="shop-title single-text">
-                        <text v-if="((data_base.is_auth_fill_info || 0) == 1 || (data_base.is_auth_upload_pic || 0) == 1) && shop.auth_type == 1 && (shop.auth_type_name || null) != null" class="shop-auth-icon round fw-b margin-right-sm">{{shop.auth_type_name}}</text>
+                        <text v-if="(data_base.is_enable_auth || 0) == 1 && shop.auth_type == 1 && (shop.auth_type_name || null) != null" class="shop-auth-icon round fw-b margin-right-sm">{{shop.auth_type_name}}</text>
                         <text>{{shop.name}}</text>
                     </view>
                     <view class="base-bottom oh margin-top-sm">

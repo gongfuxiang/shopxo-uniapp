@@ -27,12 +27,12 @@
  * 错误提示
  */
 .goods-item .error-msg {
-    left: 104rpx;
+    left: 96rpx;
     top: 78rpx;
-    width: 142rpx;
+    width: 160rpx;
 }
 .goods-item .error-msg text {
-    padding: 2rpx 20rpx;
+    padding: 2rpx 10rpx;
     box-shadow: 0 2px 10px rgb(181 181 181 / 95%);
 }
 

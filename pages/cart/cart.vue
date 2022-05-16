@@ -18,7 +18,7 @@
                                         <!-- 图片 -->
                                         <image :class="'goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                         <!-- 错误 -->
-                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc">
+                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
                                             <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
                                         </view>
                                     </navigator>
@@ -96,7 +96,7 @@
                 <button class="bg-main br-main cr-white text-size round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
             </navigator>
         </view>
-        
+
         <!-- 提示信息 -->
         <block v-if="data_list.length == 0 && data_list_loding_status != 0">
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>

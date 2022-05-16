@@ -211,15 +211,15 @@
                 </view>
 
                 <!-- 多商户 -->
-                <view v-if="plugins_shop_data != null" class="plugins-shop-container oh border-radius-main padding-main bg-white arrow-right spacing-mb">
-                    <view :data-value="'/pages/plugins/shop/detail/detail?id=' + plugins_shop_data.id" @tap="url_event">
-                        <image :src="plugins_shop_data.logo" mode="aspectFit" class="plugins-shop-logo fl radius"></image>
-                        <view class="plugins-shop-base column-right-view fr">
-                            <view class="plugins-shop-title single-text">
-                                <text v-if="plugins_shop_data.auth_type == 1" class="plugins-shop-auth-icon">{{plugins_shop_data.auth_type_name}}</text>
+                <view v-if="plugins_shop_data != null" class="plugins-shop-data-list oh border-radius-main padding-main bg-white arrow-right spacing-mb">
+                    <view :data-value="plugins_shop_data.url" @tap="url_event" class="item">
+                        <image :src="plugins_shop_data.logo" mode="aspectFit" class="logo circle fl br"></image>
+                        <view class="right-content fr">
+                            <view class="title fw-b text-size single-text">
+                                <text v-if="plugins_shop_data.auth_type == 1" class="auth-icon round margin-right-xs fw-b text-size-xs tc">{{plugins_shop_data.auth_type_name}}</text>
                                 <text>{{plugins_shop_data.name}}</text>
                             </view>
-                            <view class="plugins-shop-desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}</view>
+                            <view class="desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}</view>
                         </view>
                     </view>
                 </view>
@@ -1053,9 +1053,14 @@
                         break;
                     // 门店
                     case 'plugins-realstore' :
-                        this.setData({
-                            popup_realstore_status: true
-                        });
+                        var temp_data_list = this.plugins_realstore_data;
+                        if(temp_data_list.length == 1) {
+                            app.globalData.url_open(temp_data_list[0]['url']);
+                        } else {
+                            this.setData({
+                                popup_realstore_status: true
+                            });
+                        }
                         break;
                     // 默认
                     default:
