@@ -50,17 +50,7 @@
     width: calc(100% - 320rpx);
 }
 .shop-title {
-    font-size: 32rpx;
-    font-weight: bold;
     line-height: 40rpx;
-}
-.shop-auth-icon {
-    background-color: #f4c985;
-    border: 1px solid #e7ba77;
-    color: #856651;
-    text-align: center;
-    padding: 2rpx 12rpx;
-    font-size: 24rpx;
 }
 
 /**

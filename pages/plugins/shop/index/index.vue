@@ -10,14 +10,33 @@
             </scroll-view>
             
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
+            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-shop-data-list" @scrolltolower="scroll_lower" lower-threshold="30">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                     <block v-for="(item, index) in data_list" :key="index">
                         <view class="item border-radius-main bg-white oh spacing-mb">
                             <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.logo_long" mode="aspectFit"></image>
+                                <image :src="item.logo_long" class="logo" mode="aspectFit"></image>
                                 <view class="padding-main tc">
-                                    <view class="single-text fw-b cr-base">{{item.name}}</view>
+                                    <view class="single-text">
+                                        <!-- 认证信息 -->
+                                        <text v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon">
+                                            <!-- 实名认证 -->
+                                            <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
+                                                <block v-if="item.auth_type == 0">
+                                                    <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
+                                                </block>
+                                                <block v-if="item.auth_type == 1">
+                                                    <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
+                                                </block>
+                                            </block>
+                                            <!-- 保证金认证 -->
+                                            <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
+                                                <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                            </block>
+                                        </text>
+                                        <!-- 标题 -->
+                                        <text class="fw-b text-size cr-base va-m">{{item.name}}</text>
+                                    </view>
                                     <view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
                                     <view class="oh margin-top-sm br-t-dashed padding-top-main">
                                         <view class="fl cr-gray single-text">商品 {{item.goods_count}}</view>

@@ -275,9 +275,6 @@
 /**
  * 多商户 - 数据列表
  */
-.plugins-shop-data-list .item {
-    
-}
 .plugins-shop-data-list .item .logo {
     width: 120rpx;
     height: 120rpx !important;
@@ -286,15 +283,12 @@
     width: calc(100% - 190rpx);
     margin-right: 50rpx;
 }
-.plugins-shop-data-list .item .auth-icon {
-    background-color: #f4c985;
-    border: 1px solid #e7ba77;
-    color: #856651;
-    padding: 2rpx 12rpx;
+.plugins-shop-data-list .item .auth-icon .icon {
+    width: 36rpx;
+    height: 36rpx !important;
+    margin-right: 10rpx;
 }
 .plugins-shop-data-list .item .desc {
-    color: #888;
-    font-size: 24rpx;
     min-height: 72rpx;
     line-height: 36rpx;
 }

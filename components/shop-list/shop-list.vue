@@ -6,11 +6,27 @@
                     <view :data-value="item.url" @tap="url_event">
                         <image :src="item.logo" mode="aspectFit" class="logo circle fl br"></image>
                         <view class="right-content fr">
-                            <view class="title fw-b text-size single-text">
-                                <text v-if="(propConfig.is_enable_auth || 0) == 1 && item.auth_type == 1 && (item.auth_type_name || null) != null" class="auth-icon round margin-right-xs fw-b text-size-xs tc">{{item.auth_type_name}}</text>
-                                <text>{{item.name}}</text>
+                            <view class="title single-text">
+                                <!-- 认证信息 -->
+                                <text v-if="(propConfig.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon">
+                                    <!-- 实名认证 -->
+                                    <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
+                                        <block v-if="item.auth_type == 0">
+                                            <image :src="propConfig.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
+                                        </block>
+                                        <block v-if="item.auth_type == 1">
+                                            <image :src="propConfig.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
+                                        </block>
+                                    </block>
+                                    <!-- 保证金认证 -->
+                                    <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
+                                        <image :src="propConfig.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                    </block>
+                                </text>
+                                <!-- 标题 -->
+                                <text class="fw-b text-size va-m">{{item.name}}</text>
                             </view>
-                            <view class="desc multi-text cr-gray margin-top-sm">{{item.describe}}</view>
+                            <view class="desc multi-text cr-grey text-size-xs margin-top-sm">{{item.describe}}</view>
                         </view>
                     </view>
                 </view>

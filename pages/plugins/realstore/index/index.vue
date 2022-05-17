@@ -160,18 +160,19 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var data_list = data.data_list || [];
                             this.setData({
                                 data_base: data.base || null,
                                 favor_user: data.favor_user || [],
                                 category: data.category || [],
                                 slider_list: data.slider_list || [],
                                 icon_list: data.icon_list || [],
-                                data_list: data.data_list || [],
+                                data_list: data_list,
                                 is_first: 0,
                                 data_list_loding_status: data_list.length > 0 ? 3 : 0,
                                 data_bottom_line_status: true,
                             });
-                            
+
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享
                                 this.setData({
