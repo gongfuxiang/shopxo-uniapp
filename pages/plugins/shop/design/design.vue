@@ -12,12 +12,28 @@
                     </view>
                 </view>
                 <!-- 顶部 -->
-                <view class="header bg-white oh">
+                <view class="header plugins-shop-data-list bg-white oh">
                     <image :src="shop.logo_long" mode="widthFix" class="shop-logo fl br-r padding-right-lg margin-top-xs cp"></image>
-                    <view class="base fr">
+                    <view class="base fr item">
                         <view class="shop-title single-text">
-                            <text v-if="(data_base.is_enable_auth || 0) == 1 && shop.auth_type == 1 && (shop.auth_type_name || null) != null" class="shop-auth-icon round fw-b margin-right-sm">{{shop.auth_type_name}}</text>
-                            <text>{{shop.name}}</text>
+                            <!-- 认证信息 -->
+                            <view v-if="(data_base.is_enable_auth || 0) == 1 && ((shop.auth_type != -1 && (shop.auth_type_msg || null) != null) || ((shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null))" class="auth-icon dis-inline-block">
+                                <!-- 实名认证 -->
+                                <block v-if="shop.auth_type != -1 && (shop.auth_type_msg || null) != null">
+                                    <block v-if="shop.auth_type == 0">
+                                        <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
+                                    </block>
+                                    <block v-if="shop.auth_type == 1">
+                                        <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
+                                    </block>
+                                </block>
+                                <!-- 保证金认证 -->
+                                <block v-if="(shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null">
+                                    <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                </block>
+                            </view>
+                            <!-- 标题 -->
+                            <text class="fw-b text-size va-m">{{shop.name}}</text>
                         </view>
                         <view class="base-bottom oh margin-top-sm">
                             <view v-if="(data_base.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="header_service_event">

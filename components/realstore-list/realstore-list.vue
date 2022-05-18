@@ -23,7 +23,7 @@
                         <view class="dis-inline-block va-m">
                             <uni-icons type="location-filled" size="12" color="#8d8d8d"></uni-icons>
                         </view>
-                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs va-m" :data-value="item.province_name+item.city_name+item.county_name+item.address" @tap.stop="text_copy_event">{{item.province_name}}{{item.city_name}}{{item.county_name}}{{item.address}}</view>
+                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-sm va-m" :data-value="item.province_name+item.city_name+item.county_name+item.address" @tap.stop="text_copy_event">{{item.province_name}}{{item.city_name}}{{item.county_name}}{{item.address}}</view>
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">

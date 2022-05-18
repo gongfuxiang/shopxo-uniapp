@@ -15,7 +15,7 @@
                 <view class="base fr item">
                     <view class="shop-title single-text">
                         <!-- 认证信息 -->
-                        <text v-if="(data_base.is_enable_auth || 0) == 1 && ((shop.auth_type != -1 && (shop.auth_type_msg || null) != null) || ((shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null))" class="auth-icon">
+                        <view v-if="(data_base.is_enable_auth || 0) == 1 && ((shop.auth_type != -1 && (shop.auth_type_msg || null) != null) || ((shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null))" class="auth-icon dis-inline-block">
                             <!-- 实名认证 -->
                             <block v-if="shop.auth_type != -1 && (shop.auth_type_msg || null) != null">
                                 <block v-if="shop.auth_type == 0">
@@ -29,9 +29,9 @@
                             <block v-if="(shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null">
                                 <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
                             </block>
-                        </text>
+                        </view>
                         <!-- 标题 -->
-                        <text class="fw-b text-size cr-base va-m">{{shop.name}}</text>
+                        <text class="fw-b text-size va-m">{{shop.name}}</text>
                     </view>
                     <view class="base-bottom oh margin-top-sm">
                         <view v-if="(data_base.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="header_service_event">

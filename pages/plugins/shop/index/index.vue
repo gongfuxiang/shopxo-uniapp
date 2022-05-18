@@ -19,7 +19,7 @@
                                 <view class="padding-main tc">
                                     <view class="single-text">
                                         <!-- 认证信息 -->
-                                        <text v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon">
+                                        <view v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon dis-inline-block">
                                             <!-- 实名认证 -->
                                             <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
                                                 <block v-if="item.auth_type == 0">
@@ -33,7 +33,7 @@
                                             <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
                                                 <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
                                             </block>
-                                        </text>
+                                        </view>
                                         <!-- 标题 -->
                                         <text class="fw-b text-size cr-base va-m">{{item.name}}</text>
                                     </view>

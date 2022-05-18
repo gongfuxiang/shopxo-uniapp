@@ -211,18 +211,9 @@
                 </view>
 
                 <!-- 多商户 -->
-                <view v-if="plugins_shop_data != null" class="plugins-shop-data-list oh border-radius-main padding-main bg-white arrow-right spacing-mb">
-                    <view :data-value="plugins_shop_data.url" @tap="url_event" class="item">
-                        <image :src="plugins_shop_data.logo" mode="aspectFit" class="logo circle fl br"></image>
-                        <view class="right-content fr">
-                            <view class="title fw-b text-size single-text">
-                                <text v-if="plugins_shop_data.auth_type == 1" class="auth-icon round margin-right-xs fw-b text-size-xs tc">{{plugins_shop_data.auth_type_name}}</text>
-                                <text>{{plugins_shop_data.name}}</text>
-                            </view>
-                            <view class="desc multi-text cr-gray margin-top-sm">{{plugins_shop_data.describe}}</view>
-                        </view>
-                    </view>
-                </view>
+                <block v-if="plugins_shop_data != null">
+                    <component-shop-list :propDataList="[plugins_shop_data]"></component-shop-list>
+                </block>
 
                 <!-- 商品评价 -->
                 <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
@@ -575,6 +566,7 @@
     import componentBottomLine from "../../components/bottom-line/bottom-line";
     import componentOnlineService from "../../components/online-service/online-service";
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
+    import componentShopList from "../../components/shop-list/shop-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -705,7 +697,8 @@
             componentTrnNav,
             componentBottomLine,
             componentOnlineService,
-            componentRealstoreList
+            componentRealstoreList,
+            componentShopList
         },
 
         onLoad(params) {

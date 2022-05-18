@@ -27,9 +27,9 @@
                     <navigator :url="item.url" hover-class="none">
                         <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
                         <view class="base fr">
-                            <view class="single-text">{{item.title}}</view>
-                            <view class="cr-gray margin-top-sm">{{item.add_time_date_cn}}</view>
-                            <view class="cr-grey multi-text margin-top-sm">{{item.describe}}</view>
+                            <view class="single-text text-size">{{item.title}}</view>
+                            <view class="cr-grey margin-top-sm">{{item.add_time_date_cn}}</view>
+                            <view class="cr-base text-size-sm multi-text margin-top-sm">{{item.describe}}</view>
                         </view>
                     </navigator>
                 </view>
