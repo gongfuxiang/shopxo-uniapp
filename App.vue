@@ -54,7 +54,7 @@
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
                 // 版本号
-                version: "v2.2.7",
+                version: "v2.2.8",
                 // 货币价格符号
                 currency_symbol: "￥",
                 // 主题类型        主题颜色
