@@ -45,9 +45,11 @@
                                 <text class="goods-group-title va-m">{{group.name}}</text>
                                 <text v-if="(group.alias || null) != null" class="goods-group-alias va-m round margin-left-sm text-size-xs">{{group.alias}}</text>
                             </view>
+                            <!-- #ifndef MP-KUAISHOU -->
                             <view v-if="(group.lng || 0) != 0 && (group.lat || 0) != 0" class="fr">
                                 <view class="goods-group-map-submit br round text-size-xs" :data-index="index" @tap="map_event">查看地图</view>
                             </view>
+                            <!-- #endif -->
                         </view>
                         <!-- 商品 -->
                         <view class="goods-content margin-bottom-sm">

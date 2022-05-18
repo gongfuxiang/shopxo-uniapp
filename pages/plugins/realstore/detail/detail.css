@@ -8,7 +8,7 @@
     border-bottom-left-radius: 100rpx;
     border-bottom-right-radius: 100rpx;
     height: 310rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO */
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU */
     height: 360rpx;
     /* #endif */
 }
@@ -44,7 +44,7 @@
  */
 .header-content {
     top: 140rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO */
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU */
     top: 200rpx;
     /* #endif */
     width: calc(100% - 80rpx);

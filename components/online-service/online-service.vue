@@ -9,7 +9,7 @@
                 </view>
             </block>
             <block v-else>
-                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
+                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-KUAISHOU -->
                 <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                     <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                 <!-- #endif -->
@@ -178,7 +178,7 @@
                             online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)
                         });
                     } else {
-                        // #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY || MP-KUAISHOU || H5 || APP
                         this.setData({
                             common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                             online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)

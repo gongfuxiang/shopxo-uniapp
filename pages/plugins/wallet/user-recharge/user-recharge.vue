@@ -347,6 +347,9 @@
                             // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
                             this.common_pay_handle(this, data, index);
                             // #endif
+                            // #ifdef MP-KUAISHOU
+                            this.kuaishou_pay_handle(this, data, index);
+                            // #endif
                             // #ifdef MP-QQ
                             this.qq_pay_handle(this, data, index);
                             // #endif
@@ -363,8 +366,28 @@
                     }
                 });
             },
+
+            // 快手小程序
+            kuaishou_pay_handle(self, data, index) {
+                uni.pay({
+                    orderInfo: data.data,
+                    serviceId: '1',
+                    success: res => {                
+                        // 数据设置
+                        self.order_item_pay_success_handle(index);
             
-            // 微信、支付宝、百度、头条、QQ支付处理
+                        // 跳转支付页面
+                        uni.navigateTo({
+                            url: "/pages/paytips/paytips?code=9000"
+                        });
+                    },
+                    fail: res => {
+                        app.globalData.showToast('支付失败');
+                    }
+                });
+            },
+
+            // 微信、支付宝、百度、头条、QQ
             common_pay_handle(self, data, index) {
                 uni.requestPayment({
                     // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO

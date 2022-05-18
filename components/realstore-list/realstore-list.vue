@@ -27,9 +27,11 @@
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
+                        <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
                             <uni-icons type="paperplane-filled" size="12" color="#fff"></uni-icons>
                         </view>
+                        <!-- #endif -->
                         <view v-if="(item.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" :data-value="item.service_tel" @tap.stop="tel_event">
                             <uni-icons type="phone-filled" size="12" color="#fff"></uni-icons>
                         </view>

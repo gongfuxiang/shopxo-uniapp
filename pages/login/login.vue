@@ -270,7 +270,7 @@
                         <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
                         <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">使用授权自动登录</button>
                         <!-- #endif -->
-                        <!-- #ifdef MP-QQ || MP-BAIDU -->
+                        <!-- #ifdef MP-QQ || MP-BAIDU || MP-KUAISHOU -->
                         <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">使用授权自动登录</button>
                         <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
@@ -566,6 +566,10 @@
                 } else {
                     app.globalData.auth_check(this, 'get_user_info_event', 'scope.userInfo');
                 }
+                // #endif
+                // #ifdef MP-KUAISHOU
+                var userinfo = e.target.userInfo;
+                this.user_auth_code(e.target.userInfo);
                 // #endif
             },
 

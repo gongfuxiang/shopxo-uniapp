@@ -144,10 +144,10 @@ button:before {
     float: right;
 }
 .wh-auto {
-    width: 100%;
+    width: 100% !important;
 }
 .ht-auto {
-    height: 100%;
+    height: 100% !important;
 }
 .tc {
     text-align: center;
@@ -162,16 +162,16 @@ button:before {
     overflow: hidden;
 }
 .dis-none {
-    display: none;
+    display: none !important;
 }
 .dis-block {
-    display: block;
+    display: block !important;
 }
 .dis-inline {
-    display: inline;
+    display: inline !important;
 }
 .dis-inline-block {
-    display: inline-block;
+    display: inline-block !important;
 }
 .va-m {
     vertical-align: middle;
@@ -340,6 +340,7 @@ button:before {
 }
 .br-0 {
     border: 0 !important;
+    box-shadow: none;
 }
 
 /**

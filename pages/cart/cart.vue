@@ -57,7 +57,7 @@
             </view>
 
             <!-- 操作导航 -->
-            <view v-if="data_list.length > 0" class="buy-nav oh wh-auto">
+            <view class="buy-nav oh wh-auto">
                 <!-- 展示型 -->
                 <view v-if="common_site_type == 1" class="exhibition-mode padding-horizontal-main">
                     <button class="bg-main cr-white round wh-auto text-size" type="default" @tap="exhibition_submit_event" hover-class="none">
@@ -166,7 +166,7 @@
             this.init();
         },
 
-        methods: {                
+        methods: {
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
@@ -243,9 +243,10 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var data_list = data.data || [];
                             this.setData({
-                                data_list: data.data,
-                                data_list_loding_status: data.data.length == 0 ? 0 : 3,
+                                data_list: data_list,
+                                data_list_loding_status: data_list.length == 0 ? 0 : 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '购物车空空如也'
                             });
@@ -271,7 +272,7 @@
                         // 分享菜单处理、延时执行，确保基础数据已加载完成
                         setTimeout(function() {
                             app.globalData.page_share_handle();
-                        }, 1000);
+                        }, 3000);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

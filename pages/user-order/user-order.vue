@@ -25,7 +25,7 @@
                         <text class="fr cr-red">{{item.status_name}}<text v-if="(item.is_under_line_text || null) != null">（{{item.is_under_line_text}}）</text></text>
                     </view>
                     <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
-                        <navigator :url="'/pages/user-order-detail/user-order-detail?id=' + item.id" hover-class="none">
+                        <view :data-value="'/pages/user-order-detail/user-order-detail?id=' + item.id" @tap="url_event">
                             <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{detail.title}}</view>
@@ -41,7 +41,7 @@
                                 </view>
                                 <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{detail.orderaftersale_btn_text}}</view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
                         <text>共<text class="fw-b">{{item.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{item.currency_data.currency_symbol}}{{item.total_price}}</text>元</text>
@@ -424,6 +424,9 @@
                                         // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
                                         this.common_pay_handle(this, data, order_ids);
                                         // #endif
+                                        // #ifdef MP-KUAISHOU
+                                        this.kuaishou_pay_handle(this, data, order_ids);
+                                        // #endif
                                         // #ifdef MP-QQ
                                         this.qq_pay_handle(this, data, order_ids);
                                         // #endif
@@ -476,11 +479,31 @@
                     }
                 });
             },
-            
-            // 微信、支付宝、百度、头条、QQ支付处理
+
+            // 快手小程序
+            kuaishou_pay_handle(self, data, order_ids) {
+                uni.pay({
+                    orderInfo: data.data,
+                    serviceId: '1',
+                    success: res => {                
+                        // 数据设置
+                        self.order_item_pay_success_handle(order_ids);
+
+                        // 跳转支付页面
+                        uni.navigateTo({
+                            url: "/pages/paytips/paytips?code=9000"
+                        });
+                    },
+                    fail: res => {
+                        app.globalData.showToast('支付失败');
+                    }
+                });
+            },
+
+            // 微信、支付宝、百度、头条、QQ
             common_pay_handle(self, data, order_ids) {
                 uni.requestPayment({
-                    // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+                    // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
                     orderInfo: data.data,
                     // #endif
                     // #ifdef MP-QQ

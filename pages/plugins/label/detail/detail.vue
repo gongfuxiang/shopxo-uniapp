@@ -3,8 +3,8 @@
         <block v-if="(label || null) != null">
             <!-- 基础 -->
             <view class="label-info bg-white padding-horizontal-main padding-top-main padding-bottom-sm">
-                <text class="round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs" :style="((label.bg_color || null) != null ? 'background-color:'+ label.bg_color+' !important;' : '')+((label.text_color || null) != null ? 'color:'+ label.text_color+' !important;' : '')">{{label.name}}</text>
-                <text class="cr-gray margin-left-sm">共有<text class="cr-red fw-b margin-left-xs margin-right-xs">{{data_total}}</text>条相关商品</text>
+                <view class="dis-inline-block round cr-white bg-main padding-left-lg padding-right-lg padding-top-xs padding-bottom-xs" :style="((label.bg_color || null) != null ? 'background-color:'+ label.bg_color+' !important;' : '')+((label.text_color || null) != null ? 'color:'+ label.text_color+' !important;' : '')">{{label.name}}</view>
+                <view class="dis-inline-block cr-gray margin-left-sm">共有<text class="cr-red fw-b margin-left-xs margin-right-xs">{{data_total}}</text>条相关商品</view>
             </view>
             
             <!-- 排序 -->

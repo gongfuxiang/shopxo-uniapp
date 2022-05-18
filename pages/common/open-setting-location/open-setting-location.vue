@@ -38,7 +38,7 @@
         methods: {
             // 获取权限
             init() {
-                // #ifdef MP
+                // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO || MP-QQ
                 var self = this;
                 uni.getSetting({
                     success(res) {
@@ -65,6 +65,10 @@
                 // #endif
                 // #ifdef H5 || APP
                 this.choose_location();
+                // #endif
+                // #ifdef MP-KUAISHOU
+                app.globalData.showToast('不支持地理位置选择！');
+                uni.navigateBack();
                 // #endif
             },
 

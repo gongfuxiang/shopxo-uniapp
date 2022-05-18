@@ -7,17 +7,17 @@
                     <!-- 顶部 -->
                     <view v-if="is_single_page == 0" class="header-top padding-horizontal-main" :style="'padding-top:'+(status_bar_height+8)+'px;'">
                         <!-- 返回 -->
-                        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || H5 || APP -->
+                        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-TOUTIAO || MP-KUAISHOU || H5 || APP -->
                         <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
                             <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
                         <!-- 搜索 -->
                         <view :class="'fr va-m '+(is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
-                            <!-- #ifndef H5 || MP-KUAISHOU -->
+                            <!-- #ifndef H5 -->
                             <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
-                            <!-- #ifdef H5 || MP-KUAISHOU -->
+                            <!-- #ifdef H5 -->
                             <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
                         </view>
@@ -28,7 +28,7 @@
                     </view>
                 </view>
                 <!-- 头部基础内容 -->
-                <view class="header-content margin-main padding-main border-radius-main bg-white wh-auto pa br">
+                <view class="header-content margin-main padding-main border-radius-main bg-white pa br">
                     <view class="base oh">
                         <!-- 基础内容 -->
                         <image :src="info.logo" mode="widthFix" class="logo circle fl br" :data-value="info.logo" @tap="image_show_event"></image>
@@ -58,9 +58,11 @@
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
+                        <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="(info.lat != 0 && info.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" @tap="address_map_event">
                             <uni-icons type="paperplane-filled" size="12" color="#fff"></uni-icons>
                         </view>
+                        <!-- #endif -->
                         <view v-if="(info.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" @tap="tel_event">
                             <uni-icons type="phone-filled" size="12" color="#fff"></uni-icons>
                         </view>
@@ -107,7 +109,7 @@
                         <!-- 右侧商品列表 -->
                         <block v-if="(data_list || null) != null && data_list.length > 0">
                             <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                <navigator :url="'/pages/goods-detail/goods-detail?id='+item.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" hover-class="none">
+                                <view :data-value="'/pages/goods-detail/goods-detail?id='+item.id+'&is_opt_back=1&buy_use_type_index='+buy_use_type_index+'&realstore_id='+info.id" @tap="url_event">
                                     <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
                                     <view class="goods-base fr">
                                         <view class="goods-base-content">
@@ -132,7 +134,7 @@
                                             </view>
                                         </view>
                                     </view>
-                                </navigator>
+                                </view>
                             </view>
                         </block>
                         <block v-else>
@@ -1190,6 +1192,11 @@
                 }
 
                 return data;
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

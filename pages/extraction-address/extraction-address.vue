@@ -83,15 +83,18 @@
                 key: this.user_location_cache_key
             });
 
+            // #ifndef MP-KUAISHOU
             // 是否获取位置
             if ((this.params.is_buy || 0) == 1 && this.home_extraction_address_position == 1) {
                 uni.navigateTo({
                     url: '/pages/common/open-setting-location/open-setting-location'
                 });
             }
+            // #endif
         },
 
         onShow() {
+            // #ifndef MP-KUAISHOU
             // 是否需要选择地理位置
             if (this.home_extraction_address_position == 1) {
                 // 首次不请求数据
@@ -102,6 +105,10 @@
             } else {
                 this.init();
             }
+            // #endif
+            // #ifdef MP-KUAISHOU
+            this.init();
+            // #endif
 
             this.setData({
                 is_first: 0

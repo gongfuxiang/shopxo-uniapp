@@ -325,7 +325,7 @@
                         // 分享菜单处理、延时执行，确保基础数据已加载完成
                         setTimeout(function() {
                             app.globalData.page_share_handle();
-                        }, 1000);
+                        }, 3000);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();

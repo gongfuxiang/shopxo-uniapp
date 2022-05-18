@@ -45,11 +45,11 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-                system_type: 'yifan2',
+                system_type: 'default',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
@@ -281,7 +281,7 @@
              */
             user_auth_login(object, method, auth_data) {
                 var self = this;
-                // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO
+                // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
                 uni.checkSession({
                     success: function() {
                         var login_data = self.get_login_cache_info();
@@ -1045,6 +1045,10 @@
              * scale      缩放比例，范围5~18
              */
             open_location(lng, lat, name, address, scale) {
+                // #ifdef MP-KUAISHOU
+                this.showToast('请复制地址到网页地图中查看！');
+                return false;
+                // #endif
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
                     this.showToast('坐标有误');
                     return false;
@@ -1208,6 +1212,9 @@
                 //#endif
                 // #ifdef MP-TOUTIAO
                     value = 'toutiao';
+                //#endif
+                // #ifdef MP-KUAISHOU
+                    value = 'kuaishou';
                 //#endif
                 // #ifdef H5
                     value = 'h5';
