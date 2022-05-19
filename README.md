@@ -46,9 +46,10 @@
 
 #### 支持多种配色
 
-![配色.jpg](https://doc.shopxo.net/upload/image/20211023/1634962774958024.jpg)
+![配色](https://doc.shopxo.net/upload/image/20211023/1634962774958024.jpg)
 
 #### 效果图片
 
-![主要部分.jpg](https://doc.shopxo.net/upload/image/20211023/1634962851731604.jpg)
-![扩展部分.jpg](https://doc.shopxo.net/upload/image/20211023/1634962862173709.jpg)
+![主要部分](https://doc.shopxo.net/upload/image/20211023/1634962851731604.jpg)
+![扩展部分](https://doc.shopxo.net/upload/image/20211023/1634962862173709.jpg)
+![多门店](https://doc.shopxo.net/upload/image/20220406/1649233148208137.jpg)
