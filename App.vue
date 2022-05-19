@@ -1340,7 +1340,7 @@
                                 page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
                                 page_url += 'is_weixin_auth_web_openid=1';
                             var request_url = encodeURIComponent(base64.encode(page_url));
-                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');                        
+                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');
                             window.location.href = url;
                         }
                         return false;
