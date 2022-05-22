@@ -116,7 +116,7 @@
                     <block v-if="goods_list.length > 0">
                         <block v-for="(item, index) in goods_list" :key="index">
                             <view v-if="item.active != 0" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                                <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.id" hover-class="none">
+                                <navigator :url="item.goods_url" hover-class="none">
                                     <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                                     <view class="base padding-horizontal-main margin-top">
                                         <view class="multi-text">{{item.title}}</view>

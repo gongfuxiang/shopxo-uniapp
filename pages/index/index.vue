@@ -164,7 +164,7 @@
                                 <view v-if="floor.goods.length > 0" class="goods-list">
                                     <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh pr">
                                         <!-- 商品主体内容 -->
-                                        <navigator :url="'/pages/goods-detail/goods-detail?id=' + goods.id" hover-class="none">
+                                        <navigator :url="goods.goods_url" hover-class="none">
                                             <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
                                             <view class="goods-base padding-horizontal-main margin-top-sm">
                                                 <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
@@ -214,7 +214,7 @@
                                             <text v-if="(item.user.province || null) != null"><text class="padding-left-xs padding-right-xs">-</text>{{item.user.province}}</text>
                                         </view>
                                         <view class="item-content fl">
-                                            <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.goods_id" hover-class="none" class="single-text">
+                                            <navigator :url="item.goods_url" hover-class="none" class="single-text">
                                                 <image mode="widthFix" :src="item.images" class="va-m br"></image>
                                                 <text class="margin-left-sm single-text">{{item.title}}</text>
                                             </navigator>

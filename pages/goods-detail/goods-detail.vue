@@ -340,19 +340,19 @@
                             <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-gray">{{nav_home_button_info.text}}</text>
                         </view>
-                        <!-- 客服 -->
-                        <component-online-service v-if="online_service_status == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
-                        <!-- 购物车 -->
-                        <view v-if="is_opt_cart == 1" class="item fl cp">
-                            <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
-                                <view class="badge-icon">
-                                    <component-badge :propNumber="quick_nav_cart_count"></component-badge>
-                                </view>
-                                <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
-                                <text class="dis-block text-size-xs cr-gray">购物车</text>
-                            </navigator>
-                        </view>
                     </block>
+                    <!-- 客服 -->
+                    <component-online-service v-if="online_service_status == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
+                    <!-- 购物车 -->
+                    <view v-if="is_opt_cart == 1" class="item fl cp">
+                        <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
+                            <view class="badge-icon">
+                                <component-badge :propNumber="quick_nav_cart_count"></component-badge>
+                            </view>
+                            <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
+                            <text class="dis-block text-size-xs cr-gray">购物车</text>
+                        </navigator>
+                    </view>
                     <!-- 收藏 -->
                     <view class="item fl cp" @tap="goods_favor_event">
                         <image :src="common_static_url+'favor'+(nav_favor_button_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
@@ -788,15 +788,11 @@
                     
                     // 底部业务导航按钮数量处理
                     var value = 4;
-                    if(this.is_opt_back == 1) {
-                        value = 2;
-                    } else {
-                        if(this.is_opt_cart != 1) {
-                            value--;
-                        }
-                        if(this.online_service_status != 1) {
-                            value--;
-                        }
+                    if(this.is_opt_cart != 1) {
+                        value--;
+                    }
+                    if(this.online_service_status != 1) {
+                        value--;
                     }
                     this.setData({bottom_nav_bus_number: value});
                 } else {
@@ -1043,6 +1039,14 @@
                             popup_status: true,
                             buy_event_type: type
                         });
+                        break;
+                    // url事件
+                    case 'url':
+                        if(value == null) {
+                            app.globalData.showToast('url事件为空');
+                            return false;
+                        }
+                        app.globalData.url_open(value);
                         break;
                     // 门店
                     case 'plugins-realstore' :

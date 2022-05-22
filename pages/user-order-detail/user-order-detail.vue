@@ -23,7 +23,7 @@
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
-                        <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.goods_id" hover-class="none">
+                        <navigator :url="item.goods_url" hover-class="none">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{item.title}}</view>

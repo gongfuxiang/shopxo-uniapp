@@ -69,7 +69,7 @@
                 </view>
                 <view class="goods-list oh">
                     <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                        <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.id" hover-class="none">
+                        <navigator :url="item.goods_url" hover-class="none">
                             <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                             <view class="base padding-horizontal-main margin-top-sm">
                                 <view class="multi-text">{{item.title}}</view>

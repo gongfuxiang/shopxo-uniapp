@@ -4,7 +4,7 @@
             <!-- 商品 -->
             <view class="goods padding-main border-radius-main bg-white spacing-mb">
                 <view class="goods-item oh">
-                    <navigator :url="'/pages/goods-detail/goods-detail?id=' + order_data.items.goods_id" hover-class="none">
+                    <navigator :url="order_data.items.goods_url" hover-class="none">
                         <image class="goods-image fl radius" :src="order_data.items.images" mode="aspectFill"></image>
                         <view class="goods-base">
                             <view class="multi-text">{{order_data.items.title}}</view>

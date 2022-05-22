@@ -14,7 +14,7 @@
                                 </view>
 
                                 <view class="items">
-                                    <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.goods_id" hover-class="none">
+                                    <navigator :url="item.goods_url" hover-class="none">
                                         <!-- 图片 -->
                                         <image :class="'goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                         <!-- 错误 -->
@@ -26,7 +26,7 @@
                                     <!-- 基础 -->
                                     <view class="goods-base">
                                         <!-- 标题、规格 -->
-                                        <navigator :url="'/pages/goods-detail/goods-detail?id=' + item.goods_id" hover-class="none">
+                                        <navigator :url="item.goods_url" hover-class="none">
                                             <view :class="'goods-title multi-text margin-bottom-sm '+((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{item.title}}</view>
                                         </navigator>
                                         <view v-if="item.spec != null" class="margin-bottom-sm">

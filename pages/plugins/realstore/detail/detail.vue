@@ -149,9 +149,13 @@
                 <block v-if="cart_status">
                     <view class="cart-mask wh-auto ht-auto pf" :data-value="false" @tap="cart_event"></view>
                     <view class="cart-content bg-white border-radius-main pa oh">
-                        <block v-if="(cart.data || null) != null && cart.data.length > 0">
+                        <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                             <view class="oh br-b padding-vertical-main padding-horizontal-main">
                                 <text class="va-m text-size-xs cr-base">已选商品</text>
+                                <view class="dis-inline-block margin-left-xl text-size-xs">
+                                    <text class="cr-red">没有已加购的商品？</text>
+                                    <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
+                                </view>
                                 <view class="fr cp" @tap="cart_all_delete_event">
                                     <view class="dis-inline-block va-m">
                                         <uni-icons type="trash" size="12" color="#f00"></uni-icons>
@@ -192,6 +196,10 @@
                         </block>
                         <block v-else>
                             <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
+                            <view class="padding-bottom-xxxl margin-bottom-xxxl tc text-size-xs">
+                                <text class="cr-red">没有已加购的商品？</text>
+                                <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
+                            </view>
                         </block>
                     </view>
                 </block>
@@ -382,9 +390,9 @@
                                 // 获取数据、仅首次调用
                                 // 获取列表接口和购物车
                                 if(this.is_first == 1) {
-                                    this.setData({is_first: 0});
                                     this.get_data_list();
-                                    this.get_cart_data();
+                                    this.get_cart_data(this.is_first);
+                                    this.setData({is_first: 0});
                                 } else {
                                     // 非首次赋值购物车数据
                                     this.setData({
@@ -415,7 +423,7 @@
                 });
             },
 
-            // 获取数据-获取数据
+            // 获取数据-商品列表
             get_data_list(is_mandatory) {
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
@@ -839,8 +847,8 @@
                 });
             },
 
-            // 获取购物车数据
-            get_cart_data() {
+            // 获取购物车数据、参数是否首次请求
+            get_cart_data(is_first = 0) {
                 uni.request({
                     url: app.globalData.get_request_url("cartdata", "detail", "realstore"),
                     method: 'POST',
@@ -854,6 +862,13 @@
                                 cart: res.data.data
                             });
                             this.cart_data_list_handle();
+
+                            // 首次判断是否需要开启购物车
+                            if(is_first == 1 && (this.params.is_show_cart || 0) == 1) {
+                                this.setData({
+                                    cart_status: true
+                                });
+                            }
                         } else {
                             app.globalData.showToast('请求失败，请重试！');
                         }
