@@ -1141,17 +1141,24 @@
             
             // 成功后处理
             success_back_handle(res) {
+                var self = this;
                 app.globalData.showToast(res.data.msg, 'success');
                 var event_callback = this.params.event_callback || null;
                 setTimeout(function() {
-                    // 触发回调函数
-                    if (event_callback != null) {
-                        var pages = getCurrentPages();
-                        if((pages[pages.length-2][event_callback] || null) != null) {
-                            pages[pages.length-2][event_callback]();
+                    var pages = getCurrentPages();
+                    if(pages.length > 1) {
+                        // 触发回调函数
+                        if (event_callback != null) {
+                            if((pages[pages.length-2][event_callback] || null) != null) {
+                                pages[pages.length-2][event_callback]();
+                            }
                         }
+                        // 默认返回上一页
+                        uni.navigateBack();
+                    } else {
+                        // 仅一个页面则执行成功返回
+                        self.success_event();
                     }
-                    uni.navigateBack();
                 }, 1000);
             },
 
@@ -1304,7 +1311,7 @@
                 });
             },
 
-            // 返回上一页
+            // 成功返回
             success_event(e) {
                 var url = (this.prev_page == null) ? app.globalData.data.tabbar_pages[0] : this.prev_page;
                 app.globalData.url_open(url, true);
