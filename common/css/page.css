@@ -786,3 +786,42 @@ button[disabled].bg-gray {
 .last-next-data navigator {
     width: calc(100% - 120rpx);
 }
+
+/**
+ * 商品列表 - 列表
+ */
+.goods-data-list .goods-img {
+    width: 190rpx !important;
+    height: 190rpx !important;
+}
+.goods-data-list .base {
+    width: calc(100% - 220rpx);
+}
+/*
+ * 商品列表 - 滚动
+ */
+.goods-data-rolling-list swiper {
+    height: 390rpx !important;
+}
+.goods-data-rolling-list .item .goods-img {
+    height: 240rpx !important;
+}
+/**
+ * 商品列表 - 九方格
+ */
+.goods-data-grid-list .item {
+    width: calc(50% - 10rpx);
+    float: left;
+    padding-bottom: 10rpx;
+    margin-bottom: 20rpx;
+}
+.goods-data-grid-list .item:nth-of-type(2n + 1) {
+    margin-right: 10rpx;
+}
+.goods-data-grid-list .item:nth-of-type(2n) {
+    margin-left: 10rpx;
+}
+.goods-data-grid-list .item .goods-img {
+    width: 100%;
+    height: 380rpx !important;
+}

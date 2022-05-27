@@ -126,14 +126,17 @@
 .plugins-label-bottom-right {
     right: 0;
 }
-.plugins-activity-rolling-list .plugins-label-bottom-left,
-.plugins-activity-rolling-list .plugins-label-bottom-center,
-.plugins-activity-rolling-list .plugins-label-bottom-right {
-    bottom: calc(100% - 240rpx);
+/**
+ * 商品列表标签处理
+ */
+.goods-data-rolling-list .plugins-label-bottom-left,
+.goods-data-rolling-list .plugins-label-bottom-center,
+.goods-data-rolling-list .plugins-label-bottom-right {
+    bottom: calc(100% - 240rpx) !;
 }
-.plugins-activity-list .plugins-label-bottom-left,
-.plugins-activity-list .plugins-label-bottom-center,
-.plugins-activity-list .plugins-label-bottom-right {
+.goods-data-list .plugins-label-bottom-left,
+.goods-data-list .plugins-label-bottom-center,
+.goods-data-list .plugins-label-bottom-right {
     bottom: 0;
 }
 
@@ -190,45 +193,6 @@
 .plugins-blog-grid-list .item .blog-img {
     width: 100%;
     height: 230rpx !important;
-}
-
-/**
- * 活动配置 - 列表
- */
-.plugins-activity-list .activity-img {
-    width: 190rpx !important;
-    height: 190rpx !important;
-}
-.plugins-activity-list .base {
-    width: calc(100% - 220rpx);
-}
-/*
- * 活动配置 - 滚动
- */
-.plugins-activity-rolling-list swiper {
-    height: 390rpx !important;
-}
-.plugins-activity-rolling-list .item .activity-img {
-    height: 240rpx !important;
-}
-/**
- * 活动配置 - 九方格
- */
-.plugins-activity-grid-list .item {
-    width: calc(50% - 10rpx);
-    float: left;
-    padding-bottom: 10rpx;
-    margin-bottom: 20rpx;
-}
-.plugins-activity-grid-list .item:nth-of-type(2n + 1) {
-    margin-right: 10rpx;
-}
-.plugins-activity-grid-list .item:nth-of-type(2n) {
-    margin-left: 10rpx;
-}
-.plugins-activity-grid-list .item .activity-img {
-    width: 100%;
-    height: 380rpx !important;
 }
 
 /**

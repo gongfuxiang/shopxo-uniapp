@@ -1,11 +1,11 @@
 <template>
     <view>
-        <view v-if="(data || null) != null" class="pr">
+        <view v-if="(shop || null) != null" class="pr">
             <!-- 搜索 -->
             <view class="search padding-main bg-white pr oh br-b">
                 <input class="bg-white fl padding-left-xxl text-size-xs round border-color-main" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey" @input="search_keywords_event">
                 <view class="search-btn pa">
-                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&'">搜本店</button>
+                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&'">搜本店</button>
                     <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
                 </view>
             </view>
@@ -102,35 +102,17 @@
             </block>
             <!-- 自动模式 -->
             <block v-else>
-                <view class="shop-category-list scroll-view-horizontal">
-                    <scroll-view scroll-x>
-                        <view :class="'item dis-inline-block cr-base padding-horizontal-main padding-top-xs padding-bottom-xs round cp ' + ((shop_category_tab_value == 0) ? 'bg-main cr-white' : '')" @tap="shop_category_tab_event" data-value="0">全部</view>
-                        <block v-if="shop_goods_category.length > 0">
-                            <block v-for="(item, index) in shop_goods_category" :key="index">
-                                <view :class="'item dis-inline-block cr-base padding-horizontal-main padding-top-xs padding-bottom-xs round cp ' + ((shop_category_tab_value == item.id) ? 'bg-main cr-white' : '')" @tap="shop_category_tab_event" :data-value="item.id">{{item.name}}</view>
-                            </block>
-                        </block>
-                    </scroll-view>
-                </view>
                 <view class="data-list padding-horizontal-main oh">
-                    <block v-if="goods_list.length > 0">
-                        <block v-for="(item, index) in goods_list" :key="index">
-                            <view v-if="item.active != 0" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                                <navigator :url="item.goods_url" hover-class="none">
-                                    <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                    <view class="base padding-horizontal-main margin-top">
-                                        <view class="multi-text">{{item.title}}</view>
-                                        <view class="price margin-top">
-                                            <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                                        </view>
-                                    </view>
-                                </navigator>
-                            </view>
+                    <!-- 轮播 -->
+                    <view v-if="slider.length > 0" class="margin-top-main">
+                        <component-banner :propData="slider"></component-banner>
+                    </view>
+
+                    <!-- 商品列表 -->
+                    <block v-if="data.length > 0">
+                        <block v-for="(item, index) in data" :key="index">
+                            <component-goods-list :propData="item" propMoreUrlKey="more_url" :propKeywordsUrl="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&keywords='" :propIsAutoPlay="true" :propCurrencySymbol="currency_symbol"></component-goods-list>
                         </block>
-                    </block>
-                    <block v-else>
-                        <!-- 提示信息 -->
-                        <component-no-data propStatus="0"></component-no-data>
                     </block>
                 </view>
             </block>
@@ -149,6 +131,8 @@
     import componentLayout from "../../../../components/layout/layout";
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentBanner from "../../../../components/slider/slider";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -166,12 +150,11 @@
                 shop_favor_user: [],
                 shop_navigation: [],
                 shop_goods_category: [],
-                data: null,
-                goods_list: [],
+                slider: [],
+                data: [],
                 search_keywords_value: '',
                 header_service_status: false,
                 nav_category_status: false,
-                shop_category_tab_value: 0,
                 shop_favor_info: {
                     "text": "收藏",
                     "status": 0,
@@ -185,7 +168,9 @@
         components: {
             componentLayout,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentBanner,
+            componentGoodsList
         },
         props: {},
 
@@ -235,23 +220,18 @@
                             var data = res.data.data;
                             this.setData({
                                 data_base: data.base || null,
-                                shop: ((data.shop || null) == null) ? null : data.shop,
+                                shop: data.shop || null,
                                 shop_favor_user: data.shop_favor_user || [],
                                 shop_navigation: data.shop_navigation || [],
                                 shop_goods_category: data.shop_goods_category || [],
-                                data: data.data || null,
-                                goods_list: (data.data || null) != null && (data.data.goods || null) != null && data.data.goods.length > 0 ? data.data.goods : [],
+                                data: data.data || [],
+                                slider: data.slider || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
 
                             if ((this.shop || null) != null) {
-                                // 自动模式数据、商品列表切换处理
-                                if ((this.shop.data_model || 0) == 0) {
-                                    this.shop_category_tab_handle();
-                                }
-
                                 // 收藏信息
                                 var status = this.shop_favor_user.indexOf(this.shop.id) != -1 ? 1 : 0;
                                 this.setData({
@@ -401,32 +381,6 @@
                 app.globalData.image_show_event(e);
             },
 
-            // 分类切换事件
-            shop_category_tab_event(e) {
-                this.setData({
-                    shop_category_tab_value: e.currentTarget.dataset.value || 0
-                });
-                this.shop_category_tab_handle();
-            },
-
-            // 分类切换处理
-            shop_category_tab_handle() {
-                var value = this.shop_category_tab_value || 0;
-                var temp = this.data;
-                var goods = [];
-                if (temp.goods.length > 0) {
-                    for (var i in temp.goods) {
-                        if (temp.goods[i]['shop_category_id'] == value || value == 0) {
-                            goods.push(temp.goods[i]);
-                        }
-                    }
-                }
-                this.setData({
-                    goods_list: goods,
-                    data_bottom_line_status: goods.length > 0
-                });
-            },
-            
             // 进入客服系统
             chat_event() {
                 app.globalData.chat_entry_handle(this.shop.chat_info.chat_url);
