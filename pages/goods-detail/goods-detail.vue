@@ -853,6 +853,10 @@
                                 plugins_chat_data: data.plugins_chat_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                             };
+                            // 如果已默认开启弹窗，库存为0则不开启
+                            if(this.popup_status == 1 && goods.inventory <= 0) {
+                                upd_data['popup_status'] = 0;
+                            }
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {
                                 upd_data['nav_home_button_info'] = data.nav_home_button_info;
