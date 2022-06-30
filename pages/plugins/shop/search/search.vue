@@ -96,6 +96,8 @@
                 shop: null,
                 is_show_popup_form: false,
                 popup_form_loading_status: false,
+                // 排序导航
+                search_nav_sort_index: 0,
                 search_nav_sort_list: [
                     { name: "综合", field: "default", sort: "asc", "icon": null },
                     { name: "销量", field: "sales_count", sort: "asc", "icon": "default" },
@@ -349,6 +351,13 @@
                         post_data[temp_field[i]['form_key']] = app.globalData.get_length(temp) > 0 ? JSON.stringify(temp) : '';
                     }
                 }
+                
+                // 排序
+                var temp_index = this.search_nav_sort_index;
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                post_data['order_by_type'] = temp_search_nav_sort[temp_index]['sort'] == 'desc' ? 'asc' : 'desc';
+                post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
+
                 return post_data;
             },
 
@@ -384,7 +393,6 @@
             // 排序事件
             nav_sort_event(e) {
                 var index = e.currentTarget.dataset.index || 0;
-                var temp_post_data = this.post_data;
                 var temp_search_nav_sort = this.search_nav_sort_list;
                 var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
                 for (var i in temp_search_nav_sort) {
@@ -399,10 +407,9 @@
                 if (temp_search_nav_sort[index]['icon'] != null) {
                     temp_search_nav_sort[index]['icon'] = temp_sort;
                 }
-                temp_post_data['order_by_field'] = temp_search_nav_sort[index]['field'];
-                temp_post_data['order_by_type'] = temp_sort;
+
                 this.setData({
-                    post_data: temp_post_data,
+                    search_nav_sort_index: index,
                     search_nav_sort_list: temp_search_nav_sort,
                     data_page: 1
                 });
@@ -450,12 +457,21 @@
                         }
                     }
                 }
+
+                // 排序导航
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                for (var i in temp_search_nav_sort) {
+                    temp_search_nav_sort[i]['sort'] = 'asc';
+                    temp_search_nav_sort[i]['icon'] = (temp_search_nav_sort[i]['field'] == 'default') ? null : 'default';
+                }
                 
                 // 关闭弹窗、分页恢复1页、重新获取数据
                 this.setData({
                     search_map_list: temp_list,
                     post_data: temp_post,
                     is_show_popup_form: false,
+                    search_nav_sort_list: temp_search_nav_sort,
+                    search_nav_sort_index: 0,
                     data_page: 1
                 });
                 this.get_data_list(1);

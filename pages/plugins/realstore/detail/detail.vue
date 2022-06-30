@@ -1017,8 +1017,18 @@
                 // 起步价
                 var starting_price = parseFloat(this.info.starting_price) || 0;
                 if(starting_price > 0 && this.cart.total_price < starting_price) {
-                    app.globalData.showToast("起步价"+starting_price+"元");
-                    return false;
+                    // 是否限制类型
+                    var limit_type = this.info.starting_price_limit_type_list || [];
+                    if(limit_type.length > 0) {
+                        var buy_use_type = this.info.buy_use_type_list[this.buy_use_type_index];
+                        if(limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
+                            app.globalData.showToast(buy_use_type['name']+'起步价'+starting_price+'元');
+                            return false;
+                        }
+                    } else {
+                        app.globalData.showToast('起步价'+starting_price+'元');
+                        return false;
+                    }
                 }
 
                 // 进入订单确认页面
@@ -1149,7 +1159,16 @@
                     if(index === null || index === '') {
                         // 是否默认类型
                         if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
-                            index = this.info.default_buy_use_type;
+                            // 不在店铺设置的类型列表则默认0
+                            var temp_index = null;
+                            for(var i in this.info.buy_use_type_list) {
+                                if(this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
+                                    temp_index = i;
+                                }
+                            }
+                            if(temp_index !== null) {
+                                index = temp_index;
+                            }
                         }
                     }
 
