@@ -84,9 +84,9 @@
                 <view class="price-content padding-lg" :style="(plugins_seckill_is_valid == 1) ? 'background-image: url('+plugins_seckill_data.bg_img+')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon radius va-m">{{show_field_price_text}}</text>
-                        <text class="sales-price va-m">{{currency_symbol}}{{goods.min_price}}</text>
+                        <text class="sales-price va-m">{{currency_symbol}}{{goods_spec_base_price}}</text>
                     </view>
-                    <view v-if="(goods.min_original_price || null) != null && goods.min_original_price > 0" class="original-price margin-top-sm single-text">{{currency_symbol}}{{goods.min_original_price}}</view>
+                    <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm single-text">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
                 </view>
                 <!-- 秒杀 -->
                 <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-lg fr tc">
@@ -201,7 +201,7 @@
                 </view>
 
                 <!-- 门店 -->
-                <view v-if="plugins_realstore_data != null" class="plugins-realstore-container">
+                <view v-if="plugins_realstore_data != null && plugins_realstore_data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">相关门店</text>
@@ -388,7 +388,7 @@
                         <view class="goods-popup-base-content">
                             <view class="goods-price">
                                 <view class="sales-price">{{currency_symbol}}{{goods_spec_base_price}}</view>
-                                <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price > 0" class="original-price">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
+                                <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
                             </view>
                             <view class="inventory">
                                 <text class="cr-gray">库存</text>
@@ -679,7 +679,10 @@
                 // 标签插件
                 plugins_label_data: null,
                 // 智能工具插件
+                plugins_intellectstools_config: null,
                 plugins_intellectstools_data: null,
+                plugins_intellectstools_timer: null,
+                plugins_intellectstools_timerout: null,
                 // 客服插件
                 plugins_chat_data: null,
                 // 门店插件
@@ -732,6 +735,8 @@
         // 页面销毁时执行
         onUnload: function() {
             clearInterval(this.plugins_salerecords_timer);
+            clearInterval(this.plugins_intellectstools_timer);
+            clearInterval(this.plugins_intellectstools_timerout);
         },
 
         // 监听滚动
@@ -784,6 +789,7 @@
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
+                        plugins_intellectstools_config: app.globalData.get_config('plugins_base.intellectstools.data'),
                     });
                     
                     // 底部业务导航按钮数量处理
@@ -837,7 +843,7 @@
                                 buy_button: data.buy_button || null,
                                 top_nav_title_data: data.middle_tabs_nav || [],
                                 goods_spec_base_price: goods.price,
-                                goods_spec_base_original_price: goods.original_price,
+                                goods_spec_base_original_price: goods.original_price || 0,
                                 goods_spec_base_inventory: goods.inventory,
                                 goods_spec_base_images: goods.images,
                                 show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
@@ -882,6 +888,9 @@
                             
                             // 购买记录提示
                             this.plugins_salerecords_tips_handle();
+                            
+                            // 默认选中第一个规格、必须是可以可售的商品
+                            this.plugins_intellectstools_selected_spec_handle();
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -976,6 +985,62 @@
                }, 500);
             },
 
+            // 默认选中第一个规格、必须是可以可售的商品
+            plugins_intellectstools_selected_spec_handle() {
+                var self = this;
+                // 销毁之前的任务
+                clearInterval(self.plugins_intellectstools_timer);
+                clearInterval(self.plugins_intellectstools_timerout);
+                // 读取智能工具插件配置、是否开启
+                var config = self.plugins_intellectstools_config || null;
+                if(config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
+                    // 必须存在购买和加入购物车任意一个、规格必须多个
+                    var buy = self.buy_button;
+                    var sku_count = app.globalData.get_length(self.goods_specifications_choose);
+                    if(((buy.is_buy || 0)+(buy.is_cart || 0)) > 0 && sku_count > 0) {
+                        // 先清除价格展示信息
+                        self.setData({
+                            goods_spec_base_price: '...',
+                            goods_spec_base_original_price: '...'
+                        });
+                        var num = 0;
+                        var timer = setInterval(function() {
+                            var spec = self.goods_specifications_choose;
+                            for(var i in spec) {
+                                // 清除价格展示信息、避免获取价格类型赋值
+                                self.setData({
+                                    goods_spec_base_price: '...',
+                                    goods_spec_base_original_price: '...'
+                                });
+                                // 必须不存在已选择项
+                                var active = spec[i]['value'].map(function(v){return v.is_active}).join('') || null;
+                                if(active == null) {
+                                    var status = false;
+                                    for(var k in spec[i]['value']) {
+                                        // 必须是可选和未选
+                                        if(!status && (spec[i]['value'][k]['is_disabled'] || null) == null && (spec[i]['value'][k]['is_dont'] || null) == null) {
+                                            self.goods_specifications_handle(i, k);
+                                            status = true;
+                                            num++;
+                                        }
+                                    }
+                                }
+                            }
+                            if(num >= sku_count) {
+                                clearInterval(self.plugins_intellectstools_timer);
+                            }
+                        }, 100);
+                        var timerout = setTimeout(function() {
+                            clearInterval(self.plugins_intellectstools_timerout);
+                        }, 20000);
+                        self.setData({
+                            plugins_intellectstools_timer: timer,
+                            plugins_intellectstools_timerout: timerout
+                        });
+                    }
+                }
+            },
+
             // 不能选择规格处理
             goods_specifications_choose_handle_dont(key) {
                 var temp_data = this.goods_specifications_choose || [];
@@ -984,10 +1049,12 @@
                 }
 
                 // 是否不能选择
+                key = parseInt(key);
                 for (var i in temp_data) {
                     for (var k in temp_data[i]['value']) {
                         if (i > key) {
-                            temp_data[i]['value'][k]['is_dont'] = 'spec-dont-choose', temp_data[i]['value'][k]['is_disabled'] = '';
+                            temp_data[i]['value'][k]['is_dont'] = 'spec-dont-choose';
+                            temp_data[i]['value'][k]['is_disabled'] = '';
                             temp_data[i]['value'][k]['is_active'] = '';
                         }
 
@@ -1054,7 +1121,7 @@
                         break;
                     // 门店
                     case 'plugins-realstore' :
-                        var temp_data_list = this.plugins_realstore_data;
+                        var temp_data_list = this.plugins_realstore_data || [];
                         if(temp_data_list.length == 1) {
                             app.globalData.url_open(temp_data_list[0]['url']);
                         } else {
@@ -1170,9 +1237,14 @@
             goods_specifications_event(e) {
                 var key = e.currentTarget.dataset.key || 0;
                 var keys = e.currentTarget.dataset.keys || 0;
+                this.goods_specifications_handle(key, keys);
+            },
+
+            // 规格选择处理
+            goods_specifications_handle(key, keys) {
                 var temp_data = this.goods_specifications_choose;
                 var temp_images = this.goods_spec_base_images;
-
+            
                 // 不能选择和禁止选择跳过
                 if ((temp_data[key]['value'][keys]['is_dont'] || null) == null && (temp_data[key]['value'][keys]['is_disabled'] || null) == null) {
                     // 规格选择
@@ -1197,13 +1269,13 @@
                         goods_spec_base_images: temp_images,
                         buy_number: parseInt(this.goods.buy_min_number) || 1,
                     });
-
+            
                     // 不能选择规格处理
                     this.goods_specifications_choose_handle_dont(key);
-
+            
                     // 获取下一个规格类型
                     this.get_goods_specifications_type(key);
-
+            
                     // 获取规格详情
                     this.get_goods_specifications_detail();
                 }
@@ -1226,8 +1298,8 @@
             // 获取下一个规格类型
             get_goods_specifications_type(key) {
                 var temp_data = this.goods_specifications_choose;
-                var active_index = key + 1;
-                var sku_count = temp_data.length;
+                var active_index = parseInt(key) + 1;
+                var sku_count = app.globalData.get_length(temp_data);
                 if (active_index <= 0 || active_index >= sku_count) {
                     return false;
                 }
@@ -1309,7 +1381,7 @@
                 if (spec.length <= 0 || active_count < sku_count) {
                     this.setData({
                         goods_spec_base_price: this.goods.price,
-                        goods_spec_base_original_price: this.goods.original_price,
+                        goods_spec_base_original_price: this.goods.original_price || 0,
                         goods_spec_base_inventory: this.goods.inventory
                     });
                     return false;
@@ -1361,7 +1433,7 @@
                 var spec_base = data.spec_base;
                 var data = {
                     goods_spec_base_price: spec_base.price,
-                    goods_spec_base_original_price: spec_base.original_price,
+                    goods_spec_base_original_price: spec_base.original_price || 0,
                     goods_spec_base_inventory: parseInt(spec_base.inventory),
                     plugins_wholesale_data: data.plugins_wholesale_data || null,
                 };
