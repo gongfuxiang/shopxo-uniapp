@@ -290,7 +290,7 @@
                             var temp_nav_order = null;
                             if(upd_data.navigation.length > 0) {
                                 for(var i in upd_data.navigation) {
-                                    var url = app.globalData.url_value_handle(upd_data.navigation[i]['event_value']);
+                                    var url = app.globalData.get_url_main_part(upd_data.navigation[i]['event_value']);
                                     if(url == '/pages/user-order/user-order') {
                                         temp_nav_order = upd_data.navigation[i];
                                         upd_data.navigation.splice(i, 1);

@@ -547,8 +547,9 @@
                 }
                 return s_x;
             },
-            
-            url_value_handle(url) {
+
+            // url主要部分
+            get_url_main_part(url) {
                 if (url.indexOf("?") == -1) {
                     var value = url;
                 } else {
@@ -562,7 +563,7 @@
              * 当前地址是否存在tabbar中
              */
             is_tabbar_pages(url) {
-                var value = this.url_value_handle(url);
+                var value = this.get_url_main_part(url);
                 if ((value || null) == null) {
                     return false;
                 }
@@ -711,9 +712,7 @@
                 return false;
             },
 
-            /**
-             * url参数转json对象
-             */
+            // url参数转json对象
             url_params_to_json(url_params) {
                 var json = new Object();
                 if ((url_params || null) != null) {
@@ -724,6 +723,18 @@
                     }
                 }
                 return json;
+            },
+
+            // json对象转url请求参数
+            json_to_url_params(data) {
+                var str = '';
+                for(var i in data) {
+                    if(str != '') {
+                        str += '&';
+                    }
+                    str += i+'='+data[i];
+                }
+                return str;
             },
 
             // 拨打电话

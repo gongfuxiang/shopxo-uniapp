@@ -382,8 +382,11 @@
             
             // 添加地址事件
             address_add_event(e) {
+                var temp_params = this.params;
+                    temp_params['id'] = 0;
+                var query = app.globalData.json_to_url_params(temp_params);
                 uni.navigateTo({
-                    url: '/pages/user-address-save/user-address-save'
+                    url: '/pages/user-address-save/user-address-save?' + query
                 });
             },
 
@@ -395,10 +398,13 @@
                     app.globalData.showToast("地址有误");
                     return false;
                 }
-                
+
                 // 进入编辑页面
+                var temp_params = this.params;
+                    temp_params['id'] = data.id;
+                var query = app.globalData.json_to_url_params(temp_params);
                 uni.navigateTo({
-                    url: '/pages/user-address-save/user-address-save?id=' + data.id
+                    url: '/pages/user-address-save/user-address-save?' + query
                 });
             },
 

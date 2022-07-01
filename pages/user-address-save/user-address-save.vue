@@ -14,7 +14,7 @@
                 </view>
 
                 <view class="form-gorup">
-                    <block v-if="is_user_address_location_discern_forbid_region == 0">
+                    <block v-if="is_user_address_forbid_choice_region == 0">
                         <view class="br-b padding-bottom-xs margin-bottom-lg">
                             <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
                             <view class="select-address oh">
@@ -135,7 +135,7 @@
                 home_user_address_idcard_status: 0,
                 is_user_address_discern: 0,
                 is_user_address_location_discern: 0,
-                is_user_address_location_discern_forbid_region: 0
+                is_user_address_forbid_choice_region: 0
             };
         },
 
@@ -179,7 +179,7 @@
                         home_user_address_idcard_status: app.globalData.get_config('config.home_user_address_idcard_status'),
                         is_user_address_discern: app.globalData.get_config('plugins_base.intellectstools.data.is_user_address_discern', 0),
                         is_user_address_location_discern: app.globalData.get_config('plugins_base.intellectstools.data.is_user_address_location_discern', 0),
-                        is_user_address_location_discern_forbid_region: app.globalData.get_config('plugins_base.intellectstools.data.is_user_address_location_discern_forbid_region', 0)
+                        is_user_address_forbid_choice_region: app.globalData.get_config('plugins_base.intellectstools.data.is_user_address_forbid_choice_region', 0)
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -657,7 +657,9 @@
             form_submit(e) {                
                 // 表单数据
                 var form_data = e.detail.value;
-                
+                // 加入页面请求参数
+                form_data['params'] = this.params;
+
                 // 数据校验
                 var validation = [
                     { fields: "name", msg: "请填写联系人" },
@@ -667,13 +669,13 @@
                     { fields: "county", msg: "请选择区县" },
                     { fields: "address", msg: "请填写详细地址" }
                 ];
-                
+
                 // 是否开启了地理位置选择
                 if (this.home_user_address_map_status == 1) {
                     validation.push({ fields: "lng", msg: "请选择地理位置" });
                     validation.push({ fields: "lat", msg: "请选择地理位置" });
                 }
-                
+
                 // 是否开启了用户身份证信息
                 if (this.home_user_address_idcard_status == 1) {
                     // 验证
@@ -705,7 +707,7 @@
                 }
                 form_data['lng'] = lng;
                 form_data['lat'] = lat;
-                
+
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {
                     // 数据保存
