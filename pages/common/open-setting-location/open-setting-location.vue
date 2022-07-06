@@ -5,6 +5,9 @@
                 <view class="msg cr-gray">开启相应的权限服务</view>
                 <view class="value cr-base">获取[ <text>位置信息</text> ]权限</view>
                 <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_callback_event">打开设置页</button>
+                <view class="tc margin-top-sm">
+                    <navigator open-type="navigateBack" class="cp cr-gray dis-inline-block" hover-class="none">返回</navigator>
+                </view>
             </view>
         </view>
         <view v-else class="open-setting-loding">

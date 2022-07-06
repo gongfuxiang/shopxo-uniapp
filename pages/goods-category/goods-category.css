@@ -22,19 +22,14 @@
 * 左侧导航
 */
 .left-nav {
-    width: 210rpx;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
+    width: 200rpx;
 }
 .left-nav .item {
-    height: 100rpx;
-    line-height: 100rpx;
-    font-size: 32rpx;
+    height: 80rpx;
+    line-height: 80rpx;
     padding: 0 10rpx;
     border-left: 3px solid #fff;
     border-right: 3px solid #fff;
-    overflow: hidden;
 }
 .left-nav .item:not(:last-child) {
     border-bottom: 1px solid #f1f1f1 !important;
@@ -50,7 +45,7 @@
 *  右侧内容
 */
 .right-container {
-    width: calc(100% - 210rpx);
+    width: calc(100% - 200rpx);
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -75,4 +70,71 @@
 }
 .model-one .content-item:nth-child(3n) {
     border-right: 0;
+}
+
+
+/**
+ * 商品列表模式
+ */
+.category-content.goods-model {
+    padding-top: 150rpx;
+}
+.top-nav {
+    height: 150rpx;
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+.top-nav .icon-content {
+    width: 80rpx;
+    height: 80rpx;
+    padding: 1px;
+}
+.top-nav .item {
+    height: 180rpx;
+    padding: 0 15rpx;
+}
+.goods-right-content {
+    width: calc(100% - 200rpx);
+    height: calc(100% - 150rpx);
+    top: 150rpx;
+    right: 0;
+    background: #f5f5f5;
+}
+.goods-right-content .word-list {
+    position: sticky;
+    top: 0;
+    right: 0;
+    background: #f5f5f5;
+    z-index: 1;
+    padding: 0px 1px 20rpx 1px;
+}
+.goods-list .goods-img {
+    width: 190rpx;
+    height: 190rpx !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+.goods-list .goods-base {
+    width: calc(100% - 220rpx);
+}
+.goods-list .goods-base-content {
+    min-height: 100rpx;
+}
+.goods-list .goods-base .simple-desc {
+    line-height: 30rpx;
+    min-height: 30rpx;
+    max-height: 58rpx;
+}
+.goods-list .goods-base .sales-price {
+    width: calc(100% - 320rpx);
+    left: 210rpx;
+    bottom: 10rpx;
+}
+.goods-list .goods-base .buy-opt {
+    right: 10rpx;
+    bottom: 6rpx;
+}
+.goods-list .goods-base .buy-number {
+    min-width: 32rpx;
 }

@@ -735,7 +735,7 @@
                     app.globalData.showToast('数量为改变');
                     return false;
                 }
-           
+
                 // 操作数量
                 var opt_number = 1;
                 if(type == 0) {
@@ -780,7 +780,7 @@
                     }
                 });
             },
-            
+
             // 购物车更新
             cart_update(cart_id, goods_id, buy_number) {
                 uni.showLoading({
@@ -814,7 +814,7 @@
                     }
                 });
             },
-            
+
             // 购物车删除
             cart_delete(cart_id) {
                 uni.showLoading({

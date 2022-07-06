@@ -220,12 +220,12 @@
                     wd: params.keywords || ''
                 }
             });
-        },
 
-        onShow() {
             // 数据加载
             this.init();
-            
+        },
+
+        onShow() {            
             // 初始化配置
             this.init_config();
         },

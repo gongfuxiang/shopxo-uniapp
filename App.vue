@@ -47,7 +47,7 @@
                 // 请求地址
                 request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1135,8 +1135,8 @@
             },
 
             // 剪贴板
-            text_copy_event(e) {
-                var value = e.currentTarget.dataset.value || null;
+            text_copy_event(data) {
+                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (data || null);
                 if (value != null) {
                     var self = this;
                     uni.setClipboardData({
@@ -1290,8 +1290,9 @@
                 return height;
             },
 
-            // 获取当前页面地址、不含?后面的参数
-            get_page_url(is_whole) {
+            // 获取当前页面地址
+            // is_whole 完整地址（?后面的参数）
+            get_page_url(is_whole = true) {
                 // #ifdef MP || APP
                 var url = this.current_page();
                 // #endif

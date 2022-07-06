@@ -238,6 +238,9 @@
 .text-size-sm {
     font-size: 26rpx !important;
 }
+.text-size-md {
+    font-size: 28rpx !important;
+}
 .text-size,
 .text-size-default {
     font-size: 32rpx !important;

@@ -133,14 +133,14 @@
                     category_ids: ((params.category_id || 0) == 0) ? '' : JSON.stringify({"0":params.category_id})
                 }
             });
+
+            // 数据加载
+            this.get_data();
         },
 
         onShow() {
             // 初始化配置
             this.init_config();
-
-            // 数据加载
-            this.get_data();
         },
 
         // 下拉刷新

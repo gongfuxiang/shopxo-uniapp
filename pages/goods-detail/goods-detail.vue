@@ -327,7 +327,7 @@
                 <!-- 左侧集合操作 -->
                 <view :class="'bus-items fl tc bus-items-'+bottom_nav_bus_number">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
-                    <block v-if="(params.is_opt_back || 0) != 0">
+                    <block v-if="is_opt_back != 0">
                         <!-- 返回操作 -->
                         <view class="item fl cp" @tap="bottom_nav_back_event">
                             <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
@@ -437,6 +437,12 @@
                         </view>
                     </view>
                     <view class="share-popup-content">
+                        <!-- #ifdef H5 -->
+                        <view class="share-items oh cp" @tap="share_h5_event">
+                            <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-gray single-text">点击复制地址分享给好友、群聊</text>
+                        </view>
+                        <!-- #endif -->
                         <!-- #ifdef MP-ALIPAY -->
                         <view class="share-items oh cp" @tap="share_base_event">
                             <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
@@ -713,7 +719,7 @@
                 // 是否指定开启购买弹窗、默认0否、1是
                 popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1,
                 // 是否底部导航展示返回按钮
-                is_opt_back: params.is_opt_back || 0,
+                is_opt_back: parseInt(params.is_opt_back || 0),
                 // 是否自定义购物车状态
                 is_opt_cart: (params.is_opt_cart === undefined) ? (app.globalData.data.is_goods_bottom_opt_cart || 0) : (params.is_opt_cart || 0),
             });
@@ -1216,7 +1222,16 @@
                                     this.setData({
                                         quick_nav_cart_count: res.data.data
                                     });
-                                    this.popup_close_event();
+
+                                    // 是否返回定义来源返回
+                                    if(parseInt(this.params.is_opt_buy_status || 0) == 1 && this.is_opt_back == 1) {
+                                        setTimeout(function() {
+                                            uni.navigateBack();;
+                                        }, 1000);
+                                    } else {
+                                        // 关闭购买弹窗窗口
+                                        this.popup_close_event();
+                                    }
                                     app.globalData.showToast(res.data.msg, "success");
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'goods_buy_confirm_event')) {
@@ -1639,7 +1654,12 @@
                     popup_share_status: false
                 });
             },
-            
+
+            // h5分享
+            share_h5_event() {
+                app.globalData.text_copy_event(app.globalData.get_page_url());
+            },
+
             // 基础分享事件
             share_base_event() {
                 this.setData({
@@ -1872,7 +1892,7 @@
                     var url = app.globalData.data.tabbar_pages[0];
 
                     // 是否有参数定义
-                    if((this.params.is_opt_back || 0) == 1) {
+                    if(this.is_opt_back == 1) {
                         // 门店详情来源
                         if((this.params.realstore_id || null) != null) {
                             url = '/pages/plugins/realstore/detail/detail?id='+this.params.realstore_id;
