@@ -456,7 +456,6 @@
                 if(two_index != -1 && temp_data_content != null) {
                     temp_data_three_content = temp_data_content['items'][two_index];
                 }
-                console.log(temp_data_three_content)
                 this.setData({
                     nav_active_index: index,
                     nav_active_item_two_index: two_index,
