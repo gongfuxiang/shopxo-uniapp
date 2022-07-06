@@ -60,82 +60,87 @@
                         </swiper>
                     </view>
                 </view>
-                
-                <!-- 首页中间广告 - 插件 -->
-                <view v-if="(plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
-                    <view v-for="(item,index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''" @tap="url_event">
-                        <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"></image>
-                    </view>
-                </view>
 
-                <!-- 限时秒杀 - 插件 -->
-                <view v-if="plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
-                    <view class="spacing-nav-title">
-                        <text class="text-wrapper va-m">限时秒杀</text>
-                        <view class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds"></component-countdown>
+                <!-- 按照插件顺序渲染插件数据 -->
+                <block v-if="plugins_sort_list.length > 0">
+                    <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
+                        <!-- 首页中间广告 - 插件 -->
+                        <view v-if="pv.plugins == 'homemiddleadv' && (plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
+                            <view v-for="(item, index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''" @tap="url_event">
+                                <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"></image>
+                            </view>
                         </view>
-                        <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                    </view>
-                    <view class="goods-list scroll-view-horizontal border-radius-main oh">
-                        <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
-                            <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
-                                <swiper-item class="padding-right-main">
-                                    <view class="item bg-white border-radius-main oh pr ht-auto">
-                                        <!-- 商品主体内容 -->
-                                        <navigator :url="item.goods_url" hover-class="none">
-                                            <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                            <view class="goods-base padding-left padding-right margin-top-sm">
-                                                <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                                <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
-                                                <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
-                                                <view class="icon pa">
-                                                    <uni-icons type="cart" size="16" color="#E02020"></uni-icons>
+
+                        <!-- 限时秒杀 - 插件 -->
+                        <view v-if="pv.plugins == 'seckill' && plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
+                            <view class="spacing-nav-title">
+                                <text class="text-wrapper va-m">限时秒杀</text>
+                                <view class="dis-inline-block va-m margin-left-sm">
+                                    <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds"></component-countdown>
+                                </view>
+                                <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                            </view>
+                            <view class="goods-list scroll-view-horizontal border-radius-main oh">
+                                <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
+                                    <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
+                                        <swiper-item class="padding-right-main">
+                                            <view class="item bg-white border-radius-main oh pr ht-auto">
+                                                <!-- 商品主体内容 -->
+                                                <navigator :url="item.goods_url" hover-class="none">
+                                                    <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                                    <view class="goods-base padding-left padding-right margin-top-sm">
+                                                        <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
+                                                        <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
+                                                        <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
+                                                        <view class="icon pa">
+                                                            <uni-icons type="cart" size="16" color="#E02020"></uni-icons>
+                                                        </view>
+                                                    </view>
+                                                </navigator>
+                                                <!-- 标签插件 -->
+                                                <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                                    <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                                        <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                            <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                        </view>
+                                                    </block>
                                                 </view>
                                             </view>
-                                        </navigator>
-                                        <!-- 标签插件 -->
-                                        <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                                            <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                                <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                    <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                </view>
-                                            </block>
-                                        </view>
-                                    </view>
-                                </swiper-item>
-                            </block>
-                        </swiper>
-                    </view>
-                </view>
+                                        </swiper-item>
+                                    </block>
+                                </swiper>
+                            </view>
+                        </view>
 
-                <!-- 活动配置-楼层顶部 - 插件 -->
-                <block v-if="(plugins_activity_data || null) != null">
-                    <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
-                </block>
+                        <!-- 活动配置-楼层顶部 - 插件 -->
+                        <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                        </block>
 
-                <!-- 门店 - 插件 -->
-                <block v-if="(plugins_realstore_data || null) != null">
-                    <view class="spacing-nav-title">
-                        <text class="text-wrapper">{{plugins_realstore_data.base.home_data_list_title || '最新门店'}}</text>
-                        <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                    </view>
-                    <component-realstore-list :propDataList="plugins_realstore_data.data" :propFavorUser="plugins_realstore_data.favor_user"></component-realstore-list>
-                </block>
-                
-                <!-- 多商户 - 插件 -->
-                <block v-if="(plugins_shop_data || null) != null">
-                    <view class="spacing-nav-title">
-                        <text class="text-wrapper">{{plugins_shop_data.base.home_data_list_title || '最新商家'}}</text>
-                        <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                    </view>
-                    <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
-                </block>
+                        <!-- 门店 - 插件 -->
+                        <block v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
+                            <view class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_realstore_data.base.home_data_list_title || '最新门店'}}</text>
+                                <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                            </view>
+                            <component-realstore-list :propDataList="plugins_realstore_data.data" :propFavorUser="plugins_realstore_data.favor_user"></component-realstore-list>
+                        </block>
 
-                <!-- 博客-楼层顶部 - 插件 -->
-                <block v-if="(plugins_blog_data || null) != null">
-                    <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
+                        <!-- 多商户 - 插件 -->
+                        <block v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
+                            <view class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_shop_data.base.home_data_list_title || '最新商家'}}</text>
+                                <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                            </view>
+                            <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
+                        </block>
+
+                        <!-- 博客-楼层顶部 - 插件 -->
+                        <block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
+                            <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
+                        </block>
+                    </block>
                 </block>
 
                 <!-- 楼层数据 -->
@@ -187,46 +192,51 @@
                     </block>
                 </block>
 
-                <!-- 活动配置-楼层底部 - 插件 -->
-                <block v-if="(plugins_activity_data || null) != null">
-                    <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                <!-- 按照插件顺序渲染插件数据 -->
+                <block v-if="plugins_sort_list.length > 0">
+                    <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
+                        <!-- 活动配置-楼层底部 - 插件 -->
+                        <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                        </block>
+
+                        <!-- 博客-楼层底部 - 插件 -->
+                        <block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
+                            <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
+                        </block>
+
+                        <!--- 底部购买记录 - 插件 -->
+                        <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
+                            <view class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
+                                <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
+                            </view>
+                            <view class="bg-white padding-horizontal-main border-radius-main oh">
+                                <swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6" interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
+                                    <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
+                                        <swiper-item>
+                                            <view class="item oh padding-vertical-main">
+                                                <view class="item-content single-text fl">
+                                                    <image mode="widthFix" :src="item.user.avatar" class="va-m br"></image>
+                                                    <text class="margin-left-sm">{{item.user.user_name_view}}</text>
+                                                    <text v-if="(item.user.province || null) != null"><text class="padding-left-xs padding-right-xs">-</text>{{item.user.province}}</text>
+                                                </view>
+                                                <view class="item-content fl">
+                                                    <navigator :url="item.goods_url" hover-class="none" class="single-text">
+                                                        <image mode="widthFix" :src="item.images" class="va-m br"></image>
+                                                        <text class="margin-left-sm single-text">{{item.title}}</text>
+                                                    </navigator>
+                                                </view>
+                                                <view class="item-content single-text fr tr cr-gray padding-top-xs">{{item.add_time}}</view>
+                                            </view>
+                                        </swiper-item>
+                                    </block>
+                                </swiper>
+                            </view>
+                        </view>
+                    </block>
                 </block>
-                
-                <!-- 博客-楼层底部 - 插件 -->
-                <block v-if="(plugins_blog_data || null) != null">
-                    <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
-                </block>
-                
-                <!--- 底部购买记录 - 插件 -->
-                <view v-if="(plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="spacing-mb plugins-salerecords">
-                    <view class="spacing-nav-title">
-                        <text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
-                        <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
-                    </view>
-                    <view class="bg-white padding-horizontal-main border-radius-main oh">
-                        <swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6" interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
-                            <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
-                                <swiper-item>
-                                    <view class="item oh padding-vertical-main">
-                                        <view class="item-content single-text fl">
-                                            <image mode="widthFix" :src="item.user.avatar" class="va-m br"></image>
-                                            <text class="margin-left-sm">{{item.user.user_name_view}}</text>
-                                            <text v-if="(item.user.province || null) != null"><text class="padding-left-xs padding-right-xs">-</text>{{item.user.province}}</text>
-                                        </view>
-                                        <view class="item-content fl">
-                                            <navigator :url="item.goods_url" hover-class="none" class="single-text">
-                                                <image mode="widthFix" :src="item.images" class="va-m br"></image>
-                                                <text class="margin-left-sm single-text">{{item.title}}</text>
-                                            </navigator>
-                                        </view>
-                                        <view class="item-content single-text fr tr cr-gray padding-top-xs">{{item.add_time}}</view>
-                                    </view>
-                                </swiper-item>
-                            </block>
-                        </swiper>
-                    </view>
-                </view>
-                
+
                 <!-- 弹屏广告 - 插件 -->
                 <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
                     <view class="content pr">
@@ -318,6 +328,8 @@
                 search_is_fixed: 0,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
+                // 插件顺序列表
+                plugins_sort_list: [],
                 // 限时秒杀插件
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
@@ -429,6 +441,7 @@
                                 message_total: (data.common_message_total || 0) == 0 ? 0 : data.common_message_total,
                                 right_icon_list: data.right_icon_list || [],
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
+                                plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
