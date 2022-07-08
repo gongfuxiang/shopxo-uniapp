@@ -260,9 +260,12 @@
 
             // 获取数据
             init() {
-                this.setData({
-                    data_list_loding_status: 1
-                });
+                if(this.is_first == 1) {
+                    this.setData({
+                        data_list_loding_status: 1
+                    });
+                }
+
                 uni.request({
                     url: app.globalData.get_request_url("category", "goods"),
                     method: "POST",
@@ -787,8 +790,6 @@
                             } else {
                                 app.globalData.set_tab_bar_badge(2, 1, data.common_cart_total);
                             }
-                        } else {
-                            app.globalData.showToast('请求失败，请重试！');
                         }
                     },
                     fail: () => {
