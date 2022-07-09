@@ -32,7 +32,7 @@
                                 <block v-for="(item, index) in category_list" :key="index">
                                     <view :class="'text-size-sm item tc cr-base cp dis-inline-block ' + (nav_active_index == index ? 'cr-main border-color-main fw-b' : '')" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                         <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
-                                            <image :src="((item.icon || null) == null) ? common_static_url+'images.png' : item.icon" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+                                            <image :src="((item[category_goods_model_icon_field] || null) == null) ? common_static_url+'images.png' : item[category_goods_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
                                         </view>
                                         <view class="margin-top-xs">{{item.name}}</view>
                                     </view>
@@ -221,7 +221,9 @@
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
-                is_single_page: app.globalData.is_current_single_page() || 0
+                is_single_page: app.globalData.is_current_single_page() || 0,
+                // 商品列表模式一级分类图标类型
+                category_goods_model_icon_field: app.globalData.data.category_goods_model_icon_type == 0 ? 'big_images' : 'icon'
             };
         },
 

@@ -68,7 +68,7 @@
                             <text>品牌</text>
                             <text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
                         </view>
-                        <view v-if="(search_map_info.brand || null) != null" class="map-content brand-info oh margin-top-lg">
+                        <view v-if="(search_map_info.brand || null) != null && (params.brand || null) != null" class="map-content brand-info oh margin-top-lg">
                             <image v-if="(search_map_info.brand.logo || null) != null" :src="search_map_info.brand.logo" mode="aspectFit" class="fl"></image>
                             <view v-else class="info-logo-empty tc fl">{{search_map_info.brand.name}}</view>
                             <view class="info-right fr">
@@ -305,12 +305,12 @@
 
                         // 基础自定义分享
                         var category_id = this.params.category_id || 0;
-                        var brand_id = this.params.brand_id || 0;
+                        var brand = this.params.brand || 0;
                         var keywords = this.params.keywords || '';
                         this.setData({
                             share_info: {
                                 path: '/pages/goods-search/goods-search',
-                                query: 'category_id=' + category_id + '&brand_id=' + brand_id + '&keywords=' + keywords
+                                query: 'category_id=' + category_id + '&brand=' + brand + '&keywords=' + keywords
                             }
                         });
 
@@ -414,7 +414,7 @@
 
                 // 指定分类、品牌
                 post_data['category_id'] = params['category_id'] || 0;
-                post_data['brand_id'] = params['brand_id'] || 0;
+                post_data['brand'] = params['brand'] || 0;
 
                 // 搜索条件
                 var temp_field = this.map_fields_list;

@@ -37,6 +37,8 @@
                 is_goods_bottom_opt_cart: 1,
                 // 门店详情顶部导航返回按钮（0 否, 1 是）
                 is_realstore_top_nav_back: 1,
+                // 分类页面商品列表模式一级分类使用图标类型（0 大图片, 1 icon图标）
+                category_goods_model_icon_type: 0,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -45,16 +47,16 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
                 application_title: "ShopXO",
                 application_describe: "ShopXO开源商城、MIT协议、可商用、可二次开发、满足99%电商运营需求",
                 // 版本号
-                version: "v2.2.8",
+                version: "v2.2.9",
                 // 货币价格符号
                 currency_symbol: "￥",
                 // 主题类型        主题颜色
