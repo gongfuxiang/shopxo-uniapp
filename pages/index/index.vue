@@ -80,36 +80,38 @@
                                 </view>
                                 <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
-                            <view class="goods-list scroll-view-horizontal border-radius-main oh">
-                                <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
-                                    <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
-                                        <swiper-item class="padding-right-main">
-                                            <view class="item bg-white border-radius-main oh pr ht-auto">
-                                                <!-- 商品主体内容 -->
-                                                <navigator :url="item.goods_url" hover-class="none">
-                                                    <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                                    <view class="goods-base padding-left padding-right margin-top-sm">
-                                                        <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                                        <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
-                                                        <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
-                                                        <view class="icon pa">
-                                                            <uni-icons type="cart" size="16" color="#E02020"></uni-icons>
+                            <view class="rolling-horizontal border-radius-main oh">
+                                <view class="goods-list scroll-view-horizontal">
+                                    <swiper :vertical="false" :autoplay="(plugins_seckill_data.base || null) != null && (plugins_seckill_data.base.is_home_auto_play || 0) == 1" :circular="false" :display-multiple-items="plugins_seckill_data.goods.length < 3 ? plugins_seckill_data.goods.length : 3" interval="3000">
+                                        <block v-for="(item, index) in plugins_seckill_data.goods" :key="index">
+                                            <swiper-item>
+                                                <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto">
+                                                    <!-- 商品主体内容 -->
+                                                    <navigator :url="item.goods_url" hover-class="none">
+                                                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                                        <view class="goods-base padding-left padding-right margin-top-sm">
+                                                            <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
+                                                            <view class="sales-price single-text">{{currency_symbol}}{{item.min_price}}</view>
+                                                            <view v-if="(item.min_original_price || null) != null && item.min_original_price > 0" class="original-price single-text">{{currency_symbol}}{{item.min_original_price}}</view>
+                                                            <view class="icon pa">
+                                                                <uni-icons type="cart" size="16" color="#E02020"></uni-icons>
+                                                            </view>
                                                         </view>
+                                                    </navigator>
+                                                    <!-- 标签插件 -->
+                                                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                                            <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                            </view>
+                                                        </block>
                                                     </view>
-                                                </navigator>
-                                                <!-- 标签插件 -->
-                                                <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                                                    <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                                        <view v-if="lv.goods_ids.indexOf(item.goods_id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                            <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                        </view>
-                                                    </block>
                                                 </view>
-                                            </view>
-                                        </swiper-item>
-                                    </block>
-                                </swiper>
+                                            </swiper-item>
+                                        </block>
+                                    </swiper>
+                                </view>
                             </view>
                         </view>
 

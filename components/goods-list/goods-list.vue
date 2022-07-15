@@ -65,12 +65,12 @@
                         </view>
                     </block>
                     <!-- 滚动 -->
-                    <block v-else-if="propData.style_type == 2">
-                        <view class="goods-data-rolling-list scroll-view-horizontal border-radius-main oh spacing-mb">
+                    <view v-else-if="propData.style_type == 2" class="rolling-horizontal border-radius-main oh spacing-mb">
+                        <view class="goods-data-rolling-list scroll-view-horizontal">
                             <swiper :vertical="false" :autoplay="propIsAutoPlay" :circular="false" :display-multiple-items="propData.goods_list.length < 3 ? propData.goods_list.length : 3" interval="3000">
                                 <block v-for="(item, index) in propData.goods_list" :key="index">
-                                    <swiper-item class="padding-right-main">
-                                        <view class="item bg-white border-radius-main oh pr ht-auto pr">
+                                    <swiper-item>
+                                        <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                             <!-- 商品主体内容 -->
                                             <navigator :url="item.goods_url" hover-class="none">
                                                 <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
@@ -93,7 +93,7 @@
                                 </block>
                             </swiper>
                         </view>
-                    </block>
+                    </view>
                 </block>
             </view>
         </view>

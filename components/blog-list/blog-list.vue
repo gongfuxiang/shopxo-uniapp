@@ -47,12 +47,12 @@
                                 </view>
                             </block>
                             <!-- 滚动 -->
-                            <block v-else-if="floor.style_type == 2">
-                                <view class="plugins-blog-rolling-list scroll-view-horizontal border-radius-main oh spacing-mb">
+                            <view v-else-if="floor.style_type == 2" class="rolling-horizontal border-radius-main oh spacing-mb">
+                                <view class="plugins-blog-rolling-list scroll-view-horizontal">
                                     <swiper :vertical="false" :autoplay="(propConfig.is_home_hot_auto_play || 0) == 1" :circular="false" :display-multiple-items="floor.blog_list.length < 3 ? floor.blog_list.length : 3" interval="3000">
                                         <block v-for="(item, index) in floor.blog_list" :key="index">
-                                            <swiper-item class="padding-right-main">
-                                                <view class="item bg-white border-radius-main oh pr ht-auto pr">
+                                            <swiper-item>
+                                                <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                                     <navigator :url="item.url" hover-class="none">
                                                         <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
                                                         <view class="blog-title pa single-text cr-white padding-horizontal-main padding-top-sm padding-bottom-sm">{{item.title}}</view>
@@ -62,7 +62,7 @@
                                         </block>
                                     </swiper>
                                 </view>
-                            </block>
+                            </view>
                         </block>
                     </view>
                 </block>

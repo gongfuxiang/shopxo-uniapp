@@ -759,6 +759,12 @@ button[disabled].bg-gray {
     box-sizing: border-box;
     width: 100%;
 }
+/**
+ * 滚动水平左右滑动内容宽度处理
+ */
+.rolling-horizontal .scroll-view-horizontal {
+    width: calc(100% + 20rpx);
+}
 
 /**
  * 公共操作栏按钮样式
