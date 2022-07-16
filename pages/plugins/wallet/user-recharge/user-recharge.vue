@@ -325,6 +325,34 @@
                 }
                 // #endif
 
+                // 支付方式
+                var payment = null;
+                for(var i in this.payment_list) {
+                    if(this.payment_list[i]['id'] == this.payment_id) {
+                        payment = this.payment_list[i];
+                    }
+                }
+                if(payment == null) {
+                    app.globalData.showToast('支付方式有误');
+                    return false;
+                }
+
+                // 请求数据
+                var post_data = {
+                    recharge_id: recharge_id,
+                    payment_id: this.payment_id
+                };
+
+                // h5自定义重定向地址
+                // #ifdef H5
+                post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : '')));
+                // paypal支付方式使用respond_url返回地址、移除重定向地址
+                if(payment.payment == 'PayPal') {
+                    post_data['respond_url'] = post_data['redirect_url'];
+                    delete post_data['redirect_url'];
+                }
+                // #endif
+
                 // 请求支付接口
                 uni.showLoading({
                     title: "请求中..."
@@ -332,13 +360,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("pay", "recharge", "wallet"),
                     method: "POST",
-                    data: {
-                        // #ifdef H5
-                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
-                        // #endif
-                        recharge_id: recharge_id,
-                        payment_id: this.payment_id
-                    },
+                    data: post_data,
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();

@@ -290,15 +290,6 @@
                             if (res.data.data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = res.data.data.data;
-                                    // 下订单支付处理
-                                    if (this.load_status == 0) {
-                                        var ck = app.globalData.data.cache_page_pay_key;
-                                        var cache_ids = uni.getStorageSync(ck) || null;
-                                        if (cache_ids != null) {
-                                            uni.removeStorageSync(ck);
-                                            this.pay_handle(cache_ids);
-                                        }
-                                    }
                                 } else {
                                     var temp_data_list = this.data_list || [];
                                     var temp_data = res.data.data.data;
@@ -307,6 +298,7 @@
                                     }
                                 }
 
+                                var temp_load_status = this.load_status;
                                 this.setData({
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
@@ -316,6 +308,17 @@
                                     load_status: 1,
                                     payment_list: res.data.data.payment_list || []
                                 });
+
+                                // 下订单支付处理
+                                if (temp_load_status == 0) {
+                                    var ck = app.globalData.data.cache_page_pay_key;
+                                    var pay_data = uni.getStorageSync(ck) || null;
+                                    if (pay_data != null) {
+                                        uni.removeStorageSync(ck);
+                                        this.setData({payment_id: parseInt(pay_data.payment_id || 0)});
+                                        this.pay_handle(pay_data.order_ids);
+                                    }
+                                }
 
                                 // 是否还有数据
                                 this.setData({
@@ -393,6 +396,34 @@
                 }
                 // #endif
 
+                // 支付方式
+                var payment = null;
+                for(var i in this.payment_list) {
+                    if(this.payment_list[i]['id'] == this.payment_id) {
+                        payment = this.payment_list[i];
+                    }
+                }
+                if(payment == null) {
+                    app.globalData.showToast('支付方式有误');
+                    return false;
+                }
+
+                // 请求数据
+                var post_data = {
+                    ids: order_ids,
+                    payment_id: this.payment_id
+                };
+
+                // h5自定义重定向地址
+                // #ifdef H5
+                post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : '')));
+                // paypal支付方式使用respond_url返回地址、移除重定向地址
+                if(payment.payment == 'PayPal') {
+                    post_data['respond_url'] = post_data['redirect_url'];
+                    delete post_data['redirect_url'];
+                }
+                // #endif
+
                 // 请求支付接口
                 uni.showLoading({
                     title: "请求中..."
@@ -400,13 +431,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("pay", "order"),
                     method: "POST",
-                    data: {
-                        // #ifdef H5
-                        redirect_url: encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : ''))),
-                        // #endif
-                        ids: order_ids,
-                        payment_id: this.payment_id
-                    },
+                    data: post_data,
                     dataType: "json",
                     success: res => {
                         uni.hideLoading();

@@ -594,7 +594,11 @@
                             uni.hideLoading();
                             if (res.data.code == 0) {
                                 if (res.data.data.order_status == 1) {
-                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.order_ids.join(','));
+                                    var pay_data = {
+                                        order_ids: res.data.data.order_ids.join(','),
+                                        payment_id: data['payment_id']
+                                    };
+                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, pay_data);
                                 }
                                 uni.redirectTo({
                                     url: '/pages/user-order/user-order'
