@@ -3,7 +3,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU || H5 || APP
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
                 "navigationBarTitleText": "首页",
                 // #endif
@@ -19,7 +19,7 @@
 		{
 			"path": "pages/goods-category/goods-category",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU || H5 || APP
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
                 "navigationBarTitleText": "商品分类",
                 // #endif
@@ -41,7 +41,7 @@
 		{
 			"path": "pages/user/user",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU || H5 || APP
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
                 "navigationBarTitleText": "用户中心",
                 // #endif
@@ -91,7 +91,7 @@
 		{
 			"path": "pages/goods-detail/goods-detail",
 			"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,
@@ -214,8 +214,10 @@
 		{
 			"path": "pages/common/open-setting-location/open-setting-location",
 			"style": {
-				"enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+                // #ifndef MP-TOUTIAO
+                "navigationStyle": "custom",
+                // #endif
+				"enablePullDownRefresh": false
 			}
 		},
 		{
@@ -738,7 +740,7 @@
         {
         	"path": "pages/plugins/realstore/detail/detail",
         	"style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,
