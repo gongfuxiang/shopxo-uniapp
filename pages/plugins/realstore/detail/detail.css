@@ -34,7 +34,7 @@
 }
 .nav-search {
     width: calc(100% - 90rpx);
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO || H5 || APP */
     width: 100%;
     /* #endif */
 }

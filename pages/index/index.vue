@@ -15,7 +15,7 @@
                         </view>
                     </view>
 
-                    <!-- #ifdef H5 || APP -->
+                    <!-- #ifdef H5 || MP-TOUTIAO || APP -->
                     <!-- 右上角icon列表 -->
                     <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
                         <block v-for="(item,index) in right_icon_list">
@@ -298,9 +298,9 @@
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
     // 状态栏高度
-    var bar_height = 0;
-    // #ifndef MP-TOUTIAO
-    bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
     // #endif
 
     export default {
@@ -500,7 +500,6 @@
             
             // 页面滚动监听
             onPageScroll(e) {
-                // #ifndef MP-TOUTIAO
                 if(this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
                     var top = e.scrollTop > 35 ? 35 : e.scrollTop;
                     var num = top*7;
@@ -508,7 +507,7 @@
                     // #ifdef MP-ALIPAY
                         base = 235
                     // #endif
-                    // #ifdef H5 || APP
+                    // #ifdef H5 || MP-TOUTIAO || APP
                         var len = (this.right_icon_list || []).length;
                         base = (len <= 0) ? 0 : 66*len;
                     // #endif
@@ -521,7 +520,6 @@
                         });
                     }
                 }
-                // #endif
             },
             
             // url事件

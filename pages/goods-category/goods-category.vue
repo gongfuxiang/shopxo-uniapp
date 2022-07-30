@@ -193,9 +193,9 @@
     
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
-    var bar_height = 0;
-    // #ifndef MP-TOUTIAO
-    bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
     // #endif
 
     export default {

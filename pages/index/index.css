@@ -5,9 +5,9 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     min-height: 410rpx;
-    padding-top: 8px;
-    /* #ifndef MP-TOUTIAO */
     padding-top: calc(var(--status-bar-height) + 8px);
+    /* #ifndef MP-TOUTIAO */
+    padding-top: 0;
     /* #endif */
 }
 .home-top-nav-title {
@@ -16,7 +16,7 @@
     padding: 2px 250rpx 0 20rpx;
     height: 37px;
     font-size: 42rpx;
-    /* #ifdef H5 || APP */
+    /* #ifdef H5 || MP-TOUTIAO || APP */
     font-size: 24px;
     padding-top: 0;
     /* #endif */
@@ -37,12 +37,12 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     padding-top: 25px;
-    /* #ifdef H5 || APP */
+    /* #ifdef H5 || MP-TOUTIAO || APP */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;
     /* #endif */
 }
-/* #ifdef H5 || APP */
+/* #ifdef H5 || MP-TOUTIAO || APP */
 .search-content-fixed .nav-top-right-icon {
     top: 9px !important;
 }
@@ -51,7 +51,7 @@
 /**
  * 消息
  */
-/* #ifdef H5 || APP */
+/* #ifdef H5 || MP-TOUTIAO || APP */
 .nav-top-right-icon {
     top: -34px;
     right: 28rpx;
