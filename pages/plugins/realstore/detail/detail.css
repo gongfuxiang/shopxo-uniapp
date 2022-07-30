@@ -8,7 +8,7 @@
     border-bottom-left-radius: 100rpx;
     border-bottom-right-radius: 100rpx;
     height: 310rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU */
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
     height: 360rpx;
     /* #endif */
 }
@@ -17,7 +17,7 @@
  */
 .header-top {
     padding-right: 250rpx;
-    /* #ifdef MP-ALIPAY */
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
     padding-top: 20rpx !important;
     padding-right: 20rpx;
     /* #endif */
@@ -34,7 +34,7 @@
 }
 .nav-search {
     width: calc(100% - 90rpx);
-    /* #ifdef MP-ALIPAY */
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
     width: 100%;
     /* #endif */
 }
@@ -44,7 +44,7 @@
  */
 .header-content {
     top: 140rpx;
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU */
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
     top: 200rpx;
     /* #endif */
     width: calc(100% - 80rpx);
@@ -94,7 +94,7 @@
 .tablecode {
     background: rgb(255 255 255 / 60%);
     padding: 2rpx 20rpx;
-    /* #ifdef MP-ALIPAY */
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
     margin-top: 15rpx;
     /* #endif */
 }
@@ -108,7 +108,7 @@
     /* #ifdef H5 || APP */
     height: calc(100vh - 390rpx);
     /* #endif */
-    /* #ifdef MP-ALIPAY */
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
     height: calc(100vh - 400rpx);
     /* #endif */
 }

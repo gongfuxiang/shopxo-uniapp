@@ -5,7 +5,9 @@
 			"style": {
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
-                "navigationBarTitleText": "首页",
+                // #endif
+                // #ifndef MP-ALIPAY
+                "navigationBarTitleText": "ShopXO",
                 // #endif
                 // #ifdef MP-ALIPAY
                 "transparentTitle": "always",
@@ -21,6 +23,8 @@
 			"style": {
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
+                // #endif
+                // #ifndef MP-ALIPAY
                 "navigationBarTitleText": "商品分类",
                 // #endif
                 // #ifdef MP-ALIPAY
@@ -43,6 +47,8 @@
 			"style": {
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
+                // #endif
+                // #ifndef MP-ALIPAY
                 "navigationBarTitleText": "用户中心",
                 // #endif
                 // #ifdef MP-ALIPAY

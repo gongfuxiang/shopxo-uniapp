@@ -5,7 +5,10 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     min-height: 410rpx;
+    padding-top: 8px;
+    /* #ifndef MP-TOUTIAO */
     padding-top: calc(var(--status-bar-height) + 8px);
+    /* #endif */
 }
 .home-top-nav-title {
     font-weight: bold;

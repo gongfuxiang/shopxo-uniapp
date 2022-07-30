@@ -192,11 +192,17 @@
     import componentNoData from "../../components/no-data/no-data";
     
     var common_static_url = app.globalData.get_static_url('common');
+    // 状态栏高度
+    var bar_height = 0;
+    // #ifndef MP-TOUTIAO
+    bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #endif
+
     export default {
         data() {
             return {
                 common_static_url: common_static_url,
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                status_bar_height: bar_height,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

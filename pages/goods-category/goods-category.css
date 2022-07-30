@@ -9,6 +9,9 @@
     /* #ifdef H5 || APP */
     padding-right: 20rpx;
     /* #endif */
+    /* #ifdef MP-TOUTIAO */
+    padding-right: 20rpx;
+    /* #endif */
     padding-bottom: 10px;
 }
 .category-content {

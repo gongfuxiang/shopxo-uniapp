@@ -297,7 +297,12 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
-    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // 状态栏高度
+    var bar_height = 0;
+    // #ifndef MP-TOUTIAO
+    bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #endif
+
     export default {
         data() {
             return {
@@ -495,6 +500,7 @@
             
             // 页面滚动监听
             onPageScroll(e) {
+                // #ifndef MP-TOUTIAO
                 if(this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
                     var top = e.scrollTop > 35 ? 35 : e.scrollTop;
                     var num = top*7;
@@ -515,6 +521,7 @@
                         });
                     }
                 }
+                // #endif
             },
             
             // url事件
