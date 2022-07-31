@@ -388,6 +388,13 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
 
+                            // 订单是否已提交、直接进入支付页面
+                            if((data.is_order_submit || 0) == 1) {
+                                this.buy_submit_response_handle(data);
+                                return false;
+                            }
+
+                            // 处理订单初始化数据
                             if (data.goods_list.length == 0) {
                                 this.setData({
                                     data_list_loding_status: 0
@@ -593,16 +600,7 @@
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                if (res.data.data.order_status == 1) {
-                                    var pay_data = {
-                                        order_ids: res.data.data.order_ids.join(','),
-                                        payment_id: data['payment_id']
-                                    };
-                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, pay_data);
-                                }
-                                uni.redirectTo({
-                                    url: '/pages/user-order/user-order'
-                                });
+                                this.buy_submit_response_handle(res.data.data);
                             } else {
                                 app.globalData.showToast(res.data.msg);
                                 this.setData({
@@ -619,6 +617,20 @@
                         }
                     });
                 }
+            },
+
+            // 订单提交响应处理
+            buy_submit_response_handle(data) {
+                if (data.order_status == 1) {
+                    var pay_data = {
+                        order_ids: data.order_ids.join(','),
+                        payment_id: data.payment_id
+                    };
+                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, pay_data);
+                }
+                uni.redirectTo({
+                    url: '/pages/user-order/user-order'
+                });
             },
 
             // 支付方式选择
