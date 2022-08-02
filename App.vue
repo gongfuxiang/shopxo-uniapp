@@ -318,68 +318,81 @@
             user_login(object, method) {
                 var login_data = uni.getStorageSync(this.data.cache_user_login_key) || null;
                 if (login_data == null) {
-                    var self = this;
-                    uni.showLoading({
-                        title: "授权中..."
-                    });
-                    var action = 'login';
-                    // #ifdef MP-BAIDU
-                    action = 'getLoginCode';
-                    // #endif
-                    uni[action]({
-                        success: res => {
-                            if (res.code) {
-                                uni.request({
-                                    url: self.get_request_url('appminiuserauth', 'user'),
-                                    method: 'POST',
-                                    data: {
-                                        authcode: res.code
-                                    },
-                                    dataType: 'json',
-                                    success: res => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            var data = res.data.data;
-                                            if ((data.is_user_exist || 0) == 1) {
-                                                uni.setStorage({
-                                                    key: self.data.cache_user_info_key,
-                                                    data: data,
-                                                    success: res => {
-                                                        if (typeof object === 'object' && (method || null) != null) {
-                                                            object[method]();
-                                                        }
-                                                    },
-                                                    fail: () => {
-                                                        self.showToast('用户信息缓存失败');
-                                                    }
-                                                });
-                                            } else {
-                                                uni.setStorage({
-                                                    key: self.data.cache_user_login_key,
-                                                    data: data
-                                                });
-                                                self.login_to_auth();
-                                            }
-                                        } else {
-                                            uni.hideLoading();
-                                            self.showToast(res.data.msg);
-                                        }
-                                    },
-                                    fail: () => {
-                                        uni.hideLoading();
-                                        self.showToast('服务器请求出错');
-                                    }
-                                });
-                            }
-                        },
-                        fail: e => {
-                            uni.hideLoading();
-                            self.showToast('授权失败');
-                        }
-                    });
+                    this.user_login_handle(object, method, true);
                 } else {
                     this.login_to_auth();
                 }
+            },
+
+            /**
+             * 用户登录处理
+             * object     回调操作对象
+             * method     回调操作对象的函数
+             * auth_data  授权数据
+             * is_to_auth 是否进入授权
+             */
+            user_login_handle(object, method, is_to_auth = true) {
+                var self = this;
+                uni.showLoading({
+                    title: "授权中..."
+                });
+                var action = 'login';
+                // #ifdef MP-BAIDU
+                action = 'getLoginCode';
+                // #endif
+                uni[action]({
+                    success: res => {
+                        if (res.code) {
+                            uni.request({
+                                url: self.get_request_url('appminiuserauth', 'user'),
+                                method: 'POST',
+                                data: {
+                                    authcode: res.code
+                                },
+                                dataType: 'json',
+                                success: res => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        var data = res.data.data;
+                                        if ((data.is_user_exist || 0) == 1) {
+                                            uni.setStorage({
+                                                key: self.data.cache_user_info_key,
+                                                data: data,
+                                                success: res => {
+                                                    if (typeof object === 'object' && (method || null) != null) {
+                                                        object[method]();
+                                                    }
+                                                },
+                                                fail: () => {
+                                                    self.showToast('用户信息缓存失败');
+                                                }
+                                            });
+                                        } else {
+                                            uni.setStorage({
+                                                key: self.data.cache_user_login_key,
+                                                data: data
+                                            });
+                                            if(is_to_auth) {
+                                                self.login_to_auth();
+                                            }
+                                        }
+                                    } else {
+                                        uni.hideLoading();
+                                        self.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    self.showToast('服务器请求出错');
+                                }
+                            });
+                        }
+                    },
+                    fail: e => {
+                        uni.hideLoading();
+                        self.showToast('授权失败');
+                    }
+                });
             },
 
             /**

@@ -555,17 +555,17 @@
                 this.user_auth_code(userinfo);
                 // #endif
                 // #ifdef MP-TOUTIAO
-                if(e == 1) {
-                    var self = this;
-                    uni.getUserInfo({
-                        success (res) {
-                            var userinfo = JSON.parse(res.rawData);
-                            self.user_auth_code(userinfo);
-                        }
-                    });
-                } else {
-                    app.globalData.auth_check(this, 'get_user_info_event', 'scope.userInfo');
-                }
+                uni.getUserProfile({
+                    force: true,
+                    success: (res) => {
+                        // 由于头条getUserProfile内置了login
+                        // 会刷新前面的login会导致后面获取手机号码数据解析失败
+                        // 这里重新获取sessionKey登录
+                        app.globalData.user_login_handle(null, null, false);
+                        // 用户授权登录
+                        this.user_auth_code(res.userInfo);
+                    }
+                });
                 // #endif
                 // #ifdef MP-KUAISHOU
                 var userinfo = e.target.userInfo;
@@ -573,7 +573,7 @@
                 // #endif
             },
 
-            // 用户授权
+            // 用户授权登录
             // auth_data  授权数据
             user_auth_code(auth_data) {
                 if ((auth_data || null) != null) {
@@ -876,9 +876,14 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            self.showToast('服务器请求出错');
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
+                } else {
+                    var msg = e.errmsg || e.errMsg || e.detail.errmsg || e.detail.errMsg || null;
+                    if(msg != null) {
+                        app.globalData.showToast(msg);
+                    }
                 }
             },
             
