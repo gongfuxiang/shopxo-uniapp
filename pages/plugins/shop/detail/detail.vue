@@ -96,25 +96,58 @@
             </view>
 
             <!-- 数据模式 -->
-            <block v-if="(shop.data_model || 0) == 1">
-                <!-- 拖拽模式、引入拖拽数据模块 -->
-                <component-layout :propData="data"></component-layout>
-            </block>
             <!-- 自动模式 -->
-            <block v-else>
-                <view class="data-list padding-horizontal-main oh">
-                    <!-- 轮播 -->
-                    <view v-if="slider.length > 0" class="margin-top-main">
-                        <component-banner :propData="slider"></component-banner>
+            <block v-if="(shop.data_model || 0) == 0">
+                <block v-if="(data || null) != null && data.length > 0">
+                    <view class="goods-data-grid-list padding-main oh">
+                        <view v-for="(item, index) in data" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
+                            <navigator :url="item.goods_url" hover-class="none">
+                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                <view class="base padding-horizontal-main margin-top-sm">
+                                    <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
+                                    <view class="sales-price">{{currency_symbol}}{{item.min_price}}</view>
+                                </view>
+                            </navigator>
+                        </view>
                     </view>
+                    <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id" size="mini">查看更多商品 >></button>
+                </block>
+                <block v-else>
+                    <component-no-data propStatus="0"></component-no-data>
+                </block>
+            </block>
 
-                    <!-- 商品列表 -->
-                    <block v-if="data.length > 0">
-                        <block v-for="(item, index) in data" :key="index">
-                            <component-goods-list :propData="item" propMoreUrlKey="more_url" :propKeywordsUrl="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&keywords='" :propIsAutoPlay="true" :propCurrencySymbol="currency_symbol"></component-goods-list>
+            <!-- 标准模式 -->
+            <block v-if="(shop.data_model || 0) == 1">
+                <block v-if="((slider || null) != null && slider.length > 0) || ((data || null) != null && data.length > 0)">
+                    <view class="data-list padding-horizontal-main oh">
+                        <!-- 轮播 -->
+                        <view v-if="slider.length > 0" class="margin-top-main">
+                            <component-banner :propData="slider"></component-banner>
+                        </view>
+
+                        <!-- 商品列表 -->
+                        <block v-if="data.length > 0">
+                            <block v-for="(item, index) in data" :key="index">
+                                <component-goods-list :propData="item" propMoreUrlKey="more_url" :propKeywordsUrl="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&keywords='" :propIsAutoPlay="true" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                            </block>
                         </block>
-                    </block>
-                </view>
+                    </view>
+                </block>
+                <block v-else>
+                    <component-no-data propStatus="0"></component-no-data>
+                </block>
+            </block>
+
+            <!-- 拖拽模式 -->
+            <block v-if="(shop.data_model || 0) == 2">
+                <block v-if="(data || null) != null && data.length > 0">
+                    <!-- 拖拽模式、引入拖拽数据模块 -->
+                    <component-layout :propData="data"></component-layout>
+                </block>
+                <block v-else>
+                    <component-no-data propStatus="0"></component-no-data>
+                </block>
             </block>
 
             <!-- 结尾 -->
@@ -218,17 +251,18 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var temp_data = data.data || [];
                             this.setData({
                                 data_base: data.base || null,
                                 shop: data.shop || null,
                                 shop_favor_user: data.shop_favor_user || [],
                                 shop_navigation: data.shop_navigation || [],
                                 shop_goods_category: data.shop_goods_category || [],
-                                data: data.data || [],
+                                data: temp_data,
                                 slider: data.slider || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
-                                data_bottom_line_status: true
+                                data_bottom_line_status: temp_data.length > 0
                             });
 
                             if ((this.shop || null) != null) {
@@ -363,6 +397,11 @@
 
             // 导航事件
             nav_event(e) {
+                app.globalData.url_event(e);
+            },
+
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
             },
 
