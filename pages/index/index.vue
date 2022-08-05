@@ -4,7 +4,9 @@
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
                 <!-- 标题 -->
+                <!-- #ifndef MP-TOUTIAO -->
                 <view class="home-top-nav-title cr-white single-text">{{application_title}}</view>
+                <!-- #endif -->
 
                 <!-- 搜索 -->
                 <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
@@ -471,6 +473,15 @@
                             } else {
                                 app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
                             }
+
+                            // 搜索框宽度处理
+                            // #ifdef MP-TOUTIAO
+                                var len = (this.right_icon_list || []).length;
+                                var val = (len <= 0) ? 0 : 66*len;
+                                this.setData({
+                                    search_style: 'width: calc(100% - '+val+'rpx);',
+                                });
+                            // #endif
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -513,10 +524,15 @@
                     // #endif
                     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
                     if((this.plugins_mourning_data || 0) != 1) {
+                        var top_val = 35;
                         var val = (num > base) ? base : num;
+                        // #ifdef MP-TOUTIAO
+                            top_val = 0;
+                            val = base
+                        // #endif
                         this.setData({
                             search_style: 'width: calc(100% - '+val+'rpx);',
-                            search_is_fixed: (top >= 35) ? 1 : 0,
+                            search_is_fixed: (top >= top_val) ? 1 : 0,
                         });
                     }
                 }
