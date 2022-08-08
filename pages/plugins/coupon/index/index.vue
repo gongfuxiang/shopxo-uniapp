@@ -1,7 +1,7 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="padding-horizontal-main padding-top-main">
-            <image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix"></image>
+            <image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
         </view>
 
         <!-- 优惠劵列表 -->
@@ -226,6 +226,11 @@
                         }
                     }
                 }
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

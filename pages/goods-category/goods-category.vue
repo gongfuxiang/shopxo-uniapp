@@ -45,7 +45,7 @@
                                 <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main border-color-main' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                     <text>全部</text>
                                 </view>
-                                <block v-if="(data_content || null) != null && data_content.items.length > 0">
+                                <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
                                     <block v-for="(item, index) in data_content.items" :key="index">
                                         <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main border-color-main' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
                                             <text>{{item.name}}</text>
@@ -59,7 +59,7 @@
                             <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
                                 <view class="pr">
                                     <!-- 三级导航 -->
-                                    <view v-if="(data_three_content || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
+                                    <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
                                         <scroll-view :scroll-x="true">
                                             <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_three_index == -1) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
                                             <block v-for="(item, index) in data_three_content.items" :key="index">
