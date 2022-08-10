@@ -89,9 +89,6 @@
             choose_location() {
                 uni.chooseLocation({
                     success: res => {
-                        var position = app.globalData.map_gcj_to_bd(res.longitude, res.latitude);
-                        res.longitude = position.lng;
-                        res.latitude = position.lat;
                         uni.setStorageSync(this.cache_key, res);
                         uni.navigateBack();
                     },

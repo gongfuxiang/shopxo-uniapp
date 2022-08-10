@@ -54,7 +54,7 @@
                 } else {
                     uni.switchTab({
                         url: app.globalData.data.tabbar_pages[0]
-                    })
+                    });
                 }
             }
         }

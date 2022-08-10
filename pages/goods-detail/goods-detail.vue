@@ -557,6 +557,11 @@
         <!-- 提示信息 -->
         <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 
+        <!-- 无商品信息展示返回按钮 -->
+        <view v-if="goods == null && data_list_loding_status != 1" class="tc margin-top-xxxl">
+            <button type="default" class="bg-main br-main cr-white round" size="mini" @tap="goods_error_event">返回</button>
+        </view>
+
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
@@ -1899,6 +1904,18 @@
                         }
                     }
                     app.globalData.url_open(url);
+                }
+            },
+
+            // 商品错误返回、无上一个则返回首页
+            goods_error_event(e) {
+                var prev_url = app.globalData.prev_page();
+                if(prev_url == null) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0]
+                    });
+                } else {
+                    uni.navigateBack();
                 }
             }
         }

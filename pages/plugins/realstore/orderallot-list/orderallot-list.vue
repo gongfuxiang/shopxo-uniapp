@@ -40,7 +40,7 @@
                     <view v-if="item.operate_data.is_collect == 1 || ((item.express_data || null) != null && item.express_data.length > 0)" class="item-operation tr br-t padding-vertical-main">
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                         <block v-if="(item.express_data || null) != null && item.express_data.length > 0">
-                            <block v-for="(ev, ei) in item.express_data" :key="item.id+ei">
+                            <block v-for="(ev, ei) in item.express_data" :key="ei">
                                 <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid='+item.id+'&eid='+ev.id+'&action_type=realstore'" hover-class="none">物流{{ei+1}}</button>
                             </block>
                         </block>
