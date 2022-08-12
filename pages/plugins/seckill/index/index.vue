@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="(data_base || null) != null">
+        <view v-if="(data_base || null) != null" :style="seckill_bg">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 轮播 -->
                 <view v-if="slider.length > 0">
@@ -32,7 +32,7 @@
                                     <view class="multi-text">{{item.title}}</view>
                                     <view class="single-text margin-top-sm">
                                         <text v-if="time.status == 0 || time.status == 1" class="text-size-xs bg-red cr-white round padding-left-sm padding-right-sm padding-top-xs padding-bottom-xs">{{data_base.goods_detail_icon || '秒杀价'}}</text>
-                                        <text class="sales-price va-m">{{currency_symbol}}{{item.min_price}}</text>
+                                        <text class="sales-price va-m">{{currency_symbol}}{{item.seckill_min_price}}</text>
                                     </view>
                                 </view>
                             </navigator>
@@ -61,9 +61,11 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
+    var seckill_static_url = app.globalData.get_static_url('seckill', true);
     export default {
         data() {
             return {
+                seckill_bg: 'background: url('+seckill_static_url+'home-bg.png) top/100% no-repeat;',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -125,7 +127,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base || null,
+                                data_base: data.config || null,
                                 time: data.time || null,
                                 goods: data.goods || [],
                                 slider: data.slider || [],

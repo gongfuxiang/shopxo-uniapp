@@ -74,7 +74,7 @@
                         </view>
 
                         <!-- 限时秒杀 - 插件 -->
-                        <view v-if="pv.plugins == 'seckill' && plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill spacing-mb">
+                        <view v-if="pv.plugins == 'seckill' && plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill border-radius-main padding-horizontal-main spacing-mb" :style="plugins_seckill_bg">
                             <view class="spacing-nav-title">
                                 <text class="text-wrapper va-m">限时秒杀</text>
                                 <view class="dis-inline-block va-m margin-left-sm">
@@ -299,6 +299,7 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
+    var seckill_static_url = app.globalData.get_static_url('seckill', true);
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -340,6 +341,7 @@
                 // 插件顺序列表
                 plugins_sort_list: [],
                 // 限时秒杀插件
+                plugins_seckill_bg: 'background: url('+seckill_static_url+'home-bg.png) top/100% no-repeat;',
                 plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
                 // 购买记录插件
@@ -409,7 +411,8 @@
                         common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
                         common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
-                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service')
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
+                        application_title: app.globalData.get_config('config.home_site_name', app.globalData.data.application_title)
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
