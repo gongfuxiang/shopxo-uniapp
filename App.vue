@@ -49,7 +49,7 @@
                 // 请求地址
                 request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1375,14 +1375,44 @@
                 }
                 return true;
             },
-            
+
+            // app标题
+            get_application_title() {
+                var value = null;
+                // 根据终端类型获取对应数据
+                var type = this.application_client_type() || null;
+                if(type !== null) {
+                    value = this.get_config('config.common_app_mini_'+type+'_title') || null;
+                }
+                // 获取公共数据
+                if(value === null) {
+                    value = this.get_config('config.home_site_name', this.data.application_title);
+                }
+                return value;
+            },
+
+            // app描述
+            get_application_describe() {
+                var value = null;
+                // 根据终端类型获取对应数据
+                var type = this.application_client_type() || null;
+                if(type !== null) {
+                    value = this.get_config('config.common_app_mini_'+type+'_describe') || null;
+                }
+                // 获取公共数据
+                if(value === null) {
+                    value = this.data.application_describe;
+                }
+                return value;
+            },
+
             // 分享内容处理
             share_content_handle(data) {
                 // 获取插件配置信息
                 var share_config = this.get_config('plugins_base.share.data') || {};
                 var result = {
-                    title: data.title || share_config.title || this.data.application_title,
-                    desc: data.desc || share_config.desc || this.data.application_describe,
+                    title: data.title || share_config.title || this.get_application_title(),
+                    desc: data.desc || share_config.desc || this.get_application_describe(),
                     path: data.path || this.data.tabbar_pages[0],
                     query: this.share_query_handle(data.query || ''),
                     img: data.img || share_config.pic || this.get_config('config.home_site_logo_square')

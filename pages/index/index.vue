@@ -412,7 +412,7 @@
                         common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
-                        application_title: app.globalData.get_config('config.home_site_name', app.globalData.data.application_title)
+                        application_title: app.globalData.get_application_title()
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
