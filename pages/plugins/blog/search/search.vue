@@ -114,15 +114,24 @@
                             });
 
                             // 基础自定义分享
+                            var info = this.data_base;
+                            if((this.nav_active_value || 0) != 0 && this.category.length > 0) {
+                                for(var i in this.category) {
+                                    if(this.nav_active_value == this.category[i]['id']) {
+                                        info = this.category[i];
+                                        break;
+                                    }
+                                }
+                            }
                             this.setData({
                                 share_info: {
-                                    title: this.data_base.seo_title || this.data_base.application_name,
-                                    desc: this.data_base.seo_desc,
+                                    title: info.seo_title || this.data_base.application_name,
+                                    desc: info.seo_desc,
                                     path: '/pages/plugins/blog/search/search',
                                     query: 'id=' +this.nav_active_value + '&keywords=' + this.search_keywords_value
                                 }
                             });
-                            
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
