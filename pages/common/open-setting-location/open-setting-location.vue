@@ -41,7 +41,7 @@
         methods: {
             // 获取权限
             init() {
-                // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO || MP-QQ
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
                 var self = this;
                 uni.getSetting({
                     success(res) {
@@ -66,7 +66,7 @@
                     }
                 });
                 // #endif
-                // #ifdef H5 || APP
+                // #ifdef MP-ALIPAY || H5 || APP
                 this.choose_location();
                 // #endif
                 // #ifdef MP-KUAISHOU
