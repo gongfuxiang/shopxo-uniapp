@@ -327,7 +327,7 @@
                 <!-- 左侧集合操作 -->
                 <view :class="'bus-items fl tc bus-items-'+bottom_nav_bus_number">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
-                    <block v-if="is_opt_back != 0">
+                    <block v-if="is_opt_back == 1 && is_goods_bottom_opt_back == 1">
                         <!-- 返回操作 -->
                         <view class="item fl cp" @tap="bottom_nav_back_event">
                             <image :src="common_static_url+'back-icon.png'" mode="scaleToFill"></image>
@@ -342,7 +342,7 @@
                         </view>
                     </block>
                     <!-- 客服 -->
-                    <component-online-service v-if="online_service_status == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
+                    <component-online-service v-if="common_app_is_online_service == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
                     <!-- 购物车 -->
                     <view v-if="is_opt_cart == 1" class="item fl cp">
                         <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
@@ -644,10 +644,9 @@
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 底部导航业务操作按钮数量
                 bottom_nav_bus_number: 4,
-                // 是否开启客服
-                online_service_status: 0,
                 // 是否底部导航展示返回按钮
                 is_opt_back: 0,
+                is_goods_bottom_opt_back: 0,
                 // 是否开启购物车
                 is_opt_cart: 1,
                 // 滚动监听值
@@ -722,11 +721,12 @@
                 // 是否自定义购买事件
                 buy_event_type: params.opt_buy_event_type || 'buy',
                 // 是否指定开启购买弹窗、默认0否、1是
-                popup_status: (parseInt(params.is_opt_buy_status) || 0) == 1,
+                popup_status: parseInt(params.is_opt_buy_status || 0) == 1,
                 // 是否底部导航展示返回按钮
                 is_opt_back: parseInt(params.is_opt_back || 0),
+                is_goods_bottom_opt_back: app.globalData.data.is_goods_bottom_opt_back || 0,
                 // 是否自定义购物车状态
-                is_opt_cart: (params.is_opt_cart === undefined) ? (app.globalData.data.is_goods_bottom_opt_cart || 0) : (params.is_opt_cart || 0),
+                is_opt_cart: (params.is_opt_cart === undefined) ? (app.globalData.data.is_goods_bottom_opt_cart || 0) : parseInt(params.is_opt_cart || 0),
             });
 
             // 数据加载
@@ -793,11 +793,10 @@
                 if ((status || false) == true) {
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service', 0),
                         common_app_is_use_mobile_detail: app.globalData.get_config('config.common_app_is_use_mobile_detail'),
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
-                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
                         plugins_intellectstools_config: app.globalData.get_config('plugins_base.intellectstools.data'),
@@ -808,7 +807,7 @@
                     if(this.is_opt_cart != 1) {
                         value--;
                     }
-                    if(this.online_service_status != 1) {
+                    if(this.common_app_is_online_service != 1) {
                         value--;
                     }
                     this.setData({bottom_nav_bus_number: value});
