@@ -13,7 +13,7 @@
 }
 .category-content {
     height: calc(100vh - 68px);
-    /* #ifdef H5 || MP-TOUTIAO || APP */
+    /* #ifdef H5 || APP */
     height: calc(100vh - 98px) !important;
     /* #endif */
 }
