@@ -47,8 +47,6 @@
 .right-container {
     width: calc(100% - 200rpx);
     height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
     top: 0;
     right: 0;
     background: #f5f5f5;
