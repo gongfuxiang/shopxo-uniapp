@@ -12,7 +12,11 @@
         </view>
         <view v-else class="open-setting-loding">
             <image :src="common_static_url+'bg-loding.gif'" class="avatar dis-block" mode="widthFix"></image>
+            <view class="tc margin-top-sm">
+                <navigator open-type="navigateBack" class="cp cr-gray dis-inline-block" hover-class="none">返回</navigator>
+            </view>
         </view>
+        <view v-if="(error_msg || null) != null" class="cr-red margin-top-lg padding-horizontal-main">{{error_msg}}</view>
     </view>
 </template>
 <script>
@@ -26,7 +30,8 @@
                 params: null,
                 is_show_open_setting: false,
                 auth: 'scope.userLocation',
-                cache_key: app.globalData.data.cache_userlocation_key
+                cache_key: app.globalData.data.cache_userlocation_key,
+                error_msg: null
             };
         },
 
@@ -90,10 +95,18 @@
                 uni.chooseLocation({
                     success: res => {
                         uni.setStorageSync(this.cache_key, res);
-                        uni.navigateBack();
+                        setTimeout(function(){
+                            uni.navigateBack();
+                        }, 500);
                     },
                     fail: res => {
-                        uni.navigateBack();
+                        // 取消则自动返回、则显示错误
+                        if(res.errMsg.indexOf('cancel') != -1) {
+                            uni.navigateBack();
+                        } else {
+                            this.setData({error_msg: res.errMsg});
+                            app.globalData.showToast(res.errMsg);
+                        }
                     }
                 });
             }

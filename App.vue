@@ -1067,7 +1067,7 @@
             },
 
             /**
-             * 百度坐标BD-09到火星坐标GCJ02(高德，谷歌，腾讯坐标)
+             * 打开地图
              * lng        经度
              * lat        纬度
              * name       地图上面显示的名称
@@ -1079,19 +1079,19 @@
                 this.showToast('请复制地址到网页地图中查看！');
                 return false;
                 // #endif
+
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
                     this.showToast('坐标有误');
                     return false;
                 }
-                
+
                 // 转换坐标打开位置
-                var position = this.map_bd_to_gcj(lng, lat);
                 uni.openLocation({
                     name: name || '地理位置',
                     address: address || '',
                     scale: scale || 18,
-                    longitude: position.lng,
-                    latitude: position.lat
+                    longitude: parseFloat(lng),
+                    latitude: parseFloat(lat)
                 });
             },
 

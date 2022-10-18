@@ -403,10 +403,6 @@
                         payment = this.payment_list[i];
                     }
                 }
-                if(payment == null) {
-                    app.globalData.showToast('支付方式有误');
-                    return false;
-                }
 
                 // 请求数据
                 var post_data = {
@@ -416,11 +412,13 @@
 
                 // h5自定义重定向地址
                 // #ifdef H5
-                post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : '')));
-                // paypal支付方式使用respond_url返回地址、移除重定向地址
-                if(payment.payment == 'PayPal') {
-                    post_data['respond_url'] = post_data['redirect_url'];
-                    delete post_data['redirect_url'];
+                if(payment != null) {
+                    post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false)+(this.nav_status_index > 0 ? '?status='+this.nav_status_index : '')));
+                    // paypal支付方式使用respond_url返回地址、移除重定向地址
+                    if(payment.payment == 'PayPal') {
+                        post_data['respond_url'] = post_data['redirect_url'];
+                        delete post_data['redirect_url'];
+                    }
                 }
                 // #endif
 
