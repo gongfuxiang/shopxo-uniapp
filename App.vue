@@ -60,7 +60,7 @@
                 application_title: "ShopXO",
                 application_describe: "企业级B2C开源电商系统！",
                 // 版本号
-                version: "v2.3.0",
+                version: "v2.3.1",
                 // 货币价格符号
                 currency_symbol: "￥",
                 // 主题类型        主题颜色
