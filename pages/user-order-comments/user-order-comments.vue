@@ -103,18 +103,18 @@
             init() {
                 var self = this;
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
                 });
                 uni.request({
                     url: app.globalData.get_request_url("comments", "order"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.params.id
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -143,7 +143,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -365,20 +365,20 @@
                 // 提交表单
                 var self = this;
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 self.setData({
                     form_button_disabled: true
                 });
                 uni.request({
                     url: app.globalData.get_request_url("commentssave", "order"),
-                    method: "POST",
+                    method: 'POST',
                     data: form_data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                             setTimeout(function() {
                                 uni.navigateBack();
                             }, 2000);
@@ -394,7 +394,7 @@
                         self.setData({
                             form_button_disabled: false
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

@@ -6,7 +6,7 @@
                 <uni-swipe-action>
                     <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                         <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                            <view :class="'goods-item padding-main pr ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
+                            <view :class="'goods-item wh-auto padding-main pr ' + (common_site_type == 1 ? 'exhibition-mode-data' : '')">
                                 <!-- 选择 -->
                                 <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl selected">
                                     <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
@@ -236,9 +236,9 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("index", "cart"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -281,7 +281,7 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -340,13 +340,13 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("stock", "cart"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         "id": temp_data_list[index]['id'],
                         "goods_id": temp_data_list[index]['goods_id'],
                         "stock": buy_number
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -370,7 +370,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -397,7 +397,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -499,7 +499,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

@@ -150,12 +150,12 @@
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "realstore"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         lng: lng,
                         lat: lat
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -206,7 +206,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

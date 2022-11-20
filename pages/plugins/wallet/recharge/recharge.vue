@@ -84,15 +84,15 @@
                     form_submit_disabled_status: true
                 });
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("create", "recharge", "wallet"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         money: this.recharge_money_value
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         this.setData({
                             form_submit_disabled_status: false
@@ -116,7 +116,7 @@
                             form_submit_disabled_status: false
                         });
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

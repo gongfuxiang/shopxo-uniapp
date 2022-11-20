@@ -83,11 +83,11 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("square", "answer"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -133,7 +133,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

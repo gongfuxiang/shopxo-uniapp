@@ -3,17 +3,17 @@
         <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup">
-                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
                     <input type="text" class="cr-base" name="name" maxlength="30" placeholder="联系人格式 1~30 个字符之间" placeholder-class="cr-grey">
                 </view>
 
                 <view class="form-gorup">
-                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
                     <input type="text" class="cr-base" name="tel" maxlength="30" placeholder-class="cr-grey" placeholder="座机 或 手机">
                 </view>
 
                 <view class="form-gorup">
-                    <view class="form-gorup-title">描述<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">描述<text class="form-group-tips-must">*</text></view>
                     <textarea class="cr-base" name="content" maxlength="160" :auto-height="true" placeholder-class="cr-grey" placeholder="请详细描述问题，我们将尽快为您解答！"></textarea>
                 </view>
 
@@ -109,7 +109,7 @@
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                app.globalData.showToast(res.data.msg, "success");
+                                app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function() {
                                     uni.redirectTo({
                                         url: "/pages/user-answer-list/user-answer-list"

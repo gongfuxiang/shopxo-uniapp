@@ -179,7 +179,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -191,13 +191,13 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("order", "extraction", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page,
                         status: status || 0,
                         keywords: this.search_keywords_value || ''
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -246,7 +246,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -314,13 +314,13 @@
                     form_submit_disabled_status: true
                 });
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("take", "extraction", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         this.setData({
                             form_submit_disabled_status: false
@@ -335,7 +335,7 @@
                                 is_show_take_popup: false,
                                 data_list: temp_data_list
                             });
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                         } else {
                             app.globalData.showToast(res.data.msg);
                         }
@@ -345,7 +345,7 @@
                             form_submit_disabled_status: false
                         });
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

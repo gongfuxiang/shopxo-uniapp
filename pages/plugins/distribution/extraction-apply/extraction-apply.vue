@@ -1,5 +1,5 @@
 <template>
-    <view class="page">
+    <view class="page-bottom-fixed">
         <form @submit="form_submit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup bg-white form-container-upload oh">
@@ -18,17 +18,17 @@
                 </view>
 
                 <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">别名<text class="form-group-tips">选填</text></view>
+                    <view class="form-gorup-title">别名</view>
                     <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符">
                 </view>
 
                 <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间">
                 </view>
 
                 <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机">
                 </view>
 
@@ -56,7 +56,7 @@
                 </view>
 
                 <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">详细地址<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间">
                 </view>
 
@@ -164,9 +164,9 @@
                 var self = this;
                 uni.request({
                     url: app.globalData.get_request_url("applyinfo", "extraction", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -246,9 +246,9 @@
                 var self = this;
                 uni.request({
                     url: app.globalData.get_request_url("index", "region"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -272,11 +272,11 @@
                 if (self.province_id) {
                     uni.request({
                         url: app.globalData.get_request_url("index", "region"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             pid: self.province_id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -302,11 +302,11 @@
                     // 加载loding
                     uni.request({
                         url: app.globalData.get_request_url("index", "region"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             pid: self.city_id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -472,17 +472,17 @@
                     form_submit_disabled_status: true
                 });
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("applysave", "extraction", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                             setTimeout(function() {
                                 uni.navigateBack();
                             }, 1000);
@@ -502,7 +502,7 @@
                             form_submit_disabled_status: false
                         });
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

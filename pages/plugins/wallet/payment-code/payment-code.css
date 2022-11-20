@@ -1,0 +1,12 @@
+.brcode {
+    width: 660rpx;
+    padding-top: 60rpx;
+}
+.qrcode {
+    width: 450rpx;
+    margin-top: 60rpx;
+    padding: 50rpx;
+}
+.bottom-fixed button {
+    width: 50%;
+}

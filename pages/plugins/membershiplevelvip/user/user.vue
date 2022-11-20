@@ -180,9 +180,9 @@
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url("index", "vip", "membershiplevelvip"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -213,7 +213,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -250,13 +250,13 @@
                                 submit_disabled_status: true
                             });
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("renew", "buy", "membershiplevelvip"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {},
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     self.setData({
@@ -278,7 +278,7 @@
                                         submit_disabled_status: false
                                     });
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }

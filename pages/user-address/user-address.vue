@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view class="page padding-main">
+        <view class="page-bottom-fixed padding-main">
             <view v-if="data_list.length > 0">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-horizontal-main border-radius-main bg-white spacing-mb">
                     <view @tap="address_conent_event" :data-index="index">
@@ -140,7 +140,7 @@
             get_data_list() {
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -149,9 +149,9 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "useraddress"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.params,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -193,7 +193,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -209,25 +209,25 @@
 
                 var self = this;
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "删除后不可恢复，确定继续吗?",
-                    confirmText: "确认",
-                    cancelText: "不了",
+                    title: '温馨提示',
+                    content: '删除后不可恢复，确定继续吗?',
+                    confirmText: '确认',
+                    cancelText: '不了',
                     success: result => {
                         if (result.confirm) {
                             // 加载loding
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             
                             // 获取数据
                             uni.request({
                                 url: app.globalData.get_request_url("delete", "useraddress"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     id: value
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
@@ -238,7 +238,7 @@
                                             data_list_loding_status: temp_data.length == 0 ? 0 : 3,
                                             data_bottom_line_status: temp_data.length == 0 ? false : true
                                         });
-                                        app.globalData.showToast(res.data.msg, "success");
+                                        app.globalData.showToast(res.data.msg, 'success');
                                         
                                         // 当前删除是否存在缓存中，存在则删除
                                         var cache_address = uni.getStorageSync(app.globalData.data.cache_buy_user_address_select_key);
@@ -258,7 +258,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }
@@ -275,30 +275,30 @@
                 }
                 var self = this;
                 if (value == self.is_default) {
-                    app.globalData.showToast("设置成功", "success");
+                    app.globalData.showToast("设置成功", 'success');
                     return false;
                 }
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("setdefault", "useraddress"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: value
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             self.setData({
                                 is_default: value
                             });
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
@@ -309,7 +309,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -352,13 +352,13 @@
                         
                         // 加载获取数据
                         uni.showLoading({
-                            title: "处理中..."
+                            title: '处理中...'
                         });
                         uni.request({
                             url: app.globalData.get_request_url("outsystemadd", "useraddress"),
-                            method: "POST",
+                            method: 'POST',
                             data: data,
-                            dataType: "json",
+                            dataType: 'json',
                             success: res => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
@@ -373,7 +373,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("服务器请求出错");
+                                app.globalData.showToast('服务器请求出错');
                             }
                         });
                     }

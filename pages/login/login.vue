@@ -10,7 +10,7 @@
                             <view v-if="(user.nickname || null) != null" class="cr-base">{{user.nickname}}</view>
                         </view>
                         <view class="margin-top-xxxl padding-top-xxxl">
-                            <input type="number" placeholder="输入手机号码" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
+                            <input type="number" placeholder="手机号码" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
                             <view class="code pr margin-vertical-main">
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
@@ -80,8 +80,8 @@
                     <form @submit="formLogin">
                         <!-- 账号密码 -->
                         <block v-if="current_opt_type == 'login_username'">
-                            <input type="text" placeholder="输入用户名/手机/邮箱" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="用户名/手机/邮箱" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                             <view  v-if="home_user_login_img_verify_state == 1" class="verify pr margin-vertical-main">
                                 <input type="text" placeholder="验证码" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event">
                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_login" @tap="image_verify_event"></image>
@@ -89,7 +89,7 @@
                         </block>
                         <!-- 手机 -->
                         <block v-if="current_opt_type == 'login_sms'">
-                            <input type="number" placeholder="输入手机号码" maxlength="11" name="accounts" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
+                            <input type="number" placeholder="手机号码" maxlength="11" name="accounts" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
                             <view class="code pr margin-vertical-main">
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
@@ -97,7 +97,7 @@
                         </block>
                         <!-- 邮箱 -->
                         <block v-if="current_opt_type == 'login_email'">
-                            <input type="text" placeholder="输入电子邮箱" maxlength="60" name="accounts" @input="form_input_email_event" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="电子邮箱" maxlength="60" name="accounts" @input="form_input_email_event" class="form-item margin-vertical-main wh-auto">
                             <view class="code pr margin-vertical-main">
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
@@ -156,8 +156,8 @@
                     <form @submit="formReg">
                         <!-- 账号密码 -->
                         <block v-if="current_opt_type == 'reg_username'">
-                            <input type="text" placeholder="输入用户名" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="用户名" maxlength="60" name="accounts" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                             <view  v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-main">
                                 <input type="text" placeholder="验证码" name="verify" maxlength="4" :value="form_input_image_verify_value" @input="form_input_image_verify_event">
                                 <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_reg" @tap="image_verify_event"></image>
@@ -165,21 +165,21 @@
                         </block>
                         <!-- 手机 -->
                         <block v-if="current_opt_type == 'reg_sms'">
-                            <input type="number" placeholder="输入手机号码" maxlength="11" name="accounts" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
+                            <input type="number" placeholder="手机号码" maxlength="11" name="accounts" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto">
                             <view class="code pr margin-vertical-main">
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                             </view>
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                         </block>
                         <!-- 邮箱 -->
                         <block v-if="current_opt_type == 'reg_email'">
-                            <input type="text" placeholder="输入电子邮箱" maxlength="60" name="accounts" @input="form_input_email_event" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="电子邮箱" maxlength="60" name="accounts" @input="form_input_email_event" class="form-item margin-vertical-main wh-auto">
                             <view class="code pr margin-vertical-main">
                                 <input type="number" placeholder="验证码" name="verify" maxlength="4">
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                             </view>
-                            <input type="text" placeholder="输入登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
+                            <input type="text" placeholder="登录密码" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-main wh-auto">
                         </block>
                         <!-- 协议 -->
                         <view class="margin-top-xxxl cr-gray">
@@ -220,7 +220,7 @@
                 <!-- 找回密码 -->
                 <view v-else-if="current_opt_form == 'forget'" class="form-content">
                     <form @submit="formForget">
-                        <input type="text" placeholder="输入手机/邮箱" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-main wh-auto">
+                        <input type="text" placeholder="手机/邮箱" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-main wh-auto">
                         <view class="code pr margin-vertical-main">
                             <input type="number" placeholder="验证码" name="verify" maxlength="4">
                             <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
@@ -455,7 +455,7 @@
                 } else {
                     // 是否需要绑定手机
                     if (type == 'bind' && !app.globalData.user_is_need_login(user)) {
-                        type = 'success';
+                        type = 'bind';
                         form = 'success';
                     }
                 }
@@ -695,6 +695,10 @@
                     var post_data = {
                         mobile: this.form_input_mobile_value || ''
                     };
+                    if((post_data.mobile || null) == null) {
+                        app.globalData.showToast('请填写手机号码');
+                        return false;
+                    }
                 } else {
                     if(this.current_opt_form == 'login') {
                         action = 'loginverifysend';
@@ -706,7 +710,11 @@
                         action = 'forgetpwdverifysend';
                         image_verify_type = 'user_forget';
                     }
-                    var accounts  = (this.current_opt_type == 'bind_verify' || this.current_opt_type == 'login_sms' || this.current_opt_type == 'reg_sms') ? this.form_input_mobile_value :  (this.current_opt_type == 'forget' ? this.form_input_accounts_value : this.form_input_email_value);
+                    var accounts  = ((this.current_opt_type == 'bind_verify' || this.current_opt_type == 'login_sms' || this.current_opt_type == 'reg_sms') ? this.form_input_mobile_value :  (this.current_opt_type == 'forget' ? this.form_input_accounts_value : this.form_input_email_value)) || null;
+                    if(accounts == null) {
+                        app.globalData.showToast('请填写账号');
+                        return false;
+                    }
                     var post_data = {
                         accounts: accounts,
                         verify: this.form_input_image_verify_value,
@@ -778,7 +786,7 @@
                             form_input_image_verify_value: ''
                         });
                         this.image_verify_event(image_verify_type);
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -829,7 +837,7 @@
                             this.setData({
                                 form_submit_loading: false
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }
@@ -863,7 +871,7 @@
                     };
                     data[field_unionid] = this.user[field_unionid] || '';
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     var self = this;
                     uni.request({
@@ -952,7 +960,7 @@
                             this.setData({
                                 form_submit_loading: false
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }
@@ -1032,7 +1040,7 @@
                             this.setData({
                                 form_submit_loading: false
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }
@@ -1090,7 +1098,7 @@
                             this.setData({
                                 form_submit_loading: false
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }
@@ -1128,7 +1136,7 @@
                                 this.setData({
                                     form_submit_loading: false
                                 });
-                                app.globalData.showToast("服务器请求出错");
+                                app.globalData.showToast('服务器请求出错');
                             }
                         });
                     } else {
@@ -1197,10 +1205,16 @@
             // 表单类型事件
             opt_form_event(e) {
                 var value = e.currentTarget.dataset.value;
+                // 手机更换绑定来源则直接返回
+                if(value == 'bind' && (this.params.opt_form || null) != null && this.params.opt_form == 'bind_verify') {
+                    uni.navigateBack();
+                }
+
+                // 设置数据
                 var data = {
                     current_opt_form: value
                 };
-                
+
                 // 小程序使用授权自动登录
                 // 切换手机绑定方式
                 if(value == 'auth' || value == 'bind') {

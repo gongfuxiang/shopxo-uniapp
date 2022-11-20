@@ -337,11 +337,11 @@
             get_detail_init() {
                 uni.request({
                     url: app.globalData.get_request_url("index", "detail", "realstore"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.request_params_merge({
                         "id": this.params.id || 0
                     }, 'init'),
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -418,7 +418,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -435,7 +435,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中...",
+                    title: '加载中...',
                     mask: true
                 });
 
@@ -450,14 +450,14 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("datalist", "detail", "realstore"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.request_params_merge({
                         id: this.params.id || 0,
                         page: this.data_page,
                         keywords: this.search_keywords_value,
                         category_id: category_id
                     }, 'data'),
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -511,7 +511,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -546,7 +546,7 @@
                                     this.setData({
                                         favor_info: res.data.data
                                     });
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
                                         app.globalData.showToast(res.data.msg);
@@ -789,13 +789,13 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("stock", "cart"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         "id": cart_id,
                         "goods_id": goods_id,
                         "stock": buy_number
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -810,7 +810,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -842,7 +842,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -874,7 +874,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -976,7 +976,7 @@
                                     },
                                     fail: () => {
                                         uni.hideLoading();
-                                        app.globalData.showToast("服务器请求出错");
+                                        app.globalData.showToast('服务器请求出错');
                                     }
                                 });
                             }

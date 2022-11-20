@@ -112,7 +112,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -121,12 +121,12 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("usercominglist", "userqrcode", "signin"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.params.id || 0,
                         page: this.data_page
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -175,7 +175,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

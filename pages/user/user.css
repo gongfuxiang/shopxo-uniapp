@@ -36,14 +36,18 @@
     line-height: 46rpx;
 }
 /**
- * 消息
+ * 头部右上角
  */
-.nav-message {
+.head-right {
     z-index: 10;
     right: 30rpx;
     top: 110rpx;
 }
-.nav-message .badge-icon {
+.head-right .item .icon {
+    width: 35rpx;
+    height: 35rpx;
+}
+.head-right .item .badge-icon {
     top: -10px;
     right: -2px;
 }

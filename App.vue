@@ -51,9 +51,9 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1124,7 +1124,8 @@
             // 链接地址事件
             url_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-                this.url_open(value);
+                var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
+                this.url_open(value, is_redirect);
             },
 
             // url打开
@@ -1456,7 +1457,7 @@
                 var page = pages[pages.length-1];
                 return this.page_url_handle(page);
             },
-            
+
             // 上一页页面地址
             prev_page() {
                 var value = null;
@@ -1467,7 +1468,17 @@
                 }
                 return value;
             },
-            
+
+            // 返回上一页、则回到shouy 
+            page_back_prev_event() {
+                var prev_page = this.prev_page();
+                if(prev_page == null) {
+                    uni.switchTab({url: this.data.tabbar_pages[0]});
+                } else {
+                    uni.navigateBack();
+                }
+            },
+
             // 页面地址处理
             page_url_handle(page) {
                 var route = page.route;
@@ -1532,6 +1543,21 @@
                     }
                 }
                 // #endif
+            },
+
+            // 清除用户缓存
+            remove_user_cache_event() {
+                // 用户登录缓存
+                uni.removeStorageSync(this.data.cache_user_login_key);
+                // 用户信息缓存
+                uni.removeStorageSync(this.data.cache_user_info_key);
+
+                // 非小程序则两秒后回到首页
+                this.showToast('清除成功', 'success');
+                var url = this.data.tabbar_pages[0];
+                setTimeout(function() {
+                    uni.switchTab({url: url});
+                }, 1500);
             }
         },
 

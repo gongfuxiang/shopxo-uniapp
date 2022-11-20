@@ -91,16 +91,16 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
                 });
                 uni.request({
                     url: app.globalData.get_request_url("index", "poster", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -141,7 +141,7 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -149,20 +149,20 @@
             // 刷新海报
             poster_refresh_event(e) {
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("refresh", "poster", "distribution"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             this.setData({
                                 user_share_poster: res.data.data
                             });
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                         } else {
                             if (app.globalData.is_login_check(res.data, self, 'init')) {
                                 app.globalData.showToast(res.data.msg);
@@ -171,7 +171,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

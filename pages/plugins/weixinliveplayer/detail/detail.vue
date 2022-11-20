@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="detail != null" class="page">
+        <view v-if="detail != null" class="page-bottom-fixed">
             <!-- 封面图片 -->
             <image v-if="(detail || null) != null && (detail.share_img || null) != null" class="banner wh-auto dis-block" :src="detail.share_img" mode="widthFix" @tap="detail_images_view_event" :data-value="detail.share_img"></image>
 
@@ -96,18 +96,18 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
                 });
                 uni.request({
                     url: app.globalData.get_request_url("detail", "search", "weixinliveplayer"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.params.id
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -157,7 +157,7 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -208,7 +208,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

@@ -1,5 +1,5 @@
 <template>
-    <view class="page">
+    <view class="page-bottom-fixed">
         <view v-if="save_base_data != null && save_base_data.total_price > 0">
             <form @submit="formSubmit" class="form-container">
                 <view class="padding-main oh">
@@ -37,14 +37,14 @@
                     </view>
 
                     <view class="form-gorup">
-                        <view class="form-gorup-title">发票抬头<text class="form-group-tips-must">必填</text></view>
+                        <view class="form-gorup-title">发票抬头<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" placeholder="发票抬头、最多200个字符" maxlength="200" :value="data.invoice_title || ''">
                     </view>
 
                     <!-- 企业信息 -->
                     <view v-if="company_container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">企业统一社会信用代码或纳税识别号<text class="form-group-tips-must">必填</text>
+                            <view class="form-gorup-title">企业统一社会信用代码或纳税识别号<text class="form-group-tips-must">*</text>
                             </view>
                             <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" placeholder="企业统一社会信用代码或纳税识别号、最多160个字符" maxlength="160" :value="data.invoice_code || ''">
                         </view>
@@ -53,19 +53,19 @@
                     <!-- 企业专票信息 -->
                     <view v-if="company_special_container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">企业开户行名称<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">企业开户行名称<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" placeholder="企业开户行名称、最多200个字符" maxlength="200" :value="data.invoice_bank || ''">
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">企业开户帐号<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">企业开户帐号<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" placeholder="企业开户帐号、最多160个字符" maxlength="160" :value="data.invoice_account || ''">
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">企业联系电话<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">企业联系电话<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" placeholder="企业联系电话 6~15 个字符" maxlength="15" :value="data.invoice_tel || ''">
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">企业注册地址<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">企业注册地址<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" placeholder="企业注册地址、最多230个字符" maxlength="230" :value="data.invoice_address || ''">
                         </view>
                     </view>
@@ -73,15 +73,15 @@
                     <!-- 收件人信息 -->
                     <view v-if="addressee_container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">收件人姓名<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">收件人姓名<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" placeholder="收件人姓名格式 2~30 个字符之间" maxlength="30" :value="data.name || ''">
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">收件人电话<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">收件人电话<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" placeholder="收件人电话 6~15 个字符" maxlength="15" :value="data.tel || ''">
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">收件人地址<text class="form-group-tips-must">必填</text></view>
+                            <view class="form-gorup-title">收件人地址<text class="form-group-tips-must">*</text></view>
                             <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" placeholder="收件人地址、最多230个字符" maxlength="230" :value="data.address || ''">
                         </view>
                     </view>
@@ -89,13 +89,13 @@
                     <!-- 电子邮箱信息 -->
                     <view v-if="email_container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">电子邮箱<text class="form-group-tips">选填</text></view>
+                            <view class="form-gorup-title">电子邮箱</view>
                             <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" placeholder="电子邮箱、最多60个字符" maxlength="60" :value="data.email || ''">
                         </view>
                     </view>
 
                     <view class="form-gorup">
-                        <view class="form-gorup-title">备注<text class="form-group-tips">选填</text></view>
+                        <view class="form-gorup-title">备注</view>
                         <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" placeholder="备注最多230个字符" maxlength="60" :value="data.user_note || ''">
                     </view>
                     <view class="bottom-fixed padding-main">
@@ -170,16 +170,16 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
                 });
                 uni.request({
                     url: app.globalData.get_request_url("saveinfo", "user", "invoice"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.params,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -227,7 +227,7 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -368,7 +368,7 @@
                             success: res => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                     var is_to = (this.params || null) != null && (this.params.is_redirect || 0) == 1;
                                     setTimeout(function() {
                                         // 是否关闭页面进入我的发票、适合从订单开票中过来提交成功直接进入我的发票列表
@@ -406,5 +406,4 @@
     };
 </script>
 <style>
-    @import './invoice-saveinfo.css';
 </style>

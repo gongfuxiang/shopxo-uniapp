@@ -194,7 +194,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -206,13 +206,13 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order", "membershiplevelvip"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page,
                         status: order_status,
                         is_more: 1
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -285,7 +285,7 @@
                             data_list_loding_status: 2,
                             load_status: 1
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -364,9 +364,9 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("pay", "buy", "membershiplevelvip"),
-                    method: "POST",
+                    method: 'POST',
                     data: post_data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -389,7 +389,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -536,11 +536,11 @@
                         var timer = setInterval(function() {
                             uni.request({
                                 url: app.globalData.get_request_url("paycheck", "buy", "membershiplevelvip"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     order_no: self.popup_view_pay_data.order_no,
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
@@ -568,7 +568,7 @@
                                 },
                                 fail: () => {
                                     clearInterval(self.popup_view_pay_timer);
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }, 3000);
@@ -611,10 +611,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "取消后不可恢复，确定继续吗?",
-                    confirmText: "确认",
-                    cancelText: "不了",
+                    title: '温馨提示',
+                    content: '取消后不可恢复，确定继续吗?',
+                    confirmText: '确认',
+                    cancelText: '不了',
                     success: result => {
                         if (result.confirm) {
                             // 参数
@@ -623,15 +623,15 @@
                             
                             // 加载loding
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("cancel", "order", "membershiplevelvip"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     id: id
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
@@ -641,14 +641,14 @@
                                         this.setData({
                                             data_list: temp_data_list
                                         });
-                                        app.globalData.showToast(res.data.msg, "success");
+                                        app.globalData.showToast(res.data.msg, 'success');
                                     } else {
                                         app.globalData.showToast(res.data.msg);
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }
@@ -659,10 +659,10 @@
             // 删除
             delete_event(e) {
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "删除后不可恢复，确定继续吗?",
-                    confirmText: "确认",
-                    cancelText: "不了",
+                    title: '温馨提示',
+                    content: '删除后不可恢复，确定继续吗?',
+                    confirmText: '确认',
+                    cancelText: '不了',
                     success: result => {
                         if (result.confirm) {
                             // 参数
@@ -671,15 +671,15 @@
                             
                             // 加载loding
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("delete", "order", "membershiplevelvip"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     id: id
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
@@ -694,14 +694,14 @@
                                                 data_bottom_line_status: false
                                             });
                                         }
-                                        app.globalData.showToast(res.data.msg, "success");
+                                        app.globalData.showToast(res.data.msg, 'success');
                                     } else {
                                         app.globalData.showToast(res.data.msg);
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }

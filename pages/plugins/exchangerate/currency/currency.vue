@@ -67,7 +67,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 if (self.data_list.length <= 0) {
                     self.setData({
@@ -76,9 +76,9 @@
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "exchangerate"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -110,7 +110,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -130,19 +130,19 @@
                 if (data.id != this.data_default.id) {
                     var self = this;
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
                         url: app.globalData.get_request_url("setcurrency", "index", "exchangerate"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             "currency": data.id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                app.globalData.showToast(res.data.msg, "success");
+                                app.globalData.showToast(res.data.msg, 'success');
                                 self.setData({
                                     data_default: data
                                 });
@@ -160,7 +160,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

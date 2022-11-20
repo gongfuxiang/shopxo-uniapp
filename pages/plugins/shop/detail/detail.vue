@@ -242,11 +242,11 @@
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url("detail", "index", "shop"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         "id": this.params.id || 0
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -310,7 +310,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -342,7 +342,7 @@
                                     this.setData({
                                         shop_favor_info: res.data.data
                                     });
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'shop_favor_event')) {
                                         app.globalData.showToast(res.data.msg);

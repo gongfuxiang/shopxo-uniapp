@@ -77,7 +77,7 @@
 			"path": "pages/login/login",
 			"style": {
 				"enablePullDownRefresh": false,
-                "navigationBarTitleText": "登陆"
+                "navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -255,6 +255,27 @@
             }
         },
         {
+            "path": "pages/setup/setup",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "设置"
+            }
+        },
+        {
+            "path": "pages/personal/personal",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "个人资料"
+            }
+        },
+        {
+            "path": "pages/logout/logout",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "账号注销"
+            }
+        },
+        {
         	"path": "pages/plugins/seckill/index/index",
         	"style": {
         		"enablePullDownRefresh": true,
@@ -352,6 +373,13 @@
 				"navigationBarTitleText": "我的团队"
 			}
 		},
+        {
+        	"path": "pages/plugins/membershiplevelvip/member-code/member-code",
+        	"style": {
+        		"enablePullDownRefresh": false,
+        		"navigationBarTitleText": "会员码"
+        	}
+        },
 		{
 			"path": "pages/plugins/distribution/user/user",
 			"style": {
@@ -513,6 +541,13 @@
 				"navigationBarTitleText": "提现详情"
 			}
 		},
+        {
+        	"path": "pages/plugins/wallet/payment-code/payment-code",
+        	"style": {
+        		"enablePullDownRefresh": false,
+        		"navigationBarTitleText": "付款码"
+        	}
+        },
 		{
 			"path": "pages/plugins/excellentbuyreturntocash/profit/profit",
 			"style": {

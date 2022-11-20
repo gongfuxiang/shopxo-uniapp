@@ -826,9 +826,9 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("detail", "goods"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.params,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         uni.hideLoading();
@@ -920,7 +920,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -1180,7 +1180,7 @@
                                             "status": res.data.data.status
                                         }
                                     });
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this,
                                         'goods_favor_event')) {
@@ -1236,7 +1236,7 @@
                                         // 关闭购买弹窗窗口
                                         this.popup_close_event();
                                     }
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'goods_buy_confirm_event')) {
                                         app.globalData.showToast(res.data.msg);
@@ -1384,7 +1384,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -1424,7 +1424,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -1536,7 +1536,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -1717,7 +1717,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("服务器请求出错");
+                                app.globalData.showToast('服务器请求出错');
                             }
                         });
                     }
@@ -1772,19 +1772,19 @@
                         return false;
                     } else {
                         uni.showLoading({
-                            title: "处理中..."
+                            title: '处理中...'
                         });
                         uni.request({
                             url: app.globalData.get_request_url("receive", "coupon", "coupon"),
-                            method: "POST",
+                            method: 'POST',
                             data: {
                                 "coupon_id": value
                             },
-                            dataType: "json",
+                            dataType: 'json',
                             success: res => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    app.globalData.showToast(res.data.msg, "success");
+                                    app.globalData.showToast(res.data.msg, 'success');
                                     if (this.plugins_coupon_data.base != null && this
                                         .plugins_coupon_data.base.is_repeat_receive != 1) {
                                         temp_list[index]['is_operable'] = 0;
@@ -1801,7 +1801,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("服务器请求出错");
+                                app.globalData.showToast('服务器请求出错');
                             }
                         });
                     }

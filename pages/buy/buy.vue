@@ -4,7 +4,7 @@
             <component-no-data propStatus="2" propMsg="展示型不允许提交订单"></component-no-data>
         </block>
         <block v-else>
-            <view v-if="goods_list.length > 0" class="page">
+            <view v-if="goods_list.length > 0" class="page-bottom-fixed">
                 <!-- 销售+自提 模式选择 -->
                 <view v-if="common_site_type == 4" class="buy-header-nav bg-white oh tc">
                     <block v-for="(item, index) in buy_header_nav" :key="index">
@@ -379,9 +379,9 @@
                 data['site_model'] = this.site_model;
                 uni.request({
                     url: app.globalData.get_request_url("index", "buy"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.request_data_ext_params_merge(data),
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         uni.hideLoading();
@@ -491,7 +491,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -594,9 +594,9 @@
                     });
                     uni.request({
                         url: app.globalData.get_request_url("add", "buy"),
-                        method: "POST",
+                        method: 'POST',
                         data: data,
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
@@ -613,7 +613,7 @@
                             this.setData({
                                 buy_submit_disabled_status: false
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

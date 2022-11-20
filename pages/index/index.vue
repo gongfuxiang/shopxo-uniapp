@@ -301,7 +301,7 @@
     var static_url = app.globalData.get_static_url('home');
     var seckill_static_url = app.globalData.get_static_url('seckill', true);
     // 状态栏高度
-    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO
     bar_height = 0;
     // #endif
@@ -426,9 +426,9 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("index", "index"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         // 获取最新缓存
@@ -507,7 +507,7 @@
                             data_bottom_line_status: true,
                             load_status: 1
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

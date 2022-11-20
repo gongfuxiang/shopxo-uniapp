@@ -79,14 +79,14 @@
                     });
                 }
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 // 是否指定方法
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "express"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.params,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -115,7 +115,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

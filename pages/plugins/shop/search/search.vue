@@ -175,15 +175,15 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: "加载中...",
+                    title: '加载中...',
                     mask: true
                 });
                 var post_data = this.request_map_handle();
                 uni.request({
                     url: app.globalData.get_request_url("index", "search", "shop"),
-                    method: "POST",
+                    method: 'POST',
                     data: post_data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -243,7 +243,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -260,15 +260,15 @@
                 
                 // 获取数据
                 uni.showLoading({
-                    title: "加载中...",
+                    title: '加载中...',
                     mask: true
                 });
                 var post_data = this.request_map_handle();
                 uni.request({
                     url: app.globalData.get_request_url("datalist", "search", "shop"),
-                    method: "POST",
+                    method: 'POST',
                     data: post_data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -321,7 +321,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

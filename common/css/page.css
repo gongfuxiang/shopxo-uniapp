@@ -206,6 +206,9 @@ button:before {
 .auto {
     margin: 0 auto;
 }
+.lh-0 {
+    line-height: 0 !important;
+}
 .cp {
     /* #ifdef H5 */
     cursor: pointer;
@@ -236,6 +239,12 @@ button:before {
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
+}
+/**
+ * 页面底部浮动、增加底部边距
+ */
+.page-bottom-fixed {
+    padding-bottom: 120rpx;
 }
 
 /**
@@ -309,19 +318,19 @@ button:before {
  * 边框 灰色（四边）、红色、黄色、绿色、灰色、无边线
  */
 .br {
-    border: 1px solid #efefef !important;
+    border: 1px solid #f7f7f7 !important;
 }
 .br-b {
-    border-bottom: 1px solid #efefef !important;
+    border-bottom: 1px solid #f7f7f7 !important;
 }
 .br-t {
-    border-top: 1px solid #efefef !important;
+    border-top: 1px solid #f7f7f7 !important;
 }
 .br-l {
-    border-left: 1px solid #efefef !important;
+    border-left: 1px solid #f7f7f7 !important;
 }
 .br-r {
-    border-right: 1px solid #efefef !important;
+    border-right: 1px solid #f7f7f7 !important;
 }
 .br-red {
     border:1px  solid #f00 !important;
@@ -347,19 +356,19 @@ button:before {
  * 虚线边框、灰色（四边）、红色、黄色、绿色、灰色
  */
 .br-dashed {
-    border: dashed 1px #efefef !important;
+    border: dashed 1px #f7f7f7 !important;
 }
 .br-b-dashed {
-    border-bottom: dashed 1px #efefef !important;
+    border-bottom: dashed 1px #f7f7f7 !important;
 }
 .br-t-dashed {
-    border-top: dashed 1px #efefef !important;
+    border-top: dashed 1px #f7f7f7 !important;
 }
 .br-l-dashed {
-    border-left: dashed 1px #efefef !important;
+    border-left: dashed 1px #f7f7f7 !important;
 }
 .br-r-dashed {
-    border-right: dashed 1px #efefef !important;
+    border-right: dashed 1px #f7f7f7 !important;
 }
 .br-dashed-red {
     border: dashed 1px #f00 !important;
@@ -392,6 +401,9 @@ button:before {
 }
 .cr-grey {
     color: #9A9A9A !important;
+}
+.cr-grey-white {
+    color: #e7e7e7 !important;
 }
 .cr-red {
     color: #f00 !important;
@@ -545,7 +557,8 @@ button[disabled].bg-gray {
     font-size: 28rpx;
 }
 .form-container .form-gorup input,
-.form-container .form-gorup .picker {
+.form-container .form-gorup .picker,
+.form-container .form-gorup .radio-gorup {
     height: 70rpx;
     line-height: 70rpx;
 }
@@ -559,6 +572,12 @@ button[disabled].bg-gray {
 }
 .form-container .form-gorup .switch {
     margin: 30rpx 0 20rpx 0;
+}
+.form-container .form-gorup .radio-gorup .radio radio {
+    transform: scale(0.7);
+}
+.form-container .form-gorup .radio-gorup .radio:not(:last-child) {
+    margin-right: 50rpx;
 }
 
 /**

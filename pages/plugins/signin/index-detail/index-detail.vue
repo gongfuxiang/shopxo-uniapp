@@ -147,11 +147,11 @@
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url("detail", "index", "signin"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.params.id || 0
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -197,7 +197,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -233,15 +233,15 @@
             coming_event(e) {
                 if (this.is_already_coming != 1 && this.init()) {
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
                         url: app.globalData.get_request_url("coming", "index", "signin"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             id: this.data.id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
@@ -259,7 +259,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }
@@ -276,13 +276,13 @@
             team_event(e) {
                 if (this.init()) {
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
                         url: app.globalData.get_request_url("team", "userqrcode", "signin"),
-                        method: "POST",
+                        method: 'POST',
                         data: {},
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
@@ -314,7 +314,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

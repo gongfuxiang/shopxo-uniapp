@@ -1,9 +1,9 @@
 <template>
-    <view class="page">
+    <view class="page-bottom-fixed">
         <form v-if="check_status == 1" @submit="form_submit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup">
-                    <view class="form-gorup-title">提现金额<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">提现金额<text class="form-group-tips-must">*</text></view>
                     <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="'提现金额，最低' + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + '元，最高' + can_cash_max_money + '元'">
                     <view class="notice-content-blue">
                         <view v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-bottom-sm">赠送金额不可提现</view>
@@ -15,7 +15,7 @@
                 </view>
 
                 <view class="form-gorup">
-                    <view class="form-gorup-title">收款平台<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">收款平台<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" placeholder="收款平台格式 1~60 个字符之间">
                     <view class="notice-content-blue">
                         强烈建议优先填写国有4大银行(中国银行、中国建设银行、中国工商银行和中国农业银行) 请填写详细的开户银行分行名称，虚拟账户如支付宝、财付通、微信 直接填写 相应的名称 即可。
@@ -23,7 +23,7 @@
                 </view>
 
                 <view class="form-gorup">
-                    <view class="form-gorup-title">收款账号<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">收款账号<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" placeholder="收款账号格式 1~60 个字符之间">
                     <view class="notice-content-blue">
                         银行账号或虚拟账号(支付宝、财付通、微信等账号)
@@ -31,7 +31,7 @@
                 </view>
 
                 <view class="form-gorup">
-                    <view class="form-gorup-title">开户人姓名<text class="form-group-tips-must">必填</text></view>
+                    <view class="form-gorup-title">开户人姓名<text class="form-group-tips-must">*</text></view>
                     <input type="text" name="bank_username" :value="default_data.bank_username || ''"
                         placeholder-class="cr-grey" class="cr-base" maxlength="30" placeholder="开户人姓名格式 1~30 个字符之间">
                     <view class="notice-content-blue">
@@ -133,13 +133,13 @@
                     data_list_loding_status: 1
                 });
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("createinit", "cash", "wallet"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -170,7 +170,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -205,17 +205,17 @@
                         form_submit_loading: true
                     });
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
                         url: app.globalData.get_request_url("create", "cash", "wallet"),
-                        method: "POST",
+                        method: 'POST',
                         data: form_data,
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                app.globalData.showToast(res.data.msg, "success");
+                                app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function() {
                                     uni.redirectTo({
                                         url: '/pages/plugins/wallet/user-cash/user-cash'
@@ -237,7 +237,7 @@
                                 form_submit_loading: false
                             });
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

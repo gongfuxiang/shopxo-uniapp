@@ -95,7 +95,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 if (self.data_list.length <= 0) {
                     self.setData({
@@ -104,9 +104,9 @@
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "coupon"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -158,7 +158,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -191,19 +191,19 @@
                         var temp_list = this.data_list;
                         if (temp_list[index]['is_operable'] != 0) {
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("receive", "coupon", "coupon"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     "coupon_id": value
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
-                                        app.globalData.showToast(res.data.msg, "success");
+                                        app.globalData.showToast(res.data.msg, 'success');
                                         if (this.data_base != null && this.data_base.is_repeat_receive !=
                                             1) {
                                             temp_list[index]['is_operable'] = 0;
@@ -220,7 +220,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }

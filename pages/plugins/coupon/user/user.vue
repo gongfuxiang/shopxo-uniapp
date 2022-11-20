@@ -171,7 +171,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 if (this.data_list == null || (this.data_list[this.nav_tabs_value] || null) == null || this.data_list[this.nav_tabs_value].length <= 0) {
                     this.setData({
@@ -180,9 +180,9 @@
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "coupon", "coupon"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -211,7 +211,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

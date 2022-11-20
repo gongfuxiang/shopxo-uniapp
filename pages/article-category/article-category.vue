@@ -84,13 +84,13 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("index", "article"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -127,7 +127,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -144,18 +144,18 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
 
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("datalist", "article"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page,
                         id: this.nav_active_value || 0
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -208,7 +208,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

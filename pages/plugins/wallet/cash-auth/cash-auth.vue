@@ -16,7 +16,7 @@
                     </view>
 
                     <view class="form-gorup pr">
-                        <view class="form-gorup-title">请输入安全验证码<text class="form-group-tips-must">必填</text></view>
+                        <view class="form-gorup-title">请输入安全验证码<text class="form-group-tips-must">*</text></view>
                         <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" placeholder="验证码格式 4 位数字" maxlength="4">
                         <button :class="'bg-gray br-gray cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                     </view>
@@ -119,7 +119,7 @@
             get_data() {
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -128,9 +128,9 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("auth", "cash", "wallet"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         this.setData({
@@ -158,7 +158,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -231,7 +231,7 @@
                             verify_loading: false,
                             verify_disabled: false
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -254,13 +254,13 @@
                         form_submit_disabled_status: true
                     });
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
                         url: app.globalData.get_request_url("verifycheck", "cash", "wallet"),
-                        method: "POST",
+                        method: 'POST',
                         data: form_data,
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             this.setData({
@@ -283,7 +283,7 @@
                                 form_submit_disabled_status: false
                             });
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

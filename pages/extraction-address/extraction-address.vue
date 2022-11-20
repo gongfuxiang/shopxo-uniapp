@@ -167,7 +167,7 @@
             get_data_list() {
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -185,9 +185,9 @@
                 // 请求接口
                 uni.request({
                     url: app.globalData.get_request_url("extraction", "useraddress"),
-                    method: "POST",
+                    method: 'POST',
                     data: data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -228,7 +228,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

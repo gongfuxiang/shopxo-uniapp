@@ -1,14 +1,14 @@
 <template>
-    <view class="page">
+    <view class="page-bottom-fixed">
         <form @submit="form_submit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup oh">
                     <view class="form-gorup-item-left">
-                        <view class="form-gorup-title">联系人<text class="form-group-tips-must">必填</text></view>
+                        <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="联系人2~16个字符">
                     </view>
                     <view class="form-gorup-item-right">
-                        <view class="form-gorup-title">联系电话<text class="form-group-tips-must">必填</text></view>
+                        <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey" class="cr-base" placeholder="座机或手机">
                     </view>
                 </view>
@@ -42,14 +42,14 @@
                         <view v-if="(address_data.province_name || null) != null" class="br-b padding-bottom-lg margin-bottom-lg" >{{address_data.province_name}}{{address_data.city_name || ''}}{{address_data.county_name || ''}}</view>
                     </block>
                     <view class="pr">
-                        <view class="form-gorup-title">详细地址<text class="form-group-tips-must">必填</text><text v-if="home_user_address_map_status == 1" class="fr form-group-tips">地理位置</text></view>
+                        <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text><text v-if="home_user_address_map_status == 1" class="fr form-group-tips">地理位置</text></view>
                         <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey" :class="'cr-base bs-bb '+(home_user_address_map_status == 1 ? 'address-value' : '')" placeholder="详细地址1~80个字符">
                         <view v-if="home_user_address_map_status == 1" @tap="choose_location_event" class="map-icon pa cp tc">
                             <uni-icons type="location" size="20" color="#666"></uni-icons>
                         </view>
                     </view>
                     <view class="br-t padding-top-lg margin-top-xs pr">
-                        <view class="form-gorup-title">别名<text class="form-group-tips">选填</text></view>
+                        <view class="form-gorup-title">别名</view>
                         <input type="text" name="alias" :value="address_data.alias || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="别名最多16个字符">
                     </view>
                 </view>
@@ -65,11 +65,11 @@
                 <!-- 身份证信息 -->
                 <view v-if="home_user_address_idcard_status == 1" class="idcard-container padding-horizontal-main padding-top-main border-radius-main oh">
                     <view class="form-gorup">
-                        <view class="form-gorup-title">身份证姓名<text class="form-group-tips-must">必填</text><text class="form-group-tips">请务必与上传的身份证件姓名保持一致</text></view>
+                        <view class="form-gorup-title">身份证姓名<text class="form-group-tips-must">*</text><text class="form-group-tips">请务必与上传的身份证件姓名保持一致</text></view>
                         <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="身份证姓名格式 2~16 个字符之间">
                     </view>
                     <view class="form-gorup">
-                        <view class="form-gorup-title">身份证号码<text class="form-group-tips-must">必填</text><text class="form-group-tips">请务必与上传的身份证件号码保持一致</text></view>
+                        <view class="form-gorup-title">身份证号码<text class="form-group-tips-must">*</text><text class="form-group-tips">请务必与上传的身份证件号码保持一致</text></view>
                         <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey" class="cr-base" placeholder="身份证号码格式最多18个字符">
                     </view>
                     <view class="form-gorup bg-white form-container-upload oh">
@@ -216,9 +216,9 @@
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url("detail", "useraddress"),
-                    method: "POST",
+                    method: 'POST',
                     data: this.params,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data || null;
@@ -303,9 +303,9 @@
             get_province_list() {
                 uni.request({
                     url: app.globalData.get_request_url("index", "region"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -327,11 +327,11 @@
                 if (this.province_id) {
                     uni.request({
                         url: app.globalData.get_request_url("index", "region"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             pid: this.province_id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -358,11 +358,11 @@
                     // 加载loding
                     uni.request({
                         url: app.globalData.get_request_url("index", "region"),
-                        method: "POST",
+                        method: 'POST',
                         data: {
                             pid: this.city_id
                         },
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             if (res.data.code == 0) {
                                 var data = res.data.data;
@@ -593,14 +593,14 @@
             address_discern_handle(data, is_user = 0, type = 0) {
                 data['is_user'] = is_user;
                 uni.showLoading({
-                    title: "处理中...",
+                    title: '处理中...',
                     mask: true
                 });
                 uni.request({
                     url: app.globalData.get_request_url("address", "index", "intellectstools"),
-                    method: "POST",
+                    method: 'POST',
                     data: data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -648,7 +648,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -715,17 +715,17 @@
                         form_submit_disabled_status: true
                     });
                     uni.showLoading({
-                        title: "处理中..."
+                        title: '处理中...'
                     });
                     uni.request({
-                        url: app.globalData.get_request_url("save", "useraddress"),
-                        method: "POST",
+                        url: app.globalData.get_request_url('save', 'useraddress'),
+                        method: 'POST',
                         data: form_data,
-                        dataType: "json",
+                        dataType: 'json',
                         success: res => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                app.globalData.showToast(res.data.msg, "success");
+                                app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function() {
                                     uni.navigateBack();
                                 }, 1000);
@@ -745,7 +745,7 @@
                                 form_submit_disabled_status: false
                             });
                             uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast('服务器请求出错');
                         }
                     });
                 }

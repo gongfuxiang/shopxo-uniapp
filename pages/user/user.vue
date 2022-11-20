@@ -11,17 +11,25 @@
                     <!-- 左侧头像 -->
                     <view class="padding-bottom-xxl oh tc fl">
                         <image @tap="preview_event" @error="user_avatar_error" class="head-avatar circle bg-white va-m" :src="avatar" mode="widthFix"></image>
-                        <text class="item-name cr-white va-m margin-left-lg">{{nickname}}</text>
+                        <view class="va-m dis-inline-block cr-white margin-left-lg tl">
+                            <view>{{nickname}}</view>
+                        </view>
                     </view>
-                    
-                    <!-- 右上角消息 -->
-                    <view class="nav-message pa">
-                        <navigator url="/pages/message/message" hover-class="none">
-                            <uni-icons type="chat" size="16" color="#e2e2e2"></uni-icons>
+
+                    <!-- 右上角 -->
+                    <view class="head-right pa">
+                        <view class="item pr dis-inline-block" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event">
+                            <image class="icon" :src="common_static_url+'qrcode-icon.png'" mode="widthFix"></image>
+                        </view>
+                        <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" @tap="url_event">
+                            <image class="icon" :src="common_static_url+'gear-icon.png'" mode="widthFix"></image>
+                        </view>
+                        <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/message/message" @tap="url_event">
+                            <image class="icon" :src="common_static_url+'notification-icon.png'" mode="widthFix"></image>
                             <view class="badge-icon pa">
                                 <component-badge :propNumber="message_total"></component-badge>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                 </view>
 
@@ -78,15 +86,9 @@
                         </block>
             
                         <!-- 清除缓存 -->
-                        <view class="nav-item padding-main fl tc cp" @tap="logout_event">
-                            <!-- #ifndef MP -->
-                            <image :src="common_static_url+'logout-icon.png'" class="item-icon" mode="widthFix"></image>
-                            <view class="item-name single-text cr-base">退出登录</view>
-                            <!-- #endif -->
-                            <!-- #ifdef MP -->
+                        <view class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
                             <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
                             <view class="item-name single-text cr-base">清除缓存</view>
-                            <!-- #endif -->
                         </view>
                 
                         <!-- 联系客服 -->
@@ -252,9 +254,9 @@
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url("center", "user"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -329,38 +331,20 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
 
-            // 退出
-            logout_event(e) {
-                // 用户登录缓存
-                uni.removeStorageSync(app.globalData.data.cache_user_login_key);
-                // 用户信息缓存
-                uni.removeStorageSync(app.globalData.data.cache_user_info_key);
-
-                // #ifdef MP
-                // 小程序提示缓存清除成功
-                app.globalData.showToast("清除成功", "success");
-                // #endif
-
-                // #ifndef MP
-                // 非小程序则两秒后回到首页
-                app.globalData.showToast("退出成功", "success");
-                setTimeout(function() {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0]
-                    });
-                }, 2000);
-                // #endif
+            // 清除缓存
+            remove_user_cache_event(e) {
+                app.globalData.remove_user_cache_event();
             },
 
             // 客服电话
             call_event() {
                 if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast("客服电话有误");
+                    app.globalData.showToast('客服电话有误');
                 } else {
                     app.globalData.call_tel(this.common_app_customer_service_tel);
                 }
@@ -392,6 +376,11 @@
             onPageScroll(e) {
                 // 位置记录
                 this.setData({scroll_value: e.scrollTop});
+            },
+            
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

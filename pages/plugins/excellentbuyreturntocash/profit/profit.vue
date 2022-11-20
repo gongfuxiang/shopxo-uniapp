@@ -146,7 +146,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -158,13 +158,13 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "profit", "excellentbuyreturntocash"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page,
                         status: status,
                         is_more: 1
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -213,7 +213,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -234,15 +234,15 @@
             list_submit_settlement_event(e) {
                 var index = e.currentTarget.dataset.index || 0;
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("auto", "profit", "excellentbuyreturntocash"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.data_list[index]['id']
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -252,7 +252,7 @@
                             this.setData({
                                 data_list: temp_data_list
                             });
-                            app.globalData.showToast(res.data.msg, "success");
+                            app.globalData.showToast(res.data.msg, 'success');
                         } else {
                             app.globalData.alert({
                                 msg: res.data.msg,
@@ -262,7 +262,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

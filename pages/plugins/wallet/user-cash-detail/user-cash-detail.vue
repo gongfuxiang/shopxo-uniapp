@@ -65,18 +65,18 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
                 });
                 uni.request({
                     url: app.globalData.get_request_url("detail", "cash", "wallet"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         id: this.params.id
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -120,7 +120,7 @@
                             data_bottom_line_status: false,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }

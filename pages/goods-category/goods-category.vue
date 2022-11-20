@@ -278,9 +278,9 @@
 
                 uni.request({
                     url: app.globalData.get_request_url("category", "goods"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -337,7 +337,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -374,9 +374,9 @@
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("datalist", "search"),
-                    method: "POST",
+                    method: 'POST',
                     data: data,
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         if (res.data.code == 0) {
                             var data = res.data.data;                            
@@ -430,7 +430,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -720,13 +720,13 @@
                 });
                 uni.request({
                     url: app.globalData.get_request_url("stock", "cart"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         "id": cart_id,
                         "goods_id": goods_id,
                         "stock": buy_number
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
@@ -741,7 +741,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -773,7 +773,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -803,7 +803,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },

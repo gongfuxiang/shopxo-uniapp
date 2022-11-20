@@ -171,7 +171,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -181,14 +181,14 @@
                 var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
                 uni.request({
                     url: app.globalData.get_request_url("index", "orderaftersale"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         page: this.data_page,
                         keywords: this.form_keyword_value || "",
                         status: status,
                         is_more: 1
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -241,7 +241,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -270,10 +270,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "取消后不可恢复，确定继续吗?",
-                    confirmText: "确认",
-                    cancelText: "不了",
+                    title: '温馨提示',
+                    content: '取消后不可恢复，确定继续吗?',
+                    confirmText: '确认',
+                    cancelText: '不了',
                     success: result => {
                         if (result.confirm) {
                             // 参数
@@ -282,15 +282,15 @@
                             
                             // 加载loding
                             uni.showLoading({
-                                title: "处理中..."
+                                title: '处理中...'
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("cancel", "orderaftersale"),
-                                method: "POST",
+                                method: 'POST',
                                 data: {
                                     id: id
                                 },
-                                dataType: "json",
+                                dataType: 'json',
                                 success: res => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
@@ -300,7 +300,7 @@
                                         this.setData({
                                             data_list: temp_data_list
                                         });
-                                        app.globalData.showToast(res.data.msg, "success");
+                                        app.globalData.showToast(res.data.msg, 'success');
                                     } else {
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
@@ -311,7 +311,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast("服务器请求出错");
+                                    app.globalData.showToast('服务器请求出错');
                                 }
                             });
                         }

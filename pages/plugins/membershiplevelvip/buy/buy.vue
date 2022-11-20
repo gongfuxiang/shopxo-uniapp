@@ -1,7 +1,7 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null">
-            <view v-if="(data_list || null) != null && data_list.length > 0" class="page">
+            <view v-if="(data_list || null) != null && data_list.length > 0" class="page-bottom-fixed">
                 <!-- 导航 -->
                 <scroll-view class="nav  scroll-view-horizontal bg-white tc oh" scroll-x="true">
                     <block v-for="(item, index) in data_list" :key="index">
@@ -101,7 +101,7 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: "加载中..."
+                    title: '加载中...'
                 });
                 if (this.data_list.length <= 0) {
                     this.setData({
@@ -110,9 +110,9 @@
                 }
                 uni.request({
                     url: app.globalData.get_request_url("index", "buy", "membershiplevelvip"),
-                    method: "POST",
+                    method: 'POST',
                     data: {},
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
@@ -145,7 +145,7 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             },
@@ -189,15 +189,15 @@
                     submit_disabled_status: true
                 });
                 uni.showLoading({
-                    title: "处理中..."
+                    title: '处理中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url("create", "buy", "membershiplevelvip"),
-                    method: "POST",
+                    method: 'POST',
                     data: {
                         opening: item['id'] + '-' + rules['number']
                     },
-                    dataType: "json",
+                    dataType: 'json',
                     success: res => {
                         uni.hideLoading();
                         this.setData({
@@ -219,7 +219,7 @@
                             submit_disabled_status: false
                         });
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast('服务器请求出错');
                     }
                 });
             }
