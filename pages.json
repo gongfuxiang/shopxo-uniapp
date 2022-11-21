@@ -545,7 +545,7 @@
         	"path": "pages/plugins/wallet/payment-code/payment-code",
         	"style": {
         		"enablePullDownRefresh": false,
-        		"navigationBarTitleText": "付款码"
+        		"navigationBarTitleText": "钱包付款码"
         	}
         },
 		{

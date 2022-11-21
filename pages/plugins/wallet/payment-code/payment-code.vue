@@ -23,7 +23,7 @@
             <view class="bottom-fixed padding-main oh">
                 <view class="bg-gray round oh">
                     <button type="default" class="bg-gray br-gray cr-base round fl" size="mini" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" data-redirect="1" @tap="url_event">会员码</button>
-                    <button type="default" class="bg-main br-main cr-white round fr" size="mini">付款码</button>
+                    <button type="default" class="bg-main br-main cr-white round fr" size="mini">钱包付款码</button>
                 </view>
             </view>
         </block>

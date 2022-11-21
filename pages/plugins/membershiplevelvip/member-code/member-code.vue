@@ -20,7 +20,7 @@
             <view class="bottom-fixed padding-main">
                 <view class="bg-gray round oh">
                     <button type="default" class="bg-main br-main cr-white round fl" size="mini">会员码</button>
-                    <button type="default" class="bg-gray br-gray cr-base round fr" size="mini" data-value="/pages/plugins/wallet/payment-code/payment-code" data-redirect="1" @tap="url_event">付款码</button>
+                    <button type="default" class="bg-gray br-gray cr-base round fr" size="mini" data-value="/pages/plugins/wallet/payment-code/payment-code" data-redirect="1" @tap="url_event">钱包付款码</button>
                 </view>
             </view>
         </block>

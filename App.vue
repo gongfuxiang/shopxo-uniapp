@@ -358,7 +358,8 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         var data = res.data.data;
-                                        if ((data.is_user_exist || 0) == 1) {
+                                        var client_type = this.application_client_type();
+                                        if ((data.is_user_exist || 0) == 1 || client_type == 'weixin') {
                                             uni.setStorage({
                                                 key: self.data.cache_user_info_key,
                                                 data: data,
