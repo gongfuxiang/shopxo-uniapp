@@ -3,9 +3,16 @@
         <view :class="((plugins_mourning_data || 0) == 1 ? ' grayscale' : '')+(is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
-                <!-- 标题 -->
+                <!-- logo/标题 -->
                 <!-- #ifndef MP-TOUTIAO -->
-                <view class="home-top-nav-title cr-white single-text">{{application_title}}</view>
+                <view class="home-top-nav-logo">
+                    <block v-if="(application_logo || null) != null">
+                        <image :src="application_logo" mode="aspectFit" class="home-top-nav-logo-image"></image>
+                    </block>
+                    <block v-else>
+                        <view class="home-top-nav-logo-title cr-white single-text">{{application_title}}</view>
+                    </block>
+                </view>
                 <!-- #endif -->
 
                 <!-- 搜索 -->
@@ -332,6 +339,7 @@
                 common_app_is_online_service: 0,
                 // 名称
                 application_title: app.globalData.data.application_title,
+                application_logo: app.globalData.data.application_logo,
                 // 顶部+搜索样式配置
                 top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(bar_height+8)+'px;',
                 search_style: '',
@@ -412,7 +420,8 @@
                         common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
-                        application_title: app.globalData.get_application_title()
+                        application_title: app.globalData.get_application_title(),
+                        application_logo: app.globalData.get_application_logo()
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -449,8 +458,8 @@
                                 navigation: data.navigation || [],
                                 article_list: data.article_list || [],
                                 data_list: data.data_list,
-                                cart_total: (data.common_cart_total || 0) == 0 ? 0 : data.common_cart_total,
-                                message_total: (data.common_message_total || 0) == 0 ? 0 : data.common_message_total,
+                                cart_total: parseInt(data.cart_total.buy_number || 0),
+                                message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],

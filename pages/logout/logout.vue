@@ -1,6 +1,6 @@
 <template>
-    <view>
-        <view class="page-bottom-fixed bg-white">
+    <view class="scroll-box bg-white">
+        <view class="page-bottom-fixed">
             <block v-if="data_list_loding_status == 3">
                 <view class="padding-main">
                     <view class="">

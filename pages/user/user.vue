@@ -284,7 +284,7 @@
                             // 数据设置
                             var upd_data = {
                                 user_order_status_list: temp_user_order_status_list,
-                                message_total: (data.common_message_total || 0) == 0 ? 0 : data.common_message_total,
+                                message_total: parseInt(data.message_total || 0),
                                 head_nav_list: temp_head_nav_list,
                                 navigation: data.navigation || []
                             }
@@ -312,7 +312,7 @@
                             this.setData(upd_data);
 
                             // 导航购物车处理
-                            var cart_total = data.common_cart_total || 0;
+                            var cart_total = parseInt(data.cart_total.buy_number || 0);
                             if (cart_total <= 0) {
                                 app.globalData.set_tab_bar_badge(2, 0);
                             } else {

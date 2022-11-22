@@ -4,22 +4,22 @@
             <!-- 主体内容 -->
             <block v-if="data_list_loding_status == 3">
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right" data-value="/pages/personal/personal" @tap="url_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/personal/personal" @tap="url_event">
                         <image :src="(user.avatar || default_avatar)" mode="widthFix" class="circle br va-m user-avatar"></image>
                         <text class="va-m margin-left">{{user.user_name_view || '用户名'}}</text>
                     </view>
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">
                         <text>更换手机</text>
                         <text class="fr cr-grey">{{user.mobile_security || ''}} 点击更换</text>
                     </view>
                 </view>
 
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right" data-value="/pages/user-address/user-address" @tap="url_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/user-address/user-address" @tap="url_event">
                         <text>地址管理</text>
                         <text class="fr cr-grey">点击管理</text>
                     </view>
-                    <view v-if="(plugins_invoice || null) != null" class="padding-vertical-main padding-right-xxxl arrow-right br-t" data-value="/pages/plugins/invoice/user/user" @tap="url_event">
+                    <view v-if="(plugins_invoice || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/plugins/invoice/user/user" @tap="url_event">
                         <text>发票管理</text>
                         <text class="fr cr-grey">点击前往</text>
                     </view>
@@ -27,20 +27,20 @@
 
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                     <!-- #ifdef MP -->
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right br-b" @tap="open_setting_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="open_setting_event">
                         <text>权限设置</text>
                         <text class="fr cr-grey">点击管理</text>
                     </view>
                     <!-- #endif -->
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right br-b" @tap="remove_user_cache_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="remove_user_cache_event">
                         <text>清除缓存</text>
                         <text class="fr cr-grey">点击清除</text>
                     </view>
-                    <view v-if="(common_app_customer_service_tel || null) != null" class="padding-vertical-main padding-right-xxxl arrow-right br-b" @tap="call_event">
+                    <view v-if="(common_app_customer_service_tel || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="call_event">
                         <text>客服电话</text>
                         <text class="fr cr-grey">{{common_app_customer_service_tel || ''}} 点击拨打</text>
                     </view>
-                    <view class="padding-vertical-main padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
                         <text>账号注销</text>
                         <text class="fr cr-grey">注销后无法恢复</text>
                     </view>

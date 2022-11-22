@@ -523,7 +523,7 @@ button[disabled].bg-gray {
 .form-container .form-gorup .form-gorup-item-right {
     float: right;
     padding-left: 20rpx;
-    border-left: 1px solid #eee;
+    border-left: 1px solid #f7f7f7;
 }
 .form-container .form-gorup .form-gorup-item-left,
 .form-container .form-gorup .form-gorup-item-right {

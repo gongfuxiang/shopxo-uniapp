@@ -9,7 +9,7 @@
                             <view class="fw-b fl margin-top-lg">头像</view>
                             <button class="fr bg-white br-0 lh-0" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                 <image :src="(user_data.avatar || default_avatar)" mode="widthFix" class="circle br user-avatar"></image>
-                            </button> 
+                            </button>
                         </view>
 
                         <view class="form-gorup oh">

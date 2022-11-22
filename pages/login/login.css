@@ -22,7 +22,7 @@ page {
 .form-content .form-item,
 .form-content .code,
 .form-content .verify {
-    border-bottom: solid 1px #eee;
+    border-bottom: solid 1px #f7f7f7;
 }
 .form-content .form-item,
 .form-content .code input,

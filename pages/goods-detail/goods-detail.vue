@@ -344,14 +344,12 @@
                     <!-- 客服 -->
                     <component-online-service v-if="common_app_is_online_service == 1" :propIsGoods="true" :propIsNav="true" :propCard="true" :propTitle="goods.title" :propImg="goods.images" :propPath="'/pages/goods-detail/goods-detail?id='+goods.id" :propChatUrl="(plugins_chat_data == null) ? '' : plugins_chat_data.chat_url"></component-online-service>
                     <!-- 购物车 -->
-                    <view v-if="is_opt_cart == 1" class="item fl cp">
-                        <navigator url="/pages/cart/cart" open-type="switchTab" hover-class="none">
-                            <view class="badge-icon">
-                                <component-badge :propNumber="quick_nav_cart_count"></component-badge>
-                            </view>
-                            <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
-                            <text class="dis-block text-size-xs cr-gray">购物车</text>
-                        </navigator>
+                    <view v-if="is_opt_cart == 1" class="item fl cp" data-value="/pages/cart-page/cart-page" @tap="url_event">
+                        <view class="badge-icon">
+                            <component-badge :propNumber="quick_nav_cart_count"></component-badge>
+                        </view>
+                        <image :src="common_static_url+'cart-icon.png'" mode="scaleToFill"></image>
+                        <text class="dis-block text-size-xs cr-gray">购物车</text>
                     </view>
                     <!-- 收藏 -->
                     <view class="item fl cp" @tap="goods_favor_event">
@@ -376,14 +374,14 @@
 
             <!-- 购买弹层 -->
             <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
-                <view class="goods-popup padding-main bg-white">
+                <view class="goods-popup padding-main bg-white pr">
                     <view class="close fr oh">
                         <view class="fr" @tap.stop="popup_close_event">
                             <icon type="clear" size="20"></icon>
                         </view>
                     </view>
                     <!-- 规格基础信息 -->
-                    <view class="goods-popup-base oh br-b">
+                    <view class="goods-popup-base oh br-b pr">
                         <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                         <view class="goods-popup-base-content">
                             <view class="goods-price">
@@ -860,7 +858,7 @@
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
-                                quick_nav_cart_count: data.common_cart_total || 0,
+                                quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
@@ -1224,7 +1222,7 @@
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
                                     this.setData({
-                                        quick_nav_cart_count: res.data.data
+                                        quick_nav_cart_count: res.data.data.buy_number
                                     });
 
                                     // 是否返回定义来源返回
@@ -1557,7 +1555,6 @@
                         var sku_count = temp_data.length;
                         var active_count = 0;
                         var spec = [];
-
                         if (sku_count > 0) {
                             for (var i in temp_data) {
                                 for (var k in temp_data[i]['value']) {

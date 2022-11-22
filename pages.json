@@ -59,6 +59,13 @@
 				"enablePullDownRefresh": true
 			}
 		},
+        {
+        	"path": "pages/cart-page/cart-page",
+        	"style": {
+        		"enablePullDownRefresh": true,
+                "navigationBarTitleText": "购物车"
+        	}
+        },
 		{
 			"path": "pages/buy/buy",
 			"style": {
@@ -257,21 +264,21 @@
         {
             "path": "pages/setup/setup",
             "style": {
-            	"enablePullDownRefresh": true,
+            	"enablePullDownRefresh": false,
             	"navigationBarTitleText": "设置"
             }
         },
         {
             "path": "pages/personal/personal",
             "style": {
-            	"enablePullDownRefresh": true,
+            	"enablePullDownRefresh": false,
             	"navigationBarTitleText": "个人资料"
             }
         },
         {
             "path": "pages/logout/logout",
             "style": {
-            	"enablePullDownRefresh": true,
+            	"enablePullDownRefresh": false,
             	"navigationBarTitleText": "账号注销"
             }
         },

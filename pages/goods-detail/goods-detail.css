@@ -268,10 +268,6 @@
 /**
  * 弹窗基础
  */
-.goods-popup,
-.goods-popup-base{
-    position: relative;
-}
 .goods-popup .close {
     position: absolute;
     top: 20rpx;
@@ -291,7 +287,7 @@
 .goods-popup-base-content {
     position: absolute;
     left: 220rpx;
-    bottom: 30rpx;
+    top: 0;
 }
 .goods-popup-base-content .goods-price {
     margin-bottom: 10rpx;

@@ -10,15 +10,23 @@
     padding-top: 0;
     /* #endif */
 }
-.home-top-nav-title {
-    font-weight: bold;
+.home-top-nav-logo {
     text-align: left;
     padding: 2px 250rpx 0 20rpx;
     height: 37px;
+    /* #ifdef H5 || MP-TOUTIAO || APP */
+    padding-top: 0;
+    /* #endif */
+}
+.home-top-nav-logo-image {
+    width: 240rpx;
+    height: 70rpx !important;
+}
+.home-top-nav-logo-title {
+    font-weight: bold;
     font-size: 42rpx;
     /* #ifdef H5 || MP-TOUTIAO || APP */
     font-size: 24px;
-    padding-top: 0;
     /* #endif */
 }
 
