@@ -89,7 +89,7 @@
         transform: translateY(-100%);
     }
     .popup-bottom {
-        bottom: 0;
+        bottom: var(--window-bottom);
         width: 100vw;
         transform: translateY(100%);
     }
