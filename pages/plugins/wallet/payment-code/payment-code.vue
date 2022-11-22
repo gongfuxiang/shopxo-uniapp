@@ -22,7 +22,7 @@
             <!-- 导航 -->
             <view class="bottom-fixed padding-main oh">
                 <view class="bg-gray round oh">
-                    <button type="default" class="bg-gray br-gray cr-base round text-size fl" size="mini" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" data-redirect="1" @tap="url_event">会员码</button>
+                    <button type="default" class="bg-gray br-gray cr-base round text-size fl" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value='+screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>
                     <button type="default" class="bg-main br-main cr-white round text-size fr" size="mini">钱包付款码</button>
                 </view>
             </view>
@@ -65,17 +65,24 @@
             componentNoData
         },
 
-        onShow() {
+        // 页面加载初始化
+        onLoad(params) {
             // 获取屏幕亮度
             // #ifndef H5
             var self = this;
-            uni.getScreenBrightness({
-            	success: function (res) {
-                    self.setData({
-                        screen_brightness_value: res.value
-                    });
-            	}
-            });
+            if((params || null) != null && (params.screen_brightness_value || null) == null) {
+                uni.getScreenBrightness({
+                    success: function (res) {
+                        self.setData({
+                            screen_brightness_value: res.value
+                        });
+                    }
+                });
+            } else {
+                self.setData({
+                    screen_brightness_value: params.screen_brightness_value
+                });
+            }
             // #endif
 
             // 数据加载
