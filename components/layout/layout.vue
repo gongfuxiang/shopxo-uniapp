@@ -19,9 +19,7 @@
                                                     <view
                                                     :class="'module-images-content ' + vss.config.frontend_config.media_fixed.media_container_ent"
                                                     :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                        <image @tap="layout_url_event" :data-value="vss.config.url || ''" :src="vss.config.images"
-                                                        mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent">
-                                                        </image>
+                                                        <image @tap="layout_url_event" :data-value="vss.config.url || ''" :src="vss.config.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                     </view>
                                                 </block>
                                                 <!-- 多图 -->
@@ -31,12 +29,12 @@
                                                         <view class="module-list-rolling">
                                                             <scroll-view scroll-x>
                                                                 <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
-                                                                    <view
-                                                                    :class="'module-item ' + vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                    :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style + '' + vss.config.frontend_config.media_fixed.media_container_style"
-                                                                    @tap="layout_url_event" :data-value="item.url || ''">
-                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent">
-                                                                        </image>
+                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                        <view
+                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                        </view>
                                                                     </view>
                                                                 </view>
                                                             </scroll-view>
@@ -49,16 +47,14 @@
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style">
                                                                     <view
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                    :style="vss.config.frontend_config.media_fixed.media_container_style" @tap="layout_url_event"
-                                                                    :data-value="item.url || ''">
-                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent">
-                                                                        </image>
+                                                                    :style="vss.config.frontend_config.media_fixed.media_container_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                                     </view>
                                                                 </view>
                                                             </view>
                                                         </view>
                                                     </block>
-                                                    <block v-else>
+                                                    <block v-if="vss.config.view_list_show_style == 'routine'">
                                                         <!-- 默认轮播 -->
                                                         <swiper
                                                         :indicator-dots="vss.config.data_list.length > 0"
@@ -68,12 +64,68 @@
                                                         :circular="circular" :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                             <block v-for="(item, index2) in vss.config.data_list" :key="index2">
                                                                 <swiper-item :class="vss.config.frontend_config.media_fixed.media_container_ent">
-                                                                    <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent"
-                                                                    @tap="layout_url_event" :data-value="item.url || ''">
-                                                                    </image>
+                                                                    <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"
+                                                                    @tap="layout_url_event" :data-value="item.url || ''"></image>
                                                                 </swiper-item>
                                                             </block>
                                                         </swiper>
+                                                    </block>
+                                                </block>
+                                                <!-- 图文 -->
+                                                <block v-else-if="vss.value == 'images-text'">
+                                                    <block v-if="vss.config.view_list_show_style == 'rolling'">
+                                                        <!-- 滚动 -->
+                                                        <view class="module-list-rolling">
+                                                            <scroll-view scroll-x>
+                                                                <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                        <view
+                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                        </view>
+                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
+                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                    </view>
+                                                                </view>
+                                                            </scroll-view>
+                                                        </view>
+                                                    </block>
+                                                    <block v-if="vss.config.view_list_show_style == 'leftright'">
+                                                        <!-- 左图右文 -->
+                                                        <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
+                                                            <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                                <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                    <view class="fl">
+                                                                        <view
+                                                                        :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                            <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                        </view>
+                                                                    </view>
+                                                                    <view class="fl" :style="vss.config.frontend_config.item_right_style">
+                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
+                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </view>
+                                                    </block>
+                                                    <block v-if="vss.config.view_list_show_style == 'updown'">
+                                                        <!-- 默认上图下文 -->
+                                                        <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
+                                                            <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                                <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                    <view
+                                                                    :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                    :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                        <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                    </view>
+                                                                    <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
+                                                                    <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                </view>
+                                                            </view>
+                                                        </view>
                                                     </block>
                                                 </block>
                                                 <!-- 视频 -->
@@ -90,7 +142,8 @@
                                                         :enable-progress-gesture="false"
                                                         :show-fullscreen-btn="false"
                                                         :poster="(vss.config.content_images || null) != null ? vss.config.content_images : ''"
-                                                        :class="vss.config.frontend_config.media_fixed.media_ent">
+                                                        :class="vss.config.frontend_config.media_fixed.media_ent"
+                                                        :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                         </video>
                                                     </view>
                                                 </block>
@@ -102,12 +155,12 @@
                                                             <view class="module-goods-content module-list-rolling">
                                                                 <scroll-view scroll-x>
                                                                     <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
-                                                                        <view
-                                                                        :class="'module-item ' + vss.config.frontend_config.media_fixed.media_container_ent"
-                                                                        :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style + '' + vss.config.frontend_config.media_fixed.media_container_style"
-                                                                        @tap="layout_url_event" :data-value="item.goods_url || ''">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent">
-                                                                            </image>
+                                                                        <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.goods_url || ''">
+                                                                            <view
+                                                                            :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                            :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                                <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                            </view>
                                                                             <view class="item-bottom">
                                                                                 <view class="module-title">
                                                                                     {{item.title}}
@@ -130,8 +183,7 @@
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style" @tap="layout_url_event"
                                                                         :data-value="item.goods_url || ''">
-                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent">
-                                                                            </image>
+                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                                             <view class="item-bottom">
                                                                                 <view class="module-title">
                                                                                     {{item.title}}
@@ -165,6 +217,10 @@
                                                             </view>
                                                         </view>
                                                     </view>
+                                                </block>
+                                                <!-- 自定义html -->
+                                                <block v-else-if="vss.value == 'custom' && (vss.config.custom || null) != null">
+                                                    <mp-html :content="vss.config.custom" />
                                                 </block>
                                             </view>
                                         </view>
