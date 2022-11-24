@@ -18,7 +18,7 @@
 
                     <!-- 右上角 -->
                     <view class="head-right pa">
-                        <view class="item pr dis-inline-block" data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event">
+                        <view v-if="(qrcode_page_url || null) != null" class="item pr dis-inline-block" :data-value="qrcode_page_url" @tap="url_event">
                             <image class="icon" :src="common_static_url+'qrcode-icon.png'" mode="widthFix"></image>
                         </view>
                         <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" @tap="url_event">
@@ -192,11 +192,20 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    // 会员码及付款码入口
+                    var qrcode_page_url = null;
+                    if(app.globalData.get_config('plugins_base.wallet', null) != null) {
+                        qrcode_page_url = '/pages/plugins/wallet/payment-code/payment-code';
+                    }
+                    if(app.globalData.get_config('plugins_base.membershiplevelvip', null) != null) {
+                        qrcode_page_url = '/pages/plugins/membershiplevelvip/member-code/member-code';
+                    }
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                         common_user_center_notice: app.globalData.get_config('config.common_user_center_notice'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
-                        common_app_is_head_vice_nav: app.globalData.get_config('config.common_app_is_head_vice_nav')
+                        common_app_is_head_vice_nav: app.globalData.get_config('config.common_app_is_head_vice_nav'),
+                        qrcode_page_url: qrcode_page_url
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');

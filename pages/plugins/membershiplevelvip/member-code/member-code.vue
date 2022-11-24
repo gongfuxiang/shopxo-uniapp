@@ -17,7 +17,7 @@
             <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
             
             <!-- 导航 -->
-            <view class="bottom-fixed padding-main">
+            <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main">
                 <view class="bg-gray round oh">
                     <button type="default" class="bg-main br-main cr-white round text-size fl" size="mini">会员码</button>
                     <button type="default" class="bg-gray br-gray cr-base round text-size fr" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value='+screen_brightness_value" data-redirect="1" @tap="url_event">钱包付款码</button>
@@ -43,6 +43,7 @@
                 data_list_loding_msg: '',
                 is_to_login: 0,
                 screen_brightness_value: 0,
+                plugins_wallet: null,
                 user: null,
                 member_code: '',
                 barcode:{
@@ -80,12 +81,28 @@
                 });
             }
             // #endif
+        },
 
+        onShow() {
             // 数据加载
             this.init();
+        
+            // 初始化配置
+            this.init_config();
         },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        plugins_wallet: app.globalData.get_config('plugins_base.wallet', null)
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 获取数据
             init() {
                 var user = app.globalData.get_user_info(this, 'init');

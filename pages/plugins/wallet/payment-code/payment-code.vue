@@ -20,7 +20,7 @@
             <view class="margin-top-xxxl cr-yellow tc">({{scheduled_value}})秒后自动刷新付款码</view>
 
             <!-- 导航 -->
-            <view class="bottom-fixed padding-main oh">
+            <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main">
                 <view class="bg-gray round oh">
                     <button type="default" class="bg-gray br-gray cr-base round text-size fl" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value='+screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>
                     <button type="default" class="bg-main br-main cr-white round text-size fr" size="mini">钱包付款码</button>
@@ -46,6 +46,7 @@
                 data_list_loding_msg: '',
                 is_to_login: 0,
                 screen_brightness_value: 0,
+                plugins_membershiplevelvip: null,
                 scheduled_timer: null,
                 scheduled_value: 0,
                 payment_code: '',
@@ -84,12 +85,28 @@
                 });
             }
             // #endif
+        },
 
+        onShow() {
             // 数据加载
             this.init();
+        
+            // 初始化配置
+            this.init_config();
         },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        plugins_membershiplevelvip: app.globalData.get_config('plugins_base.membershiplevelvip', null)
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 获取数据
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
