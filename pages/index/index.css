@@ -4,10 +4,13 @@
 .home-top-nav-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    min-height: 410rpx;
+    min-height: calc(var(--status-bar-height) + 130rpx);
+    /* #ifdef H5 */
+    min-height: calc(var(--status-bar-height) + 160rpx);
+    /* #endif */
     padding-top: calc(var(--status-bar-height) + 8px);
-    /* #ifndef MP-TOUTIAO */
-    padding-top: 0;
+    /* #ifdef MP-TOUTIAO */
+    padding-top: 0 !important;
     /* #endif */
 }
 .home-top-nav-logo {

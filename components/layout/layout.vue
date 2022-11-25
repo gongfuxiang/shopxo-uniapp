@@ -7,11 +7,11 @@
                     <view
                     :class="'layout-content-children ' + (((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.ent || null) != null) ? v.config.frontend_config.ent : '')"
                     :style="((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.style || null) != null) ? v.config.frontend_config.style : ''">
-                        <block v-for="(vs, index2) in v.children" :key="index2">
+                        <block v-for="(vs, indexchn) in v.children" :key="indexchn">
                             <view :class="'layout-content-container ' + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.ent || null) != null) ? vs.config.frontend_config.ent : '')"
                             :style="((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : ''">
                                 <block v-if="(vs.children || null) != null && vs.children.length > 0">
-                                    <view v-for="(vss, index) in vs.children" :key="index" class="layout-content">
+                                    <view v-for="(vss, indexlay) in vs.children" :key="indexlay" class="layout-content">
                                         <view v-if="(vss.config || null) != null && vss.config.length !== 0" class="module-content">
                                             <view :class="'module-' + vss.value + '-container'" :style="((vss.config.frontend_config || null) != null && (vss.config.frontend_config.style || null) != null) ? vss.config.frontend_config.style : ''">
                                                 <!-- 单图 -->
@@ -28,8 +28,8 @@
                                                         <!-- 滚动 -->
                                                         <view class="module-list-rolling">
                                                             <scroll-view scroll-x>
-                                                                <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
-                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                <view v-for="(item, index2dtg) in vss.config.data_list" :key="index2dtg" class="item">
+                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2dtg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
@@ -43,7 +43,7 @@
                                                     <block v-else-if="vss.config.view_list_show_style == 'list'">
                                                         <!-- 列表 -->
                                                         <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
-                                                            <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                            <view v-for="(item, index2dtl) in vss.config.data_list" :key="index2dtl" class="item">
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style">
                                                                     <view
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
@@ -62,7 +62,7 @@
                                                         :indicator-active-color="indicator_active_color"
                                                         :autoplay="vss.config.data_list.length > 0"
                                                         :circular="circular" :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                            <block v-for="(item, index2) in vss.config.data_list" :key="index2">
+                                                            <block v-for="(item, index2dtm) in vss.config.data_list" :key="index2dtm">
                                                                 <swiper-item :class="vss.config.frontend_config.media_fixed.media_container_ent">
                                                                     <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"
                                                                     @tap="layout_url_event" :data-value="item.url || ''"></image>
@@ -77,15 +77,15 @@
                                                         <!-- 滚动 -->
                                                         <view class="module-list-rolling">
                                                             <scroll-view scroll-x>
-                                                                <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
-                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
+                                                                <view v-for="(item, index2twg) in vss.config.data_list" :key="index2twg" class="item">
+                                                                    <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2twg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                                             <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                                         </view>
-                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
-                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['title'] : ''">{{item.title}}</view>
+                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twg] || null) != null && (vss.config.frontend_config.item_field_style[index2twg]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twg]['desc'] : ''">{{item.desc}}</view>
                                                                     </view>
                                                                 </view>
                                                             </scroll-view>
@@ -94,7 +94,7 @@
                                                     <block v-if="vss.config.view_list_show_style == 'leftright'">
                                                         <!-- 左图右文 -->
                                                         <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
-                                                            <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                            <view v-for="(item, index2twzy) in vss.config.data_list" :key="index2twzy" class="item">
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
                                                                     <view class="fl">
                                                                         <view
@@ -104,8 +104,8 @@
                                                                         </view>
                                                                     </view>
                                                                     <view class="fl" :style="vss.config.frontend_config.item_right_style">
-                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
-                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                        <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twzy] || null) != null && (vss.config.frontend_config.item_field_style[index2twzy]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twzy]['title'] : ''">{{item.title}}</view>
+                                                                        <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twzy] || null) != null && (vss.config.frontend_config.item_field_style[index2twzy]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twzy]['desc'] : ''">{{item.desc}}</view>
                                                                     </view>
                                                                 </view>
                                                             </view>
@@ -114,15 +114,15 @@
                                                     <block v-if="vss.config.view_list_show_style == 'updown'">
                                                         <!-- 默认上图下文 -->
                                                         <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
-                                                            <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                            <view v-for="(item, index2twsx) in vss.config.data_list" :key="index2twsx" class="item">
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
                                                                     <view
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                     :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                                         <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                                     </view>
-                                                                    <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['title'] : ''">{{item.title}}</view>
-                                                                    <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2] || null) != null && (vss.config.frontend_config.item_field_style[index2]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2]['desc'] : ''">{{item.desc}}</view>
+                                                                    <view v-if="(item.title || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twsx] || null) != null && (vss.config.frontend_config.item_field_style[index2twsx]['title'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twsx]['title'] : ''">{{item.title}}</view>
+                                                                    <view v-if="(item.desc || null) != null" :style="((vss.config.frontend_config.item_field_style || null) != null && (vss.config.frontend_config.item_field_style[index2twsx] || null) != null && (vss.config.frontend_config.item_field_style[index2twsx]['desc'] || null) != null) ? vss.config.frontend_config.item_field_style[index2twsx]['desc'] : ''">{{item.desc}}</view>
                                                                 </view>
                                                             </view>
                                                         </view>
@@ -154,8 +154,8 @@
                                                             <!-- 滚动 -->
                                                             <view class="module-goods-content module-list-rolling">
                                                                 <scroll-view scroll-x>
-                                                                    <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
-                                                                        <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2 == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.goods_url || ''">
+                                                                    <view v-for="(item, index2spg) in vss.config.data_list" :key="index2spg" class="item">
+                                                                        <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2spg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.goods_url || ''">
                                                                             <view
                                                                             :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                             :style="vss.config.frontend_config.media_fixed.media_container_style">
@@ -177,7 +177,7 @@
                                                         <block v-else>
                                                             <!-- 默认列表 -->
                                                             <view :class="'module-goods-content module-list-content ' + vss.config.frontend_config.list_ent">
-                                                                <view v-for="(item, index2) in vss.config.data_list" :key="index2" class="item">
+                                                                <view v-for="(item, index2spm) in vss.config.data_list" :key="index2spm" class="item">
                                                                     <view class="module-item" :style="vss.config.frontend_config.item_style">
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
