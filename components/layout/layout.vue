@@ -100,7 +100,7 @@
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
-                                                                            <image :src="item.images" mode="aspectFill" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                            <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
                                                                         </view>
                                                                     </view>
                                                                     <view class="fl" :style="vss.config.frontend_config.item_right_style">
@@ -504,6 +504,30 @@
                                                                         </view>
                                                                     </view>
                                                                 </scroll-view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-else-if="vss.config.view_list_show_style == 'leftright'">
+                                                            <!-- 左图右文 -->
+                                                            <view :class="'module-goods-content module-list-content ' + vss.config.frontend_config.list_ent">
+                                                                <view v-for="(item, index2stwzy) in vss.config.data_list" :key="index2stwzy" class="item">
+                                                                    <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.goods_url || ''">
+                                                                        <view class="fl">
+                                                                            <view
+                                                                            :class="vss.config.frontend_config.media_fixed.media_container_ent"
+                                                                            :style="vss.config.frontend_config.media_fixed.media_container_style">
+                                                                                <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
+                                                                            </view>
+                                                                        </view>
+                                                                        <view class="fl" :style="vss.config.frontend_config.item_right_style">
+                                                                            <view class="module-title">
+                                                                                {{item.title}}
+                                                                            </view>
+                                                                            <view class="module-price">
+                                                                                {{currency_symbol}}{{item.price}}
+                                                                            </view>
+                                                                        </view>
+                                                                    </view>
+                                                                </view>
                                                             </view>
                                                         </block>
                                                         <block v-else>
