@@ -128,6 +128,338 @@
                                                         </view>
                                                     </block>
                                                 </block>
+                                                <!-- 图片魔方 -->
+                                                <block v-else-if="vss.value == 'images-magic-cube'">
+                                                    <view :class="'oh layout-module-images-magic-cube layout-module-images-magic-cube-'+vss.config.view_list_show_style+' '+(vss.config.frontend_config.list_ent || '')">
+                                                        <block v-if="vss.config.view_list_show_style == 'g1'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'v2'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'v3'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'v3'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[3] || ''">
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'h2'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'h3'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'h4'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[3] || ''">
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lr12'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lr13'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lr21'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lr31'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'tb12'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'tb13'">
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[3] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'tb21'">
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'tb31'">
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                            <view class="item-module-magic-cube" :style="vss.config.frontend_config.item_style[3] || ''">
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lrv2h2'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'lrh2v2'">
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                                <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fl" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                            <view class="fr" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                    <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                        <block v-if="vss.config.view_list_show_style == 'g4'">
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[1] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][1]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][1]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                            <view class="oh">
+                                                                <view class="fl" :style="vss.config.frontend_config.item_style[2] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][2]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][2]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                                <view class="fr" :style="vss.config.frontend_config.item_style[3] || ''">
+                                                                    <view :data-value="vss['config']['data_list'][3]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
+                                                                        <image :src="vss['config']['data_list'][3]['images']" mode="widthFix" class="dis-block wh-auto"></image>
+                                                                    </view>
+                                                                </view>
+                                                            </view>
+                                                        </block>
+                                                    </view>
+                                                </block>
                                                 <!-- 视频 -->
                                                 <block v-else-if="vss.value == 'video'">
                                                     <view
