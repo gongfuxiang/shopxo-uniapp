@@ -79,7 +79,7 @@
                                                             <scroll-view scroll-x>
                                                                 <view v-for="(item, index2twg) in vss.config.data_list" :key="index2twg" class="item">
                                                                     <view class="module-item" :style="'width:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_width || null) == null) ? 200 : vss.config.view_list_show_style_value_arr.item_width) + 'px;margin-left:' + (((vss.config.view_list_show_style_value_arr || null) == null || (vss.config.view_list_show_style_value_arr.item_margin || null) == null || index2twg == 0) ? 0 : vss.config.view_list_show_style_value_arr.item_margin) + 'px;' + vss.config.frontend_config.item_style+vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                        <view
+                                                                        <view v-if="(item.images || null) != null"
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                                             <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
@@ -96,7 +96,7 @@
                                                         <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
                                                             <view v-for="(item, index2twzy) in vss.config.data_list" :key="index2twzy" class="item">
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                    <view class="fl">
+                                                                    <view v-if="(item.images || null) != null" class="fl">
                                                                         <view
                                                                         :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                         :style="vss.config.frontend_config.media_fixed.media_container_style">
@@ -116,7 +116,7 @@
                                                         <view :class="'module-list-content ' + vss.config.frontend_config.list_ent">
                                                             <view v-for="(item, index2twsx) in vss.config.data_list" :key="index2twsx" class="item">
                                                                 <view class="module-item" :style="vss.config.frontend_config.item_style" @tap="layout_url_event" :data-value="item.url || ''">
-                                                                    <view
+                                                                    <view v-if="(item.images || null) != null"
                                                                     :class="vss.config.frontend_config.media_fixed.media_container_ent"
                                                                     :style="vss.config.frontend_config.media_fixed.media_container_style">
                                                                         <image :src="item.images" mode="widthFix" :class="vss.config.frontend_config.media_fixed.media_ent" :style="vss.config.frontend_config.media_fixed.media_container_style"></image>
