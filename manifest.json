@@ -63,11 +63,11 @@
             }
         },
         "plugins" : {
-            // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
-            "live-player-plugin" : {
-                "version" : "1.3.0",
-                "provider" : "wx2b03c6e691cd7370"
-            }
+            // // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
+            // "live-player-plugin" : {
+            //     "version" : "1.3.0",
+            //     "provider" : "wx2b03c6e691cd7370"
+            // }
         }
     },
     "mp-alipay" : {
