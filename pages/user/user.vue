@@ -16,7 +16,7 @@
                                         <uni-icons type="compose" size="14" color="#fff"></uni-icons>
                                     </view>
                                 </view>
-                                <view v-if="(user_id || null) != null" class="br round tc padding-left-sm padding-right-sm margin-top-xs">ID {{user_id}}</view>
+                                <view v-if="(user_id || null) != null" class="br round tc padding-left-lg padding-right-lg margin-top-xs dis-inline-block">ID {{user_id}}</view>
                             </view>
                         </view>
                     </view>

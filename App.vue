@@ -51,9 +51,9 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://dev.shopxo.vip/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://dev.shopxo.vip/',
+                static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -62,7 +62,7 @@
                 // 默认logo、如 /static/images/common/logo.png
                 application_logo: '',
                 // 版本号
-                version: 'v2.3.1',
+                version: 'v2.3.2',
                 // 货币价格符号
                 currency_symbol: '￥',
                 // 主题类型        主题颜色
