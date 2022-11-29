@@ -240,6 +240,9 @@
                         if(res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_user_info_key, res.data.data);
                             app.globalData.showToast(res.data.msg, 'success');
+                            setTimeout(function() {
+                                uni.navigateBack();
+                            }, 1000);
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);

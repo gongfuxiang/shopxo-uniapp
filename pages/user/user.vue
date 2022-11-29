@@ -1,10 +1,7 @@
 <template>
     <view>
         <!-- 顶部内容 -->
-        <view class="top-content" :style="top_content_style">  
-            <!-- 导航标题 -->
-            <component-trn-nav :propScroll="scroll_value" :propHeight="top_nav_height" :propTitle="nav_title"></component-trn-nav>
-
+        <view class="top-content" :style="top_content_style">
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
                 <view class="head-base pr oh">
@@ -12,7 +9,15 @@
                     <view class="padding-bottom-xxl oh tc fl">
                         <image @tap="preview_event" @error="user_avatar_error" class="head-avatar circle bg-white va-m" :src="avatar" mode="widthFix"></image>
                         <view class="va-m dis-inline-block cr-white margin-left-lg tl">
-                            <view>{{nickname}}</view>
+                            <view data-value="/pages/personal/personal" @tap="url_event">
+                                <view>
+                                    <text class="va-m">{{nickname}}</text>
+                                    <view class="dis-inline-block va-m margin-left-sm">
+                                        <uni-icons type="compose" size="14" color="#fff"></uni-icons>
+                                    </view>
+                                </view>
+                                <view v-if="(user_id || null) != null" class="br round tc padding-left-sm padding-right-sm margin-top-xs">ID {{user_id}}</view>
+                            </view>
                         </view>
                     </view>
 
@@ -133,7 +138,7 @@
                 common_static_url: common_static_url,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
-                nav_title: "用户中心",
+                user_id: '',
                 nickname: "用户名",
                 message_total: 0,
                 head_nav_list: [
@@ -159,10 +164,8 @@
                 common_app_is_head_vice_nav: 0,
                 // 顶部样式配置
                 top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight', 0))+5)+'px;',
-                // 滚动监听值
-                scroll_value: 0,
-                // 顶部导航信息
-                top_nav_height: 50,
+                // 付款码地址
+                qrcode_page_url: null
             };
         },
 
@@ -251,11 +254,14 @@
             
             // 设置用户基础信息
             set_user_base(user) {
+                if((user.id || null) != null) {
+                    this.setData({user_id: user.id});
+                }
                 if((user.avatar || null) != null) {
-                    this.setData({"avatar": user.avatar});
+                    this.setData({avatar: user.avatar});
                 }
                 if((user.user_name_view || null) != null) {
-                    this.setData({"nickname": user.user_name_view});
+                    this.setData({nickname: user.user_name_view});
                 }
             },
 
@@ -380,13 +386,7 @@
             navigation_event(e) {
                 app.globalData.operation_event(e);
             },
-            
-            // 页面滚动监听
-            onPageScroll(e) {
-                // 位置记录
-                this.setData({scroll_value: e.scrollTop});
-            },
-            
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
