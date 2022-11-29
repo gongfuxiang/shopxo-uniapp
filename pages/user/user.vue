@@ -126,7 +126,6 @@
     const app = getApp();
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentBadge from "../../components/badge/badge";
-    import componentTrnNav from "../../components/trn-nav/trn-nav";
     import componentCopyright from "../../components/copyright/copyright";
     import componentOnlineService from "../../components/online-service/online-service";
 
@@ -172,7 +171,6 @@
         components: {
             componentQuickNav,
             componentBadge,
-            componentTrnNav,
             componentCopyright,
             componentOnlineService
         },
