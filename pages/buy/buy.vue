@@ -123,7 +123,7 @@
                     <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item bg-white border-radius-main spacing-mb arrow-right">
                         <text class="cr-base">{{buy_datetime_info.title}}</text>
                         <view class="right-value single-text dis-inline-block fr tr">
-                            <component-time-select :propTitle="buy_datetime_info.title" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
+                            <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
                                 <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey">{{buy_datetime_info.placeholder}}</text>
                                 <text v-else class="cr-base">{{buy_datetime_info.value}}</text>
                             </component-time-select>
@@ -803,12 +803,12 @@
             buy_datetime_event(e) {
                 var temp = this.buy_datetime_info;
                 temp['status'] = !temp.status;
-                if((e || null) != null) {
-                    temp['value'] = e._date || '';
+                if(e != 'open' && e != 'close') {
+                    temp['value'] = (((e || null) != null) ? e._date : '') || '';
                 }
                 this.setData({
                     buy_datetime_info: temp
-                })
+                });
             },
 
             // 打开次卡选择

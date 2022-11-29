@@ -12,14 +12,19 @@
                 </view>
                 <view class="time-select-time-box">
                     <view class="left_box">
-                        <view v-if="item.timeArr.length > 0" @click="_changeDay(index)" :class="{ active: item.checked }" v-for="(item, index) in timeList" :key="item.dateStr">
-                            {{ item.name }}
-                        </view>
+                        <block v-if="item.timeArr.length > 0" v-for="(item, index) in timeList" :key="item.dateStr">
+                            <view @click="_changeDay(index)" :class="{ active: item.checked }">
+                                {{ item.name }}
+                            </view>
+                        </block>
                     </view>
                     <view class="right_box">
-                        <view @click="_changeTime(index)" :class="{ active: item.checked }" v-for="(item, index) in activeTimeArr" :key="item.time">
-                            {{ item.time }}{{ propRangeType ? '-' + item.endtime : '' }}
-                        </view>
+                        <view v-if="day_active_index == 0 && (propPlaceholder || null) != null" @click="_changeTime('')" :class="(time_active_index === '' ? 'active' : '')">{{propPlaceholder}}</view>
+                        <block v-for="(item, index) in activeTimeArr" :key="item.time">
+                            <view @click="_changeTime(index)" :class="{ active: item.checked }">
+                                {{ item.time }}{{ propRangeType ? '-' + item.endtime : '' }}
+                            </view>
+                        </block>
                     </view>
                 </view>
             </view>
@@ -33,6 +38,10 @@ export default {
         propTitle: {
             type: String,
             default: '请选择时间'
+        },
+        propPlaceholder: {
+            type: String,
+            default: ''
         },
         propSubhead: {
             type: String,
@@ -100,7 +109,9 @@ export default {
             select_dateStr: '',
             selectTime: '',
             selectEndime: '',
-            activeTimeArr: []
+            activeTimeArr: [],
+            day_active_index: 0,
+            time_active_index: ''
         };
     },
     beforeMount() {
@@ -115,16 +126,16 @@ export default {
         _stopFunc() {},
 
         _dataOpen() {
-            this._selectEvent();
+            this._selectEvent('open');
         },
         _closeBtnClose() {
             if(this.propCloseBtn) {
-                this._selectEvent();
+                this._selectEvent('close');
             }
         },
         _maskClose() {
             if(this.propMaskHide) {
-                this._selectEvent();
+                this._selectEvent('close');
             }
         },
         _selectEvent(data = '') {
@@ -141,19 +152,24 @@ export default {
             this.selectDateStr = timeList[_ind].dateStr;
             this.select_dateStr = timeList[_ind]._dateStr;
             this.activeTimeArr = timeList[_ind].timeArr;
+            this.day_active_index = e;
         },
         _changeTime(e) {
-            let _ind = e - 0;
             let { activeTimeArr } = this;
             let timeArr = JSON.parse(JSON.stringify(activeTimeArr));
             timeArr.forEach(ele => {
                 ele.checked = false;
             });
-            timeArr[_ind].checked = true;
-            this.selectTime = timeArr[_ind].time;
-            this.selectEndime = timeArr[_ind].endtime;
+            let _data = '';
+            if(e !== '') {
+                let _ind = e - 0;
+                timeArr[_ind].checked = true;
+                this.selectTime = timeArr[_ind].time;
+                this.selectEndime = timeArr[_ind].endtime;
+                _data = this._handleData();
+            }
+            this.time_active_index = e;
             this.activeTimeArr = timeArr;
-            let _data = this._handleData();
             this._selectEvent(_data);
         },
         _handleData() {
@@ -208,6 +224,7 @@ export default {
             }
 
             this.timeList = _timeList;
+            this.time_active_index = this.propDefaultTime || '';
         },
         _setDefaultTime(list) {
             for (let index = 0; index < list.length; index++) {
