@@ -6,7 +6,7 @@
                 <!-- logo/标题 -->
                 <!-- #ifndef MP-TOUTIAO -->
                 <view class="home-top-nav-logo">
-                    <block v-if="(application_logo || null) != null">
+                    <block v-if="is_logo_use_text == 0 && (application_logo || null) != null">
                         <image :src="application_logo" mode="aspectFit" class="home-top-nav-logo-image"></image>
                     </block>
                     <block v-else>
@@ -340,6 +340,7 @@
                 // 名称
                 application_title: app.globalData.data.application_title,
                 application_logo: app.globalData.data.application_logo,
+                is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
                 top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(bar_height+8)+'px;',
                 search_style: '',

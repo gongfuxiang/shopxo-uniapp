@@ -43,6 +43,8 @@
                 is_online_service_fixed: 1,
                 // 分类页面商品列表模式一级分类使用图标类型（0 大图片, 1 icon图标）
                 category_goods_model_icon_type: 0,
+                // 强制使用文字作为logo（默认后台站点设置手机端图片logo->当前指定logo->后台手机管理小程序配置名称->站点设置中的站点名称）
+                is_logo_use_text: 0,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
