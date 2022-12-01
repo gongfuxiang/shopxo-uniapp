@@ -6,10 +6,10 @@
                 class="layout-view">
                     <view
                     :class="'layout-content-children ' + (((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.ent || null) != null) ? v.config.frontend_config.ent : '')"
-                    :style="((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.style || null) != null) ? v.config.frontend_config.style : ''">
+                    :style="(((v.config || null) != null && (v.config.frontend_config || null) != null && (v.config.frontend_config.style || null) != null) ? v.config.frontend_config.style : '')+(((v.config || null) != null && (v.config.style_background_images || null) != null) ? 'background-image:url('+v.config.style_background_images+');' : '')">
                         <block v-for="(vs, indexchn) in v.children" :key="indexchn">
                             <view :class="'layout-content-container ' + (((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.ent || null) != null) ? vs.config.frontend_config.ent : '')"
-                            :style="((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : ''">
+                            :style="(((vs.config || null) != null && (vs.config.frontend_config || null) != null && (vs.config.frontend_config.style || null) != null) ? vs.config.frontend_config.style : '')+(((vs.config || null) != null && (vs.config.style_background_images || null) != null) ? 'background-image:url('+vs.config.style_background_images+');' : '')">
                                 <block v-if="(vs.children || null) != null && vs.children.length > 0">
                                     <view v-for="(vss, indexlay) in vs.children" :key="indexlay" class="layout-content">
                                         <view v-if="(vss.config || null) != null && vss.config.length !== 0" class="module-content">
