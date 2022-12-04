@@ -104,19 +104,26 @@
                     </view>
 
                     <!-- 积分 -->
-                    <view v-if="(plugins_points_data || null) != null && (plugins_points_data.discount_price || 0) > 0" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
-                        <view class="select oh">
-                            <text v-if="plugins_points_data.discount_type == 1">使用{{plugins_points_data.use_integral}}个积分兑换商品</text>
-                            <text v-else>使用积分{{plugins_points_data.use_integral}}个</text>
-                            <text class="sales-price">-{{currency_symbol}}{{plugins_points_data.discount_price}}</text>
-                            <view @tap="points_event" class="fr cp">
-                                <image class="icon" :src="common_static_url+'select' + (plugins_points_status ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                    <view v-if="(plugins_points_data || null) != null" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
+                        <block v-if="(plugins_points_data.discount_price || 0) > 0">
+                            <view class="select oh">
+                                <text v-if="plugins_points_data.discount_type == 1">使用{{plugins_points_data.use_integral}}个积分兑换商品</text>
+                                <text v-else>使用积分{{plugins_points_data.use_integral}}个</text>
+                                <text class="sales-price">-{{currency_symbol}}{{plugins_points_data.discount_price}}</text>
+                                <view @tap="points_event" class="fr cp">
+                                    <image class="icon" :src="common_static_url+'select' + (plugins_points_status ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                                </view>
                             </view>
-                        </view>
-                        <view class="desc">
-                            <text v-if="plugins_points_data.discount_type == 1">你有积分{{plugins_points_data.user_integral}}个</text>
-                            <text v-else>你有积分{{plugins_points_data.user_integral}}个，可用{{plugins_points_data.use_integral}}个</text>
-                        </view>
+                            <view class="desc">
+                                <text v-if="plugins_points_data.discount_type == 1">你有积分{{plugins_points_data.user_integral}}个</text>
+                                <text v-else>你有积分{{plugins_points_data.user_integral}}个，可用{{plugins_points_data.use_integral}}个</text>
+                            </view>
+                        </block>
+                        <block v-else>
+                            <view v-if="(plugins_points_data.is_support_goods_exchange || 0) == 1" class="desc tr">
+                                <text>你有积分{{plugins_points_data.user_integral}}个，不足以兑换当前商品</text>
+                            </view>
+                        </block>
                     </view>
 
                     <!-- 时间选择 -->
@@ -303,7 +310,8 @@
             //params['data'] = '{"buy_type":"goods","goods_id":"1","stock":"1","spec":"[]"}';
             if ((params.data || null) != null && app.globalData.get_length(JSON.parse(decodeURIComponent(params.data))) > 0) {
                 this.setData({
-                    params: JSON.parse(decodeURIComponent(params.data))
+                    params: JSON.parse(decodeURIComponent(params.data)),
+                    plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1
                 });
 
                 // 删除地址缓存
@@ -336,7 +344,8 @@
                 if ((status || false) == true) {
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
-                        common_order_is_booking: app.globalData.get_config('config.common_order_is_booking')
+                        common_order_is_booking: app.globalData.get_config('config.common_order_is_booking'),
+                        plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
