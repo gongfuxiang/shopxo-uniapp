@@ -28,9 +28,9 @@
                     <block v-if="category_show_level == 0">
                         <!-- 一级导航 -->
                         <view class="top-nav bg-white wh-auto pa br-b scroll-view-horizontal">
-                            <scroll-view :scroll-x="true" class="ht-auto">
+                            <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-'+nav_active_index" class="ht-auto">
                                 <block v-for="(item, index) in category_list" :key="index">
-                                    <view :class="'text-size-sm item tc cr-base cp dis-inline-block ' + (nav_active_index == index ? 'cr-main border-color-main fw-b' : '')" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                    <view :class="'text-size-sm item tc cr-base cp dis-inline-block ' + (nav_active_index == index ? 'cr-main border-color-main fw-b' : '')" :id="'one-nav-item-'+index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                         <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
                                             <image :src="((item[category_goods_model_icon_field] || null) == null) ? common_static_url+'images.png' : item[category_goods_model_icon_field]" mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
                                         </view>
@@ -62,10 +62,10 @@
                                 <view class="right-content-actual pr">
                                     <!-- 三级导航 -->
                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
-                                        <scroll-view :scroll-x="true">
+                                        <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-'+nav_active_item_three_index">
                                             <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_three_index == -1) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
                                             <block v-for="(item, index) in data_three_content.items" :key="index">
-                                                <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_three_index == index) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{item.name}}</view>
+                                                <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right '+((nav_active_item_three_index == index) ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')" :id="'three-nav-item-'+index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{item.name}}</view>
                                             </block>
                                         </scroll-view>
                                     </view>

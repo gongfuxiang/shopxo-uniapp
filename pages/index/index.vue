@@ -171,7 +171,7 @@
                             </view>
                             <view class="floor-list wh-auto oh pr">
                                 <view v-if="floor.items.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
-                                    <scroll-view scroll-x>
+                                    <scroll-view :scroll-x="true">
                                         <block v-for="(icv, icx) in floor.items" :key="icx">
                                             <navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{icv.name}}</navigator>
                                         </block>
