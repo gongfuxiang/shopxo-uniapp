@@ -200,6 +200,11 @@
                     </view>
                 </view>
 
+                <!-- 组合搭配 -->
+                <block v-if="plugins_binding_data != null">
+                    <component-binding-list :propData="plugins_binding_data" :propLabel="plugins_label_data"></component-binding-list>
+                </block>
+
                 <!-- 门店 -->
                 <view v-if="plugins_realstore_data != null && plugins_realstore_data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title">
@@ -566,6 +571,7 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '../../common/js/lib/base64.js';
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
@@ -576,6 +582,7 @@
     import componentOnlineService from "../../components/online-service/online-service";
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
     import componentShopList from "../../components/shop-list/shop-list";
+    import componentBindingList from "../../components/binding-list/binding-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -695,7 +702,9 @@
                 plugins_chat_data: null,
                 // 门店插件
                 plugins_realstore_data: null,
-                popup_realstore_status: false
+                popup_realstore_status: false,
+                // 组合搭配插件
+                plugins_binding_data: null
             };
         },
 
@@ -709,7 +718,8 @@
             componentBottomLine,
             componentOnlineService,
             componentRealstoreList,
-            componentShopList
+            componentShopList,
+            componentBindingList
         },
 
         onLoad(params) {
@@ -866,6 +876,7 @@
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                                 plugins_chat_data: data.plugins_chat_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
+                                plugins_binding_data: data.plugins_binding_data || null
                             };
                             // 如果已默认开启弹窗，库存为0则不开启
                             if(this.popup_status == 1 && goods.inventory <= 0) {
@@ -1579,13 +1590,15 @@
                             case 'buy':
                                 // 进入订单确认页面
                                 var data = {
-                                    "buy_type": "goods",
-                                    "goods_id": this.goods.id,
-                                    "stock": this.buy_number,
-                                    "spec": JSON.stringify(spec)
+                                    buy_type: "goods",
+                                    goods_data: encodeURIComponent(base64.encode(JSON.stringify([{
+                                        goods_id: this.goods.id,
+                                        stock: this.buy_number,
+                                        spec: spec
+                                    }])))
                                 };
                                 uni.navigateTo({
-                                    url: '/pages/buy/buy?data=' + encodeURIComponent(JSON.stringify(data))
+                                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data)))
                                 });
                                 this.popup_close_event();
                                 break;

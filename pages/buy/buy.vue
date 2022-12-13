@@ -245,6 +245,7 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '../../common/js/lib/base64.js';
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentTimeSelect from "../../components/time-select/time-select";
@@ -307,10 +308,15 @@
         props: {},
 
         onLoad(params) {
-            //params['data'] = '{"buy_type":"goods","goods_id":"1","stock":"1","spec":"[]"}';
-            if ((params.data || null) != null && app.globalData.get_length(JSON.parse(decodeURIComponent(params.data))) > 0) {
+            // params.data 参数 urlencode(base64_encode(json字符串))
+            //  buy_type 下单类型（goods 立即购买、cart 购物车）
+            //  goods_data 下单商品urlencode(base64_encode(json字符串[{goods_id,stock,spec}]))
+            //  params['data'] = '{"buy_type":"goods","goods_data":"W3siZ29vZHNfaWQiOiI5Iiwic3RvY2siOjEsInNwZWMiOlt7InR5cGUiOiLpopzoibIiLCJ2YWx1ZSI6IueyieiJsiJ9LHsidHlwZSI6IuWwuueggSIsInZhbHVlIjoiTCJ9XX1"}';
+            //  ids 购物车主键ids
+            if ((params.data || null) != null) {
+                console.log(params.data);
                 this.setData({
-                    params: JSON.parse(decodeURIComponent(params.data)),
+                    params: JSON.parse(base64.decode(decodeURIComponent(params.data))),
                     plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1
                 });
 
@@ -358,7 +364,7 @@
                 if (this.params == null) {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '订单信息有误'
+                        data_list_loding_msg: '商品信息有误'
                     });
                     uni.stopPullDownRefresh();
                     return false;
