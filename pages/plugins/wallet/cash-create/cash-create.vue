@@ -71,9 +71,9 @@
                 form_submit_loading: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                default_data: null,
                 data_base: null,
-                user_wallet: null,
+                user_wallet: {},
+                default_data: {},
                 check_status: null,
                 can_cash_max_money: 0.00
             };
@@ -149,8 +149,8 @@
                                 data_list_loding_status: 3,
                                 data_base: data.base || null,
                                 check_status: data.check_status || 0,
-                                default_data: data.default_data || null,
-                                user_wallet: data.user_wallet || null,
+                                default_data: data.default_data || {},
+                                user_wallet: data.user_wallet || {},
                                 can_cash_max_money: parseFloat(data.can_cash_max_money) || 0.00
                             });
                         } else {
