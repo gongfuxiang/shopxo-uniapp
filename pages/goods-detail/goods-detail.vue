@@ -377,60 +377,6 @@
                 </view>
             </view>
 
-            <!-- 购买弹层 -->
-            <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
-                <view class="goods-popup padding-main bg-white pr">
-                    <view class="close fr oh">
-                        <view class="fr" @tap.stop="popup_close_event">
-                            <icon type="clear" size="20"></icon>
-                        </view>
-                    </view>
-                    <!-- 规格基础信息 -->
-                    <view class="goods-popup-base oh br-b pr">
-                        <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
-                        <view class="goods-popup-base-content">
-                            <view class="goods-price">
-                                <view class="sales-price">{{currency_symbol}}{{goods_spec_base_price}}</view>
-                                <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
-                            </view>
-                            <view class="inventory">
-                                <text class="cr-gray">库存</text>
-                                <text class="cr-base">{{goods_spec_base_inventory}}</text>
-                                <text class="cr-gray">{{goods.inventory_unit}}</text>
-                            </view>
-                        </view>
-                    </view>
-
-                    <view class="goods-popup-content">
-                        <!-- 商品规格 -->
-                        <view v-if="goods_specifications_choose.length > 0" class="goods-spec-choose">
-                            <view v-for="(item, key) in goods_specifications_choose" :key="key" class="item br-b">
-                                <view class="title">{{item.name}}</view>
-                                <view v-if="item.value.length > 0" class="spec">
-                                    <block v-for="(items, keys) in item.value" :key="keys">
-                                        <button @tap.stop="goods_specifications_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
-                                            <text class="va-m">{{items.name}}</text>
-                                        </button>
-                                    </block>
-                                </view>
-                            </view>
-                        </view>
-
-                        <!-- 购买数量 -->
-                        <view class="goods-buy-number oh">
-                            <view class="title fl">购买数量</view>
-                            <view class="number-content tc oh round">
-                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
-                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
-                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
-                            </view>
-                        </view>
-                    </view>
-                    <button class="goods-popup-submit bg-main cr-white" type="default" @tap.stop="goods_buy_confirm_event" hover-class="none">确定</button>
-                </view>
-            </component-popup>
-
             <!-- 分享弹层 -->
             <component-popup :propShow="popup_share_status" propPosition="bottom" @onclose="popup_share_close_event">
                 <view class="share-popup bg-white">
@@ -565,13 +511,16 @@
             <button type="default" class="bg-main br-main cr-white round" size="mini" @tap="goods_error_event">返回</button>
         </view>
 
+        <!-- 商品购买 -->
+        <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import componentGoodsBuy from "../../components/goods-buy/goods-buy";
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
@@ -608,14 +557,11 @@
                 goods_photo: [],
                 goods_specifications_choose: [],
                 goods_content_app: [],
-                popup_status: false,
-                buy_number: 1,
+                popup_buy_status: false,
                 buy_event_type: 'buy',
                 buy_button: {},
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
-                goods_spec_base_inventory: 0,
-                goods_spec_base_images: '',
                 goods_spec_selected_text: '请选择规格',
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
@@ -694,10 +640,7 @@
                 // 标签插件
                 plugins_label_data: null,
                 // 智能工具插件
-                plugins_intellectstools_config: null,
                 plugins_intellectstools_data: null,
-                plugins_intellectstools_timer: null,
-                plugins_intellectstools_timerout: null,
                 // 客服插件
                 plugins_chat_data: null,
                 // 门店插件
@@ -709,6 +652,7 @@
         },
 
         components: {
+            componentGoodsBuy,
             componentQuickNav,
             componentPopup,
             componentBadge,
@@ -729,7 +673,7 @@
                 // 是否自定义购买事件
                 buy_event_type: params.opt_buy_event_type || 'buy',
                 // 是否指定开启购买弹窗、默认0否、1是
-                popup_status: parseInt(params.is_opt_buy_status || 0) == 1,
+                popup_buy_status: parseInt(params.is_opt_buy_status || 0) == 1,
                 // 是否底部导航展示返回按钮
                 is_opt_back: parseInt(params.is_opt_back || 0),
                 is_goods_bottom_opt_back: app.globalData.data.is_goods_bottom_opt_back || 0,
@@ -754,8 +698,6 @@
         // 页面销毁时执行
         onUnload: function() {
             clearInterval(this.plugins_salerecords_timer);
-            clearInterval(this.plugins_intellectstools_timer);
-            clearInterval(this.plugins_intellectstools_timerout);
         },
 
         // 监听滚动
@@ -806,8 +748,7 @@
                         common_is_goods_detail_show_photo: app.globalData.get_config('config.common_is_goods_detail_show_photo'),
                         common_is_show_goods_comments: app.globalData.get_config('config.common_is_show_goods_comments', 1),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
-                        plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster'),
-                        plugins_intellectstools_config: app.globalData.get_config('plugins_base.intellectstools.data'),
+                        plugins_is_goods_detail_poster: app.globalData.get_config('plugins_base.distribution.data.is_goods_detail_poster')
                     });
                     
                     // 底部业务导航按钮数量处理
@@ -851,9 +792,7 @@
                                 autoplay: goods.photo.length > 1,
                                 goods_photo: goods.photo,
                                 nav_more_list: data.nav_more_list || [],
-                                goods_specifications_choose: goods.specifications.choose || [],
                                 goods_content_app: goods.content_app || [],
-                                buy_number: goods.buy_min_number || 1,
                                 nav_favor_button_info: {
                                     "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
                                     "status": goods.is_favor
@@ -862,8 +801,6 @@
                                 top_nav_title_data: data.middle_tabs_nav || [],
                                 goods_spec_base_price: goods.price,
                                 goods_spec_base_original_price: goods.original_price || 0,
-                                goods_spec_base_inventory: goods.inventory,
-                                goods_spec_base_images: goods.images,
                                 show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
@@ -878,15 +815,20 @@
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null
                             };
-                            // 如果已默认开启弹窗，库存为0则不开启
-                            if(this.popup_status == 1 && goods.inventory <= 0) {
-                                upd_data['popup_status'] = 0;
-                            }
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {
                                 upd_data['nav_home_button_info'] = data.nav_home_button_info;
                             }
                             this.setData(upd_data);
+
+                            // 如果已默认开启购买弹窗，库存为0则不开启
+                            if(this.popup_buy_status && parseInt(goods.inventory) > 0) {
+                                if((this.$refs.goods_buy || null) != null) {
+                                    var buy_params = this.params;
+                                    buy_params['buy_event_type'] = this.buy_event_type;
+                                    this.$refs.goods_buy.init(this.goods, buy_params);
+                                }
+                            }
 
                             // 分享配置
                             this.setData({
@@ -901,15 +843,9 @@
                                     video: goods.video
                                 }
                             });
-                            
-                            // 不能选择规格处理
-                            this.goods_specifications_choose_handle_dont(0);
-                            
+
                             // 购买记录提示
                             this.plugins_salerecords_tips_handle();
-                            
-                            // 默认选中第一个规格、必须是可以可售的商品
-                            this.plugins_intellectstools_selected_spec_handle();
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -917,7 +853,7 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
-                        
+
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
                     },
@@ -1004,110 +940,9 @@
                }, 500);
             },
 
-            // 默认选中第一个规格、必须是可以可售的商品
-            plugins_intellectstools_selected_spec_handle() {
-                var self = this;
-                // 销毁之前的任务
-                clearInterval(self.plugins_intellectstools_timer);
-                clearInterval(self.plugins_intellectstools_timerout);
-                // 读取智能工具插件配置、是否开启
-                var config = self.plugins_intellectstools_config || null;
-                if(config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
-                    // 必须存在购买和加入购物车任意一个、规格必须多个
-                    var buy = self.buy_button;
-                    var sku_count = app.globalData.get_length(self.goods_specifications_choose);
-                    if(((buy.is_buy || 0)+(buy.is_cart || 0)) > 0 && sku_count > 0) {
-                        // 先清除价格展示信息
-                        self.setData({
-                            goods_spec_base_price: '...',
-                            goods_spec_base_original_price: '...'
-                        });
-                        var num = 0;
-                        var timer = setInterval(function() {
-                            var spec = self.goods_specifications_choose;
-                            for(var i in spec) {
-                                // 清除价格展示信息、避免获取价格类型赋值
-                                self.setData({
-                                    goods_spec_base_price: '...',
-                                    goods_spec_base_original_price: '...'
-                                });
-                                // 必须不存在已选择项
-                                var active = spec[i]['value'].map(function(v){return v.is_active}).join('') || null;
-                                if(active == null) {
-                                    var status = false;
-                                    for(var k in spec[i]['value']) {
-                                        // 必须是可选和未选
-                                        if(!status && (spec[i]['value'][k]['is_disabled'] || null) == null && (spec[i]['value'][k]['is_dont'] || null) == null) {
-                                            self.goods_specifications_handle(i, k);
-                                            status = true;
-                                            num++;
-                                        }
-                                    }
-                                }
-                            }
-                            if(num >= sku_count) {
-                                clearInterval(self.plugins_intellectstools_timer);
-                            }
-                        }, 100);
-                        var timerout = setTimeout(function() {
-                            clearInterval(self.plugins_intellectstools_timerout);
-                        }, 20000);
-                        self.setData({
-                            plugins_intellectstools_timer: timer,
-                            plugins_intellectstools_timerout: timerout
-                        });
-                    }
-                }
-            },
-
-            // 不能选择规格处理
-            goods_specifications_choose_handle_dont(key) {
-                var temp_data = this.goods_specifications_choose || [];
-                if (temp_data.length <= 0) {
-                    return false;
-                }
-
-                // 是否不能选择
-                key = parseInt(key);
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if (i > key) {
-                            temp_data[i]['value'][k]['is_dont'] = 'spec-dont-choose';
-                            temp_data[i]['value'][k]['is_disabled'] = '';
-                            temp_data[i]['value'][k]['is_active'] = '';
-                        }
-
-                        // 当只有一个规格的时候
-                        if (key == 0 && temp_data.length == 1) {
-                            temp_data[i]['value'][k]['is_disabled'] = (temp_data[i]['value'][k]['is_only_level_one'] || null) != null && (temp_data[i]['value'][k]['inventory'] || 0) <= 0 ? 'spec-items-disabled' : '';
-                        }
-                    }
-                }
-
-                this.setData({
-                    goods_specifications_choose: temp_data
-                });
-            },
-
-            // 购买弹层关闭
-            popup_close_event(e) {
-                this.setData({
-                    popup_status: false
-                });
-            },
-
             // 进入店铺
             shop_event(e) {
-                var value = this.nav_home_button_info.value;
-                if (app.globalData.is_tabbar_pages(value)) {
-                    uni.switchTab({
-                        url: value
-                    });
-                } else {
-                    uni.navigateTo({
-                        url: value
-                    });
-                }
+                app.globalData.url_open(this.nav_home_button_info.value);
             },
 
             // 导航购买按钮事件
@@ -1125,10 +960,12 @@
                     // 购买、加入购物车
                     case 'buy':
                     case 'cart':
-                        this.setData({
-                            popup_status: true,
-                            buy_event_type: type
-                        });
+                        this.setData({buy_event_type: type});
+                        if((this.$refs.goods_buy || null) != null) {
+                            var buy_params = this.params;
+                            buy_params['buy_event_type'] = this.buy_event_type;
+                            this.$refs.goods_buy.init(this.goods, buy_params);
+                        }
                         break;
                     // url事件
                     case 'url':
@@ -1153,6 +990,14 @@
                     default:
                         app.globalData.showToast('事件未处理');
                 }
+            },
+
+            // 加入购物车成功回调
+            goods_cart_back_event(e) {
+                this.setData({
+                    goods_spec_selected_text: ((e.spec || null) == null) ? '' : e.spec.map(function(v){return v.value;}).join(' / '),
+                    quick_nav_cart_count: e.cart_number
+                });
             },
 
             // 收藏事件
@@ -1204,438 +1049,6 @@
                         });
                     }
                 }
-            },
-
-            // 加入购物车事件
-            goods_cart_event(spec) {
-                var user = app.globalData.get_user_info(this, 'goods_buy_confirm_event');
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=goods_buy_confirm_event"
-                        });
-                        return false;
-                    } else {
-                        var data = this.params;
-                        data['goods_id'] = this.goods.id;
-                        data['spec'] = JSON.stringify(spec);
-                        data['stock'] = this.buy_number;
-                        uni.showLoading({
-                            title: '处理中...'
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('save', 'cart'),
-                            method: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            success: res => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.setData({
-                                        quick_nav_cart_count: res.data.data.buy_number
-                                    });
-
-                                    // 是否返回定义来源返回
-                                    if(parseInt(this.params.is_opt_buy_status || 0) == 1 && this.is_opt_back == 1) {
-                                        setTimeout(function() {
-                                            uni.navigateBack();;
-                                        }, 1000);
-                                    } else {
-                                        // 关闭购买弹窗窗口
-                                        this.popup_close_event();
-                                    }
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'goods_buy_confirm_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
-                            }
-                        });
-                    }
-                }
-            },
-
-            // 规格事件
-            goods_specifications_event(e) {
-                var key = e.currentTarget.dataset.key || 0;
-                var keys = e.currentTarget.dataset.keys || 0;
-                this.goods_specifications_handle(key, keys);
-            },
-
-            // 规格选择处理
-            goods_specifications_handle(key, keys) {
-                var temp_data = this.goods_specifications_choose;
-                var temp_images = this.goods_spec_base_images;
-            
-                // 不能选择和禁止选择跳过
-                if ((temp_data[key]['value'][keys]['is_dont'] || null) == null && (temp_data[key]['value'][keys]['is_disabled'] || null) == null) {
-                    // 规格选择
-                    for (var i in temp_data) {
-                        for (var k in temp_data[i]['value']) {
-                            if ((temp_data[i]['value'][k]['is_dont'] || null) == null && (temp_data[i]['value'][k]['is_disabled'] || null) == null) {
-                                if (key == i) {
-                                    if (keys == k && (temp_data[i]['value'][k]['is_active'] || null) == null) {
-                                        temp_data[i]['value'][k]['is_active'] = 'cr-white bg-main br-main';
-                                        if ((temp_data[i]['value'][k]['images'] || null) != null) {
-                                            temp_images = temp_data[i]['value'][k]['images'];
-                                        }
-                                    } else {
-                                        temp_data[i]['value'][k]['is_active'] = '';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    this.setData({
-                        goods_specifications_choose: temp_data,
-                        goods_spec_base_images: temp_images,
-                        buy_number: parseInt(this.goods.buy_min_number) || 1,
-                    });
-            
-                    // 不能选择规格处理
-                    this.goods_specifications_choose_handle_dont(key);
-            
-                    // 获取下一个规格类型
-                    this.get_goods_specifications_type(key);
-            
-                    // 获取规格详情
-                    this.get_goods_specifications_detail();
-                }
-                
-                // 已选择规格
-                var spec_selected = [];
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null)
-                        {
-                            spec_selected.push(temp_data[i]['value'][k]['name']);
-                        }
-                    }
-                }
-                this.setData({
-                    goods_spec_selected_text: (spec_selected.length <= 0) ? '请选择规格' : spec_selected.join(' / ')
-                });
-            },
-
-            // 获取下一个规格类型
-            get_goods_specifications_type(key) {
-                var temp_data = this.goods_specifications_choose;
-                var active_index = parseInt(key) + 1;
-                var sku_count = app.globalData.get_length(temp_data);
-                if (active_index <= 0 || active_index >= sku_count) {
-                    return false;
-                }
-                
-                // 获取规格值
-                var spec = [];
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                            spec.push({
-                                "type": temp_data[i]['name'],
-                                "value": temp_data[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
-                if (spec.length <= 0) {
-                    return false;
-                }
-
-                // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = JSON.stringify(spec);
-                uni.request({
-                    url: app.globalData.get_request_url('spectype', 'goods'),
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code == 0) {
-                            var spec_type = res.data.data.spec_type;
-                            var spec_count = spec.length;
-                            var index = spec_count > 0 ? spec_count : 0;
-                            if (index < sku_count) {
-                                for (var i in temp_data) {
-                                    for (var k in temp_data[i]['value']) {
-                                        if (index == i) {
-                                            temp_data[i]['value'][k]['is_dont'] = '';
-                                            var temp_value = temp_data[i]['value'][k]['name'];
-                                            var temp_status = false;
-                                            for (var t in spec_type) {
-                                                if (spec_type[t] == temp_value) {
-                                                    temp_status = true;
-                                                    break;
-                                                }
-                                            }
-                                            if (temp_status == true) {
-                                                temp_data[i]['value'][k]['is_disabled'] = '';
-                                            } else {
-                                                temp_data[i]['value'][k]['is_disabled'] = 'spec-items-disabled';
-                                            }
-                                        }
-                                    }
-                                }
-                                this.setData({
-                                    goods_specifications_choose: temp_data
-                                });
-                            }
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 获取规格详情
-            get_goods_specifications_detail() {
-                // 获取规格值
-                var spec = this.goods_selected_spec();
-
-                // 存在规格的时候是否已完全选择规格
-                var sku_count = this.goods_specifications_choose.length;
-                var active_count = spec.length;
-                if (spec.length <= 0 || active_count < sku_count) {
-                    this.setData({
-                        goods_spec_base_price: this.goods.price,
-                        goods_spec_base_original_price: this.goods.original_price || 0,
-                        goods_spec_base_inventory: this.goods.inventory
-                    });
-                    return false;
-                }
-                
-                // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = JSON.stringify(spec);
-                data['stock'] = this.buy_number;
-                uni.request({
-                    url: app.globalData.get_request_url('specdetail', 'goods'),
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.goods_spec_detail_back_handle(res.data.data);
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-            
-            // 已选的商品规格
-            goods_selected_spec() {
-                var spec = [];
-                var temp_data = this.goods_specifications_choose;
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                            spec.push({
-                                "type": temp_data[i]['name'],
-                                "value": temp_data[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
-                return spec;
-            },
-            
-            // 商品规格详情返回数据处理
-            goods_spec_detail_back_handle(data) {
-                var spec_base = data.spec_base;
-                var data = {
-                    goods_spec_base_price: spec_base.price,
-                    goods_spec_base_original_price: spec_base.original_price || 0,
-                    goods_spec_base_inventory: parseInt(spec_base.inventory),
-                    plugins_wholesale_data: data.plugins_wholesale_data || null,
-                };
-
-                // 已选数量是否超过规格库存
-                if(this.buy_number > data.goods_spec_base_inventory) {
-                    data['buy_number'] = data.goods_spec_base_inventory;
-                }
-                this.setData(data);
-            },
-
-            // 数量输入事件
-            goods_buy_number_blur(e) {
-                var number = parseInt(e.detail.value) || 1;
-                if(isNaN(number)) {
-                    number = this.goods.buy_min_number || 1;
-                }
-                this.goods_buy_number_func(number);
-            },
-
-            // 数量操作事件
-            goods_buy_number_event(e) {
-                var type = parseInt(e.currentTarget.dataset.type) || 0;
-                var temp_number = parseInt(this.buy_number);
-                var number = (type == 0) ? temp_number - 1 : temp_number + 1;
-                this.goods_buy_number_func(number);
-            },
-
-            // 数量处理方法
-            goods_buy_number_func(number) {
-                var buy_min_number = parseInt(this.goods.buy_min_number) || 1;
-                var buy_max_number = parseInt(this.goods.buy_max_number) || 0;
-                var inventory = parseInt(this.goods_spec_base_inventory);
-                var inventory_unit = this.goods.inventory_unit;
-
-                // 最小起购数量
-                if (number < buy_min_number) {
-                    number = buy_min_number;
-                    app.globalData.showToast('起购' + buy_min_number + inventory_unit);
-                }
-
-                // 最大购买数量
-                if (buy_max_number > 0 && number > buy_max_number) {
-                    number = buy_max_number;
-                    app.globalData.showToast('限购' + buy_max_number + inventory_unit);
-                }
-
-                // 是否超过库存数量
-                if (number > inventory) {
-                    number = inventory;
-                    app.globalData.showToast('库存数量' + inventory + inventory_unit);
-                }
-
-                this.setData({
-                    buy_number: number
-                });
-                
-                // 存在规格的时候是否已完全选择规格
-                var spec = this.goods_selected_spec();
-                var sku_count = this.goods_specifications_choose.length;
-                var active_count = spec.length;
-                if (sku_count > 0 && active_count < sku_count) {
-                    return false;
-                }
-                
-                // 获取数据
-                var data = this.params;
-                data['id'] = this.goods.id;
-                data['spec'] = spec;
-                data['stock'] = this.buy_number;
-                uni.request({
-                    url: app.globalData.get_request_url('stock', 'goods'),
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.goods_spec_detail_back_handle(res.data.data);
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            // 确认
-            goods_buy_confirm_event(e) {
-                var user = app.globalData.get_user_info(this, 'goods_buy_confirm_event');
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=goods_buy_confirm_event"
-                        });
-                        return false;
-                    } else {
-                        // 属性
-                        var temp_data = this.goods_specifications_choose;
-                        var sku_count = temp_data.length;
-                        var active_count = 0;
-                        var spec = [];
-                        if (sku_count > 0) {
-                            for (var i in temp_data) {
-                                for (var k in temp_data[i]['value']) {
-                                    if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                                        active_count++;
-                                        spec.push({
-                                            "type": temp_data[i]['name'],
-                                            "value": temp_data[i]['value'][k]['name']
-                                        });
-                                    }
-                                }
-                            }
-
-                            if (active_count < sku_count) {
-                                app.globalData.showToast('请选择规格');
-                                return false;
-                            }
-                        }
-                        
-                        // 操作类型
-                        switch (this.buy_event_type) {
-                            case 'buy':
-                                // 进入订单确认页面
-                                var data = {
-                                    buy_type: "goods",
-                                    goods_data: encodeURIComponent(base64.encode(JSON.stringify([{
-                                        goods_id: this.goods.id,
-                                        stock: this.buy_number,
-                                        spec: spec
-                                    }])))
-                                };
-                                uni.navigateTo({
-                                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data)))
-                                });
-                                this.popup_close_event();
-                                break;
-
-                            case 'cart':
-                                this.goods_cart_event(spec);
-                                break;
-
-                            default:
-                                app.globalData.showToast("操作事件类型有误");
-                        }
-                    }
-                }
-            },
-
-            // 详情图片查看
-            goods_detail_images_view_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                if (value != null) {
-                    uni.previewImage({
-                        current: value,
-                        urls: [value]
-                    });
-                }
-            },
-
-            // 商品相册图片查看
-            goods_photo_view_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var all = [];
-                for (var i in this.goods_photo) {
-                    all.push(this.goods_photo[i]['images']);
-                }
-                uni.previewImage({
-                    current: all[index],
-                    urls: all
-                });
             },
 
             // 视频播放

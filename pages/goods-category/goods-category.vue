@@ -244,7 +244,7 @@
                 <view class="botton-nav round pa bg-main-pair oh">
                     <view class="cart dis-inline-block va-m margin-left-xxl pr cp" @tap="cart_event">
                         <uni-icons type="cart" size="18" color="#fff"></uni-icons>
-                        <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
+                        <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">
                             <component-badge :propNumber="cart.buy_number"></component-badge>
                         </view>
                     </view>
@@ -254,50 +254,10 @@
                     </view>
                     <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" class="text-size-sm pa radius-0 bg-main cr-white">去结算</button>
                 </view>
-
-                <!-- 规格选择弹层 -->
-                <component-popup :propShow="popup_spec_status" propPosition="bottom" @onclose="popup_spec_close_event">
-                    <view class="goods-spec-popup padding-main bg-white pr">
-                        <view class="close fr oh">
-                            <view class="fr" @tap.stop="popup_spec_close_event">
-                                <icon type="clear" size="20"></icon>
-                            </view>
-                        </view>
-                        <!-- 规格基础信息 -->
-                        <view class="goods-spec-popup-base oh br-b pr">
-                            <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_spec_base_images_view_event" :data-value="goods_spec_base_images"></image>
-                            <view class="goods-spec-popup-base-content">
-                                <view class="goods-price">
-                                    <view class="sales-price">{{currency_symbol}}{{goods_spec_base_price}}</view>
-                                    <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
-                                </view>
-                                <view class="inventory">
-                                    <text class="cr-gray">库存</text>
-                                    <text class="cr-base">{{goods_spec_base_inventory}}</text>
-                                    <text class="cr-gray">{{goods_choose_data.inventory_unit}}</text>
-                                </view>
-                            </view>
-                        </view>
-                        <!-- 商品规格 -->
-                        <view class="goods-spec-popup-content">
-                            <view v-if="goods_specifications_choose.length > 0" class="goods-spec-choose">
-                                <view v-for="(item, key) in goods_specifications_choose" :key="key" class="item br-b">
-                                    <view class="text-size">{{item.name}}</view>
-                                    <view v-if="item.value.length > 0" class="spec margin-top-sm">
-                                        <block v-for="(items, keys) in item.value" :key="keys">
-                                            <button @tap.stop="goods_specifications_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                                <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
-                                                <text class="va-m">{{items.name}}</text>
-                                            </button>
-                                        </block>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                        <button class="goods-spec-popup-submit bg-main cr-white" type="default" @tap.stop="goods_spec_confirm_event" hover-class="none">确定</button>
-                    </view>
-                </component-popup>
             </block>
+
+            <!-- 商品购买 -->
+            <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
@@ -307,6 +267,8 @@
 
 <script>
     const app = getApp();
+    import base64 from '../../common/js/lib/base64.js';
+    import componentGoodsBuy from "../../components/goods-buy/goods-buy";
     import componentSearch from "../../components/search/search";
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentNoData from "../../components/no-data/no-data";
@@ -345,13 +307,7 @@
                 scroll_top: 0,
                 scroll_top_old: 0,
                 cart_status: false,
-                popup_spec_status: false,
-                goods_spec_base_price: 0,
-                goods_spec_base_original_price: 0,
-                goods_spec_base_inventory: 0,
-                goods_spec_base_images: '',
                 goods_choose_data: {},
-                goods_specifications_choose: [],
                 // 基础配置
                 category_show_level: 0,
                 // 自定义分享信息
@@ -364,6 +320,7 @@
         },
 
         components: {
+            componentGoodsBuy,
             componentSearch,
             componentQuickNav,
             componentNoData,
@@ -665,6 +622,7 @@
                         var index = e.currentTarget.dataset.index;
                         var type = parseInt(e.currentTarget.dataset.type) || 0;
                         var temp_goods = this.data_list[index];
+                        this.setData({goods_choose_data: temp_goods});
             
                         // 是否存在多规格
                         if((temp_goods.is_exist_many_spec || 0) != 0) {
@@ -675,27 +633,9 @@
                                 });
                                 app.globalData.showToast('不同规格的商品需在购物车减购');
                             } else {
-                                // 展示规格选择
-                                var temp_specifications = temp_goods['specifications']['choose'] || [];
-                                if(temp_specifications.length > 0) {
-                                    for(var i in temp_specifications) {
-                                        for(var k in temp_specifications[i]['value']) {
-                                            temp_specifications[i]['value'][k]['is_active'] = '';
-                                            if(i > 0) {
-                                                temp_specifications[i]['value'][k]['is_dont'] = 'spec-dont-choose';
-                                            }
-                                        }
-                                    }
+                                if((this.$refs.goods_buy || null) != null) {
+                                    this.$refs.goods_buy.init(temp_goods, {buy_event_type: 'cart'});
                                 }
-                                this.setData({
-                                    popup_spec_status: true,
-                                    goods_choose_data: temp_goods,
-                                    goods_specifications_choose: temp_specifications,
-                                    goods_spec_base_price: temp_goods.price,
-                                    goods_spec_base_original_price: temp_goods.original_price || 0,
-                                    goods_spec_base_inventory: temp_goods.inventory,
-                                    goods_spec_base_images: temp_goods.images,
-                                });
                             }
                             return false;
                         }
@@ -704,6 +644,12 @@
                         this.buy_number_event_handle(type, temp_goods);
                     }
                 }
+            },
+
+            // 加入购物车成功回调
+            goods_cart_back_event(e) {
+                // 重新获取购物车数据
+                this.get_cart_data();
             },
 
             // 列表数量事件处理
@@ -963,7 +909,7 @@
                     }
                 });
             },
-            
+
             // 购物车更新列表数据处理
             cart_data_list_handle() {
                 var temp_cart = this.cart || null;
@@ -983,302 +929,6 @@
                     }
                     this.setData({
                         data_list: temp_data_list
-                    });
-                }
-            },
-
-            // 规格选择弹层关闭
-            popup_spec_close_event(e) {
-                this.setData({
-                    popup_spec_status: false
-                });
-            },
-            
-            // 规格事件
-            goods_specifications_event(e) {
-                var key = e.currentTarget.dataset.key || 0;
-                var keys = e.currentTarget.dataset.keys || 0;
-                this.goods_specifications_handle(key, keys);
-            },
-            
-            // 规格选择处理
-            goods_specifications_handle(key, keys) {            
-                // 不能选择和禁止选择跳过
-                var temp_data = this.goods_specifications_choose;
-                var temp_images = this.goods_spec_base_images;
-                if ((temp_data[key]['value'][keys]['is_dont'] || null) == null && (temp_data[key]['value'][keys]['is_disabled'] || null) == null) {
-                    // 规格选择
-                    for (var i in temp_data) {
-                        for (var k in temp_data[i]['value']) {
-                            if ((temp_data[i]['value'][k]['is_dont'] || null) == null && (temp_data[i]['value'][k]['is_disabled'] || null) == null) {
-                                if (key == i) {
-                                    if (keys == k && (temp_data[i]['value'][k]['is_active'] || null) == null) {
-                                        temp_data[i]['value'][k]['is_active'] = 'cr-white bg-main br-main';
-                                        if ((temp_data[i]['value'][k]['images'] || null) != null) {
-                                            temp_images = temp_data[i]['value'][k]['images'];
-                                        }
-                                    } else {
-                                        temp_data[i]['value'][k]['is_active'] = '';
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    this.setData({
-                        goods_specifications_choose: temp_data,
-                        goods_spec_base_images: temp_images
-                    });
-            
-                    // 不能选择规格处理
-                    this.goods_specifications_choose_handle_dont(key);
-            
-                    // 获取下一个规格类型
-                    this.get_goods_specifications_type(key);
-            
-                    // 获取规格详情
-                    this.get_goods_specifications_detail();
-                }
-                
-                // 已选择规格
-                var spec_selected = [];
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null)
-                        {
-                            spec_selected.push(temp_data[i]['value'][k]['name']);
-                        }
-                    }
-                }
-                this.setData({
-                    goods_spec_selected_text: (spec_selected.length <= 0) ? '请选择规格' : spec_selected.join(' / ')
-                });
-            },
-            
-            // 不能选择规格处理
-            goods_specifications_choose_handle_dont(key) {
-                var temp_data = this.goods_specifications_choose || [];
-                if (temp_data.length <= 0) {
-                    return false;
-                }
-            
-                // 是否不能选择
-                key = parseInt(key);
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if (i > key) {
-                            temp_data[i]['value'][k]['is_dont'] = 'spec-dont-choose';
-                            temp_data[i]['value'][k]['is_disabled'] = '';
-                            temp_data[i]['value'][k]['is_active'] = '';
-                        }
-            
-                        // 当只有一个规格的时候
-                        if (key == 0 && temp_data.length == 1) {
-                            temp_data[i]['value'][k]['is_disabled'] = (temp_data[i]['value'][k]['is_only_level_one'] || null) != null && (temp_data[i]['value'][k]['inventory'] || 0) <= 0 ? 'spec-items-disabled' : '';
-                        }
-                    }
-                }
-            
-                this.setData({
-                    goods_specifications_choose: temp_data
-                });
-            },
-            
-            // 获取下一个规格类型
-            get_goods_specifications_type(key) {
-                var temp_data = this.goods_specifications_choose;
-                var active_index = parseInt(key) + 1;
-                var sku_count = app.globalData.get_length(temp_data);
-                if (active_index <= 0 || active_index >= sku_count) {
-                    return false;
-                }
-                
-                // 获取规格值
-                var spec = [];
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                            spec.push({
-                                "type": temp_data[i]['name'],
-                                "value": temp_data[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
-                if (spec.length <= 0) {
-                    return false;
-                }
-            
-                // 获取数据
-                uni.request({
-                    url: app.globalData.get_request_url('spectype', 'goods'),
-                    method: 'POST',
-                    data: {
-                        id: this.goods_choose_data.id,
-                        spec: JSON.stringify(spec)
-                    },
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code == 0) {
-                            var spec_type = res.data.data.spec_type;
-                            var spec_count = spec.length;
-                            var index = spec_count > 0 ? spec_count : 0;
-                            if (index < sku_count) {
-                                for (var i in temp_data) {
-                                    for (var k in temp_data[i]['value']) {
-                                        if (index == i) {
-                                            temp_data[i]['value'][k]['is_dont'] = '';
-                                            var temp_value = temp_data[i]['value'][k]['name'];
-                                            var temp_status = false;
-                                            for (var t in spec_type) {
-                                                if (spec_type[t] == temp_value) {
-                                                    temp_status = true;
-                                                    break;
-                                                }
-                                            }
-                                            if (temp_status == true) {
-                                                temp_data[i]['value'][k]['is_disabled'] = '';
-                                            } else {
-                                                temp_data[i]['value'][k]['is_disabled'] = 'spec-items-disabled';
-                                            }
-                                        }
-                                    }
-                                }
-                                this.setData({
-                                    goods_specifications_choose: temp_data
-                                });
-                            }
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-            
-            // 获取规格详情
-            get_goods_specifications_detail() {
-                // 获取规格值
-                var spec = this.goods_selected_spec();
-            
-                // 存在规格的时候是否已完全选择规格
-                var sku_count = this.goods_specifications_choose.length;
-                var active_count = spec.length;
-                if (spec.length <= 0 || active_count < sku_count) {
-                    this.setData({
-                        goods_spec_base_price: this.goods_choose_data.price,
-                        goods_spec_base_original_price: this.goods_choose_data.original_price || 0,
-                        goods_spec_base_inventory: this.goods_choose_data.inventory
-                    });
-                    return false;
-                }
-            
-                // 获取数据
-                uni.request({
-                    url: app.globalData.get_request_url('specdetail', 'goods'),
-                    method: 'POST',
-                    data: {
-                        id: this.goods_choose_data.id,
-                        spec: JSON.stringify(spec),
-                        stock: 1
-                    },
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            this.goods_spec_detail_back_handle(res.data.data);
-                        } else {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
-            },
-            
-            // 已选的商品规格
-            goods_selected_spec() {
-                var spec = [];
-                var temp_data = this.goods_specifications_choose;
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]['value']) {
-                        if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                            spec.push({
-                                "type": temp_data[i]['name'],
-                                "value": temp_data[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
-                return spec;
-            },
-            
-            // 商品规格详情返回数据处理
-            goods_spec_detail_back_handle(data) {
-                var spec_base = data.spec_base;
-                var data = {
-                    goods_spec_base_price: spec_base.price,
-                    goods_spec_base_original_price: spec_base.original_price || 0,
-                    goods_spec_base_inventory: parseInt(spec_base.inventory)
-                };
-                this.setData(data);
-            },
-            
-            // 规格选择确认
-            goods_spec_confirm_event(e) {
-                var user = app.globalData.get_user_info(this, 'goods_spec_confirm_event');
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=goods_spec_confirm_event"
-                        });
-                        return false;
-                    } else {
-                        // 属性
-                        var temp_data = this.goods_specifications_choose;
-                        var sku_count = temp_data.length;
-                        var active_count = 0;
-                        var spec = [];
-                        if (sku_count > 0) {
-                            for (var i in temp_data) {
-                                for (var k in temp_data[i]['value']) {
-                                    if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                                        active_count++;
-                                        spec.push({
-                                            "type": temp_data[i]['name'],
-                                            "value": temp_data[i]['value'][k]['name']
-                                        });
-                                    }
-                                }
-                            }
-            
-                            if (active_count < sku_count) {
-                                app.globalData.showToast('请选择规格');
-                                return false;
-                            }
-                        }
-            
-                        // 数据操作处理
-                        if(this.buy_number_event_handle(1, this.goods_choose_data, spec)) {
-                            this.setData({
-                                popup_spec_status: false
-                            });
-                        }
-                    }
-                }
-            },
-            
-            // 规格图片查看
-            goods_spec_base_images_view_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                if (value != null) {
-                    uni.previewImage({
-                        current: value,
-                        urls: [value]
                     });
                 }
             },
@@ -1337,7 +987,7 @@
                     "ids": ids.join(',')
                 };
                 uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(JSON.stringify(data))
+                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data)))
                 });
             }
         }
