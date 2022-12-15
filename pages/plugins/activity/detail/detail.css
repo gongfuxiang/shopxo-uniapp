@@ -2,11 +2,14 @@
 * 基础
 */
 .base-container {
-    padding: 50rpx 20rpx 50rpx 20rpx;
+    height: 280rpx;
+    background-size: cover;
 }
-.base-container image {
-    width: 200rpx !important;
-    height: 200rpx !important;
+.base-container .text {
+    top: 0;
+    left: 0;
+    background: rgb(0 0 0 / 35%);
+    padding: 100rpx 20rpx 20rpx 20rpx;
 }
 .word-content .word-icon:not(:last-child) {
     margin-right: 20rpx;

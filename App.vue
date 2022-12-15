@@ -53,9 +53,9 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -340,6 +340,9 @@
              * is_to_auth 是否进入授权
              */
             user_login_handle(object, method, is_to_auth = true) {
+                // 邀请人参数
+                var params = this.get_launch_cache_info();
+                var referrer = params == null ? 0 : params.referrer || 0;
                 var self = this;
                 uni.showLoading({
                     title: "授权中..."
@@ -355,7 +358,8 @@
                                 url: self.get_request_url('appminiuserauth', 'user'),
                                 method: 'POST',
                                 data: {
-                                    authcode: res.code
+                                    authcode: res.code,
+                                    referrer: referrer
                                 },
                                 dataType: 'json',
                                 success: res => {
@@ -437,10 +441,10 @@
 
                 // 请求数据
                 var data = {
-                    "auth_data": JSON.stringify(auth_data),
-                    "openid": login_data.openid,
-                    "unionid": login_data.unionid,
-                    "referrer": referrer
+                    auth_data: JSON.stringify(auth_data),
+                    openid: login_data.openid,
+                    unionid: login_data.unionid,
+                    referrer: referrer
                 };
                 
                 // 用户信息处理

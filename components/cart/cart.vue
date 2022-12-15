@@ -105,6 +105,7 @@
 </template>
 <script>
     const app = getApp();
+    import base64 from '../../common/js/lib/base64.js';
     import componentNoData from "../../components/no-data/no-data";
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -581,7 +582,7 @@
                     "ids": ids.join(',')
                 };
                 uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(JSON.stringify(data))
+                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data)))
                 });
             },
 

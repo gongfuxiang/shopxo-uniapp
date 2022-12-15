@@ -3,9 +3,8 @@
         <view v-if="(data || null) != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息 -->
-                <view class="base-container tc border-radius-main bg-main spacing-mb" :style="'background-color:'+data.color+' !important;'">
-                    <image class="dis-block circle auto" :src="data.cover" mode="widthFix"></image>
-                    <view class="cr-white margin-top-lg">{{data.describe}}</view>
+                <view class="base-container tc pr padding-main border-radius-main bg-main oh spacing-mb" :style="'background-color:'+data.color+' !important;background-image:url('+data.cover+')'">
+                    <view class="text cr-white pa bs-bb text-size wh-auto ht-auto">{{data.describe}}</view>
                 </view>
 
                 <!-- 关键字 -->

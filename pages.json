@@ -843,6 +843,20 @@
             	"enablePullDownRefresh": true,
             	"navigationBarTitleText": "次卡使用记录"
             }
+        },
+        {
+            "path": "pages/plugins/binding/index/index",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "组合搭配"
+            }
+        },
+        {
+            "path": "pages/plugins/binding/detail/detail",
+            "style": {
+            	"enablePullDownRefresh": true,
+            	"navigationBarTitleText": "组合搭配详情"
+            }
         }
 	],
     "subPackages": [],

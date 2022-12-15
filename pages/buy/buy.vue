@@ -153,7 +153,7 @@
                         </view>
                     </view>
                 </view>
-                
+
                 <!-- 导航 -->
                 <view class="buy-nav oh wh-auto bg-white br-t">
                     <view class="nav-base fl single-text padding-left-main">
@@ -161,7 +161,7 @@
                         <text class="sales-price">{{currency_symbol}}{{total_price}}</text>
                     </view>
                     <view class="fr nav-submit padding-top padding-bottom padding-horizontal-main">
-                        <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">提交订单</button>
+                        <button class="bg-main cr-white round text-size" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">提交订单</button>
                     </view>
                 </view>
             </view>
@@ -314,7 +314,6 @@
             //  params['data'] = '{"buy_type":"goods","goods_data":"W3siZ29vZHNfaWQiOiI5Iiwic3RvY2siOjEsInNwZWMiOlt7InR5cGUiOiLpopzoibIiLCJ2YWx1ZSI6IueyieiJsiJ9LHsidHlwZSI6IuWwuueggSIsInZhbHVlIjoiTCJ9XX1"}';
             //  ids 购物车主键ids
             if ((params.data || null) != null) {
-                console.log(params.data);
                 this.setData({
                     params: JSON.parse(base64.decode(decodeURIComponent(params.data))),
                     plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1

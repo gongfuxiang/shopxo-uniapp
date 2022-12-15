@@ -1,0 +1,66 @@
+/**
+* 基础
+*/
+.base-container {
+    height: 280rpx;
+    background-size: cover;
+}
+.base-container .text {
+    top: 0;
+    left: 0;
+    background: rgb(0 0 0 / 35%);
+    padding: 100rpx 20rpx 20rpx 20rpx;
+}
+
+/**
+* 商品列表
+*/
+.data-list .item .goods-img {
+    width:170rpx;
+    height: 170rpx !important;
+}
+.data-list .item .right-base {
+    width: calc(100% - 190rpx);
+}
+.data-list .item .spec-choice {
+    max-width: calc(100% - 220rpx);
+}
+
+/**
+ * 导航
+ */
+.nav-button {
+    background: #eee;
+    -webkit-box-shadow: 0 -3px 8px #dbdbdb;
+    box-shadow: 0 -3px 8px #dbdbdb;
+}
+.nav-button .left-price {
+    width: calc(100% - 220rpx);
+}
+.nav-button .right-button {
+    width: 200rpx;
+}
+.nav-button .left-price .estimate-discount-price {
+    top: 6rpx;
+    left: 20rpx;
+    width: calc(100% - 270rpx);
+}
+.nav-button .left-price .discount-icon {
+    border-top-right-radius: 30rpx;
+    border-bottom-left-radius: 30rpx;
+    background-image: linear-gradient(45deg,#a3f9a3,#248828,#8bc34a,#d2374c,#9c27b0);
+    background-size: 400%;
+    animation: gradient 5s ease infinite;
+    padding: 0 16rpx;
+}
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
