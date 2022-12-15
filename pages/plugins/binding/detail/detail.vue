@@ -10,7 +10,7 @@
                 <view v-if="(data.goods || null) != null && data.goods.length > 0">
                     <!-- 商品 -->
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods" :key="index" class="item padding-main border-radius-main bg-white oh spacing-mb">
+                        <view v-for="(item, index) in data.goods" :key="index" :class="'item padding-main border-radius-main bg-white oh spacing-mb '+(item.buy_data.is_cart == 0 ? 'br-red' : '')">
                             <image class="goods-img dis-block border-radius-main fl" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                             <view class="right-base fr">
                                 <label v-if="data.type == 1 && item.buy_data.is_cart == 1" class="fr" :data-index="index" @tap="goods_choice_event">
