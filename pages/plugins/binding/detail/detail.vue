@@ -45,7 +45,7 @@
                             <view :class="'sales-price single-text margin-top-'+(data.estimate_discount_price == 0 ? 'sm' : 'xl')">{{currency_symbol}}{{data.estimate_price}}</view>
                         </view>
                         <view class="right-button fr tr">
-                            <button type="default" size="mini" class="bg-main br-main cr-white round dis-block" @tap="buy_event">立即购买</button>
+                            <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
                         </view>
                     </view>
                 </view>

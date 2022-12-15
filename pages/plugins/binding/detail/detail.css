@@ -31,14 +31,13 @@
  */
 .nav-button {
     background: #eee;
-    -webkit-box-shadow: 0 -3px 8px #dbdbdb;
-    box-shadow: 0 -3px 8px #dbdbdb;
+    box-shadow: 0 -2px 3px #e2e2e2;
 }
 .nav-button .left-price {
-    width: calc(100% - 220rpx);
+    width: calc(100% - 270rpx);
 }
 .nav-button .right-button {
-    width: 200rpx;
+    width: 250rpx;
 }
 .nav-button .left-price .estimate-discount-price {
     top: 6rpx;
