@@ -29,6 +29,16 @@
 
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                
+                <!-- 回到店铺 -->
+                <view v-if="(shop || null) != null" class="bottom-fixed padding-main">
+                    <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
+                        <view class="dis-inline-block va-m">
+                            <uni-icons type="shop" size="16" color="#fff"></uni-icons>
+                        </view>
+                        <text class="va-m margin-left-sm">回到店铺</text>
+                    </button>
+                </view>
             </scroll-view>
         </view>
     </view>
@@ -51,6 +61,7 @@
                 data_page: 1,
                 params: null,
                 data_base: null,
+                shop: null,
                 // 自定义分享信息
                 share_info: {}
             };
@@ -98,14 +109,15 @@
                 uni.request({
                     url: app.globalData.get_request_url("index", "index", "binding"),
                     method: 'POST',
-                    data: {},
+                    data: this.params,
                     dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base || null
+                                data_base: data.base || null,
+                                shop: data.shop || null
                             });
                             
                             if ((this.data_base || null) != null) {
@@ -125,7 +137,7 @@
                                     });
                                 }
                             }
-                            
+
                             // 获取列表数据
                             this.get_data_list(1);
                         } else {
@@ -169,7 +181,8 @@
                     url: app.globalData.get_request_url("datalist", "index", "binding"),
                     method: 'POST',
                     data: {
-                        page: this.data_page
+                        page: this.data_page,
+                        shop_id: this.params.spid || 0
                     },
                     dataType: 'json',
                     success: res => {
@@ -231,7 +244,17 @@
 
             // 滚动加载
             scroll_lower(e) {
-                this.get_data_list(1);
+                this.get_data_list();
+            },
+
+            // 店铺事件
+            shop_event(e) {
+                var prev_url = app.globalData.prev_page();
+                if(prev_url != null && prev_url.indexOf('pages/plugins/shop/detail/detail') != -1) {
+                    uni.navigateBack();
+                } else {
+                    app.globalData.url_event(e);
+                }
             }
         }
     };

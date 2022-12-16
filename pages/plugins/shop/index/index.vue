@@ -251,7 +251,7 @@
 
             // 滚动加载
             scroll_lower(e) {
-                this.get_data_list(1);
+                this.get_data_list();
             },
 
             // 导航事件
