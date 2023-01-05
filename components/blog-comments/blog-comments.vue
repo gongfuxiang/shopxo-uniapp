@@ -357,62 +357,76 @@
 
             // 评论
             comments_event() {
-                if(this.input_comments_value == '') {
-                    app.globalData.showToast('请填写评论内容');
+                if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                uni.showLoading({
-                    title: '提交中...'
-                });
-                uni.request({
-                    url: app.globalData.get_request_url("comments", "index", "blog"),
-                    method: 'POST',
-                    data: {
-                        blog_id: this.data.id,
-                        content: this.input_comments_value,
-                        blog_comments_id: this.input_comments_modal_blog_comments_id,
-                        reply_comments_id: this.input_comments_modal_reply_comments_id
-                    },
-                    dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
-                        if (res.data.code == 0) {
-                            var temp_data = this.data;
-                            if((this.input_comments_modal_blog_comments_id || 0) == 0) {
-                                var temp_list = temp_data.comments_list || [];
-                                temp_list.splice(0, 0, res.data.data);
-                                temp_data['comments_list'] = temp_list;
-                                temp_data['comments_count'] = parseInt(temp_data['comments_count'])+1;
-                            } else {
-                                var index = this.input_comments_modal_index;
-                                var temp_list = temp_data.comments_list[index]['reply_comments_list'] || [];
-                                temp_list.splice(0, 0, res.data.data);
-                                if((this.input_comments_modal_reply_comments_id || 0) != 0) {
-                                    for(var i in temp_list) {
-                                        if(temp_list[i]['id'] == this.input_comments_modal_reply_comments_id) {
-                                            temp_list[i]['comments_count'] = parseInt(temp_list[i]['comments_count'])+1;
-                                            break;
-                                        }
-                                    }
-                                }
-                                temp_data.comments_list[index]['reply_comments_list'] = temp_list;
-                                temp_data.comments_list[index]['comments_count'] = parseInt(temp_data.comments_list[index]['comments_count'])+1;
-                            }
-                            this.setData({
-                                data: temp_data,
-                                input_comments_value: '',
-                                input_comments_length_value: this.input_comments_length_max,
-                                input_comments_modal_status: false
-                            });
-                        } else {
-                            app.globalData.showToast(res.data.msg);
+                var user = app.globalData.get_user_info();
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: "/pages/login/login?event_callback=favor_event"
+                        });
+                        return false;
+                    } else {
+                        if(this.input_comments_value == '') {
+                            app.globalData.showToast('请填写评论内容');
+                            return false;
                         }
-                    },
-                    fail: () => {
-                        uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
+                        uni.showLoading({
+                            title: '提交中...'
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url("comments", "index", "blog"),
+                            method: 'POST',
+                            data: {
+                                blog_id: this.data.id,
+                                content: this.input_comments_value,
+                                blog_comments_id: this.input_comments_modal_blog_comments_id,
+                                reply_comments_id: this.input_comments_modal_reply_comments_id
+                            },
+                            dataType: 'json',
+                            success: res => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    var temp_data = this.data;
+                                    if((this.input_comments_modal_blog_comments_id || 0) == 0) {
+                                        var temp_list = temp_data.comments_list || [];
+                                        temp_list.splice(0, 0, res.data.data);
+                                        temp_data['comments_list'] = temp_list;
+                                        temp_data['comments_count'] = parseInt(temp_data['comments_count'])+1;
+                                    } else {
+                                        var index = this.input_comments_modal_index;
+                                        var temp_list = temp_data.comments_list[index]['reply_comments_list'] || [];
+                                        temp_list.splice(0, 0, res.data.data);
+                                        if((this.input_comments_modal_reply_comments_id || 0) != 0) {
+                                            for(var i in temp_list) {
+                                                if(temp_list[i]['id'] == this.input_comments_modal_reply_comments_id) {
+                                                    temp_list[i]['comments_count'] = parseInt(temp_list[i]['comments_count'])+1;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        temp_data.comments_list[index]['reply_comments_list'] = temp_list;
+                                        temp_data.comments_list[index]['comments_count'] = parseInt(temp_data.comments_list[index]['comments_count'])+1;
+                                    }
+                                    this.setData({
+                                        data: temp_data,
+                                        input_comments_value: '',
+                                        input_comments_length_value: this.input_comments_length_max,
+                                        input_comments_modal_status: false
+                                    });
+                                } else {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast('服务器请求出错');
+                            }
+                        });
                     }
-                });
+                }
             },
 
             // 点赞
