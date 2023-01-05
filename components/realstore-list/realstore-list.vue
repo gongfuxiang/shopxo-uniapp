@@ -21,7 +21,7 @@
                     <!-- 地址 -->
                     <view class="margin-top-sm oh cp">
                         <view class="dis-inline-block va-m">
-                            <uni-icons type="location-filled" size="12" color="#8d8d8d"></uni-icons>
+                            <uni-icons type="location-filled" size="32rpx" color="#8d8d8d"></uni-icons>
                         </view>
                         <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-sm va-m" :data-value="item.province_name+item.city_name+item.county_name+item.address" @tap.stop="text_copy_event">{{item.province_name}}{{item.city_name}}{{item.county_name}}{{item.address}}</view>
                     </view>
@@ -29,14 +29,14 @@
                     <view class="icon-list pa">
                         <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-                            <uni-icons type="paperplane-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
                         <view v-if="(item.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" :data-value="item.service_tel" @tap.stop="tel_event">
-                            <uni-icons type="phone-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="phone-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <view v-if="propIsFavor" :class="'icon-item circle dis-inline-block tc cp pr '+((item.is_favor || 0) == 1 ? 'bg-red' : 'bg-gray')" :data-index="index" @tap.stop="favor_event">
-                            <uni-icons type="heart-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                     </view>
                 </view>

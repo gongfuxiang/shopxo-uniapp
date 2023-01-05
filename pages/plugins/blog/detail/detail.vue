@@ -1,83 +1,80 @@
 <template>
-    <view>        
-        <view v-if="(data || null) != null" class="padding-horizontal-main padding-top-main">
-            <view class="padding-main border-radius-main bg-white spacing-mb">
-                <view class="title-content pr">
-                    <!-- #ifndef MP -->
+    <view>
+        <view v-if="(data || null) != null" class="padding-top-main">
+            <view class="padding-horizontal-main">
+                <view class="padding-main border-radius-main bg-white spacing-mb">
                     <view class="fw-b text-size-xl">{{data.title}}</view>
-                    <!-- #endif -->
-                    <!-- #ifdef MP -->
-                    <view class="blog-title fw-b text-size-xl">{{data.title}}</view>
-                    <button class="blog-share tr cp pa br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none">
-                        <image :src="common_static_url+'share-icon.png'" mode="scaleToFill"></image>
-                    </button>
-                    <!-- #endif -->
-                </view>
-                <view class="cr-grey margin-top-lg oh br-t padding-top-main">
-                    <view class="fl">
-                        <text>时间：</text>
-                        <text>{{data.add_time}}</text>
-                    </view>
-                    <view class="fr">
-                        <text class="margin-left-xxxl">浏览：</text>
-                        <text>{{data.access_count}}</text>
-                    </view>
-                </view>
-            </view>
-            <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
-                <view v-if="(data.video_url || null) != null && (data.is_live_play || 0) == 0">
-                    <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
-                </view>
-                <mp-html :content="data.content" />
-            </view>
-            
-            <!-- 上一篇、下一篇 -->
-            <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
-                <view v-if="(last_next.last || null) != null">
-                    <text class="cr-gray va-m">上一篇：</text>
-                    <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.last.title}}</navigator>
-                </view>
-                <view v-if="(last_next.next || null) != null" class="margin-top-sm">
-                    <text class="cr-gray va-m">下一篇：</text>
-                    <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.next.title}}</navigator>
-                </view>
-            </view>
-            
-            <!-- 推荐博文 -->
-            <view v-if="right_list.length > 0" class="plugins-blog-list">
-                <view class="spacing-nav-title">
-                    <text class="text-wrapper">推荐博文</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                </view>
-                <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
-                    <navigator :url="item.url" hover-class="none">
-                        <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
-                        <view class="base fr">
-                            <view class="single-text">{{item.title}}</view>
-                            <view class="cr-gray margin-top-sm">{{item.add_time_date_cn}}</view>
-                            <view class="cr-grey multi-text margin-top-sm">{{item.describe}}</view>
+                    <view class="cr-grey margin-top-lg oh br-t padding-top-main">
+                        <view class="fl">
+                            <text>时间：</text>
+                            <text>{{data.add_time}}</text>
                         </view>
-                    </navigator>
+                        <view class="fr">
+                            <text class="margin-left-xxxl">浏览：</text>
+                            <text>{{data.access_count}}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
+                    <view v-if="(data.video_url || null) != null && (data.is_live_play || 0) == 0">
+                        <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                    </view>
+                    <mp-html :content="data.content" />
                 </view>
             </view>
-            
-            <!-- 相关商品 -->
-            <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="goods-list oh">
-                <view class="spacing-nav-title">
-                    <text class="text-wrapper">相关商品</text>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+
+            <!-- 评论内容 -->
+            <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
+
+            <view class="padding-horizontal-main">
+                <!-- 上一篇、下一篇 -->
+                <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
+                    <view v-if="(last_next.last || null) != null">
+                        <text class="cr-gray va-m">上一篇：</text>
+                        <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.last.title}}</navigator>
+                    </view>
+                    <view v-if="(last_next.next || null) != null" class="margin-top-sm">
+                        <text class="cr-gray va-m">下一篇：</text>
+                        <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{last_next.next.title}}</navigator>
+                    </view>
                 </view>
-                <view class="goods-list oh">
-                    <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                        <navigator :url="item.goods_url" hover-class="none">
-                            <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                            <view class="base padding-horizontal-main margin-top-sm">
-                                <view class="multi-text">{{item.title}}</view>
-                                <view class="price margin-top">
-                                    <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                                </view>
+
+                <!-- 推荐博文 -->
+                <view v-if="right_list.length > 0" class="plugins-blog-list">
+                    <view class="spacing-nav-title">
+                        <text class="text-wrapper">推荐博文</text>
+                        <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                    </view>
+                    <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
+                        <navigator :url="item.url" hover-class="none">
+                            <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
+                            <view class="base fr">
+                                <view class="single-text">{{item.title}}</view>
+                                <view class="cr-gray margin-top-sm">{{item.add_time_date_cn}}</view>
+                                <view class="cr-grey multi-text margin-top-sm">{{item.describe}}</view>
                             </view>
                         </navigator>
+                    </view>
+                </view>
+
+                <!-- 相关商品 -->
+                <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="goods-list oh">
+                    <view class="spacing-nav-title">
+                        <text class="text-wrapper">相关商品</text>
+                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                    </view>
+                    <view class="goods-list oh">
+                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
+                            <navigator :url="item.goods_url" hover-class="none">
+                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                                <view class="base padding-horizontal-main margin-top-sm">
+                                    <view class="multi-text">{{item.title}}</view>
+                                    <view class="price margin-top">
+                                        <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
+                                    </view>
+                                </view>
+                            </navigator>
+                        </view>
                     </view>
                 </view>
             </view>
@@ -95,6 +92,7 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentBlogComments from "../../../../components/blog-comments/blog-comments";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -110,6 +108,7 @@
                 data: null,
                 right_list: [],
                 last_next: null,
+                emoji_list: [],
                 // 自定义分享信息
                 share_info: {}
             };
@@ -117,7 +116,8 @@
 
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentBlogComments
         },
         props: {},
 
@@ -174,7 +174,8 @@
                                 data_base: data.base || null,
                                 data: blog,
                                 right_list: data.right_list || [],
-                                last_next: data.last_next || null
+                                last_next: data.last_next || null,
+                                emoji_list: data.emoji_list || []
                             });
 
                             // 基础自定义分享

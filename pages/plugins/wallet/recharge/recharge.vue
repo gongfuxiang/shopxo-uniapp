@@ -99,7 +99,7 @@
                         });
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.recharge_id);
+                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, {order_ids: res.data.data.recharge_id});
                             uni.redirectTo({
                                 url: '/pages/plugins/wallet/user-recharge/user-recharge'
                             });

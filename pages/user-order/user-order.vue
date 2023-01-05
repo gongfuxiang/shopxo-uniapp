@@ -391,7 +391,7 @@
             pay_handle(order_ids) {
                 // #ifdef H5
                 // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                if(!app.globalData.is_user_weixin_web_openid(order_ids)) {
+                if(!app.globalData.is_user_weixin_web_openid(order_ids, this.payment_id)) {
                     return false;
                 }
                 // #endif

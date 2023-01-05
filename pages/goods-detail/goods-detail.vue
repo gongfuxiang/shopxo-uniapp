@@ -136,7 +136,7 @@
                 <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
                     <view class="notice-content">
                         <view class="va-m dis-inline-block margin-right-xs">
-                            <uni-icons type="notification" size="18" color="#dd514c"></uni-icons>
+                            <uni-icons type="notification" size="32rpx" color="#dd514c"></uni-icons>
                         </view>
                         <block v-if="(plugins_intellectstools_data.base_bottom.title || null) != null">
                             <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{plugins_intellectstools_data.base_bottom.title}}</text>
@@ -376,43 +376,6 @@
                     </block>
                 </view>
             </view>
-
-            <!-- 分享弹层 -->
-            <component-popup :propShow="popup_share_status" propPosition="bottom" @onclose="popup_share_close_event">
-                <view class="share-popup bg-white">
-                    <view class="close fr oh">
-                        <view class="fr" @tap.stop="popup_share_close_event">
-                            <icon type="clear" size="20"></icon>
-                        </view>
-                    </view>
-                    <view class="share-popup-content">
-                        <!-- #ifdef H5 -->
-                        <view class="share-items oh cp" @tap="share_h5_event">
-                            <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-gray single-text">点击复制地址分享给好友、群聊</text>
-                        </view>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-ALIPAY -->
-                        <view class="share-items oh cp" @tap="share_base_event">
-                            <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-gray single-text">一键分享给好友、群聊</text>
-                        </view>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU -->
-                        <view class="share-items oh cp">
-                            <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_share_close_event">
-                                <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                                <text class="cr-gray single-text">一键分享给好友、群聊</text>
-                            </button>
-                        </view>
-                        <!-- #endif -->
-                        <view v-if="plugins_is_goods_detail_poster == 1" class="share-items oh cp" @tap="poster_event">
-                            <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
-                        </view>
-                    </view>
-                </view>
-            </component-popup>
             
             <!-- 批发弹层 -->
             <component-popup :propShow="popup_wholesale_status" propPosition="bottom" @onclose="popup_wholesale_close_event">
@@ -510,6 +473,9 @@
         <view v-if="goods == null && data_list_loding_status != 1" class="tc margin-top-xxxl">
             <button type="default" class="bg-main br-main cr-white round" size="mini" @tap="goods_error_event">返回</button>
         </view>
+        
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
 
         <!-- 商品购买 -->
         <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
@@ -532,6 +498,7 @@
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
     import componentShopList from "../../components/shop-list/shop-list";
     import componentBindingList from "../../components/binding-list/binding-list";
+    import componentSharePopup from "../../components/share-popup/share-popup";
 
     var common_static_url = app.globalData.get_static_url('common');
     var system_info = app.globalData.get_system_info() || {};
@@ -565,7 +532,6 @@
                 goods_spec_selected_text: '请选择规格',
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
-                popup_share_status: false,
                 // 更多导航
                 nav_more_status: false,
                 nav_more_timer: null,
@@ -663,7 +629,8 @@
             componentOnlineService,
             componentRealstoreList,
             componentShopList,
-            componentBindingList
+            componentBindingList,
+            componentSharePopup
         },
 
         onLoad(params) {
@@ -1067,86 +1034,11 @@
 
             // 分享开启弹层
             popup_share_event(e) {
-                if(!app.globalData.is_single_page_check()) {
-                    return false;
-                }
-                this.setData({
-                    popup_share_status: true
-                });
-            },
-
-            // 分享弹层关闭
-            popup_share_close_event(e) {
-                this.setData({
-                    popup_share_status: false
-                });
-            },
-
-            // h5分享
-            share_h5_event() {
-                app.globalData.text_copy_event(app.globalData.get_page_url());
-            },
-
-            // 基础分享事件
-            share_base_event() {
-                this.setData({
-                    popup_share_status: false
-                });
-                uni.pageScrollTo({
-                    scrollTop: 0,
-                    duration: 300,
-                    complete: res => {
-                        setTimeout(function() {
-                            uni.showShareMenu();
-                        }, 500);
-                    }
-                });
-            },
-
-            // 商品海报分享
-            poster_event() {
-                var user = app.globalData.get_user_info(this, 'poster_event');
-                if (user != false) {
-                    // 用户未绑定用户则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=poster_event"
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: '生成中...'
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('goodsposter', 'distribution', 'distribution'),
-                            method: 'POST',
-                            data: {
-                                "goods_id": this.goods.id
-                            },
-                            dataType: 'json',
-                            success: res => {
-                                uni.hideLoading();
-
-                                if (res.data.code == 0) {
-                                    uni.previewImage({
-                                        current: res.data.data,
-                                        urls: [res.data.data]
-                                    });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'poster_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
-                            }
-                        });
-                    }
+                if((this.$refs.share || null) != null) {
+                    this.$refs.share.init({status: true, is_goods_poster: this.plugins_is_goods_detail_poster, goods_id: this.goods.id});
                 }
             },
-            
+
             // 优惠券开启弹层
             popup_coupon_event(e) {
                 if(!app.globalData.is_single_page_check()) {

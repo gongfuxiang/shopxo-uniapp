@@ -772,6 +772,13 @@
         	}
         },
         {
+        	"path": "pages/plugins/blog/comments/comments",
+        	"style": {
+        		"enablePullDownRefresh": true,
+        		"navigationBarTitleText": "评论列表"
+        	}
+        },
+        {
         	"path": "pages/plugins/express/detail/detail",
         	"style": {
         		"enablePullDownRefresh": true,

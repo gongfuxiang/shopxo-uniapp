@@ -243,7 +243,7 @@
                 <!-- 购物车底部导航 -->
                 <view class="botton-nav round pa bg-main-pair oh">
                     <view class="cart dis-inline-block va-m margin-left-xxl pr cp" @tap="cart_event">
-                        <uni-icons type="cart" size="18" color="#fff"></uni-icons>
+                        <uni-icons type="cart" size="32rpx" color="#fff"></uni-icons>
                         <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">
                             <component-badge :propNumber="cart.buy_number"></component-badge>
                         </view>

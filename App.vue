@@ -1345,7 +1345,7 @@
             },
 
             // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids) {
+            is_user_weixin_web_openid(order_ids, payment_id = 0) {
                 // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
                 if(this.is_weixin_env()) {
                     var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
@@ -1376,7 +1376,10 @@
                             });
                             return true;
                         } else {
-                            uni.setStorageSync(this.data.cache_page_pay_key, (typeof order_ids == 'array') ? order_ids.join(',') : order_ids);
+                            uni.setStorageSync(this.data.cache_page_pay_key,  {
+                                order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
+                                payment_id: payment_id
+                            });
                             var page_url = this.get_page_url();
                                 page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
                                 page_url += 'is_weixin_auth_web_openid=1';

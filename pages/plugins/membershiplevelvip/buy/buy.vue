@@ -204,7 +204,7 @@
                             submit_disabled_status: false
                         });
                         if (res.data.code == 0) {
-                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
+                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, {order_ids: res.data.data.id});
                             uni.redirectTo({
                                 url: '/pages/plugins/membershiplevelvip/order/order'
                             });

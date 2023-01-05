@@ -36,7 +36,7 @@
                             <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
                                 <text class="va-m margin-right-xs">{{info.buy_use_type_list[buy_use_type_index]['name']}}</text>
                                 <view class="dis-inline-block va-m">
-                                    <uni-icons type="arrowdown" size="12" color="#fff"></uni-icons>
+                                    <uni-icons type="arrowdown" size="32rpx" color="#fff"></uni-icons>
                                 </view>
                             </view>
                             <view :class="'title fw-b text-size single-text '+((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
@@ -52,7 +52,7 @@
                     <!-- 地址 -->
                     <view class="margin-top-sm oh cp">
                         <view class="dis-inline-block va-m">
-                            <uni-icons type="location-filled" size="12" color="#8d8d8d"></uni-icons>
+                            <uni-icons type="location-filled" size="32rpx" color="#8d8d8d"></uni-icons>
                         </view>
                         <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-sm va-m" :data-value="info.province_name+info.city_name+info.county_name+info.address" @tap="text_copy_event">{{info.province_name}}{{info.city_name}}{{info.county_name}}{{info.address}}</view>
                     </view>
@@ -60,14 +60,14 @@
                     <view class="icon-list pa">
                         <!-- #ifndef MP-KUAISHOU -->
                         <view v-if="(info.lat != 0 && info.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" @tap="address_map_event">
-                            <uni-icons type="paperplane-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
                         <view v-if="(info.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" @tap="tel_event">
-                            <uni-icons type="phone-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="phone-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <view :class="'icon-item circle dis-inline-block tc cp pr '+((favor_info.status == 1) ? 'bg-red' : 'bg-gray')" @tap="favor_event">
-                            <uni-icons type="heart-filled" size="12" color="#fff"></uni-icons>
+                            <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
                             <view class="badge-icon pa">
                                 <component-badge :propNumber="favor_info.count"></component-badge>
                             </view>
@@ -206,7 +206,7 @@
             <!-- 购物车底部导航 -->
             <view class="botton-nav round pa bg-main-pair oh">
                 <view class="cart dis-inline-block va-m margin-left-xxl pr cp" @tap="cart_event">
-                    <uni-icons type="cart" size="18" color="#fff"></uni-icons>
+                    <uni-icons type="cart" size="32rpx" color="#fff"></uni-icons>
                     <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
                         <component-badge :propNumber="cart.buy_number"></component-badge>
                     </view>

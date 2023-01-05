@@ -224,16 +224,21 @@
                                     // 下订单支付处理
                                     if (this.load_status == 0) {
                                         var ck = app.globalData.data.cache_page_pay_key;
-                                        var order_id = uni.getStorageSync(ck) || null;
-                                        if (order_id != null) {
+                                        var pay_data = uni.getStorageSync(ck) || null;
+                                        if (pay_data != null) {
                                             uni.removeStorageSync(ck);
+                                            this.setData({payment_id: parseInt(pay_data.payment_id || 0)});
                                             for (var i in temp_data_list) {
-                                                if (order_id == temp_data_list[i]['id']) {
-                                                    this.setData({
-                                                        is_show_payment_popup: true,
-                                                        temp_pay_value: temp_data_list[i]['id'],
-                                                        temp_pay_index: i
-                                                    });
+                                                if (pay_data.order_ids == temp_data_list[i]['id']) {
+                                                    if(this.payment_id == 0) {
+                                                        this.setData({
+                                                            is_show_payment_popup: true,
+                                                            temp_pay_value: temp_data_list[i]['id'],
+                                                            temp_pay_index: i
+                                                        });
+                                                    } else {
+                                                        this.pay_handle(pay_data.order_ids, i);
+                                                    }
                                                     break;
                                                 }
                                             }
@@ -325,7 +330,7 @@
             pay_handle(order_id, index) {
                 // #ifdef H5
                 // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                if(!app.globalData.is_user_weixin_web_openid(order_id)) {
+                if(!app.globalData.is_user_weixin_web_openid(order_id, this.payment_id)) {
                     return false;
                 }
                 // #endif

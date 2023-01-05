@@ -29,7 +29,7 @@
                     <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
                         <block v-for="(item,index) in right_icon_list">
                             <view class="item dis-inline-block cp" :data-value="item.url || ''" @tap="url_event">
-                                <uni-icons :type="item.icon" size="18" color="#f1f1f1"></uni-icons>
+                                <uni-icons :type="item.icon" size="32rpx" color="#f1f1f1"></uni-icons>
                                 <view v-if="(item.badge || null) != null" class="badge-icon pa">
                                     <component-badge :propNumber="item.badge"></component-badge>
                                 </view>
