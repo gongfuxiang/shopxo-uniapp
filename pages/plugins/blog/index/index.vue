@@ -20,7 +20,7 @@
                         <view class="fr right-base">
                             <view class="single-text cr-base">
                                 <text class="fw">{{item.name}}</text>
-                                <text v-if="(item.blog_data || null) != null && item.blog_data.day_comments_count > 0" class="margin-left-sm cr-red fw">{{item.blog_data.day_comments_count}}</text>
+                                <text v-if="(item.blog_data || null) != null && item.blog_data.day_comments_count > 0" class="margin-left-sm cr-red fw">({{item.blog_data.day_comments_count}})</text>
                             </view>
                             <view v-if="(item.blog_data || null) != null" class="single-text cr-gray text-size-xs">
                                 <text>{{blog_main_name}}: {{item.blog_data.blog_count}}</text>
