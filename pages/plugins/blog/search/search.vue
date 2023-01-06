@@ -112,6 +112,9 @@
                                 data_base: data.base || null,
                                 category: data.category || []
                             });
+                            // 标题
+                            var blog_main_name = ((data.base || null) == null) ? '博文' : (data.base.blog_main_name || '博文');
+                            uni.setNavigationBarTitle({title: blog_main_name+'搜索'});
 
                             // 基础自定义分享
                             var info = this.data_base;

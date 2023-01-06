@@ -10,10 +10,32 @@
             <view v-if="slide_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <component-banner :propData="slide_list"></component-banner>
             </view>
+            
+            <!-- 分类导航 -->
+            <view v-if="(data_base.is_home_category_main_nav || 0) == 1 && (category || null) != null && category.length > 0" class="nav-blog-category padding-horizontal-main oh">
+                <block v-for="(item, index) in category" :key="index">
+                    <view class="item oh padding-main margin-bottom-main radius bg-white bs-bb" :data-value="item.url" @tap="url_event">
+                        <image v-if="(item.icon || null) != null" :src="item.icon" mode="aspectFill" class="fl icon radius"></image>
+                        <view v-else class="fl radius icon-text tc">{{item.name.substr(0, 1)}}</view>
+                        <view class="fr right-base">
+                            <view class="single-text cr-base">
+                                <text class="fw">{{item.name}}</text>
+                                <text v-if="(item.blog_data || null) != null && item.blog_data.day_comments_count > 0" class="margin-left-sm cr-red fw">{{item.blog_data.day_comments_count}}</text>
+                            </view>
+                            <view v-if="(item.blog_data || null) != null" class="single-text cr-gray text-size-xs">
+                                <text>{{blog_main_name}}: {{item.blog_data.blog_count}}</text>
+                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">评论: {{item.blog_data.comments_count}}</text>
+                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">点赞: {{item.blog_data.give_thumbs_count}}</text>
+                            </view>
+                        </view>
+                    </view>
+                    
+                </block>
+            </view>
 
             <!-- 分类 -->
             <view class="spacing-nav-title padding-horizontal-main">
-                <text class="text-wrapper va-m">所有博文</text>
+                <text class="text-wrapper va-m">所有{{blog_main_name}}</text>
                 <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-list scroll-view-horizontal dis-inline-block oh va-m margin-left-sm" scroll-x="true">
                     <block v-for="(item, index) in category" :key="index">
                         <view class="item cr-base dis-inline-block padding-horizontal-main" :data-value="item.url" @tap="url_event">{{item.name}}</view>
@@ -38,7 +60,7 @@
             <!-- 热门博文-滚动 -->
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title">
-                    <text class="text-wrapper">热门博文</text>
+                    <text class="text-wrapper">热门{{blog_main_name}}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">
@@ -62,7 +84,7 @@
             <!-- 推荐博文 -->
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title">
-                    <text class="text-wrapper">推荐博文</text>
+                    <text class="text-wrapper">推荐{{blog_main_name}}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
@@ -129,6 +151,7 @@
                 goods_list: [],
                 hot_list: [],
                 right_list: [],
+                blog_main_name: '博文',
                 // 自定义分享信息
                 share_info: {}
             };
@@ -189,15 +212,17 @@
                                 goods_list: data.goods_list || [],
                                 hot_list: data.hot_list || [],
                                 right_list: data.right_list || [],
+                                blog_main_name: ((data.base || null) == null) ? '博文' : (data.base.blog_main_name || '博文'),
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
 
                             // 基础自定义分享
+                            var title = this.data_base.seo_title || this.data_base.application_name;
                             this.setData({
                                 share_info: {
-                                    title: this.data_base.seo_title || this.data_base.application_name,
+                                    title: title,
                                     desc: this.data_base.seo_desc,
                                     path: '/pages/plugins/blog/index/index',
                                     img: ((this.slide_list || null) != null && this.slide_list.length > 0) ? this.slide_list[0]['images_url'] : ''
@@ -210,6 +235,9 @@
                                 data_list_loding_msg: res.data.msg
                             });
                         }
+
+                        // 标题
+                        uni.setNavigationBarTitle({title: title});
 
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);

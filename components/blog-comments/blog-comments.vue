@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="(data || null) != null && (data_base || null) != null" class="padding-top-main">
+        <view v-if="(data || null) != null && (data_base || null) != null" class="padding-vertical-main">
             <view class="padding-horizontal-main">
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tc padding-vertical-main blog-comments-bottom-container">
@@ -24,8 +24,8 @@
                     </view>
                 </view>
                 <!-- 评论回复表单 -->
-                <view v-if="!input_comments_modal_status" class="padding-top-lg margin-bottom-xl oh padding-bottom-xl blog-comments-reply-container">
-                    <image :src="avatar" mode="aspectFill" class="user-avatar fl br circle"></image>
+                <view v-if="(data_base.is_blog_comments_add || 0) == 1 && !input_comments_modal_status" class="padding-top-lg margin-bottom-xl oh padding-bottom-xl blog-comments-reply-container">
+                    <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                     <view class="right-base fr">
                         <view class="bg-white border-radius-main padding-main">
                             <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
@@ -43,7 +43,7 @@
                 <view v-if="(data_base.is_blog_comments_show || 0) == 1 && (data.comments_list || null) != null && data.comments_list.length > 0" class="blog-comments-list bg-white border-radius-main margin-bottom-xxxl">
                     <block v-for="(item, index) in data.comments_list" :key="index">
                         <view class="item oh padding-horizontal-main padding-top-xxl padding-bottom-xxl text-size-xs">
-                            <image :src="item.user.avatar" mode="aspectFill" class="user-avatar br circle fl"></image>
+                            <image :src="item.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
                             <view class="fr right-content">
                                 <view class="comments-base oh">
                                     <span class="username cr-base">{{item.user.user_name_view}}</span>
@@ -67,7 +67,7 @@
                                 <view v-if="(item.reply_comments_list || null) != null && item.reply_comments_list.length > 0" class="reply-blog-comments-list">
                                     <block v-for="(comments, index2) in item.reply_comments_list" :key="index2">
                                         <view class="item margin-top-xl padding-bottom-lg oh">
-                                            <image :src="comments.user.avatar" mode="aspectFill" class="user-avatar br circle fl"></image>
+                                            <image :src="comments.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
                                             <view class="fr right-content">
                                                 <view class="comments-reply-base oh">
                                                     <span class="username cr-base">{{comments.user.user_name_view}}</span>
@@ -233,17 +233,31 @@
 
             // 评论弹窗开启
             modal_open_event(e) {
-                var index = parseInt(e.currentTarget.dataset.index || 0);
-                var username = e.currentTarget.dataset.username;
-                var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-                var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
-                this.setData({
-                    input_comments_modal_status: true,
-                    input_comments_modal_index: index,
-                    input_comments_modal_username: username,
-                    input_comments_modal_blog_comments_id: blog_comments_id,
-                    input_comments_modal_reply_comments_id: reply_comments_id
-                });
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info();
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: "/pages/login/login?event_callback=favor_event"
+                        });
+                        return false;
+                    } else {
+                        var index = parseInt(e.currentTarget.dataset.index || 0);
+                        var username = e.currentTarget.dataset.username;
+                        var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                        var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
+                        this.setData({
+                            input_comments_modal_status: true,
+                            input_comments_modal_index: index,
+                            input_comments_modal_username: username,
+                            input_comments_modal_blog_comments_id: blog_comments_id,
+                            input_comments_modal_reply_comments_id: reply_comments_id
+                        });
+                    }
+                }
             },
 
             // 表情选择事件
@@ -517,6 +531,7 @@
     .blog-comments-reply-container .user-avatar {
         width: 100rpx;
         height: 100rpx !important;
+        border:1px solid #eee;
     }
     .blog-comments-reply-container .right-base {
         width: calc(100% - 130rpx);
@@ -527,16 +542,18 @@
     .blog-comments-modal {
         top: 0;
         left: 0;
-        width: 100%;
+        width: calc(100% - 80rpx);
         height: 100%;
         background: rgba(0, 0, 0, 0.6);
+        padding: 40rpx;
         z-index: 10;
     }
     .blog-comments-modal-content {
         padding: 10px;
         border-radius: 10px;
-        margin: 20px;
-        margin-top: 35%;
+        margin: 0 auto;
+        margin-top: 30%;
+        max-width: calc(800px - 180rpx);
     }
     .blog-comments-modal-content textarea {
         height: 200rpx;
@@ -552,6 +569,7 @@
     .blog-comments-list > .item .user-avatar {
         width: 50rpx;
         height: 50rpx;
+        border:1px solid #eee;
     }
     .blog-comments-list > .item:not(:last-child) {
         border-bottom: 1px dashed #f6f6f6;

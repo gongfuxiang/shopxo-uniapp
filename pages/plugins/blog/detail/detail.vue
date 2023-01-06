@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main">
                 <view class="padding-main border-radius-main bg-white spacing-mb">
                     <view class="fw-b text-size-xl">{{data.title}}</view>
-                    <view class="cr-grey margin-top-lg oh br-t padding-top-main">
+                    <view class="cr-grey margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
                             <text>时间：</text>
                             <text>{{data.add_time}}</text>
@@ -42,7 +42,7 @@
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title">
-                        <text class="text-wrapper">推荐博文</text>
+                        <text class="text-wrapper">推荐{{blog_main_name}}</text>
                         <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
                     <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
@@ -109,6 +109,7 @@
                 right_list: [],
                 last_next: null,
                 emoji_list: [],
+                blog_main_name: '博文',
                 // 自定义分享信息
                 share_info: {}
             };
@@ -175,7 +176,8 @@
                                 data: blog,
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
-                                emoji_list: data.emoji_list || []
+                                emoji_list: data.emoji_list || [],
+                                blog_main_name: ((data.base || null) == null) ? '博文' : (data.base.blog_main_name || '博文')
                             });
 
                             // 基础自定义分享
