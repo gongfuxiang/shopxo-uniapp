@@ -70,9 +70,12 @@
 .header-service .item:first-child {
     border-top: 0 !important;
 }
+.header-service .qrcode .item:not(:last-child) {
+    margin-right: 20rpx;
+}
 .header-service image {
-    width: 260rpx;
-    height: 260rpx;
+    width: 130rpx;
+    height: 130rpx;
 }
 .header-service .chat-info image {
     width: 40rpx;

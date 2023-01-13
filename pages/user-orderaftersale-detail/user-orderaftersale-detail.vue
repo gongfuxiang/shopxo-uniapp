@@ -23,6 +23,44 @@
                 </view>
             </view>
 
+            <!-- 客服信息 -->
+            <view v-if="(plugins_intellectstools_data || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
+                <view v-if="(plugins_intellectstools_data.service_msg || null) != null" class="cr-red margin-bottom">{{plugins_intellectstools_data.service_msg}}</view>
+                <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm padding-left-xxxl padding-right-xxxl round" @tap="plugins_intellectstools_service_event">
+                    <view class="dis-inline-block va-m margin-right-sm lh-0">
+                        <uni-icons type="chatbubble" size="34rpx" color="#fff"></uni-icons>
+                    </view>
+                    <text>联系客服</text>
+                </button>
+                <view v-if="plugins_intellectstools_service_status" class="plugins-intellectstools-service pa border-radius-main oh bg-white br">
+                    <view v-if="(plugins_intellectstools_data.chat || null) != null" class="item padding-main br-t single-text">
+                        <text class="va-m">客服：</text>
+                        <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                            <image class="dis-inline-block va-m" :src="plugins_intellectstools_data.chat.icon" mode="scaleToFill"></image>
+                            <text class="margin-left-sm va-m cr-blue" :data-value="plugins_intellectstools_data.chat.chat_url">{{plugins_intellectstools_data.chat.name}}</text>
+                        </view>
+                    </view>
+                    <view v-if="(plugins_intellectstools_data.service_qq || null) != null" class="item padding-main br-t single-text">
+                        <text>Q Q：</text>
+                        <text class="cp" @tap="text_copy_event" :data-value="plugins_intellectstools_data.service_qq">{{plugins_intellectstools_data.service_qq}}</text>
+                    </view>
+                    <view v-if="(plugins_intellectstools_data.service_tel || null) != null" class="item padding-main br-t single-text">
+                        <text>电话：</text>
+                        <text class="cp" @tap="tel_event" :data-value="plugins_intellectstools_data.service_tel">{{plugins_intellectstools_data.service_tel}}</text>
+                    </view>
+                    <view v-if="(plugins_intellectstools_data.service_weixin || null) != null || (plugins_intellectstools_data.service_line || null) != null" class="oh qrcode tc br-t">
+                        <view v-if="(plugins_intellectstools_data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="plugins_intellectstools_data.service_weixin" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_weixin"></image>
+                            <view>长按微信咨询</view>
+                        </view>
+                        <view v-if="(plugins_intellectstools_data.service_line || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="plugins_intellectstools_data.service_line" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_line"></image>
+                            <view>长按line咨询</view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
             <!-- 基础信息 -->
             <view v-if="new_aftersale_data != null">
                 <!-- 提示/退货 -->
@@ -271,7 +309,10 @@
                 form_number: 0,
                 form_images_list: [],
                 form_express_name: '',
-                form_express_number: ''
+                form_express_number: '',
+                // 智能工具插件、客服信息展示
+                plugins_intellectstools_data: null,
+                plugins_intellectstools_service_status: false
             };
         },
 
@@ -338,7 +379,8 @@
                                 return_money_goods_reason: data.return_money_goods_reason || [],
                                 aftersale_type_list: data.aftersale_type_list || [],
                                 return_goods_address: data.return_goods_address || null,
-                                form_price: data.returned_data || null != null ? data.returned_data.refund_price : 0
+                                form_price: data.returned_data || null != null ? data.returned_data.refund_price : 0,
+                                plugins_intellectstools_data: data.plugins_intellectstools_data || null
                             });
                         } else {
                             self.setData({
@@ -676,6 +718,33 @@
                 uni.navigateTo({
                     url: "/pages/user-orderaftersale/user-orderaftersale?keywords=" + this.new_aftersale_data.order_no
                 });
+            },
+
+            // 客服事件
+            plugins_intellectstools_service_event(e) {
+                this.setData({
+                    plugins_intellectstools_service_status: !this.plugins_intellectstools_service_status
+                });
+            },
+
+            // 客服电话
+            tel_event(e) {
+                app.globalData.call_tel(e.currentTarget.dataset.value);
+            },
+
+            // 剪切板
+            text_copy_event(e) {
+                app.globalData.text_copy_event(e);
+            },
+
+            // 图片预览
+            image_show_event(e) {
+                app.globalData.image_show_event(e);
+            },
+
+            // 进入客服系统
+            chat_event() {
+                app.globalData.chat_entry_handle(this.plugins_intellectstools_data.chat.chat_url);
             }
         }
     };

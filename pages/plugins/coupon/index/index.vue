@@ -15,7 +15,7 @@
                             <text class="unit">{{item.type_unit}}</text>
                             <text v-if="(item.desc || null) != null" class="desc cr-gray">{{item.desc}}</text>
                         </view>
-                        <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
+                        <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{item.use_limit_type_name}}</view>
                     </view>
                     <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
                         <text class="circle"></text>

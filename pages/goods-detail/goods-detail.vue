@@ -424,7 +424,7 @@
                                             <text class="unit">{{item.type_unit}}</text>
                                         </view>
                                         <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.use_limit_type_name}}</view>
-                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text">{{item.desc}}</view>
+                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-gray single-text text-size-xs">{{item.desc}}</view>
                                     </view>
                                     <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
                                         <text class="circle"></text>
@@ -1016,6 +1016,30 @@
                         });
                     }
                 }
+            },
+
+            // 详情图片查看
+            goods_detail_images_view_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                if (value != null) {
+                    uni.previewImage({
+                        current: value,
+                        urls: [value]
+                    });
+                }
+            },
+
+            // 商品相册图片查看
+            goods_photo_view_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var all = [];
+                for (var i in this.goods_photo) {
+                    all.push(this.goods_photo[i]['images']);
+                }
+                uni.previewImage({
+                    current: all[index],
+                    urls: all
+                });
             },
 
             // 视频播放

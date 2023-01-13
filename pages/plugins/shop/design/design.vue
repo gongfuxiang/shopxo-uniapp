@@ -56,12 +56,8 @@
                             <text class="margin-left-sm va-m cr-blue" :data-value="shop.chat_info.chat_url">{{shop.chat_info.name}}</text>
                         </view>
                     </view>
-                    <view v-if="(shop.service_weixin_qrcode || null) != null" class="item br-t tc padding-top-lg padding-bottom-lg">
-                        <image class="radius cp" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
-                        <view>点击长按微信咨询</view>
-                    </view>
                     <view v-if="(shop.service_qq || null) != null" class="item padding-main br-t single-text">
-                        <text>QQ：</text>
+                        <text>Q Q：</text>
                         <text class="cp" @tap="text_copy_event" :data-value="shop.service_qq">{{shop.service_qq}}</text>
                     </view>
                     <view v-if="(shop.service_tel || null) != null" class="item padding-main br-t single-text">
@@ -71,6 +67,16 @@
                     <view v-if="(shop.open_week_name || null) != null && (shop.close_week_name || null) != null" class="item padding-main br-t single-text">
                         <text>时间：</text>
                         <text class="cp" @tap="text_copy_event" :data-value="shop.open_week_name + '至' + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{shop.open_week_name}}至{{shop.close_week_name}}，{{shop.open_time}}-{{shop.close_time}}</text>
+                    </view>
+                    <view v-if="(shop.service_weixin_qrcode || null) != null || (shop.service_line_qrcode || null) != null" class="oh qrcode tc br-t">
+                        <view v-if="(shop.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
+                            <view>长按微信咨询</view>
+                        </view>
+                        <view v-if="(shop.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="shop.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_line_qrcode"></image>
+                            <view>长按line咨询</view>
+                        </view>
                     </view>
                 </view>
                 <!-- 导航 -->

@@ -26,7 +26,8 @@ iframe,
 .online-service-movable-container,
 .bottom-fixed,
 .buy-nav,
-.plugins-popupscreen .content {
+.plugins-popupscreen .content,
+.cart-buy-nav {
     max-width: 800px !important;
     margin: 0 auto !important;
 }
@@ -35,7 +36,8 @@ iframe,
 .nav-more-view,
 .quick-movable-container,
 .online-service-movable-container,
-.buy-nav {
+.buy-nav,
+.cart-buy-nav {
     left: auto !important;
 }
 iframe,
