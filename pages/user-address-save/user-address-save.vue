@@ -16,7 +16,14 @@
                 <view class="form-gorup">
                     <block v-if="is_user_address_forbid_choice_region == 0">
                         <view class="br-b padding-bottom-xs margin-bottom-lg">
-                            <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
+                            <view class="form-gorup-title oh">
+                                <text>省市区</text>
+                                <text class="form-group-tips-must">*</text>
+                                <view class="code-search fr">
+                                    <input type="text" maxlength="30" placeholder-class="cr-grey" class="cr-base dis-inline-block br radius text-size-xs padding-left-sm padding-right-sm" placeholder="地址编号" @input="region_code_value_event">
+                                    <button type="default" size="mini" class="bg-main-pair br-main-pair cr-white text-size-xs margin-left-sm" @tap="region_code_event" :disabled="form_submit_disabled_status">搜索</button>
+                                </view>
+                            </view>
                             <view class="select-address oh">
                                 <view class="section fl">
                                     <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
@@ -130,6 +137,7 @@
                 user_location: null,
                 address_discern_value: '',
                 form_submit_disabled_status: false,
+                region_code_value: '',
                 // 基础配置
                 home_user_address_map_status: 0,
                 home_user_address_idcard_status: 0,
@@ -666,7 +674,6 @@
                     { fields: "tel", msg: "请填写联系电话" },
                     { fields: "province", msg: "请选择省份" },
                     { fields: "city", msg: "请选择城市" },
-                    { fields: "county", msg: "请选择区县" },
                     { fields: "address", msg: "请填写详细地址" }
                 ];
 
@@ -749,6 +756,57 @@
                         }
                     });
                 }
+            },
+            
+            // 地址编号输入事件
+            region_code_value_event(e) {
+                this.setData({
+                    region_code_value: e.detail.value
+                });
+            },
+            // 地址编号搜索
+            region_code_event(e) {
+                if((this.region_code_value || null) == null) {
+                    app.globalData.showToast('请输入数据');
+                    return false;
+                }
+                this.setData({
+                    form_submit_disabled_status: true
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('codedata', 'region'),
+                    method: 'POST',
+                    data: {code: this.region_code_value},
+                    dataType: 'json',
+                    success: res => {
+                        this.setData({
+                            form_submit_disabled_status: false
+                        });
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, 'success');
+                            var ads_data = res.data.data;
+                            this.setData({
+                                province_id: ads_data.province || null,
+                                city_id: ads_data.city || null,
+                                county_id: ads_data.county || null
+                            });
+                            // 地区数据填充处理
+                            this.region_data_fill_handle();
+                        } else {
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast('提交失败，请重试！');
+                            }
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            form_submit_disabled_status: false
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    }
+                });
             }
         }
     };

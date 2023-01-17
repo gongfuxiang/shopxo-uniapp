@@ -53,3 +53,18 @@
     height: 170rpx;
     border: 1px dashed #c2c2c2;
 }
+
+/**
+ * 地址编号搜索
+ */
+.code-search {
+    width: 300rpx;
+}
+.code-search input {
+    width: calc(100% - 122rpx);
+}
+.code-search input,
+.code-search button {
+    height: 40rpx;
+    line-height: 40rpx;
+}
