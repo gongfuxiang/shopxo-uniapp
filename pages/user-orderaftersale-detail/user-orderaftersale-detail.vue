@@ -269,25 +269,25 @@
                     field: 'refuse_reason'
                 }, {
                     name: '申请时间',
-                    field: 'apply_time_time'
+                    field: 'apply_time'
                 }, {
                     name: '确认时间',
-                    field: 'confirm_time_time'
+                    field: 'confirm_time'
                 }, {
                     name: '退货时间',
-                    field: 'delivery_time_time'
+                    field: 'delivery_time'
                 }, {
                     name: '审核时间',
-                    field: 'audit_time_time'
+                    field: 'audit_time'
                 }, {
                     name: '取消时间',
-                    field: 'cancel_time_time'
+                    field: 'cancel_time'
                 }, {
                     name: '添加时间',
-                    field: 'add_time_time'
+                    field: 'add_time'
                 }, {
                     name: '更新时间',
-                    field: 'upd_time_time'
+                    field: 'upd_time'
                 }],
                 // 快递信息
                 panel_express_data_list: [{
@@ -298,7 +298,7 @@
                     field: 'express_number'
                 }, {
                     name: '退货时间',
-                    field: 'delivery_time_time'
+                    field: 'delivery_time'
                 }],
                 // 表单数据
                 form_button_disabled: false,

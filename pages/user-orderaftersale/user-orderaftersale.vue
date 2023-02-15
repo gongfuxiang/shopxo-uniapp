@@ -13,7 +13,7 @@
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                     <view class="item-base oh br-b padding-bottom-main">
-                        <text class="cr-base">{{item.add_time_time}}</text>
+                        <text class="cr-base">{{item.add_time}}</text>
                         <text class="fr cr-red">{{item.status_text}}</text>
                     </view>
                     <view class="goods-item oh">

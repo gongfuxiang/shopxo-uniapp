@@ -10,7 +10,7 @@
                             </navigator>
                             <view class="item-base fl margin-top-sm">
                                 <block v-for="(item, tx) in [1,2,3,4,5]" :key="tx">
-                                    <image class="xingxing-icon va-m" :src="common_static_url+'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= item ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="item"></image>
+                                    <image class="xingxing-icon va-m" :src="common_static_url+'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tx ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tx"></image>
                                 </block>
                                 <text v-if="form_rating_list[index] != undefined" class="cr-gray va-m margin-left-lg">{{rating_msg[form_rating_list[index]-1]}}</text>
                             </view>

@@ -192,7 +192,7 @@
                                         <text v-if="(item.coupon.desc || null) != null" class="desc cr-gray">{{item.coupon.desc}}</text>
                                     </view>
                                     <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{item.coupon.use_limit_type_name}}</view>
-                                    <view class="base-time cr-gray single-text">{{item.time_start_text}} 至 {{item.time_end_text}}</view>
+                                    <view class="base-time cr-gray single-text">{{item.time_start}} 至 {{item.time_end}}</view>
                                 </view>
                                 <view :class="'v-right fr '+((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
                                     <text class="circle"></text>

@@ -21,7 +21,7 @@
                                 <text class="form-group-tips-must">*</text>
                                 <view class="code-search fr">
                                     <input type="text" maxlength="30" placeholder-class="cr-grey" class="cr-base dis-inline-block br radius text-size-xs padding-left-sm padding-right-sm" placeholder="地址编号" @input="region_code_value_event">
-                                    <button type="default" size="mini" class="bg-main-pair br-main-pair cr-white text-size-xs margin-left-sm" @tap="region_code_event" :disabled="form_submit_disabled_status">搜索</button>
+                                    <button type="default" size="mini" class="bg-main-pair br-main-pair cr-white text-size-xs margin-left-sm" @tap="region_code_event" :disabled="form_submit_disabled_status">检索</button>
                                 </view>
                             </view>
                             <view class="select-address oh">
