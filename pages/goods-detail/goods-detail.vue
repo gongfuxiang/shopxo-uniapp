@@ -189,7 +189,7 @@
                 </view>
 
                 <!-- 商品基础参数 -->
-                <view v-if="(goods.parameters || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white spacing-mb">
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white spacing-mb">
                     <view class="content-item oh">
                         <block v-for="(item, index) in goods.parameters.base" :key="index">
                             <view class="item single-text">
@@ -272,7 +272,7 @@
                 </view>
 
                 <!-- 商品详情参数 -->
-                <view v-if="(goods.parameters || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">商品参数</text>
