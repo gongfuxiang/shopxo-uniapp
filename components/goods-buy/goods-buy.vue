@@ -67,6 +67,8 @@
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
                 goods_spec_base_inventory: 0,
+				goods_spec_base_buy_min_number: 0,
+				goods_spec_base_buy_max_number: 0,
                 goods_spec_base_images: '',
                 goods: {},
                 goods_spec_choose: [],
@@ -314,10 +316,22 @@
                 var sku_count = this.goods_spec_choose.length;
                 var active_count = spec.length;
                 if (spec.length <= 0 || active_count < sku_count) {
+					var buy_number = parseInt(this.buy_number);
+					var buy_min_number = parseInt(this.goods.buy_min_number || 1);
+					var buy_max_number = parseInt(this.goods.buy_max_number || 0);
+					if(buy_number < buy_min_number) {
+						buy_number = buy_min_number;
+					}
+					if(buy_max_number > 0 && buy_number > buy_max_number) {
+						buy_number = buy_max_number;
+					}
                     this.setData({
                         goods_spec_base_price: this.goods.price,
                         goods_spec_base_original_price: this.goods.original_price || 0,
-                        goods_spec_base_inventory: this.goods.inventory
+                        goods_spec_base_inventory: this.goods.inventory,
+						goods_spec_base_buy_min_number : 0,
+						goods_spec_base_buy_max_number : 0,
+						buy_number: buy_number
                     });
                     return false;
                 }
@@ -348,10 +362,22 @@
             // 商品规格详情返回数据处理
             goods_spec_detail_back_handle(data) {
                 var spec_base = data.spec_base;
+				var buy_number = parseInt(this.buy_number);
+				var spec_buy_min_number = parseInt(spec_base.buy_min_number || 1);
+				var spec_buy_max_number = parseInt(spec_base.buy_max_number || 0);
+				if(spec_buy_min_number > 0 && buy_number < spec_buy_min_number) {
+					buy_number = spec_buy_min_number;
+				}
+				if(spec_buy_max_number > 0 && buy_number > spec_buy_max_number) {
+					buy_number = spec_buy_max_number;
+				}
                 this.setData({
                     goods_spec_base_price: spec_base.price,
                     goods_spec_base_original_price: spec_base.original_price || 0,
-                    goods_spec_base_inventory: parseInt(spec_base.inventory)
+                    goods_spec_base_inventory: parseInt(spec_base.inventory || 0),
+					goods_spec_base_buy_min_number: spec_buy_min_number,
+					goods_spec_base_buy_max_number: spec_buy_max_number,
+					buy_number: buy_number
                 });
             },
 
@@ -405,7 +431,7 @@
                     spec: temp_spec
                 });
             },
-            
+
             // 数量输入事件
             goods_buy_number_blur(e) {
                 var number = parseInt(e.detail.value) || 1;
@@ -414,44 +440,46 @@
                 }
                 this.goods_buy_number_func(number);
             },
-            
+
             // 数量操作事件
             goods_buy_number_event(e) {
-                var type = parseInt(e.currentTarget.dataset.type) || 0;
+                var type = parseInt(e.currentTarget.dataset.type || 0);
                 var temp_number = parseInt(this.buy_number);
                 var number = (type == 0) ? temp_number - 1 : temp_number + 1;
                 this.goods_buy_number_func(number);
             },
-            
+
             // 数量处理方法
             goods_buy_number_func(number) {
-                var buy_min_number = parseInt(this.goods.buy_min_number) || 1;
-                var buy_max_number = parseInt(this.goods.buy_max_number) || 0;
-                var inventory = parseInt(this.goods_spec_base_inventory);
+                var buy_min_number = parseInt(this.goods.buy_min_number || 1);
+                var buy_max_number = parseInt(this.goods.buy_max_number || 0);
+				var spec_buy_min_number = parseInt(this.goods_spec_base_buy_min_number || 0);
+				var spec_buy_max_number = parseInt(this.goods_spec_base_buy_max_number || 0);
+                var inventory = parseInt(this.goods_spec_base_inventory || 0);
                 var inventory_unit = this.goods.inventory_unit;
-            
+
                 // 最小起购数量
-                if (number < buy_min_number) {
-                    number = buy_min_number;
-                    app.globalData.showToast('起购' + buy_min_number + inventory_unit);
-                }
-            
+				var min = (spec_buy_min_number > 0) ? spec_buy_min_number : buy_min_number;
+				if (min > 0 && number < min) {
+				    number = min;
+				    app.globalData.showToast('起购' + min + inventory_unit);
+				}
+
                 // 最大购买数量
-                if (buy_max_number > 0 && number > buy_max_number) {
-                    number = buy_max_number;
-                    app.globalData.showToast('限购' + buy_max_number + inventory_unit);
-                }
-            
+				var max = (spec_buy_max_number > 0) ? spec_buy_max_number : buy_max_number;
+				if (max > 0 && number > max) {
+				    number = max;
+				    app.globalData.showToast('限购' + max + inventory_unit);
+				}
+
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
                     app.globalData.showToast('库存数量' + inventory + inventory_unit);
                 }
-            
-                this.setData({
-                    buy_number: number
-                });
-                
+
+                this.setData({buy_number: number});
+
                 // 存在规格的时候是否已完全选择规格
                 var spec = this.goods_selected_spec();
                 var sku_count = this.goods_spec_choose.length;
@@ -459,7 +487,7 @@
                 if (sku_count > 0 && active_count < sku_count) {
                     return false;
                 }
-                
+
                 // 获取数据
                 var data = this.params;
                 data['id'] = this.goods.id;
