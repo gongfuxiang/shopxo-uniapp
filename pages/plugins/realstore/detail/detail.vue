@@ -733,36 +733,43 @@
                 if(buy_number < 0) {
                     buy_number = 0;
                 }
-
+                
                 // 数据校验
                 var buy_min_number = parseInt(goods['buy_min_number']) || 1;
                 var buy_max_number = parseInt(goods['buy_max_number']) || 0;
+                var spec_buy_min_number = parseInt(goods['spec_buy_min_number']) || 0;
+                var spec_buy_max_number = parseInt(goods['spec_buy_max_number']) || 0;
                 var inventory = parseInt(goods['inventory']);
                 var inventory_unit = goods['inventory_unit'];
-                if (buy_min_number > 0) {
+                
+                // 最小起购数量
+                var min = (spec_buy_min_number > 0) ? spec_buy_min_number : buy_min_number;
+                if (min > 0) {
                     if(type == 0) {
-                        if(buy_number < buy_min_number) {
+                        if(buy_number < min) {
                             buy_number = 0;
                         }
                     } else {
-                        if(buy_number < buy_min_number) {
-                            buy_number = buy_min_number;
+                        if(buy_number < min) {
+                            buy_number = min;
                         }
                     }
                 }
-                if (buy_max_number > 0 && buy_number > buy_max_number) {
-                    app.globalData.showToast('限购' + buy_max_number + inventory_unit);
-                    return false;
+                
+                // 最大购买数量
+                var max = (spec_buy_max_number > 0) ? spec_buy_max_number : buy_max_number;
+                if (max > 0 && buy_number > max) {
+                    buy_number = max;
+                    app.globalData.showToast('限购' + max + inventory_unit);
+                	return false;
                 }
-                if (buy_number > inventory) {
-                    app.globalData.showToast('库存数量' + inventory + inventory_unit);
-                    return false;
-                }
+                
+                // 数量是否改变
                 if (goods[buy_number_field] == buy_number) {
-                    app.globalData.showToast('数量为改变');
+                    app.globalData.showToast('数量未改变');
                     return false;
                 }
-
+                
                 // 操作数量
                 var opt_number = 1;
                 if(type == 0) {
