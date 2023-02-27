@@ -42,7 +42,7 @@
                         <!-- 二级导航 -->
                         <view class="left-nav bg-white ht-auto">
                             <scroll-view :scroll-y="true" class="ht-auto">
-                                <view class="left-content-actual">
+                                <view :class="((common_site_type != 1) ? 'left-content-actual' : '')">
                                     <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main border-color-main' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                         <text>全部</text>
                                     </view>
@@ -59,7 +59,7 @@
                         <!-- 商品列表 -->
                         <view class="goods-right-content pa bs-bb padding-top-main padding-horizontal-main">
                             <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
-                                <view class="right-content-actual pr">
+                                <view :class="((common_site_type != 1) ? 'right-content-actual' : '')+' pr'">
                                     <!-- 三级导航 -->
                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
                                         <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-'+nav_active_item_three_index">
@@ -81,7 +81,7 @@
                                                     </view>
                                                     <view class="margin-top-sm oh">
                                                         <view class="sales-price text-size-sm single-text pa">{{currency_symbol}}{{item.min_price}}</view>
-                                                        <view class="buy-opt tc pa">
+                                                        <view v-if="common_site_type != 1" class="buy-opt tc pa">
                                                             <block v-if="(item.inventory || 0) > 0">
                                                                 <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                     <uni-icons type="minus" size="22" color="#f00"></uni-icons>
@@ -184,7 +184,7 @@
             </view>
 
             <!-- 仅商品模式展示购物车和规格选择 -->
-            <block v-if="category_show_level == 0">
+            <block v-if="common_site_type != 1 && category_show_level == 0">
                 <!-- 购物车列表 -->
                 <block v-if="cart_status">
                     <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
@@ -290,6 +290,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+				common_site_type: 0,
                 category_list: [],
                 data_content: null,
                 data_three_content: null,
@@ -347,6 +348,7 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
+						common_site_type: app.globalData.get_config('config.common_site_type'),
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         category_show_level: app.globalData.get_config('config.category_show_level')
                     });
