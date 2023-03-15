@@ -25,6 +25,8 @@
                 cache_page_pay_key: "cache_page_pay_key",
                 // 上一页地址缓存key
                 cache_prev_page_key: 'cache_prev_page_key',
+				// tab页面切换参数
+				cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
@@ -53,7 +55,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -196,13 +198,27 @@
             request_params_handle(url) {
                 // 用户信息
                 var user = this.get_user_cache_info();
-                var token = user == false ? '' : user.token || '';
+                var token = user == null ? '' : (user.token || '');
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
                 // 拼接标识
                 var join = (url.indexOf('?') == -1) ? '?' : '&';
                 return url + join + "system_type="+ this.data.system_type +"&application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
             },
+			
+			/**
+			 * 获取tab页面切换参数
+			 */
+			get_page_tabbar_switch_params() {
+				return uni.getStorageSync(this.data.cache_page_tabbar_switch_params) || null;
+			},
+			
+			/**
+			 * 删除tab页面切换参数
+			 */
+			remove_page_tabbar_switch_params() {
+				uni.removeStorageSync(this.data.cache_page_tabbar_switch_params);
+			},
 
             /**
              * 获取用户信息,信息不存在则唤醒授权
@@ -212,7 +228,7 @@
              */
             get_user_info(object, method) {
                 var user = this.get_user_cache_info();
-                if (user == false) {
+                if (user == null) {
                     // #ifdef MP
                     // 小程序唤醒用户授权
                     this.user_login(object, method);
@@ -249,7 +265,7 @@
                 var user = uni.getStorageSync(this.data.cache_user_info_key) || null;
                 if (user == null) {
                     // 是否存在默认值
-                    return default_value == undefined ? false : default_value;
+                    return default_value == undefined ? null : default_value;
                 }
 
                 // 是否读取key
@@ -619,6 +635,13 @@
                         // 内部页面
                         case 1:
                             if (this.is_tabbar_pages(value)) {
+								var temp = value.split('?');
+								if(temp.length > 1 && (temp[1] || null) != null)
+								{
+									value = temp[0];
+									var query = this.url_params_to_json(temp[1]);
+									uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
+								}
                                 uni.switchTab({
                                     url: value
                                 });
@@ -728,7 +751,7 @@
              */
             user_is_need_login(user) {
                 // 用户信息是否正确
-                if (user == false) {
+                if ((user || null) == null) {
                     return true;
                 }
                 // 是否需要绑定手机号码
@@ -1532,7 +1555,7 @@
             // 用户自动登录处理
             user_auto_login_handle() {
                 // #ifdef H5
-                var user = this.get_user_cache_info() || null;
+                var user = this.get_user_cache_info();
                 if(user == null) {
                     var params = this.get_launch_cache_info() || {};
                     var config = this.get_config('plugins_base.thirdpartylogin.data') || null;

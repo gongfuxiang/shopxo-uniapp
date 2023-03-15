@@ -93,7 +93,7 @@
                         <!-- 清除缓存 -->
                         <view class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
                             <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
-                            <view class="item-name single-text cr-base">清除缓存</view>
+                            <view class="item-name single-text cr-base">{{client_value == 'h5' ? '退出账号' : '清除缓存'}}</view>
                         </view>
                 
                         <!-- 联系客服 -->
@@ -136,6 +136,7 @@
             return {
                 common_static_url: common_static_url,
                 static_url: static_url,
+				client_value: app.globalData.application_client_type(),
                 avatar: app.globalData.data.default_user_head_src,
                 user_id: '',
                 nickname: "用户名",

@@ -2,7 +2,7 @@
     <view>
         <view v-if="(data_base || null) != null">
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-binding-data-list" @scrolltolower="scroll_lower" lower-threshold="30">
+            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-binding-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                     <block v-for="(item, index) in data_list" :key="index">
                         <view class="item border-radius-main bg-white padding-main oh spacing-mb">

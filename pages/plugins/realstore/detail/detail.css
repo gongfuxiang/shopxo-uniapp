@@ -147,7 +147,7 @@
 *  右侧内容
 */
 .right-content-actual {
-    padding-bottom: 105rpx;
+    padding-bottom: calc(105rpx + env(safe-area-inset-bottom));
 }
 .right-content {
     width: calc(100% - 220rpx);    
@@ -188,7 +188,7 @@
 .botton-nav {
     width: calc(100% - 40rpx);
     left: auto;
-    bottom: 20rpx;
+    bottom: calc(20rpx + env(safe-area-inset-bottom));
     line-height: 80rpx;
     z-index: 6;
     max-width: calc(800px - 40rpx);

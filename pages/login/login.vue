@@ -433,7 +433,7 @@
                 this.init_config(true);
 
                 // 用户信息
-                var user = app.globalData.get_user_cache_info() || null;
+                var user = app.globalData.get_user_cache_info();
 
                 // 数据处理
                 var type = (user == null) ? 'auth' : 'bind';
@@ -586,7 +586,7 @@
             user_auth_back_event() {
                 var user = app.globalData.get_user_cache_info();
                 this.setData({
-                    user: user || null
+                    user: user
                 });
 
                 // 是否需要绑定手机号码

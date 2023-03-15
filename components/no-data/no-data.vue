@@ -42,7 +42,7 @@
 </script>
 <style>
     .no-data-box {
-        padding: 10% 0;
+        padding-top: 17%;
         text-align: center;
     }
     .no-data-box image {

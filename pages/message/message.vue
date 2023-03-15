@@ -1,6 +1,6 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="30">
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main bg-white oh spacing-mb">
                     <view class="oh">

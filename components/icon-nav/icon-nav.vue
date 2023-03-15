@@ -2,7 +2,7 @@
     <view>
         <view v-if="propData.length > 0" class="icon-nav-list">
             <view v-for="(item, index) in propData" :key="index" class="item">
-                <view class="item-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
+                <view :class="'item-content '+((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="((item.bg_color || null) == null ? '' : 'background-color:'+item.bg_color+';')">
                     <image :src="item.images_url" mode="aspectFit"></image>
                 </view>
                 <view class="title">{{item.name}}</view>
@@ -12,7 +12,6 @@
 </template>
 <script>
     const app = getApp();
-
     export default {
         data() {
             return {};
@@ -55,6 +54,16 @@
         width: 50rpx !important;
         height: 50rpx !important;
     }
+	.icon-nav-list .item .item-exposed {
+		padding: 0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	.icon-nav-list .item .item-exposed,
+	.icon-nav-list .item .item-exposed image {
+		width: 90rpx !important;
+		height: 90rpx !important;
+	}
     .icon-nav-list .item .title {
         margin-top: 6rpx;
         font-size: 28rpx;

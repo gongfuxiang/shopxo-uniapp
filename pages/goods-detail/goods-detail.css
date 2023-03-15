@@ -1,5 +1,5 @@
 .page {
-    padding-bottom: 100rpx;
+    padding-bottom: 110rpx;
 }
 
 /**
@@ -109,6 +109,7 @@
     bottom: 0;
     height: 100rpx;
     z-index: 2;
+	padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
 }
 .goods-buy-nav .bus-items {
     width: 45%;

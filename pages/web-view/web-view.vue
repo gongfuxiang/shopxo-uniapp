@@ -23,7 +23,7 @@
                 // token处理
                 if (url.indexOf('{token}') >= 0) {
                     var user = app.globalData.get_user_cache_info();
-                    var token = user == false ? null : user.token || null;
+                    var token = user == null ? null : (user.token || null);
                     if (token != null) {
                         url = url.replace(/{token}/ig, token);
                     }

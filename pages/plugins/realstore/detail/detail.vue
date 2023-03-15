@@ -95,7 +95,7 @@
                     </view>
                 </scroll-view>
                 <!-- 右侧 -->
-                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
+                <scroll-view :scroll-y="true" class="right-content padding-right-main fr ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                     <view class="right-content-actual pr">
                         <!-- 二级分类 -->
                         <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal">

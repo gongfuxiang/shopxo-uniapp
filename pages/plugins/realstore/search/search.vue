@@ -28,7 +28,7 @@
             </scroll-view>
             
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30">
+            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
                 <block v-if="(data_list || null) != null && data_list.length > 0">
                     <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
                 </block>

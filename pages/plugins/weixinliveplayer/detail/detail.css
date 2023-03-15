@@ -26,6 +26,7 @@
     left: 0;
     bottom: 20rpx;
     height: 80rpx;
+	padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
 }
 .nav button {
     height: 100% !important;

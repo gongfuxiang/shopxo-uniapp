@@ -58,7 +58,7 @@
                         </view>
                         <!-- 商品列表 -->
                         <view class="goods-right-content pa bs-bb padding-top-main padding-horizontal-main">
-                            <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="30">
+                            <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                                 <view :class="((common_site_type != 1) ? 'right-content-actual' : '')+' pr'">
                                     <!-- 三级导航 -->
                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
@@ -290,6 +290,8 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+				user: null,
+				tabbar_params: null,
 				common_site_type: 0,
                 category_list: [],
                 data_content: null,
@@ -331,11 +333,20 @@
         props: {},
 
         onShow() {
+			// 基础参数
+			this.setData({
+				user: app.globalData.get_user_cache_info(),
+				tabbar_params: app.globalData.get_page_tabbar_switch_params()
+			});
+
             // 数据加载
             this.init();
 
             // 初始化配置
             this.init_config();
+
+			// 清除tab参数
+			app.globalData.remove_page_tabbar_switch_params();
         },
 
         // 下拉刷新
@@ -373,11 +384,33 @@
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+							var index = this.nav_active_index;
                             var temp_category = res.data.data.category || [];
+							// 是否指定分类
+							var tabbar_params = this.tabbar_params;
+							if(temp_category.length > 0 && (tabbar_params || null) != null && (tabbar_params.id || null) != null) {
+								for(var i in temp_category) {
+									if(temp_category[i]['id'] == tabbar_params.id) {
+										index = i;
+										break;
+									}
+								}
+							}
+							// 设置分类及右侧数据和及基础数据
                             var upd_data = {
                                 category_list: temp_category,
-                                data_content: temp_category[this.nav_active_index] || null
+                                data_content: temp_category[index] || null,
+								nav_active_index: index,
                             }
+							// 指定分类则重新读取列表数据
+							if(tabbar_params != null && this.nav_active_index != index) {
+								upd_data['is_first'] = 1;
+								upd_data['data_page'] = 1;
+								upd_data['data_list'] = [];
+								upd_data['data_list_loding_status'] = 1;
+								upd_data['nav_active_item_two_index'] = -1;
+								upd_data['nav_active_item_three_index'] = -1;
+							}
                             // 非商品列表模式
                             if(this.category_show_level != 0) {
                                 upd_data['data_list_loding_status'] = temp_category.length == 0 ? 0 : 3;
@@ -891,32 +924,34 @@
 
             // 获取购物车数据
             get_cart_data() {
-                uni.request({
-                    url: app.globalData.get_request_url("index", "cart"),
-                    method: 'POST',
-                    data: {},
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            var data = res.data.data;
-                            var temp_cart = data.data || [];
-                            this.setData({
-                                cart: res.data.data
-                            });
-                            this.cart_data_list_handle();
-                            
-                            // 导航购物车处理
-                            if (data.buy_number <= 0) {
-                                app.globalData.set_tab_bar_badge(2, 0);
-                            } else {
-                                app.globalData.set_tab_bar_badge(2, 1, data.buy_number);
-                            }
-                        }
-                    },
-                    fail: () => {
-                        app.globalData.showToast('服务器请求出错');
-                    }
-                });
+				if(this.user != null) {
+					uni.request({
+						url: app.globalData.get_request_url("index", "cart"),
+						method: 'POST',
+						data: {},
+						dataType: 'json',
+						success: res => {
+							if (res.data.code == 0) {
+								var data = res.data.data;
+								var temp_cart = data.data || [];
+								this.setData({
+									cart: res.data.data
+								});
+								this.cart_data_list_handle();
+								
+								// 导航购物车处理
+								if (data.buy_number <= 0) {
+									app.globalData.set_tab_bar_badge(2, 0);
+								} else {
+									app.globalData.set_tab_bar_badge(2, 1, data.buy_number);
+								}
+							}
+						},
+						fail: () => {
+							app.globalData.showToast('服务器请求出错');
+						}
+					});
+				}
             },
 
             // 购物车更新列表数据处理

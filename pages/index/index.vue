@@ -544,7 +544,7 @@
                             val = base
                         // #endif
                         this.setData({
-                            search_style: 'width: calc(100% - '+val+'rpx);',
+                            search_style: 'width: calc(100% - '+(val < 0 ? 0 : val)+'rpx);',
                             search_is_fixed: (top >= top_val) ? 1 : 0,
                         });
                     }
