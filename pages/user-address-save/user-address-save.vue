@@ -19,9 +19,9 @@
                             <view class="form-gorup-title oh">
                                 <text>省市区</text>
                                 <text class="form-group-tips-must">*</text>
-                                <view class="code-search fr">
-                                    <input type="text" maxlength="30" placeholder-class="cr-grey" class="cr-base dis-inline-block br radius text-size-xs padding-left-sm padding-right-sm" placeholder="地址编号" @input="region_code_value_event">
-                                    <button type="default" size="mini" class="bg-main-pair br-main-pair cr-white text-size-xs margin-left-sm" @tap="region_code_event" :disabled="form_submit_disabled_status">检索</button>
+                                <view class="code-search fr oh pr">
+                                    <input type="text" maxlength="30" placeholder-class="cr-grey" class="cr-base dis-inline-block br-main-pair text-size-xs padding-left-sm padding-right-sm va-m" placeholder="地址编号" @input="region_code_value_event">
+                                    <button type="default" size="mini" class="bg-main-pair br-main-pair cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">检索</button>
                                 </view>
                             </view>
                             <view class="select-address oh">
@@ -101,7 +101,9 @@
                 </view>
 
                 <view class="bottom-fixed padding-main">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+					<view class="bottom-line-exclude oh">
+						<button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+					</view>
                 </view>
             </view>
         </form>

@@ -155,7 +155,7 @@
                 </view>
 
                 <!-- 导航 -->
-                <view class="buy-nav oh wh-auto bg-white br-t">
+                <view class="buy-nav oh wh-auto bg-white br-t bottom-line-exclude">
                     <view class="nav-base fl single-text padding-left-main">
                         <text>合计：</text>
                         <text class="sales-price">{{currency_symbol}}{{total_price}}</text>

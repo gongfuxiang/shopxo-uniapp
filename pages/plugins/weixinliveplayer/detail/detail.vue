@@ -29,7 +29,7 @@
             </view>
 
             <!-- 导航 -->
-            <view class="nav wh-auto oh">
+            <view class="nav wh-auto oh bottom-line-exclude">
                 <button class="share-friend-submit fl cr-white text-size round margin-left-main" type="default" hover-class="none" open-type="share">
                     <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-share-friend-icon.png'" mode="widthFix"></image>
                     <text class="va-m">分享</text>

@@ -328,7 +328,7 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作 -->
-            <view class="goods-buy-nav oh wh-auto bg-white br-t">
+            <view class="goods-buy-nav oh wh-auto bg-white br-t bottom-line-exclude">
                 <!-- 左侧集合操作 -->
                 <view :class="'bus-items fl tc bus-items-'+bottom_nav_bus_number">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->

@@ -61,10 +61,21 @@
     width: 300rpx;
 }
 .code-search input {
-    width: calc(100% - 122rpx);
+    width: calc(100% - 100rpx) !important;
+	border-top-left-radius: 50rpx !important;
+	border-bottom-left-radius: 50rpx !important;
 }
 .code-search input,
 .code-search button {
-    height: 40rpx;
-    line-height: 40rpx;
+    height: 50rpx !important;
+	min-height: 50rpx !important;
+	line-height: 48rpx !important;
+}
+.code-search button {
+	top: 0;
+	right: 0;
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	border-top-right-radius: 50rpx !important;
+	border-bottom-right-radius: 50rpx !important;
 }

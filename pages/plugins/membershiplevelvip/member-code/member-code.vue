@@ -18,10 +18,12 @@
             
             <!-- 导航 -->
             <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main">
-                <view class="bg-gray round oh">
-                    <button type="default" class="bg-main br-main cr-white round text-size fl" size="mini">会员码</button>
-                    <button type="default" class="bg-gray br-gray cr-base round text-size fr" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value='+screen_brightness_value" data-redirect="1" @tap="url_event">钱包付款码</button>
-                </view>
+				<view class="bottom-line-exclude oh">
+					<view class="bg-gray round oh">
+						<button type="default" class="bg-main br-main cr-white round text-size fl" size="mini">会员码</button>
+						<button type="default" class="bg-gray br-gray cr-base round text-size fr" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value='+screen_brightness_value" data-redirect="1" @tap="url_event">钱包付款码</button>
+					</view>
+				</view>
             </view>
         </block>
 

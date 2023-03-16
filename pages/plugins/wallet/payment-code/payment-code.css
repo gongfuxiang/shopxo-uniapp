@@ -7,9 +7,6 @@
     margin-top: 60rpx;
     padding: 50rpx;
 }
-.bottom-fixed {
-	padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-}
 .bottom-fixed button {
     width: 50%;
 }

@@ -246,7 +246,7 @@ button:before {
  * 页面底部浮动、增加底部边距
  */
 .page-bottom-fixed {
-    padding-bottom: 120rpx;
+    padding-bottom: 120rpx !important;
 }
 
 /**
@@ -464,6 +464,13 @@ button[disabled].bg-yellow {
 button[disabled].bg-gray {
     background-color: #ececec !important;
     color: #ababab !important;
+}
+
+/**
+ * 兼容底部横线底部内边距
+ */
+.bottom-line-exclude {
+	padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
 }
 
 /**
