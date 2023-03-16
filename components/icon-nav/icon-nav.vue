@@ -44,12 +44,11 @@
         border-radius: 50%;
         padding: 20rpx;
         text-align: center;
-        width: 50rpx;
-        height: 50rpx;
         margin: 0 auto;
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
+	.icon-nav-list .item .item-content,
     .icon-nav-list .item image {
         width: 50rpx !important;
         height: 50rpx !important;

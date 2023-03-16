@@ -1,6 +1,6 @@
 <template>
     <view>
-        <swiper :indicator-dots="propData.length > 0" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="propData.length > 0" :circular="circular" :class="'banner banner-'+(propSize || 'default')" v-if="propData.length > 0">
+        <swiper :indicator-dots="propData.length > 0" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="propData.length > 0" :circular="circular" :class="'banner border-radius-main oh bg-white spacing-mb banner-'+(propSize || 'default')" v-if="propData.length > 0">
             <block v-for="(item, index) in propData" :key="index">
                 <swiper-item>
                     <image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"></image>
@@ -11,7 +11,6 @@
 </template>
 <script>
     const app = getApp();
-
     export default {
         data() {
             return {
@@ -43,12 +42,9 @@
     };
 </script>
 <style>
-    .banner {
-        background: #fff;
-        margin-bottom: 20rpx;
-        border-radius: 20rpx;
-        overflow: hidden;
-    }
+	.banner {
+		transform: translateY(0);
+	}
     .banner image {
         min-width: 100%;
     }

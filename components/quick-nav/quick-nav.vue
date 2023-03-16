@@ -18,9 +18,9 @@
                 <view class="nav-popup-content">
                     <view v-if="data_list.length > 0" class="nav-data-list">
                         <view v-for="(item, index) in data_list" :key="index" class="item cp">
-                            <view class="item-content" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="'background-color:' + (item.bg_color || '#fff')">
-                                <image :src="item.images_url" mode="aspectFit"></image>
-                            </view>
+							<view :class="'item-content '+((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="((item.bg_color || null) == null ? '' : 'background-color:'+item.bg_color+';')">
+							    <image :src="item.images_url" mode="aspectFit"></image>
+							</view>
                             <view class="title">{{item.name}}</view>
                         </view>
                     </view>
@@ -203,22 +203,33 @@
         width: calc(25% - 60rpx);
         float: left;
         padding: 30rpx;
+		/* #ifdef H5 */
+		cursor: pointer;
+		/* #endif */
     }
     .nav-data-list .item-content {
         border-radius: 50%;
         padding: 20rpx;
         text-align: center;
-        width: 70rpx;
-        height: 70rpx;
         margin: 0 auto;
         -webkit-box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
         box-shadow: 0 2px 12px rgb(226 226 226 / 95%);
     }
+	.nav-data-list .item-content,
     .nav-data-list .item image {
-        width: 60rpx !important;
-        height: 60rpx !important;
-        margin-top: 5rpx;
+        width: 70rpx !important;
+        height: 70rpx !important;
     }
+	.nav-data-list .item .item-exposed {
+		padding: 0;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+	}
+	.nav-data-list .item .item-exposed,
+	.nav-data-list .item .item-exposed image {
+		width: 110rpx !important;
+		height: 110rpx !important;
+	}
     .nav-data-list .item .title {
         margin-top: 10rpx;
         font-size: 28rpx !important;

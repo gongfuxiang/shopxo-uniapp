@@ -49,11 +49,11 @@
                         </navigator>
                     </block>
                 </view>
-                
+
                 <!-- 订单导航 -->
                 <view v-if="(navigation_order || null) != null" class="nav-list bg-white bg-white padding-main border-radius-main spacing-mb">
                     <!-- 主导航 -->
-                    <view :data-value="navigation_order.event_value" :data-type="navigation_order.event_type" @tap="navigation_event" class="nav-item br-b cp">
+                    <view :data-value="navigation_order.event_value" :data-type="navigation_order.event_type" @tap="navigation_event" class="nav-item br-b cp padding-main">
                         <view class="arrow-right">
                             <image :src="navigation_order.images_url" class="item-icon va-m" mode="widthFix"></image>
                             <text class="item-name va-m cr-base margin-left-sm">{{navigation_order.name}}</text>
@@ -75,33 +75,61 @@
                         </block>
                     </view>
                 </view>
-                
+
                 <!-- 聚合导航 -->
-                <view class="nav-box padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-main item-title fw-b text-size">我的服务</view>
-                    <view class="oh margin-top-sm">
-                        <block v-for="(item, index) in navigation" :key="index">
-                            <!-- 这里不展示订单导航 -->
-                            <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item padding-main fl tc cp">
-                                    <image :src="item.images_url" class="item-icon" mode="widthFix"></image>
-                                    <view class="item-name single-text cr-base">{{item.name}}</view>
-                                </view>
-                            </block>
-                        </block>
-            
-                        <!-- 清除缓存 -->
-                        <view class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
-                            <image :src="common_static_url+'cache-icon.png'" class="item-icon" mode="widthFix"></image>
-                            <view class="item-name single-text cr-base">{{client_value == 'h5' ? '退出账号' : '清除缓存'}}</view>
-                        </view>
-                
-                        <!-- 联系客服 -->
-                        <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
-                            <image :src="common_static_url+'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
-                            <view class="item-name single-text cr-base">联系客服</view>
-                        </view>
-                    </view>
+                <view class="padding-main border-radius-main bg-white spacing-mb">
+                    <view class="padding-main item-title fw-b text-size">我的服务</view>
+					<!-- 列表模式 -->
+					<view v-if="nav_show_model_type == 1" class="nav-list">
+						<block v-for="(item, index) in navigation" :key="index">
+							<!-- 这里不展示订单导航 -->
+							<block v-if="item.event_value != '/pages/user-order/user-order'">
+								<view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item br-t cp padding-main">
+									<view class="arrow-right">
+										<image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
+										<text class="item-name va-m cr-base margin-left-sm">{{item.name}}</text>
+										<text v-if="(item.desc || null) != null" class="item-desc fr tr single-text cr-grey">{{item.desc}}</text>
+									</view>
+								</view>
+							</block>
+						</block>
+						<!-- 清除缓存 -->
+						<view class="nav-item br-t cp padding-main" @tap="remove_user_cache_event">
+							<view class="arrow-right">
+								<image :src="common_static_url+nav_logout_data.icon+'-icon.png'" class="item-icon va-m" mode="widthFix"></image>
+								<text class="item-name va-m cr-base margin-left-sm">{{nav_logout_data.name}}</text>
+							</view>
+						</view>
+						<!-- 联系客服 -->
+						<view v-if="(common_app_customer_service_tel || null) != null" class="nav-item br-t cp padding-main" @tap="call_event">
+							<view class="arrow-right">
+								<image :src="common_static_url+'customer-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
+								<text class="item-name va-m cr-base margin-left-sm">联系客服</text>
+							</view>
+						</view>
+					</view>
+					<!-- 默认九方格模式 -->
+					<view v-else class="nav-box oh br-t margin-top-sm">
+						<block v-for="(item, index) in navigation" :key="index">
+							<!-- 这里不展示订单导航 -->
+							<block v-if="item.event_value != '/pages/user-order/user-order'">
+								<view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item padding-main fl tc cp">
+									<image :src="item.images_url" class="item-icon" mode="widthFix"></image>
+									<view class="item-name single-text cr-base">{{item.name}}</view>
+								</view>
+							</block>
+						</block>
+						<!-- 清除缓存 -->
+						<view class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
+							<image :src="common_static_url+nav_logout_data.icon+'-icon.png'" class="item-icon" mode="widthFix"></image>
+							<view class="item-name single-text cr-base">{{nav_logout_data.name}}</view>
+						</view>
+						<!-- 联系客服 -->
+						<view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
+							<image :src="common_static_url+'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
+							<view class="item-name single-text cr-base">联系客服</view>
+						</view>
+					</view>
                 </view>
             </view>
         </view>
@@ -121,7 +149,6 @@
         <component-copyright></component-copyright>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import componentQuickNav from "../../components/quick-nav/quick-nav";
@@ -131,16 +158,20 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
+	var client_value = app.globalData.application_client();
     export default {
         data() {
             return {
                 common_static_url: common_static_url,
                 static_url: static_url,
-				client_value: app.globalData.application_client_type(),
                 avatar: app.globalData.data.default_user_head_src,
                 user_id: '',
                 nickname: "用户名",
                 message_total: 0,
+				nav_logout_data: {
+					name: (client_value == 'mp') ? '清除缓存' : '退出账号',
+					icon: (client_value == 'mp') ? 'cache' : 'logout',
+				},
                 head_nav_list: [
                     { name: "订单总数", url: "user-order", count: 0 },
                     { name: "商品收藏", url: "user-favor", count: 0 },
@@ -165,7 +196,9 @@
                 // 顶部样式配置
                 top_content_style: 'background-image: url("'+static_url+'nav-top.png");'+'padding-top:'+(parseInt(app.globalData.get_system_info('statusBarHeight', 0))+5)+'px;',
                 // 付款码地址
-                qrcode_page_url: null
+                qrcode_page_url: null,
+				// 用户中心菜单展示模式
+				nav_show_model_type: app.globalData.data.user_center_nav_show_model_type
             };
         },
 

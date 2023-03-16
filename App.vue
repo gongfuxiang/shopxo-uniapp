@@ -47,6 +47,8 @@
                 category_goods_model_icon_type: 0,
                 // 强制使用文字作为logo（默认后台站点设置手机端图片logo->当前指定logo->后台手机管理小程序配置名称->站点设置中的站点名称）
                 is_logo_use_text: 0,
+				// 用户中心菜单展示模式（0 九方格, 1 列表）
+				user_center_nav_show_model_type: 0,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -57,7 +59,7 @@
                 // 请求地址
                 request_url: 'https://d1.shopxo.vip/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1245,43 +1247,46 @@
             px_to_rpx(value) {
                 return ((value || 0) == 0) ? 0 : parseInt(value) * 750 / parseInt(this.get_system_info('windowWidth', 0));
             },
-            
+
             // 终端类型
             application_client() {
                 var type = '';
                 // #ifdef APP
                     type = 'app';
-                //#endif
+                // #endif
+				// #ifdef H5
+				    type = 'h5';
+				// #endif
                 // #ifdef MP
                     type = 'mp';
-                //#endif
+                // #endif
                 return type;
             },
-            
+
             // 终端类型值
             application_client_type() {
                 var value = '';
                 // #ifdef MP-WEIXIN
                     value = 'weixin';
-                //#endif
+                // #endif
                 // #ifdef MP-ALIPAY
                     value = 'alipay';
-                //#endif
+                // #endif
                 // #ifdef MP-BAIDU
                     value = 'baidu';
-                //#endif
+                // #endif
                 // #ifdef MP-QQ
                     value = 'qq';
-                //#endif
+                // #endif
                 // #ifdef MP-TOUTIAO
                     value = 'toutiao';
-                //#endif
+                // #endif
                 // #ifdef MP-KUAISHOU
                     value = 'kuaishou';
-                //#endif
+                // #endif
                 // #ifdef H5
                     value = 'h5';
-                //#endif
+                // #endif
                 return value;
             },
 
