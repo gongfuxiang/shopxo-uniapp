@@ -57,7 +57,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -1164,12 +1164,41 @@
 
             // url打开
             url_open(value, is_redirect = false) {
-                if (value != null) {
-                    var temp = value.substr(0, 6);
-                    if (temp == 'http:/' || temp == 'https:') {
+                if ((value || null) != null) {
+					// web地址
+					var http_arr = ['http:/', 'https:'];
+                    if (http_arr.indexOf(value.substr(0, 6)) != -1) {
                         this.open_web_view(value);
+
+					// 打开外部小程序协议
+					} else if(value.substr(0, 8) == 'appid://') {
+						uni.navigateToMiniProgram({
+						    appId: value.substr(8)
+						});
+
+					// 地图协议
+					} else if(value.substr(0, 6) == 'map://') {
+						var values = value.substr(6).split('|');
+						if (values.length != 4) {
+						    this.showToast('事件值格式有误');
+						    return false;
+						}
+						this.open_location(values[2], values[3], values[0], values[1]);
+
+					// 电话协议
+					} else if(value.substr(0, 6) == 'tel://') {
+						this.call_tel(value.substr(6));
+
+					// 默认切换或跳转页面
                     } else {
                         if (this.is_tabbar_pages(value)) {
+							var temp = value.split('?');
+							if(temp.length > 1 && (temp[1] || null) != null)
+							{
+								value = temp[0];
+								var query = this.url_params_to_json(temp[1]);
+								uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
+							}
                             uni.switchTab({
                                 url: value
                             });
