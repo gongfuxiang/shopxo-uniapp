@@ -59,9 +59,9 @@
                 // 请求地址
                 request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-                system_type: 'default',
+                system_type: 'default-2',
                 // 基础信息
                 application_title: 'ShopXO',
                 application_describe: '企业级B2C开源电商系统！',
@@ -386,25 +386,21 @@
                                         var data = res.data.data;
                                         var client_type = this.application_client_type();
                                         if ((data.is_user_exist || 0) == 1 || client_type == 'weixin') {
-                                            uni.setStorage({
-                                                key: self.data.cache_user_info_key,
-                                                data: data,
-                                                success: res => {
-                                                    if (typeof object === 'object' && (method || null) != null) {
-                                                        object[method]();
-                                                    }
-                                                },
-                                                fail: () => {
-                                                    self.showToast('用户信息缓存失败');
-                                                }
-                                            });
+											uni.setStorageSync(self.data.cache_user_info_key, data);
+                                            if (typeof object === 'object' && (method || null) != null) {
+                                                object[method]();
+                                            }
                                         } else {
-                                            uni.setStorage({
-                                                key: self.data.cache_user_login_key,
-                                                data: data
-                                            });
+                                            uni.setStorageSync(self.data.cache_user_login_key, data);
                                             if(is_to_auth) {
-                                                self.login_to_auth();
+												var pages = getCurrentPages();
+												if(pages[pages.length-1]['route'] == 'pages/login/login') {
+													if (typeof object === 'object' && (method || null) != null) {
+													    object[method]();
+													}
+												} else {
+													self.login_to_auth();
+												}
                                             }
                                         }
                                     } else {
@@ -478,18 +474,10 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            uni.setStorage({
-                                key: self.data.cache_user_info_key,
-                                data: res.data.data,
-                                success: res => {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method]();
-                                    }
-                                },
-                                fail: () => {
-                                    self.showToast('用户信息缓存失败');
-                                }
-                            });
+							uni.setStorageSync(self.data.cache_user_info_key, res.data.data);
+                            if (typeof object === 'object' && (method || null) != null) {
+                                object[method]();
+                            }
                         } else {
                             self.showToast(res.data.msg);
                         }
@@ -1639,7 +1627,7 @@
          * 小程序初始化
          */
         onLaunch(params) {},
-        
+
         /**
          * 小程序页面显示
          */

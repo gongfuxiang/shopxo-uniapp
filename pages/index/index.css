@@ -9,9 +9,6 @@
     min-height: calc(var(--status-bar-height) + 160rpx);
     /* #endif */
     padding-top: calc(var(--status-bar-height) + 8px);
-    /* #ifdef MP-TOUTIAO */
-    padding-top: 0 !important;
-    /* #endif */
 }
 .home-top-nav-logo {
     text-align: left;
@@ -60,6 +57,9 @@
  */
 .search-fixed-seat {
     padding-top: 70rpx;
+	/* #ifdef MP-TOUTIAO */
+	padding-top: 60rpx;
+	/* #endif */
 }
 .search-content-fixed {
     position: fixed !important;
@@ -70,7 +70,7 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     padding-top: 25px;
-    /* #ifdef H5 || MP-TOUTIAO || APP */
+    /* #ifdef H5 || APP */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;
     /* #endif */

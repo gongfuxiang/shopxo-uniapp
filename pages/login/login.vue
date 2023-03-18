@@ -1,7 +1,7 @@
 <template>
     <view>
         <view class="content">
-            <block v-if="(home_site_logo_square || null) != null">
+            <block v-if="(is_exist_base_data || 0) == 1">
                 <!-- 表单验证码 -->
                 <view v-if="current_opt_form == 'bind_verify'" class="form-content">
                     <form @submit="formBind">
@@ -103,7 +103,7 @@
                                 <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{verify_submit_text}}</button>
                             </view>
                         </block>
-                        <!-- 协议 -->
+						<!-- 协议 -->
                         <view class="margin-top-xxxl cr-gray">
                             <view class="dis-inline-block va-m" @tap="agreement_change">
                                 <radio-group class="dis-inline-block va-m" style="transform:scale(0.6)">
@@ -147,6 +147,7 @@
                                 <text v-if="home_user_login_type.indexOf('sms') != -1" class="cr-blue" data-value="login_sms" @tap="opt_type_event">短信验证码</text>
                                 <text v-if="home_user_login_type.indexOf('email') != -1" class="cr-blue" data-value="login_email" @tap="opt_type_event">邮箱验证码</text>
                             </view>
+							<view v-else class="tc cr-gray padding-vertical-main">暂时关闭了登录</view>
                         </view>
                     </form>
                 </view>
@@ -213,6 +214,7 @@
                                 <text v-if="home_user_reg_type.indexOf('sms') != -1" class="cr-blue" data-value="reg_sms" @tap="opt_type_event">短信验证码</text>
                                 <text v-if="home_user_reg_type.indexOf('email') != -1" class="cr-blue" data-value="reg_email" @tap="opt_type_event">邮箱验证码</text>
                             </view>
+							<view v-else class="tc cr-gray padding-vertical-main">暂时关闭了注册</view>
                         </view>
                     </form>
                 </view>
@@ -311,9 +313,9 @@
                 </component-popup>
             </block>
             <view v-else class="margin-top-xxxl padding-top-xxxl tc">
-                <text class="cr-red">基础数据有误、请点击刷新！</text>
+                <text class="cr-red">基础数据有误，如未自动加载则请手动点击加载！</text>
                 <view class="margin-top-xl">
-                    <button type="default" size="mini" class="br-main cr-white bg-main dis-inline-block padding-left-xxxl padding-right-xxxl padding-top-sm padding-bottom-sm round" @tap="cache_refresh_event">刷新基础数据</button>
+                    <button type="default" size="mini" class="br-main cr-white bg-main dis-inline-block padding-left-xxxl padding-right-xxxl padding-top-sm padding-bottom-sm round" @tap="cache_refresh_event">加载基础数据</button>
                 </view>
             </view>
         </view>
@@ -344,6 +346,8 @@
                 verify_image_url: null,
                 popup_image_verify_status: false,
                 // 基础配置
+				is_refreshed_base_data: 0,
+				is_exist_base_data: 0,
                 common_user_onekey_bind_mobile_list: [],
                 home_site_logo_square: null,
                 home_user_login_type: [],
@@ -418,7 +422,7 @@
         },
 
         // 页面显示
-        onShow() {            
+        onShow() {
             // 异步初始化配置
             this.init_config();
 
@@ -438,19 +442,22 @@
                 // 数据处理
                 var type = (user == null) ? 'auth' : 'bind';
                 var form = type;
+				var is_base = (this.home_site_logo_square || null) != null ? 1 : 0;
                 // #ifdef H5 || APP
                 if(user == null) {
                     // 非小程序：如果开启登录则取第一个登录方式
                     if((this.home_user_login_type || null) != null && this.home_user_login_type.length > 0) {
-                        // 开启登录则取第一个
-                        form = 'login';
-                        type = 'login_'+this.home_user_login_type[0];
+						form = 'login';
+						// 开启登录则取第一个
+						type = 'login_'+this.home_user_login_type[0];
 
-                        // 用户登录和验证码获取开启图片验证码
-                        if(this.home_user_login_img_verify_state == 1 || this.common_img_verify_state == 1) {
-                            this.image_verify_event('user_login');
-                        }
-                    }
+						// 用户登录和验证码获取开启图片验证码
+						if(this.home_user_login_img_verify_state == 1 || this.common_img_verify_state == 1) {
+							this.image_verify_event('user_login');
+						}
+                    } else {
+						is_base = 0;
+					}
                 } else {
                     // 是否需要绑定手机
                     if (type == 'bind' && !app.globalData.user_is_need_login(user)) {
@@ -472,11 +479,18 @@
                 {
                     form = this.params.opt_form;
                 }
+				
+				// 没有基础数据则刷新
+				if(is_base == 0 && this.is_refreshed_base_data == 0) {
+					this.cache_refresh_event();
+				}
 
                 this.setData({
                     user: user,
                     current_opt_type: type,
-                    current_opt_form: form
+                    current_opt_form: form,
+					is_exist_base_data: is_base,
+					is_refreshed_base_data: 1,
                 });
 
                 // 登录成功
@@ -495,8 +509,8 @@
             init_config(status) {
                 if ((status || false) == true) {
                     this.setData({
+						home_site_logo_square: app.globalData.get_config('config.home_site_logo_square'),
                         common_user_onekey_bind_mobile_list: app.globalData.get_config('config.common_user_onekey_bind_mobile_list', []),
-                        home_site_logo_square: app.globalData.get_config('config.home_site_logo_square'),
                         home_user_login_type: app.globalData.get_config('config.home_user_login_type'),
                         home_user_reg_type: app.globalData.get_config('config.home_user_reg_type'),
                         home_user_login_img_verify_state: app.globalData.get_config('config.home_user_login_img_verify_state'),
@@ -611,7 +625,7 @@
                     form_input_email_value: e.detail.value
                 });
             },
-            
+
             // 输入手机和邮箱事件
             form_input_accounts_event(e) {
                 this.setData({
@@ -625,14 +639,14 @@
                     form_input_image_verify_value: e.detail.value
                 });
             },
-            
+
             // 弹层图片验证码关闭
             popup_image_verify_close_event(e) {
                 this.setData({
                     popup_image_verify_status: false
                 });
             },
-            
+
             // 弹层图片验证码确认
             popup_image_verify_submit_event(e) {
                 this.verify_send_handle();
@@ -1230,20 +1244,20 @@
 
                 // 开启登录则取第一个
                 if(value == 'login' && this.home_user_login_type.length > 0) {
-                    data['current_opt_type'] = 'login_'+this.home_user_login_type[0];
-                    // 是否开启图片验证码
-                    if(this.home_user_login_img_verify_state == 1 || this.common_img_verify_state == 1) {
-                        this.image_verify_event('user_login');
-                    }
+					data['current_opt_type'] = 'login_'+this.home_user_login_type[0];
+					// 是否开启图片验证码
+					if(this.home_user_login_img_verify_state == 1 || this.common_img_verify_state == 1) {
+						this.image_verify_event('user_login');
+					}
                 }
 
                 // 开启注册则取第一个
                 if(value == 'reg' && this.home_user_reg_type.length > 0) {
-                    data['current_opt_type'] = 'reg_'+this.home_user_reg_type[0];
-                    // 是否开启图片验证码
-                    if(this.home_user_register_img_verify_state == 1 || this.common_img_verify_state == 1) {
-                        this.image_verify_event('user_reg');
-                    }
+					data['current_opt_type'] = 'reg_'+this.home_user_reg_type[0];
+					// 是否开启图片验证码
+					if(this.home_user_register_img_verify_state == 1 || this.common_img_verify_state == 1) {
+						this.image_verify_event('user_reg');
+					}
                 }
                 this.setData(data);
 
@@ -1283,7 +1297,7 @@
                     });
                 }
             },
-            
+
             // 图片验证码事件
             image_verify_event(e) {
                 var type = (typeof e == 'string') ? e : e.currentTarget.dataset.type || null;
@@ -1295,20 +1309,20 @@
                     });
                 }
             },
-            
+
             // 缓存数据刷新
             cache_refresh_event(e) {
                 app.globalData.init_config();
                 var self = this;
                 uni.showLoading({
-                    title: '刷新中...'
+                    title: '加载中...'
                 });
                 setTimeout(function() {
                     self.init();
                     uni.hideLoading();
                 }, 3000);
             },
-            
+
             // 第三方登录事件
             plugins_thirdpartylogin_event(e) {
                 // 是否已同意协议
