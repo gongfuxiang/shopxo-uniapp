@@ -336,6 +336,15 @@
 .goods-parameters .content-item .item:nth-child(2n) {
     float: right;
 }
+/**
+ * 商品参数弹窗
+ */
+.popup-params-container .item .name {
+	width: 220rpx;
+}
+.popup-params-container .item .value {
+	width: calc(100% - 240rpx);
+}
 
 /*
 * icon

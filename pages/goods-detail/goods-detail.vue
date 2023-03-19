@@ -189,15 +189,11 @@
                 </view>
 
                 <!-- 商品基础参数 -->
-                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white spacing-mb">
-                    <view class="content-item oh">
-                        <block v-for="(item, index) in goods.parameters.base" :key="index">
-                            <view class="item single-text">
-                                <text class="name">{{item.name}}:</text>
-                                <text class="value">{{item.value}}</text>
-                            </view>
-                        </block>
-                    </view>
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text spacing-mb" @tap="popup_params_event" data-value="base">
+					<block v-for="(item, index) in goods.parameters.base" :key="index">
+						<text v-if="index > 0">，</text>
+						<text>{{item.value}}</text>
+					</block>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -279,12 +275,17 @@
                     </view>
                     <view class="goods-parameters border-radius-main padding-main bg-white">
                         <view class="content-item oh">
-                            <block v-for="(item, index) in goods.parameters.detail" :key="index">
-                                <view class="item single-text">
-                                    <text class="name">{{item.name}}:</text>
-                                    <text class="value">{{item.value}}</text>
-                                </view>
-                            </block>
+							<view class="oh">
+								<block v-for="(item, index) in goods.parameters.detail" :key="index">
+									<view v-if="index <= 3" class="item single-text">
+										<text class="name">{{item.name}}:</text>
+										<text class="value">{{item.value}}</text>
+									</view>
+								</block>
+							</view>
+							<view class="tc margin-top-sm">
+								<text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
+							</view>
                         </view>
                     </view>
                 </view>
@@ -376,7 +377,31 @@
                     </block>
                 </view>
             </view>
-            
+
+			<!-- 商品参数弹窗 -->
+			<component-popup :propShow="popup_params_status" propPosition="bottom" @onclose="popup_params_close_event">
+			    <view class="padding-horizontal-main padding-top-main bg-white">
+			        <view class="close oh">
+			            <view class="fr" @tap.stop="popup_params_close_event">
+			                <icon type="clear" size="20"></icon>
+			            </view>
+			        </view>
+			        <view class="popup-params-container">
+			            <block v-if="(goods.parameters || null) != null && (goods.parameters[popup_params_type_field] || null) != null && goods.parameters[popup_params_type_field].length > 0">
+							<block v-for="(item, index) in goods.parameters[popup_params_type_field]" :key="index">
+								<view class="item padding-vertical-main br-b oh">
+									<view class="name fl br-r single-text">{{item.name}}</view>
+									<view class="value fr padding-left single-text">{{item.value}}</view>
+								</view>
+							</block>
+			            </block>
+			            <block v-else>
+			                <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无参数数据</view>
+			            </block>
+			        </view>
+			    </view>
+			</component-popup>
+
             <!-- 批发弹层 -->
             <component-popup :propShow="popup_wholesale_status" propPosition="bottom" @onclose="popup_wholesale_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-base">
@@ -583,6 +608,9 @@
                 top_nav_title_scroll: true,
                 top_nav_title_timer: null,
                 top_nav_title_data: [],
+				// 详情参数弹窗
+				popup_params_status: false,
+				popup_params_type_field: 'base',
                 // 自定义分享信息
                 share_info: {},
                 // 限时秒杀插件
@@ -1205,6 +1233,21 @@
                 app.globalData.operation_event(e);
                 this.setData({nav_more_status: false});
             },
+			
+			// 商品参数开启弹层
+			popup_params_event(e) {
+			    this.setData({
+			        popup_params_status: true,
+					popup_params_type_field: e.currentTarget.dataset.value || 'base'
+			    });
+			},
+
+			// 商品参数关闭弹层
+			popup_params_close_event(e) {
+			    this.setData({
+			        popup_params_status: false
+			    });
+			},
 
             // 批发开启弹层
             popup_wholesale_event(e) {
