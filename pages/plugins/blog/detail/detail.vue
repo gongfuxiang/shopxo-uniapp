@@ -58,24 +58,12 @@
                 </view>
 
                 <!-- 相关商品 -->
-                <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="goods-list oh">
+                <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
                     <view class="spacing-nav-title">
                         <text class="text-wrapper">相关商品</text>
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
-                    <view class="goods-list oh">
-                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                            <navigator :url="item.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                <view class="base padding-horizontal-main margin-top-sm">
-                                    <view class="multi-text">{{item.title}}</view>
-                                    <view class="price margin-top">
-                                        <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                                    </view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </view>
+                    <component-goods-list :propData="{style_type: 1, goods_list: data.goods_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
             </view>
         </view>
@@ -93,6 +81,7 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
     import componentBlogComments from "../../../../components/blog-comments/blog-comments";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -118,7 +107,8 @@
         components: {
             componentNoData,
             componentBottomLine,
-            componentBlogComments
+            componentBlogComments,
+            componentGoodsList
         },
         props: {},
 
@@ -218,5 +208,4 @@
     };
 </script>
 <style>
-    @import './detail.css';
 </style>

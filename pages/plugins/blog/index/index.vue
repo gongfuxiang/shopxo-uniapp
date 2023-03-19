@@ -105,19 +105,7 @@
                     <text class="text-wrapper">推荐商品</text>
                     <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                 </view>
-                <view class="goods-list oh">
-                    <view v-for="(item, index) in goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                        <navigator :url="item.goods_url" hover-class="none">
-                            <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                            <view class="base padding-horizontal-main margin-top-sm">
-                                <view class="multi-text">{{item.title}}</view>
-                                <view class="price margin-top">
-                                    <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                                </view>
-                            </view>
-                        </navigator>
-                    </view>
-                </view>
+                <component-goods-list :propData="{style_type: 1, goods_list: goods_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
 
             <!-- 结尾 -->
@@ -136,6 +124,7 @@
     import componentCountdown from "../../../../components/countdown/countdown";
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     export default {
         data() {
@@ -162,7 +151,8 @@
             componentBanner,
             componentCountdown,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsList
         },
         props: {},
 

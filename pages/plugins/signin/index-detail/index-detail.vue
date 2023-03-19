@@ -40,7 +40,7 @@
                 <view  v-if="(data.right_images || null) != null" class="spacing-mb">
                     <image class="wh-auto dis-block border-radius-main" :src="data.right_images" mode="widthFix" @tap="right_images_event"></image>
                 </view>
-                
+
                 <!-- 公告信息 -->
                 <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="spacing-mb">
                     <view class="notice-content">
@@ -54,17 +54,7 @@
                         <text class="text-wrapper">推荐商品</text>
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                     </view>
-                    <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
-                            <navigator :url="item.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                <view class="padding-horizontal-main margin-top-sm">
-                                    <view class="multi-text">{{item.title}}</view>
-                                    <view class="sales-price single-text margin-top-sm">{{currency_symbol}}{{item.min_price}}</view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </view>
+                    <component-goods-list :propData="{style_type: 1, goods_list: data.goods_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
             </view>
 
@@ -94,6 +84,7 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     var static_url = app.globalData.get_static_url('signin', true);
     export default {
@@ -120,7 +111,8 @@
 
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsList
         },
         props: {},
 
