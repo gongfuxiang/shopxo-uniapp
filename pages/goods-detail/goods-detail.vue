@@ -101,7 +101,15 @@
                     <view class="padding-main">
                         <view class="goods-title-content oh">
                             <!-- 标题 -->
-                            <view class="goods-title fl" :style="'color:' + goods.title_color">{{goods.title}}</view>
+                            <view class="goods-title fl" :style="'color:' + goods.title_color">
+                                <text class="va-m">{{goods.title}}</text>
+                                <!-- icon -->
+                                <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container dis-inline-block va-m">
+                                    <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
+                                        <text v-if="(item.name || null) != null" class="item round text-size-xs bg-white margin-left-sm" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-value="item.url || ''" @tap="url_event">{{item.name}}</text>
+                                    </block>
+                                </view>
+                            </view>
                             <!-- 分享 -->
                             <view class="goods-share tc cp pa" @tap="popup_share_event">
                                 <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
@@ -173,13 +181,6 @@
                 </view>
             </view>
 
-            <!-- icon -->
-            <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container oh border-radius-main padding-horizontal-main margin-bottom-sm">
-                <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
-                    <view v-if="(item.name || null) != null" class="fl tc round text-size-xs bg-white" :style="((item.br_color || null) == null ? '' : 'border:1px solid '+item.br_color+';') + '' + ((item.color || null) == null ? '' : 'color: '+item.color+';')" :data-value="item.url || ''" @tap="url_event">{{item.name}}</view>
-                </block>
-            </view>
-
             <view class="padding-horizontal-main">
                 <!-- 面板提示信息 -->
                 <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white spacing-mb">
@@ -249,7 +250,9 @@
                                     <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{item.msg}}</view>
                                 </view>
                             </view>
-                            <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="cr-base tc">查看更多评价 >></navigator>
+                            <view class="tc">
+                                <text class="cr-grey" :data-value="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" @tap="url_event">查看更多评价 >></text>
+                            </view>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-sm padding-bottom-sm">暂无评价数据</view>
@@ -277,13 +280,13 @@
                         <view class="content-item oh">
 							<view class="oh">
 								<block v-for="(item, index) in goods.parameters.detail" :key="index">
-									<view v-if="index <= 3" class="item single-text">
+									<view v-if="index <= 3" class="item single-text cr-base">
 										<text class="name">{{item.name}}:</text>
 										<text class="value">{{item.value}}</text>
 									</view>
 								</block>
 							</view>
-							<view class="tc margin-top-sm">
+							<view class="tc margin-top-lg">
 								<text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
 							</view>
                         </view>

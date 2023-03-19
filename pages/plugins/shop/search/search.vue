@@ -10,23 +10,14 @@
                     </view>
                 </block>
             </view>
-            <image class="screening-submit pa" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+            <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+            <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
         </view>
 
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                    <navigator :url="item.goods_url" hover-class="none">
-                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                        <view class="base padding-horizontal-main margin-top">
-                            <view class="multi-text">{{item.title}}</view>
-                            <view class="price margin-top">
-                                <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                            </view>
-                        </view>
-                    </navigator>
-                </view>
+            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main oh">
+                <component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
@@ -78,6 +69,7 @@
     import componentPopup from "../../../../components/popup/popup";
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -105,6 +97,8 @@
                     { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
                     { name: "最新", field: "id", sort: "asc", "icon": "default" }
                 ],
+                // 数据展示样式（0图文、1九方格）
+                data_show_type_value: 1,
                 // 搜素条件
                 search_map_list: {
                     category_list: []
@@ -120,7 +114,8 @@
         components: {
             componentPopup,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsList
         },
         props: {},
 
@@ -475,6 +470,11 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+
+            // 数据展示类型
+            data_show_type_event(e) {
+                this.setData({data_show_type_value: this.data_show_type_value == 0 ? 1 : 0});
             }
         }
     };

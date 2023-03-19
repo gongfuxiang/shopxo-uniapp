@@ -4,34 +4,23 @@
 .nav-sort-content .item {
     height: 80rpx;
     line-height: 80rpx;
-    width: calc(20% - 25rpx);
+    width: calc(20% - 33.33rpx);
 }
 .nav-sort-content .item .icon {
     width: 30rpx;
-    height: 30rpx;
+    height: 30rpx !important;
 }
 .screening-submit {
     width: 50rpx;
     height: 50rpx;
     top: 15rpx;
-    right: 20rpx;
+    right: 80rpx !important;
 }
-
-/**
-* 商品列表
-*/
-.data-list .item {
-    width: calc(50% - 10rpx);
-}
-.data-list .item:nth-child(2n) {
-    float: right;
-}
-.data-list .item:nth-child(2n+1) {
-    float: left;
-}
-.data-list .item .goods-img {
-    width: 100%;
-    height: 380rpx !important;
+.show-type-submit {
+    width: 50rpx;
+    height: 50rpx !important;
+    top: 15rpx;
+    right: 16rpx;
 }
 
 /**

@@ -104,20 +104,10 @@
             <!-- 数据模式 -->
             <!-- 自动模式 -->
             <block v-if="(shop.data_model || 0) == 0">
-                <block v-if="(data || null) != null && data.length > 0">
-                    <view class="goods-data-grid-list padding-main oh">
-                        <view v-for="(item, index) in data" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
-                            <navigator :url="item.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                <view class="base padding-horizontal-main margin-top-sm">
-                                    <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                    <view class="sales-price">{{currency_symbol}}{{item.min_price}}</view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </view>
+                <view v-if="(data || null) != null && data.length > 0" class="padding-main oh">
+                    <component-goods-list :propData="{style_type: 1, goods_list: data}" :propCurrencySymbol="currency_symbol"></component-goods-list>
                     <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id" size="mini">查看更多商品 >></button>
-                </block>
+                </view>
                 <block v-else>
                     <component-no-data propStatus="0"></component-no-data>
                 </block>

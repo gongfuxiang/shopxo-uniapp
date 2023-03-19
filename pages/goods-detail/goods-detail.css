@@ -339,6 +339,11 @@
 /**
  * 商品参数弹窗
  */
+.popup-params-container {
+    max-height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
 .popup-params-container .item .name {
 	width: 220rpx;
 }
@@ -349,17 +354,10 @@
 /*
 * icon
 */
-.goods-icon-container view {
+.goods-icon-container .item {
     border: 1px solid #3bb4f2;
     color: #3bb4f2;
-    padding: 5rpx 15rpx;
-    margin-bottom: 10rpx;
-    display: inline-table;
-    min-height: 32rpx;
-    line-height: 32rpx;
-}
-.goods-icon-container view:not(:last-child) {
-    margin-right: 10rpx;
+    padding: 4rpx 16rpx;
 }
 
 /*

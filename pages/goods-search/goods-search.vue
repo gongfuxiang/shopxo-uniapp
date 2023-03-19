@@ -11,32 +11,13 @@
                 </block>
             </view>
             <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+			<image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
         </view>
 
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white padding-bottom-sm margin-bottom-main oh pr">
-                    <!-- 商品主体内容 -->
-                    <navigator :url="item.goods_url" hover-class="none">
-                        <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                        <view class="base padding-horizontal-main margin-top-sm">
-                            <view class="multi-text">{{item.title}}</view>
-                            <view class="price margin-top">
-                                <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                            </view>
-                        </view>
-                    </navigator>
-                    <!-- 标签插件 -->
-                    <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                        <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                            <view v-if="lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                            </view>
-                        </block>
-                    </view>
-                </view>
+            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main oh">
+				<component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
@@ -155,6 +136,7 @@
     import componentPopup from "../../components/popup/popup";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
+	import componentGoodsList from "../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -182,6 +164,8 @@
                     { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
                     { name: "最新", field: "id", sort: "asc", "icon": "default" }
                 ],
+                // 数据展示样式（0图文、1九方格）
+                data_show_type_value: 1,
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 搜素条件
@@ -209,7 +193,8 @@
             componentQuickNav,
             componentPopup,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+			componentGoodsList
         },
         props: {},
 
@@ -570,10 +555,10 @@
                 });
                 this.get_data_list(1);
             },
-            
-            // url事件
-            url_event(e) {
-                app.globalData.url_event(e);
+
+            // 数据展示类型
+            data_show_type_event(e) {
+                this.setData({data_show_type_value: this.data_show_type_value == 0 ? 1 : 0});
             }
         }
     };

@@ -177,27 +177,9 @@
                                         </block>
                                     </scroll-view>
                                 </view>
-                                <view v-if="floor.goods.length > 0" class="goods-list">
-                                    <view v-for="(goods, index2) in floor.goods" :key="index2" class="goods bg-white border-radius-main oh pr">
-                                        <!-- 商品主体内容 -->
-                                        <navigator :url="goods.goods_url" hover-class="none">
-                                            <image class="goods-img dis-block" :src="goods.images" mode="aspectFit"></image>
-                                            <view class="goods-base padding-horizontal-main margin-top-sm">
-                                                <view class="goods-title multi-text margin-bottom-sm">{{goods.title}}</view>
-                                                <view class="sales-price">{{currency_symbol}}{{goods.min_price}}</view>
-                                            </view>
-                                        </navigator>
-                                        <!-- 标签插件 -->
-                                        <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
-                                            <block v-for="(lv,li) in plugins_label_data.data" :key="li">
-                                                <view v-if="lv.goods_ids.indexOf(goods.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
-                                                    <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
-                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
-                                                </view>
-                                            </block>
-                                        </view>
-                                    </view>
-                                </view>
+                                <block v-if="floor.goods.length > 0">
+									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                                </block>
                             </view>
                         </view>
                     </block>
@@ -303,6 +285,7 @@
     import componentBlogList from "../../components/blog-list/blog-list";
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
     import componentShopList from "../../components/shop-list/shop-list";
+	import componentGoodsList from "../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
@@ -392,7 +375,8 @@
             componentActivityList,
             componentBlogList,
             componentRealstoreList,
-            componentShopList
+            componentShopList,
+			componentGoodsList
         },
         props: {},
 

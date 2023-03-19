@@ -8,7 +8,7 @@
             </view>
             
             <!-- 排序 -->
-            <view class="nav-sort bg-white oh">
+            <view class="nav-sort bg-white oh pr">
                 <view class="nav-sort-content">
                     <block v-for="(item, index) in search_nav_sort_list" :key="index">
                         <view class="item tc fl" :data-index="index" @tap="nav_sort_event">
@@ -17,22 +17,13 @@
                         </view>
                     </block>
                 </view>
+                <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
             </view>
 
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view v-if="data_list.length > 0" class="data-list oh padding-horizontal-main padding-top-main">
-                    <view v-for="(item, index) in data_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main oh">
-                        <navigator :url="item.goods_url" hover-class="none">
-                            <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                            <view class="base padding-horizontal-main margin-top-sm">
-                                <view class="multi-text">{{item.title}}</view>
-                                <view class="price margin-top">
-                                    <text class="sales-price">{{currency_symbol}}{{item.min_price}}</text>
-                                </view>
-                            </view>
-                        </navigator>
-                    </view>
+                <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                    <component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -53,6 +44,7 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -77,6 +69,8 @@
                     { name: "最新", field: "new", sort: "asc", "icon": "default" }
                 ],
                 search_nav_sort_value: '',
+                // 数据展示样式（0图文、1九方格）
+                data_show_type_value: 1,
                 // 自定义分享信息
                 share_info: {}
             };
@@ -84,7 +78,8 @@
 
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsList
         },
         props: {},
 
@@ -304,6 +299,11 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+
+            // 数据展示类型
+            data_show_type_event(e) {
+                this.setData({data_show_type_value: this.data_show_type_value == 0 ? 1 : 0});
             }
         }
     };

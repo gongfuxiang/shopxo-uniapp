@@ -4,17 +4,23 @@
 .nav-sort-content .item {
     height: 80rpx;
     line-height: 80rpx;
-    width: calc(20% - 25rpx);
+    width: calc(20% - 33.33rpx);
 }
 .nav-sort-content .item .icon {
     width: 30rpx;
-    height: 30rpx;
+    height: 30rpx !important;
 }
 .screening-submit {
     width: 50rpx;
-    height: 50rpx;
+    height: 50rpx !important;
     top: 15rpx;
-    right: 20rpx;
+    right: 80rpx;
+}
+.show-type-submit {
+    width: 50rpx;
+    height: 50rpx !important;
+    top: 15rpx;
+    right: 16rpx;
 }
 
 /**
