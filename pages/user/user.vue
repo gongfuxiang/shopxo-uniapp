@@ -80,7 +80,7 @@
                 <view class="service-nav padding-main border-radius-main bg-white spacing-mb">
                     <view class="padding-main pr">
                         <text class="fw-b text-size">我的服务</text>
-                        <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(nav_show_model_type == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="nav_show_type_event"></image>
+                        <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(nav_show_model_type == 0 ? 'list' : 'grid')+'-icon.png'" mode="aspectFill" @tap="nav_show_type_event"></image>
                     </view>
 					<!-- 列表模式 -->
 					<view v-if="nav_show_model_type == 1" class="nav-list">
