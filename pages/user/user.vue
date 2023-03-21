@@ -77,14 +77,17 @@
                 </view>
 
                 <!-- 聚合导航 -->
-                <view class="padding-main border-radius-main bg-white spacing-mb">
-                    <view class="padding-main item-title fw-b text-size">我的服务</view>
+                <view class="service-nav padding-main border-radius-main bg-white spacing-mb">
+                    <view class="padding-main pr">
+                        <text class="fw-b text-size">我的服务</text>
+                        <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(nav_show_model_type == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="nav_show_type_event"></image>
+                    </view>
 					<!-- 列表模式 -->
 					<view v-if="nav_show_model_type == 1" class="nav-list">
 						<block v-for="(item, index) in navigation" :key="index">
 							<!-- 这里不展示订单导航 -->
 							<block v-if="item.event_value != '/pages/user-order/user-order'">
-								<view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item br-t cp padding-main">
+								<view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item br-t cp padding-main margin-top-sm">
 									<view class="arrow-right">
 										<image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
 										<text class="item-name va-m cr-base margin-left-sm">{{item.name}}</text>
@@ -359,7 +362,7 @@
                             this.setData(upd_data);
 
                             // 导航购物车处理
-                            var cart_total = parseInt(data.cart_total.buy_number || 0);
+                            var cart_total = data.cart_total.buy_number || 0;
                             if (cart_total <= 0) {
                                 app.globalData.set_tab_bar_badge(2, 0);
                             } else {
@@ -422,6 +425,11 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 数据展示类型
+            nav_show_type_event(e) {
+                this.setData({nav_show_model_type: this.nav_show_model_type == 0 ? 1 : 0});
             }
         }
     };

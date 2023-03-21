@@ -915,7 +915,7 @@
                 self.top_nav_title_scroll = false;
                 
                 // 获取节点位置
-                const query = uni.createSelectorQuery();
+                var query = uni.createSelectorQuery();
                 query.select(value).boundingClientRect();
                 query.selectViewport().scrollOffset();
                 query.exec(function(res) {
@@ -993,8 +993,15 @@
             // 加入购物车成功回调
             goods_cart_back_event(e) {
                 this.setData({
-                    goods_spec_selected_text: ((e.spec || null) == null) ? '' : e.spec.map(function(v){return v.value;}).join(' / '),
-                    quick_nav_cart_count: e.cart_number
+                    goods_spec_selected_text: ((e.spec || null) == null) ? '' : e.spec.map(function(v){return v.value;}).join(' / ')
+                });
+                this.goods_cart_count_handle(e.cart_number);
+            },
+
+            // 购物车总数处理
+            goods_cart_count_handle(cart_number) {
+                this.setData({
+                    quick_nav_cart_count: cart_number
                 });
             },
 

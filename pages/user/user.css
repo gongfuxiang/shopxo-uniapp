@@ -102,3 +102,9 @@
     margin-top: 2rpx;
     width: calc(100% - 300rpx);
 }
+.service-nav .show-type-submit {
+    width: 50rpx;
+    height: 50rpx !important;
+    top: 18rpx;
+    right: 20rpx;
+}

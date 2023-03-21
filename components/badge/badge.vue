@@ -34,13 +34,13 @@
         right: 0;
         transform: translate(50%, -50%);
         top: 0px;
-        min-width: 16px;
+        min-width: 14px;
         padding: 0;
-        height: 16px;
-        line-height: 16px;
+        height: 14px;
+        line-height: 14px;
         text-align: center;
         background-color: #FF3B30;
-        border-radius: 16px;
+        border-radius: 20px;
         color: #fff;
         font-size: 10px;
         padding: 1px 1px;

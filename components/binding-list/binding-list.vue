@@ -68,10 +68,10 @@
         background: linear-gradient(to right, rgb(255 235 220), rgb(241 235 255));
     }
     .plugins-binding-list .left-content {
-        width: 60%;
+        width: 65%;
     }
     .plugins-binding-list .right-content {
-        width: 40%;
+        width: 35%;
         padding-top: 100rpx;
     }
     .plugins-binding-list .estimate-discount-price .discount-icon {

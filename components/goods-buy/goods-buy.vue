@@ -22,33 +22,38 @@
                         </view>
                     </view>
                 </view>
-                <view class="goods-spec-choice-content">
-                    <!-- 商品规格 -->
-                    <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
-                        <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-top-xxl padding-bottom-xxl">
-                            <view class="text-size-sm">{{item.name}}</view>
-                            <view v-if="item.value.length > 0" class="spec margin-top-sm">
-                                <block v-for="(items, keys) in item.value" :key="keys">
-                                    <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'round '+items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                        <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
-                                        <text class="va-m">{{items.name}}</text>
-                                    </button>
-                                </block>
+                <block v-if="(goods.is_exist_many_spec || 0) == 1 && goods_spec_choose.length == 0">
+                    <view class="padding-top-xxxl padding-bottom-xxxl tc cr-red">规格数据有误</view>
+                </block>
+                <block v-else>
+                    <view class="goods-spec-choice-content">
+                        <!-- 商品规格 -->
+                        <view v-if="goods_spec_choose.length > 0" class="goods-spec-choose">
+                            <view v-for="(item, key) in goods_spec_choose" :key="key" class="item padding-top-xxl padding-bottom-xxl">
+                                <view class="text-size-sm">{{item.name}}</view>
+                                <view v-if="item.value.length > 0" class="spec margin-top-sm">
+                                    <block v-for="(items, keys) in item.value" :key="keys">
+                                        <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'round '+items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
+                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
+                                            <text class="va-m">{{items.name}}</text>
+                                        </button>
+                                    </block>
+                                </view>
+                            </view>
+                        </view>
+
+                        <!-- 购买数量 -->
+                        <view class="goods-buy-number oh pr margin-top-xl margin-bottom-xxl">
+                            <view class="fl margin-top">购买数量</view>
+                            <view class="number-content tc oh round">
+                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
+                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
+                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
                             </view>
                         </view>
                     </view>
-
-                    <!-- 购买数量 -->
-                    <view class="goods-buy-number oh pr margin-top-xl margin-bottom-xxl">
-                        <view class="fl margin-top">购买数量</view>
-                        <view class="number-content tc oh round">
-                            <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
-                            <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
-                            <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
-                        </view>
-                    </view>
-                </view>
-                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
+                    <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
+                </block>
             </view>
         </component-popup>
     </view>
@@ -74,6 +79,8 @@
                 goods_spec_choose: [],
                 buy_number: 1,
                 buy_event_type: 'cart',
+                is_direct_cart: 0,
+                is_success_tips: 1,
                 // 智能工具插件
                 plugins_intellectstools_config: app.globalData.get_config('plugins_base.intellectstools.data'),
                 plugins_intellectstools_timer: null,
@@ -93,18 +100,41 @@
                 if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
+                params = params || {};
+
+                // 状态默认开启弹窗
+                var status = true;
+                // 商品可选规格
+                var goods_spec_choose = ((goods.specifications || null) != null) ? (goods.specifications.choose || []) : [];
+                // 无规格是否直接操作
+                var is_direct_cart = 0;
+                if((params.is_direct_cart || 0) == 1 && parseInt(goods.is_exist_many_spec || 0) == 0 && goods_spec_choose.length == 0) {
+                    status = false;
+                    is_direct_cart = 1;
+                }
+                // 是否成功提示、默认提示
+                var is_success_tips = (params.is_success_tips == undefined) ? 1 : params.is_success_tips || 0;
+                // 直接加购、并且用户已经存在购物车则依次+1
+                if(this.is_direct_cart == 1 && parseInt(this.goods.user_cart_count || 0) > 0) {
+                    var buy_number = 1;
+                } else {
+                    var buy_number = goods.buy_min_number || 1;
+                }
+                // 设置数据
                 this.setData({
-                    popup_status: true,
+                    popup_status: status,
                     params: params || {},
                     back_data: back_data,
                     goods: goods || {},
-                    goods_spec_choose: goods.specifications.choose || [],
+                    goods_spec_choose: goods_spec_choose,
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,
                     goods_spec_base_inventory: goods.inventory,
                     goods_spec_base_images: goods.images,
-                    buy_number: goods.buy_min_number || 1,
-                    buy_event_type: params.buy_event_type || 'cart'
+                    buy_number: buy_number,
+                    buy_event_type: params.buy_event_type || 'cart',
+                    is_direct_cart: is_direct_cart,
+                    is_success_tips: is_success_tips,
                 });
 
                 // 不能选择规格处理
@@ -112,6 +142,11 @@
 
                 // 是否默认选中第一个规格
                 this.plugins_intellectstools_selected_spec_handle();
+
+                // 是否直接操作加入购物车
+                if(is_direct_cart) {
+                    this.spec_confirm_event();
+                }
             },
 
             // 默认选中第一个规格
@@ -603,7 +638,10 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, 'success');
+                            // 是否成功提示
+                            if(this.is_success_tips == 1) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                            }
                             var cart_number = res.data.data.buy_number;
 
                             // 调用父级

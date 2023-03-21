@@ -25,6 +25,10 @@
 .data-list .item .spec-choice {
     max-width: calc(100% - 220rpx);
 }
+.data-list .item .cart-badge-icon {
+    top: -16rpx;
+    right: 0;
+}
 
 /**
  * 导航

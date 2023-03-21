@@ -12,7 +12,7 @@
                     </block>
                 </view>
 
-                <view class="padding-horizontal-main padding-top-main">
+                <view class="padding-horizontal-main padding-top-main bottom-line-exclude">
                     <!-- 地址 -->
                     <view v-if="common_site_type == 0 || common_site_type == 2 || common_site_type == 4" class="padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
                         <view class="address arrow-right cp" @tap="address_event">

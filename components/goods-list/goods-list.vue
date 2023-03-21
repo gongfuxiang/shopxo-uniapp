@@ -1,32 +1,40 @@
 <template>
     <view>
-        <view v-if="(propData || null) != null && (propData.goods_list || null) != null && propData.goods_list.length > 0">
-            <view v-if="(propData.title || null) != null || (propData.vice_title || null) != null" class="spacing-nav-title">
-                <text v-if="(propData.title || null) != null" class="text-wrapper" :style="'color:'+(propData.color || '#333')+';'">{{propData.title}}</text>
-                <text v-if="(propData.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{propData.vice_title}}</text>
-                <navigator v-if="(propData[propMoreUrlKey] || null) != null" :url="propData[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+        <view v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
+            <view v-if="(data.title || null) != null || (data.vice_title || null) != null" class="spacing-nav-title">
+                <text v-if="(data.title || null) != null" class="text-wrapper" :style="'color:'+(data.color || '#333')+';'">{{data.title}}</text>
+                <text v-if="(data.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{data.vice_title}}</text>
+                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
             </view>
-            <view class="wh-auto oh pr">
-                <view v-if="(propData.keywords_arr || null) != null && propData.keywords_arr.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
+            <view class="wh-auto oh pr goods-list">
+                <view v-if="(data.keywords_arr || null) != null && data.keywords_arr.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
                     <scroll-view scroll-x>
-                        <block v-for="(kv, ki) in propData.keywords_arr" :key="ki">
+                        <block v-for="(kv, ki) in data.keywords_arr" :key="ki">
                             <navigator v-if="(kv || null) != null" :url="propKeywordsUrl + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
                         </block>
                     </scroll-view>
                 </view>
                 <!-- 默认图文 -->
-                <block v-if="(propData.style_type || 0) == 0">
+                <block v-if="(data.style_type || 0) == 0">
                     <view class="goods-data-list">
-                        <view v-for="(item, index) in propData.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
+                        <view v-for="(item, index) in data.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
-                            <navigator :url="item.goods_url" hover-class="none">
+                            <view :data-value="item.goods_url" @tap="url_event">
                                 <image class="goods-img fl radius" :src="item.images" mode="aspectFit"></image>
                                 <view class="base fr">
                                     <view class="multi-text">{{item.title}}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
-                                    <view class="sales-price margin-top-sm">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                    <view class="base-bottom pa">
+                                        <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                        <view v-if="(item.is_error || 0) == 0" class="fr pr" :data-index="index" @tap.stop="goods_cart_event">
+                                            <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                            <view class="cart-badge-icon pa">
+                                                <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                            </view>
+                                        </view>
+                                    </view>
                                 </view>
-                            </navigator>
+                            </view>
                             <!-- 标签插件 -->
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv,li) in propLabel.data" :key="li">
@@ -40,15 +48,23 @@
                     </view>
                 </block>
                 <!-- 九方格 -->
-                <block v-else-if="propData.style_type == 1">
+                <block v-else-if="data.style_type == 1">
                     <view class="goods-data-grid-list">
-                        <view v-for="(item, index) in propData.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
+                        <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
                             <navigator :url="item.goods_url" hover-class="none">
                                 <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
-                                    <view class="goods-title multi-text margin-bottom-sm">{{item.title}}</view>
-                                    <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                    <view class="goods-title multi-text">{{item.title}}</view>
+                                    <view class="margin-top-sm">
+                                        <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                        <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                            <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                            <view class="cart-badge-icon pa">
+                                                <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                            </view>
+                                        </view>
+                                    </view>
                                 </view>
                             </navigator>
                             <!-- 标签插件 -->
@@ -64,18 +80,26 @@
                     </view>
                 </block>
                 <!-- 滚动 -->
-                <view v-else-if="propData.style_type == 2" class="rolling-horizontal border-radius-main oh spacing-mb">
+                <view v-else-if="data.style_type == 2" class="rolling-horizontal border-radius-main oh spacing-mb">
                     <view class="goods-data-rolling-list scroll-view-horizontal">
-                        <swiper :vertical="false" :autoplay="propIsAutoPlay" :circular="false" :display-multiple-items="((propData.multiple_items || null) == null) ? (propData.goods_list.length < 3 ? propData.goods_list.length : 3) : (propData.goods_list.length < propData.multiple_items ? propData.goods_list.length : propData.multiple_items)" interval="3000">
-                            <block v-for="(item, index) in propData.goods_list" :key="index">
+                        <swiper :vertical="false" :autoplay="propIsAutoPlay" :circular="false" :display-multiple-items="((data.multiple_items || null) == null) ? (data.goods_list.length < 3 ? data.goods_list.length : 3) : (data.goods_list.length < data.multiple_items ? data.goods_list.length : data.multiple_items)" interval="3000">
+                            <block v-for="(item, index) in data.goods_list" :key="index">
                                 <swiper-item>
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                         <!-- 商品主体内容 -->
                                         <navigator :url="item.goods_url" hover-class="none">
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
-                                                <view class="multi-text margin-bottom-sm">{{item.title}}</view>
-                                                <view class="sales-price">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                                <view class="multi-text">{{item.title}}</view>
+                                                <view class="margin-top-sm">
+                                                    <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                                    <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                        <view class="cart-badge-icon pa">
+                                                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                                        </view>
+                                                    </view>
+                                                </view>
                                             </view>
                                         </navigator>
                                         <!-- 标签插件 -->
@@ -95,23 +119,38 @@
                 </view>
             </view>
         </view>
+
+        <!-- 商品购买 -->
+        <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+
+        <!-- 购物车抛物线 -->
+        <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentBadge from "../../components/badge/badge";
+    import componentGoodsBuy from "../../components/goods-buy/goods-buy";
+    import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
     export default {
         data() {
-            return {};
+            return {
+                data: null,
+            };
         },
-        components: {},
+        components: {
+            componentBadge,
+            componentGoodsBuy,
+            componentCartParaCurve
+        },
         props: {
             propCurrencySymbol: {
                 type: String,
                 default: app.globalData.data.currency_symbol
             },
             propData: {
-            	type: [Array,Object],
-            	default: []
+                type: [Array,Object],
+                default: []
             },
             propMoreUrlKey: {
                 type: String,
@@ -128,9 +167,74 @@
             propLabel: {
                 type: [Array,Object,String],
                 default: null
+            },
+            propIsCartParaCurve: {
+                type: Boolean,
+                default: false
             }
         },
+        // 属性值改变监听
+        watch: {
+            // 数据
+            propData(value, old_value) {
+                this.data = value;
+            }
+        },
+        // 页面被展示
+        created: function() {
+            this.data = this.propData;
+        },
         methods: {
+            // 加入购物车
+            goods_cart_event(e) {
+                if((this.$refs.goods_buy || null) != null) {
+                    var index = e.currentTarget.dataset.index || 0;
+                    var goods = this.propData.goods_list[index];
+                    // 开启购物车抛物线效果则展示提示操作
+                    var is_success_tips = this.propIsCartParaCurve ? 0 : 1;
+                    this.$refs.goods_buy.init(goods, {buy_event_type: 'cart', is_direct_cart: 1, is_success_tips: is_success_tips}, {index: index, pos: e});
+                }
+            },
+
+            // 加入购物车成功回调
+            goods_cart_back_event(e) {
+                // 增加数量
+                var back = e.back_data;
+                var temp = this.data;
+                var goods = temp['goods_list'][back.index];
+                goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0)+parseInt(e.stock);
+                if(goods['user_cart_count'] > 99) {
+                    goods['user_cart_count'] = '99+';
+                }
+                temp['goods_list'][back.index] = goods;
+                this.setData({data: temp});
+
+                // 抛物线
+                if(this.propIsCartParaCurve && (this.$refs.cart_para_curve || null) != null) {
+                    this.$refs.cart_para_curve.init(null, back.pos, goods.images);
+                }
+
+                // 导航购物车处理
+                var cart_total = e.cart_number || 0;
+                if (cart_total <= 0) {
+                    app.globalData.set_tab_bar_badge(2, 0);
+                } else {
+                    app.globalData.set_tab_bar_badge(2, 1, cart_total);
+                }
+
+                // 当前页面
+                var page = app.globalData.current_page().split('?');
+                switch(page[0]) {
+                    // 商品详情页面
+                    case 'pages/goods-detail/goods-detail' :
+                        var obj = app.globalData.get_page_object(page[0]);
+                        if(obj != null) {
+                            obj.goods_cart_count_handle(cart_total);
+                        }
+                        break;
+                }
+            },
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);

@@ -37,7 +37,6 @@
     const app = getApp();
     import componentPopup from "../popup/popup";
     import componentNoData from "../no-data/no-data";
-
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {

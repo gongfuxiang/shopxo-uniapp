@@ -82,7 +82,7 @@
                                                     <view class="margin-top-sm oh">
                                                         <view class="sales-price text-size-sm single-text pa">{{currency_symbol}}{{item.min_price}}</view>
                                                         <view v-if="common_site_type != 1" class="buy-opt tc pa">
-                                                            <block v-if="(item.inventory || 0) > 0">
+                                                            <block v-if="(item.is_error || 0) == 0">
                                                                 <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                     <uni-icons type="minus" size="22" color="#f00"></uni-icons>
                                                                 </view>
@@ -92,7 +92,7 @@
                                                                 </view>
                                                             </block>
                                                             <block v-else>
-                                                                <text class="cr-grey text-size-xs">没货了</text>
+                                                                <text class="cr-grey text-size-xs">{{item.error_msg}}</text>
                                                             </block>
                                                         </view>
                                                     </view>
@@ -256,6 +256,9 @@
                 </view>
             </block>
 
+            <!-- 购物车抛物线 -->
+            <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
+
             <!-- 商品购买 -->
             <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
@@ -274,6 +277,7 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
+    import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
     
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
@@ -318,7 +322,9 @@
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 商品列表模式一级分类图标类型
-                category_goods_model_icon_field: app.globalData.data.category_goods_model_icon_type == 0 ? 'big_images' : 'icon'
+                category_goods_model_icon_field: app.globalData.data.category_goods_model_icon_type == 0 ? 'big_images' : 'icon',
+                // 临时操作数据
+                temp_opt_data: null,
             };
         },
 
@@ -328,7 +334,8 @@
             componentQuickNav,
             componentNoData,
             componentPopup,
-            componentBadge
+            componentBadge,
+            componentCartParaCurve
         },
         props: {},
 
@@ -676,7 +683,7 @@
                         }
 
                         // 数据操作处理
-                        this.buy_number_event_handle(type, temp_goods);
+                        this.buy_number_event_handle(e, type, temp_goods);
                     }
                 }
             },
@@ -688,7 +695,7 @@
             },
 
             // 列表数量事件处理
-            buy_number_event_handle(type, goods, spec = '') {
+            buy_number_event_handle(e, type, goods, spec = '') {
                 var res = this.buy_number_handle(type, goods, 'buy_number');
                 if(res === false) {
                     return false;
@@ -710,6 +717,15 @@
                     }
                 }
 
+                // 数据临时记录
+                this.setData({
+                    temp_opt_data: {
+                        pos: e,
+                        goods: goods,
+                        type: type,
+                    }
+                });
+
                 // 操作类型
                 if(res == 0) {
                     if(cart_item == null) {
@@ -724,6 +740,18 @@
                     this.cart_update(cart_item.id, goods['id'], number);
                 }
                 return true;
+            },
+
+            // 购物车抛物线动画
+            cart_para_curve_handle() {
+                if((this.temp_opt_data || null) != null && (this.temp_opt_data.type || 0) == 1) {
+                    if((this.$refs.cart_para_curve || null) != null) {
+                        var self = this;
+                        uni.createSelectorQuery().select('.botton-nav .cart').boundingClientRect().exec(function(res) {
+                            self.$refs.cart_para_curve.init(res, self.temp_opt_data.pos, self.temp_opt_data.goods.images);
+                        });
+                    }
+                }
             },
 
             // 购物车数量操作
@@ -842,6 +870,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            this.cart_para_curve_handle();
                             this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
@@ -874,6 +903,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            this.cart_para_curve_handle();
                             this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {

@@ -10,10 +10,10 @@
                 <view v-if="(data.goods || null) != null && data.goods.length > 0">
                     <!-- 商品 -->
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods" :key="index" :class="'item padding-main border-radius-main bg-white oh spacing-mb '+(item.buy_data.is_cart == 0 ? 'br-red' : '')">
+                        <view v-for="(item, index) in data.goods" :key="index" :class="'item padding-main border-radius-main bg-white oh spacing-mb '+(item.is_error == 0 ? '' : 'br-red')">
                             <image class="goods-img dis-block border-radius-main fl" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                             <view class="right-base fr">
-                                <label v-if="data.type == 1 && item.buy_data.is_cart == 1" class="fr" :data-index="index" @tap="goods_choice_event">
+                                <label v-if="data.type == 1 && item.is_error == 0" class="fr" :data-index="index" @tap="goods_choice_event">
                                     <radio :checked="(item.checked == undefined || item.checked == true)" style="transform:scale(0.7)" />
                                 </label>
                                 <view :class="'multi-text '+(data.type == 1 ? 'padding-right' : '')">{{item.title}}</view>
@@ -22,14 +22,17 @@
                                     <text v-if="item.original_price != 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
                                 </view>
                                 <view class="margin-top-xs">
-                                    <view v-if="item.buy_data.is_cart == 1">
-                                        <view class="va-m dis-inline-block margin-right-lg" :data-index="index" @tap="goods_cart_event">
+                                    <view v-if="item.is_error == 0">
+                                        <view class="va-m dis-inline-block margin-right-xl pr" :data-index="index" @tap="goods_cart_event">
                                             <uni-icons type="cart" size="16" color="#999"></uni-icons>
+                                            <view class="cart-badge-icon pa">
+                                                <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                            </view>
                                         </view>
                                         <text class="cr-gray text-size-xs">{{item.inventory}}{{item.inventory_unit}}</text>
                                         <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-gray cr-gray radius fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{item.spec_choice_text || '选择规格'}}</view>
                                     </view>
-                                    <view v-else class="cr-yellow text-size-xs">{{item.buy_data.error}}</view>
+                                    <view v-else class="cr-yellow text-size-xs">{{item.error_msg}}</view>
                                 </view>
                             </view>
                         </view>
@@ -77,6 +80,7 @@
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
     import componentGoodsSpecChoice from "../../../../components/goods-spec-choice/goods-spec-choice";
     import componentGoodsBuy from "../../../../components/goods-buy/goods-buy";
+    import componentBadge from "../../../../components/badge/badge";
 
     export default {
         data() {
@@ -98,7 +102,8 @@
             componentNoData,
             componentBottomLine,
             componentGoodsSpecChoice,
-            componentGoodsBuy
+            componentGoodsBuy,
+            componentBadge
         },
 
         onLoad(params) {
@@ -275,7 +280,7 @@
                 var goods_data = [];
                 var temp_goods = this.data.goods;
                 for(var i in temp_goods) {
-                    if(temp_goods[i]['buy_data']['is_cart'] == 1) {
+                    if(temp_goods[i]['is_error'] == 0) {
                         var goods_id = null;
                         if(type == 1) {
                             if(temp_goods[i]['checked'] == undefined || temp_goods[i]['checked'] == true) {
@@ -324,13 +329,22 @@
                 if((this.$refs.goods_buy || null) != null) {
                     var index = e.currentTarget.dataset.index || 0;
                     var goods = this.data['goods'][index];
-                    this.$refs.goods_buy.init(goods, {buy_event_type: 'cart'}, index);
+                    this.$refs.goods_buy.init(goods, {buy_event_type: 'cart', is_direct_cart: 1}, {index: index});
                 }
             },
 
             // 加入购物车成功回调
             goods_cart_back_event(e) {
-                console.log(e);
+                // 增加数量
+                var back = e.back_data;
+                var temp = this.data;
+                var goods = temp['goods'][back.index];
+                goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0)+parseInt(e.stock);
+                if(goods['user_cart_count'] > 99) {
+                    goods['user_cart_count'] = '99+';
+                }
+                temp['goods'][back.index] = goods;
+                this.setData({data: temp});
             }
         }
     };

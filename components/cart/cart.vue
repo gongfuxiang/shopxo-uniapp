@@ -6,25 +6,27 @@
                 <uni-swipe-action>
                     <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                         <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                            <view :class="'cart-goods-item wh-auto padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
+                            <view :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                 <!-- 选择 -->
                                 <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl cart-selected">
                                     <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
                                     <text v-if="(item.is_error || 0) == 1" class="cr-grey">失效</text>
                                 </view>
 
-                                <view class="items">
-                                    <navigator :url="item.goods_url" hover-class="none">
-                                        <!-- 图片 -->
-                                        <image :class="'cart-goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                        <!-- 错误 -->
-                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
-                                            <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
-                                        </view>
-                                    </navigator>
+                                <view class="items oh padding-left-sm">
+                                    <view  class="fl">
+                                        <navigator :url="item.goods_url" hover-class="none">
+                                            <!-- 图片 -->
+                                            <image :class="'cart-goods-image fl radius '+((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                            <!-- 错误 -->
+                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                <text class="cr-red tc bg-white round">{{item.error_msg}}</text>
+                                            </view>
+                                        </navigator>
+                                    </view>
 
                                     <!-- 基础 -->
-                                    <view class="cart-goods-base">
+                                    <view class="cart-goods-base fr">
                                         <!-- 标题、规格 -->
                                         <navigator :url="item.goods_url" hover-class="none">
                                             <view :class="'cart-goods-title multi-text margin-bottom-sm '+((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{item.title}}</view>
@@ -248,7 +250,7 @@
                             });
 
                             // 导航购物车处理
-                            var cart_total = parseInt(data.buy_number || 0);
+                            var cart_total = data.buy_number || 0;
                             if (cart_total <= 0) {
                                 app.globalData.set_tab_bar_badge(2, 0);
                             } else {
@@ -607,13 +609,9 @@
     .cart-goods-image {
         width: 155rpx;
         height: 155rpx;
-        margin-right: 20rpx;
     }
     .cart-goods-base {
-        margin-left: 175rpx;
-    }
-    .cart-goods-item .items {
-        padding-left: 80rpx;
+        width: calc(100% - 170rpx);
     }
     .cart-goods-item .selected {
         margin-top: 60rpx;
@@ -623,7 +621,7 @@
      * 错误提示
      */
     .cart-goods-item .error-msg {
-        left: 96rpx;
+        left: 92rpx;
         top: 78rpx;
         width: 160rpx;
     }

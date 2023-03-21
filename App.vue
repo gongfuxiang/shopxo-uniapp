@@ -45,7 +45,7 @@
                 is_online_service_fixed: 1,
                 // 分类页面商品列表模式一级分类使用图标类型（0 大图片, 1 icon图标）
                 category_goods_model_icon_type: 0,
-                // 强制使用文字作为logo（默认后台站点设置手机端图片logo->当前指定logo->后台手机管理小程序配置名称->站点设置中的站点名称）
+                // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
                 is_logo_use_text: 0,
 				// 用户中心菜单展示模式（0 九方格, 1 列表）
 				user_center_nav_show_model_type: 0,
@@ -57,7 +57,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -1470,7 +1470,11 @@
 
             // applogo
             get_application_logo() {
-                return this.get_config('config.home_site_logo_wap', this.data.application_logo);
+                var logo = this.data.application_logo || null;
+                if(logo == null) {
+                    logo = this.get_config('config.home_site_logo_wap');
+                }
+                return logo
             },
 
             // 分享内容处理
@@ -1510,6 +1514,17 @@
                     return false;
                 }
                 return true;
+            },
+
+            // 调用页面方法
+            get_page_object(page) {
+                var pages = getCurrentPages();
+                for(var i=0; i<pages.length; i++) {
+                    if(pages[i]['route'] == page) {
+                        return pages[i];
+                    }
+                }
+                return null;
             },
 
             // 当前页面地址

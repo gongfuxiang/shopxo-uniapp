@@ -126,7 +126,7 @@
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
                         <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-activity-list>
                         </block>
 
                         <!-- 门店 - 插件 -->
@@ -178,7 +178,7 @@
                                     </scroll-view>
                                 </view>
                                 <block v-if="floor.goods.length > 0">
-									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
+									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
                                 </block>
                             </view>
                         </view>
@@ -443,7 +443,7 @@
                                 navigation: data.navigation || [],
                                 article_list: data.article_list || [],
                                 data_list: data.data_list,
-                                cart_total: parseInt(data.cart_total.buy_number || 0),
+                                cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,

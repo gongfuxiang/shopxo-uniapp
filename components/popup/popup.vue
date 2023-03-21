@@ -2,7 +2,7 @@
     <view>
         <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
             <view class="popup-mask" v-if="propMask || true" @tap="onMaskTap"></view>
-            <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')">
+            <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')" :style="'left:'+popup_content_left_value+'px'">
                 <slot></slot>
             </view>
         </view>
@@ -11,7 +11,9 @@
 <script>
     export default {
         data() {
-            return {};
+            return {
+                popup_content_left_value: 'auto'
+            };
         },
         components: {},
         props: {
@@ -43,6 +45,19 @@
             	type: Boolean,
             	default: false
             }
+        },
+        // 属性值改变监听
+        watch: {
+            // 监听状态
+        	propShow(value, old_value) {
+                // 处理内容左边距、避免父级设置内边距影响
+                var width = uni.getSystemInfoSync().windowWidth;
+                var left = 0;
+                if(width > 800) {
+                    left = (width-800)/2;
+                }
+                this.popup_content_left_value = left;
+        	}
         },
         methods: {
             onMaskTap: function onMaskTap() {
