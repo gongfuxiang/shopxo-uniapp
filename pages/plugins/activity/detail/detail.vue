@@ -23,20 +23,7 @@
                         <text class="cr-grey text-size-xs margin-left-lg">{{data.vice_title}}</text>
                         <navigator url="/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多活动</navigator>
                     </view>
-                    <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods_list" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
-                            <navigator :url="item.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
-                                <view class="padding-horizontal-main margin-top-sm">
-                                    <view class="multi-text">{{item.title}}</view>
-                                    <view class="single-text margin-top-sm">
-                                        <text v-if="(data_base.goods_detail_icon || null) != null" class="text-size-xs bg-red cr-white round padding-left-sm padding-right-sm padding-top-xs padding-bottom-xs" :style="'background-color:'+data.color+' !important;'">{{data_base.goods_detail_icon}}</text>
-                                        <text class="sales-price va-m">{{currency_symbol}}{{item.min_price}}</text>
-                                    </view>
-                                </view>
-                            </navigator>
-                        </view>
-                    </view>
+                    <component-goods-list :propData="{style_type: 1, goods_list: data.goods_list}" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -57,6 +44,7 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentGoodsList from "../../../../components/goods-list/goods-list";
 
     export default {
         data() {
@@ -76,7 +64,8 @@
 
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentGoodsList
         },
         props: {},
 

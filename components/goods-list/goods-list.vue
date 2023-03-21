@@ -25,7 +25,10 @@
                                     <view class="multi-text">{{item.title}}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
                                     <view class="base-bottom pa">
-                                        <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                        <view class="fl">
+                                            <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
+                                            <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
+                                        </view>
                                         <view v-if="(item.is_error || 0) == 0" class="fr pr" :data-index="index" @tap.stop="goods_cart_event">
                                             <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                             <view class="cart-badge-icon pa">
@@ -57,7 +60,10 @@
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{item.title}}</view>
                                     <view class="margin-top-sm">
-                                        <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                        <view class="fl">
+                                            <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
+                                            <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
+                                        </view>
                                         <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                             <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                             <view class="cart-badge-icon pa">
@@ -92,7 +98,10 @@
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="multi-text">{{item.title}}</view>
                                                 <view class="margin-top-sm">
-                                                    <view class="sales-price fl">{{propCurrencySymbol}}{{item.min_price}}</view>
+                                                    <view class="fl">
+                                                        <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
+                                                        <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
+                                                    </view>
                                                     <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                         <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                                         <view class="cart-badge-icon pa">
@@ -144,33 +153,50 @@
             componentCartParaCurve
         },
         props: {
+            // 价格符号
             propCurrencySymbol: {
                 type: String,
                 default: app.globalData.data.currency_symbol
             },
+            // 列表数据
             propData: {
                 type: [Array,Object],
                 default: []
             },
+            // 更多url地址
             propMoreUrlKey: {
                 type: String,
                 default: 'url'
             },
+            // 关键字url地址
             propKeywordsUrl: {
                 type: String,
                 default: '/pages/goods-search/goods-search?keywords='
             },
+            // 滚动自动播放
             propIsAutoPlay: {
                 type: Boolean,
                 default: true
             },
+            // 标签数据
             propLabel: {
                 type: [Array,Object,String],
                 default: null
             },
+            // 展示加购抛物线
             propIsCartParaCurve: {
                 type: Boolean,
                 default: false
+            },
+            // 展示价格icon图标
+            propIsShowPriceIcon: {
+                type: Boolean,
+                default: false
+            },
+            // 展示价格字段
+            propPriceField: {
+                type: String,
+                default: 'min_price'
             }
         },
         // 属性值改变监听

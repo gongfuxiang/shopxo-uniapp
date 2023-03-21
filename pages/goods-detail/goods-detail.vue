@@ -83,13 +83,13 @@
                 <!-- 价格 -->
                 <view class="price-content padding-lg" :style="(plugins_seckill_is_valid == 1) ? 'background-image: url('+plugins_seckill_data.bg_img+')' : ''">
                     <view class="single-text">
-                        <text v-if="(show_field_price_text || null) != null" class="price-icon radius va-m">{{show_field_price_text}}</text>
+                        <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{show_field_price_text}}</text>
                         <text class="sales-price va-m">{{currency_symbol}}{{goods_spec_base_price}}</text>
                     </view>
                     <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm single-text">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
                 </view>
                 <!-- 秒杀 -->
-                <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-lg fr tc">
+                <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
                     <view class="time-title cr-white single-text">{{plugins_seckill_data.title || '限时秒杀'}}</view>
                     <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds" :propMsecShow="true" propTimeSize="32" propTimePadding="0" propTimeWeight="bold" propTimeBackgroundColor="transparent" propTimeColor="#ffe500" propDsColor="#fff"></component-countdown>
                 </view>

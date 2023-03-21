@@ -2,7 +2,7 @@
     <view>
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
+                <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white pr spacing-mb">
                     <navigator :url="item.goods_url" hover-class="none">
                         <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                         <view class="goods-base">
@@ -13,7 +13,7 @@
                             </view>
                         </view>
                     </navigator>
-                    <button class="br-red cr-red bg-white fr round" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
+                    <button class="br-red cr-red bg-white round text-size-xs pa operate-submit" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                 </view>
             </view>
             <view v-else>

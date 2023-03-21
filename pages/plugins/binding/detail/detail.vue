@@ -30,7 +30,7 @@
                                             </view>
                                         </view>
                                         <text class="cr-gray text-size-xs">{{item.inventory}}{{item.inventory_unit}}</text>
-                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-gray cr-gray radius fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{item.spec_choice_text || '选择规格'}}</view>
+                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-gray cr-gray round fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{item.spec_choice_text || '选择规格'}}</view>
                                     </view>
                                     <view v-else class="cr-yellow text-size-xs">{{item.error_msg}}</view>
                                 </view>

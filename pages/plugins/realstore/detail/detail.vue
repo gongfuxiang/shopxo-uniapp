@@ -195,7 +195,7 @@
                     </block>
                     <block v-else>
                         <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
-                        <view class="padding-bottom-xxxl margin-bottom-xxxl tc text-size-xs">
+                        <view class="padding-bottom-xxxl margin-bottom-xxxl tc text-size-xs margin-top-xxl">
                             <text class="cr-red">没有已加购的商品？</text>
                             <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
                         </view>
@@ -217,7 +217,10 @@
                 </view>
                 <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm pa radius-0 '+((info.status_info.status == 1) ? 'bg-main cr-white' : 'bg-gray cr-gray')">{{info.status_info.status == 1 ? '去结算' : info.status_info.msg}}</button>
             </view>
-            
+
+            <!-- 购物车抛物线 -->
+            <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
+
             <!-- 商品购买 -->
             <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
         </view>
@@ -235,6 +238,7 @@
     import componentSearch from "../../../../components/search/search";
     import componentBadge from "../../../../components/badge/badge";
     import componentPopup from "../../../../components/popup/popup";
+    import componentCartParaCurve from '../../../../components/cart-para-curve/cart-para-curve';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -285,6 +289,8 @@
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // 临时操作数据
+                temp_opt_data: null,
             };
         },
 
@@ -293,7 +299,8 @@
             componentNoData,
             componentSearch,
             componentBadge,
-            componentPopup
+            componentPopup,
+            componentCartParaCurve
         },
         props: {},
 
@@ -610,7 +617,7 @@
                         }
 
                         // 数据操作处理
-                        this.buy_number_event_handle(type, temp_goods);
+                        this.buy_number_event_handle(e, type, temp_goods);
                     }
                 }
             },
@@ -622,12 +629,21 @@
             },
 
             // 列表数量事件处理
-            buy_number_event_handle(type, goods, spec = '') {
+            buy_number_event_handle(e, type, goods, spec = '') {
                 var res = this.buy_number_handle(type, goods, 'buy_number');
                 if(res === false) {
                     return false;
                 }
-                
+
+                // 数据临时记录
+                this.setData({
+                    temp_opt_data: {
+                        pos: e,
+                        goods: goods,
+                        type: type,
+                    }
+                });
+
                 // 为0或减操作则查询
                 var cart_item = null;
                 if(type == 0 || (type == 1 && goods['buy_number'] > 0)) {
@@ -658,6 +674,18 @@
                     this.cart_update(cart_item.id, goods['id'], number);
                 }
                 return true;
+            },
+
+            // 购物车抛物线动画
+            cart_para_curve_handle() {
+                if((this.temp_opt_data || null) != null && (this.temp_opt_data.type || 0) == 1) {
+                    if((this.$refs.cart_para_curve || null) != null) {
+                        var self = this;
+                        uni.createSelectorQuery().select('.botton-nav .cart').boundingClientRect().exec(function(res) {
+                            self.$refs.cart_para_curve.init(res, self.temp_opt_data.pos, self.temp_opt_data.goods.images);
+                        });
+                    }
+                }
             },
 
             // 购物车数量操作
@@ -801,6 +829,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            this.cart_para_curve_handle();
                             this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
@@ -833,6 +862,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            this.cart_para_curve_handle();
                             this.get_cart_data();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {

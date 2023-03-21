@@ -286,7 +286,7 @@
 }
 .goods-base-price-countdown .price-icon { 
     margin-right: 0;
-    padding: 0px 3px;
+    padding: 0px 10rpx;
     border: 1px solid #fff;
     background: transparent;
     position: absolute;

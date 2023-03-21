@@ -6,3 +6,7 @@
     width: 160rpx;
     height: 160rpx;
 }
+.operate-submit {
+    right: 20rpx;
+    bottom: 20rpx;
+}
