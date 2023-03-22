@@ -772,7 +772,7 @@ button[disabled].bg-gray {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgb(225 225 225 / 70%);
+    background: rgb(253 253 253 / 80%);
     z-index: 1;
 }
 .goods-data-grid-list .item .error-msg,

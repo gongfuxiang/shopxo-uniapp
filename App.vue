@@ -1518,13 +1518,14 @@
 
             // 调用页面方法
             get_page_object(page) {
+                var result = [];
                 var pages = getCurrentPages();
                 for(var i=0; i<pages.length; i++) {
                     if(pages[i]['route'] == page) {
-                        return pages[i];
+                        result.push(pages[i]);
                     }
                 }
-                return null;
+                return result;
             },
 
             // 当前页面地址
