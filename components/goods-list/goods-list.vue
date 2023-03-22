@@ -19,21 +19,20 @@
                     <view class="goods-data-list">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
-                            <view :data-value="item.goods_url" @tap="url_event">
+                            <view class="cp" :data-value="item.goods_url" @tap="url_event">
                                 <image class="goods-img fl radius" :src="item.images" mode="aspectFit"></image>
+                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius">{{item.error_msg}}</view>
                                 <view class="base fr">
                                     <view class="multi-text">{{item.title}}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
                                     <view class="base-bottom pa">
-                                        <view class="fl">
-                                            <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
-                                            <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
-                                        </view>
-                                        <view v-if="(item.is_error || 0) == 0" class="fr pr" :data-index="index" @tap.stop="goods_cart_event">
-                                            <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
-                                            <view class="cart-badge-icon pa">
-                                                <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
-                                            </view>
+                                        <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
+                                        <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
+                                    </view>
+                                    <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                        <view class="cart-badge-icon pa">
+                                            <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                         </view>
                                     </view>
                                 </view>
@@ -55,8 +54,9 @@
                     <view class="goods-data-grid-list">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
-                            <navigator :url="item.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
+                            <view class="cp" :data-value="item.goods_url" @tap="url_event">
+                                <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
+                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{item.title}}</view>
                                     <view class="margin-top-sm">
@@ -64,7 +64,7 @@
                                             <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
                                             <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                         </view>
-                                        <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                        <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                             <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                             <view class="cart-badge-icon pa">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -72,7 +72,7 @@
                                         </view>
                                     </view>
                                 </view>
-                            </navigator>
+                            </view>
                             <!-- 标签插件 -->
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv,li) in propLabel.data" :key="li">
@@ -93,8 +93,9 @@
                                 <swiper-item>
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                         <!-- 商品主体内容 -->
-                                        <navigator :url="item.goods_url" hover-class="none">
+                                        <view class="cp" :data-value="item.goods_url" @tap="url_event">
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
+                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="multi-text">{{item.title}}</view>
                                                 <view class="margin-top-sm">
@@ -102,7 +103,7 @@
                                                         <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
                                                         <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                                     </view>
-                                                    <view v-if="(item.is_error || 0) == 0" class="fr pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                                    <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                         <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                                         <view class="cart-badge-icon pa">
                                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -110,7 +111,7 @@
                                                     </view>
                                                 </view>
                                             </view>
-                                        </navigator>
+                                        </view>
                                         <!-- 标签插件 -->
                                         <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(propLabel.base.user_goods_show_style || 'top-left')">
                                             <block v-for="(lv,li) in propLabel.data" :key="li">
