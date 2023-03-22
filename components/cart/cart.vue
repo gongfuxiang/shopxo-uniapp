@@ -621,7 +621,7 @@
      * 错误提示
      */
     .cart-goods-item .error-msg {
-        left: 92rpx;
+        left: 80rpx;
         top: 78rpx;
         width: 160rpx;
     }
@@ -714,7 +714,7 @@
     }
     .cart-nav-remove-submit {
         top: 38rpx;
-        left: 66rpx;
+        left: 76rpx;
         padding: 0rpx 20rpx;
         line-height: 36rpx;
     }
