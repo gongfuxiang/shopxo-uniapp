@@ -9,8 +9,8 @@
                                 <image class="goods-image fl radius br margin-right-lg" :src="item.images" mode="aspectFill"></image>
                             </navigator>
                             <view class="item-base fl margin-top-sm">
-                                <block v-for="(item, tx) in [1,2,3,4,5]" :key="tx">
-                                    <image class="xingxing-icon va-m" :src="common_static_url+'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tx ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tx"></image>
+                                <block v-for="(tv, ti) in [1,2,3,4,5]" :key="ti">
+                                    <image class="xingxing-icon va-m" :src="common_static_url+'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
                                 </block>
                                 <text v-if="form_rating_list[index] != undefined" class="cr-gray va-m margin-left-lg">{{rating_msg[form_rating_list[index]-1]}}</text>
                             </view>
@@ -273,9 +273,6 @@
                 var temp_list = this.form_rating_list;
                 var length = this.detail.items.length;
                 for (var i = 0; i < length; i++) {
-                    if (temp_list[i] == undefined) {
-                        temp_list[i] = 0;
-                    }
                     if (index == i) {
                         temp_list[i] = value;
                     }
