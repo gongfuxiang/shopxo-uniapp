@@ -26,7 +26,7 @@
                                 <!-- 标题 -->
                                 <text class="fw-b text-size va-m">{{item.name}}</text>
                             </view>
-                            <view class="desc multi-text cr-base text-size-sm margin-top-sm">{{item.describe}}</view>
+                            <view class="desc multi-text cr-base text-size-xs margin-top-sm">{{item.describe}}</view>
                         </view>
                     </view>
                 </view>

@@ -568,3 +568,21 @@
     overflow-x: hidden;
     margin-top: 20rpx;
 }
+
+/**
+ * 商品服务 - 插件
+ */
+.plugins-goodsservice-view-container .item image {
+    width: 32rpx;
+    height: 32rpx !important;
+}
+.plugins-goodsservice-container .item image {
+    width: 70rpx;
+    height: 70rpx !important;
+}
+.plugins-goodsservice-container .item .left {
+    width: 80rpx;
+}
+.plugins-goodsservice-container .item .right {
+    width: calc(100% - 90rpx);
+}

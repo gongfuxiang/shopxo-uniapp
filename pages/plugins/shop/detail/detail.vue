@@ -78,8 +78,8 @@
                 </view>
             </view>
             <!-- 导航 -->
-            <view class="nav scroll-view-horizontal bg-white padding-top-lg border-color-main">
-                <view class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b cp" @tap="nav_shop_category_event">查看商品分类</view>
+            <view v-if="shop_goods_category.length > 0 || shop_navigation.length > 0" class="nav scroll-view-horizontal bg-white padding-top-lg border-color-main">
+                <view v-if="shop_goods_category.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b cp" @tap="nav_shop_category_event">查看商品分类</view>
                 <scroll-view scroll-x class="nav-scroll">
                     <block v-if="shop_navigation.length > 0">
                         <block v-for="(item, index) in shop_navigation" :key="index">

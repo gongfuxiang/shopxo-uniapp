@@ -113,17 +113,17 @@
                             <!-- 分享 -->
                             <view class="goods-share tc cp pa" @tap="popup_share_event">
                                 <image :src="common_static_url+'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                                <view class="cr-gray text-size-sm">分享</view>
+                                <view class="cr-gray text-size-xs">分享</view>
                             </view>
                         </view>
-                        
+
                         <!-- 简述 -->
-                        <view v-if="(goods.simple_desc || null) != null" class="cr-red margin-top-lg">{{goods.simple_desc}}</view>
+                        <view v-if="(goods.simple_desc || null) != null" class="cr-red text-size-xs margin-top-lg">{{goods.simple_desc}}</view>
                     </view>
-                    
+
                     <!-- 基础总计数据 -->
                     <view class="br-t padding-main">
-                        <view class="base-grid oh padding-top-sm padding-bottom-sm">
+                        <view class="base-grid oh padding-top-sm padding-bottom-sm text-size-xs">
                             <view class="fl tl">
                                 <text class="cr-gray">库存</text>
                                 <text class="cr-main padding-left-sm">{{goods.inventory}}</text>
@@ -142,20 +142,17 @@
 
                 <!-- 智能工具-基础提示信息 -->
                 <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
-                    <view class="notice-content">
+                    <view class="notice-content text-size-xs">
                         <view class="va-m dis-inline-block margin-right-xs">
                             <uni-icons type="notification" size="32rpx" color="#dd514c"></uni-icons>
                         </view>
-                        <block v-if="(plugins_intellectstools_data.base_bottom.title || null) != null">
-                            <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{plugins_intellectstools_data.base_bottom.title}}</text>
-                            <view></view>
-                        </block>
-                        <text>{{plugins_intellectstools_data.base_bottom.msg}}</text>
+                        <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{plugins_intellectstools_data.base_bottom.title}}</text>
+                        <view>{{plugins_intellectstools_data.base_bottom.msg}}</view>
                     </view>
                 </view>
-                
+
                 <!-- 批发 -->
-                <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
+                <view v-if="((plugins_wholesale_data || null) != null)" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title margin-top-sm">{{plugins_wholesale_data.title}}</view>
                     <view class="fr column-right-view border-radius-main single-text" @tap="popup_wholesale_event">
                         <block  v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
@@ -163,9 +160,9 @@
                         </block>
                     </view>
                 </view>
-            
+
                 <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white arrow-right spacing-mb">
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title margin-top-sm">优惠券</view>
                     <view class="fr column-right-view border-radius-main single-text cp" @tap="popup_coupon_event">
                         <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
@@ -175,7 +172,7 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0)+(buy_button.is_cart || 0)+(buy_button.is_show || 0) > 0))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right spacing-mb">
+                <view v-if="goods.is_exist_many_spec == 1 && ((buy_button || null) != null && ((buy_button.is_buy || 0)+(buy_button.is_cart || 0)+(buy_button.is_show || 0) > 0))" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title">规格</view>
                     <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="((buy_button.is_buy || 0) == 1) ? 'buy' : (((buy_button.is_cart || 0) == 1) ? 'cart' : 'show')">{{goods_spec_selected_text}}</view>
                 </view>
@@ -183,18 +180,28 @@
 
             <view class="padding-horizontal-main">
                 <!-- 面板提示信息 -->
-                <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white spacing-mb">
+                <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white text-size-xs spacing-mb">
                     <block v-for="(item, index) in goods.plugins_view_panel_data" :key="index">
                         <view v-if="(item || null) != null">{{item}}</view>
                     </block>
                 </view>
 
                 <!-- 商品基础参数 -->
-                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text spacing-mb" @tap="popup_params_event" data-value="base">
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_params_event" data-value="base">
 					<block v-for="(item, index) in goods.parameters.base" :key="index">
 						<text v-if="index > 0">，</text>
 						<text>{{item.value}}</text>
 					</block>
+                </view>
+
+                <!-- 商品服务 -->
+                <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_goodsservice_event">
+                    <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
+                        <view :class="'item dis-inline-block '+(index > 0 ? 'margin-left-xxl' : '')">
+                            <image class="va-m" :src="item.images" mode="widthFix"></image>
+                            <text class="cr-base va-m margin-left-sm">{{item.name}}</text>
+                        </view>
+                    </block>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -236,7 +243,7 @@
                                             <uni-rate :value="item.rating" :readonly="true" :is-fill="false" :size="14" />
                                         </view>
                                         <view class="fr">
-                                            <text class="cr-grey">{{item.add_time_date}}</text>
+                                            <text class="cr-grey text-size-xs">{{item.add_time_date}}</text>
                                         </view>
                                     </view>
                                 </view>
@@ -261,10 +268,10 @@
                 </view>
 
                 <!-- 智能工具-详情顶部提示信息 -->
-                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.content_top || null) != null && (plugins_intellectstools_data.content_top.msg || null) != null && plugins_intellectstools_data.content_top.msg.length > 0" class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main spacing-mb">
+                <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.content_top || null) != null && (plugins_intellectstools_data.content_top.msg || null) != null && plugins_intellectstools_data.content_top.msg.length > 0" class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main text-size-xs spacing-mb">
                     <view v-if="((plugins_intellectstools_data.content_top.title || null) != null)" class="panel-title padding-bottom-main fw-b text-size margin-bottom-main">{{plugins_intellectstools_data.content_top.title}}</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in plugins_intellectstools_data.content_top.msg" :key="index" class="item padding-vertical-main">
+                        <view v-for="(item, index) in plugins_intellectstools_data.content_top.msg" :key="index" class="item padding-top-sm padding-bottom-sm">
                             <view class="content">{{item}}</view>
                         </view>
                     </view>
@@ -280,14 +287,14 @@
                         <view class="content-item oh">
 							<view class="oh">
 								<block v-for="(item, index) in goods.parameters.detail" :key="index">
-									<view v-if="index <= 3" class="item single-text cr-base">
+									<view v-if="index <= 3" class="item single-text cr-base text-size-xs">
 										<text class="name">{{item.name}}:</text>
 										<text class="value">{{item.value}}</text>
 									</view>
 								</block>
 							</view>
 							<view class="tc margin-top-lg">
-								<text class="cr-grey" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
+								<text class="cr-grey text-size-xs" @tap="popup_params_event" data-value="detail">查看全部参数 >></text>
 							</view>
                         </view>
                     </view>
@@ -487,6 +494,35 @@
                 </view>
             </component-popup>
 
+            <!-- 商品服务弹层 -->
+            <component-popup :propShow="popup_goodsservice_status" propPosition="bottom" @onclose="popup_goodsservice_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_goodsservice_close_event">
+                            <icon type="clear" size="20"></icon>
+                        </view>
+                    </view>
+                    <view class="plugins-goodsservice-container">
+                        <block v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0">
+                            <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
+                                <view :class="'item oh padding-vertical-main '+(index > 0 ? 'br-t' : '')">
+                                    <view class="fl left">
+                                        <image class="dis-block" :src="item.images" mode="widthFix"></image>
+                                    </view>
+                                    <view class="fr right tl">
+                                        <view class="cr-base fw-b text-size-sm">{{item.name}}</view>
+                                        <view class="cr-grey text-size-xs margin-top-xs">{{item.describe}}</view>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <block v-else>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关服务信息</view>
+                        </block>
+                    </view>
+                </view>
+            </component-popup>
+
             <!-- 购买记录 -->
             <view v-if="(plugins_salerecords_tips_content || null) != null" :class="'plugins-salerecords-tips' + plugins_salerecords_tips_ent">
                 <image mode="widthFix" :src="plugins_salerecords_tips_content.user.avatar" class="va-m br"></image>
@@ -644,7 +680,10 @@
                 plugins_realstore_data: null,
                 popup_realstore_status: false,
                 // 组合搭配插件
-                plugins_binding_data: null
+                plugins_binding_data: null,
+                // 商品服务插件
+                plugins_goodsservice_data: null,
+                popup_goodsservice_status: false,
             };
         },
 
@@ -811,7 +850,8 @@
                                 plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                                 plugins_chat_data: data.plugins_chat_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
-                                plugins_binding_data: data.plugins_binding_data || null
+                                plugins_binding_data: data.plugins_binding_data || null,
+                                plugins_goodsservice_data: data.plugins_goodsservice_data || null
                             };
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {
@@ -1270,6 +1310,20 @@
             popup_wholesale_close_event(e) {
                 this.setData({
                     popup_wholesale_status: false
+                });
+            },
+
+            // 商品服务开启弹层
+            popup_goodsservice_event(e) {
+                this.setData({
+                    popup_goodsservice_status: true
+                });
+            },
+
+            // 商品服务弹层关闭
+            popup_goodsservice_close_event(e) {
+                this.setData({
+                    popup_goodsservice_status: false
                 });
             },
 

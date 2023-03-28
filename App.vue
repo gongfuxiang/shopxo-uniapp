@@ -61,7 +61,7 @@
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-                system_type: 'default-2',
+                system_type: 'default',
                 // 基础信息
                 application_title: 'ShopXO',
                 application_describe: '企业级B2C开源电商系统！',

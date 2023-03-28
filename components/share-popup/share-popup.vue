@@ -11,26 +11,26 @@
                     <!-- #ifdef H5 -->
                     <view class="share-items oh cp" @tap="share_h5_event">
                         <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-gray single-text">点击复制地址分享给好友、群聊</text>
+                        <text class="cr-gray text-size-xs single-text">点击复制地址分享给好友、群聊</text>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
                         <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-gray single-text">一键分享给好友、群聊</text>
+                        <text class="cr-gray text-size-xs single-text">一键分享给好友、群聊</text>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU -->
                     <view class="share-items oh cp">
                         <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_close_event">
                             <image :src="common_static_url+'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-gray single-text">一键分享给好友、群聊</text>
+                            <text class="cr-gray text-size-xs single-text">一键分享给好友、群聊</text>
                         </button>
                     </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
                         <image :src="common_static_url+'share-friend-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-gray single-text">生成海报，分享到朋友圈、好友及群聊</text>
+                        <text class="cr-gray text-size-xs single-text">生成海报，分享到朋友圈、好友及群聊</text>
                     </view>
                 </view>
             </view>
