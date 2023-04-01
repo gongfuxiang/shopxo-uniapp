@@ -146,7 +146,7 @@
                     <!-- 支付方式 -->
                     <view v-if="total_price > 0 && payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
                         <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-main">
-                            <view :class="'item-content radius br ' + (item.selected || '')" :data-value="item.id" @tap="payment_event">
+                            <view :class="'item-content radius br ' + (payment_id == item.id ? 'cr-main br-main' : '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{item.name}}</text>
                             </view>
@@ -450,10 +450,12 @@
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],
+                                    payment_list: data.payment_list || [],
+                                    payment_id: data.default_payment_id || 0,
                                     buy_datetime_info: datetime,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null,
-                                    plugins_realstore_data: data.plugins_realstore_data || null
+                                    plugins_realstore_data: data.plugins_realstore_data || null,
                                 });
 
                                 // 优惠劵选择处理
@@ -484,9 +486,6 @@
                                     key: app.globalData.data.cache_buy_user_address_select_key,
                                     data: data.base.address || null
                                 });
-
-                                // 支付方式
-                                this.payment_list_data(data.payment_list);
                             }
                         } else {
                             this.setData({
@@ -652,20 +651,7 @@
                 this.setData({
                     payment_id: e.currentTarget.dataset.value
                 });
-                this.payment_list_data(this.payment_list);
                 this.init();
-            },
-
-            // 支付方式数据处理
-            payment_list_data(data) {
-                if (this.payment_id != 0) {
-                    for (var i in data) {
-                        data[i]['selected'] = (data[i]['id'] == this.payment_id) ? 'cr-main br-main' : '';
-                    }
-                }
-                this.setData({
-                    payment_list: data || []
-                });
             },
 
             // 优惠劵弹层开启

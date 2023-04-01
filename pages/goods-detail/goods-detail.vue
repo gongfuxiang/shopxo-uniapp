@@ -544,6 +544,9 @@
         <!-- 商品购买 -->
         <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
+        <!-- 商品批量下单 -->
+        <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
+
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true"></component-quick-nav>
     </view>
@@ -551,6 +554,7 @@
 <script>
     const app = getApp();
     import componentGoodsBuy from "../../components/goods-buy/goods-buy";
+    import componentGoodsBatchBuy from "../../components/goods-batch-buy/goods-batch-buy";
     import componentQuickNav from "../../components/quick-nav/quick-nav";
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
@@ -578,6 +582,7 @@
                 indicator_active_color: '#666',
                 autoplay: true,
                 circular: true,
+                load_status: 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -684,11 +689,14 @@
                 // 商品服务插件
                 plugins_goodsservice_data: null,
                 popup_goodsservice_status: false,
+                // 商品批量下单插件
+                plugins_batchbuy_data: null
             };
         },
 
         components: {
             componentGoodsBuy,
+            componentGoodsBatchBuy,
             componentQuickNav,
             componentPopup,
             componentBadge,
@@ -717,14 +725,14 @@
                 // 是否自定义购物车状态
                 is_opt_cart: (params.is_opt_cart === undefined) ? (app.globalData.data.is_goods_bottom_opt_cart || 0) : parseInt(params.is_opt_cart || 0),
             });
-
-            // 数据加载
-            this.init();
         },
 
         onShow() {
             // 初始化配置
             this.init_config();
+
+            // 数据加载
+            this.init();
         },
 
         // 下拉刷新
@@ -821,43 +829,49 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var goods = data.goods;
-                            var upd_data = {
-                                data_bottom_line_status: true,
-                                data_list_loding_status: 3,
-                                goods: goods,
-                                indicator_dots: goods.photo.length > 1,
-                                autoplay: goods.photo.length > 1,
-                                goods_photo: goods.photo,
-                                nav_more_list: data.nav_more_list || [],
-                                goods_content_app: goods.content_app || [],
-                                nav_favor_button_info: {
-                                    "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
-                                    "status": goods.is_favor
-                                },
-                                buy_button: data.buy_button || null,
-                                top_nav_title_data: data.middle_tabs_nav || [],
-                                goods_spec_base_price: goods.price,
-                                goods_spec_base_original_price: goods.original_price || 0,
-                                show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
-                                plugins_seckill_data: data.plugins_seckill_data || null,
-                                plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
-                                plugins_coupon_data: data.plugins_coupon_data || null,
-                                quick_nav_cart_count: data.cart_total.buy_number || 0,
-                                plugins_salerecords_data: data.plugins_salerecords_data || null,
-                                plugins_shop_data: data.plugins_shop_data || null,
-                                plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
-                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
-                                plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                plugins_chat_data: data.plugins_chat_data || null,
-                                plugins_realstore_data: data.plugins_realstore_data || null,
-                                plugins_binding_data: data.plugins_binding_data || null,
-                                plugins_goodsservice_data: data.plugins_goodsservice_data || null
-                            };
-                            // 导航首页按钮
-                            if ((data.nav_home_button_info || null) != null) {
-                                upd_data['nav_home_button_info'] = data.nav_home_button_info;
+                            if(this.load_status == 1) {
+                                this.setData({quick_nav_cart_count: data.cart_total.buy_number || 0});
+                            } else {
+                                var upd_data = {
+                                    data_bottom_line_status: true,
+                                    data_list_loding_status: 3,
+                                    load_status: 1,
+                                    goods: goods,
+                                    indicator_dots: goods.photo.length > 1,
+                                    autoplay: goods.photo.length > 1,
+                                    goods_photo: goods.photo,
+                                    nav_more_list: data.nav_more_list || [],
+                                    goods_content_app: goods.content_app || [],
+                                    nav_favor_button_info: {
+                                        "text": (goods.is_favor == 1 ? '已' : '') + '收藏',
+                                        "status": goods.is_favor
+                                    },
+                                    buy_button: data.buy_button || null,
+                                    top_nav_title_data: data.middle_tabs_nav || [],
+                                    goods_spec_base_price: goods.price,
+                                    goods_spec_base_original_price: goods.original_price || 0,
+                                    show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                                    plugins_seckill_data: data.plugins_seckill_data || null,
+                                    plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
+                                    plugins_coupon_data: data.plugins_coupon_data || null,
+                                    quick_nav_cart_count: data.cart_total.buy_number || 0,
+                                    plugins_salerecords_data: data.plugins_salerecords_data || null,
+                                    plugins_shop_data: data.plugins_shop_data || null,
+                                    plugins_wholesale_data: ((data.plugins_wholesale_data || null) == null) ? null : data.plugins_wholesale_data,
+                                    plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
+                                    plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                                    plugins_chat_data: data.plugins_chat_data || null,
+                                    plugins_realstore_data: data.plugins_realstore_data || null,
+                                    plugins_binding_data: data.plugins_binding_data || null,
+                                    plugins_goodsservice_data: data.plugins_goodsservice_data || null,
+                                    plugins_batchbuy_data: data.plugins_batchbuy_data || null
+                                };
+                                // 导航首页按钮
+                                if ((data.nav_home_button_info || null) != null) {
+                                    upd_data['nav_home_button_info'] = data.nav_home_button_info;
+                                }
+                                this.setData(upd_data);
                             }
-                            this.setData(upd_data);
 
                             // 如果已默认开启购买弹窗，库存为0则不开启
                             if(this.popup_buy_status && parseInt(goods.inventory) > 0) {
@@ -1022,6 +1036,14 @@
                             this.setData({
                                 popup_realstore_status: true
                             });
+                        }
+                        break;
+                    // 商品批量下单-购买
+                    case 'plugins-batchbuy-button-buy' :
+                    // 商品批量下单-加入购物车
+                    case 'plugins-batchbuy-button-cart' :
+                        if((this.$refs.goods_batch_buy || null) != null) {
+                            this.$refs.goods_batch_buy.init(this.goods, this.plugins_batchbuy_data, type.replace('plugins-batchbuy-button-', ''));
                         }
                         break;
                     // 默认
@@ -1362,6 +1384,11 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+
+            // 商品批量下单加入购物车回调
+            batch_goods_cart_back_event(e) {
+                this.goods_cart_count_handle(e.cart_number);
             }
         }
     };

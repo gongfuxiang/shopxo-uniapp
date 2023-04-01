@@ -46,9 +46,9 @@
                         <view class="goods-buy-number oh pr margin-top-xl margin-bottom-xxl">
                             <view class="fl margin-top">购买数量</view>
                             <view class="number-content tc oh round">
-                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="0">-</view>
-                                <input @blur="goods_buy_number_blur" class="tc cr-gray fl" type="number" :value="buy_number">
-                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl" data-type="1">+</view>
+                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" data-type="0">-</view>
+                                <input @blur="goods_buy_number_blur" class="tc cr-gray bg-white fl va-m radius-0" type="number" :value="buy_number">
+                                <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" data-type="1">+</view>
                             </view>
                         </view>
                     </view>
@@ -95,7 +95,7 @@
         created: function() {},
 
         methods: {
-            // 获取数据
+            // 初始化
             init(goods = {}, params = {}, back_data = null) {
                 if(!app.globalData.is_single_page_check()) {
                     return false;
@@ -742,7 +742,6 @@
         right: 20rpx;
         top: 0;
         background: #eee;
-        border-radius: 2px;
         border: 1px solid #eee;
     }
     .goods-spec-choice-container .number-content .number-submit {
@@ -751,13 +750,10 @@
     }
     .goods-spec-choice-container .number-content input {
         width: 50px;
-        background: #fff;
-        border-radius: 0px;
     }
     .goods-spec-choice-container .number-content .number-submit,
     .goods-spec-choice-container .number-content input {
         padding: 0;
-        vertical-align: middle;
         height: 60rpx;
         line-height: 60rpx;
     }
