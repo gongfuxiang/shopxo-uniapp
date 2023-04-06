@@ -12,6 +12,9 @@
     padding-top: 0;
     padding-bottom: 0;
 }
+.header-shop-whole-search input {
+    width: calc(100% - 168rpx);
+}
 .search-btn {
     top: 20rpx;
     right: 20rpx;

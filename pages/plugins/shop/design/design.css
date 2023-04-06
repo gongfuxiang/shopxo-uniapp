@@ -10,6 +10,9 @@
     border-width: 1px;
     border-style: solid;
 }
+.header-shop-whole-search input {
+    width: calc(100% - 168rpx);
+}
 .search-btn {
     top: 20rpx;
     right: 20rpx;

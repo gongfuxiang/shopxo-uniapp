@@ -2,11 +2,11 @@
     <view>
         <view v-if="(shop || null) != null" class="pr">
             <!-- 搜索 -->
-            <view class="search padding-main bg-white pr oh br-b">
+            <view :class="'padding-main bg-white pr oh br-b search '+(is_shop_whole_search == 1 ? '' : 'header-shop-whole-search')">
                 <input class="bg-white fl padding-left-xxl text-size-xs round border-color-main" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey" @input="search_keywords_event">
                 <view class="search-btn pa">
-                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&'">搜本店</button>
-                    <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
+                    <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&'">{{is_shop_whole_search == 1 ? '搜本店' : '搜索'}}</button>
+                    <button v-if="is_shop_whole_search == 1" class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
                 </view>
             </view>
             <!-- 顶部 -->
@@ -172,6 +172,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 currency_symbol: app.globalData.data.currency_symbol,
+                is_shop_whole_search: app.globalData.data.is_shop_whole_search || 0,
                 params: null,
                 user: null,
                 data_base: null,
