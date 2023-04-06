@@ -20,9 +20,9 @@
                             <view class="form-container-upload oh">
                                 <view class="form-upload-data fl">
                                     <block v-if="(form_images_list[index] || null) != null && form_images_list[index].length > 0">
-                                        <view v-for="(item, ix) in form_images_list[index]" :key="ix" class="item fl">
+                                        <view v-for="(iv, ix) in form_images_list[index]" :key="ix" class="item fl">
                                             <text class="delete-icon" @tap="upload_delete_event" :data-index="index" :data-ix="ix">x</text>
-                                            <image :src="item" @tap="upload_show_event" :data-index="index" :data-ix="ix" mode="aspectFill" class="padding-xs dis-block"></image>
+                                            <image :src="iv" @tap="upload_show_event" :data-index="index" :data-ix="ix" mode="aspectFill" class="padding-xs dis-block"></image>
                                         </view>
                                     </block>
                                 </view>

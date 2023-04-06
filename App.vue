@@ -41,6 +41,8 @@
                 is_goods_bottom_opt_back: 1,
                 // 门店详情顶部导航返回按钮（0 否, 1 是）
                 is_realstore_top_nav_back: 1,
+                // 门店详情搜索框内扫码加购（0否, 1是）
+                is_realstore_top_search_scan: 1,
                 // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
                 is_online_service_fixed: 1,
                 // 分类页面商品列表模式一级分类使用图标类型（0 大图片, 1 icon图标）

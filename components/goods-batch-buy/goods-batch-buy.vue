@@ -14,7 +14,7 @@
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
                                         <view :class="'padding-top-xxl padding-bottom-xxl tc cp oh pr ' + (nav_active_index == index ? 'bg-white cr-main' : '')" :data-index="index" @tap="nav_event">
-                                            <image v-if="(item.images || null) != null" class="dis-inline-block va-m radius margin-right" :src="item.images" mode="widthFix"></image>
+                                            <image v-if="(item.images || null) != null" class="dis-inline-block va-m radius margin-right spec-images" :src="item.images" mode="widthFix"></image>
                                             <text class="text-size-xs cr-base va-m">{{item.name}}</text>
                                             <view v-if="(item.badge_total || 0) > 0" class="badge-icon pa">
                                                 <component-badge :propNumber="item.badge_total"></component-badge>
@@ -47,10 +47,13 @@
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
                                         <view :class="'oh padding-vertical-main '+(index > 0 ? 'br-t' : '')">
                                             <view class="fl item-left">
-                                                <view class="text-size-xs">{{item.name}}</view>
+                                                <view>
+                                                    <image v-if="(item.images || null) != null" class="dis-inline-block va-m radius margin-right spec-images" :src="item.images" mode="widthFix"></image>
+                                                    <text class="text-size-xs va-m">{{item.name}}</text>
+                                                </view>
                                                 <view class="sales-price text-size-xs">{{currency_symbol}}{{item.base.price}}</view>
                                             </view>
-                                            <view class="tc oh round fr item-right text-size-xs">
+                                            <view class="tc oh round fr item-right text-size-xs margin-top-xs">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-gray fl va-m" data-type="0" :data-index="index">-</view>
                                                 <input @blur="batchbuy_goods_buy_number_blur" class="tc cr-gray bg-white fl va-m radius-0" type="number" :value="(item.buy_number || 0)" :data-index="index">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-gray fl va-m" data-type="1" :data-index="index">+</view>
@@ -397,7 +400,7 @@
         top: 8rpx;
         right: 36rpx;
     }
-    .plugins-batchbuy-container .left-nav image {
+    .plugins-batchbuy-container .left-nav .spec-images {
         width: 50rpx;
         height: 50rpx !important;
     }
@@ -426,6 +429,10 @@
     }
     .plugins-batchbuy-container .right-conent-only-level-one {
         width: 100%;
+    }
+    .plugins-batchbuy-container .right-conent-only-level-one .spec-images {
+        width: 34rpx;
+        height: 34rpx !important;
     }
     .plugins-batchbuy-container .confirm-submit {
         left: 0;

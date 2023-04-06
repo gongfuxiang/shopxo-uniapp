@@ -15,10 +15,10 @@
                         <!-- 搜索 -->
                         <view :class="'fr va-m '+(is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
                             <!-- #ifndef H5 -->
-                            <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="true" :propIsOnEvent="true" :propIsRequired="false" propIcon="scan" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
+                            <component-search @onsearch="search_button_event" @onicon="search_icon_event" :propIsIconOnEvent="is_realstore_top_search_scan == 1" :propIsOnEvent="true" :propIsRequired="false" :propIcon="is_realstore_top_search_scan == 1 ? 'scan' : 'search'" propIconColor="#fff" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
                             <!-- #ifdef H5 -->
-                            <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
+                            <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#9A9A9A" propPlaceholderClass="cr-grey" propTextColor="#fff" propPlaceholder="商品搜索" propBgColor="rgba(0, 0, 0, 0.1)" propBrColor="rgb(205 205 205 / 60%)"></component-search>
                             <!-- #endif -->
                         </view>
                     </view>
@@ -289,6 +289,7 @@
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                is_realstore_top_search_scan: app.globalData.data.is_realstore_top_search_scan || 0,
                 // 临时操作数据
                 temp_opt_data: null,
             };
