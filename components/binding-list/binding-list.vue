@@ -4,7 +4,7 @@
             <!-- 组合搭配 -->
             <block v-if="((propData.binding_list || null) != null)">
                 <block v-for="(bv, bi) in propData.binding_list" :key="bi">
-                    <view v-if="((bv.goods || null) != null) && bv.goods.length > 0" class="plugins-binding-list padding-horizontal-main border-radius-main oh">
+                    <view v-if="((bv.goods || null) != null) && bv.goods.length > 0" class="plugins-binding-list padding-horizontal-main border-radius-main oh spacing-mb">
                         <view class="spacing-nav-title oh">
                             <text class="text-wrapper">{{bv.title}}</text>
                             <view v-if="(bv.estimate_discount_price || 0) != 0" class="estimate-discount-price fr">

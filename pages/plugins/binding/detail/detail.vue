@@ -224,33 +224,56 @@
                 // 已选商品
                 var min_price = 0;
                 var max_price = 0;
+                var min_original_price = 0;
+                var max_original_price = 0;
+                var price = 0;
+                var discount_price = 0;
                 for(var i in goods) {
-                    if(goods[i]['checked'] == undefined || goods[i]['checked'] == true) {
+                    if((goods[i]['checked'] == undefined || goods[i]['checked'] == true) && goods[i]['is_error'] == 0) {
                         min_price += parseFloat(goods[i]['min_price'] || 0);
                         max_price += parseFloat(goods[i]['max_price'] || 0);
+                        min_original_price += parseFloat(goods[i]['min_original_price'] || 0);
+                        max_original_price += parseFloat(goods[i]['max_original_price'] || 0);
                     }
                 }
 
-                // 优惠计算
+                // 价格信息
+                price = parseFloat(temp_data.price || 0);
                 var rate = parseFloat(temp_data.rate || 0);
-                var discount_price = 0;
-                if(min_price == max_price) {
-                    if(rate > 0) {
-                        var price = app.globalData.price_two_decimal(min_price*rate);
-                        var discount_price = app.globalData.price_two_decimal(min_price-price) || 0;
+                // 组合价
+                if(price > 0) {
+                    if(min_price == max_price) {
+                        var original_price = min_price;
+                        var dv = parseFloat(app.globalData.price_two_decimal(original_price-price));
+                        discount_price = (dv <= 0) ? 0 : dv;
                     } else {
-                        var price = min_price;
+                        var original_price = min_price+'-'+max_price;
+                        var d1 = parseFloat(app.globalData.price_two_decimal(min_price-price));
+                        var d2 = parseFloat(app.globalData.price_two_decimal(max_price-price));
+                        discount_price = (d1 == d2) ? d1 : ((d1 <= 0 && d2 <= 0) ? 0 : (d1 <= 0 ? 0 : d1)+'-'+(d2 <= 0 ? 0 : d2));
                     }
                 } else {
+                    // 折扣率
                     if(rate > 0) {
-                        var temp_min = app.globalData.price_two_decimal(min_price*rate);
-                        var temp_max = app.globalData.price_two_decimal(max_price*rate);
-                        var price = temp_min+'-'+temp_max;
-                        var discount_price = app.globalData.price_two_decimal(min_price-temp_min)+'-'+app.globalData.price_two_decimal(max_price-temp_max);
+                        min_original_price = min_price;
+                        max_original_price = max_price;
+                        min_price = min_price*rate;
+                        max_price = max_price*rate;
+                    }
+
+                    price = (min_price != max_price) ? min_price+'-'+max_price : min_price;
+                    var original_price = (min_original_price != max_original_price) ? min_original_price+'-'+max_original_price : min_original_price;
+                    if(price.toString().indexOf('-') == -1 && original_price.toString().indexOf('-') == -1)
+                    {
+                        var dv = parseFloat(app.globalData.price_two_decimal(original_price-price));
+                        discount_price = (dv <= 0) ? 0 : dv;
                     } else {
-                        var price = app.globalData.price_two_decimal(min_price)+'-'+app.globalData.price_two_decimal(max_price);
+                        var d1 = parseFloat(app.globalData.price_two_decimal(min_original_price-min_price));
+                        var d2 = parseFloat(app.globalData.price_two_decimal(max_original_price-max_price));
+                        discount_price = (d1 == d2) ? d1 : ((d1 <= 0 && d2 <= 0) ? 0 : (d1 <= 0 ? 0 : d1)+'-'+(d2 <= 0 ? 0 : d2));
                     }
                 }
+
                 // 购买价格
                 temp_data['estimate_price'] = price;
                 // 节省价格

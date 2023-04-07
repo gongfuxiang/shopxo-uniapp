@@ -774,6 +774,7 @@ button[disabled].bg-gray {
     left: 0;
     background: rgb(253 253 253 / 80%);
     z-index: 1;
+    filter: blur(0.3px);
 }
 .goods-data-grid-list .item .error-msg,
 .goods-data-rolling-list .item .error-msg {
