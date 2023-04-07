@@ -104,7 +104,7 @@
                 is_first: 0,
                 system: system,
                 x: 12,
-                y: height - 210
+                y: height - 280
             });
         },
         methods: {

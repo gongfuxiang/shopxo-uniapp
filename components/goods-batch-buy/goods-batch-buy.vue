@@ -10,7 +10,7 @@
                 <view class="plugins-batchbuy-container oh">
                     <block v-if="(goods || null) != null && (batchbuy_data || null) != null && (batchbuy_data.goods_spec_data || null) != null && batchbuy_data.goods_spec_data.length > 0">
                         <block v-if="batchbuy_data.is_only_level_one == 0">
-                            <view class="left-nav ht-auto pa bg-base">
+                            <view class="left-nav pa bg-base">
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
                                         <view :class="'padding-top-xxl padding-bottom-xxl tc cp oh pr ' + (nav_active_index == index ? 'bg-white cr-main' : '')" :data-index="index" @tap="nav_event">
@@ -63,8 +63,26 @@
                                 </scroll-view>
                             </view>
                         </block>
-                        <view class="pa confirm-submit padding-horizontal-main wh-auto bs-bb bottom-line-exclude">
-                            <button type="default" class="bg-main cr-white text-size tc wh-auto round" @tap="confirm_event">{{(buy_event_type == 'buy') ? '立即购买' : '加入购物车'}}</button>
+                        <view class="confirm-submit pa wh-auto bottom-line-exclude bg-white padding-top-main">
+                            <view class="oh padding-horizontal-main padding-bottom-main cr-grey">
+                                <text class="text-size-xs">
+                                    <text>已选</text>
+                                    <text class="cr-red padding-left-xs padding-right-xs">{{base_data.kind}}</text>
+                                    <text>种</text>
+                                    <text class="cr-red padding-left-xs padding-right-xs">{{base_data.quantity}}</text>
+                                    <text>{{goods.inventory_unit}}</text>
+                                </text>
+                                <text class="text-size-xs fr">金额：<text class="fw-b sales-price">{{currency_symbol}}{{base_data.amount_money}}</text></text>
+                            </view>
+                            <view v-if="(buy_button.data || null) != null && buy_button.data.length > 0" class="padding-bottom-main">
+                                <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
+                                    <block v-for="(item, index) in buy_button.data" :key="index">
+                                        <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
+                                            <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="confirm_event" :data-type="item.type" hover-class="none">{{item.name}}</button>
+                                        </view>
+                                    </block>
+                                </view>
+                            </view>
                         </view>
                     </block>
                     <block v-else>
@@ -86,10 +104,15 @@
                 currency_symbol: app.globalData.get_config('currency_symbol', app.globalData.data.currency_symbol),
                 popup_status: false,
                 nav_active_index: 0,
-                buy_event_type: 'buy',
                 goods: null,
+                buy_button: null,
                 batchbuy_data: null,
                 back_data: null,
+                base_data: {
+                    kind: 0,
+                    quantity: 0,
+                    amount_money: '0.00',
+                }
             };
         },
 
@@ -102,7 +125,7 @@
 
         methods: {
             // 初始化
-            init(goods = null, batchbuy_data = null, buy_event_type = 'buy', back_data = null) {
+            init(goods = null, batchbuy_data = null, buy_button = null, back_data = null) {
                 if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
@@ -110,7 +133,7 @@
                     popup_status: true,
                     goods: goods || null,
                     batchbuy_data: batchbuy_data || null,
-                    buy_event_type: buy_event_type || 'buy',
+                    buy_button: buy_button || null,
                     back_data: back_data,
                 });
             },
@@ -196,25 +219,45 @@
                 {
                     var badge_total = 0;
                     temp_data.goods_spec_data[this.nav_active_index]['data'].forEach(item => {
-                        badge_total += parseInt(item.buy_number || 0);
+                        var temp_badge = parseInt(item.buy_number || 0);
+                        if(temp_badge > 0) {
+                            badge_total += temp_badge;
+                        }
                     });
                     temp_data.goods_spec_data[this.nav_active_index]['badge_total'] = badge_total;
                 }
 
-                // 设置数据
-                this.setData({
-                    batchbuy_data: temp_data
-                });
-
-                // 总数
+                // 总数、汇总
                 var stock_total = 0;
+                var kind_total = 0;
+                var amount_money_total = 0;
                 temp_data.goods_spec_data.forEach(item => {
                     if(parseInt(temp_data.is_only_level_one || 0) == 1) {
-                        stock_total += parseInt(item.buy_number || 0);
+                        var temp_stock = parseInt(item.buy_number || 0);
+                        if(temp_stock > 0) {
+                            stock_total += temp_stock;
+                            kind_total += 1;
+                            amount_money_total += temp_stock*parseFloat(item.base.price);
+                        }
                     } else {
                         item.data.forEach(item2 => {
-                            stock_total += parseInt(item2.buy_number || 0);
+                            var temp_stock = parseInt(item2.buy_number || 0);
+                            if(temp_stock > 0) {
+                                stock_total += temp_stock;
+                                kind_total += 1;
+                                amount_money_total += temp_stock*parseFloat(item2.base.price);
+                            }
                         });
+                    }
+                });
+
+                // 设置数据
+                this.setData({
+                    batchbuy_data: temp_data,
+                    base_data: {
+                        kind: kind_total,
+                        quantity: stock_total,
+                        amount_money: app.globalData.price_two_decimal(amount_money_total)
                     }
                 });
 
@@ -323,8 +366,8 @@
                         }
 
                         // 操作类型
-                        switch (this.buy_event_type) {
-                            case 'buy':
+                        switch (e.currentTarget.dataset.type) {
+                            case 'plugins-batchbuy-button-buy':
                                 // 进入订单确认页面
                                 var data = {
                                     buy_type: "goods",
@@ -337,7 +380,7 @@
                                 break;
 
                             // 加入购物车
-                            case 'cart':
+                            case 'plugins-batchbuy-button-cart':
                                 this.goods_cart_event(goods_data);
                                 break;
                                         
@@ -389,12 +432,13 @@
 <style>
     .plugins-batchbuy-container {
         height: 60vh;
-        padding-bottom: 100rpx;;
+        padding-bottom: 160rpx;
     }
     .plugins-batchbuy-container .left-nav {
         width: 200rpx;
         top: 0;
         left: 0;
+        height: calc(100% - 160rpx);
     }
     .plugins-batchbuy-container .left-nav .badge-icon {
         top: 8rpx;
@@ -436,6 +480,19 @@
     }
     .plugins-batchbuy-container .confirm-submit {
         left: 0;
-        bottom: 20rpx;
+        bottom: 0;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-0 .item,
+    .plugins-batchbuy-container .buy-nav-btn-number-1 .item {
+        width: 100% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-2 .item {
+        width: 50% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-3 .item {
+        width: 33.33% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-4 .item {
+        width: 25% !important;
     }
 </style>

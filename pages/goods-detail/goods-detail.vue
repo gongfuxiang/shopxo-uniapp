@@ -1043,7 +1043,7 @@
                     // 商品批量下单-加入购物车
                     case 'plugins-batchbuy-button-cart' :
                         if((this.$refs.goods_batch_buy || null) != null) {
-                            this.$refs.goods_batch_buy.init(this.goods, this.plugins_batchbuy_data, type.replace('plugins-batchbuy-button-', ''));
+                            this.$refs.goods_batch_buy.init(this.goods, this.plugins_batchbuy_data, this.buy_button);
                         }
                         break;
                     // 默认

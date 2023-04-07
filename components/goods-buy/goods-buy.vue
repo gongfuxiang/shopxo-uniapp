@@ -627,16 +627,12 @@
                 data['goods_id'] = this.goods.id;
                 data['spec'] = JSON.stringify(spec);
                 data['stock'] = this.buy_number;
-                uni.showLoading({
-                    title: '处理中...'
-                });
                 uni.request({
                     url: app.globalData.get_request_url('save', 'cart'),
                     method: 'POST',
                     data: data,
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         if (res.data.code == 0) {
                             // 是否成功提示
                             if(this.is_success_tips == 1) {
@@ -669,7 +665,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
                     }
                 });

@@ -23,13 +23,13 @@
         onShow() {
             // 数据加载
             if((this.$refs.cart || null) != null) {
-                this.$refs.cart.init();
+                this.$refs.cart.init('cart');
             }
         },
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.$refs.cart.init();
+            this.$refs.cart.init('cart');
         },
 
         methods: {}

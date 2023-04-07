@@ -40,15 +40,17 @@
 
                     <!-- 导航 -->
                     <view class="nav-button bottom-fixed padding-main pr">
-                        <view class="left-price fl">
-                            <view v-if="data.estimate_discount_price != 0" class="pa single-text estimate-discount-price">
-                                <text class="discount-icon cr-white text-size-xs">节省</text>
-                                <text class="cr-green">{{currency_symbol}}{{data.estimate_discount_price}}</text>
+                        <view class="bottom-line-exclude oh">
+                            <view class="left-price fl">
+                                <view v-if="data.estimate_discount_price != 0" class="pa single-text estimate-discount-price">
+                                    <text class="discount-icon cr-white text-size-xs">节省</text>
+                                    <text class="cr-green">{{currency_symbol}}{{data.estimate_discount_price}}</text>
+                                </view>
+                                <view :class="'sales-price single-text margin-top-'+(data.estimate_discount_price == 0 ? 'sm' : 'xl')">{{currency_symbol}}{{data.estimate_price}}</view>
                             </view>
-                            <view :class="'sales-price single-text margin-top-'+(data.estimate_discount_price == 0 ? 'sm' : 'xl')">{{currency_symbol}}{{data.estimate_price}}</view>
-                        </view>
-                        <view class="right-button fr tr">
-                            <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                            <view class="right-button fr tr">
+                                <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                            </view>
                         </view>
                     </view>
                 </view>

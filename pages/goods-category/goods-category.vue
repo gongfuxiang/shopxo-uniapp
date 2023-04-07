@@ -778,7 +778,16 @@
                         if(res === false) {
                             return false;
                         }
-                        
+
+                        // 数据临时记录
+                        this.setData({
+                            temp_opt_data: {
+                                pos: e,
+                                goods: temp_goods,
+                                type: type,
+                            }
+                        });
+
                         // 操作类型
                         if(res == 0) {
                             this.cart_delete(temp_goods['id']);
@@ -855,9 +864,6 @@
 
             // 购物车添加
             cart_save(goods_id, buy_number, spec = '') {
-                uni.showLoading({
-                    title: '处理中...'
-                });
                 uni.request({
                     url: app.globalData.get_request_url('save', 'cart'),
                     method: 'POST',
@@ -868,7 +874,6 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         if (res.data.code == 0) {
                             this.cart_para_curve_handle();
                             this.get_cart_data();
@@ -879,7 +884,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
                     }
                 });
@@ -887,10 +891,6 @@
 
             // 购物车更新
             cart_update(cart_id, goods_id, buy_number) {
-                uni.showLoading({
-                    title: '处理中...',
-                    mask: true
-                });
                 uni.request({
                     url: app.globalData.get_request_url("stock", "cart"),
                     method: 'POST',
@@ -901,7 +901,6 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         if (res.data.code == 0) {
                             this.cart_para_curve_handle();
                             this.get_cart_data();
@@ -914,7 +913,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
                     }
                 });
@@ -922,10 +920,6 @@
 
             // 购物车删除
             cart_delete(cart_id) {
-                uni.showLoading({
-                    title: '处理中...',
-                    mask: true
-                });
                 uni.request({
                     url: app.globalData.get_request_url('delete', 'cart'),
                     method: 'POST',
@@ -934,7 +928,6 @@
                     },
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         if (res.data.code == 0) {
                             this.get_cart_data();
                         } else {
@@ -946,7 +939,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
                     }
                 });

@@ -2,7 +2,7 @@
     <view>
         <view v-if="data_list.length > 0" class="cart-page">
             <!-- 数据列表 -->
-            <view class="padding-horizontal-main padding-top-main">
+            <view :class="'padding-horizontal-main padding-top-main '+(source_type != 'cart' ? 'bottom-line-exclude' : '')">
                 <uni-swipe-action>
                     <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                         <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
@@ -59,33 +59,32 @@
             </view>
 
             <!-- 操作导航 -->
-            <view class="cart-buy-nav oh wh-auto">
-                <!-- 展示型 -->
-                <view v-if="common_site_type == 1" class="cart-exhibition-mode padding-horizontal-main">
-                    <button class="bg-main cr-white round wh-auto text-size" type="default" @tap="exhibition_submit_event" hover-class="none">
+            <!-- 展示型 -->
+            <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto '+(source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                <view class="cart-exhibition-mode padding-horizontal-main">
+                    <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                         <view class="dis-inline-block va-m margin-right-xl">
                             <uni-icons type="phone" size="14" color="#fff" />
                         </view>
                         <text class="va-m">{{common_is_exhibition_mode_btn_text}}</text>
                     </button>
                 </view>
-
-                <!-- 销售,自提,虚拟销售 -->
-                <view v-else class="br-t bg-white wh-auto ht-auto">
-                    <view class="cart-nav-base fl single-text padding-left">
-                        <view @tap="selected_event" data-type="all" class="fl cart-selected">
-                            <image class="icon va-m" :src="common_static_url+'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
-                            <text v-if="!already_selected_status" class="va-m cr-base">全选</text>
-                        </view>
-                        <view v-if="already_selected_status" @tap="cart_all_remove_event" class="cart-nav-remove-submit pa bg-white cr-red br-red round cp">删除</view>
-                        <view class="fr price">
-                            <view class="sales-price single-text fr">{{currency_symbol}}{{total_price}}</view>
-                            <view class="fr">合计：</view>
-                        </view>
+            </view>
+            <!-- 销售,自提,虚拟销售 -->
+            <view v-else :class="'cart-buy-nav oh wh-auto br-t bg-white '+(source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                <view class="cart-nav-base fl single-text padding-left">
+                    <view @tap="selected_event" data-type="all" class="fl cart-selected">
+                        <image class="icon va-m" :src="common_static_url+'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                        <text v-if="!already_selected_status" class="va-m cr-base">全选</text>
                     </view>
-                    <view class="fr cart-nav-submit padding-top padding-bottom padding-horizontal-main">
-                        <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="!already_selected_status" hover-class="none">结算</button>
+                    <view v-if="already_selected_status" @tap="cart_all_remove_event" class="cart-nav-remove-submit pa bg-white cr-red br-red round cp">删除</view>
+                    <view class="fr price">
+                        <view class="sales-price single-text fr">{{currency_symbol}}{{total_price}}</view>
+                        <view class="fr">合计：</view>
                     </view>
+                </view>
+                <view class="fr cart-nav-submit padding-top padding-bottom padding-horizontal-main">
+                    <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="!already_selected_status" hover-class="none">结算</button>
                 </view>
             </view>
         </view>
@@ -122,6 +121,7 @@
                 total_price: '0.00',
                 is_selected_all: false,
                 already_selected_status: false,
+                source_type: null,
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 common_site_type: 0,
@@ -180,7 +180,8 @@
             },
 
             // 获取数据
-            init(e) {
+            init(source_type = null) {
+                this.setData({source_type: source_type});
                 var user = app.globalData.get_user_info(this, "init");
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
