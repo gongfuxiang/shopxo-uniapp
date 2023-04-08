@@ -182,7 +182,7 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: res.msg,
+                                data_list_loding_msg: res.data.msg,
                                 is_to_login: 0
                             });
                         }

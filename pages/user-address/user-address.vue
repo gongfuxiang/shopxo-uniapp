@@ -44,12 +44,12 @@
 			<view class="bottom-line-exclude oh">
 				<block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
 					<view class="submit-list">
-						<button class="bg-main br-main cr-white round text-size dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
-						<button class="bg-main-pair br-main-pair cr-white round text-size dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
+						<button class="bg-main br-main cr-white round text-size-sm dis-inline-block fl" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+						<button class="bg-main-pair br-main-pair cr-white round text-size-sm dis-inline-block fr" type="default" hover-class="none" @tap="choose_system_address_event">导入系统地址</button>
 					</view>
 				</block>
 				<block v-else>
-					<button class="bg-main br-main cr-white round text-size wh-auto" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
+					<button class="bg-main br-main cr-white round text-size-sm wh-auto" type="default" hover-class="none" @tap="address_add_event">添加新地址</button>
 				</block>
 			</view>
         </view>

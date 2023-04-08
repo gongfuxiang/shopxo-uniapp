@@ -812,9 +812,11 @@
 
             // 获取数据
             init() {
-                uni.showLoading({
-                    title: '加载中...'
-                });
+                if(this.load_status == 0) {
+                    uni.showLoading({
+                        title: '加载中...'
+                    });
+                }
                 this.setData({
                     data_list_loding_status: 1
                 });
@@ -825,7 +827,9 @@
                     dataType: 'json',
                     success: res => {
                         uni.stopPullDownRefresh();
-                        uni.hideLoading();
+                        if(this.load_status == 0) {
+                            uni.hideLoading();
+                        }
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var goods = data.goods;
@@ -911,7 +915,9 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        uni.hideLoading();
+                        if(this.load_status == 0) {
+                            uni.hideLoading();
+                        }
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,

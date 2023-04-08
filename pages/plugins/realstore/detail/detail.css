@@ -223,12 +223,11 @@
     z-index: 5;
 }
 .cart-content {
-    left: auto;
-    bottom: 130rpx;
+    left: 20rpx;
+    bottom: calc(130rpx + env(safe-area-inset-bottom));
     width: calc(100% - 40rpx);
     z-index: 6;
     max-width: calc(800px - 40rpx);
-    margin-left: 20rpx;
 }
 .cart-content .cart-list {
     max-height: 60vh;

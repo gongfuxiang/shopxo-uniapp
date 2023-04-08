@@ -102,7 +102,7 @@
 
                 <view class="bottom-fixed padding-main">
 					<view class="bottom-line-exclude oh">
-						<button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+						<button class="bg-main br-main cr-white round text-size-sm" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
 					</view>
                 </view>
             </view>
