@@ -62,8 +62,9 @@
         background-size: 20% 100%; 
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 80rpx;
+        font-size: 60rpx;
         font-weight: bold;
+        padding-top: 20%;
     }
     .loading-animation {
         -webkit-animation: loading-animation 2s linear infinite;

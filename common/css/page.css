@@ -301,6 +301,14 @@ button:before {
 .border-radius-main {
     border-radius: 20rpx;
 }
+.border-radius-left-main {
+    border-top-left-radius: 20rpx;
+    border-bottom-left-radius: 20rpx;
+}
+.border-radius-right-main {
+    border-top-right-radius: 20rpx;
+    border-bottom-right-radius: 20rpx;
+}
 
 /**
  * 价格
@@ -772,7 +780,7 @@ button[disabled].bg-gray {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgb(253 253 253 / 80%);
+    background: rgb(253 253 253 / 60%);
     z-index: 1;
     filter: blur(0.3px);
 }

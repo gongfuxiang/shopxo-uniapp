@@ -195,13 +195,15 @@
                 </view>
 
                 <!-- 商品服务 -->
-                <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_goodsservice_event">
-                    <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
-                        <view :class="'item dis-inline-block '+(index > 0 ? 'margin-left-xxl' : '')">
-                            <image class="va-m" :src="item.images" mode="widthFix"></image>
-                            <text class="cr-base va-m margin-left-sm">{{item.name}}</text>
-                        </view>
-                    </block>
+                <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white arrow-right text-size-xs spacing-mb" @tap="popup_goodsservice_event">
+                    <view class="content single-text oh border-radius-right-main">
+                        <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
+                            <view :class="'item dis-inline-block '+(index > 0 ? 'margin-left-xxl' : '')">
+                                <image class="va-m" :src="item.images" mode="widthFix"></image>
+                                <text class="cr-base va-m margin-left-sm">{{item.name}}</text>
+                            </view>
+                        </block>
+                    </view>
                 </view>
 
                 <!-- 组合搭配 -->

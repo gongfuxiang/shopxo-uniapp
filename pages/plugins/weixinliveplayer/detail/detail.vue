@@ -30,15 +30,15 @@
 
             <!-- 导航 -->
             <view class="nav wh-auto oh bottom-line-exclude">
-                <button class="share-friend-submit fl cr-white text-size round margin-left-main" type="default" hover-class="none" open-type="share">
+                <button class="share-friend-submit fl cr-white text-size-sm round margin-left-main" type="default" hover-class="none" open-type="share">
                     <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-share-friend-icon.png'" mode="widthFix"></image>
                     <text class="va-m">分享</text>
                 </button>
-                <button class="share-poster-submit fl cr-white text-size round margin-left-main" type="default" hover-class="none" @tap="share_poster_event">
+                <button class="share-poster-submit fl cr-white text-size-sm round margin-left-main" type="default" hover-class="none" @tap="share_poster_event">
                     <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-share-poster-icon.png'" mode="widthFix"></image>
                     <text class="va-m">海报</text>
                 </button>
-                <button class="player-submit fr cr-white text-size round margin-horizontal-main" type="default" hover-class="none" @tap="player_event">
+                <button class="player-submit fr cr-white text-size-sm round margin-horizontal-main" type="default" hover-class="none" @tap="player_event">
                     <image class="item-icon va-m margin-right-sm" :src="static_url+'nav-player-icon.png'" mode="widthFix"></image>
                     <text class="va-m">进入直播</text>
                 </button>

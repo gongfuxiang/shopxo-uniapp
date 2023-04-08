@@ -228,7 +228,6 @@
             // 获取数据
             get_data() {
                 this.setData({
-                    data_list_loding_status: 1,
                     total_price: '0.00',
                     is_selected_all: false,
                     already_selected_status: false
@@ -625,6 +624,7 @@
         left: 80rpx;
         top: 78rpx;
         width: 160rpx;
+        filter: blur(0.3px);
     }
     .cart-goods-item .error-msg text {
         padding: 2rpx 10rpx;
