@@ -140,6 +140,13 @@
                     </view>
                 </view>
 
+                <!-- 面板提示信息 -->
+                <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white text-size-xs spacing-mb">
+                    <block v-for="(item, index) in goods.plugins_view_panel_data" :key="index">
+                        <view v-if="(item || null) != null">{{item}}</view>
+                    </block>
+                </view>
+
                 <!-- 智能工具-基础提示信息 -->
                 <view v-if="((plugins_intellectstools_data || null) != null) && (plugins_intellectstools_data.base_bottom || null) != null && (plugins_intellectstools_data.base_bottom.msg || null) != null" class="plugins-intellectstools-base-bottom-container spacing-mb">
                     <view class="notice-content text-size-xs">
@@ -179,13 +186,6 @@
             </view>
 
             <view class="padding-horizontal-main">
-                <!-- 面板提示信息 -->
-                <view v-if="(goods.plugins_view_panel_data || null) != null && goods.plugins_view_panel_data.length > 0" class="goods-panel-container oh border-radius-main padding-horizontal-main padding-top-xs padding-bottom-xs bg-white text-size-xs spacing-mb">
-                    <block v-for="(item, index) in goods.plugins_view_panel_data" :key="index">
-                        <view v-if="(item || null) != null">{{item}}</view>
-                    </block>
-                </view>
-
                 <!-- 商品基础参数 -->
                 <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_params_event" data-value="base">
 					<block v-for="(item, index) in goods.parameters.base" :key="index">
@@ -838,6 +838,7 @@
                             if(this.load_status == 1) {
                                 this.setData({quick_nav_cart_count: data.cart_total.buy_number || 0});
                             } else {
+                                var price_text_arr = ['售价', '价格', '销售价'];
                                 var upd_data = {
                                     data_bottom_line_status: true,
                                     data_list_loding_status: 3,
@@ -856,7 +857,7 @@
                                     top_nav_title_data: data.middle_tabs_nav || [],
                                     goods_spec_base_price: goods.price,
                                     goods_spec_base_original_price: goods.original_price || 0,
-                                    show_field_price_text: goods.show_field_price_text == '价格' ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                                    show_field_price_text: (price_text_arr.indexOf(goods.show_field_price_text) != -1) ? null : (goods.show_field_price_text.replace(/<[^>]+>/g, "") || null),
                                     plugins_seckill_data: data.plugins_seckill_data || null,
                                     plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
