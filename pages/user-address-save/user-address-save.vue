@@ -65,7 +65,7 @@
                 <view v-if="is_user_address_discern == 1" class="form-gorup pr br-main-pair">
                     <textarea @input="address_discern_value_event" class="margin-0" placeholder="粘贴整段地址，自动拆分姓名、电话及地址" placeholder-class="cr-grey" />
                     <cover-view class="auto-discern pa">
-                        <button type="default" size="mini" class="round bg-main-pair cr-white br-main-pair" @tap="address_discern_submit_event">识别</button>
+                        <button type="default" size="mini" class="round bg-main-pair cr-white br-main-pair text-size-xs" @tap="address_discern_submit_event">识别</button>
                     </cover-view>
                 </view>
 

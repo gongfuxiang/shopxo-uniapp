@@ -279,16 +279,6 @@
                         <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">使用授权自动登录</button>
                         <!-- #endif -->
                     </view>
-                    <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
-                        <!-- 登录 -->
-                        <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                            <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">已有账号？立即登录</text>
-                        </view>
-                        <!-- 注册 -->
-                        <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                            <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">还没账号？注册账号</text>
-                        </view>
-                    </view>
                 </view>
                 <!-- #endif -->
 
