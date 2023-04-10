@@ -21,7 +21,7 @@
                                     <text v-if="(item.coupon.desc || null) != null" class="desc cr-gray">{{item.coupon.desc}}</text>
                                 </view>
                                 <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{item.coupon.use_limit_type_name}}</view>
-                                <view class="base-time cr-gray single-text text-size-xs">{{item.time_start}} 至{{item.time_end}}</view>
+                                <view class="base-time cr-gray single-text text-size-xs">{{item.time_start}} 至 {{item.time_end}}</view>
                             </view>
                             <navigator :url="home_page_url" open-type="switchTab" hover-class="none">
                                 <view class="v-right fr" :style="'background:' + item.coupon.bg_color_value + ';'">
