@@ -1,7 +1,7 @@
 <template>
     <view>
         <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
-            <view class="popup-mask" v-if="propMask || true" @tap="onMaskTap"></view>
+            <view class="popup-mask" v-if="propMask || true" @tap="on_mask_tap"></view>
             <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')" :style="'left:'+popup_content_left_value+'px'">
                 <slot></slot>
             </view>
@@ -50,6 +50,22 @@
         watch: {
             // 监听状态
         	propShow(value, old_value) {
+                this.left_handle();
+        	}
+        },
+        // 组建创建
+        created: function() {
+            this.left_handle();
+        },
+        methods: {
+            // 事件处理
+            on_mask_tap: function on_mask_tap() {
+                this.$emit('onclose', {
+                    detail: {}
+                }, {});
+            },
+            // 左边距位置处理
+            left_handle() {
                 // 处理内容左边距、避免父级设置内边距影响
                 var width = uni.getSystemInfoSync().windowWidth;
                 var left = 0;
@@ -57,13 +73,6 @@
                     left = (width-800)/2;
                 }
                 this.popup_content_left_value = left;
-        	}
-        },
-        methods: {
-            onMaskTap: function onMaskTap() {
-                this.$emit('onclose', {
-                    detail: {}
-                }, {});
             }
         }
     };
