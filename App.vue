@@ -196,7 +196,7 @@
                 var url = this.data.request_url + (group || "api")+".php?s=" + c + "/" + a + plugins_params;
                 return this.request_params_handle(url) + "&ajax=ajax" + params;
             },
-            
+
             /**
              * 请求参数处理
              * url     url地址
@@ -211,14 +211,14 @@
                 var join = (url.indexOf('?') == -1) ? '?' : '&';
                 return url + join + "system_type="+ this.data.system_type +"&application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
             },
-			
+
 			/**
 			 * 获取tab页面切换参数
 			 */
 			get_page_tabbar_switch_params() {
 				return uni.getStorageSync(this.data.cache_page_tabbar_switch_params) || null;
 			},
-			
+
 			/**
 			 * 删除tab页面切换参数
 			 */
@@ -288,7 +288,7 @@
             get_launch_cache_info() {
                 return uni.getStorageSync(this.data.cache_launch_info_key) || null;
             },
-            
+
             /**
              * 系统参数设置
              */

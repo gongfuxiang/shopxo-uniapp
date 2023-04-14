@@ -236,6 +236,7 @@
             // 规格选择处理
             goods_spec_choice_handle(key, keys) {
                 var temp_spec = this.goods_spec_choose;
+                var temp_images = this.goods_spec_base_images;
                 // 不能选择和禁止选择跳过
                 if ((temp_spec[key]['value'][keys]['is_dont'] || null) == null && (temp_spec[key]['value'][keys]['is_disabled'] || null) == null) {
                     // 规格选择
@@ -245,6 +246,9 @@
                                 if (key == i) {
                                     if (keys == k && (temp_spec[i]['value'][k]['is_active'] || null) == null) {
                                         temp_spec[i]['value'][k]['is_active'] = 'cr-white bg-main br-main';
+                                        if ((temp_spec[i]['value'][k]['images'] || null) != null) {
+                                            temp_images = temp_spec[i]['value'][k]['images'];
+                                        }
                                     } else {
                                         temp_spec[i]['value'][k]['is_active'] = '';
                                     }
@@ -253,7 +257,8 @@
                         }
                     }
                     this.setData({
-                        spec: temp_spec
+                        spec: temp_spec,
+                        goods_spec_base_images: temp_images,
                     });
 
                     // 不能选择规格处理
