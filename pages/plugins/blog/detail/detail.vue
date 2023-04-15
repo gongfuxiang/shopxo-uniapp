@@ -16,7 +16,7 @@
                     </view>
                 </view>
                 <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
-                    <view v-if="(data.video_url || null) != null && (data.is_live_play || 0) == 0">
+                    <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
                         <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
                     </view>
                     <mp-html :content="data.content" />
@@ -92,6 +92,7 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 currency_symbol: app.globalData.data.currency_symbol,
+                client_type: application_client_type(),
                 params: null,
                 data_base: null,
                 data: null,

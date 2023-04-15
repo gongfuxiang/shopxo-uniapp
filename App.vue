@@ -241,10 +241,10 @@
                     // #endif
                     
                     // #ifdef H5 || APP
-                    // h5、app登陆注册
+                    // h5、app登录注册
                     uni.showModal({
                         title: '温馨提示',
-                        content: '请先登陆或注册',
+                        content: '请先登录或注册',
                         confirmText: '确认',
                         cancelText: '暂不',
                         success: result => {
@@ -299,7 +299,7 @@
             },
 
             /**
-             * 获取登陆授权数据
+             * 获取登录授权数据
              */
             get_login_cache_info() {
                 return uni.getStorageSync(this.data.cache_user_login_key) || null;
