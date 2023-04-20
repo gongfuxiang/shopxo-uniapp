@@ -52,7 +52,16 @@
                             </view>
                         </view>
                     </view>
-                    <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
+                    <view v-if="(buy_button || null) != null && (buy_button.data || null) != null && buy_button.data.length > 0" class="padding-bottom-main">
+                        <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
+                            <block v-for="(item, index) in buy_button.data" :key="index">
+                                <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
+                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-type="item.type" hover-class="none">{{item.name}}</button>
+                                </view>
+                            </block>
+                        </view>
+                    </view>
+                    <button v-else class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
                 </block>
             </view>
         </component-popup>
@@ -79,6 +88,7 @@
                 goods_spec_choose: [],
                 buy_number: 1,
                 buy_event_type: 'cart',
+                buy_button: null,
                 is_direct_cart: 0,
                 is_success_tips: 1,
                 // 智能工具插件
@@ -133,12 +143,20 @@
                     goods_spec_base_images: goods.images,
                     buy_number: buy_number,
                     buy_event_type: params.buy_event_type || 'cart',
+                    buy_button: params.buy_button || null,
                     is_direct_cart: is_direct_cart,
                     is_success_tips: is_success_tips,
                 });
 
-                // 不能选择规格处理
-                this.spec_handle_dont(0, 1);
+                // 是否初始化
+                var is_init = (params.is_init == undefined || params.is_init) == 1 ? 1 : 0;
+                if(is_init == 1) {
+                    // 不能选择规格处理
+                    this.spec_handle_dont(0, 1);
+                } else {
+                    // 获取规格详情
+                    this.get_spec_detail();
+                }
 
                 // 是否默认选中第一个规格
                 this.plugins_intellectstools_selected_spec_handle();
@@ -213,7 +231,7 @@
                         }, 20000);
                         self.setData({
                             plugins_intellectstools_timer: timer,
-                            plugins_intellectstools_timerout: timerout
+                            plugins_intellectstools_timerout: timerout,
                         });
                     }
                 }
@@ -257,7 +275,7 @@
                         }
                     }
                     this.setData({
-                        spec: temp_spec,
+                        goods_spec_choose: temp_spec,
                         goods_spec_base_images: temp_images,
                     });
 
@@ -269,6 +287,13 @@
 
                     // 获取规格详情
                     this.get_spec_detail();
+                    
+                    // 规格选择回调
+                    this.$emit('SpecChoiceEvent', {
+                        goods_id: this.goods.id,
+                        spec: this.choice_spec_data(),
+                        goods_spec_choose: this.goods_spec_choose,
+                    });
                 }
             },
             
@@ -282,18 +307,7 @@
                 }
 
                 // 获取规格值
-                var spec = [];
-                for (var i in temp_spec) {
-                    for (var k in temp_spec[i]['value']) {
-                        if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
-                            spec.push({
-                                type: temp_spec[i]['name'],
-                                value: temp_spec[i]['value'][k]['name']
-                            });
-                            break;
-                        }
-                    }
-                }
+                var spec = this.choice_spec_data();
                 if (spec.length <= 0) {
                     return false;
                 }
@@ -334,7 +348,7 @@
                                     }
                                 }
                                 this.setData({
-                                    spec: temp_spec
+                                    goods_spec_choose: temp_spec
                                 });
                             }
                         } else {
@@ -345,6 +359,24 @@
                         app.globalData.showToast('服务器请求出错');
                     }
                 });
+            },
+
+            // 选择规格数据
+            choice_spec_data() {
+                var spec = [];
+                var temp_spec = this.goods_spec_choose;
+                for (var i in temp_spec) {
+                    for (var k in temp_spec[i]['value']) {
+                        if ((temp_spec[i]['value'][k]['is_active'] || null) != null) {
+                            spec.push({
+                                type: temp_spec[i]['name'],
+                                value: temp_spec[i]['value'][k]['name']
+                            });
+                            break;
+                        }
+                    }
+                }
+                return spec;
             },
 
             // 获取规格详情
@@ -468,7 +500,7 @@
                 }
 
                 this.setData({
-                    spec: temp_spec
+                    goods_spec_choose: temp_spec
                 });
             },
 
@@ -597,7 +629,8 @@
                         }
 
                         // 操作类型
-                        switch (this.buy_event_type) {
+                        var type = e.currentTarget.dataset.type || this.buy_event_type;
+                        switch (type) {
                             case 'buy':
                                 // 进入订单确认页面
                                 var data = {
@@ -652,6 +685,7 @@
                                 stock: this.buy_number,
                                 cart_number: cart_number,
                                 back_data: this.back_data,
+                                goods_spec_choose: this.goods_spec_choose,
                             });
 
                             // 是否返回定义来源返回
@@ -756,5 +790,18 @@
         padding: 0;
         height: 60rpx;
         line-height: 60rpx;
+    }
+    .goods-spec-choice-container .buy-nav-btn-number-0 .item,
+    .goods-spec-choice-container .buy-nav-btn-number-1 .item {
+        width: 100% !important;
+    }
+    .goods-spec-choice-container .buy-nav-btn-number-2 .item {
+        width: 50% !important;
+    }
+    .goods-spec-choice-container .buy-nav-btn-number-3 .item {
+        width: 33.33% !important;
+    }
+    .goods-spec-choice-container .buy-nav-btn-number-4 .item {
+        width: 25% !important;
     }
 </style>

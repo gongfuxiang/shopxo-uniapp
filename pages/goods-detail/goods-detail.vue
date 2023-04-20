@@ -544,7 +544,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+        <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
@@ -885,6 +885,7 @@
                                 if((this.$refs.goods_buy || null) != null) {
                                     var buy_params = this.params;
                                     buy_params['buy_event_type'] = this.buy_event_type;
+                                    buy_params['buy_button'] = this.buy_button;
                                     this.$refs.goods_buy.init(this.goods, buy_params);
                                 }
                             }
@@ -1025,6 +1026,8 @@
                         if((this.$refs.goods_buy || null) != null) {
                             var buy_params = this.params;
                             buy_params['buy_event_type'] = this.buy_event_type;
+                            buy_params['buy_button'] = this.buy_button;
+                            buy_params['is_init'] = 0;
                             this.$refs.goods_buy.init(this.goods, buy_params);
                         }
                         break;
@@ -1063,10 +1066,21 @@
 
             // 加入购物车成功回调
             goods_cart_back_event(e) {
-                this.setData({
-                    goods_spec_selected_text: ((e.spec || null) == null) ? '' : e.spec.map(function(v){return v.value;}).join(' / ')
-                });
+                this.goods_spec_back_event(e);
                 this.goods_cart_count_handle(e.cart_number);
+            },
+
+            // 规格选择回调
+            goods_spec_back_event(e) {
+                var temp_goods = this.goods;
+                // 存在多规格则使用已选规格覆盖现有规格
+                if((temp_goods.specifications || null) != null) {
+                    temp_goods['specifications']['choose'] = e.goods_spec_choose;
+                }
+                this.setData({
+                    goods_spec_selected_text: ((e.spec || null) == null) ? '' : e.spec.map(function(v){return v.value;}).join(' / '),
+                    goods: temp_goods,
+                });
             },
 
             // 购物车总数处理
