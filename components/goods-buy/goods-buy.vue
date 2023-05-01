@@ -595,7 +595,7 @@
             },
 
             // 规格确认事件
-            spec_confirm_event(e) {
+            spec_confirm_event(e = null) {
                 var user = app.globalData.get_user_info(this, 'spec_confirm_event');
                 if (user != false) {
                     // 用户未绑定用户则转到登录页面
@@ -629,7 +629,7 @@
                         }
 
                         // 操作类型
-                        var type = e.currentTarget.dataset.type || this.buy_event_type;
+                        var type = (e == null) ? this.buy_event_type : (e.currentTarget.dataset.type || this.buy_event_type);
                         switch (type) {
                             case 'buy':
                                 // 进入订单确认页面
