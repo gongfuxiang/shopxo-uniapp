@@ -223,6 +223,9 @@
 
             // 签到
             coming_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
                 if (this.is_already_coming != 1 && this.init()) {
                     uni.showLoading({
                         title: '处理中...'

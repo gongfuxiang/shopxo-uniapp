@@ -180,6 +180,9 @@
 
             // 优惠劵领取事件
             coupon_receive_event(e) {
+                if(!app.globalData.is_single_page_check()) {
+                    return false;
+                }
                 // 参数处理
                 if ((e || null) == null) {
                     var index = this.temp_coupon_receive_index;
