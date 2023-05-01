@@ -295,9 +295,11 @@
                                 {
                                     for(var i1 in temp_data.goods_spec_data) {
                                         if(parseInt(temp_data.is_only_level_one || 0) == 1) {
-                                            temp_data.goods_spec_data[i1].base.price = item.data.spec_base.price;
-                                            temp_data.goods_spec_data[i1].base.original_price = item.data.spec_base.original_price;
-                                            temp_data.goods_spec_data[i1].base.inventory = item.data.spec_base.inventory;
+                                            if(temp_data.goods_spec_data[i1].base.id == item.data.spec_base.id) {
+                                                temp_data.goods_spec_data[i1].base.price = item.data.spec_base.price;
+                                                temp_data.goods_spec_data[i1].base.original_price = item.data.spec_base.original_price;
+                                                temp_data.goods_spec_data[i1].base.inventory = item.data.spec_base.inventory;
+                                            }
                                         } else {
                                             for(var i2 in temp_data.goods_spec_data[i1].data) {
                                                 if(temp_data.goods_spec_data[i1].data[i2].base.id == item.data.spec_base.id) {
