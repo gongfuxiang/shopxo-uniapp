@@ -9,8 +9,7 @@
                             <view :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                 <!-- 选择 -->
                                 <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="fl cart-selected">
-                                    <image v-if="(item.is_error || 0) != 1" class="icon" :src="common_static_url+'select' + ((item.is_error || 0) == 1 ? '-disabled' : ((item.selected || false) ? '-active' : '')) + '-icon.png'" mode="widthFix"></image>
-                                    <text v-if="(item.is_error || 0) == 1" class="cr-grey">失效</text>
+                                    <image class="icon" :src="common_static_url+'select' + ((item.selected || false) ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                                 </view>
 
                                 <view class="items oh padding-left-sm">
@@ -84,7 +83,7 @@
                     </view>
                 </view>
                 <view class="fr cart-nav-submit padding-top padding-bottom padding-horizontal-main">
-                    <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="!already_selected_status" hover-class="none">结算</button>
+                    <button class="bg-main cr-white round text-size-lg" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">结算</button>
                 </view>
             </view>
         </view>
@@ -121,6 +120,7 @@
                 total_price: '0.00',
                 is_selected_all: false,
                 already_selected_status: false,
+                already_valid_selected_status: false,
                 source_type: null,
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
@@ -508,17 +508,13 @@
                         case 'all':
                             temp_is_selected_all = temp_is_selected_all == true ? false : true;
                             for (var i in temp_data_list) {
-                                if (temp_data_list[i]['is_error'] != 1) {
-                                    temp_data_list[i]['selected'] = temp_is_selected_all;
-                                }
+                                temp_data_list[i]['selected'] = temp_is_selected_all;
                             }
                             break;
                             // 节点操作
                         case 'node':
                             var index = e.currentTarget.dataset.index || 0;
-                            if (temp_data_list[index]['is_error'] != 1) {
-                                temp_data_list[index]['selected'] = temp_data_list[index]['selected'] == true ? false : true;
-                            }
+                            temp_data_list[index]['selected'] = temp_data_list[index]['selected'] == true ? false : true;
                             break;
                     }
 
@@ -540,12 +536,12 @@
                 var selected_count = 0;
                 var temp_data_list = this.data_list;
                 for (var i in temp_data_list) {
-                    if ((temp_data_list[i]['is_error'] || 0) == 0) {
-                        data_count++;
-                    }
                     if ((temp_data_list[i]['selected'] || false) == true) {
-                        total_price += parseInt(temp_data_list[i]['stock']) * parseFloat(temp_data_list[i]['price']);
                         selected_count++;
+                        if ((temp_data_list[i]['is_error'] || 0) == 0) {
+                            data_count++;
+                            total_price += parseInt(temp_data_list[i]['stock']) * parseFloat(temp_data_list[i]['price']);
+                        }
                     }
                     cart_total += parseInt(temp_data_list[i]['stock']);
                 }
@@ -553,7 +549,8 @@
                 this.setData({
                     total_price: total_price.toFixed(2),
                     already_selected_status: selected_count > 0,
-                    is_selected_all: selected_count > 0 && selected_count >= data_count
+                    already_valid_selected_status: data_count > 0,
+                    is_selected_all: selected_count > 0 && selected_count >= temp_data_list.length
                 });
                 if (cart_total <= 0) {
                     app.globalData.set_tab_bar_badge(2, 0);
@@ -568,7 +565,7 @@
                 var ids = [];
                 var temp_data_list = this.data_list || [];
                 for (var i in temp_data_list) {
-                    if ((temp_data_list[i]['selected'] || false) == true) {
+                    if ((temp_data_list[i]['is_error'] || 0) == 0 && (temp_data_list[i]['selected'] || false) == true) {
                         ids.push(temp_data_list[i]['id']);
                         selected_count++;
                     }
