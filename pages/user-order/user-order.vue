@@ -693,8 +693,9 @@
                         div.innerHTML= data.data.html;
                         document.body.appendChild(div);
                         var fm = document.forms;
-                        if(fm.length > 0) {
-                            fm[0].submit();
+                        var fm_len = fm.length;
+                        if(fm_len > 0) {
+                            fm[fm_len-1].submit();
                         }
                     }
 
