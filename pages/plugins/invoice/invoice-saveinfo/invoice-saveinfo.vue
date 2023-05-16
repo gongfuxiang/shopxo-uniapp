@@ -4,9 +4,12 @@
             <form @submit="formSubmit" class="form-container">
                 <view class="padding-main oh">
                     <view class="padding-main border-radius-main bg-white spacing-mb">
-                        <text class="cr-base margin-right-sm">发票金额</text>
-                        <text class="cr-main text-size fw-b">{{save_base_data.total_price}}</text>
-                        <text class="cr-grey margin-left-sm">元</text>
+                        <view>
+                            <text class="cr-base margin-right-sm">发票金额</text>
+                            <text class="cr-main text-size fw-b">{{save_base_data.total_price}}</text>
+                            <text class="cr-grey margin-left-sm">元</text>
+                        </view>
+                        <view class="cr-base margin-top-sm">{{save_base_data.business_desc}}</view>
                     </view>
 
                     <view class="form-gorup">
@@ -312,13 +315,13 @@
             // 表单提交
             formSubmit(e) {
                 var data = e.detail.value;
-                if ((this.data || null) == null) {
+                if ((this.data || null) == null || (this.data.id || null) == null) {
                     data['ids'] = this.params.ids || '';
                     data['type'] = this.params.type || '';
                 } else {
                     data['id'] = this.data.id;
                 }
-                
+
                 // 数据验证
                 var validation = [
                     {fields: 'invoice_type', msg: '请选择发票类型', is_can_zero: 1},
