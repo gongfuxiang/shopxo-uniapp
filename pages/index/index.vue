@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view :class="((plugins_mourning_data || 0) == 1 ? ' grayscale' : '')+(is_single_page == 1 ? ' single-page-top' : '')">
+        <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '')+(is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
                 <!-- logo/标题 -->
@@ -89,12 +89,12 @@
                                 </view>
                                 <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
-                            <component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
+                            <component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
                         </view>
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
                         <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-activity-list>
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-activity-list>
                         </block>
 
                         <!-- 门店 - 插件 -->
@@ -146,7 +146,7 @@
                                     </scroll-view>
                                 </view>
                                 <block v-if="floor.goods.length > 0">
-									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
+									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
                                 </block>
                             </view>
                         </view>
@@ -158,7 +158,7 @@
                     <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
                         <!-- 活动配置-楼层底部 - 插件 -->
                         <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-activity-list>
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index"></component-activity-list>
                         </block>
 
                         <!-- 博客-楼层底部 - 插件 -->
@@ -229,10 +229,10 @@
         </view>
 
         <!-- 在线客服 -->
-        <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data || 0"></component-online-service>
+        <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
         
         <!-- 快捷导航 -->
-        <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data || 0"></component-quick-nav>
+        <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
     </view>
 </template>
 
@@ -318,7 +318,7 @@
                 plugins_popupscreen_cache_key: 'plugins_popupscreen_cache_key',
                 plugins_popupscreen_timer: null,
                 // 哀悼灰度插件
-                plugins_mourning_data: 0,
+                plugins_mourning_data_is_app: app.globalData.is_app_mourning(),
                 // 标签插件
                 plugins_blog_data: null,
                 // 门店插件
@@ -423,7 +423,7 @@
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                                 plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
                                 plugins_popupscreen_data: data.plugins_popupscreen_data || null,
-                                plugins_mourning_data: data.plugins_mourning_data || 0,
+                                plugins_mourning_data_is_app: parseInt(data.plugins_mourning_data || 0) == 1,
                                 plugins_blog_data: data.plugins_blog_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null
@@ -488,7 +488,7 @@
                         base = (len <= 0) ? 0 : 66*len;
                     // #endif
                     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
-                    if((this.plugins_mourning_data || 0) != 1) {
+                    if(!this.plugins_mourning_data_is_app) {
                         var top_val = 35;
                         var val = (num > base) ? base : num;
                         // #ifdef MP-TOUTIAO

@@ -53,6 +53,8 @@
                 is_logo_use_text: 0,
 				// 用户中心菜单默认展示模式（0 九方格, 1 列表）
 				user_center_nav_show_model_type: 0,
+                // 商品列表是否展示购物车（0否, 1是）
+                is_goods_list_show_cart_opt: 1,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -61,7 +63,7 @@
                     "/pages/user/user"
                 ],
                 // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'https://d1.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -104,7 +106,7 @@
                 }
                 
                 // 原始缓存是否存在邀请id、邀请使用最开始的用户id
-                if(cache_params != null && (cache_params.referrer || null) != null) {
+                if((params['referrer'] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
                     params['referrer'] = cache_params.referrer;
                 }
 
@@ -207,9 +209,13 @@
                 var token = user == null ? '' : (user.token || '');
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
+                // 启动参数
+                var params = this.get_launch_cache_info();
+                var referrer = params == null ? null : (params.referrer || null);
+                var referrer_params = (referrer == null) ? '' : '&referrer='+referrer;
                 // 拼接标识
                 var join = (url.indexOf('?') == -1) ? '?' : '&';
-                return url + join + "system_type="+ this.data.system_type +"&application=app&application_client_type="+ client_value + "&token=" + token + "&uuid=" + uuid;
+                return url + join + 'system_type='+ this.data.system_type +'&application=app&application_client_type='+ client_value + '&token=' + token + '&uuid=' + uuid + referrer_params;
             },
 
 			/**
@@ -362,9 +368,6 @@
              * is_to_auth 是否进入授权
              */
             user_login_handle(object, method, is_to_auth = true) {
-                // 邀请人参数
-                var params = this.get_launch_cache_info();
-                var referrer = params == null ? 0 : params.referrer || 0;
                 var self = this;
                 uni.showLoading({
                     title: "授权中..."
@@ -380,8 +383,7 @@
                                 url: self.get_request_url('appminiuserauth', 'user'),
                                 method: 'POST',
                                 data: {
-                                    authcode: res.code,
-                                    referrer: referrer
+                                    authcode: res.code
                                 },
                                 dataType: 'json',
                                 success: res => {
@@ -453,16 +455,11 @@
              * auth_data  授权数据
              */
             get_user_login_info(object, method, login_data, auth_data) {
-                // 邀请人参数
-                var params = this.get_launch_cache_info();
-                var referrer = params == null ? 0 : params.referrer || 0;
-
                 // 请求数据
                 var data = {
                     auth_data: JSON.stringify(auth_data),
                     openid: login_data.openid,
-                    unionid: login_data.unionid,
-                    referrer: referrer
+                    unionid: login_data.unionid
                 };
                 
                 // 用户信息处理
@@ -1640,6 +1637,35 @@
                 setTimeout(function() {
                     uni.switchTab({url: url});
                 }, 1500);
+            },
+
+            // 是否站点变灰
+            is_app_mourning() {
+                var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
+                if(is_app == 1) {
+                    // 当前时间戳
+                    var time_current = Date.parse(new Date());
+                    // 开始时间
+                    var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
+                    if(time_start != null)
+                    {
+                        if(Date.parse(new Date(time_start)) > time_current)
+                        {
+                            return false;
+                        }
+                    }
+                    // 结束时间
+                    var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
+                    if(time_end != null)
+                    {
+                        if(Date.parse(new Date(time_end)) < time_current)
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
             }
         },
 

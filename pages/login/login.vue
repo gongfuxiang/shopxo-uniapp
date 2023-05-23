@@ -796,9 +796,6 @@
 
             // 绑定手机表单提交
             formBind(e) {
-                // 系统参数
-                var params = app.globalData.get_launch_cache_info();
-                
                 // 数据验证
                 var client_type = app.globalData.application_client_type();
                 var field_openid = client_type+'_openid';
@@ -810,7 +807,6 @@
                 e.detail.value['province'] = this.user.province;
                 e.detail.value['city'] = this.user.city;
                 e.detail.value['gender'] = this.user.gender;
-                e.detail.value['referrer'] = (params == null) ? ((this.user || null) == null ? 0 : this.user.referrer || 0) : params.referrer || 0;
                 var validation = [
                     {fields: 'mobile', msg: '请填写手机号码'},
                     {fields: 'verify', msg: '请填写验证码'}
@@ -851,11 +847,7 @@
                 var encrypted_data = e.detail.encryptedData || null;
                 var iv = e.detail.iv || null;
                 var code = e.detail.code || null;
-                if ((encrypted_data != null && iv != null) || code != null) {
-                    // 系统参数、邀请人id
-                    var params = app.globalData.get_launch_cache_info();
-                    var referrer = (params == null) ? ((this.user || null) == null ? 0 : this.user.referrer || 0) : params.referrer || 0;
-                    
+                if ((encrypted_data != null && iv != null) || code != null) {                    
                     // 解密数据并绑定手机
                     var client_type = app.globalData.application_client_type();
                     var field_openid = client_type+'_openid';
@@ -869,8 +861,7 @@
                         "avatar": this.user.avatar || '',
                         "province": this.user.province || '',
                         "city": this.user.city || '',
-                        "gender": this.user.gender || 0,
-                        "referrer": referrer
+                        "gender": this.user.gender || 0
                     };
                     data[field_unionid] = this.user[field_unionid] || '';
                     uni.showLoading({
@@ -1018,10 +1009,6 @@
                         }
                     }
                     // #endif
-
-                    // 系统参数、邀请人id
-                    var params = app.globalData.get_launch_cache_info();
-                    e.detail.value['referrer'] = (params == null) ? ((this.user || null) == null ? 0 : this.user.referrer || 0) : params.referrer || 0;
 
                     // 网络请求
                     uni.showLoading({

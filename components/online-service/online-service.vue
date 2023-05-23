@@ -113,11 +113,11 @@
             	default: ''
             },
             propIsGrayscale: {
-            	type:Number,
-            	default: 0
+            	type: Boolean,
+            	default: false
             },
             propIsChat: {
-            	type:Number,
+            	type: Number,
             	default: 0
             },
             propChatUrl: {
@@ -129,7 +129,7 @@
         watch: {
             // 是否灰度
         	propIsGrayscale(value, old_value) {
-                this.common_ent = (value == 1) ? 'grayscale' : '';
+                this.common_ent = value ? 'grayscale' : '';
         	}
         },
         // 页面被展示
@@ -164,6 +164,8 @@
                 // 是否使用客服系统
                 is_chat: this.propIsChat || this.is_chat,
                 chat_url: this.propChatUrl || this.chat_url,
+                // 是否灰度
+                common_ent: this.propIsGrayscale ? 'grayscale' : ''
             });
         },
         methods: {

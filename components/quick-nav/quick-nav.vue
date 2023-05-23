@@ -68,15 +68,15 @@
             	default: false
             },
             propIsGrayscale: {
-            	type:Number,
-            	default: 0
+            	type: Boolean,
+            	default: false
             }
         },
         // 属性值改变监听
         watch: {
             // 是否灰度
         	propIsGrayscale(value, old_value) {
-                this.common_ent = (value == 1) ? 'grayscale' : '';
+                this.common_ent = value ? 'grayscale' : '';
         	}
         },
         // 页面被展示
@@ -104,7 +104,9 @@
                 is_first: 0,
                 system: system,
                 x: 12,
-                y: height - 280
+                y: height - 280,
+                // 是否灰度
+                common_ent: this.propIsGrayscale ? 'grayscale' : ''
             });
         },
         methods: {

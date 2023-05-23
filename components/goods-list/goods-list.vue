@@ -29,7 +29,7 @@
                                         <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
                                         <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                     </view>
-                                    <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                    <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                         <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                         <view class="cart-badge-icon pa">
                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -64,7 +64,7 @@
                                             <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
                                             <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                         </view>
-                                        <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                        <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                             <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                             <view class="cart-badge-icon pa">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -103,7 +103,7 @@
                                                         <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
                                                         <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                                     </view>
-                                                    <view v-if="(item.is_error || 0) == 0" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                                    <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                         <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
                                                         <view class="cart-badge-icon pa">
                                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -131,10 +131,10 @@
         </view>
 
         <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+        <component-goods-buy v-if="is_show_cart" ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
         <!-- 购物车抛物线 -->
-        <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
+        <component-cart-para-curve v-if="is_show_cart" ref="cart_para_curve"></component-cart-para-curve>
     </view>
 </template>
 <script>
@@ -146,6 +146,7 @@
         data() {
             return {
                 data: null,
+                is_show_cart: false,
             };
         },
         components: {
@@ -198,6 +199,11 @@
             propPriceField: {
                 type: String,
                 default: 'min_price'
+            },
+            // 来源
+            propSource: {
+                type: String,
+                default: ''
             }
         },
         // 属性值改变监听
@@ -209,6 +215,12 @@
         },
         // 页面被展示
         created: function() {
+            var is_app_mourning = app.globalData.is_app_mourning();
+            var is_show_cart = (app.globalData.data.is_goods_list_show_cart_opt == 1) ? (is_app_mourning && this.propSource == 'index' ? false : true) : false;
+            this.setData({
+                data: this.propData,
+                is_show_cart: is_show_cart
+            })
             this.data = this.propData;
         },
         methods: {
