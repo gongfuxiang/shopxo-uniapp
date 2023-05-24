@@ -148,6 +148,9 @@
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
 
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base"></component-user-base>
+
         <!-- 版权信息 -->
         <component-copyright></component-copyright>
     </view>
@@ -158,6 +161,7 @@
     import componentBadge from "../../components/badge/badge";
     import componentCopyright from "../../components/copyright/copyright";
     import componentOnlineService from "../../components/online-service/online-service";
+    import componentUserBase from "../../components/user-base/user-base";
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
@@ -209,7 +213,8 @@
             componentQuickNav,
             componentBadge,
             componentCopyright,
-            componentOnlineService
+            componentOnlineService,
+            componentUserBase
         },
         props: {},
 
@@ -276,8 +281,14 @@
                         // 分享菜单处理
                         app.globalData.page_share_handle();
                     } else {
+                        // 获取基础数据
                         this.set_user_base(user);
                         this.get_data();
+
+                        // 用户头像和昵称设置提示
+                        if((this.$refs.user_base || null) != null) {
+                            this.$refs.user_base.init('user');
+                        }
                     }
                 } else {
                     uni.stopPullDownRefresh();

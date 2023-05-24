@@ -35,12 +35,16 @@
                 </view>
             </view>
         </component-popup>
+
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base"></component-user-base>
     </view>
 </template>
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from "../../components/popup/popup";
+    import componentUserBase from "../../components/user-base/user-base";
     export default {
         data() {
             return {
@@ -52,7 +56,8 @@
         },
 
         components: {
-            componentPopup
+            componentPopup,
+            componentUserBase
         },
 
         created: function() {},
@@ -68,6 +73,11 @@
                     is_goods_poster: config.is_goods_poster || 0,
                     goods_id: config.goods_id || 0
                 });
+
+                // 用户头像和昵称设置提示
+                if((this.$refs.user_base || null) != null) {
+                    this.$refs.user_base.init('share');
+                }
             },
 
             // 弹层关闭

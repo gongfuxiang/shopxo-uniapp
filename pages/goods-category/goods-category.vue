@@ -264,6 +264,9 @@
 
             <!-- 快捷导航 -->
             <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
+
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base"></component-user-base>
         </view>
     </view>
 </template>
@@ -278,6 +281,7 @@
     import componentPopup from "../../components/popup/popup";
     import componentBadge from "../../components/badge/badge";
     import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
+    import componentUserBase from "../../components/user-base/user-base";
     
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
@@ -335,7 +339,8 @@
             componentNoData,
             componentPopup,
             componentBadge,
-            componentCartParaCurve
+            componentCartParaCurve,
+            componentUserBase
         },
         props: {},
 
@@ -354,6 +359,11 @@
 
 			// 清除tab参数
 			app.globalData.remove_page_tabbar_switch_params();
+
+            // 用户头像和昵称设置提示
+            if((this.$refs.user_base || null) != null) {
+                this.$refs.user_base.init('goods-category');
+            }
         },
 
         // 下拉刷新
@@ -654,7 +664,7 @@
                 }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: "/pages/login/login?event_callback=buy_number_event"
@@ -761,7 +771,7 @@
                 }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: "/pages/login/login?event_callback=cart_buy_number_event"

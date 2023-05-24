@@ -15,7 +15,7 @@
                         <view class="form-gorup oh">
                             <view class="form-gorup-item-left">
                                 <view class="form-gorup-title">昵称<text class="form-group-tips-must">*</text></view>
-                                <input :type="(application_client_type == 'weixin') ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="昵称2~16个字符">
+                                <input :type="(application_client_type == 'weixin') ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey" class="cr-base" placeholder="昵称1~16个字符">
                             </view>
                             <view class="form-gorup-item-right">
                                 <view class="form-gorup-title">生日</view>
@@ -63,7 +63,7 @@
                         </view>
 
                         <view class="bottom-fixed padding-main">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+                            <button class="bg-main br-main cr-white round text-size-sm" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
                         </view>
                     </view>
                 </form>

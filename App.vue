@@ -27,6 +27,8 @@
                 cache_prev_page_key: 'cache_prev_page_key',
 				// tab页面切换参数
 				cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
+                // 用户基础资料提示间隔key
+                cache_user_base_personal_interval_time_key: 'cache_user_base_personal_interval_time_key',
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片
@@ -55,6 +57,15 @@
 				user_center_nav_show_model_type: 0,
                 // 商品列表是否展示购物车（0否, 1是）
                 is_goods_list_show_cart_opt: 1,
+                // 用户基础信息头像及昵称设置提示数据
+                user_base_personal_setup_data: {
+                    // 页面（index 首页、goods-category 商品分类、cart 购物车、 user 用户中心、share 分享）
+                    pages: ['index', 'goods-category', 'cart', 'user', 'share'],
+                    // 终端（weixin 微信、alipay 支付宝、baidu 百度、qq QQ、toutiao 头条、kuaishou 快手）
+                    client: ['weixin'],
+                    // 关闭后再次提示间隔时间（单位秒）、默认1800秒30分钟
+                    interval_time: 1800,
+                },
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -245,7 +256,7 @@
                     // 小程序唤醒用户授权
                     this.user_login(object, method);
                     // #endif
-                    
+
                     // #ifdef H5 || APP
                     // h5、app登录注册
                     uni.showModal({

@@ -233,6 +233,9 @@
         
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
     </view>
 </template>
 
@@ -254,6 +257,7 @@
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
     import componentShopList from "../../components/shop-list/shop-list";
 	import componentGoodsList from "../../components/goods-list/goods-list";
+    import componentUserBase from "../../components/user-base/user-base";
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
@@ -344,7 +348,8 @@
             componentBlogList,
             componentRealstoreList,
             componentShopList,
-			componentGoodsList
+			componentGoodsList,
+            componentUserBase
         },
         props: {},
 
@@ -354,6 +359,11 @@
 
             // 初始化配置
             this.init_config();
+
+            // 用户头像和昵称设置提示
+            if((this.$refs.user_base || null) != null) {
+                this.$refs.user_base.init('index');
+            }
         },
 
         // 下拉刷新

@@ -101,12 +101,16 @@
         <block v-if="data_list.length == 0 && data_list_loding_status != 0">
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </block>
+
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base"></component-user-base>
     </view>
 </template>
 <script>
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
     import componentNoData from "../../components/no-data/no-data";
+    import componentUserBase from "../../components/user-base/user-base";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -147,7 +151,8 @@
         },
 
         components: {
-            componentNoData
+            componentNoData,
+            componentUserBase
         },
         props: {},
 
@@ -210,7 +215,16 @@
                         // 分享菜单处理
                         app.globalData.page_share_handle();
                     } else {
+                        // 获取数据
                         this.get_data();
+
+                        // 用户头像和昵称设置提示
+                        if((this.$refs.user_base || null) != null) {
+                            var self = this;
+                            setTimeout(function() {
+                                self.$refs.user_base.init('cart');
+                            }, 10);
+                        }
                     }
                 } else {
                     uni.stopPullDownRefresh();
