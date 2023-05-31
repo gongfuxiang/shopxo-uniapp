@@ -317,8 +317,8 @@
             // 数量处理方法
             goods_buy_number_func(index, buy_number) {
                 var temp_data_list = this.data_list;
-                var buy_min_number = parseInt(temp_data_list[index]['buy_min_number']) || 1;
-                var buy_max_number = parseInt(temp_data_list[index]['buy_max_number']) || 0;
+                var buy_min_number = parseInt(temp_data_list[index]['spec_buy_min_number']) || 1;
+                var buy_max_number = parseInt(temp_data_list[index]['spec_buy_max_number']) || 0;
                 var inventory = parseInt(temp_data_list[index]['inventory']);
                 var inventory_unit = temp_data_list[index]['inventory_unit'];
                 if (buy_number < buy_min_number) {

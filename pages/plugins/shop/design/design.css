@@ -43,14 +43,14 @@
     font-size: 24rpx;
 }
 .shop-logo {
-    width: 280rpx;
+    width: 90rpx;
 }
 .base-bottom image {
     width: 28rpx;
     height: 28rpx;
 }
 .header .base {
-    width: calc(100% - 320rpx);
+    width: calc(100% - 110rpx);
 }
 .shop-title {
     line-height: 40rpx;
@@ -71,9 +71,12 @@
 .header-service .item:first-child {
     border-top: 0 !important;
 }
+.header-service .qrcode .item:not(:last-child) {
+    margin-right: 20rpx;
+}
 .header-service image {
-    width: 260rpx;
-    height: 260rpx;
+    width: 130rpx;
+    height: 130rpx;
 }
 .header-service .chat-info image {
     width: 40rpx;
@@ -98,6 +101,14 @@
 .nav-shop-category {
     padding-right: 38rpx !important;
     background-size: 14px 14px;
+}
+.nav .nav-items {
+    width: 380rpx;
+    left: calc(50% - 190rpx);
+    top: 300rpx;
+    z-index: 1;
+    -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
+    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
 }
 
 /**

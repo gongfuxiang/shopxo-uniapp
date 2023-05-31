@@ -4,28 +4,23 @@
             <!-- 头部 -->
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索 -->
-                <view :class="'padding-main bg-white pr oh br-b search '+(is_shop_whole_search == 1 ? '' : 'header-shop-whole-search')">
+                <view :class="'padding-main bg-white pr oh br-b search '+(is_shop_search_all_search_button == 1 ? '' : 'header-shop-whole-search')">
                     <input class="bg-white fl padding-left-xxl text-size-xs round border-color-main" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey" @input="search_keywords_event">
                     <view class="search-btn pa">
-                        <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&'">{{is_shop_whole_search == 1 ? '搜本店' : '搜索'}}</button>
-                        <button v-if="is_shop_whole_search == 1" class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
+                        <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id='+shop.id+'&'">{{is_shop_search_all_search_button == 1 ? '搜本店' : '搜索'}}</button>
+                        <button v-if="is_shop_search_all_search_button == 1" class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">搜全站</button>
                     </view>
                 </view>
                 <!-- 顶部 -->
                 <view class="header plugins-shop-data-list bg-white oh">
-                    <image :src="shop.logo_long" mode="widthFix" class="shop-logo fl br-r padding-right-lg margin-top-xs cp"></image>
+                    <image :src="shop.logo" mode="widthFix" class="shop-logo fl border-radius-main cp"></image>
                     <view class="base fr item">
                         <view class="shop-title single-text">
                             <!-- 认证信息 -->
                             <view v-if="(data_base.is_enable_auth || 0) == 1 && ((shop.auth_type != -1 && (shop.auth_type_msg || null) != null) || ((shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null))" class="auth-icon dis-inline-block">
                                 <!-- 实名认证 -->
                                 <block v-if="shop.auth_type != -1 && (shop.auth_type_msg || null) != null">
-                                    <block v-if="shop.auth_type == 0">
-                                        <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
-                                    </block>
-                                    <block v-if="shop.auth_type == 1">
-                                        <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
-                                    </block>
+                                    <image :src="shop.auth_type == 0 ? data_base.shop_auth_personal_icon : data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill" :data-value="'/pages/plugins/shop/license/license?id='+shop.id" @tap="url_event"></image>
                                 </block>
                                 <!-- 保证金认证 -->
                                 <block v-if="(shop.bond_status || 0) == 1 && (shop.bond_status_msg || null) != null">
@@ -35,14 +30,23 @@
                             <!-- 标题 -->
                             <text class="fw-b text-size va-m">{{shop.name}}</text>
                         </view>
-                        <view class="base-bottom oh margin-top-sm">
+                        <view class="base-bottom oh margin-top-sm text-size-xs">
+                            <!-- 在线客服 -->
                             <view v-if="(data_base.is_service_info || 0) == 1" class="fl margin-right-xxl cp" @tap="header_service_event">
                                 <image class="va-m margin-right-sm" :src="common_static_url+'customer-service-icon.png'" mode="scaleToFill"></image>
                                 <text class="va-m cr-base">在线客服</text>
                             </view>
+                            <!-- 收藏 -->
                             <view class="fl single-text cp" @tap="shop_favor_event">
                                 <image class="va-m margin-right-sm" :src="common_static_url+'favor'+(shop_favor_info.status == 1 ? '-active' : '')+'-icon.png'" mode="scaleToFill"></image>
                                 <text :class="'va-m ' + (shop_favor_info.status == 1 ? 'cr-main' : '')">{{shop_favor_info.text}}({{shop_favor_info.count}})</text>
+                            </view>
+                            <!-- 评分 -->
+                            <view v-if="(shop.score_data || null) != null" class="fl margin-left-xxl">
+                                <view class="dis-inline-block va-m">
+                                    <uni-rate :value="shop.score_data.value" :readonly="true" :is-fill="false" :size="14" />
+                                </view>
+                                <text class="va-m cr-red">{{shop.score_data.value}}分</text>
                             </view>
                         </view>
                     </view>
@@ -68,7 +72,7 @@
                         <text>时间：</text>
                         <text class="cp" @tap="text_copy_event" :data-value="shop.open_week_name + '至' + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{shop.open_week_name}}至{{shop.close_week_name}}，{{shop.open_time}}-{{shop.close_time}}</text>
                     </view>
-                    <view v-if="(shop.service_weixin_qrcode || null) != null || (shop.service_line_qrcode || null) != null" class="oh qrcode tc br-t">
+                    <view v-if="(shop.service_weixin_qrcode || null) != null || (shop.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
                         <view v-if="(shop.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                             <image class="radius cp" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
                             <view>长按微信咨询</view>
@@ -83,9 +87,17 @@
                 <view v-if="shop_goods_category.length > 0 || shop_navigation.length > 0" class="nav scroll-view-horizontal bg-white padding-top-lg border-color-main">
                     <view v-if="shop_goods_category.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block fw-b cp" @tap="nav_shop_category_event">查看商品分类</view>
                     <scroll-view scroll-x class="nav-scroll">
-                        <block v-if="shop_navigation.length > 0">
-                            <block v-for="(item, index) in shop_navigation" :key="index">
+                        <block v-for="(item, index) in shop_navigation" :key="index">
+                            <block v-if="(item.items || null) == null || item.items.length == 0">
                                 <view class="item dis-inline-block fw-b cp" @tap="nav_event" :data-value="item.url" :data-index="index">{{item.name}}</view>
+                            </block>
+                            <block v-else>
+                                <view class="item dis-inline-block fw-b cp" @tap="nav_event" :data-index="index">{{item.name}}</view>
+                                <view v-if="(item.items_status || 0) == 1" class="nav-items pf border-radius-main oh bg-white br">
+                                    <block v-for="(items, index2) in item.items" :key="index2">
+                                        <view class="item fw-b cp margin-vertical-main" @tap="nav_event" :data-value="items.url" :data-index="index" :data-indexs="index2">{{items.name}}</view>
+                                    </block>
+                                </view>
                             </block>
                         </block>
                     </scroll-view>
@@ -109,7 +121,6 @@
 
             <!-- 结尾 -->
             <block v-if="(data.is_footer || 0) == 1">
-                <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </block>
         </view>
@@ -130,7 +141,7 @@
         data() {
             return {
                 common_static_url: common_static_url,
-                is_shop_whole_search: app.globalData.data.is_shop_whole_search || 0,
+                is_shop_search_all_search_button: 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -195,19 +206,21 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var base = data.base || null;
                             this.setData({
-                                data_base: data.base || null,
+                                data_base: base,
                                 shop: (data.shop || null) == null || data.shop.length <= 0 ? null : data.shop,
                                 shop_favor_user: data.shop_favor_user || [],
                                 shop_navigation: data.shop_navigation || [],
                                 shop_goods_category: data.shop_goods_category || [],
+                                is_shop_search_all_search_button: (base == null || parseInt(base.is_shop_search_all_search_button || 0) != 1) ? 0 : 1,
                                 data: (data.data || null) != null && data.data.length != 0 ? data.data : null,
                                 layout_data: data.layout_data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
                             });
-                            
+
                             // 收藏信息
                             if ((this.shop || null) != null) {
                                 var status = this.shop_favor_user.indexOf(this.shop.id) != -1 ? 1 : 0;
@@ -342,6 +355,26 @@
 
             // 导航事件
             nav_event(e) {
+                // 存在子级则做子级显示隐藏处理
+                var value = e.currentTarget.dataset.value || null;
+                if(value == null) {
+                    var index = e.currentTarget.dataset.index;
+                    var temp_nav = this.shop_navigation;
+                    for(var i in temp_nav) {
+                        if(i == index) {
+                            temp_nav[i]['items_status'] = ((temp_nav[i]['items_status'] || 0) == 0) ? 1 : 0;
+                        } else {
+                            temp_nav[i]['items_status'] = 0;
+                        }
+                    }
+                    this.setData({shop_navigation: temp_nav});
+                } else {
+                    app.globalData.url_event(e);
+                }
+            },
+
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
             },
 

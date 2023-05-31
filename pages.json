@@ -793,6 +793,13 @@
                 		"enablePullDownRefresh": true,
                 		"navigationBarTitleText": "店铺收藏"
                 	}
+                },
+                {
+                	"path": "license/license",
+                	"style": {
+                		"enablePullDownRefresh": true,
+                		"navigationBarTitleText": "工商资质"
+                	}
                 }
             ]
         },
