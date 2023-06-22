@@ -72,6 +72,7 @@
                                     <!-- 右侧商品列表 -->
                                     <view v-if="(data_list || null) != null && data_list.length > 0" class="oh">
                                         <view v-for="(item, index) in data_list" :key="index" class="item bg-white border-radius-main oh pr spacing-mb">
+                                            <!-- 商品主体内容 -->
                                             <view :data-value="item.goods_url+'&is_opt_back=1'" @tap="url_event">
                                                 <image :src="item.images" mode="widthFix" class="goods-img radius fl"></image>
                                                 <view class="goods-base padding-top-sm padding-right-sm fr">
@@ -97,6 +98,15 @@
                                                         </view>
                                                     </view>
                                                 </view>
+                                            </view>
+                                            <!-- 标签插件 -->
+                                            <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-'+((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img')+' plugins-label-'+(plugins_label_data.base.user_goods_show_style || 'top-left')">
+                                                <block v-for="(lv,li) in plugins_label_data.data" :key="li">
+                                                    <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="((plugins_label_data.base.is_user_goods_label_url || 0) == 1) ? (lv.url || '') : ''" @tap="url_event">
+                                                        <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:'+ lv.bg_color+' !important;' : '')+((lv.text_color || null) != null ? 'color:'+ lv.text_color+' !important;' : '')">{{lv.name}}</view>
+                                                        <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                    </view>
+                                                </block>
                                             </view>
                                         </view>
                                     </view>
@@ -290,6 +300,7 @@
     bar_height = 0;
     // #endif
 
+    var icon_type = app.globalData.data.category_goods_model_icon_type;
     export default {
         data() {
             return {
@@ -326,9 +337,11 @@
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 商品列表模式一级分类图标类型
-                category_goods_model_icon_field: app.globalData.data.category_goods_model_icon_type == 0 ? 'big_images' : 'icon',
+                category_goods_model_icon_field: (icon_type == 0) ? 'realistic_images' : ((icon_type == 1) ? 'icon' : 'big_images' ),
                 // 临时操作数据
                 temp_opt_data: null,
+                // 标签插件
+                plugins_label_data: null,
             };
         },
 
@@ -401,8 +414,9 @@
                     success: res => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            var data = res.data.data;
 							var index = this.nav_active_index;
-                            var temp_category = res.data.data.category || [];
+                            var temp_category = data.category || [];
 							// 是否指定分类
 							var tabbar_params = this.tabbar_params;
 							if(temp_category.length > 0 && (tabbar_params || null) != null && (tabbar_params.id || null) != null) {
@@ -418,6 +432,7 @@
                                 category_list: temp_category,
                                 data_content: temp_category[index] || null,
 								nav_active_index: index,
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                             }
 							// 指定分类则重新读取列表数据
 							if(tabbar_params != null && this.nav_active_index != index) {

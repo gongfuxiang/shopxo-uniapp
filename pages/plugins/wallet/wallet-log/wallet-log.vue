@@ -61,7 +61,7 @@
                 nav_status_index: 0,
                 content_list: [
                     {name: "业务类型", field: "business_type_name"},
-                    {name: "金额类型", field: "operation_money", unit: "元"},
+                    {name: "金额类型", field: "money_type_name"},
                     {name: "操作金额", field: "operation_money", unit: "元"},
                     {name: "原始金额", field: "original_money", unit: "元"},
                     {name: "最新金额", field: "latest_money", unit: "元"}
