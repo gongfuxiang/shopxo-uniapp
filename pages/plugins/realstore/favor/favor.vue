@@ -35,7 +35,8 @@
                 data_page_total: 0,
                 data_page: 1,
                 data_list_loding_status: 1,
-                data_bottom_line_status: false
+                data_bottom_line_status: false,
+                data_is_loading: 0
             };
         },
 
@@ -93,12 +94,19 @@
                         return false;
                     }
                 }
+                
+                // 是否加载中
+                if(this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1
+                });
+                
                 // 加载loding
                 uni.showLoading({
                     title: '加载中...'
-                });
-                this.setData({
-                    data_list_loding_status: 1
                 });
                 
                 // 获取数据
@@ -128,7 +136,8 @@
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
                                     data_list_loding_status: 3,
-                                    data_page: this.data_page + 1
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0
                                 });
                                 
                                 // 是否还有数据
@@ -137,12 +146,14 @@
                                 });
                             } else {
                                 this.setData({
-                                    data_list_loding_status: 0
+                                    data_list_loding_status: 0,
+                                    data_is_loading: 0
                                 });
                             }
                         } else {
                             this.setData({
-                                data_list_loding_status: 0
+                                data_list_loding_status: 0,
+                                data_is_loading: 0
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
@@ -153,7 +164,8 @@
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 2
+                            data_list_loding_status: 2,
+                            data_is_loading: 0
                         });
                         app.globalData.showToast('服务器请求出错');
                     }

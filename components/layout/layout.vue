@@ -167,7 +167,7 @@
                                                                 </view>
                                                             </view>
                                                         </block>
-                                                        <block v-if="vss.config.view_list_show_style == 'v3'">
+                                                        <block v-if="vss.config.view_list_show_style == 'v4'">
                                                             <view class="fl" :style="vss.config.frontend_config.item_style[0] || ''">
                                                                 <view :data-value="vss['config']['data_list'][0]['url'] || ''" @tap="layout_url_event" class="dis-block oh" :style="vss.config.frontend_config.images_style || ''">
                                                                     <image :src="vss['config']['data_list'][0]['images']" mode="widthFix" class="dis-block wh-auto"></image>

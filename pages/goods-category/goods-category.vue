@@ -309,6 +309,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                data_is_loading: 0,
 				user: null,
 				tabbar_params: null,
 				common_site_type: 0,
@@ -506,6 +507,12 @@
                     }
                 }
 
+                // 是否加载中
+                if(this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({data_is_loading: 1});
+
                 // 请求参数
                 var data = {
                     page: this.data_page,
@@ -549,7 +556,8 @@
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
-                                    data_page: this.data_page + 1
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0
                                 });
             
                                 // 是否还有数据
@@ -562,7 +570,8 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_total: 0
+                                    data_total: 0,
+                                    data_is_loading: 0
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
@@ -574,7 +583,8 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
+                                data_is_loading: 0
                             });
                             app.globalData.showToast(res.data.msg);
                         }
@@ -582,7 +592,8 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: '服务器请求出错',
+                            data_is_loading: 0
                         });
                         app.globalData.showToast('服务器请求出错');
                     }

@@ -28,12 +28,8 @@
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
                         <!-- #ifndef MP-KUAISHOU -->
-                        <view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
+                        <view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item bg-blue circle dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
                             <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
-                        </view>
-                        <!-- #endif -->
-                        <view v-if="(item.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" :data-value="item.service_tel" @tap.stop="tel_event">
-                            <uni-icons type="phone-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <view v-if="propIsFavor" :class="'icon-item circle dis-inline-block tc cp pr '+((item.is_favor || 0) == 1 ? 'bg-red' : 'bg-gray')" :data-index="index" @tap.stop="favor_event">
                             <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
@@ -176,12 +172,7 @@
                 var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');
                 app.globalData.open_location(info.lng, info.lat, info.name, address);
             },
-            
-            // 电话
-            tel_event(e) {
-                app.globalData.call_tel(e.currentTarget.dataset.value || null);
-            },
-            
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);

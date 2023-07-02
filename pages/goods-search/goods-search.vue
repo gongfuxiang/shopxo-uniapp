@@ -145,6 +145,7 @@
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
+                data_is_loading: 0,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -323,6 +324,12 @@
                     }
                 }
                 
+                // 是否加载中
+                if(this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({data_is_loading: 1});
+
                 // 获取数据
                 uni.showLoading({
                     title: '加载中...',
@@ -354,7 +361,8 @@
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
-                                    data_page: this.data_page + 1
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0
                                 });
 
                                 // 是否还有数据
@@ -364,7 +372,8 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_total: 0
+                                    data_total: 0,
+                                    data_is_loading: 0
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
@@ -375,7 +384,8 @@
                             }
                         } else {
                             this.setData({
-                                data_list_loding_status: 0
+                                data_list_loding_status: 0,
+                                data_is_loading: 0
                             });
                             app.globalData.showToast(res.data.msg);
                         }
@@ -384,7 +394,8 @@
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 2
+                            data_list_loding_status: 2,
+                            data_is_loading: 0
                         });
                         app.globalData.showToast('服务器请求出错');
                     }

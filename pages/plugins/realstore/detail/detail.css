@@ -49,6 +49,7 @@
     /* #endif */
     width: calc(100% - 80rpx);
     box-shadow: 0 0 8px rgb(0 0 0 / 6%);
+    min-height: 172rpx;
 }
 .header-content .address-content {
     width: calc(100% - 220rpx);
@@ -103,13 +104,13 @@
  * 中间内容
  */
 .content {
-    margin-top: 80rpx;
-    height: calc(100vh - 440rpx);
+    margin-top: 95rpx;
+    height: calc(100vh - 455rpx);
     /* #ifdef H5 || APP */
-    height: calc(100vh - 390rpx);
+    height: calc(100vh - 505rpx);
     /* #endif */
     /* #ifdef MP-ALIPAY || MP-TOUTIAO */
-    height: calc(100vh - 400rpx);
+    height: calc(100vh - 415rpx);
     /* #endif */
 }
 
@@ -241,4 +242,13 @@
 }
 .cart-content .cart-list .goods-base-content {
     min-height: 60rpx;
+}
+
+/**
+ * 客服弹窗
+ */
+.header-service {
+    left: auto;
+    right: 20rpx;
+    top: 435rpx;
 }

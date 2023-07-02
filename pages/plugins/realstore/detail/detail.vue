@@ -58,19 +58,48 @@
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
+                        <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item bg-green circle dis-inline-block tc cp" @tap="header_service_event">
+                            <uni-icons type="chatbubble-filled" size="32rpx" color="#fff"></uni-icons>
+                        </view>
                         <!-- #ifndef MP-KUAISHOU -->
-                        <view v-if="(info.lat != 0 && info.lng != 0)" class="icon-item bg-green circle dis-inline-block tc cp" @tap="address_map_event">
+                        <view v-if="(info.lat != 0 && info.lng != 0)" class="icon-item bg-blue circle dis-inline-block tc cp" @tap="address_map_event">
                             <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
-                        <view v-if="(info.service_tel || null) != null" class="icon-item bg-yellow circle dis-inline-block tc cp" @tap="tel_event">
-                            <uni-icons type="phone-filled" size="32rpx" color="#fff"></uni-icons>
-                        </view>
                         <view :class="'icon-item circle dis-inline-block tc cp pr '+((favor_info.status == 1) ? 'bg-red' : 'bg-gray')" @tap="favor_event">
                             <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
                             <view class="badge-icon pa">
                                 <component-badge :propNumber="favor_info.count"></component-badge>
                             </view>
+                        </view>
+                    </view>
+                </view>
+                
+                <!-- 在线客服 -->
+                <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
+                    <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
+                        <text class="va-m">客服：</text>
+                        <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                            <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
+                            <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{info.chat_info.name}}</text>
+                        </view>
+                    </view>
+                    <view v-if="(info.service_qq || null) != null" class="item padding-main br-t single-text">
+                        <text>Q Q：</text>
+                        <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{info.service_qq}}</text>
+                    </view>
+                    <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
+                        <text>电话：</text>
+                        <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{info.service_tel}}</text>
+                    </view>
+                    <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
+                        <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
+                            <view>长按微信咨询</view>
+                        </view>
+                        <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                            <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
+                            <view>长按line咨询</view>
                         </view>
                     </view>
                 </view>
@@ -248,6 +277,7 @@
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                data_is_loading: 0,
                 currency_symbol: app.globalData.data.currency_symbol,
                 cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
                 buy_use_type_index: 0,
@@ -275,6 +305,7 @@
                 cart_status: false,
                 popup_spec_status: false,
                 goods_choose_data: {},
+                header_service_status: false,
                 // 收藏信息
                 favor_info: {
                     "text": "收藏",
@@ -449,6 +480,12 @@
                     }
                 }
 
+                // 是否加载中
+                if(this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({data_is_loading: 1});
+
                 // 加载loding
                 uni.showLoading({
                     title: '加载中...',
@@ -494,7 +531,8 @@
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
-                                    data_page: this.data_page + 1
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0
                                 });
                                 
                                 // 是否还有数据
@@ -503,7 +541,8 @@
                                 });
                             } else {
                                 this.setData({
-                                    data_list_loding_status: 0
+                                    data_list_loding_status: 0,
+                                    data_is_loading: 0
                                 });
                                 if (this.data_page <= 1) {
                                     this.setData({
@@ -515,7 +554,8 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
+                                data_is_loading: 0
                             });
                             app.globalData.showToast(res.data.msg);
                         }
@@ -525,7 +565,8 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: '服务器请求出错',
+                            data_is_loading: 0
                         });
                         app.globalData.showToast('服务器请求出错');
                     }
@@ -1128,6 +1169,11 @@
                 app.globalData.image_show_event(e);
             },
 
+            // 进入客服系统
+            chat_event() {
+                app.globalData.chat_entry_handle(this.info.chat_info.chat_url);
+            },
+
             // 导航事件
             nav_event(e) {
                 this.setData({
@@ -1290,6 +1336,13 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 客服服务事件
+            header_service_event(e) {
+                this.setData({
+                    header_service_status: !this.header_service_status
+                });
             }
         }
     };

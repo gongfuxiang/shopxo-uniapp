@@ -59,33 +59,6 @@
 }
 
 /**
-* 客服
-*/
-.header-service {
-    width: 400rpx;
-    left: 80rpx;
-    top: 210rpx;
-    z-index: 2;
-    font-size: 24rpx;
-    -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
-    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
-}
-.header-service .item:first-child {
-    border-top: 0 !important;
-}
-.header-service .qrcode .item:not(:last-child) {
-    margin-right: 20rpx;
-}
-.header-service image {
-    width: 130rpx;
-    height: 130rpx;
-}
-.header-service .chat-info image {
-    width: 40rpx;
-    height: 40rpx;
-}
-
-/**
 * 导航
 */
 .nav {
