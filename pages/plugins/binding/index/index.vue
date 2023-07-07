@@ -2,36 +2,23 @@
     <view>
         <view v-if="(data_base || null) != null">
             <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-binding-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view class="item border-radius-main bg-white padding-main oh spacing-mb">
-                            <navigator :url="'/pages/plugins/binding/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.images" mode="aspectFit" class="images fl dis-block border-radius-main"></image>
-                                <view class="base-right fr bs-bb">
-                                    <view class="fw-b text-size cr-base single-text">{{item.title}}</view>
-                                    <view class="cr-grey margin-top-xs text-size-xs multi-text">{{item.describe}}</view>
-                                    <view class="sales-price margin-top-sm single-text">{{currency_symbol}}{{item.estimate_price}}</view>
-                                    <view v-if="item.estimate_original_price != 0" class="original-price margin-top-xs single-text">{{currency_symbol}}{{item.estimate_original_price}}</view>
-                                    <view v-if="(item.estimate_discount_price || 0) != 0" class="margin-top-sm single-text">
-                                        <text class="discount-icon cr-white text-size-xs">节省</text>
-                                        <text class="cr-green">{{currency_symbol}}{{item.estimate_discount_price}}</text>
-                                    </view>
-                                </view>
-                            </navigator>
-                        </view>
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view :class="((shop || null) != null ? 'page' : '')">
+                    <block v-if="(data_list || null) != null && data_list.length > 0">
+                        <!-- 组合搭配组件 -->
+                        <component-binding-list :propConfig="data_base" :propDataList="data_list" :propCurrencySymbol="currency_symbol"></component-binding-list>
                     </block>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                </view>
+                    <block v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                    </block>
 
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </view>
 
                 <!-- 回到店铺 -->
-                <view v-if="(shop || null) != null && shop.length > 0" class="bottom-fixed padding-main">
+                <view v-if="(shop || null) != null" class="bottom-fixed padding-main">
                     <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
                         <view class="dis-inline-block va-m">
                             <uni-icons type="shop" size="16" color="#fff"></uni-icons>
@@ -47,6 +34,7 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentBindingList from "../../../../components/binding-list/binding-list";
 
     export default {
         data() {
@@ -70,7 +58,8 @@
 
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
+            componentBindingList
         },
 
         onLoad(params) {
@@ -189,7 +178,7 @@
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        shop_id: this.params.spid || 0
+                        shop_id: this.params.shop_id || 0
                     },
                     dataType: 'json',
                     success: res => {

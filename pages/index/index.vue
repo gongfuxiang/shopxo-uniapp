@@ -99,8 +99,8 @@
 
                         <!-- 门店 - 插件 -->
                         <block v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
-                            <view class="spacing-nav-title">
-                                <text class="text-wrapper">{{plugins_realstore_data.base.home_data_list_title || '最新门店'}}</text>
+                            <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_realstore_data.base.home_data_list_title}}</text>
                                 <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
                             <component-realstore-list :propDataList="plugins_realstore_data.data" :propFavorUser="plugins_realstore_data.favor_user"></component-realstore-list>
@@ -108,11 +108,20 @@
 
                         <!-- 多商户 - 插件 -->
                         <block v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
-                            <view class="spacing-nav-title">
-                                <text class="text-wrapper">{{plugins_shop_data.base.home_data_list_title || '最新商家'}}</text>
+                            <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_shop_data.base.home_data_list_title}}</text>
                                 <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
                             <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
+                        </block>
+                        
+                        <!-- 组合搭配 - 插件 -->
+                        <block v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
+                            <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title">
+                                <text class="text-wrapper">{{plugins_binding_data.base.home_data_list_title}}</text>
+                                <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+                            </view>
+                            <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
                         </block>
 
                         <!-- 博客-楼层顶部 - 插件 -->
@@ -258,6 +267,7 @@
     import componentShopList from "../../components/shop-list/shop-list";
 	import componentGoodsList from "../../components/goods-list/goods-list";
     import componentUserBase from "../../components/user-base/user-base";
+    import componentBindingList from "../../components/binding-list/binding-list";
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
@@ -328,7 +338,9 @@
                 // 门店插件
                 plugins_realstore_data: null,
                 // 多商户插件
-                plugins_shop_data: null
+                plugins_shop_data: null,
+                // 组合搭配插件
+                plugins_binding_data: null
             };
         },
 
@@ -349,7 +361,8 @@
             componentRealstoreList,
             componentShopList,
 			componentGoodsList,
-            componentUserBase
+            componentUserBase,
+            componentBindingList
         },
         props: {},
 
@@ -436,7 +449,8 @@
                                 plugins_mourning_data_is_app: parseInt(data.plugins_mourning_data || 0) == 1,
                                 plugins_blog_data: data.plugins_blog_data || null,
                                 plugins_realstore_data: data.plugins_realstore_data || null,
-                                plugins_shop_data: data.plugins_shop_data || null
+                                plugins_shop_data: data.plugins_shop_data || null,
+                                plugins_binding_data: data.plugins_binding_data || null
                             });
 
                             // 弹屏广告插件处理

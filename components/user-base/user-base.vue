@@ -44,6 +44,9 @@
                 popup_status: false,
                 user: null,
                 user_avatar: '',
+                pages: [],
+                client: [],
+                integral_time: 0
             };
         },
 
@@ -57,13 +60,33 @@
             }
         },
 
-        created: function() {},
+        created: function() {
+            // 初始化配置
+            this.init_config();
+        },
 
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        pages: app.globalData.get_config('config.common_app_user_base_popup_pages', []),
+                        client: app.globalData.get_config('config.common_app_user_base_popup_client', []),
+                        integral_time: parseInt(app.globalData.get_config('config.common_app_user_base_popup_integral_time', 1800))
+                    });
+                    console.log(this.pages, this.client)
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
             // 初始配置
             init(type = '') {
-                var data = app.globalData.data.user_base_personal_setup_data;
-                if(data.pages.indexOf(type) != -1 && data.client.indexOf(this.application_client_type) != -1) {
+                // 初始化配置
+                this.init_config(true);
+
+                // 是否需要展示弹窗提示
+                if(this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
                     // 当前缓存用户
                     var user = app.globalData.get_user_cache_info();
                     // 头像是默认则置为空
@@ -75,7 +98,7 @@
                     // 间隔时间
                     var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
                     var current_time = Date.parse(new Date())/1000;
-                    if(status && !this.popup_status && cache_time > 0 && current_time < cache_time+parseInt(data.interval_time)) {
+                    if(status && !this.popup_status && cache_time > 0 && current_time < cache_time+parseInt(this.interval_time)) {
                         status = false;
                     }
                     this.setData({

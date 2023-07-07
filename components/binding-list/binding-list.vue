@@ -1,59 +1,60 @@
 <template>
     <view>
-        <view v-if="((propData || null) != null)" class="plugins-binding-container">
-            <!-- 组合搭配 -->
-            <block v-if="((propData.binding_list || null) != null)">
-                <block v-for="(bv, bi) in propData.binding_list" :key="bi">
-                    <view v-if="((bv.goods || null) != null) && bv.goods.length > 0" class="plugins-binding-list padding-horizontal-main border-radius-main oh spacing-mb">
-                        <view class="spacing-nav-title oh">
-                            <text class="text-wrapper">{{bv.title}}</text>
-                            <view v-if="(bv.estimate_discount_price || 0) != 0" class="estimate-discount-price fr">
-                                <text class="discount-icon cr-white text-size-xs">节省</text>
-                                <text class="cr-green text-size-lg va-m">{{propCurrencySymbol}}{{bv.estimate_discount_price}}</text>
-                            </view>
-                        </view>
-                        <view class="left-content fl">
-                            <component-goods-list :propData="{style_type: 2, goods_list: bv.goods, multiple_items: 2}" :propLabel="propLabel" :propCurrencySymbol="propCurrencySymbol" :propIsAutoPlay="(propData.config.is_auto_play || 0) == 1"></component-goods-list>
-                        </view>
-                        <view class="right-content fr bs-bb padding-left-main tc">
-                            <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round" :data-value="'/pages/plugins/binding/detail/detail?id='+bv.id" @tap="url_event">{{bv.buy_button_text}}</button>
-                            <view class="sales-price margin-top-sm">{{propCurrencySymbol}}{{bv.estimate_price}}</view>
-                            <view v-if="(bv.estimate_original_price || 0) != 0" class="original-price margin-top-sm">{{propCurrencySymbol}}{{bv.estimate_original_price}}</view>
+        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh">
+            <block v-for="(item, index) in data_list" :key="index">
+                <view class="item border-radius-main bg-white padding-main oh spacing-mb" :data-value="item.url" @tap="url_event">
+                    <image :src="item.images" mode="aspectFit" class="images fl dis-block border-radius-main"></image>
+                    <view class="base-right fr bs-bb">
+                        <view class="fw-b text-size cr-base single-text">{{item.title}}</view>
+                        <view class="cr-grey margin-top-xs text-size-xs multi-text">{{item.describe}}</view>
+                        <view class="sales-price margin-top-sm single-text">{{propCurrencySymbol}}{{item.estimate_price}}</view>
+                        <view v-if="item.estimate_original_price != 0" class="original-price margin-top-xs single-text">{{propCurrencySymbol}}{{item.estimate_original_price}}</view>
+                        <view v-if="(item.estimate_discount_price || 0) != 0" class="margin-top-sm single-text">
+                            <text class="discount-icon cr-white text-size-xs">节省</text>
+                            <text class="cr-green">{{propCurrencySymbol}}{{item.estimate_discount_price}}</text>
                         </view>
                     </view>
-                </block>
+                </view>
             </block>
-
-            <!-- 商品关联 -->
-            <view v-if="((propData.relevant_data || null) != null)">
-                <component-goods-list :propData="{title: propData.relevant_data.name, style_type: 2, goods_list: propData.relevant_data.data}" :propLabel="propLabel" :propCurrencySymbol="propCurrencySymbol" :propIsAutoPlay="(propData.config.is_auto_play_relevant || 0) == 1"></component-goods-list>
-            </view>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentGoodsList from "../goods-list/goods-list";
     export default {
         data() {
-            return {};
+            return {
+                config: {},
+                data_list: []
+            };
         },
-        components: {
-            componentGoodsList
-        },
+        components: {},
         props: {
+            // 价格符号
             propCurrencySymbol: {
                 type: String,
                 default: app.globalData.data.currency_symbol
             },
-            propData: {
-            	type: [Array,Object],
-            	default: []
+            propConfig: {
+            	type: [String,Object],
+            	default: null
             },
-            propLabel: {
-                type: [Array,Object,String],
-                default: null
+            propDataList: {
+            	type: Array,
+            	default: () => []
             }
+        },
+        // 属性值改变监听
+        watch: {
+            
+        },
+        // 页面被展示
+        created: function(e) {  
+            var config = ((this.propConfig || null) == null ? app.globalData.get_config('plugins_base.binding.data') : this.propConfig) || {};
+            this.setData({
+                config: config,
+                data_list: this.propDataList
+            });
         },
         methods: {
             // url事件
@@ -64,17 +65,14 @@
     };
 </script>
 <style>
-    .plugins-binding-list {
-        background: linear-gradient(to right, rgb(255 235 220), rgb(241 235 255));
+    .plugins-binding-data-list .item .images {
+        width: 265rpx;
+        height: 265rpx !important;
     }
-    .plugins-binding-list .left-content {
-        width: 65%;
+    .plugins-binding-data-list .item .base-right {
+        width: calc(100% - 285rpx);
     }
-    .plugins-binding-list .right-content {
-        width: 35%;
-        padding-top: 100rpx;
-    }
-    .plugins-binding-list .estimate-discount-price .discount-icon {
+    .plugins-binding-data-list .item .base-right .discount-icon {
         border-top-right-radius: 30rpx;
         border-bottom-left-radius: 30rpx;
         background-image: linear-gradient(45deg,#a3f9a3,#248828,#8bc34a,#d2374c,#9c27b0);

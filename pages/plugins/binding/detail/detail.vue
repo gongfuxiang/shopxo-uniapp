@@ -334,8 +334,9 @@
                         }
                     }
                 }
-                if(goods_data.length < 2) {
-                    app.globalData.showToast('请至少选择两个商品起');
+                var buy_min_number = parseInt(this.data.buy_min_number || 1);
+                if(goods_data.length < buy_min_number) {
+                    app.globalData.showToast('请至少选择'+buy_min_number+'个商品');
                     return false;
                 }
 

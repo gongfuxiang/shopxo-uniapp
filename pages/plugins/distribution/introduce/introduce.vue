@@ -22,8 +22,25 @@
                                 </view>
                             </view>
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-gray">消费金额</view>
-                                <view class="content fl br-l padding-left-main">{{item.rules_msg}}</view>
+                                <view class="title fl padding-right-main cr-gray">等级规则</view>
+                                <view class="content fl br-l padding-left-main">
+                                    <block v-if="(item.rules_msg_list || null) != null">
+                                        <view>{{item.rules_msg_list.name}}</view>
+                                        <view class="padding-left-xxl">
+                                            <block v-if="(item.rules_msg_list.data || null) != null && item.rules_msg_list.data.length > 0">
+                                                <block v-for="(rv, ri) in item.rules_msg_list.data" :key="ri">
+                                                    <view>
+                                                        <text>{{rv.name}}</text>
+                                                        <text class="fr fw-b">{{rv.value}}</text>
+                                                    </view>
+                                                </block>
+                                            </block>
+                                            <block v-else>
+                                                <view class="cr-grey">无条件</view>
+                                            </block>
+                                        </view>
+                                    </block>
+                                </view>
                             </view>
                         </view>
                     </view>

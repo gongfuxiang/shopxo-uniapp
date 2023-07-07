@@ -1,26 +1,3 @@
-.data-list .item .images {
-    width: 265rpx;
-    height: 265rpx !important;
-}
-.data-list .item .base-right {
-    width: calc(100% - 285rpx);
-}
-.data-list .item .base-right .discount-icon {
-    border-top-right-radius: 30rpx;
-    border-bottom-left-radius: 30rpx;
-    background-image: linear-gradient(45deg,#a3f9a3,#248828,#8bc34a,#d2374c,#9c27b0);
-    background-size: 400%;
-    animation: gradient 5s ease infinite;
-    padding: 0 16rpx;
-}
-@keyframes gradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+.page {
+    padding-bottom: 100rpx;
 }

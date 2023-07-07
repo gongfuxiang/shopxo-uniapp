@@ -208,7 +208,7 @@
 
                 <!-- 组合搭配 -->
                 <block v-if="plugins_binding_data != null">
-                    <component-binding-list :propData="plugins_binding_data" :propLabel="plugins_label_data"></component-binding-list>
+                    <component-binding-detail-list :propData="plugins_binding_data" :propLabel="plugins_label_data"></component-binding-detail-list>
                 </block>
 
                 <!-- 门店 -->
@@ -567,7 +567,7 @@
     import componentOnlineService from "../../components/online-service/online-service";
     import componentRealstoreList from "../../components/realstore-list/realstore-list";
     import componentShopList from "../../components/shop-list/shop-list";
-    import componentBindingList from "../../components/binding-list/binding-list";
+    import componentBindingDetailList from "../../components/binding-detail-list/binding-detail-list";
     import componentSharePopup from "../../components/share-popup/share-popup";
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -709,7 +709,7 @@
             componentOnlineService,
             componentRealstoreList,
             componentShopList,
-            componentBindingList,
+            componentBindingDetailList,
             componentSharePopup
         },
 
