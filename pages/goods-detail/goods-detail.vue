@@ -395,7 +395,7 @@
 			    <view class="padding-horizontal-main padding-top-main bg-white">
 			        <view class="close oh">
 			            <view class="fr" @tap.stop="popup_params_close_event">
-			                <icon type="clear" size="20"></icon>
+			                <icon type="clear" size="46rpx"></icon>
 			            </view>
 			        </view>
 			        <view class="popup-params-container">
@@ -419,7 +419,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_wholesale_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view class="plugins-wholesale-container">
@@ -447,7 +447,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view class="plugins-coupon-container padding-bottom-main">
@@ -482,7 +482,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_realstore_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view class="plugins-realstore-popup">
@@ -501,7 +501,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_goodsservice_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view class="plugins-goodsservice-container">

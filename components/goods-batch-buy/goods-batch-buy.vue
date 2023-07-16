@@ -4,7 +4,7 @@
             <view class="bg-white">
                 <view class="close oh padding-horizontal-main padding-top-main">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <icon type="clear" size="20"></icon>
+                        <icon type="clear" size="46rpx"></icon>
                     </view>
                 </view>
                 <view class="plugins-batchbuy-container oh">

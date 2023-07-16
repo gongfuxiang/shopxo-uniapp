@@ -175,7 +175,7 @@
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
@@ -209,7 +209,7 @@
                 <view class="bg-base padding-top-lg">
                     <view class="close oh margin-right-lg padding-bottom-sm">
                         <view class="fr" @tap.stop="plugins_realstore_close_event">
-                            <icon type="clear" size="20"></icon>
+                            <icon type="clear" size="46rpx"></icon>
                         </view>
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">
