@@ -9,7 +9,7 @@
                         <!-- 返回 -->
                         <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
                         <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
-                            <uni-icons type="arrowleft" size="20" color="#fff"></uni-icons>
+                            <uni-icons type="arrowleft" size="46rpx" color="#fff"></uni-icons>
                         </view>
                         <!-- #endif -->
                         <!-- 搜索 -->
@@ -150,11 +150,11 @@
                                             <view class="tc fr">
                                                 <block v-if="(item.is_error || 0) == 0">
                                                     <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                        <uni-icons type="minus" size="22" color="#f00"></uni-icons>
+                                                        <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
                                                     </view>
                                                     <view v-if="(item.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{item.buy_number}}</view>
                                                     <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                        <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                                     </view>
                                                 </block>
                                                 <block v-else>
@@ -186,7 +186,7 @@
                             </view>
                             <view class="fr cp" @tap="cart_all_delete_event">
                                 <view class="dis-inline-block va-m">
-                                    <uni-icons type="trash" size="12" color="#f00"></uni-icons>
+                                    <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
                                 </view>
                                 <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
                             </view>
@@ -209,11 +209,11 @@
                                             <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{currency_symbol}}{{goods.price}}</view>
                                             <view class="tc fr">
                                                 <view v-if="(goods.stock || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                    <uni-icons type="minus" size="22" color="#f00"></uni-icons>
+                                                    <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
                                                 </view>
                                                 <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.stock}}</view>
                                                 <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                    <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                    <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                                 </view>
                                             </view>
                                         </view>

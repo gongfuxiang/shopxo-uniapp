@@ -33,20 +33,20 @@
         position: absolute;
         right: 0;
         transform: translate(50%, -50%);
-        top: 0px;
-        min-width: 14px;
+        top: 0;
+        min-width: 28rpx;
         padding: 0;
-        height: 14px;
-        line-height: 14px;
+        height: 28rpx;
+        line-height: 28rpx;
         text-align: center;
         background-color: #FF3B30;
-        border-radius: 20px;
+        border-radius: 40rpx;
         color: #fff;
         font-size: 10px;
-        padding: 1px 1px;
-        box-shadow: 0 0 5px rgb(0 0 0 / 60%);
+        padding: 2rpx 2rpx;
+        box-shadow: 0 0 10rpx rgb(0 0 0 / 60%);
     }
     .am-badge-text-max {
-        padding: 1px 2px;
+        padding: 2rpx 4rpx;
     }
 </style>

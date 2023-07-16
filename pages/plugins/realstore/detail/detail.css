@@ -27,10 +27,10 @@
     padding-bottom: 10px;
 }
 .nav-back {
-    width: 30px;
+    width: 60rpx;
     background: rgb(0 0 0 / 60%);
-    height: 30px;
-    line-height: 30px;
+    height: 60rpx;
+    line-height: 60rpx;
 }
 .nav-search {
     width: calc(100% - 90rpx);

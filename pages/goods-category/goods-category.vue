@@ -85,11 +85,11 @@
                                                         <view v-if="common_site_type != 1" class="buy-opt tc pa">
                                                             <block v-if="(item.is_error || 0) == 0">
                                                                 <view v-if="(item.buy_number || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                    <uni-icons type="minus" size="22" color="#f00"></uni-icons>
+                                                                    <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
                                                                 </view>
                                                                 <view v-if="(item.buy_number || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{item.buy_number}}</view>
                                                                 <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                    <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                                    <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                                                 </view>
                                                             </block>
                                                             <block v-else>
@@ -228,11 +228,11 @@
                                                 <view class="tc fr">
                                                     <block v-if="goods.is_error == 0">
                                                         <view v-if="(goods.stock || 0) > 0" class="dis-inline-block va-m cp" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                            <uni-icons type="minus" size="22" color="#f00"></uni-icons>
+                                                            <uni-icons type="minus" size="46rpx" color="#f00"></uni-icons>
                                                         </view>
                                                         <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.stock}}</view>
                                                         <view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                            <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                            <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                                         </view>
                                                     </block>
                                                     <block v-else>

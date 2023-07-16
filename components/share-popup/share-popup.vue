@@ -170,7 +170,7 @@
     }
     .share-popup-content .share-items {
         padding: 30rpx 0;
-        height: 85rpx;
+        min-height: 85rpx;
     }
     .share-popup-content .share-items:not(:first-child) {
         border-top: 1px solid #f0f0f0;

@@ -30,7 +30,7 @@
                                         <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                     </view>
                                     <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                        <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                         <view class="cart-badge-icon pa">
                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                         </view>
@@ -65,7 +65,7 @@
                                             <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                         </view>
                                         <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                            <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                            <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                             <view class="cart-badge-icon pa">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                             </view>
@@ -104,7 +104,7 @@
                                                         <text class="sales-price va-m">{{propCurrencySymbol}}{{item[propPriceField]}}</text>
                                                     </view>
                                                     <view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                        <uni-icons type="plus" size="22" color="#1AAD19"></uni-icons>
+                                                        <uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
                                                         <view class="cart-badge-icon pa">
                                                             <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                         </view>

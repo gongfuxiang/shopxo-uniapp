@@ -2,13 +2,13 @@
     <view>
         <view v-if="(data_base || null) != null">
             <!-- 顶部 -->
-            <view class="bg-white padding-top-main padding-horizontal-main">
+            <view class="bg-white padding-top-main padding-horizontal-main oh">
                 <!-- 位置 -->
                 <view class="nav-location dis-inline-block round single-text cr-base" @tap="choose_location_event">
                     <view class="dis-inline-block va-m">
-                        <uni-icons type="map-pin-ellipse" size="12" color="#888"></uni-icons>
+                        <uni-icons type="map-pin-ellipse" size="24rpx" color="#888"></uni-icons>
                     </view>
-                    <text class="va-m margin-left-xs">
+                    <text class="va-m margin-left-xs text-size-sm">
                         <block v-if="(user_location || null) != null">{{user_location.name || user_location.address || ''}}</block>
                         <block v-else>未选择位置</block>
                     </text>
@@ -20,7 +20,7 @@
             </view>
 
             <!-- 分类 -->
-            <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
+            <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-base scroll-view-horizontal bg-white oh br-b" scroll-x="true">
                 <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
                 <block v-for="(item, index) in category" :key="index">
                     <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
@@ -29,9 +29,9 @@
             
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-                <block v-if="(data_list || null) != null && data_list.length > 0">
+                <view v-if="(data_list || null) != null && data_list.length > 0" class="padding-top-main padding-horizontal-main">
                     <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
-                </block>
+                </view>
                 <view v-else>
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>

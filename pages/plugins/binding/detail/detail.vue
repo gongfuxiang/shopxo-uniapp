@@ -24,7 +24,7 @@
                                 <view class="margin-top-xs">
                                     <view v-if="item.is_error == 0">
                                         <view class="va-m dis-inline-block margin-right-xl pr" :data-index="index" @tap="goods_cart_event">
-                                            <uni-icons type="cart" size="16" color="#999"></uni-icons>
+                                            <uni-icons type="cart" size="46rpx" color="#999"></uni-icons>
                                             <view class="cart-badge-icon pa">
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                             </view>
