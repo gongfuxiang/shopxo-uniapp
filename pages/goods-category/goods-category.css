@@ -105,6 +105,9 @@
     right: 0;
     background: #f5f5f5;
 }
+.goods-right-content.category-one-subset-content {
+    width: 100%;
+}
 .goods-right-content .word-list {
     position: sticky;
     top: 0;

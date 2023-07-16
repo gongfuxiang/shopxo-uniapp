@@ -74,7 +74,6 @@
                         client: app.globalData.get_config('config.common_app_user_base_popup_client', []),
                         integral_time: parseInt(app.globalData.get_config('config.common_app_user_base_popup_integral_time', 1800))
                     });
-                    console.log(this.pages, this.client)
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }

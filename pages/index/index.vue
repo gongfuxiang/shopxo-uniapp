@@ -7,7 +7,7 @@
                 <!-- #ifndef MP-TOUTIAO -->
                 <view class="home-top-nav-logo">
                     <block v-if="is_logo_use_text == 0 && (application_logo || null) != null">
-                        <image :src="application_logo" mode="aspectFit" class="home-top-nav-logo-image"></image>
+                        <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
                     </block>
                     <block v-else>
                         <view class="home-top-nav-logo-title cr-white single-text">{{application_title}}</view>

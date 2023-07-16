@@ -12,7 +12,7 @@
 }
 .home-top-nav-logo {
     text-align: left;
-    padding: 2px 250rpx 0 20rpx;
+    padding: 2px 250rpx 10rpx 20rpx;
     height: 37px;
     /* #ifdef H5 || MP-TOUTIAO || APP */
     padding-top: 0;
@@ -20,7 +20,7 @@
 }
 .home-top-nav-logo-image {
     width: 240rpx;
-    height: 70rpx !important;
+    height: 100% !important;
 }
 .home-top-nav-logo-title {
     font-weight: bold;

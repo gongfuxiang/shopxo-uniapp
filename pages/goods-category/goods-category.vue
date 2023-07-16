@@ -40,7 +40,7 @@
                             </scroll-view>
                         </view>
                         <!-- 二级导航 -->
-                        <view class="left-nav bg-white ht-auto">
+                        <view v-if="category_one_subset_count > 0" class="left-nav bg-white ht-auto">
                             <scroll-view :scroll-y="true" class="ht-auto">
                                 <view :class="((common_site_type != 1) ? 'left-content-actual' : '')">
                                     <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main border-color-main' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
@@ -57,7 +57,7 @@
                             </scroll-view>
                         </view>
                         <!-- 商品列表 -->
-                        <view class="goods-right-content pa bs-bb padding-top-main padding-horizontal-main">
+                        <view :class="'goods-right-content pa bs-bb padding-top-main padding-horizontal-main '+(category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                             <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                                 <view :class="((common_site_type != 1) ? 'right-content-actual' : '')+' pr'">
                                     <!-- 三级导航 -->
@@ -331,6 +331,7 @@
                 scroll_top_old: 0,
                 cart_status: false,
                 goods_choose_data: {},
+                category_one_subset_count: 0,
                 // 基础配置
                 category_show_level: 0,
                 // 自定义分享信息
@@ -418,14 +419,21 @@
                             var data = res.data.data;
 							var index = this.nav_active_index;
                             var temp_category = data.category || [];
+                            // 全部分类子集数量
+                            var category_one_subset_count = 0;
 							// 是否指定分类
 							var tabbar_params = this.tabbar_params;
-							if(temp_category.length > 0 && (tabbar_params || null) != null && (tabbar_params.id || null) != null) {
+							if(temp_category.length > 0) {
 								for(var i in temp_category) {
-									if(temp_category[i]['id'] == tabbar_params.id) {
+                                    // 是否指定分类
+									if((tabbar_params || null) != null && (tabbar_params.id || null) != null && temp_category[i]['id'] == tabbar_params.id) {
 										index = i;
 										break;
 									}
+                                    // 是否全部数据都无二级
+                                    if((temp_category[i]['items'] || null) != null && temp_category[i]['items'].length > 0) {
+                                        category_one_subset_count++;
+                                    }
 								}
 							}
 							// 设置分类及右侧数据和及基础数据
@@ -433,6 +441,7 @@
                                 category_list: temp_category,
                                 data_content: temp_category[index] || null,
 								nav_active_index: index,
+                                category_one_subset_count: category_one_subset_count,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                             }
 							// 指定分类则重新读取列表数据

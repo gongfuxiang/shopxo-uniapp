@@ -84,7 +84,7 @@
             });
 
             // #ifndef MP-KUAISHOU
-            // 是否获取位置
+            // 是否获取位置、下单选择地址进入需要传参 is_buy
             if ((this.params.is_buy || 0) == 1 && this.home_extraction_address_position == 1) {
                 uni.navigateTo({
                     url: '/pages/common/open-setting-location/open-setting-location'
@@ -95,7 +95,7 @@
 
         onShow() {
             // #ifndef MP-KUAISHOU
-            // 是否需要选择地理位置
+            // 是否需要选择地理位置、这里不校验参数is_buy，仅页面进入才需要校验is_buy进入位置选择页面
             if (this.home_extraction_address_position == 1) {
                 // 首次不请求数据
                 if (this.is_first == 0) {

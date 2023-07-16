@@ -2,7 +2,7 @@
     <view>
         <view class="search-content pr">
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
-                <uni-icons :type="propIcon" size="12" :color="propIconColor"></uni-icons>
+                <uni-icons :type="propIcon" size="24rpx" :color="propIconColor"></uni-icons>
             </view>
             <input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" :value="propDefaultValue" @confirm="search_input_event" :style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
         </view>
@@ -103,17 +103,17 @@
 </script>
 <style>
     .search-content .search-icon {
-        line-height: 12px;
-        left: 10px;
-        top: calc(50% - 11px);
+        line-height: 24rpx;
+        left: 20rpx;
+        top: calc(50% - 22rpx);
         z-index: 1;
-        padding: 5px;
+        padding: 10rpx;
     }
     .search-content input {
-        font-size: 12px;
-        padding: 0 15px 0 38px;
+        font-size: 24rpx;
+        padding: 0 30rpx 0 76rpx;
         box-sizing: border-box;
-        height: 30px;
-        line-height: 30px;
+        height: 60rpx;
+        line-height: 60rpx;
     }
 </style>
