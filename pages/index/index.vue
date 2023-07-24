@@ -81,15 +81,15 @@
                         </view>
 
                         <!-- 限时秒杀 - 插件 -->
-                        <view v-if="pv.plugins == 'seckill' && plugins_seckill_is_valid == 1 && plugins_seckill_data.goods.length > 0" class="seckill border-radius-main padding-horizontal-main spacing-mb" :style="plugins_seckill_bg">
+                        <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb" :style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
                             <view class="spacing-nav-title">
-                                <text class="text-wrapper va-m">限时秒杀</text>
+                                <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title" mode="widthFix"></image>
                                 <view class="dis-inline-block va-m margin-left-sm">
-                                    <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds"></component-countdown>
+                                    <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                 </view>
                                 <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
                             </view>
-                            <component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
+                            <component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
                         </view>
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
@@ -271,7 +271,6 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('home');
-    var seckill_static_url = app.globalData.get_static_url('seckill', true);
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO
@@ -315,8 +314,6 @@
                 // 插件顺序列表
                 plugins_sort_list: [],
                 // 限时秒杀插件
-                plugins_seckill_bg: 'background: url('+seckill_static_url+'home-bg.png) top/100% no-repeat;',
-                plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
                 // 购买记录插件
                 plugins_salerecords_data: null,
@@ -440,7 +437,6 @@
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
-                                plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
                                 plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,

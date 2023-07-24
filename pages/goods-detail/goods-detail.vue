@@ -79,9 +79,9 @@
             </view>
             
             <!-- 价格信息 -->
-            <view :class="'goods-base-price bg-white oh spacing-mb '+((plugins_seckill_is_valid == 1) ? 'goods-base-price-countdown' : '')">
+            <view :class="'goods-base-price bg-white oh spacing-mb '+(((plugins_seckill_data || null) != null) ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg" :style="(plugins_seckill_is_valid == 1) ? 'background-image: url('+plugins_seckill_data.bg_img+')' : ''">
+                <view class="price-content padding-lg" :style="((plugins_seckill_data || null) != null) ? 'background-image: url('+plugins_seckill_data.goods_detail_header+')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{show_field_price_text}}</text>
                         <text class="sales-price va-m">{{currency_symbol}}{{goods_spec_base_price}}</text>
@@ -89,8 +89,8 @@
                     <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm single-text">{{currency_symbol}}{{goods_spec_base_original_price}}</view>
                 </view>
                 <!-- 秒杀 -->
-                <view v-if="plugins_seckill_is_valid == 1" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
-                    <view class="time-title cr-white single-text">{{plugins_seckill_data.title || '限时秒杀'}}</view>
+                <view v-if="(plugins_seckill_data || null) != null" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
+                    <view class="time-title cr-white single-text">{{plugins_seckill_data.goods_detail_title || '限时秒杀'}}</view>
                     <component-countdown :propHour="plugins_seckill_data.time.hours" :propMinute="plugins_seckill_data.time.minutes" :propSecond="plugins_seckill_data.time.seconds" :propMsecShow="true" propTimeSize="32" propTimePadding="0" propTimeWeight="bold" propTimeBackgroundColor="transparent" propTimeColor="#ffe500" propDsColor="#fff"></component-countdown>
                 </view>
             </view>
@@ -660,7 +660,6 @@
                 // 自定义分享信息
                 share_info: {},
                 // 限时秒杀插件
-                plugins_seckill_is_valid: 0,
                 plugins_seckill_data: null,
                 // 优惠劵插件
                 plugins_coupon_data: null,
@@ -859,7 +858,6 @@
                                     goods_spec_base_original_price: goods.original_price || 0,
                                     show_field_price_text: (price_text_arr.indexOf(goods.show_field_price_text) != -1) ? null : (goods.show_field_price_text.replace(/<[^>]+>/g, "") || null),
                                     plugins_seckill_data: data.plugins_seckill_data || null,
-                                    plugins_seckill_is_valid: (data.plugins_seckill_data || null) != null && (data.plugins_seckill_data.is_valid || 0) == 1 ? 1 : 0,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     quick_nav_cart_count: data.cart_total.buy_number || 0,
                                     plugins_salerecords_data: data.plugins_salerecords_data || null,

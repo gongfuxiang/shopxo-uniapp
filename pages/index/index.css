@@ -105,14 +105,18 @@
 /*
  * 限时秒杀 - 插件
  */
-.seckill .goods-list swiper {
+.plugins-seckill-data .icon {
+    max-width: 200rpx;
+    max-height: 160rpx;
+}
+.plugins-seckill-data .goods-list swiper {
     height: 435rpx !important;
 }
-.seckill .goods-list .item .goods-img {
+.plugins-seckill-data .goods-list .item .goods-img {
     width: 100%;
     height: 240rpx;
 }
-.seckill .goods-list .goods-base .icon {
+.plugins-seckill-data .goods-list .goods-base .icon {
     right: 20rpx;
     bottom: 13rpx;
 }
@@ -144,9 +148,9 @@
 /**
  * 标签 - 秒杀单独修改样式
  */
-.seckill .plugins-label-bottom-left,
-.seckill .plugins-label-bottom-center,
-.seckill .plugins-label-bottom-right {
+.plugins-seckill-data .plugins-label-bottom-left,
+.plugins-seckill-data .plugins-label-bottom-center,
+.plugins-seckill-data .plugins-label-bottom-right {
     bottom: calc(100% - 240rpx);
 }
 
