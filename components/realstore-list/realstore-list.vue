@@ -31,6 +31,7 @@
                         <view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item bg-blue circle dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
                             <uni-icons type="paperplane-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>
+                        <!-- #endif -->
                         <view v-if="propIsFavor" :class="'icon-item circle dis-inline-block tc cp pr '+((item.is_favor || 0) == 1 ? 'bg-red' : 'bg-gray')" :data-index="index" @tap.stop="favor_event">
                             <uni-icons type="heart-filled" size="32rpx" color="#fff"></uni-icons>
                         </view>

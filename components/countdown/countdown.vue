@@ -125,7 +125,6 @@
         	clearInterval(this.timer);
             clearInterval(this.timers);
         },
-
         // #endif
         methods: {
             // 倒计时处理

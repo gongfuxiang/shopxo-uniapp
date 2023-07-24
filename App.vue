@@ -29,6 +29,8 @@
 				cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
                 // 用户基础资料提示间隔key
                 cache_user_base_personal_interval_time_key: 'cache_user_base_personal_interval_time_key',
+                // 用户购物车选择记录key
+                cache_user_cart_not_use_data_key: 'cache_user_cart_not_use_data_key',
                 // 默认用户头像
                 default_user_head_src: "/static/images/common/user.png",
                 // 成功圆形提示图片

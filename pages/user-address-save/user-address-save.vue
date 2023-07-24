@@ -80,7 +80,7 @@
                         <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey" class="cr-base" placeholder="身份证号码格式最多18个字符">
                     </view>
                     <view class="form-gorup bg-white form-container-upload oh">
-                        <view class="form-gorup-title">身份证照片<text class="form-group-tips-must">必传</text><text class="form-group-tips">请使用身份证原件拍摄，图片要清晰</text></view>
+                        <view class="form-gorup-title">身份证照片<text class="form-group-tips-must">*</text><text class="form-group-tips">请使用身份证原件拍摄，图片要清晰</text></view>
                         <view class="form-upload-data">
                             <view class="item fl">
                                 <text v-if="(idcard_images_data.idcard_front || null) != null" class="delete-icon" @tap="upload_delete_event" data-value="idcard_front">x</text>

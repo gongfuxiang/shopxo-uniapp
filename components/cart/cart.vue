@@ -146,7 +146,7 @@
                     }
                 ],
                 // 首页地址
-                home_page_url: app.globalData.data.tabbar_pages[0]
+                home_page_url: app.globalData.data.tabbar_pages[0],
             };
         },
 
@@ -256,12 +256,29 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var data_list = data.data || [];
+                            if(data_list.length > 0) {
+                                // 选中状态处理
+                                var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
+                                for(var i in data_list) {
+                                    if((not_use[data_list[i]['id']] || null) == null || not_use[data_list[i]['id']] != data_list[i]['stock']) {
+                                        data_list[i]['selected'] = true;
+                                    }
+                                }
+
+                                // 缓存记录用户未选中的购物车数据
+                                uni.setStorageSync(app.globalData.data.cache_user_cart_not_use_data_key, not_use);
+                            }
+
+                            // 设置数据
                             this.setData({
                                 data_list: data_list,
                                 data_list_loding_status: data_list.length == 0 ? 0 : 3,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: '购物车空空如也'
                             });
+
+                            // 选择处理
+                            this.cart_selected_calculate();
 
                             // 导航购物车处理
                             var cart_total = data.buy_number || 0;
@@ -362,14 +379,20 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
+                            var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
                             var data = res.data.data;
                             temp_data_list[index]['stock'] = data.stock;
                             temp_data_list[index]['original_price'] = data.original_price;
                             temp_data_list[index]['price'] = data.price;
+                            temp_data_list[index]['selected'] = true;
+                            delete not_use[temp_data_list[index]['id']];
                             this.setData({
                                 data_list: temp_data_list
                             });
-                            
+
+                            // 缓存记录用户未选中的购物车数据
+                            uni.setStorageSync(app.globalData.data.cache_user_cart_not_use_data_key, not_use);
+
                             // 选择处理
                             this.cart_selected_calculate();
                         } else {
@@ -517,25 +540,40 @@
                 if (type != null) {
                     var temp_data_list = this.data_list;
                     var temp_is_selected_all = this.is_selected_all;
+                    var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
                     switch (type) {
                         // 批量操作
                         case 'all':
                             temp_is_selected_all = temp_is_selected_all == true ? false : true;
                             for (var i in temp_data_list) {
                                 temp_data_list[i]['selected'] = temp_is_selected_all;
+                                // 选中清除则则记录
+                                if(temp_is_selected_all) {
+                                    delete not_use[temp_data_list[i]['id']];
+                                } else {
+                                    not_use[temp_data_list[i]['id']] = temp_data_list[i]['stock'];
+                                }
                             }
                             break;
                             // 节点操作
                         case 'node':
                             var index = e.currentTarget.dataset.index || 0;
                             temp_data_list[index]['selected'] = temp_data_list[index]['selected'] == true ? false : true;
+                            // 选中清除则则记录
+                            if(temp_data_list[index]['selected']) {
+                                delete not_use[temp_data_list[index]['id']];
+                            } else {
+                                not_use[temp_data_list[index]['id']] = temp_data_list[index]['stock'];
+                            }
                             break;
                     }
-
                     this.setData({
                         data_list: temp_data_list,
-                        is_selected_all: temp_is_selected_all
+                        is_selected_all: temp_is_selected_all,
                     });
+
+                    // 缓存记录用户未选中的购物车数据
+                    uni.setStorageSync(app.globalData.data.cache_user_cart_not_use_data_key, not_use);
 
                     // 选择处理
                     this.cart_selected_calculate();

@@ -9,7 +9,7 @@
                             <text class="cr-gray margin-left-sm va-m">{{item.user.user_name_view || ''}}</text>
                         </view>
                         <view class="content margin-top">
-                            <block v-for="(fv,fi) in content_list">
+                            <block v-for="(fv,fi) in content_list" :key="fi">
                                 <view class="single-text margin-top-xs">
                                     <text class="cr-gray margin-right-xl">{{fv.name}}</text>
                                     <text class="cr-base">{{item[fv.field]}}</text>

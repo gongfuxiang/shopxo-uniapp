@@ -65,7 +65,7 @@
             <view v-if="new_aftersale_data != null">
                 <!-- 提示/退货 -->
                 <view v-if="new_aftersale_data.status <= 2" class="msg-tips padding-main border-radius-main spacing-mb">
-                    <text class="msg-text">{{new_aftersale_data.tips_msg}}</text>
+                    <text class="msg-text">{{new_aftersale_data.tips_msg.title}}</text>
                     <text class="msg-a" @tap="show_aftersale_event">查看 >></text>
                     <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
                         <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">立即退货</button>
@@ -80,7 +80,7 @@
 
                 <!-- 提示 -->
                 <view v-if="new_aftersale_data.status >= 3" :class="'msg-tips padding-main border-radius-main spacing-mb ' + (new_aftersale_data.status == 3 ? 'msg-tips-success' : (new_aftersale_data.status == 4 ? 'msg-tips-danger' : 'msg-tips-warning'))">
-                    <text class="msg-text">{{new_aftersale_data.tips_msg}}</text>
+                    <text class="msg-text">{{new_aftersale_data.tips_msg.title}}</text>
                     <text class="msg-a margin-left-sm" @tap="show_aftersale_event">查看 >></text>
                 </view>
 
@@ -135,7 +135,7 @@
                 <!-- 表单 -->
                 <view v-if="form_type != null" class="form-container oh spacing-mb">
                     <view class="form-gorup">
-                        <view class="form-gorup-title">退款原因<text class="form-group-tips-must">必选</text></view>
+                        <view class="form-gorup-title">退款原因<text class="form-group-tips-must">*</text></view>
                         <picker @change="form_reason_event" :value="form_reason_index" :range="reason_data_list">
                             <view :class="'picker ' + (form_reason_index == null ? 'cr-grey' : 'cr-base') + ' arrow-right'">
                                 {{form_reason_index == null ? '请选择原因' : reason_data_list[form_reason_index]}}

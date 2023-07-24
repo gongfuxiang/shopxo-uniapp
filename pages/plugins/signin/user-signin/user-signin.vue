@@ -4,7 +4,7 @@
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                        <block v-for="(fv,fi) in content_list">
+                        <block v-for="(fv,fi) in content_list" :key="fi">
                             <view class="single-text margin-top-xs">
                                 <text class="cr-gray margin-right-xl">{{fv.name}}</text>
                                 <text class="cr-base">{{item[fv.field]}}</text>

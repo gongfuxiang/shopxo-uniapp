@@ -22,7 +22,7 @@
                     </view>
                     <block v-if="(item.detail_data || null) != null && item.detail_data.length > 0">
                         <view v-for="(detail, di) in item.detail_data" :key="di" class="br-b-dashed oh padding-vertical-main">
-                            <block v-for="(fv,fi) in content_list">
+                            <block v-for="(fv,fi) in content_list" :key="fi">
                                 <view class="single-text margin-top-xs">
                                     <text class="cr-gray margin-right-xl">{{fv.name}}</text>
                                     <text class="cr-base">{{detail[fv.field]}}</text>

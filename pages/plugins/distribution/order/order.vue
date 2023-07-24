@@ -18,7 +18,7 @@
                     </view>
                     <view class="content margin-top">
                         <navigator :url="'/pages/plugins/distribution/order-detail/order-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv,fi) in content_list">
+                            <block v-for="(fv,fi) in content_list" :key="fi">
                                 <view class="single-text margin-top-xs">
                                     <text class="cr-gray margin-right-xl">{{fv.name}}</text>
                                     <text class="cr-base">{{item[fv.field]}}</text>
