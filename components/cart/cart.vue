@@ -258,7 +258,7 @@
                             var data_list = data.data || [];
                             if(data_list.length > 0) {
                                 // 选中状态处理
-                                var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
+                                var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || {};
                                 for(var i in data_list) {
                                     if((not_use[data_list[i]['id']] || null) == null || not_use[data_list[i]['id']] != data_list[i]['stock']) {
                                         data_list[i]['selected'] = true;
@@ -379,7 +379,7 @@
                     success: res => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
+                            var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || {};
                             var data = res.data.data;
                             temp_data_list[index]['stock'] = data.stock;
                             temp_data_list[index]['original_price'] = data.original_price;
@@ -540,7 +540,7 @@
                 if (type != null) {
                     var temp_data_list = this.data_list;
                     var temp_is_selected_all = this.is_selected_all;
-                    var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || [];
+                    var not_use = uni.getStorageSync(app.globalData.data.cache_user_cart_not_use_data_key) || {};
                     switch (type) {
                         // 批量操作
                         case 'all':

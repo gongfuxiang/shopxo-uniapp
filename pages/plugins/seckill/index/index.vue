@@ -53,7 +53,7 @@
     export default {
         data() {
             return {
-                seckill_bg: 'background: url('+seckill_static_url+'home-bg.png) top/100% no-repeat;',
+                seckill_bg: 'background: url('+seckill_static_url+'header-bg.png) top/100% no-repeat;',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

@@ -39,17 +39,30 @@
                     // 未指定购物车对象则读取tabbar数据自动计算购物车位置
                     if((cart || null) == null || (cart[0] || null) == null) {
                         var info = uni.getSystemInfoSync();
-                        var tabbar = app.globalData.data.tabbar_pages;
-                        // 无购物车菜单则结束执行
-                        var tabbar_cart_pos = tabbar.indexOf('/pages/cart/cart');
-                        if(tabbar_cart_pos == -1) {
-                            return false;
+                        // 当前页面
+                        var page = app.globalData.current_page().split('?');
+                        switch(page[0]) {                        
+                            // 商品搜索
+                            case 'pages/goods-search/goods-search' :
+                                var cart_top = 20;
+                                var cart_width = 35;
+                                var cart_left = info.screenWidth-20;
+                                break;
+
+                            // 默认购物车
+                            default :
+                                // 无购物车菜单则结束执行
+                                var tabbar = app.globalData.data.tabbar_pages;
+                                var tabbar_cart_pos = tabbar.indexOf('/pages/cart/cart');
+                                if(tabbar_cart_pos == -1) {
+                                    return false;
+                                }
+                                // 计算购物车菜单位置
+                                var tabbar_count = tabbar.length;
+                                var cart_top = info.screenHeight;
+                                var cart_width = info.screenWidth/tabbar_count;
+                                var cart_left = cart_width*tabbar_cart_pos;
                         }
-                        // 计算购物车菜单位置
-                        var tabbar_count = tabbar.length;
-                        var cart_top = info.screenHeight;
-                        var cart_width = info.screenWidth/tabbar_count;
-                        var cart_left = cart_width*tabbar_cart_pos;
                     } else {
                         var temp = cart[0];
                         var cart_width = temp.width;

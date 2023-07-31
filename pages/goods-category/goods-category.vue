@@ -4,7 +4,12 @@
             <!-- 搜索框 -->
             <block v-if="is_single_page == 0">
                 <view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+8)+'px;'">
-                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入商品名称搜索"></component-search>
+                    <block v-if="is_goods_category_search_alone == 1">
+                        <component-search propPlaceholder="输入商品名称搜索"></component-search>
+                    </block>
+                    <block v-else>
+                        <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入商品名称搜索"></component-search>
+                    </block>
                 </view>
             </block>
 
@@ -340,6 +345,8 @@
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 商品列表模式一级分类图标类型
                 category_goods_model_icon_field: (icon_type == 0) ? 'realistic_images' : ((icon_type == 1) ? 'icon' : 'big_images' ),
+                // 商品分类页面搜索进入独立搜索页面
+                is_goods_category_search_alone: app.globalData.data.is_goods_category_search_alone,
                 // 临时操作数据
                 temp_opt_data: null,
                 // 标签插件

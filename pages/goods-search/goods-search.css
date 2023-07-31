@@ -1,4 +1,23 @@
 /**
+ * 顶部搜索
+ */
+.top-search-input {
+    padding-right: 80rpx;
+}
+.top-search-right {
+    top: 20rpx;
+    right: 20rpx;
+}
+.top-search-submit {
+    line-height: 66rpx;
+    height: 66rpx;
+}
+.top-search-right .badge-icon {
+    top: -4px;
+    right: 10rpx;
+}
+
+/**
 * 排序导航
 */
 .nav-sort-content .item {
@@ -26,6 +45,9 @@
 /**
 * 商品列表
 */
+.scroll-box {
+    height: calc(100vh - 176rpx);
+}
 .data-list .item {
     width: calc(50% - 10rpx);
 }

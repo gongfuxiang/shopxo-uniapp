@@ -1,23 +1,43 @@
 <template>
     <view>
-        <!-- 排序 -->
-        <view class="nav-sort bg-white oh pr">
-            <view class="nav-sort-content">
-                <block v-for="(item, index) in search_nav_sort_list" :key="index">
-                    <view class="item tc fl cp" :data-index="index" @tap="nav_sort_event">
-                        <text class="cr-base va-m">{{item.name}}</text>
-                        <image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+        <view class="bg-white">
+            <!-- 搜索关键字 -->
+            <view class="padding-horizontal-main padding-top-main padding-bottom-sm pr">
+                <view class="top-search-input">
+                    <input type="text" confirm-type="search" placeholder="输入商品名称搜索" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base" placeholder-class="cr-grey" @input="search_input_value_event" @confirm="search_input_confirm_event" @focus="search_input_focus_event" @blur="search_input_blur_event">
+                </view>
+                <view class="pa top-search-right">
+                    <view v-if="top_search_right_type_status" class="pr cp" @tap="search_submit_confirm_event">
+                        <uni-icons type="search" size="66rpx" color="#bbb"></uni-icons>
                     </view>
-                </block>
+                    <view v-if="!top_search_right_type_status" class="pr cp" data-value="/pages/cart-page/cart-page" @tap="url_event">
+                        <uni-icons type="cart" size="66rpx" color="#bbb"></uni-icons>
+                        <view v-if="top_right_cart_total != 0" class="badge-icon pa">
+                            <component-badge :propNumber="top_right_cart_total"></component-badge>
+                        </view>
+                    </view>
+                </view>
             </view>
-            <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
-			<image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
+
+            <!-- 排序 -->
+            <view class="nav-sort oh pr">
+                <view class="nav-sort-content">
+                    <block v-for="(item, index) in search_nav_sort_list" :key="index">
+                        <view class="item tc fl cp" :data-index="index" @tap="nav_sort_event">
+                            <text class="cr-base va-m">{{item.name}}</text>
+                            <image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                        </view>
+                    </block>
+                </view>
+                <image class="screening-submit pa cp" :src="common_static_url+'search-submit-icon.png'" mode="aspectFill" @tap="popup_form_event_show"></image>
+                <image class="show-type-submit pa cp" :src="common_static_url+'show-'+(data_show_type_value == 0 ? 'grid' : 'list')+'-icon.png'" mode="aspectFill" @tap="data_show_type_event"></image>
+            </view>
         </view>
 
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main oh">
-				<component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"></component-goods-list>
+				<component-goods-list :propData="{style_type: data_show_type_value, goods_list: data_list, random: random_value}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"></component-goods-list>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
@@ -40,7 +60,7 @@
                             <text class="fr cr-red cp" @tap="map_remove_event">清除</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
+                        <input type="text" confirm-type="search" placeholder="输入商品名称搜索" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
                     </view>
 
                     <!-- 品牌 -->
@@ -137,6 +157,7 @@
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
 	import componentGoodsList from "../../components/goods-list/goods-list";
+    import componentBadge from "../../components/badge/badge";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -154,6 +175,12 @@
                 post_data: {},
                 is_show_popup_form: false,
                 popup_form_loading_status: false,
+                top_search_right_type_status: false,
+                load_status: 0,
+                // 增加随机数，避免无法监听数据列表内部数据更新
+                random_value: 0,
+                // 购物车
+                top_right_cart_total: 0,
                 // 自定义分享信息
                 share_info: {},
                 // 排序导航
@@ -195,7 +222,8 @@
             componentPopup,
             componentNoData,
             componentBottomLine,
-			componentGoodsList
+			componentGoodsList,
+            componentBadge
         },
         props: {},
 
@@ -206,14 +234,14 @@
                     wd: params.keywords || ''
                 }
             });
-
-            // 数据加载
-            this.init();
         },
 
         onShow() {            
             // 初始化配置
             this.init_config();
+
+            // 数据加载
+            this.init();
         },
 
         // 下拉刷新
@@ -267,6 +295,7 @@
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            var temp_load_status = this.load_status;
                             var data = res.data.data;
                             this.setData({
                                 search_map_info: data.search_map_info || [],
@@ -277,11 +306,30 @@
                                     goods_params_list: data.goods_params_list || [],
                                     goods_spec_list: data.goods_spec_list || []
                                 },
+                                load_status: 1,
+                                top_right_cart_total: data.cart_total.buy_number || 0,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data
                             });
-                            
+
                             // 获取数据列表
-                            this.get_data_list(1);
+                            if(temp_load_status == 0) {
+                                this.get_data_list(1);
+                            } else {
+                                // 如果购物车为0则处理列表，避免存在购物车数量
+                                if(this.top_right_cart_total == 0 && this.data_list.length > 0) {
+                                    var temp_data_list = this.data_list;
+                                    for(var i in temp_data_list) {
+                                        temp_data_list[i]['user_cart_count'] = '';
+                                    }
+                                    this.setData({
+                                        data_list: temp_data_list,
+                                        random_value: Math.random()
+                                    });
+                                }
+                            }
+
+                            // 导航购物车处理
+                            this.set_tab_bar_badge_handle();
                         } else {
                             this.setData({
                                 data_list_loding_status: 0
@@ -358,6 +406,7 @@
                                 }
                                 this.setData({
                                     data_list: temp_data_list,
+                                    random_value: Math.random(),
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
@@ -567,9 +616,72 @@
                 this.get_data_list(1);
             },
 
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
             // 数据展示类型
             data_show_type_event(e) {
                 this.setData({data_show_type_value: this.data_show_type_value == 0 ? 1 : 0});
+            },
+
+            // 导航购物车处理
+            set_tab_bar_badge_handle() {
+                if (this.top_right_cart_total <= 0) {
+                    app.globalData.set_tab_bar_badge(2, 0);
+                } else {
+                    app.globalData.set_tab_bar_badge(2, 1, this.top_right_cart_total);
+                }
+            },
+
+            // 搜索输入事件
+            search_input_value_event(e) {
+                var temp_post = this.post_data;
+                temp_post['wd'] = e.detail.value || '';
+                this.setData({
+                    post_data: temp_post
+                });
+            },
+
+            // 搜索输入框输入失去焦点事件
+            search_input_blur_event(e) {
+                this.setData({
+                    top_search_right_type_status: false
+                });
+            },
+
+            // 搜索输入框输入获取焦点事件
+            search_input_focus_event() {
+                this.setData({
+                    top_search_right_type_status: true
+                });
+            },
+
+            // 搜索输入确认事件
+            search_input_confirm_event(e) {
+                var temp_post = this.post_data;
+                temp_post['wd'] = e.detail.value || '';
+                this.setData({
+                    post_data: temp_post,
+                    data_page: 1
+                });
+                this.get_data_list(1);
+            },
+
+            // 搜索确认事件
+            search_submit_confirm_event(e) {
+                this.setData({
+                    data_page: 1
+                });
+                this.get_data_list(1);
+            },
+
+            // 购物车总数处理
+            goods_cart_count_handle(cart_number) {
+                this.setData({
+                    top_right_cart_total: cart_number
+                });
             }
         }
     };

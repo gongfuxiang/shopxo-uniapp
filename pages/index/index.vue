@@ -83,7 +83,7 @@
                         <!-- 限时秒杀 - 插件 -->
                         <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb" :style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
                             <view class="spacing-nav-title">
-                                <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title" mode="widthFix"></image>
+                                <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
                                 <view class="dis-inline-block va-m margin-left-sm">
                                     <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                 </view>
@@ -222,15 +222,15 @@
                     </navigator>
                 </view>
             </view>
-            
+
             <!-- 提示信息 -->
             <block v-if="load_status == 0">
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </block>
-            
+
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            
+
             <!-- 版权信息 -->
             <view v-if="load_status == 1">
                 <component-copyright></component-copyright>
