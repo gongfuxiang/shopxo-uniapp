@@ -4,7 +4,7 @@
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <uni-icons :type="propIcon" size="24rpx" :color="propIconColor"></uni-icons>
             </view>
-            <input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" :value="propDefaultValue" @confirm="search_input_event" :style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
+            <input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" :value="propDefaultValue" @input="search_input_value_event" @confirm="search_submit_confirm_event" @focus="search_input_focus_event" @blur="search_input_blur_event" :style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
         </view>
     </view>
 </template>
@@ -56,6 +56,18 @@
             	type: Boolean,
             	default: false
             },
+            propIsOnFocusEvent: {
+            	type: Boolean,
+            	default: false
+            },
+            propIsOnBlurEvent: {
+            	type: Boolean,
+            	default: false
+            },
+            propIsOnInputEvent: {
+            	type: Boolean,
+            	default: false
+            },
             propIcon: {
             	type: String,
             	default: 'search'
@@ -67,30 +79,52 @@
             propIsIconOnEvent: {
             	type: Boolean,
             	default: false
-            },
+            }
         },
         methods: {
-            // 搜索事件
-            search_input_event(e) {
-                var keywords = e.detail.value || null;
-                
+            // 搜索输入事件
+            search_input_value_event(e) {
+                // 是否回调事件
+                if(this.propIsOnInputEvent) {
+                    this.$emit('oninput', e.detail.value);
+                }
+            },
+
+            // 搜索失去焦点事件
+            search_input_blur_event(e) {
+                // 是否回调事件
+                if(this.propIsOnBlurEvent) {
+                    this.$emit('onblur', e.detail.value);
+                }
+            },
+
+            // 搜索获取焦点事件
+            search_input_focus_event(e) {
+                // 是否回调事件
+                if(this.propIsOnFocusEvent) {
+                    this.$emit('onfocus', e.detail.value);
+                }
+            },
+
+            // 搜索确认事件
+            search_submit_confirm_event(e) {
                 // 是否验证必须要传值
-                if (this.propIsRequired && keywords == null) {
+                if (this.propIsRequired && e.detail.value == '') {
                     app.globalData.showToast("请输入搜索关键字");
                     return false;
                 }
-                
+
                 // 是否回调事件
                 if(this.propIsOnEvent) {
-                    this.$emit('onsearch', keywords);
+                    this.$emit('onsearch', e.detail.value);
                 } else {
                     // 进入搜索页面
                     uni.navigateTo({
-                        url: this.propUrl+'?'+this.propFormName+'=' + keywords
+                        url: this.propUrl+'?'+this.propFormName+'=' + e.detail.value
                     });
                 }
             },
-            
+
             // icon事件
             search_icon_event(e) {
                 // 是否回调事件

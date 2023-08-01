@@ -267,14 +267,6 @@
                 switch(page[0]) {
                     // 商品详情页面
                     case 'pages/goods-detail/goods-detail' :
-                        var res = app.globalData.get_page_object(page[0]);
-                        if(res.length > 0) {
-                            for(var i in res) {
-                                res[i].$vm.goods_cart_count_handle(cart_total);
-                            }
-                        }
-                        break;
-
                     // 商品搜索
                     case 'pages/goods-search/goods-search' :
                         var res = app.globalData.get_page_object(page[0]);
