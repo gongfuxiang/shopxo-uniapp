@@ -4,7 +4,7 @@
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息 -->
                 <view class="base-container oh spacing-mb">
-                    <image v-if="(data.images || null) != null" class="dis-inline-block border-radius-main br va-m margin-right-sm icon" :src="data.images" mode="aspectFit"></image>
+                    <image v-if="(data.images || null) != null" class="dis-inline-block round br va-m margin-right-sm icon" :src="data.images" mode="aspectFit"></image>
                     <view class="text-size cr-base fw dis-inline-block va-m title">{{data.title}}</view>
                     <button class="round bg-white br-green cr-green fr share-submit" type="default" size="mini" hover-class="none" @tap="share_event" :data-index="index">
                         <uni-icons type="redo" size="34rpx" color="#1AAD19" class="va-m"></uni-icons>
