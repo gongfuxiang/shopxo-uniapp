@@ -1,7 +1,7 @@
 <template>
     <view>
         <view :class="'popup ' + (propClassname || '') + ' ' + ((propShow || false) ? 'popup-show' : '') + ' ' + ((propAnimation || true) ? 'animation': '' )" :disable-scroll="propDisablescroll">
-            <view class="popup-mask" v-if="propMask || true" @tap="on_mask_tap"></view>
+            <view class="popup-mask" :style="'z-index: '+propIndex+';'" v-if="propMask || true" @tap="on_mask_tap"></view>
             <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom')+ ' '+(propIsBar ? 'popup-bar' : '')" :style="'left:'+popup_content_left_value+'px'">
                 <slot></slot>
             </view>
@@ -44,6 +44,10 @@
             propIsBar: {
             	type: Boolean,
             	default: false
+            },
+            propIndex: {
+                type: Number,
+                default: 100
             }
         },
         // 属性值改变监听

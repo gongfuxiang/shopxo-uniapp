@@ -1,6 +1,6 @@
 <template>
     <view>
-        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
+        <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
@@ -100,6 +100,12 @@
 
         components: {
             componentPopup
+        },
+        props: {
+            propIndex: {
+                type: Number,
+                default: 100
+            }
         },
 
         created: function() {},

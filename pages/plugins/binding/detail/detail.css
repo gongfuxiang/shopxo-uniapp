@@ -1,15 +1,16 @@
 /**
 * 基础
 */
-.base-container {
-    height: 280rpx;
-    background-size: cover;
+.base-container .icon {
+    width: 50rpx;
+    height: 50rpx;
 }
-.base-container .text {
-    top: 0;
-    left: 0;
-    background: rgb(0 0 0 / 35%);
-    padding: 100rpx 20rpx 20rpx 20rpx;
+.base-container .title {
+    width: calc(100% - 240rpx);
+}
+.base-container .share-submit {
+    line-height: 50rpx;
+    height: 50rpx;
 }
 
 /**
@@ -34,8 +35,7 @@
  * 导航
  */
 .nav-button {
-    background: #eee;
-    box-shadow: 0 -2px 3px #e2e2e2;
+    box-shadow: 0 -2px 6px #e2e2e2;
 }
 .nav-button .left-price {
     width: calc(100% - 270rpx);

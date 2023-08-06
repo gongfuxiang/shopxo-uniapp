@@ -1670,6 +1670,11 @@
                     return true;
                 }
                 return false;
+            },
+
+            // 价格符号
+            currency_symbol() {
+                return this.get_config('currency_symbol') || this.data.currency_symbol;
             }
         },
 

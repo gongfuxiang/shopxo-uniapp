@@ -10,7 +10,7 @@
                                 <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
                             </view>
                         </view>
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
                             <view class="content fl br-l padding-left-main">{{item.value}}</view>
                         </view>

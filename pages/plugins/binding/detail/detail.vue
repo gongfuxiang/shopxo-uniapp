@@ -3,8 +3,13 @@
         <view v-if="(data || null) != null" class="page-bottom-fixed">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息 -->
-                <view class="base-container tc pr padding-main border-radius-main bg-main oh spacing-mb" :style="'background-color:'+data.color+' !important;background-image:url('+data.images+')'">
-                    <view class="text cr-white pa bs-bb text-size wh-auto ht-auto">{{data.describe}}</view>
+                <view class="base-container oh spacing-mb">
+                    <image v-if="(data.images || null) != null" class="dis-inline-block border-radius-main br va-m margin-right-sm icon" :src="data.images" mode="aspectFit"></image>
+                    <view class="text-size cr-base fw dis-inline-block va-m title">{{data.title}}</view>
+                    <button class="round bg-white br-green cr-green fr share-submit" type="default" size="mini" hover-class="none" @tap="share_event" :data-index="index">
+                        <uni-icons type="redo" size="34rpx" color="#1AAD19" class="va-m"></uni-icons>
+                        <text class="va-m">分享</text>
+                    </button>
                 </view>
 
                 <view v-if="(data.goods || null) != null && data.goods.length > 0">
@@ -14,7 +19,7 @@
                             <image class="goods-img dis-block border-radius-main fl" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                             <view class="right-base fr">
                                 <label v-if="data.type == 1 && item.is_error == 0" class="fr" :data-index="index" @tap="goods_choice_event">
-                                    <radio :checked="(item.checked == undefined || item.checked == true)" style="transform:scale(0.7)" />
+                                    <radio :checked="(item.checked == undefined || item.checked == true)" style="transform:scale(0.9)" />
                                 </label>
                                 <view :class="'multi-text '+(data.type == 1 ? 'padding-right' : '')">{{item.title}}</view>
                                 <view class="single-text margin-top-sm">
@@ -39,7 +44,7 @@
                     </view>
 
                     <!-- 导航 -->
-                    <view class="nav-button bottom-fixed padding-main pr">
+                    <view class="nav-button bottom-fixed padding-main pr bg-white">
                         <view class="bottom-line-exclude oh">
                             <view class="left-price fl">
                                 <view v-if="data.estimate_discount_price != 0" class="pa single-text estimate-discount-price">
@@ -62,6 +67,9 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <!-- 分享弹窗 -->
+            <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -83,6 +91,7 @@
     import componentGoodsSpecChoice from "../../../../components/goods-spec-choice/goods-spec-choice";
     import componentGoodsBuy from "../../../../components/goods-buy/goods-buy";
     import componentBadge from "../../../../components/badge/badge";
+    import componentSharePopup from "../../../../components/share-popup/share-popup";
 
     export default {
         data() {
@@ -90,7 +99,7 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.data.currency_symbol(),
                 params: null,
                 user: null,
                 data_base: null,
@@ -105,7 +114,8 @@
             componentBottomLine,
             componentGoodsSpecChoice,
             componentGoodsBuy,
-            componentBadge
+            componentBadge,
+            componentSharePopup
         },
 
         onLoad(params) {
@@ -371,6 +381,13 @@
                 }
                 temp['goods'][back.index] = goods;
                 this.setData({data: temp});
+            },
+
+            // 分享开启弹层
+            share_event(e) {
+                if((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
+                }
             }
         }
     };

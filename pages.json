@@ -457,6 +457,27 @@
                 	}
                 },
                 {
+                	"path": "recommend-list/recommend-list",
+                	"style": {
+                		"enablePullDownRefresh": true,
+                		"navigationBarTitleText": "我的推荐宝"
+                	}
+                },
+                {
+                	"path": "recommend-detail/recommend-detail",
+                	"style": {
+                		"enablePullDownRefresh": true,
+                		"navigationBarTitleText": "推荐宝详情"
+                	}
+                },
+                {
+                	"path": "recommend-form/recommend-form",
+                	"style": {
+                		"enablePullDownRefresh": true,
+                		"navigationBarTitleText": "推荐宝添加/编辑"
+                	}
+                },
+                {
                 	"path": "team/team",
                 	"style": {
                 		"enablePullDownRefresh": true,

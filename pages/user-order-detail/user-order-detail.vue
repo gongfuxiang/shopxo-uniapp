@@ -79,7 +79,7 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b oh padding-vertical-main">
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
                             <view class="content fl br-l padding-left-main">{{item.value}}</view>
                         </view>

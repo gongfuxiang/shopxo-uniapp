@@ -213,7 +213,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("省份信息失败");
+                        app.globalData.showToast("获取数据失败");
                     }
                 });
             },
