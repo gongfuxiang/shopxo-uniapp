@@ -36,7 +36,7 @@
                                             <view class="number-submit tc cr-gray fl va-m" data-type="1" :data-index="index" @tap="goods_buy_number_event">+</view>
                                         </view>
                                     </view>
-                                    <view v-else class="cr-yellow text-size-xs">{{item.error_msg}}</view>
+                                    <view v-else class="cr-red text-size-xs tr margin-top-xxl">{{item.goods.error_msg}}</view>
                                 </view>
                             </view>
                         </view>

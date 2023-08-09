@@ -14,7 +14,7 @@
                     <view class="base oh br-b padding-bottom-main">
                         <image class="avatar dis-block fl circle" :src="item.avatar" mode="widthFix" @tap="avatar_event" :data-value="item.avatar"></image>
                         <text class="cr-base margin-left-sm">{{item.user_name_view || ''}}</text>
-                        <text class="cr-base fr">{{item.add_time_time}}</text>
+                        <text class="cr-base fr">{{item.order_status_name}}</text>
                     </view>
                     <view class="content margin-top">
                         <navigator :url="'/pages/plugins/distribution/order-detail/order-detail?id=' + item.id" hover-class="none">
@@ -65,9 +65,11 @@
                 ],
                 nav_status_index: 0,
                 content_list: [
+                    {name: "订单号", field: "order_no"},
                     {name: "订单金额", field: "total_price", unit: "元"},
-                    {name: "订单状态", field: "order_status_name"},
-                    {name: "来源终端", field: "order_client_type_name"}
+                    {name: "支付状态", field: "order_pay_status_name"},
+                    {name: "来源终端", field: "order_client_type_name"},
+                    {name: "订单时间", field: "add_time_time"}
                 ]
             };
         },
@@ -156,7 +158,8 @@
                 });
                 
                 // 参数
-                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value']; // 获取数据
+                var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
+                // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "order", "distribution"),
                     method: 'POST',

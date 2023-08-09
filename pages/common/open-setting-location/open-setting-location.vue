@@ -4,7 +4,7 @@
             <view class="content bg-white">
                 <view class="msg cr-gray">开启相应的权限服务</view>
                 <view class="value cr-base">获取[ <text>位置信息</text> ]权限</view>
-                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_callback_event">打开设置页</button>
+                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_event">打开设置页</button>
                 <view class="tc margin-top-sm">
                     <navigator open-type="navigateBack" class="cp cr-gray dis-inline-block" hover-class="none">返回</navigator>
                 </view>
@@ -46,47 +46,39 @@
         methods: {
             // 获取权限
             init() {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-                var self = this;
-                uni.getSetting({
-                    success(res) {
-                        if (!res.authSetting[self.auth]) {
-                            uni.authorize({
-                                scope: self.auth,
-                                success(res) {
-                                    self.choose_location();
-                                },
-                                fail: res => {
-                                    self.setData({
-                                        is_show_open_setting: true
-                                    });
-                                }
-                            });
-                        } else {
-                            self.choose_location();
-                        }
-                    },
-                    fail: res => {
-                        app.globalData.showToast("请先获取授权");
-                    }
-                });
-                // #endif
-                // #ifdef MP-ALIPAY || H5 || APP
-                this.choose_location();
-                // #endif
-                // #ifdef MP-KUAISHOU
-                app.globalData.showToast('不支持地理位置选择！');
-                uni.navigateBack();
-                // #endif
+                app.globalData.get_location_check(this.auth, this, 'location_back_handle');
             },
 
-            // 位置服务回调方法
-            setting_callback_event(e) {
+            // 位置权限校验回调
+            location_back_handle(status = 0) {
+                if(status == 1) {
+                    // 是否校验成功直接返回
+                    if(parseInt(this.params.is_check_success_back || 0) == 1) {
+                        uni.navigateBack();
+                    } else {
+                        this.choose_location();
+                    }
+                } else {
+                    this.setData({
+                        is_show_open_setting: true
+                    });
+                }
+            },
+
+            // 配置打开事件
+            setting_event(e) {
                 if (e.detail.authSetting[this.auth]) {
+                    // 不展示打开设置的按钮容器
                     this.setData({
                         is_show_open_setting: false
                     });
-                    this.choose_location();
+
+                    // 是否校验成功直接返回
+                    if(parseInt(this.params.is_check_success_back || 0) == 1) {
+                        uni.navigateBack();
+                    } else {
+                        this.choose_location();
+                    }
                 }
             },
 

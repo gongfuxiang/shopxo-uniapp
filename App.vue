@@ -59,6 +59,8 @@
                 is_goods_list_show_cart_opt: 1,
                 // 商品分类页面搜索进入独立搜索页面（0否, 1是）
                 is_goods_category_search_alone: 0,
+                // 分销页面地图分布是否强制获取当前位置（0否, 1是）
+                is_distribution_map_force_location: 0,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -784,8 +786,9 @@
             },
 
             // 拨打电话
-            call_tel(value) {
-                if ((value || null) != null) {
+            call_tel(data) {
+                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (value || null);
+                if (value != null) {
                     uni.makePhoneCall({
                         phoneNumber: value.toString()
                     });
@@ -1675,6 +1678,53 @@
             // 价格符号
             currency_symbol() {
                 return this.get_config('currency_symbol') || this.data.currency_symbol;
+            },
+
+            // 位置权限校验
+            get_location_check(type, object, method) {
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
+                var self = this;
+                uni.getSetting({
+                    success(res) {
+                        if (!res.authSetting[type]) {
+                            uni.authorize({
+                                scope: type,
+                                success(res) {
+                                    if (typeof object === 'object' && (method || null) != null) {
+                                        object[method](1);
+                                    }
+                                },
+                                fail: res => {
+                                    if (typeof object === 'object' && (method || null) != null) {
+                                        object[method](0);
+                                    }
+                                }
+                            });
+                        } else {
+                            if (typeof object === 'object' && (method || null) != null) {
+                                object[method](1);
+                            }
+                        }
+                    },
+                    fail: res => {
+                        app.globalData.showToast("请先获取授权");
+                        if (typeof object === 'object' && (method || null) != null) {
+                            object[method](0);
+                        }
+                    }
+                });
+                // #endif
+                // #ifdef MP-ALIPAY || H5 || APP
+                if (typeof object === 'object' && (method || null) != null) {
+                    object[method](1);
+                }
+                // #endif
+                // #ifdef MP-KUAISHOU
+                app.globalData.showToast('不支持地理位置选择！');
+                if (typeof object === 'object' && (method || null) != null) {
+                    object[method](0);
+                }
+                // #endif
             }
         },
 

@@ -2,7 +2,9 @@
     <view>
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
+                <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">基础信息</view>
                     <view class="panel-content oh">
                         <view class="item br-b oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-gray">用户头像</view>
@@ -14,6 +16,33 @@
                             <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
                             <view class="content fl br-l padding-left-main">{{item.value}}</view>
                         </view>
+                    </view>
+                </view>
+                
+                <!-- 商品列表 -->
+                <view v-if="detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
+                        <navigator :url="item.goods_url" hover-class="none">
+                            <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
+                            <view class="goods-base pr">
+                                <view class="multi-text">{{item.title}}</view>
+                                <view v-if="item.spec != null" class="margin-top-sm">
+                                    <block v-for="(sv, si) in item.spec" :key="si">
+                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                        <text class="cr-gray">{{sv.value}}</text>
+                                    </block>
+                                </view>
+                                <view class="margin-top-sm">
+                                    <text class="fw-b">{{detail.currency_data.currency_symbol}}{{item.price}}</text>
+                                    <text class="margin-left-sm">x{{item.buy_number}}</text>
+                                </view>
+                                <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
+                            </view>
+                        </navigator>
+                    </view>
+                    <view class="padding-top-main tr cr-base text-size">
+                        <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
                     </view>
                 </view>
             </view>
@@ -63,11 +92,6 @@
             app.globalData.page_share_handle();
         },
 
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.init();
-        },
-
         methods: {
             init() {
                 uni.showLoading({
@@ -85,18 +109,19 @@
                     dataType: 'json',
                     success: res => {
                         uni.hideLoading();
-                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
                                     { name: "用户昵称", value: data.data.user_name_view || '' },
+                                    { name: "订单号", value: data.data.order_no || '' },
                                     { name: "订单金额", value: data.data.total_price + ' 元' || '' },
                                     { name: "退款金额", value: data.data.refund_price + ' 元' || '' },
                                     { name: "订单状态", value: data.data.order_status_name || '' },
                                     { name: "支付状态", value: data.data.order_pay_status_name || '' },
                                     { name: "来源终端", value: data.data.order_client_type_name || '' },
+                                    { name: "商品数量", value: data.data.buy_number_count || '' },
                                     { name: "下单时间", value: data.data.add_time_time || '' },
                                 ],
                                 data_list_loding_status: 3,
@@ -116,7 +141,6 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,

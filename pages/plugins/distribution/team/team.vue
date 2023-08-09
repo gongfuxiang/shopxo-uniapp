@@ -12,7 +12,7 @@
                         <block v-for="(fv,fi) in content_list" :key="fi">
                             <view class="single-text margin-top-xs">
                                 <text class="cr-gray margin-right-xl">{{fv.name}}</text>
-                                <text class="cr-base">{{item[fv.field]}}</text>
+                                <text class="cr-base">{{item[fv.field] || 0}}</text>
                                 <text v-if="(fv.unit || null) != null" class="cr-gray">{{fv.unit}}</text>
                             </view>
                         </block>
@@ -49,9 +49,11 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
+                    {name: "消费订单", field: "order_count", unit: "条"},
                     {name: "消费金额", field: "order_total", unit: "元"},
+                    {name: "下级订单", field: "find_order_count", unit: "条"},
                     {name: "下级消费", field: "find_order_total", unit: "元"},
-                    {name: "下级用户", field: "referrer_count"}
+                    {name: "下级用户", field: "referrer_count", unit: "个"}
                 ]
             };
         },

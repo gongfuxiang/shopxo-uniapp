@@ -443,17 +443,17 @@
                 	}
                 },
                 {
-                	"path": "statistics/statistics",
+                	"path": "team/team",
                 	"style": {
                 		"enablePullDownRefresh": true,
-                		"navigationBarTitleText": "数据统计"
+                		"navigationBarTitleText": "我的团队"
                 	}
                 },
                 {
-                	"path": "poster/poster",
+                	"path": "map/map",
                 	"style": {
-                		"enablePullDownRefresh": true,
-                		"navigationBarTitleText": "推广返利"
+                		"enablePullDownRefresh": false,
+                		"navigationBarTitleText": "客户分布"
                 	}
                 },
                 {
@@ -478,10 +478,17 @@
                 	}
                 },
                 {
-                	"path": "team/team",
+                	"path": "poster/poster",
                 	"style": {
                 		"enablePullDownRefresh": true,
-                		"navigationBarTitleText": "我的团队"
+                		"navigationBarTitleText": "推广返利"
+                	}
+                },
+                {
+                	"path": "statistics/statistics",
+                	"style": {
+                		"enablePullDownRefresh": true,
+                		"navigationBarTitleText": "数据统计"
                 	}
                 },
                 {

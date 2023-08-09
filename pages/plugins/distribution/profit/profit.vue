@@ -32,7 +32,7 @@
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
-            
+
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>

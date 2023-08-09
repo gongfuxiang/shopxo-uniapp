@@ -5,3 +5,18 @@
     width: 45rpx;
     height: 45rpx;
 }
+
+/*
+* 商品信息
+*/
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods .goods-item:last-child {
+    border-bottom: 0;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}
