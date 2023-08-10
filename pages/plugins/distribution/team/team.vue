@@ -1,5 +1,37 @@
 <template>
     <view>
+        <view class="form-container nav-search bg-white br-b oh padding-horizontal-main">
+            <view class="margin-top oh">
+                <view class="fl margin-top">下单时间：</view>
+                <view class="multiple-picker fr tc">
+                    <view class="item br dis-inline-block tl fl">
+                        <picker mode="date" data-value="team_search_time_start" @change="search_cholce_event" class="padding-sm radius">
+                            <view :class="(nav_search_value.team_search_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_time_start || '开始时间'}}</view>
+                        </picker>
+                    </view>
+                    <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
+                    <view class="item br dis-inline-block tl fr">
+                        <picker mode="date" data-value="team_search_time_end" @change="search_cholce_event" class="padding-sm">
+                            <view :class="(nav_search_value.team_search_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_time_end || '结束时间'}}</view>
+                        </picker>
+                    </view>
+                </view>
+            </view>
+            <view class="margin-top oh">
+                <view class="fl">是否下单：</view>
+                <checkbox-group data-value="team_search_buy_type" @change="search_cholce_event">
+                    <label>
+                        <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf(0) != -1" style="transform:scale(0.7)" /> 未下单
+                    </label>
+                    <label class="margin-left-xxxl">
+                        <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf(1) != -1" style="transform:scale(0.7)" /> 已下单
+                    </label>
+                </checkbox-group>
+            </view>
+            <view class="padding-bottom-main tr">
+                <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm" @tap="search_submit_event">搜索</button>
+            </view>
+        </view>
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -54,7 +86,17 @@
                     {name: "下级订单", field: "find_order_count", unit: "条"},
                     {name: "下级消费", field: "find_order_total", unit: "元"},
                     {name: "下级用户", field: "referrer_count", unit: "个"}
-                ]
+                ],                
+                nav_search_buy_type_list: [
+                    {value: -1, name: '全部'},
+                    {value: 0, name: '未下单'},
+                    {value: 1, name: '已下单'}
+                ],
+                nav_search_value: {
+                    team_search_time_start: '',
+                    team_search_time_end: '',
+                    team_search_buy_type: [],
+                }
             };
         },
 
@@ -130,13 +172,29 @@
                     title: '加载中...'
                 });
                 
+                // 请求参数
+                var data = {
+                    page: this.data_page,
+                };
+                
+                // 搜索下单时间
+                if((this.nav_search_value.team_search_time_start || null) != null) {
+                    data['team_search_time_start'] = this.nav_search_value.team_search_time_start;
+                }
+                if((this.nav_search_value.team_search_time_end || null) != null) {
+                    data['team_search_time_end'] = this.nav_search_value.team_search_time_end;
+                }
+
+                // 搜索是否下单
+                if(this.nav_search_value.team_search_buy_type.length > 0) {
+                   data['team_search_buy_type'] = this.nav_search_value.team_search_buy_type.join(',');
+                }
+
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "team", "distribution"),
                     method: 'POST',
-                    data: {
-                        page: this.data_page
-                    },
+                    data: data,
                     dataType: 'json',
                     success: res => {
                         uni.hideLoading();
@@ -213,13 +271,31 @@
                     app.globalData.showToast('头像地址有误');
                 }
             },
-            
+
             // 用户订单事件
             user_order_event(e) {
                 var value = e.currentTarget.dataset.value;
                 uni.navigateTo({
                     url: '/pages/plugins/distribution/order/order?uid='+value
                 })
+            },
+
+            // 搜索条件事件
+            search_cholce_event(e) {
+                var value = e.currentTarget.dataset.value;
+                var temp_data = this.nav_search_value;
+                temp_data[value] = e.detail.value;
+                this.setData({
+                    nav_search_value: temp_data
+                });
+            },
+
+            // 搜索确认事件
+            search_submit_event(e) {
+                this.setData({
+                    data_page: 1
+                });
+                this.get_data_list(1);
             }
         }
     };

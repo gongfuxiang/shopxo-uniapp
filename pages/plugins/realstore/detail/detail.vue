@@ -1295,7 +1295,7 @@
                     if(this.info.buy_use_type_list[index] == undefined) {
                         index = 0;
                     }
-                    data['buy_use_type_index'] = this.buy_use_type_index;
+                    data['buy_use_type_index'] = index;
                 }
 
                 // 初始化

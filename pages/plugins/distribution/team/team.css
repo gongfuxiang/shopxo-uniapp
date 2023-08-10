@@ -1,6 +1,22 @@
+/**
+ * 搜索导航
+ */
+.nav-search .item {
+    /* width: calc(50% - 80rpx); */
+}
+.form-container .multiple-picker {
+    width: calc(100% - 150rpx);
+}
+.form-container .multiple-picker .item {
+    width: calc(50% - 40rpx);
+}
+
 /*
 * 列表
 */
+.scroll-box {
+    height: calc(100vh - 234rpx);
+}
 .data-list .item .base .avatar {
     width: 40rpx;
     height: 40rpx !important;
