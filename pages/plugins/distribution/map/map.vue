@@ -49,6 +49,7 @@
                                 <view class="text-size-xs margin-top-sm">
                                     <text class="cr-grey">下单总数</text>
                                     <text class="cr-base fw-b margin-left-sm">{{item.order_count}}</text>
+                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">查看订单</button>
                                 </view>
                             </view>
                         </view>
@@ -99,9 +100,7 @@
             this.setData({
                 params: params
             });
-        },
 
-        onShow() {
             // 获取数据
             this.init();
         },
@@ -295,6 +294,14 @@
                     markers: temp_markers,
                     user: temp_user,
                     map_center_icon_status: 0
+                });
+            },
+
+            // 用户订单事件
+            user_order_event(e) {
+                var value = e.currentTarget.dataset.value;
+                uni.navigateTo({
+                    url: '/pages/plugins/distribution/order/order?uid='+value
                 });
             }
         }

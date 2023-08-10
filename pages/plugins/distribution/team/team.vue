@@ -1,37 +1,67 @@
 <template>
     <view>
-        <view class="form-container nav-search bg-white br-b oh padding-horizontal-main">
+        <!-- 搜索条件 -->
+        <view class="form-container nav-search bg-white br-b oh padding-horizontal-main padding-bottom-main text-size-xs cr-base pr">
             <view class="margin-top oh">
-                <view class="fl margin-top">下单时间：</view>
-                <view class="multiple-picker fr tc">
+                <view class="fl margin-top">注册时间：</view>
+                <view class="multiple-picker fl tc">
                     <view class="item br dis-inline-block tl fl">
-                        <picker mode="date" data-value="team_search_time_start" @change="search_cholce_event" class="padding-sm radius">
-                            <view :class="(nav_search_value.team_search_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_time_start || '开始时间'}}</view>
+                        <picker mode="date" data-value="team_search_user_time_start" @change="search_cholce_event" class="padding-sm radius">
+                            <view :class="(nav_search_value.team_search_user_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_user_time_start || '开始时间'}}</view>
                         </picker>
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                     <view class="item br dis-inline-block tl fr">
-                        <picker mode="date" data-value="team_search_time_end" @change="search_cholce_event" class="padding-sm">
-                            <view :class="(nav_search_value.team_search_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_time_end || '结束时间'}}</view>
+                        <picker mode="date" data-value="team_search_user_time_end" @change="search_cholce_event" class="padding-sm">
+                            <view :class="(nav_search_value.team_search_user_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_user_time_end || '结束时间'}}</view>
                         </picker>
                     </view>
                 </view>
+                <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_user_time_reverse" @change="search_cholce_event">
+                    <label>
+                        <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform:scale(0.7)" /> 反向
+                    </label>
+                </checkbox-group>
+            </view>
+            <view class="margin-top oh">
+                <view class="fl margin-top">下单时间：</view>
+                <view class="multiple-picker fl tc">
+                    <view class="item br dis-inline-block tl fl">
+                        <picker mode="date" data-value="team_search_order_time_start" @change="search_cholce_event" class="padding-sm radius">
+                            <view :class="(nav_search_value.team_search_order_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_order_time_start || '开始时间'}}</view>
+                        </picker>
+                    </view>
+                    <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
+                    <view class="item br dis-inline-block tl fr">
+                        <picker mode="date" data-value="team_search_order_time_end" @change="search_cholce_event" class="padding-sm">
+                            <view :class="(nav_search_value.team_search_order_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_order_time_end || '结束时间'}}</view>
+                        </picker>
+                    </view>
+                </view>
+                <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_order_time_reverse" @change="search_cholce_event">
+                    <label>
+                        <checkbox value="1" :checked="nav_search_value.team_search_order_time_reverse.indexOf('1') != -1" style="transform:scale(0.7)" /> 反向
+                    </label>
+                </checkbox-group>
             </view>
             <view class="margin-top oh">
                 <view class="fl">是否下单：</view>
                 <checkbox-group data-value="team_search_buy_type" @change="search_cholce_event">
                     <label>
-                        <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf(0) != -1" style="transform:scale(0.7)" /> 未下单
+                        <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf('0') != -1" style="transform:scale(0.7)" /> 未下单
                     </label>
-                    <label class="margin-left-xxxl">
-                        <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf(1) != -1" style="transform:scale(0.7)" /> 已下单
+                    <label class="margin-left-xxl">
+                        <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf('1') != -1" style="transform:scale(0.7)" /> 已下单
                     </label>
                 </checkbox-group>
             </view>
-            <view class="padding-bottom-main tr">
-                <button type="default" size="mini" class="bg-main br-main cr-white text-size-sm" @tap="search_submit_event">搜索</button>
+            <view class="search-submit-list pa">
+                <button type="default" size="mini" class="bg-gray br-gray cr-base text-size-xs round margin-right-main" @tap="search_reset_event">重置</button>
+                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round" @tap="search_submit_event">搜索</button>
             </view>
         </view>
+
+        <!-- 数据列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -44,7 +74,7 @@
                         <block v-for="(fv,fi) in content_list" :key="fi">
                             <view class="single-text margin-top-xs">
                                 <text class="cr-gray margin-right-xl">{{fv.name}}</text>
-                                <text class="cr-base">{{item[fv.field] || 0}}</text>
+                                <text class="cr-base">{{item[fv.field] || fv.default}}</text>
                                 <text v-if="(fv.unit || null) != null" class="cr-gray">{{fv.unit}}</text>
                             </view>
                         </block>
@@ -81,11 +111,14 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    {name: "消费订单", field: "order_count", unit: "条"},
-                    {name: "消费金额", field: "order_total", unit: "元"},
-                    {name: "下级订单", field: "find_order_count", unit: "条"},
-                    {name: "下级消费", field: "find_order_total", unit: "元"},
-                    {name: "下级用户", field: "referrer_count", unit: "个"}
+                    {name: "消费订单", field: "order_count", unit: "条", default: 0},
+                    {name: "消费金额", field: "order_total", unit: "元", default: 0},
+                    {name: "最后消费时间", field: "order_last_time", default: ''},
+                    {name: "下级订单", field: "find_order_count", unit: "条", default: 0},
+                    {name: "下级消费", field: "find_order_total", unit: "元", default: 0},
+                    {name: "下级最后消费时间", field: "find_order_last_time", default: ''},
+                    {name: "下级用户", field: "referrer_count", unit: "个", default: 0}
+                    
                 ],                
                 nav_search_buy_type_list: [
                     {value: -1, name: '全部'},
@@ -93,8 +126,12 @@
                     {value: 1, name: '已下单'}
                 ],
                 nav_search_value: {
-                    team_search_time_start: '',
-                    team_search_time_end: '',
+                    team_search_user_time_start: '',
+                    team_search_user_time_end: '',
+                    team_search_user_time_reverse: [],
+                    team_search_order_time_start: '',
+                    team_search_order_time_end: '',
+                    team_search_order_time_reverse: [],
                     team_search_buy_type: [],
                 }
             };
@@ -166,23 +203,39 @@
                     data_is_loading: 1,
                     data_list_loding_status: 1
                 });
-                
+
                 // 加载loding
                 uni.showLoading({
                     title: '加载中...'
                 });
-                
+
                 // 请求参数
                 var data = {
                     page: this.data_page,
                 };
-                
-                // 搜索下单时间
-                if((this.nav_search_value.team_search_time_start || null) != null) {
-                    data['team_search_time_start'] = this.nav_search_value.team_search_time_start;
+
+                // 搜索注册时间
+                if((this.nav_search_value.team_search_user_time_start || null) != null) {
+                    data['team_search_user_time_start'] = this.nav_search_value.team_search_user_time_start;
                 }
-                if((this.nav_search_value.team_search_time_end || null) != null) {
-                    data['team_search_time_end'] = this.nav_search_value.team_search_time_end;
+                if((this.nav_search_value.team_search_user_time_end || null) != null) {
+                    data['team_search_user_time_end'] = this.nav_search_value.team_search_user_time_end;
+                }
+                // 用户反向
+                if(this.nav_search_value.team_search_user_time_reverse.length > 0) {
+                   data['team_search_user_time_reverse'] = 1;
+                }
+
+                // 搜索下单时间
+                if((this.nav_search_value.team_search_order_time_start || null) != null) {
+                    data['team_search_order_time_start'] = this.nav_search_value.team_search_order_time_start;
+                }
+                if((this.nav_search_value.team_search_order_time_end || null) != null) {
+                    data['team_search_order_time_end'] = this.nav_search_value.team_search_order_time_end;
+                }
+                // 订单反向
+                if(this.nav_search_value.team_search_order_time_reverse.length > 0) {
+                   data['team_search_order_time_reverse'] = 1;
                 }
 
                 // 搜索是否下单
@@ -277,7 +330,7 @@
                 var value = e.currentTarget.dataset.value;
                 uni.navigateTo({
                     url: '/pages/plugins/distribution/order/order?uid='+value
-                })
+                });
             },
 
             // 搜索条件事件
@@ -288,6 +341,20 @@
                 this.setData({
                     nav_search_value: temp_data
                 });
+            },
+
+            // 搜索重置事件
+            search_reset_event(e) {
+                var temp_data = this.nav_search_value;
+                var arr_field = ['team_search_buy_type', 'team_search_order_time_reverse', 'team_search_user_time_reverse'];
+                for(var i in temp_data) {
+                    temp_data[i] = (arr_field.indexOf(i) == -1) ? '' : [];
+                }
+                this.setData({
+                    nav_search_value: temp_data,
+                    data_page: 1
+                });
+                this.get_data_list(1);
             },
 
             // 搜索确认事件

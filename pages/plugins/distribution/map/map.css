@@ -32,3 +32,7 @@
 .user-container .item .base-top-icon .dis-inline-block:not(:last-child) {
     margin-right: 30rpx;
 }
+.user-container .item .order-submit {
+    padding: 0rpx 20rpx !important;
+    line-height: 40rpx !important;
+}
