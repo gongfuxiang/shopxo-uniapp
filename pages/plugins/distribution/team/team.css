@@ -7,6 +7,12 @@
 .nav-search .multiple-picker .item {
     width: calc(50% - 24rpx);
 }
+.nav-search .multiple-picker .remove {
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding: 14rpx 10rpx 0 10rpx;
+}
 .nav-search .search-submit-list {
     right: 20rpx;
     bottom: 15rpx;
