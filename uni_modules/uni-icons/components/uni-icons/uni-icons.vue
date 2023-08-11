@@ -1,9 +1,9 @@
 <template>
 	<!-- #ifdef APP-NVUE -->
-	<text :style="{ color: color, 'font-size': iconSize }" :class="['uni-icons', styleClass]" @click="_onClick">{{unicode}}</text>
+	<text :style="{ color: color, 'font-size': iconSize }" class="uni-icons" @click="_onClick">{{unicode}}</text>
 	<!-- #endif -->
 	<!-- #ifndef APP-NVUE -->
-	<text :style="{ color: color, 'font-size': iconSize }" :class="['uni-icons', 'uniui-'+type,customPrefix,customPrefix?type:'', styleClass]" @click="_onClick"></text>
+	<text :style="{ color: color, 'font-size': iconSize }" class="uni-icons" :class="['uniui-'+type,customPrefix,customPrefix?type:'']" @click="_onClick"></text>
 	<!-- #endif -->
 </template>
 
@@ -29,7 +29,6 @@
 	 * @property {Number} size 图标大小
 	 * @property {String} type 图标图案，参考示例
 	 * @property {String} color 图标颜色
-     * @property {String} styleClass 样式class
 	 * @property {String} customPrefix 自定义图标
 	 * @event {Function} click 点击 Icon 触发事件
 	 */
@@ -45,10 +44,6 @@
 				type: String,
 				default: '#333333'
 			},
-            styleClass: {
-            	type: String,
-            	default: ''
-            },
 			size: {
 				type: [Number, String],
 				default: 16

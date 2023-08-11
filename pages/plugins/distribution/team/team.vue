@@ -5,22 +5,12 @@
             <view class="margin-top oh">
                 <view class="fl margin-top">注册时间：</view>
                 <view class="multiple-picker fl tc">
-                    <view class="item br dis-inline-block tl fl pr">
-                        <picker mode="date" data-value="team_search_user_time_start" @change="search_cholce_event" class="padding-sm radius">
-                            <view :class="(nav_search_value.team_search_user_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_user_time_start || '开始时间'}}</view>
-                        </picker>
-                        <view v-if="(nav_search_value.team_search_user_time_start || null) != null" class="pa bs-bb remove" data-value="team_search_user_time_start" @tap.stop="search_date_remove_event">
-                            <icon type="clear" size="26rpx"></icon>
-                        </view>
+                    <view class="item br dis-inline-block pr radius tl fl">
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
-                    <view class="item br dis-inline-block tl fr pr">
-                        <picker mode="date" data-value="team_search_user_time_end" @change="search_cholce_event" class="padding-sm">
-                            <view :class="(nav_search_value.team_search_user_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_user_time_end || '结束时间'}}</view>
-                        </picker>
-                        <view v-if="(nav_search_value.team_search_user_time_end || null) != null" class="pa bs-bb remove" data-value="team_search_user_time_end" @tap.stop="search_date_remove_event">
-                            <icon type="clear" size="26rpx"></icon>
-                        </view>
+                    <view class="item br dis-inline-block pr radius tl fr">
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_user_time_reverse" @change="search_cholce_event">
@@ -32,22 +22,12 @@
             <view class="margin-top oh">
                 <view class="fl margin-top">下单时间：</view>
                 <view class="multiple-picker fl tc">
-                    <view class="item br dis-inline-block tl fl pr">
-                        <picker mode="date" data-value="team_search_order_time_start" @change="search_cholce_event" class="padding-sm radius">
-                            <view :class="(nav_search_value.team_search_order_time_start || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_order_time_start || '开始时间'}}</view>
-                        </picker>
-                        <view v-if="(nav_search_value.team_search_order_time_start || null) != null" class="pa bs-bb remove" data-value="team_search_order_time_start" @tap.stop="search_date_remove_event">
-                            <icon type="clear" size="26rpx"></icon>
-                        </view>
+                    <view class="item br dis-inline-block pr radius tl fl">
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
-                    <view class="item br dis-inline-block tl fr pr">
-                        <picker mode="date" data-value="team_search_order_time_end" @change="search_cholce_event" class="padding-sm">
-                            <view :class="(nav_search_value.team_search_order_time_end || null) == null ? 'cr-grey' : ''">{{nav_search_value.team_search_order_time_end || '结束时间'}}</view>
-                        </picker>
-                        <view v-if="(nav_search_value.team_search_order_time_end || null) != null" class="pa bs-bb remove" data-value="team_search_order_time_end" @tap.stop="search_date_remove_event">
-                            <icon type="clear" size="26rpx"></icon>
-                        </view>
+                    <view class="item br dis-inline-block pr radius tl fr">
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_order_time_reverse" @change="search_cholce_event">
@@ -350,16 +330,6 @@
                 var value = e.currentTarget.dataset.value;
                 var temp_data = this.nav_search_value;
                 temp_data[value] = e.detail.value;
-                this.setData({
-                    nav_search_value: temp_data
-                });
-            },
-
-            // 日期移除事件
-            search_date_remove_event(e) {
-                var value = e.currentTarget.dataset.value;
-                var temp_data = this.nav_search_value;
-                temp_data[value] = '';
                 this.setData({
                     nav_search_value: temp_data
                 });
