@@ -529,13 +529,20 @@
                 var goods = this.popup_search_goods_list[value.out_value];
                 var temp_data = this.recommend_data;
                 var spec_str = JSON.stringify(value.spec);
+                // 数据判断处理
                 var status = true;
-                for(var i in temp_data.detail_list) {
-                    if(temp_data.detail_list[i]['goods_id'] == goods['id'] && temp_data.detail_list[i]['spec'] == spec_str) {
-                        status = false;
-                        break;
+                if((temp_data.detail_list || null) == null) {
+                    temp_data.detail_list = [];
+                }
+                if(temp_data.detail_list.length > 0) {
+                    for(var i in temp_data.detail_list) {
+                        if(temp_data.detail_list[i]['goods_id'] == goods['id'] && temp_data.detail_list[i]['spec'] == spec_str) {
+                            status = false;
+                            break;
+                        }
                     }
                 }
+
                 // 追加到关联商品中
                 if(status) {
                     temp_data.detail_list.push({

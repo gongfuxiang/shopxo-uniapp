@@ -485,13 +485,6 @@
                 	}
                 },
                 {
-                	"path": "statistics/statistics",
-                	"style": {
-                		"enablePullDownRefresh": true,
-                		"navigationBarTitleText": "数据统计"
-                	}
-                },
-                {
                 	"path": "extraction/extraction",
                 	"style": {
                 		"enablePullDownRefresh": true,

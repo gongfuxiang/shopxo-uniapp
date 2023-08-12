@@ -43,6 +43,33 @@
     height: 40rpx !important;
 }
 
+/**
+ * 统计数据
+ */
+.stats-container .item {
+    width: 50%;
+    box-sizing: border-box;
+}
+.stats-container-3 .item {
+    width: 33.33%;
+}
+.stats-container-4 .item {
+    width: 25%;
+}
+.stats-container .title {
+    border-style: solid;
+    border-width: 0 0 0 3px;
+}
+.stats-container .stats-switch-submit {
+    top: 20rpx;
+    right: 20rpx;
+    line-height: 44rpx;
+    padding: 0 40rpx 0 20rpx;
+}
+.popup-time-container .quit-time .item {
+    width: 25%;
+}
+
 /*
 * 导航
 */
