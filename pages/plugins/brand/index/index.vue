@@ -3,7 +3,6 @@
         <view v-if="(data_base || null) != null">
             <!-- 分类 -->
             <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
                 <block v-for="(item, index) in brand_category_list" :key="index">
                     <view :class="'item cr-gray dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{item.name}}</view>
                 </block>

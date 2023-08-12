@@ -500,10 +500,15 @@
                     }
                 } else {
                     var status = true;
-                    for(var i in temp_data.detail_list) {
-                        if(temp_data.detail_list[i]['goods_id'] == goods['id']) {
-                            status = false;
-                            break;
+                    if((temp_data.detail_list || null) == null) {
+                        temp_data.detail_list = [];
+                    }
+                    if(temp_data.detail_list.length > 0) {
+                        for(var i in temp_data.detail_list) {
+                            if(temp_data.detail_list[i]['goods_id'] == goods['id']) {
+                                status = false;
+                                break;
+                            }
                         }
                     }
                     // 追加到关联商品中

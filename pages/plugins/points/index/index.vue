@@ -39,11 +39,11 @@
                     </view>
                     <view class="data-list oh">
                         <view v-for="(item, index) in data_base.goods_exchange_data" :key="index" class="item padding-bottom-sm border-radius-main bg-white margin-bottom-main">
-                            <navigator :url="item.goods.goods_url" hover-class="none">
-                                <image class="goods-img dis-block" :src="item.goods.images" mode="aspectFit"></image>
+                            <navigator :url="item.goods_url" hover-class="none">
+                                <image class="goods-img dis-block" :src="item.images" mode="aspectFit"></image>
                                 <view class="padding-horizontal-main margin-top-sm">
-                                    <view class="multi-text">{{item.goods.title}}</view>
-                                    <view class="single-text original-price margin-top-sm">{{currency_symbol}}{{item.goods.price}}</view>
+                                    <view class="multi-text">{{item.title}}</view>
+                                    <view class="single-text original-price margin-top-sm">{{currency_symbol}}{{item.price}}</view>
                                     <view class="single-text">
                                         <text class="sales-price text-size">{{item.integral}}</text>
                                         <text class="cr-grey margin-left-xs">积分</text>
