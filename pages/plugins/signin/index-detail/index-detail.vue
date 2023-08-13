@@ -36,11 +36,6 @@
                     </view>
                 </view>
 
-                <!-- 广告图片 -->
-                <view  v-if="(data.right_images || null) != null" class="spacing-mb">
-                    <image class="wh-auto dis-block border-radius-main" :src="data.right_images" mode="widthFix" @tap="right_images_event"></image>
-                </view>
-
                 <!-- 公告信息 -->
                 <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="spacing-mb">
                     <view class="notice-content">
@@ -60,13 +55,13 @@
 
             <!-- 签到成功提示信息 -->
             <view v-if="is_success_tips == 1" class="coming-tips-container am-text-center">
-                <view class="coming-content tc">
+                <view class="coming-content tc pr">
                     <view class="icon-close-submit pa" @tap="coming_success_close_event">
                         <icon type="clear" size="46rpx"></icon>
                     </view>
-                    <image :src="static_url+'coming-success-icon.png'" mode="widthFix"></image>
-                    <view class="coming-tips-content">
-                        <text class="bg-white cr-red round padding-top-sm padding-bottom-sm padding-horizontal-main">获得 <text>{{coming_integral}}</text> 积分</text>
+                    <image :src="data.success_icon" mode="widthFix"></image>
+                    <view class="coming-tips-content pa">
+                        <text class="cr-red text-size-lg">获得 <text>{{coming_integral}}</text> 积分</text>
                     </view>
                 </view>
             </view>
@@ -85,12 +80,9 @@
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
     import componentGoodsList from "../../../../components/goods-list/goods-list";
-
-    var static_url = app.globalData.get_static_url('signin', true);
     export default {
         data() {
             return {
-                static_url: static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -153,7 +145,7 @@
                                 data: data.data || null,
                                 team_signin_data: data.team_signin_data || null,
                                 user_signin_data: data.user_signin_data || null,
-                                is_already_coming: (data.user_signin_data || null) != null && (data.user_signin_data.integral || 0) > 0 ? 1 : 0,
+                                is_already_coming: (data.user_signin_data || null) != null && (data.user_signin_data.current_day || 0) == 1 ? 1 : 0,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
@@ -167,7 +159,7 @@
                                         desc: this.data.seo_desc,
                                         path: '/pages/plugins/signin/index-detail/index-detail',
                                         query: 'id='+this.data.id,
-                                        img: this.data.right_images
+                                        img: this.data.bg_images || this.data.logo || ''
                                     }
                                 });
                             }
@@ -311,15 +303,6 @@
                             uni.hideLoading();
                             app.globalData.showToast('服务器请求出错');
                         }
-                    });
-                }
-            },
-
-            // 图片事件
-            right_images_event(e) {
-                if ((this.data.right_images_url || null) != null) {
-                    uni.navigateTo({
-                        url: this.data.right_images_url
                     });
                 }
             }

@@ -1,7 +1,7 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null">
-            <view class="banner tc oh pr wh-auto" :style="'background-image: url(' + data_base.banner_bg_images + ');'">
+            <view class="banner tc oh pr wh-auto" :style="'background-image: url(' + default_images_data.default_bg_images + ');'">
                 <!-- 标题 -->
                 <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl">
                     {{data_base.banner_top_title}}
@@ -14,9 +14,9 @@
                     </button>
                 </navigator>
 
-                <!-- 数据列表 -->
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list oh margin-top-xxxl">
-                    <block v-for="(item, index) in data_list" :key="index" class="item fl">
+                <!-- 介绍列表 -->
+                <view v-if="(introduce_data || null) != null && introduce_data.length > 0" class="data-list oh margin-top-xxxl">
+                    <block v-for="(item, index) in introduce_data" :key="index" class="item fl">
                         <view class="item fl tc padding-main border-radius-main bg-white">
                             <view class="single-text cr-base text-size fw-b">{{item.name}}</view>
                             <view class="multi-text cr-grey margin-top-sm">{{item.desc}}</view>
@@ -53,8 +53,9 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                data_list: [],
+                introduce_data: [],
                 data_base: null,
+                default_images_data: null,
                 // 自定义分享信息
                 share_info: {}
             };
@@ -85,12 +86,11 @@
 
             // 获取数据
             get_data_list() {
-                var self = this;
                 uni.showLoading({
                     title: '加载中...'
                 });
-                if (self.data_list.length <= 0) {
-                    self.setData({
+                if (this.introduce_data.length <= 0) {
+                    this.setData({
                         data_list_loding_status: 1
                     });
                 }
@@ -104,9 +104,10 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            self.setData({
+                            this.setData({
                                 data_base: data.base || null,
-                                data_list: data.data || [],
+                                default_images_data: data.default_images_data || null,
+                                introduce_data: data.introduce_data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
@@ -118,7 +119,8 @@
                                     share_info: {
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
-                                        path: '/pages/plugins/membershiplevelvip/index/index'
+                                        path: '/pages/plugins/membershiplevelvip/index/index',
+                                        img: this.default_images_data.default_bg_images || this.default_images_data.default_logo || ''
                                     }
                                 });
 
@@ -130,12 +132,12 @@
                                 }
                             }
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg
                             });
-                            if (app.globalData.is_login_check(res.data, self, 'get_data_list')) {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -146,7 +148,7 @@
                     fail: () => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: '服务器请求出错'

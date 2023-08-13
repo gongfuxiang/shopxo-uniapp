@@ -78,3 +78,7 @@
     max-width: 100%;
     margin-top: 60rpx;
 }
+.coming-tips-content {
+    bottom: 30rpx;
+    left: calc(50% - 82rpx);
+}
