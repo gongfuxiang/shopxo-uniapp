@@ -90,7 +90,7 @@
                                     { name: "当前级别", value: data.data.level_name || '' },
                                     { name: "结算状态", value: data.data.status_name || '' },
                                     { name: "返佣规则", value: data.data.commission_rules || '' },
-                                    { name: "创建时间", value: data.data.add_time_time || '' },
+                                    { name: "创建时间", value: data.data.add_time || '' },
                                     { name: "更新时间", value: data.data.upd_time || '' },
                                 ],
                                 data_list_loding_status: 3,

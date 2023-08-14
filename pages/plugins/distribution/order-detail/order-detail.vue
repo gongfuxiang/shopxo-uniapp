@@ -122,7 +122,7 @@
                                     { name: "支付状态", value: data.data.order_pay_status_name || '' },
                                     { name: "来源终端", value: data.data.order_client_type_name || '' },
                                     { name: "商品数量", value: data.data.buy_number_count || '' },
-                                    { name: "下单时间", value: data.data.add_time_time || '' },
+                                    { name: "下单时间", value: data.data.add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,

@@ -93,7 +93,7 @@
                                     { name: "订单金额", value: data.data.price || '' },
                                     { name: "支付金额", value: (data.data.pay_price <= 0) ? '' : (data.data.pay_price || '') },
                                     { name: "支付方式", value: data.data.payment_name || '' },
-                                    { name: "创建时间", value: data.data.add_time_time || '' },
+                                    { name: "创建时间", value: data.data.add_time || '' },
                                     { name: "更新时间", value: data.data.upd_time || '' },
                                 ],
                                 data_list_loding_status: 3,

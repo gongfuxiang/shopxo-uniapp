@@ -6,7 +6,7 @@
                     <view class="base oh br-b padding-bottom-main">
                         <image class="avatar dis-block fl circle" :src="item.avatar" mode="widthFix" @tap="avatar_event" :data-value="item.avatar"></image>
                         <text class="cr-base margin-left-sm">{{item.user_name_view || ''}}</text>
-                        <text class="cr-base fr">{{item.add_time_time}}</text>
+                        <text class="cr-base fr">{{item.add_time}}</text>
                     </view>
                     <view class="content margin-top">
                         <block v-for="(fv,fi) in content_list" :key="fi">
@@ -49,7 +49,7 @@
                     {name: "消费金额", field: "order_total", unit: "元"},
                     {name: "下级消费", field: "find_order_total", unit: "元"},
                     {name: "下级用户", field: "referrer_count"},
-                    {name: "加入时间", field: "add_time_time"}
+                    {name: "加入时间", field: "add_time"}
                 ]
             };
         },
