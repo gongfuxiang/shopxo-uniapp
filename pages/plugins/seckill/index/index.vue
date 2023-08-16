@@ -2,11 +2,6 @@
     <view>
         <view v-if="(data_base || null) != null" :style="seckill_bg">
             <view class="padding-horizontal-main padding-top-main">
-                <!-- 轮播 -->
-                <view v-if="slider.length > 0">
-                    <component-banner :propData="slider" propSize="mini"></component-banner>
-                </view>
-                
                 <!-- 公告信息 -->
                 <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="spacing-mb">
                     <view class="notice-content">
@@ -43,7 +38,6 @@
 </template>
 <script>
     const app = getApp();
-    import componentBanner from "../../../../components/slider/slider";
     import componentCountdown from "../../../../components/countdown/countdown";
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
@@ -59,9 +53,9 @@
                 data_list_loding_msg: '',
                 currency_symbol: app.globalData.data.currency_symbol,
                 data_base: null,
+                current: null,
                 time: null,
                 goods: [],
-                slider: [],
                 is_valid: 0,
                 // 自定义分享信息
                 share_info: {}
@@ -69,7 +63,6 @@
         },
 
         components: {
-            componentBanner,
             componentCountdown,
             componentNoData,
             componentBottomLine,
@@ -116,19 +109,21 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var data_base = data.config || null;
-                            var time = data.time || null;
-                            var goods = data.goods || [];
-                            if(goods.length > 0 && data_base != null) {
+                            var current = data.current || null;
+                            var time = (current == null) ? null : current.time || null;
+                            var goods = (current == null) ? [] : (current.goods || []);
+                            var is_valid = (time == null) ? 0 : (time.status == 1 ? 1 : 0);
+                            if(goods.length > 0) {
                                 for(var i in goods) {
-                                    goods[i]['price_icon'] = (time != null && (time.status == 0 || time.status == 1)) ? (data_base.goods_detail_icon || '秒杀价') : '';
+                                    goods[i]['price_icon'] = (is_valid == 1) ? (current.goods_detail_icon || '秒杀价') : '';
                                 }
                             }
                             this.setData({
                                 data_base: data_base,
+                                current: current,
                                 time: time,
                                 goods: goods,
-                                slider: data.slider || [],
-                                is_valid: data.is_valid || 0,
+                                is_valid: is_valid,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: (goods.length > 0)
