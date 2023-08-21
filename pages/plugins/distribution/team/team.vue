@@ -66,12 +66,14 @@
                         <block v-for="(fv,fi) in content_list" :key="fi">
                             <view class="single-text margin-top-xs">
                                 <text class="cr-gray margin-right-xl">{{fv.name}}</text>
-                                <text class="cr-base">{{item[fv.field] || fv.default}}</text>
+                                <text class="cr-base" :data-event="fv.event" :data-value="item[fv.field]" @tap="text_event">{{item[fv.field] || fv.default}}</text>
                                 <text v-if="(fv.unit || null) != null" class="cr-gray">{{fv.unit}}</text>
                             </view>
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">邮箱</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">电话</button>
                         <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">用户订单</button>
                     </view>
                 </view>
@@ -103,15 +105,14 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    {name: "消费订单", field: "order_count", unit: "条", default: 0},
-                    {name: "消费金额", field: "order_total", unit: "元", default: 0},
-                    {name: "最后下单时间", field: "order_last_time", default: ''},
-                    {name: "下级订单", field: "find_order_count", unit: "条", default: 0},
-                    {name: "下级消费", field: "find_order_total", unit: "元", default: 0},
-                    {name: "下级最后下单时间", field: "find_order_last_time", default: ''},
-                    {name: "下级用户", field: "referrer_count", unit: "个", default: 0}
-                    
-                ],                
+                    {name: '消费订单', field: 'order_count', unit: '', default: 0},
+                    {name: '消费金额', field: 'order_total', unit: '', default: 0},
+                    {name: '最后下单时间', field: 'order_last_time', default: ''},
+                    {name: '下级订单', field: 'find_order_count', unit: '', default: 0},
+                    {name: '下级消费', field: 'find_order_total', unit: '', default: 0},
+                    {name: '下级最后下单时间', field: 'find_order_last_time', default: ''},
+                    {name: '下级用户', field: 'referrer_count', unit: '', default: 0}
+                ],
                 nav_search_buy_type_list: [
                     {value: -1, name: '全部'},
                     {value: 0, name: '未下单'},
@@ -355,6 +356,11 @@
                     data_page: 1
                 });
                 this.get_data_list(1);
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
             }
         }
     };

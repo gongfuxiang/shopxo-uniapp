@@ -2,6 +2,22 @@
     <view>
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
+                <!-- 地址 -->
+                <view v-if="(detail.address_data || null) != null" class="goods bg-white padding-main border-radius-main spacing-mb">
+                    <view class="address-base oh">
+                        <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
+                        <text data-event="copy" :data-value="detail.address_data.name" @tap="text_event">{{detail.address_data.name}}</text>
+                        <text class="fr" data-event="tel" :data-value="detail.address_data.tel" @tap="text_event">{{detail.address_data.tel}}</text>
+                    </view>
+                    <view class="address-detail oh margin-bottom-main">
+                        <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
+                        <view class="text fr">
+                            <text data-event="copy" :data-value="detail.address_data.province_name+detail.address_data.city_name+detail.address_data.county_name+detail.address_data.address" @tap="text_event">{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
+                        </view>
+                    </view>
+                    <view class="address-divider spacing-mb"></view>
+                </view>
+
                 <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">基础信息</view>
@@ -18,7 +34,7 @@
                         </view>
                     </view>
                 </view>
-                
+
                 <!-- 商品列表 -->
                 <view v-if="detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
@@ -91,6 +107,11 @@
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
+        
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
 
         methods: {
             init() {
@@ -109,6 +130,7 @@
                     dataType: 'json',
                     success: res => {
                         uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -141,6 +163,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
@@ -162,7 +185,12 @@
                 } else {
                     app.globalData.showToast('头像地址有误');
                 }
-            }
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            },
         }
     };
 </script>

@@ -787,7 +787,7 @@
 
             // 拨打电话
             call_tel(data) {
-                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (value || null);
+                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (data || null);
                 if (value != null) {
                     uni.makePhoneCall({
                         phoneNumber: value.toString()
@@ -1209,6 +1209,24 @@
                                 });
                             }
                         }
+                    }
+                }
+            },
+
+            // 文本事件
+            text_event_handle(e) {
+                var event = e.currentTarget.dataset.event || null;
+                if(event != null) {
+                    var value = e.currentTarget.dataset.value;
+                    switch(event) {
+                        // 拨打电话
+                        case 'tel' :
+                            this.call_tel(value);
+                            break;
+                        // 复制文本
+                        case 'copy' :
+                            this.text_copy_event(value);
+                            break;
                     }
                 }
             },

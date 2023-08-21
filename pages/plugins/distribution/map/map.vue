@@ -24,13 +24,13 @@
                                 <view class="base-top oh br-b-dashed padding-bottom-xs">
                                     <view class="single-text cr-base fl view-name">{{item.user_name_view}}</view>
                                     <view class="fr base-top-icon">
-                                        <view v-if="(item.username || null) != null" class="dis-inline-block va-m" :data-value="item.username" @tap.stop="text_copy_event">
+                                        <view v-if="(item.username || null) != null" class="dis-inline-block va-m" data-event="copy" :data-value="item.username" @tap.stop="text_event">
                                             <uni-icons type="person" size="34rpx" color="#999"></uni-icons>
                                         </view>
-                                        <view v-if="(item.mobile || null) != null" class="dis-inline-block va-m" :data-value="item.mobile" @tap.stop="call_tel">
+                                        <view v-if="(item.mobile || null) != null" class="dis-inline-block va-m" data-event="tel" :data-value="item.mobile" @tap.stop="text_event">
                                             <uni-icons type="phone" size="34rpx" color="#999"></uni-icons>
                                         </view>
-                                        <view v-if="(item.email || null) != null" class="dis-inline-block va-m" :data-value="item.email" @tap.stop="text_copy_event">
+                                        <view v-if="(item.email || null) != null" class="dis-inline-block va-m" data-event="copy" :data-value="item.email" @tap.stop="text_event">
                                             <uni-icons type="email" size="34rpx" color="#999"></uni-icons>
                                         </view>
                                     </view>
@@ -38,10 +38,10 @@
                                 <view class="base-bottom cr-grey text-size-xs margin-top-sm oh">
                                     <text class="single-text fl address">{{item.address}}</text>
                                     <view class="fr">
-                                        <view class="dis-inline-block va-m" :data-value="item.address" @tap.stop="text_copy_event">
+                                        <view class="dis-inline-block va-m" data-event="copy" :data-value="item.address" @tap.stop="text_event">
                                             <uni-icons type="chatboxes" size="34rpx" color="#999"></uni-icons>
                                         </view>
-                                        <view class="dis-inline-block va-m margin-left-xxl" :data-value="item.address" :data-lng="item.lng" :data-lat="item.lat" @tap.stop="map_route_event">
+                                        <view class="dis-inline-block va-m margin-left-xxl" data-event="copy" :data-value="item.address" :data-lng="item.lng" :data-lat="item.lat" @tap.stop="map_route_event">
                                             <uni-icons type="paperplane" size="34rpx" color="#999"></uni-icons>
                                         </view>
                                     </view>
@@ -179,14 +179,9 @@
                 });
             },
 
-            // 文本复制
-            text_copy_event(e) {
-                app.globalData.text_copy_event(e);
-            },
-
-            // 拨打电话
-            call_tel(e) {
-                app.globalData.call_tel(e);
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
             },
 
             // 地址导航
