@@ -49,7 +49,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "requiredPrivateInfos" : [ "chooseLocation", "getLocation", "chooseAddress" ],
+        "requiredPrivateInfos" : [ "chooseLocation", "getLocation", "chooseAddress", "onLocationChange", "startLocationUpdate", "startLocationUpdateBackground" ],
         "appid" : "wxda7779770f53e901",
         "setting" : {
             "urlCheck" : false,

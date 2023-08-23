@@ -580,7 +580,7 @@
             // auth_data  授权数据
             user_auth_code(auth_data) {
                 if ((auth_data || null) != null) {
-                    app.globalData.user_auth_login(this, 'user_auth_back_event', auth_data);
+                    app.globalData.user_auth_login(this, 'user_auth_back_event', null, auth_data);
                 } else {
                     app.globalData.showToast("授权失败");
                 }

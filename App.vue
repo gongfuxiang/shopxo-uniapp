@@ -71,7 +71,7 @@
                 // 请求地址
                 request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://new.shopxo.vip/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -242,14 +242,15 @@
              * 获取用户信息,信息不存在则唤醒授权
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调操请求参数
              * return     有用户数据直接返回, 则回调调用者
              */
-            get_user_info(object, method) {
+            get_user_info(object, method, params) {
                 var user = this.get_user_cache_info();
                 if (user == null) {
                     // #ifdef MP
                     // 小程序唤醒用户授权
-                    this.user_login(object, method);
+                    this.user_login(object, method, params);
                     // #endif
 
                     // #ifdef H5 || APP
@@ -321,32 +322,33 @@
              * 用户登录
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调请求参数
              * auth_data  授权数据
              */
-            user_auth_login(object, method, auth_data) {
+            user_auth_login(object, method, params, auth_data) {
                 var self = this;
                 // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
                 uni.checkSession({
                     success: function() {
                         var login_data = self.get_login_cache_info();
                         if (login_data == null) {
-                            self.user_login(object, method);
+                            self.user_login(object, method, params);
                         } else {
-                            self.get_user_login_info(object, method, login_data, auth_data);
+                            self.get_user_login_info(object, method, params, login_data, auth_data);
                         }
                     },
                     fail: function() {
                         uni.removeStorageSync(self.data.cache_user_login_key);
-                        self.user_login(object, method);
+                        self.user_login(object, method, params);
                     }
                 });
                 // #endif
                 // #ifdef MP-ALIPAY
                 var login_data = self.get_login_cache_info();
                 if (login_data == null) {
-                    self.user_login(object, method);
+                    self.user_login(object, method, params);
                 } else {
-                    self.get_user_login_info(object, method, login_data, auth_data);
+                    self.get_user_login_info(object, method, params, login_data, auth_data);
                 }
                 // #endif
             },
@@ -355,12 +357,12 @@
              * 用户登录
              * object     回调操作对象
              * method     回调操作对象的函数
-             * auth_data  授权数据
+             * params     回调操请求参数
              */
-            user_login(object, method) {
+            user_login(object, method, params) {
                 var login_data = uni.getStorageSync(this.data.cache_user_login_key) || null;
                 if (login_data == null) {
-                    this.user_login_handle(object, method, true);
+                    this.user_login_handle(object, method, params, true);
                 } else {
                     this.login_to_auth();
                 }
@@ -370,10 +372,10 @@
              * 用户登录处理
              * object     回调操作对象
              * method     回调操作对象的函数
-             * auth_data  授权数据
+             * params     回调操请求参数
              * is_to_auth 是否进入授权
              */
-            user_login_handle(object, method, is_to_auth = true) {
+            user_login_handle(object, method, params, is_to_auth = true) {
                 var self = this;
                 uni.showLoading({
                     title: "授权中..."
@@ -400,7 +402,7 @@
                                         if ((data.is_user_exist || 0) == 1 || client_type == 'weixin') {
 											uni.setStorageSync(self.data.cache_user_info_key, data);
                                             if (typeof object === 'object' && (method || null) != null) {
-                                                object[method]();
+                                                object[method](params);
                                             }
                                         } else {
                                             uni.setStorageSync(self.data.cache_user_login_key, data);
@@ -408,7 +410,7 @@
 												var pages = getCurrentPages();
 												if(pages[pages.length-1]['route'] == 'pages/login/login') {
 													if (typeof object === 'object' && (method || null) != null) {
-													    object[method]();
+													    object[method](params);
 													}
 												} else {
 													self.login_to_auth();
@@ -457,10 +459,11 @@
              * 获取用户授权信息
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调请求参数
              * login_data 登录信息
              * auth_data  授权数据
              */
-            get_user_login_info(object, method, login_data, auth_data) {
+            get_user_login_info(object, method, params, login_data, auth_data) {
                 // 请求数据
                 var data = {
                     auth_data: JSON.stringify(auth_data),
@@ -483,7 +486,7 @@
                         if (res.data.code == 0) {
 							uni.setStorageSync(self.data.cache_user_info_key, res.data.data);
                             if (typeof object === 'object' && (method || null) != null) {
-                                object[method]();
+                                object[method](params);
                             }
                         } else {
                             self.showToast(res.data.msg);
@@ -799,11 +802,12 @@
              * 登录校验
              * object     回调操作对象
              * method     回调操作对象的函数
+             * params     回调请求参数
              */
-            is_login_check(res, object, method) {
+            is_login_check(res, object, method, params) {
                 if (res.code == -400) {
                     uni.clearStorage();
-                    this.get_user_info(object, method);
+                    this.get_user_info(object, method, params);
                     return false;
                 }
                 return true;
@@ -1743,6 +1747,50 @@
                     object[method](0);
                 }
                 // #endif
+            },
+
+            // 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
+            start_location_update(type = 0, object, method) {
+                // 先停止再调用
+                uni.stopLocationUpdate();
+                // 关闭监听
+                uni.offLocationChange();
+
+                // 根据类型调用api
+                if(type == 0) {
+                    // 打开小程序监听
+                    uni.startLocationUpdate({
+                        success: (res) => {
+                            this.start_location_update_change(object, method);
+                        },
+                        fail: res => {
+                            if (typeof object === 'object' && (method || null) != null) {
+                                object[method]({status: 0, msg: res.errMsg});
+                            }
+                        }
+                    });
+                } else {
+                    // 小程序后台运行监听
+                    uni.startLocationUpdateBackground({
+                        success: (res) => {
+                            this.start_location_update_change(object, method);
+                        },
+                        fail: res => {
+                            if (typeof object === 'object' && (method || null) != null) {
+                                object[method]({status: 0, msg: res.errMsg});
+                            }
+                        }
+                    });
+                }
+            },
+
+            // 位置监听改变
+            start_location_update_change(object, method) {
+                uni.onLocationChange((res) => {
+                    if (typeof object === 'object' && (method || null) != null) {
+                        object[method]({status: 1, lat: res.longitude, lng: res.latitude, data: res});
+                    }
+                });
             }
         },
 

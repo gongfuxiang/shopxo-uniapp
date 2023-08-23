@@ -989,6 +989,25 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/delivery",
+            "pages": [
+                {
+                    "path": "order/order",
+                    "style": {
+                    	"enablePullDownRefresh": true,
+                    	"navigationBarTitleText": "配送订单"
+                    }
+                },
+                {
+                    "path": "order-detail/order-detail",
+                    "style": {
+                    	"enablePullDownRefresh": true,
+                    	"navigationBarTitleText": "订单详情"
+                    }
+                }
+            ]
         }
     ],
 	"globalStyle": {

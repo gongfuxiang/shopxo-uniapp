@@ -12,7 +12,8 @@
                     <view class="address-detail oh margin-bottom-main">
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
-                            <text data-event="copy" :data-value="detail.address_data.province_name+detail.address_data.city_name+detail.address_data.county_name+detail.address_data.address" @tap="text_event">{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
+                            <text data-event="copy" :data-value="detail.address_data.address_info" @tap="text_event">{{detail.address_data.address_info}}</text>
+                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -22,23 +23,22 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">基础信息</view>
                     <view class="panel-content oh">
-                        <view class="item br-b oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-gray">用户头像</view>
-                            <view class="content fl br-l padding-left-main">
-                                <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
-                            </view>
-                        </view>
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
-                            <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                            <block v-if="(item.event || null) == null">
+                                <view class="content fl br-l padding-left-main">{{item.value}}</view>
+                            </block>
+                            <block v-else>
+                                <view data-event="copy" :data-value="item.value" @tap="text_event" class="content fl br-l padding-left-main">{{item.value}}</view>
+                            </block>
                         </view>
                     </view>
                 </view>
 
                 <!-- 商品列表 -->
-                <view v-if="detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
+                <view v-if="detail.goods_data.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
-                    <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
+                    <view v-for="(item, index) in detail.goods_data" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <navigator :url="item.goods_url" hover-class="none">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
@@ -124,7 +124,7 @@
                     data_list_loding_status: 1
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("detail", "order", "distribution"),
+                    url: app.globalData.get_request_url("detail", "order", "delivery"),
                     method: 'POST',
                     data: {
                         id: this.params.id
@@ -138,15 +138,19 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: "用户昵称", value: data.data.user_name_view || '' },
-                                    { name: "订单号", value: data.data.order_no || '' },
+                                    { name: "订单号", value: data.data.main_order_no || '', event: 'copy' },
                                     { name: "订单金额", value: data.data.total_price + ' 元' || '' },
                                     { name: "退款金额", value: data.data.refund_price + ' 元' || '' },
-                                    { name: "订单状态", value: data.data.order_status_name || '' },
-                                    { name: "支付状态", value: data.data.order_pay_status_name || '' },
-                                    { name: "来源终端", value: data.data.order_client_type_name || '' },
+                                    { name: "订单状态", value: data.data.main_status_name || '' },
                                     { name: "商品数量", value: data.data.buy_number_count || '' },
-                                    { name: "下单时间", value: data.data.add_time || '' },
+                                    { name: "配送状态", value: data.data.status_name || '' },
+                                    { name: "配送时间", value: data.data.start_delivery_time || '' },
+                                    { name: "完成时间", value: data.data.success_delivery_time || '' },
+                                    { name: "异常时间", value: data.data.abnormal_delivery_time || '' },
+                                    { name: "异常原因", value: data.data.reason || '' },
+                                    { name: "派单时间", value: data.data.add_time || '' },
+                                    { name: "更新时间", value: data.data.upd_time || '' },
+                                    { name: "订单时间", value: data.data.order_add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
@@ -193,6 +197,19 @@
             text_event(e) {
                 app.globalData.text_event_handle(e);
             },
+
+            // 地图查看
+            address_map_event(e) {
+                if ((this.detail.address_data || null) == null) {
+                    app.globalData.showToast("地址有误");
+                    return false;
+                }
+                
+                // 打开地图
+                var data = this.detail.address_data;
+                var name = data.alias || data.name || '';
+                app.globalData.open_location(data.lng, data.lat, name, data.address_info);
+            }
         }
     };
 </script>

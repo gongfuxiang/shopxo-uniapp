@@ -1,0 +1,36 @@
+/*
+* 头部
+*/
+.header {
+    height: 180rpx;
+}
+.nav-base .item {
+    width: 20%;
+}
+.nav-base .item .badge-icon {
+    top: -18rpx;
+    left: calc(50% + 52rpx);
+    z-index: 1;
+}
+.nav-search input {
+    width: calc(100% - 180rpx);
+}
+
+/**
+ * 数据列表
+ */
+.scroll-box {
+    height: calc(100vh - 180rpx);
+}
+.data-list .address-info {
+    width: calc(100% - 158rpx);
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.data-list .address-info .icon-item {
+    right: 0;
+    top: 0;
+    line-height: 54rpx;
+    height: 54rpx;
+    width: 54rpx;
+}

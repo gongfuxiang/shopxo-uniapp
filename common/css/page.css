@@ -175,6 +175,9 @@ button:before {
 .dis-inline-block {
     display: inline-block !important;
 }
+.va-t {
+    vertical-align: top;
+}
 .va-m {
     vertical-align: middle;
 }
@@ -356,6 +359,9 @@ button:before {
 }
 .br-blue {
     border: solid 1px #2196F3 !important;
+}
+.br-base {
+    border: solid 1px #666 !important;
 }
 .br-0 {
     border: 0 !important;

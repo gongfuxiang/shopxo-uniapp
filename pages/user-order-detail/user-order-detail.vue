@@ -13,7 +13,7 @@
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{detail.address_data.province_name}}{{detail.address_data.city_name}}{{detail.address_data.county_name}}{{detail.address_data.address}}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0 && detail.address_data.lng != 0 && detail.address_data.lat != 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
