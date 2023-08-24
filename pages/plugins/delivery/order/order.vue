@@ -42,7 +42,7 @@
                                 </view>
                                 <view class="single-text margin-top-sm">
                                     <text class="cr-gray">电话：</text>
-                                    <text class="cr-base" data-event="copy" :data-value="item.address_data.tel" @tap="text_event">{{item.address_data.tel}}</text>
+                                    <text class="cr-base" data-event="tel" :data-value="item.address_data.tel" @tap="text_event">{{item.address_data.tel}}</text>
                                 </view>
                                 <view class="margin-top-sm pr">
                                     <text class="cr-gray va-t">地址：</text>
