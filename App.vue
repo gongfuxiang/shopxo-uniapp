@@ -1791,13 +1791,28 @@
                         object[method]({status: 1, lat: res.longitude, lng: res.latitude, data: res});
                     }
                 });
+            },
+
+            // 获取主题
+            get_theme_value() {
+                return uni.getStorageSync('theme') || 'yellow'
+            },
+
+            // 设置主题
+            set_theme_value() {
+                this.get_theme_value();
+                // import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
+                require(`./common/css/theme/${theme}.css`);
             }
+
         },
 
         /**
          * 小程序初始化
          */
-        onLaunch(params) {},
+        onLaunch(params) {
+            this.set_theme_value()
+        },
 
         /**
          * 小程序页面显示
@@ -1823,6 +1838,5 @@
     @import './common/css/page.css';
     @import './common/css/business.css';
     @import './common/css/plugins.css';
-    @import './common/css/lib.css';
-    @import './common/css/theme/yellow.css';
+    @import './common/css/lib.css'; 
 </style>
