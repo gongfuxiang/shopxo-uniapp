@@ -1800,18 +1800,17 @@
 
             // 设置主题
             set_theme_value() {
-                this.get_theme_value();
+                let theme = this.get_theme_value();
                 // import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
                 require(`./common/css/theme/${theme}.css`);
             }
-
         },
 
         /**
          * 小程序初始化
          */
         onLaunch(params) {
-            this.set_theme_value()
+            this.globalData.set_theme_value()
         },
 
         /**
