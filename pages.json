@@ -282,7 +282,16 @@
             	"navigationBarTitleText": "账号注销"
             }
         }
-	],
+	    ,{
+            "path" : "components/iconfont/iconfont/iconfont",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
     "subPackages": [
         {
             "root": "pages/plugins/seckill",
