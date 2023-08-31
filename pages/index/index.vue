@@ -1,9 +1,8 @@
 <template>
 	<view>
-		<view
-			:class="(plugins_mourning_data_is_app ? ' grayscale' : '')+(is_single_page == 1 ? ' single-page-top' : '')">
+		<view :class="(plugins_mourning_data_is_app ? ' grayscale' : '')+(is_single_page == 1 ? ' single-page-top' : '')">
 			<!-- 顶部内容 -->
-			<view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_style">
+			<view v-if="load_status == 1" class="home-top-nav-content" :style="banner_list.length > 0 ? slider_bg : top_content_style">
 				<!-- logo/标题 -->
 				<!-- #ifndef MP-TOUTIAO -->
 				<view class="home-top-nav-logo">
@@ -18,20 +17,16 @@
 
 				<!-- 搜索 -->
 				<view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
-				<view v-if="load_status == 1"
-					:class="'pr '+(search_is_fixed == 1 ? 'search-content-fixed bg-main' : '')"
-					:style="search_is_fixed == 1 ? top_content_style : ''">
+				<view v-if="load_status == 1" :class="'pr '+(search_is_fixed == 1 ? 'search-content-fixed bg-main' : '')" :style="search_is_fixed == 1 ? top_content_style : ''">
 					<view v-if="common_app_is_enable_search == 1" :style="search_style">
 						<view class="margin-horizontal-main">
-							<component-search propPlaceholder="输入商品名称搜索" :propIsBtn="true"
-								propBgColor="#fff"></component-search>
+							<component-search propPlaceholder="输入商品名称搜索" :propIsBtn="true" propBgColor="#fff"></component-search>
 						</view>
 					</view>
 
 					<!-- #ifdef H5 || MP-TOUTIAO || APP -->
 					<!-- 右上角icon列表 -->
-					<view v-if="(right_icon_list || null) != null && right_icon_list.length > 0"
-						class="nav-top-right-icon pa">
+					<view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
 						<block v-for="(item,index) in right_icon_list">
 							<view class="item dis-inline-block cp" :data-value="item.url || ''" @tap="url_event">
 								<uni-icons :type="item.icon" size="32rpx" color="#f1f1f1"></uni-icons>
@@ -46,11 +41,15 @@
 
 				<!-- 轮播 -->
 				<view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
-					<component-banner :propData="banner_list"></component-banner>
+					<component-banner :propData="banner_list" @changeBanner="changeBanner"></component-banner>
 				</view>
 				<!-- 导航 -->
 				<view v-if="navigation.length > 0">
-					<component-icon-nav :propData="navigation"></component-icon-nav>
+					<view class="padding-horizontal-main">
+						<view class="bg-white border-radius-main">
+							<component-icon-nav :propData="navigation"></component-icon-nav>
+						</view>
+					</view>
 				</view>
 			</view>
 
@@ -58,24 +57,19 @@
 			<view class="content padding-horizontal-main">
 
 				<!-- 商城公告 -->
-				<view class="notice-content spacing-mb" v-if="load_status == 1 && (common_shop_notice || null) != null">
-					{{common_shop_notice}}
-				</view>
+				<component-notice v-if="load_status == 1 && (common_shop_notice || null) != null" :propData="common_shop_notice"></component-notice>
 
 				<!-- 推荐文章 -->
-				<view v-if="article_list.length > 0"
-					class="article-list padding-main border-radius-main oh bg-white spacing-mb">
-					<image :src="static_url+'new-icon.png'" mode="aspectFit" class="new-icon va-m fl cp"
-						data-value="/pages/article-category/article-category" @tap="url_event"></image>
+				<view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
+					<view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event">
+						<text>最新</text><text class="cr-red">资讯</text>
+					</view>
 					<view class="right-content fr va-m">
-						<swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1"
-							interval="3000">
+						<swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
 							<block v-for="(item, index) in article_list" :key="index">
 								<swiper-item class="single-text">
-									<text class="cr-base text-size-sm cp" :data-value="item.category_url"
-										@tap="url_event">[{{item.article_category_name}}]</text>
-									<text class="cr-base text-size-sm margin-left-xs cp"
-										:style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''"
+									<text class="cr-base text-size-sm cp" :data-value="item.category_url" @tap="url_event">[{{item.article_category_name}}]</text>
+									<text class="cr-base text-size-sm margin-left-xs cp" :style="(item.title_color || null) != null ? 'color:'+item.title_color+' !important;' : ''"
 										:data-value="item.url" @tap="url_event">{{item.title}}</text>
 								</swiper-item>
 							</block>
@@ -87,12 +81,8 @@
 				<block v-if="plugins_sort_list.length > 0">
 					<block v-for="(pv, pi) in plugins_sort_list" :key="pi">
 						<!-- 首页中间广告 - 插件 -->
-						<view
-							v-if="pv.plugins == 'homemiddleadv' && (plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0"
-							class="plugins-homemiddleadv oh">
-							<view v-for="(item, index) in plugins_homemiddleadv_data" :key="index"
-								class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''"
-								@tap="url_event">
+						<view v-if="pv.plugins == 'homemiddleadv' && (plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
+							<view v-for="(item, index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''" @tap="url_event">
 								<image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix">
 								</image>
 							</view>
@@ -101,74 +91,63 @@
 						<!-- 限时秒杀 - 插件 -->
 						<view
 							v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
-							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb"
-							:style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
-							<view class="spacing-nav-title">
-								<image class="dis-inline-block va-m icon"
-									:src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
-								<view class="dis-inline-block va-m margin-left-sm">
-									<component-countdown :propHour="plugins_seckill_data.data.time.hours"
-										:propMinute="plugins_seckill_data.data.time.minutes"
-										:propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
+							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb" :style="'background-image: url('+plugins_seckill_data.data.home_bg+');'">
+							<view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<view class="flex-row align-c">
+									<image class="icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
+									<view class="margin-left-sm flex-row align-c">
+										<text class="cr-red fw-b">12点场｜距结束</text>
+										<component-countdown class="margin-left-sm" :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes"
+											:propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
+									</view>
 								</view>
-								<navigator url="/pages/plugins/seckill/index/index" hover-class="none"
-									class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+								<navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
 							</view>
-							<component-goods-list
-								:propData="{style_type: 2, goods_list: plugins_seckill_data.data.goods}"
-								:propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
+							<component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
 								:propIsCartParaCurve="true" propSource="index"></component-goods-list>
 						</view>
 
 						<!-- 活动配置-楼层顶部 - 插件 -->
 						<block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-							<component-activity-list :propConfig="plugins_activity_data.base"
-								:propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data"
-								:propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true"
-								propSource="index"></component-activity-list>
+							<component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data"
+								:propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-activity-list>
 						</block>
 
 						<!-- 门店 - 插件 -->
 						<block v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
-							<view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null"
-								class="spacing-nav-title">
-								<text class="text-wrapper">{{plugins_realstore_data.base.home_data_list_title}}</text>
-								<navigator url="/pages/plugins/realstore/search/search" hover-class="none"
-									class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+							<view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<text class="text-wrapper title-left-border">{{plugins_realstore_data.base.home_data_list_title}}</text>
+								<navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
 							</view>
-							<component-realstore-list :propDataList="plugins_realstore_data.data"
-								:propFavorUser="plugins_realstore_data.favor_user"></component-realstore-list>
+							<component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
 						</block>
 
 						<!-- 多商户 - 插件 -->
 						<block v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
-							<view v-if="(plugins_shop_data.base.home_data_list_title || null) != null"
-								class="spacing-nav-title">
-								<text class="text-wrapper">{{plugins_shop_data.base.home_data_list_title}}</text>
-								<navigator url="/pages/plugins/shop/index/index" hover-class="none"
-									class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+							<view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<text class="text-wrapper title-left-border">{{plugins_shop_data.base.home_data_list_title}}</text>
+								<navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
 							</view>
-							<component-shop-list :propConfig="plugins_shop_data.base"
-								:propDataList="plugins_shop_data.data"></component-shop-list>
+							<component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
 						</block>
 
 						<!-- 组合搭配 - 插件 -->
 						<block v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
-							<view v-if="(plugins_binding_data.base.home_data_list_title || null) != null"
-								class="spacing-nav-title">
-								<text class="text-wrapper">{{plugins_binding_data.base.home_data_list_title}}</text>
-								<navigator url="/pages/plugins/binding/index/index" hover-class="none"
-									class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+							<view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<text class="text-wrapper title-left-border">{{plugins_binding_data.base.home_data_list_title}}</text>
+								<navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
 							</view>
-							<component-binding-list :propConfig="plugins_binding_data.base"
-								:propDataList="plugins_binding_data.data"
-								:propCurrencySymbol="currency_symbol"></component-binding-list>
+							<component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
 						</block>
 
 						<!-- 博客-楼层顶部 - 插件 -->
 						<block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
-							<component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data"
-								propLocation="0"></component-blog-list>
+							<component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
+						</block>
+
+						<!-- 热门推荐 -->
+						<block v-if="pv.plugins == 'seckill'">
+							<component-recommed-hot></component-recommed-hot>
 						</block>
 					</block>
 				</block>
@@ -183,21 +162,17 @@
 					<block v-else>
 						<!-- 自动+手动 -->
 						<view v-for="(floor, index) in data_list" :key="index" class="floor">
-							<view class="spacing-nav-title">
-								<text class="text-wrapper"
-									:style="'color:'+(floor.bg_color || '#333')+';'">{{floor.name}}</text>
-								<text v-if="(floor.describe || null) != null"
-									class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
-								<navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id"
-									hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+							<view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<text class="text-wrapper title-left-border" :style="'color:'+(floor.bg_color || '#333')+';'">{{floor.name}}</text>
+								<text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
+								<navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">更多
+								</navigator>
 							</view>
 							<view class="floor-list wh-auto oh pr">
-								<view v-if="floor.items.length > 0"
-									class="word-list scroll-view-horizontal margin-bottom-lg">
+								<view v-if="floor.items.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
 									<scroll-view :scroll-x="true">
 										<block v-for="(icv, icx) in floor.items" :key="icx">
-											<navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id"
-												hover-class="none"
+											<navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none"
 												class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">
 												{{icv.name}}
 											</navigator>
@@ -205,8 +180,7 @@
 									</scroll-view>
 								</view>
 								<block v-if="floor.goods.length > 0">
-									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}"
-										:propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
+									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
 										:propIsCartParaCurve="true" propSource="index"></component-goods-list>
 								</block>
 							</view>
@@ -219,15 +193,13 @@
 					<block v-for="(pv, pi) in plugins_sort_list" :key="pi">
 						<!-- 活动配置-楼层底部 - 插件 -->
 						<block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-							<component-activity-list :propConfig="plugins_activity_data.base"
-								:propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data"
+							<component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data"
 								:propCurrencySymbol="currency_symbol" propSource="index"></component-activity-list>
 						</block>
 
 						<!-- 博客-楼层底部 - 插件 -->
 						<block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
-							<component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data"
-								propLocation="1"></component-blog-list>
+							<component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
 						</block>
 
 						<!--- 底部购买记录 - 插件 -->
@@ -235,17 +207,13 @@
 							v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0"
 							class="spacing-mb plugins-salerecords">
 							<view class="spacing-nav-title">
-								<text
-									class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
-								<text
-									v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null"
+								<text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
+								<text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null"
 									class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
 							</view>
 							<view class="bg-white padding-horizontal-main border-radius-main oh">
-								<swiper :vertical="true" :autoplay="true" :circular="true"
-									:display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6"
-									interval="3000"
-									:style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
+								<swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6"
+									interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
 									<block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
 										<swiper-item>
 											<view class="item oh padding-vertical-main">
@@ -253,12 +221,10 @@
 													<image mode="widthFix" :src="item.user.avatar" class="va-m br">
 													</image>
 													<text class="margin-left-sm">{{item.user.user_name_view}}</text>
-													<text v-if="(item.user.province || null) != null"><text
-															class="padding-left-xs padding-right-xs">-</text>{{item.user.province}}</text>
+													<text v-if="(item.user.province || null) != null"><text class="padding-left-xs padding-right-xs">-</text>{{item.user.province}}</text>
 												</view>
 												<view class="item-content fl">
-													<navigator :url="item.goods_url" hover-class="none"
-														class="single-text">
+													<navigator :url="item.goods_url" hover-class="none" class="single-text">
 														<image mode="widthFix" :src="item.images" class="va-m br">
 														</image>
 														<text class="margin-left-sm single-text">{{item.title}}</text>
@@ -277,19 +243,16 @@
 				</block>
 
 				<!-- 弹屏广告 - 插件 -->
-				<view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1"
-					class="plugins-popupscreen wh-auto ht-auto">
+				<view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
 					<view class="content pr">
 						<icon type="clear" size="46rpx" class="close pa cp" @tap.stop="plugins_popupscreen_close_event">
 						</icon>
-						<image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix"
-							:data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
+						<image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
 					</view>
 				</view>
 
 				<!-- 留言 -->
-				<view v-if="load_status == 1 && common_app_is_enable_answer == 1"
-					class="bg-white border-radius-main oh spacing-mt">
+				<view v-if="load_status == 1 && common_app_is_enable_answer == 1" class="bg-white border-radius-main oh spacing-mt">
 					<navigator url="/pages/answer-form/answer-form" hover-class="none">
 						<image mode="widthFix" :src="static_url+'answer-form.jpg'" class="wh-auto border-radius-main">
 						</image>
@@ -299,8 +262,7 @@
 
 			<!-- 提示信息 -->
 			<block v-if="load_status == 0">
-				<component-no-data :propStatus="data_list_loding_status"
-					:propMsg="data_list_loding_msg"></component-no-data>
+				<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
 			</block>
 
 			<!-- 结尾 -->
@@ -313,12 +275,10 @@
 		</view>
 
 		<!-- 在线客服 -->
-		<component-online-service :propIsNav="true" :propIsBar="true"
-			:propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
+		<component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
 
 		<!-- 快捷导航 -->
-		<component-quick-nav :propIsNav="true" :propIsBar="true"
-			:propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+		<component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
 
 		<!-- 用户基础 -->
 		<component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
@@ -345,6 +305,8 @@
 	import componentGoodsList from "../../components/goods-list/goods-list";
 	import componentUserBase from "../../components/user-base/user-base";
 	import componentBindingList from "../../components/binding-list/binding-list";
+	import componentNotice from "@/components/notice/notice"
+	import componentRecommedHot from '@/components/recommend-hot/recommend-hot'
 
 	var common_static_url = app.globalData.get_static_url('common');
 	var static_url = app.globalData.get_static_url('home');
@@ -389,6 +351,8 @@
 				search_is_fixed: 0,
 				// 是否单页预览
 				is_single_page: app.globalData.is_current_single_page() || 0,
+				// 轮播滚动时，背景色替换
+				slider_bg: null,
 				// 插件顺序列表
 				plugins_sort_list: [],
 				// 限时秒杀插件
@@ -437,7 +401,9 @@
 			componentShopList,
 			componentGoodsList,
 			componentUserBase,
-			componentBindingList
+			componentBindingList,
+			componentNotice,
+			componentRecommedHot
 		},
 		props: {},
 
@@ -541,6 +507,12 @@
 								plugins_shop_data: data.plugins_shop_data || null,
 								plugins_binding_data: data.plugins_binding_data || null
 							});
+							// 轮播数据处理
+							if (data.banner_list && data.banner_list.length > 0) {
+								this.slider_bg = 'background: linear-gradient(180deg, ' + data.banner_list[0]
+									.bg_color +
+									' 0%, #f5f5f5 80%);';
+							}
 
 							// 弹屏广告插件处理
 							this.plugins_popupscreen_handle();
@@ -661,6 +633,10 @@
 					data: app.globalData.get_timestamp()
 				});
 				clearInterval(this.plugins_popupscreen_timer);
+			},
+			// 轮播改变
+			changeBanner(color) {
+				this.slider_bg = 'background: linear-gradient(180deg,' + color + ' 0%, #f5f5f5 80%);';
 			}
 		}
 	};

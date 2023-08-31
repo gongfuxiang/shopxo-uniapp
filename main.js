@@ -5,7 +5,7 @@ import App from './App';
 import base from './common/js/common/base';
 import share from './common/js/common/share';
 
-import iconfont from './components/iconfont/iconfont'
+import iconfont from './components/iconfont/iconfont.vue'
 Vue.mixin(base);
 Vue.mixin(share);
 

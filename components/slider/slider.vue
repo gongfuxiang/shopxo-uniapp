@@ -1,13 +1,11 @@
 <template>
 	<view>
-		<swiper :indicator-dots="propData.length > 0" :indicator-color="indicator_color"
-			:indicator-active-color="indicator_active_color" :autoplay="propData.length > 0" :circular="circular"
-			:class="'banner border-radius-main oh bg-white spacing-mb banner-'+(propSize || 'default')"
-			v-if="propData.length > 0">
+		<swiper :indicator-dots="propData.length > 0" :indicator-color="indicator_color" :indicator-active-color="indicator_active_color" :autoplay="propData.length > 0" :circular="circular"
+			:class="'banner border-radius-main oh bg-white spacing-mb banner-'+(propSize || 'default')" v-if="propData.length > 0" @change="swiper_change">
 			<block v-for="(item, index) in propData" :key="index">
 				<swiper-item>
-					<image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url"
-						:data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"></image>
+					<image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event">
+					</image>
 				</swiper-item>
 			</block>
 		</swiper>
@@ -19,7 +17,7 @@
 		data() {
 			return {
 				indicator_dots: false,
-				indicator_color: 'rgba(0, 0, 0, .2)',
+				indicator_color: '#fff',
 				indicator_active_color: '#666',
 				autoplay: true,
 				circular: true
@@ -37,7 +35,17 @@
 				default: 'default'
 			}
 		},
+		beforeMount() {
+			this.indicator_active_color = app.globalData.get_theme_color();
+		},
 		methods: {
+			swiper_change(e) {
+				// 原始index
+				let tmpCurrent = e.detail.current;
+				// 当前滑index
+				// this.currentIndex = tmpCurrent == this.propData.length - 1 ? 0 : tmpCurrent + 1;
+				this.$emit('changeBanner', this.propData[tmpCurrent].bg_color)
+			},
 			banner_event(e) {
 				app.globalData.operation_event(e);
 			}

@@ -2,14 +2,12 @@
 	<view>
 		<view class="search-content pr">
 			<view class="search-icon dis-inline-block pa" @tap="search_icon_event">
-				<uni-icons :type="propIcon" size="48rpx" :color="propIconColor"></uni-icons>
-				<iconfont name="icon-icon-applet-me-message-acquiesce"></iconfont>
+				<iconfont :name="propIcon" :color="propIconColor" size="28rpx"></iconfont>
 			</view>
-			<input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder"
-				:placeholder-class="propPlaceholderClass" :value="propDefaultValue" @input="search_input_value_event"
-				@confirm="search_submit_confirm_event" @focus="search_input_focus_event" @blur="search_input_blur_event"
+			<input type="text" confirm-type="search" class="round wh-auto dis-block" :placeholder="propPlaceholder" :placeholder-class="propPlaceholderClass" :value="propDefaultValue"
+				@input="search_input_value_event" @confirm="search_submit_confirm_event" @focus="search_input_focus_event" @blur="search_input_blur_event"
 				:style="'color:'+propTextColor+';background:'+propBgColor+';'+((propBrColor || null) != null ? 'border:1px solid '+propBrColor+';' : '')">
-			<button v-if="propIsBtn" class="search-btn pa" size="mini" type="default">搜索</button>
+			<button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default">搜索</button>
 		</view>
 	</view>
 </template>
@@ -39,7 +37,7 @@
 			},
 			propPlaceholderClass: {
 				type: String,
-				default: 'cr-grey'
+				default: 'cr-grey-c'
 			},
 			propTextColor: {
 				type: String,
@@ -75,11 +73,11 @@
 			},
 			propIcon: {
 				type: String,
-				default: 'search'
+				default: 'icon-icon-index-search'
 			},
 			propIconColor: {
 				type: String,
-				default: '#b7b7b7'
+				default: '#ccc'
 			},
 			propIsIconOnEvent: {
 				type: Boolean,
@@ -164,7 +162,8 @@
 	.search-content .search-btn {
 		width: 106rpx;
 		height: 56rpx;
-		background: linear-gradient(90deg, #FF426D 0%, #E20808 100%);
+		line-height: 56rpx;
+		font-size: 28rpx;
 		border-radius: 30rpx;
 		padding: 0;
 		color: #fff;
