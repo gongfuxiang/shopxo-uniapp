@@ -852,7 +852,7 @@
     * 空购物车
     */
 	.cart-no-data-box {
-		padding: 30% 0 0 0;
+		padding: 30% 0 40rpx 0;
 	}
 
 	.cart-no-data-box image {
