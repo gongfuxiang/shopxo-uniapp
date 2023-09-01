@@ -2,7 +2,8 @@
 	<view>
 		<view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
 			<block v-for="(item, index) in data_list" :key="index">
-				<view class="item bg-white padding-vertical-xl padding-horizontal-main border-radius-main pr spacing-mb" :data-value="item.url" @tap="url_event">
+				<view class="item bg-white padding-vertical-xl padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type===2 ? 'opacity' :''" :data-value="item.url"
+					@tap="url_event">
 					<view class="base oh flex-row">
 						<!-- 基础内容 -->
 						<image :src="item.logo" mode="widthFix" class="logo circle br"></image>
@@ -15,7 +16,8 @@
 							<view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
 								<view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
 									<iconfont name="icon-icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
-									<view :class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm '+((item.status_info.status == 1) ? 'cr-green' : 'cr-gray')">
+									<view
+										:class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm '+((item.status_info.status == 1) ? 'cr-green' : (item.status_info.type == 1) ? 'cr-red' : 'cr-grey-c')">
 										{{item.status_info.msg}}
 									</view>
 									{{item.status_info.time}}

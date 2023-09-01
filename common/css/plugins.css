@@ -201,7 +201,7 @@
 .plugins-blog-rolling-list .item .blog-title {
 	left: 0;
 	bottom: 0;
-	width: calc(100% - 36rpx);
+	width: calc(100% - 26rpx);
 	background-color: rgba(0, 0, 0, .5);
 }
 
@@ -277,18 +277,25 @@
  * 多商户 - 数据列表
  */
 .plugins-shop-data-list .item .logo {
-	width: 120rpx;
-	height: 120rpx !important;
+	width: 100rpx;
+	height: 100rpx !important;
+}
+
+.plugins-shop-data-list .item .item-right-icon {
+	position: absolute;
+	right: 12px;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 .plugins-shop-data-list .item .right-content {
-	width: calc(100% - 190rpx);
+	padding-left: 14rpx;
 	margin-right: 50rpx;
 }
 
 .plugins-shop-data-list .item .auth-icon .icon {
-	width: 36rpx;
-	height: 36rpx !important;
+	width: 28rpx;
+	height: 28rpx !important;
 	margin-right: 10rpx;
 }
 

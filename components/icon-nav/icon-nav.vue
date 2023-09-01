@@ -2,7 +2,7 @@
 	<view>
 		<view v-if="propData.length > 0" class="icon-nav-list" :class="propData.length > 5 ? 'swiper-height-max' : 'swiper-height-min'">
 			<uni-swiper-dot class="uni-swiper-dot-box" mode="default" :dots-styles="dotsStyles" @clickItem="click_item" :info="swiperData" :current="current">
-				<swiper class="swiper-box" :indicator-dots="swiperData.length > 2" :autoplay="autoplay" :duration="duration" @change="swiper_change" :current="swiperDotIndex">
+				<swiper class="swiper-box" :autoplay="autoplay" :duration="duration" @change="swiper_change" :current="swiperDotIndex">
 					<swiper-item v-for="(swiperItemData, i) in swiperData" :key="i">
 						<view class="swiper-item" :class="'swiper-item' + i">
 							<view v-for="(item, j) in swiperItemData" :key="j" class="swiper-item item">

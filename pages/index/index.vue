@@ -91,7 +91,8 @@
 						<!-- 限时秒杀 - 插件 -->
 						<view
 							v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
-							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb" :style="'background-image: url('+plugins_seckill_data.data.home_bg+');'">
+							class="plugins-seckill-data border-radius-main padding-horizontal-main padding-top-main spacing-mb"
+							:style="'background-image: url('+plugins_seckill_data.data.home_bg+');'">
 							<view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
 								<view class="flex-row align-c">
 									<image class="icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
@@ -163,22 +164,14 @@
 						<!-- 自动+手动 -->
 						<view v-for="(floor, index) in data_list" :key="index" class="floor">
 							<view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-								<text class="text-wrapper title-left-border" :style="'color:'+(floor.bg_color || '#333')+';'">{{floor.name}}</text>
-								<text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
+								<view class="title-left">
+									<text class="text-wrapper title-left-border" :style="'color:'+(floor.bg_color || '#333')+';'">{{floor.name}}</text>
+									<text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{floor.describe}}</text>
+								</view>
 								<navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">更多
 								</navigator>
 							</view>
 							<view class="floor-list wh-auto oh pr">
-								<view v-if="floor.items.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
-									<scroll-view :scroll-x="true">
-										<block v-for="(icv, icx) in floor.items" :key="icx">
-											<navigator :url="'/pages/goods-search/goods-search?category_id=' + icv.id" hover-class="none"
-												class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">
-												{{icv.name}}
-											</navigator>
-										</block>
-									</scroll-view>
-								</view>
 								<block v-if="floor.goods.length > 0">
 									<component-goods-list :propData="{style_type: 1, goods_list: floor.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
 										:propIsCartParaCurve="true" propSource="index"></component-goods-list>
@@ -205,13 +198,15 @@
 						<!--- 底部购买记录 - 插件 -->
 						<view
 							v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0"
-							class="spacing-mb plugins-salerecords">
-							<view class="spacing-nav-title">
-								<text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
-								<text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null"
-									class="vice-name margin-left-lg cr-gray">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
+							class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
+							<view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+								<view class="title-left">
+									<text class="text-wrapper">{{plugins_salerecords_data.base.home_bottom_title || '最新购买'}}</text>
+									<text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null"
+										class="vice-name margin-left-sm cr-grey-9">{{plugins_salerecords_data.base.home_bottom_desc}}</text>
+								</view>
 							</view>
-							<view class="bg-white padding-horizontal-main border-radius-main oh">
+							<view class="oh">
 								<swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6"
 									interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:'+(plugins_salerecords_data.data.length*84.33)+'rpx;' : ''">
 									<block v-for="(item, index) in plugins_salerecords_data.data" :key="index">

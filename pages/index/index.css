@@ -151,10 +151,6 @@
 	height: 506rpx;
 }
 
-.plugins-salerecords swiper-item {
-	border-bottom: 1px solid #f7f7f7;
-}
-
 .plugins-salerecords image {
 	width: 40rpx !important;
 	height: 40rpx !important;

@@ -94,7 +94,7 @@
 				// 蓝色 blue      #1677ff
 				// 棕色 brown     #8B4513
 				// 紫色 purple    #623cec
-				default_theme: 'yellow'
+				default_theme: 'yellow',
 			},
 
 			/**

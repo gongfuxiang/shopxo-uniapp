@@ -2,109 +2,156 @@
  * 顶部内容
  */
 .top-content {
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    width: 100%;
-    min-height: 300rpx;
-    padding-top: var(--status-bar-height);
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	width: 100%;
+	min-height: 300rpx;
+	padding-top: var(--status-bar-height);
 }
 
 /**
  * 头部
  */
 .head-base {
-    padding-top: 35rpx;
-}
-/* #ifdef H5 || APP */
-.head-base {
-    margin-bottom: 25rpx;
-}
-/* #endif */
-.head-avatar {
-    width: 120rpx;
-    height: 120rpx !important;
+	padding: 40rpx 40rpx 22rpx 40rpx;
+	/* #ifdef MP */
+	padding-top: 120rpx;
+	/* #endif */
 }
 
-/**
- * 头部导航
- */
-.head-nav-item {
-    width: 25%;
+.head-base .head-id {
+	background: linear-gradient(90deg, #FFE3DC 0%, #FF9F67 100%);
 }
-.head-nav-item .nav-value,
-.head-nav-item .nav-name {
-    line-height: 46rpx;
+
+.head-avatar {
+	width: 116rpx;
+	height: 116rpx !important;
 }
+
 /**
  * 头部右上角
  */
 .head-right {
-    z-index: 10;
-    right: 30rpx;
-    top: 110rpx;
+	z-index: 10;
 }
-.head-right .item .icon {
-    width: 35rpx;
-    height: 35rpx;
-}
+
 .head-right .item .badge-icon {
-    top: -10px;
-    right: -2px;
+	top: -10px;
+	right: -2px;
+}
+
+/**
+ * 会员码
+ */
+.qrcode-content {
+	background-size: 100% 100%;
+	color: #FEF6CF;
+}
+
+.qrcode-content.divider-r::after {
+	right: 50%;
+	height: 30%;
+	background: #FEF6CF;
+}
+
+.qrcode .icon {
+	width: 48rpx;
+	margin-right: 18rpx;
+	position: relative;
+	top: 6rpx;
+}
+
+.qrcode .iconfont {
+	top: 50%;
+	right: 48rpx;
+	transform: translateY(-50%);
+}
+
+/**
+ * 底部内容
+ */
+.user-bottom {
+	padding: 20rpx 24rpx;
+	border-radius: 8px 8px 0px 0px;
 }
 
 /**
  * 行内导航列表
  */
+.nav-content .nav-all-order-goods {
+	width: 138rpx;
+	padding: 16rpx 16rpx 16rpx 12rpx;
+}
+
+.nav-content .nav-all-order-goods::before {
+	content: '';
+	width: 3px;
+	height: 59px;
+	background-color: #fff;
+	box-shadow: -2px 0px 3px 3px rgba(0, 0, 0, 0.03);
+	position: absolute;
+	left: 0;
+	top: 50%;
+	transform: translateY(-50%);
+}
+
 .nav-list .nav-item {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
+
 .nav-list .nav-item .item-icon {
-    width: 40rpx;
-    height: 40rpx;
+	width: 40rpx;
+	height: 40rpx;
 }
+
 .nav-list .nav-item .item-desc {
-    margin-right: 50rpx;
-    margin-top: 2rpx;
-    width: calc(100% - 300rpx);
+	margin-right: 50rpx;
+	margin-top: 2rpx;
+	width: calc(100% - 300rpx);
 }
+
 .nav-list .nav-item .item-arrow {
-    width: 25rpx;
+	width: 25rpx;
 }
+
 .nav-list-sub {
-    padding: 20rpx 0;
+	padding: 16rpx 16rpx 16rpx 0;
 }
-.nav-list-sub .item {
-    width: 20%;
-}
+
+.nav-content .nav-all-order-goods .item .item-icon,
 .nav-list-sub .item .item-icon {
-    width: 50rpx;
-    height: 50rpx;
+	width: 56rpx;
+	height: 56rpx;
 }
+
 .nav-list-sub .item .badge-icon {
-    top: -2px;
-    left: calc(50% + 35rpx);
-    z-index: 1;
+	top: -2px;
+	left: calc(50% + 35rpx);
+	z-index: 1;
 }
 
 /**
  * 聚合导航
  */
 .nav-box .nav-item {
-    box-sizing: border-box;
-    width: 25%;
+	box-sizing: border-box;
+	width: 25%;
 }
+
 .nav-box .nav-item .item-icon {
-    width: 45rpx;
-    height: 45rpx !important;
+	width: 52rpx;
+	height: 52rpx !important;
 }
+
 .nav-box .nav-item .item-desc {
-    margin-right: 50rpx;
-    margin-top: 2rpx;
-    width: calc(100% - 300rpx);
+	margin-right: 50rpx;
+	margin-top: 2rpx;
+	width: calc(100% - 300rpx);
 }
+
 .service-nav .show-type-submit {
-    width: 50rpx;
-    height: 50rpx !important;
-    top: 18rpx;
-    right: 20rpx;
+	width: 50rpx;
+	height: 50rpx !important;
+	top: 18rpx;
+	right: 20rpx;
 }

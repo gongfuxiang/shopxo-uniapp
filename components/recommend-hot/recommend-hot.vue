@@ -116,11 +116,9 @@
 							swiperData = app.globalData.groupArry(item.d, 2);
 						}
 					}
-					console.log(swiperData);
 					item.d = swiperData
 
 				})
-				console.log(this.hotData)
 			}
 		}
 	}

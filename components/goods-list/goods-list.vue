@@ -1,20 +1,16 @@
 <template>
 	<view>
-		<view v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
-			<view v-if="(data.title || null) != null || (data.vice_title || null) != null" class="spacing-nav-title">
-				<text v-if="(data.title || null) != null" class="text-wrapper" :style="'color:'+(data.color || '#333')+';'">{{data.title}}</text>
-				<text v-if="(data.vice_title || null) != null" class="vice-name margin-left-lg cr-gray">{{data.vice_title}}</text>
-				<navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
+		<view class="plugins-goods" :class="data.style_type == 2 ? 'bg-white border-radius-main padding-main spacing-mb' : ''"
+			v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
+			<view v-if="(data.title || null) != null || (data.vice_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+				<view class="title-left">
+					<text v-if="(data.title || null) != null" class="text-wrapper" :class="data.style_type == 2 ? '' : 'title-left-border'"
+						:style="'color:'+(data.color || '#333')+';'">{{data.title}}</text>
+					<text v-if="(data.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{data.vice_title}}</text>
+				</view>
+				<navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
 			</view>
 			<view class="wh-auto oh pr goods-list">
-				<view v-if="(data.keywords_arr || null) != null && data.keywords_arr.length > 0" class="word-list scroll-view-horizontal margin-bottom-lg">
-					<scroll-view scroll-x>
-						<block v-for="(kv, ki) in data.keywords_arr" :key="ki">
-							<navigator v-if="(kv || null) != null" :url="propKeywordsUrl + kv" hover-class="none"
-								class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{kv}}</navigator>
-						</block>
-					</scroll-view>
-				</view>
 				<!-- 默认图文 -->
 				<block v-if="(data.style_type || 0) == 0">
 					<view class="goods-data-list">
@@ -25,7 +21,7 @@
 								<view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius">{{item.error_msg}}</view>
 								<view class="base fr">
 									<view class="multi-text">{{item.title}}</view>
-									<view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
+									<view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm text-size-sm">{{item.simple_desc}}</view>
 									<view class="base-bottom pa">
 										<text v-if="propIsShowPriceIcon && (item.price_icon || null) != null"
 											class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
@@ -33,7 +29,7 @@
 										<text class="sales-price va-m">{{item[propPriceField]}}</text>
 									</view>
 									<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-										<uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
+										<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 										<view class="cart-badge-icon pa">
 											<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 										</view>
@@ -67,7 +63,7 @@
 								<view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
 								<view class="base padding-horizontal-main margin-top-sm">
 									<view class="goods-title multi-text">{{item.title}}</view>
-									<view class="margin-top-xs">
+									<view class="margin-top-sm">
 										<view class="fl">
 											<text v-if="propIsShowPriceIcon && (item.price_icon || null) != null"
 												class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{item.price_icon}}</text>
@@ -75,7 +71,7 @@
 											<text class="sales-price va-m">{{item[propPriceField]}}</text>
 										</view>
 										<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-											<uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
+											<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 											<view class="cart-badge-icon pa">
 												<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 											</view>
@@ -101,7 +97,7 @@
 					</view>
 				</block>
 				<!-- 滚动 -->
-				<view v-else-if="data.style_type == 2" class="rolling-horizontal border-radius-main oh spacing-mb">
+				<view v-else-if="data.style_type == 2" class="rolling-horizontal border-radius-main oh">
 					<view class="goods-data-rolling-list scroll-view-horizontal">
 						<swiper class="swiper" :vertical="false" :autoplay="propIsAutoPlay" :circular="false"
 							:display-multiple-items="((data.multiple_items || null) == null) ? (data.goods_list.length < 3 ? data.goods_list.length : 3) : (data.goods_list.length < data.multiple_items ? data.goods_list.length : data.multiple_items)"
@@ -123,7 +119,7 @@
 														<text class="sales-price va-m">{{item[propPriceField]}}</text>
 													</view>
 													<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-														<uni-icons type="plus" size="46rpx" color="#1AAD19"></uni-icons>
+														<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 														<view class="cart-badge-icon pa">
 															<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 														</view>
@@ -171,6 +167,7 @@
 			return {
 				data: null,
 				is_show_cart: false,
+				themeColor: app.globalData.get_theme_color()
 			};
 		},
 		components: {

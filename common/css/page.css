@@ -279,7 +279,7 @@ button:before {
 }
 
 .opacity {
-	opacity: 0.5;
+	opacity: 0.6;
 }
 
 .opacity-max {
@@ -430,23 +430,23 @@ button:before {
  * 边框 灰色（四边）、红色、黄色、绿色、灰色、无边线
  */
 .br {
-	border: 1px solid #f7f7f7 !important;
+	border: 1px solid #EEEEEE !important;
 }
 
 .br-b {
-	border-bottom: 1px solid #f7f7f7 !important;
+	border-bottom: 1px solid #EEEEEE !important;
 }
 
 .br-t {
-	border-top: 1px solid #f7f7f7 !important;
+	border-top: 1px solid #EEEEEE !important;
 }
 
 .br-l {
-	border-left: 1px solid #f7f7f7 !important;
+	border-left: 1px solid #EEEEEE !important;
 }
 
 .br-r {
-	border-right: 1px solid #f7f7f7 !important;
+	border-right: 1px solid #EEEEEE !important;
 }
 
 .br-red {
@@ -482,23 +482,23 @@ button:before {
  * 虚线边框、灰色（四边）、红色、黄色、绿色、灰色
  */
 .br-dashed {
-	border: dashed 1px #f7f7f7 !important;
+	border: dashed 1px #EEEEEE !important;
 }
 
 .br-b-dashed {
-	border-bottom: dashed 1px #f7f7f7 !important;
+	border-bottom: dashed 1px #EEEEEE !important;
 }
 
 .br-t-dashed {
-	border-top: dashed 1px #f7f7f7 !important;
+	border-top: dashed 1px #EEEEEE !important;
 }
 
 .br-l-dashed {
-	border-left: dashed 1px #f7f7f7 !important;
+	border-left: dashed 1px #EEEEEE !important;
 }
 
 .br-r-dashed {
-	border-right: dashed 1px #f7f7f7 !important;
+	border-right: dashed 1px #EEEEEE !important;
 }
 
 .br-dashed-red {
@@ -773,8 +773,8 @@ button[disabled].bg-gray {
  */
 .notice-content {
 	color: #666;
-	line-height: 28rpx;
-	font-size: 28rpx;
+	line-height: 42rpx;
+	font-size: 26rpx;
 }
 
 .notice-content-blue {
@@ -824,8 +824,7 @@ button[disabled].bg-gray {
  * 导航分割
  */
 .spacing-nav-title {
-	height: 80rpx;
-	line-height: 80rpx;
+	margin-bottom: 20rpx
 }
 
 .spacing-nav-title .text-wrapper {
@@ -1103,8 +1102,20 @@ button[disabled].bg-gray {
 	justify-content: space-around;
 }
 
+.jc-e {
+	justify-content: end;
+}
+
 .align-c {
 	align-items: center;
+}
+
+.align-e {
+	align-items: flex-end;
+}
+
+.align-b {
+	align-items: baseline;
 }
 
 .flex-warp {
@@ -1117,6 +1128,18 @@ button[disabled].bg-gray {
 
 .flex-1 {
 	flex: 1;
+}
+
+.self-c {
+	align-self: center;
+}
+
+.self-b {
+	align-self: baseline;
+}
+
+.self-e {
+	align-self: flex-end;
 }
 
 .flex-width {
