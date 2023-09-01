@@ -59,7 +59,7 @@
 						<view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
 							<!-- 商品主体内容 -->
 							<view class="cp" :data-value="item.goods_url" @tap="url_event">
-								<image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
+								<image class="goods-img dis-block wh-auto" :src="item.images" mode="scaleToFill"></image>
 								<view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
 								<view class="base padding-horizontal-main margin-top-sm">
 									<view class="goods-title multi-text">{{item.title}}</view>
@@ -167,7 +167,7 @@
 			return {
 				data: null,
 				is_show_cart: false,
-				themeColor: app.globalData.get_theme_color()
+				themeColor: app.globalData.get_theme_color(),
 			};
 		},
 		components: {

@@ -1040,11 +1040,11 @@ button[disabled].bg-gray {
 
 .goods-data-grid-list .item .error-msg,
 .goods-data-grid-list .item .goods-img {
-	height: 380rpx !important;
+	height: 341rpx !important;
 }
 
 .goods-data-grid-list .item .error-msg {
-	line-height: 380rpx;
+	line-height: 341rpx;
 }
 
 /**

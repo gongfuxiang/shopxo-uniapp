@@ -102,7 +102,7 @@
 				<image :src="common_static_url+'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
 				<view class="cr-grey text-size-sm">{{data_list_loding_msg || '购物车空空如也'}}</view>
 				<navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
-					<button class="bg-main br-main cr-white text-size round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
+					<button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
 				</navigator>
 			</view>
 
@@ -116,9 +116,9 @@
 
 			<!-- 猜你喜欢 -->
 			<view v-if="goods_list.length > 0" class="padding-horizontal-main tc">
-				<view class="guess-like">猜你喜欢</view>
-				<component-goods-list :propData="{style_type: 1, goods_list: goods_list, random: random_value}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
-					:propIsCartParaCurve="true" propSource="index"></component-goods-list>
+				<view class="guess-like fw-b text-size-md">猜你喜欢</view>
+				<component-goods-list class="padding-top-main" :propData="{style_type: 1, goods_list: goods_list, random: random_value}" :propLabel="plugins_label_data"
+					:propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
 			</view>
 			<!-- 结尾 -->
 			<component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
@@ -852,7 +852,7 @@
     * 空购物车
     */
 	.cart-no-data-box {
-		padding: 30% 0 40rpx 0;
+		padding: 100rpx 0 40rpx 0;
 	}
 
 	.cart-no-data-box image {
@@ -931,7 +931,6 @@
 		position: relative;
 		text-align: center;
 		display: inline-block;
-		padding-bottom: 24rpx;
 	}
 
 	.guess-like::before,
