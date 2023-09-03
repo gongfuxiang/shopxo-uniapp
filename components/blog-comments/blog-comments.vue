@@ -126,7 +126,7 @@
                         <text>回复 @{{input_comments_modal_username}}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
-                                <icon type="clear" size="46rpx"></icon>
+                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                             </view>
                         </view>
                     </view>

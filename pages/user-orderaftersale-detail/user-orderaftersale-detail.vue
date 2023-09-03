@@ -193,7 +193,7 @@
             <view class="delivery-popup bg-base padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">
-                        <icon type="clear" size="46rpx"></icon>
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                 </view>
                 <view class="margin-top-xxxl padding-top-xxl">

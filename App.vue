@@ -55,47 +55,45 @@
 				is_logo_use_text: 0,
 				// 用户中心菜单默认展示模式（0 九方格, 1 列表）
 				user_center_nav_show_model_type: 0,
-				// 商品列表是否展示购物车（0否, 1是）
-				is_goods_list_show_cart_opt: 1,
-				// 商品分类页面搜索进入独立搜索页面（0否, 1是）
-				is_goods_category_search_alone: 0,
-				// 分销页面地图分布是否强制获取当前位置（0否, 1是）
-				is_distribution_map_force_location: 0,
-				// tabbar页面
-				tabbar_pages: [
-					"/pages/index/index",
-					"/pages/goods-category/goods-category",
-					"/pages/cart/cart",
-					"/pages/user/user"
-				],
-				// 请求地址
-				// request_url: 'https://d1.shopxo.vip/',
-				request_url: 'http://shopxo.com/',
-				// 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-				// static_url: 'https://d1.shopxo.vip/',
-				static_url: 'http://shopxo.com/',
-				// 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-				system_type: 'default',
-				// 基础信息
-				application_title: 'ShopXO',
-				application_describe: '企业级B2C开源电商系统！',
-				// 默认logo、如 /static/images/common/logo.png
-				application_logo: '',
-				// 版本号
-				version: 'v3.0.0',
-				// 货币价格符号
-				currency_symbol: '￥',
-				// 主题类型        主题颜色
-				// 黄色 yellow    #f6c133
-				// 红色 red       #ff0036
-				// 黑色 black     #333333
-				// 绿色 green     #20a53a
-				// 橙色 orange    #fe6f04
-				// 蓝色 blue      #1677ff
-				// 棕色 brown     #8B4513
-				// 紫色 purple    #623cec
-				default_theme: 'yellow',
-			},
+                // 商品列表是否展示购物车（0否, 1是）
+                is_goods_list_show_cart_opt: 1,
+                // 商品分类页面搜索进入独立搜索页面（0否, 1是）
+                is_goods_category_search_alone: 0,
+                // 分销页面地图分布是否强制获取当前位置（0否, 1是）
+                is_distribution_map_force_location: 0,
+                // tabbar页面
+                tabbar_pages: [
+                    "/pages/index/index",
+                    "/pages/goods-category/goods-category",
+                    "/pages/cart/cart",
+                    "/pages/user/user"
+                ],
+                // 请求地址
+                request_url: 'http://shopxo.com/',
+                // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
+                static_url: 'http://shopxo.com/',
+                // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
+                system_type: 'default',
+                // 基础信息
+                application_title: 'ShopXO',
+                application_describe: '企业级B2C开源电商系统！',
+                // 默认logo、如 /static/images/common/logo.png
+                application_logo: '',
+                // 版本号
+                version: 'v3.0.1',
+                // 货币价格符号
+                currency_symbol: '￥',
+                // 主题类型        主题颜色
+                // 黄色 yellow    #f6c133
+                // 红色 red       #ff0036
+                // 黑色 black     #333333
+                // 绿色 green     #20a53a
+                // 橙色 orange    #fe6f04
+                // 蓝色 blue      #1677ff
+                // 棕色 brown     #8B4513
+                // 紫色 purple    #623cec
+                default_theme: 'yellow'
+            },
 
 			/**
 			 * 启动参数处理
@@ -1431,55 +1429,54 @@
 				return false;
 			},
 
-			// 用户微信webopenid是否存在
-			is_user_weixin_web_openid(order_ids, payment_id = 0) {
-				// 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
-				if (this.is_weixin_env()) {
-					var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
-					if (web_openid == null) {
-						// 已经授权则重新刷新用户信息
-						var params = this.get_launch_cache_info();
-						if (params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
-							uni.showLoading({
-								title: "处理中..."
-							});
-							uni.request({
-								url: this.get_request_url("tokenuserinfo", "user"),
-								method: "POST",
-								data: {},
-								dataType: "json",
-								success: res => {
-									uni.hideLoading();
-									if (res.data.code == 0) {
-										uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
-									} else {
-										this.showToast(res.data.msg);
-									}
-								},
-								fail: () => {
-									uni.hideLoading();
-									this.showToast("服务器请求出错");
-								}
-							});
-							return true;
-						} else {
-							uni.setStorageSync(this.data.cache_page_pay_key, {
-								order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
-								payment_id: payment_id
-							});
-							var page_url = this.get_page_url();
-							page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
-							page_url += 'is_weixin_auth_web_openid=1';
-							var request_url = encodeURIComponent(base64.encode(page_url));
-							var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url=" +
-								request_url, "index").replace('&ajax=ajax', '');
-							window.location.href = url;
-						}
-						return false;
-					}
-				}
-				return true;
-			},
+            // 用户微信webopenid是否存在
+            is_user_weixin_web_openid(order_ids, payment_id = 0) {
+                // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
+                if(this.is_weixin_env()) {
+                    var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
+                    if(web_openid == null) {
+                        // 已经授权则重新刷新用户信息
+                        var params = this.get_launch_cache_info();
+                        if(params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
+                            uni.showLoading({
+                                title: "处理中..."
+                            });
+                            uni.request({
+                                url: this.get_request_url("tokenuserinfo", "user"),
+                                method: "POST",
+                                data: {},
+                                dataType: "json",
+                                success: res => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+                                    } else {
+                                        this.showToast(res.data.msg);
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    this.showToast("服务器请求出错");
+                                }
+                            });
+                            return true;
+                        } else {
+                            uni.setStorageSync(this.data.cache_page_pay_key,  {
+                                order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
+                                payment_id: payment_id
+                            });
+                            var page_url = this.get_page_url();
+                                page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
+                                page_url += 'is_weixin_auth_web_openid=1';
+                            var request_url = encodeURIComponent(base64.encode(page_url));
+                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');
+                            window.location.href = url;
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            },
 
 			// app标题
 			get_application_title() {
@@ -1811,8 +1808,8 @@
 					if (typeof object === 'object' && (method || null) != null) {
 						object[method]({
 							status: 1,
-							lat: res.longitude,
-							lng: res.latitude,
+							lng: res.longitude,
+							lat: res.latitude,
 							data: res
 						});
 					}
