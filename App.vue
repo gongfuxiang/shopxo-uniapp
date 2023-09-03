@@ -1788,7 +1788,7 @@
             start_location_update_change(object, method) {
                 uni.onLocationChange((res) => {
                     if (typeof object === 'object' && (method || null) != null) {
-                        object[method]({status: 1, lat: res.longitude, lng: res.latitude, data: res});
+                        object[method]({status: 1, lng: res.longitude, lat: res.latitude, data: res});
                     }
                 });
             }
