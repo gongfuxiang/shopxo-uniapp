@@ -89,7 +89,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_abnormal_content_close_event">
-                        <icon type="clear" size="46rpx"></icon>
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                 </view>
                 <form @submit="form_delivery_submit_event" class="form-container">

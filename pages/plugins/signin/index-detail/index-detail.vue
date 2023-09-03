@@ -57,7 +57,7 @@
             <view v-if="is_success_tips == 1" class="coming-tips-container am-text-center">
                 <view class="coming-content tc pr">
                     <view class="icon-close-submit pa" @tap="coming_success_close_event">
-                        <icon type="clear" size="46rpx"></icon>
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                     <image :src="data.success_icon" mode="widthFix"></image>
                     <view class="coming-tips-content pa">

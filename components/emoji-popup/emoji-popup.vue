@@ -4,7 +4,7 @@
             <view class="emoji-popup bg-white">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <icon type="clear" size="46rpx"></icon>
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                 </view>
                 <view class="emoji-popup-content oh tc">
