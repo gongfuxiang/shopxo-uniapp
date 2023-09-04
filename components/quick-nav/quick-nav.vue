@@ -7,20 +7,19 @@
 			</movable-view>
 		</movable-area>
 
-		<!-- 弹窗 -->
-		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
-			<view :class="'nav-popup-container '+common_ent">
-				<view class="close oh">
-					<view class="icon-right" @tap.stop="quick_close_event">
-						<icon type="clear" size="46rpx"></icon>
-					</view>
-				</view>
-				<view class="nav-popup-content">
-					<view v-if="data_list.length > 0" class="nav-data-list">
-						<view v-for="(item, index) in data_list" :key="index" class="item cp">
-							<view :class="'item-content '+((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event"
-								:style="((item.bg_color || null) == null ? '' : 'background-color:'+item.bg_color+';')">
-								<image :src="item.images_url" mode="aspectFit"></image>
+        <!-- 弹窗 -->
+        <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+            <view :class="'nav-popup-container '+common_ent">
+                <view class="close oh">
+                    <view class="icon-right" @tap.stop="quick_close_event">
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                    </view>
+                </view>
+                <view class="nav-popup-content">
+                    <view v-if="data_list.length > 0" class="nav-data-list">
+                        <view v-for="(item, index) in data_list" :key="index" class="item cp">
+							<view :class="'item-content '+((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="((item.bg_color || null) == null ? '' : 'background-color:'+item.bg_color+';')">
+							    <image :src="item.images_url" mode="aspectFit"></image>
 							</view>
 							<view class="title">{{item.name}}</view>
 						</view>

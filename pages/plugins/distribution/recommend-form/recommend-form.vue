@@ -70,7 +70,7 @@
                     <view class="padding-horizontal-main">
                         <view class="close oh">
                             <view class="fr" @tap.stop="popup_goods_choice_close_event">
-                                <icon type="clear" size="46rpx"></icon>
+                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                             </view>
                         </view>
                     </view>

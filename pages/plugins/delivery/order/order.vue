@@ -64,13 +64,13 @@
                             </view>
                         </view>
                         <view class="item-operation tr br-t padding-top-main margin-top-main">
+                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id='+item.id" @tap="url_event">详情</button>
                             <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">开始配送</button>
                             <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">再次配送</button>
                             <block v-if="item.status == 2">
                                 <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="success_delivery_event">完成配送</button>
                                 <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">异常</button>
                             </block>
-                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id='+item.id" @tap="url_event">详情</button>
                         </view>
                     </view>
                 </view>
@@ -89,7 +89,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_abnormal_content_close_event">
-                        <icon type="clear" size="46rpx"></icon>
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                 </view>
                 <form @submit="form_delivery_submit_event" class="form-container">

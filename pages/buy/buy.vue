@@ -104,7 +104,7 @@
                     </view>
 
                     <!-- 积分 -->
-                    <view v-if="(plugins_points_data || null) != null" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
+                    <view v-if="(plugins_points_data || null) != null && (((plugins_points_data.discount_price || 0) > 0) || ((plugins_points_data.is_support_goods_exchange || 0) == 1))" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <block v-if="(plugins_points_data.discount_price || 0) > 0">
                             <view class="select oh">
                                 <text v-if="plugins_points_data.discount_type == 1">使用{{plugins_points_data.use_integral}}个积分兑换商品</text>
@@ -175,7 +175,7 @@
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
-                            <icon type="clear" size="46rpx"></icon>
+                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                         </view>
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
@@ -209,7 +209,7 @@
                 <view class="bg-base padding-top-lg">
                     <view class="close oh margin-right-lg padding-bottom-sm">
                         <view class="fr" @tap.stop="plugins_realstore_close_event">
-                            <icon type="clear" size="46rpx"></icon>
+                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                         </view>
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">
