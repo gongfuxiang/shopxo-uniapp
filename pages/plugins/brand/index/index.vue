@@ -6,25 +6,29 @@
 				<scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
 					<view class="flex-row flex-nowrap align-c">
 						<block v-for="(item, index) in brand_category_list" :key="index">
-							<view :class="'item flex-col align-c ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">
+							<view class="item flex-col align-c text-size-xss" @tap="nav_event" :data-value="item.id">
 								<image :src="item.icon" mode="aspectFit"></image>
-								{{item.name}}
+								<view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
+									{{item.name}}
+								</view>
 							</view>
 						</block>
 					</view>
 				</scroll-view>
-				<component-more>
+				<component-nav-more :prop-status="popupStatus" @open-popup="open_popup_event">
 					<view class="nav-list-more">
 						<view class="flex-row flex-warp align-c">
 							<block v-for="(item, index) in brand_category_list" :key="index">
-								<view :class="'item flex-col align-c ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">
+								<view class="item flex-col align-c text-size-xss" @tap="nav_event" :data-value="item.id">
 									<image :src="item.icon" mode="aspectFit"></image>
-									{{item.name}}
+									<view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
+										{{item.name}}
+									</view>
 								</view>
 							</block>
 						</view>
 					</view>
-				</component-more>
+				</component-nav-more>
 			</view>
 
 			<!-- 列表 -->
@@ -35,7 +39,6 @@
 							<image :src="item.logo" mode="aspectFit"></image>
 							<view class="padding-main tc">
 								<view class="single-text fw-b cr-base">{{item.name}}</view>
-								<view class="multi-text cr-grey margin-top-sm">{{item.describe}}</view>
 							</view>
 						</navigator>
 					</view>
@@ -55,7 +58,7 @@
 	const app = getApp();
 	import componentNoData from "../../../../components/no-data/no-data";
 	import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-	import componentMore from "../../../../components/more/more";
+	import componentNavMore from "../../../../components/nav-more/nav-more";
 
 	export default {
 		data() {
@@ -69,14 +72,15 @@
 				brand_category_list: [],
 				nav_active_value: 0,
 				// 自定义分享信息
-				share_info: {}
+				share_info: {},
+				popupStatus: false,
 			};
 		},
 
 		components: {
 			componentNoData,
 			componentBottomLine,
-			componentMore
+			componentNavMore
 		},
 		props: {},
 
@@ -154,9 +158,16 @@
 			// 导航事件
 			nav_event(e) {
 				this.setData({
-					nav_active_value: e.currentTarget.dataset.value || 0
+					nav_active_value: e.currentTarget.dataset.value || 0,
+					popupStatus: false
 				});
 				this.nav_active_handle();
+			},
+			// 打开弹窗
+			open_popup_event(e) {
+				this.setData({
+					popupStatus: true
+				});
 			},
 
 			// 导航选中处理

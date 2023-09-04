@@ -33,18 +33,38 @@
 					<block v-if="category_show_level == 0">
 						<!-- 一级导航 -->
 						<view class="top-nav bg-white wh-auto pa br-b scroll-view-horizontal">
-							<scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-'+nav_active_index" class="ht-auto">
+							<scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-'+nav_active_index" class="top-nav-scroll">
 								<block v-for="(item, index) in category_list" :key="index">
-									<view :class="'text-size-sm item tc cr-base cp dis-inline-block ' + (nav_active_index == index ? 'cr-main border-color-main fw-b' : '')" :id="'one-nav-item-'+index"
-										:data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+									<view class="item tc cr-base cp dis-inline-block text-size-xss" :id="'one-nav-item-'+index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1"
+										@tap="nav_event">
 										<view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
 											<image :src="((item[category_goods_model_icon_field] || null) == null) ? common_static_url+'images.png' : item[category_goods_model_icon_field]"
 												mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
 										</view>
-										<view class="margin-top-xs">{{item.name}}</view>
+										<view class="padding-left-sm padding-right-sm round margin-top-xs" :class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">{{item.name}}
+										</view>
 									</view>
 								</block>
 							</scroll-view>
+							<component-nav-more prop-top="98rpx" :prop-status="popupStatus" @open-popup="open_popup_event">
+								<view class="nav-list-more">
+									<view class="flex-row flex-warp align-c">
+										<block v-for="(item, index) in category_list" :key="index">
+											<view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-'+index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1"
+												@tap="nav_event">
+												<view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
+													<image :src="((item[category_goods_model_icon_field] || null) == null) ? common_static_url+'images.png' : item[category_goods_model_icon_field]"
+														mode="aspectFit" class="icon dis-block auto wh-auto ht-auto circle"></image>
+												</view>
+												<view class="dis-inline-block padding-left-sm padding-right-sm round margin-top-xs"
+													:class="nav_active_index == index ? 'bg-main border-color-main cr-white' : ''">
+													{{item.name}}
+												</view>
+											</view>
+										</block>
+									</view>
+								</view>
+							</component-nav-more>
 						</view>
 						<!-- 二级导航 -->
 						<view v-if="category_one_subset_count > 0" class="left-nav bg-white ht-auto">
@@ -318,6 +338,7 @@
 	import componentBadge from "../../components/badge/badge";
 	import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
 	import componentUserBase from "../../components/user-base/user-base";
+	import componentNavMore from "../../components/nav-more/nav-more";
 
 	var common_static_url = app.globalData.get_static_url('common');
 	// 状态栏高度
@@ -372,7 +393,8 @@
 				temp_opt_data: null,
 				// 标签插件
 				plugins_label_data: null,
-				themeColor: app.globalData.get_theme_color()
+				themeColor: app.globalData.get_theme_color(),
+				popupStatus: false
 			};
 		},
 
@@ -384,7 +406,8 @@
 			componentPopup,
 			componentBadge,
 			componentCartParaCurve,
-			componentUserBase
+			componentUserBase,
+			componentNavMore
 		},
 		props: {},
 
@@ -685,7 +708,8 @@
 					data_three_content: temp_data_three_content,
 					data_page: 1,
 					data_list_loding_status: 1,
-					data_list: []
+					data_list: [],
+					popupStatus: false
 				});
 
 				// 商品模式则读取商品
@@ -693,6 +717,13 @@
 					this.reset_scroll();
 					this.get_goods_list(1);
 				}
+			},
+
+			// 打开弹窗
+			open_popup_event(e) {
+				this.setData({
+					popupStatus: true
+				});
 			},
 
 			// 分类事件
