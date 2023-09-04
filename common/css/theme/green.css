@@ -73,6 +73,13 @@
 	background-color: #20a53a !important;
 }
 
+/**
+ * 导航伪类背景色
+ */
+.nav-active-line::before {
+	background: #20a53a;
+}
+
 button[disabled].bg-main-pair {
 	background-color: #cfaae2 !important;
 	color: #e6deea !important;

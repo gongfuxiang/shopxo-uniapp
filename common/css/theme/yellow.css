@@ -59,6 +59,13 @@
 }
 
 /**
+ * 导航伪类背景色
+ */
+.nav-active-line::before {
+	background: #f6c133;
+}
+
+/**
  * 背景色 搭配色、次主色、主色
  */
 .bg-main-pair {

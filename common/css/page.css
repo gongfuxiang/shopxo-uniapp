@@ -894,6 +894,25 @@ button[disabled].bg-gray {
 }
 
 /**
+ * 导航下划线
+ */
+.nav-active-line {
+	position: relative;
+}
+
+.nav-active-line::before {
+	content: '';
+	width: 12px;
+	height: 2px;
+	background: transparent;
+	border-radius: 1px;
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	transform: translateX(-50%);
+}
+
+/**
  * 滚动标签高度
  */
 .scroll-box {
