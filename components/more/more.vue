@@ -4,10 +4,9 @@
 			<text>更多</text>
 			<iconfont name="icon-icon-fenlei-more"></iconfont>
 		</view>
-
 		<!-- 弹窗 -->
-		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" @onclose="quick_close_event">
-
+		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="false" propTop="182rpx" @onclose="quick_close_event">
+			<slot></slot>
 		</component-popup>
 	</view>
 </template>
@@ -25,7 +24,22 @@
 		data() {
 			return {
 				popup_status: false,
+				propIsBar: false
 			};
+		},
+		methods: {
+			// 打开弹窗
+			open_popup() {
+				this.setData({
+					popup_status: true
+				});
+			},
+			// 关闭弹窗
+			quick_close_event(e) {
+				this.setData({
+					popup_status: false
+				});
+			},
 		}
 	}
 </script>

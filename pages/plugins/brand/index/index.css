@@ -6,15 +6,27 @@
 	width: calc(100% - 70rpx);
 }
 
-.nav-list image {
-	width: 92rpx;
-	height: 92rpx;
-	border-radius: 50%;
-	margin-bottom: 4rpx;
+.nav-list-more {
+	width: 100%;
+	max-height: 600rpx;
+	overflow-y: auto;
 }
 
 .nav-list .item {
 	padding: 20rpx 18rpx;
+}
+
+.nav-list-more image,
+.nav-list image {
+	width: 92rpx;
+	height: 92rpx;
+	border-radius: 50%;
+	margin-bottom: 10rpx;
+}
+
+.nav-list-more .item {
+	width: 20%;
+	padding: 20rpx 0;
 }
 
 /**

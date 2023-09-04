@@ -13,7 +13,18 @@
 						</block>
 					</view>
 				</scroll-view>
-				<component-more></component-more>
+				<component-more>
+					<view class="nav-list-more">
+						<view class="flex-row flex-warp align-c">
+							<block v-for="(item, index) in brand_category_list" :key="index">
+								<view :class="'item flex-col align-c ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">
+									<image :src="item.icon" mode="aspectFit"></image>
+									{{item.name}}
+								</view>
+							</block>
+						</view>
+					</view>
+				</component-more>
 			</view>
 
 			<!-- 列表 -->
