@@ -53,7 +53,7 @@
 			},
 			// 数据处理
 			handle_data() {
-				this.swiperData = app.globalData.groupArry(this.propData, 10);
+				this.swiperData = app.globalData.group_arry(this.propData, 10);
 			},
 			swiper_change(e) {
 				this.current = e.detail.current

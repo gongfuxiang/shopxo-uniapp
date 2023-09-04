@@ -107,13 +107,13 @@
 					let swiperData = [];
 					if (this.hotData.length % 2 == 0) {
 						// 偶数
-						swiperData = app.globalData.groupArry(item.d, 2);
+						swiperData = app.globalData.group_arry(item.d, 2);
 					} else {
 						// 奇数
 						if (this.hotData.length === i + 1) {
-							swiperData = app.globalData.groupArry(item.d, 4);
+							swiperData = app.globalData.group_arry(item.d, 4);
 						} else {
-							swiperData = app.globalData.groupArry(item.d, 2);
+							swiperData = app.globalData.group_arry(item.d, 2);
 						}
 					}
 					item.d = swiperData

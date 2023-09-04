@@ -1842,17 +1842,17 @@
 				return color_obj[theme];
 			},
 			// 数组分组
-			group_arry(array, subGroupLength) {
+			group_arry(arry, sub_group_length) {
 				let index = 0;
-				let newArray = [];
-				if (array.length > subGroupLength) {
-					while (index < array.length) {
-						newArray.push(array.slice(index, index += subGroupLength));
+				let new_arry = [];
+				if (arry.length > sub_group_length) {
+					while (index < arry.length) {
+						new_arry.push(arry.slice(index, index += sub_group_length));
 					}
 				} else {
-					newArray = [array];
+					new_arry = [arry];
 				}
-				return newArray;
+				return new_arry;
 			},
 		},
 
