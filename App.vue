@@ -1431,54 +1431,54 @@
 				return false;
 			},
 
-            // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids, payment_id = 0) {
-                // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
-                if(this.is_weixin_env()) {
-                    var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
-                    if(web_openid == null) {
-                        // 已经授权则重新刷新用户信息
-                        var params = this.get_launch_cache_info();
-                        if(params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
-                            uni.showLoading({
-                                title: "处理中..."
-                            });
-                            uni.request({
-                                url: this.get_request_url("tokenuserinfo", "user"),
-                                method: "POST",
-                                data: {},
-                                dataType: "json",
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
-                                    } else {
-                                        this.showToast(res.data.msg);
-                                    }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    this.showToast("服务器请求出错");
-                                }
-                            });
-                            return true;
-                        } else {
-                            uni.setStorageSync(this.data.cache_page_pay_key,  {
-                                order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
-                                payment_id: payment_id
-                            });
-                            var page_url = this.get_page_url();
-                                page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
-                                page_url += 'is_weixin_auth_web_openid=1';
-                            var request_url = encodeURIComponent(base64.encode(page_url));
-                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');
-                            window.location.href = url;
-                        }
-                        return false;
-                    }
-                }
-                return true;
-            },
+			// 用户微信webopenid是否存在
+			is_user_weixin_web_openid(order_ids, payment_id = 0) {
+				// 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
+				if (this.is_weixin_env()) {
+					var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
+					if (web_openid == null) {
+						// 已经授权则重新刷新用户信息
+						var params = this.get_launch_cache_info();
+						if (params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
+							uni.showLoading({
+								title: "处理中..."
+							});
+							uni.request({
+								url: this.get_request_url("tokenuserinfo", "user"),
+								method: "POST",
+								data: {},
+								dataType: "json",
+								success: res => {
+									uni.hideLoading();
+									if (res.data.code == 0) {
+										uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+									} else {
+										this.showToast(res.data.msg);
+									}
+								},
+								fail: () => {
+									uni.hideLoading();
+									this.showToast("服务器请求出错");
+								}
+							});
+							return true;
+						} else {
+							uni.setStorageSync(this.data.cache_page_pay_key, {
+								order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
+								payment_id: payment_id
+							});
+							var page_url = this.get_page_url();
+							page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
+							page_url += 'is_weixin_auth_web_openid=1';
+							var request_url = encodeURIComponent(base64.encode(page_url));
+							var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url=" + request_url, "index").replace('&ajax=ajax', '');
+							window.location.href = url;
+						}
+						return false;
+					}
+				}
+				return true;
+			},
 
 			// app标题
 			get_application_title() {
@@ -1685,136 +1685,136 @@
 					});
 				}, 1500);
 			},
-            // 是否站点变灰
-            is_app_mourning() {
-                var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
-                if(is_app == 1) {
-                    // 当前时间戳
-                    var time_current = Date.parse(new Date());
-                    // 开始时间
-                    var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
-                    if(time_start != null)
-                    {
-                        if(Date.parse(new Date(time_start)) > time_current)
-                        {
-                            return false;
-                        }
-                    }
-                    // 结束时间
-                    var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
-                    if(time_end != null)
-                    {
-                        if(Date.parse(new Date(time_end)) < time_current)
-                        {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
-            },
+			// 是否站点变灰
+			is_app_mourning() {
+				var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
+				if (is_app == 1) {
+					// 当前时间戳
+					var time_current = Date.parse(new Date());
+					// 开始时间
+					var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
+					if (time_start != null) {
+						if (Date.parse(new Date(time_start)) > time_current) {
+							return false;
+						}
+					}
+					// 结束时间
+					var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
+					if (time_end != null) {
+						if (Date.parse(new Date(time_end)) < time_current) {
+							return false;
+						}
+					}
+					return true;
+				}
+				return false;
+			},
 
-            // 价格符号
-            currency_symbol() {
-                return this.get_config('currency_symbol') || this.data.currency_symbol;
-            },
+			// 价格符号
+			currency_symbol() {
+				return this.get_config('currency_symbol') || this.data.currency_symbol;
+			},
 
-            // 位置权限校验
-            get_location_check(type, object, method) {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-                var self = this;
-                uni.getSetting({
-                    success(res) {
-                        if (!res.authSetting[type]) {
-                            uni.authorize({
-                                scope: type,
-                                success(res) {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method](1);
-                                    }
-                                },
-                                fail: res => {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method](0);
-                                    }
-                                }
-                            });
-                        } else {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method](1);
-                            }
-                        }
-                    },
-                    fail: res => {
-                        app.globalData.showToast("请先获取授权");
-                        if (typeof object === 'object' && (method || null) != null) {
-                            object[method](0);
-                        }
-                    }
-                });
-                // #endif
-                // #ifdef MP-ALIPAY || H5 || APP
-                if (typeof object === 'object' && (method || null) != null) {
-                    object[method](1);
-                }
-                // #endif
-                // #ifdef MP-KUAISHOU
-                app.globalData.showToast('不支持地理位置选择！');
-                if (typeof object === 'object' && (method || null) != null) {
-                    object[method](0);
-                }
-                // #endif
-            },
+			// 位置权限校验
+			get_location_check(type, object, method) {
+				// #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
+				var self = this;
+				uni.getSetting({
+					success(res) {
+						if (!res.authSetting[type]) {
+							uni.authorize({
+								scope: type,
+								success(res) {
+									if (typeof object === 'object' && (method || null) != null) {
+										object[method](1);
+									}
+								},
+								fail: res => {
+									if (typeof object === 'object' && (method || null) != null) {
+										object[method](0);
+									}
+								}
+							});
+						} else {
+							if (typeof object === 'object' && (method || null) != null) {
+								object[method](1);
+							}
+						}
+					},
+					fail: res => {
+						app.globalData.showToast("请先获取授权");
+						if (typeof object === 'object' && (method || null) != null) {
+							object[method](0);
+						}
+					}
+				});
+				// #endif
+				// #ifdef MP-ALIPAY || H5 || APP
+				if (typeof object === 'object' && (method || null) != null) {
+					object[method](1);
+				}
+				// #endif
+				// #ifdef MP-KUAISHOU
+				app.globalData.showToast('不支持地理位置选择！');
+				if (typeof object === 'object' && (method || null) != null) {
+					object[method](0);
+				}
+				// #endif
+			},
 
-            // 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
-            start_location_update(type = 0, object, method) {
-                // 先停止再调用
-                uni.stopLocationUpdate();
-                // 关闭监听
-                uni.offLocationChange();
+			// 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
+			start_location_update(type = 0, object, method) {
+				// 先停止再调用
+				uni.stopLocationUpdate();
+				// 关闭监听
+				uni.offLocationChange();
 
-                // 根据类型调用api
-                if(type == 0) {
-                    // 打开小程序监听
-                    uni.startLocationUpdate({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: res => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({status: 0, msg: res.errMsg});
-                            }
-                        }
-                    });
-                } else {
-                    // 小程序后台运行监听
-                    uni.startLocationUpdateBackground({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: res => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({status: 0, msg: res.errMsg});
-                            }
-                        }
-                    });
-                }
-            },
-
+				// 根据类型调用api
+				if (type == 0) {
+					// 打开小程序监听
+					uni.startLocationUpdate({
+						success: (res) => {
+							this.start_location_update_change(object, method);
+						},
+						fail: res => {
+							if (typeof object === 'object' && (method || null) != null) {
+								object[method]({
+									status: 0,
+									msg: res.errMsg
+								});
+							}
+						}
+					});
+				} else {
+					// 小程序后台运行监听
+					uni.startLocationUpdateBackground({
+						success: (res) => {
+							this.start_location_update_change(object, method);
+						},
+						fail: res => {
+							if (typeof object === 'object' && (method || null) != null) {
+								object[method]({
+									status: 0,
+									msg: res.errMsg
+								});
+							}
+						}
+					});
+				}
+			},
 			// 位置监听改变
 			start_location_update_change(object, method) {
 				uni.onLocationChange((res) => {
 					if (typeof object === 'object' && (method || null) != null) {
 						object[method]({
 							status: 1,
-							lat: res.longitude,
-							lng: res.latitude,
+							lng: res.longitude,
+							lat: res.latitude,
 							data: res
 						});
 					}
 				});
 			},
-
 			// 获取主题
 			get_theme_value() {
 				return uni.getStorageSync('theme') || 'yellow'
@@ -1826,6 +1826,7 @@
 				// import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
 				require(`./common/css/theme/${theme}.css`);
 			},
+			// 获取主题色值
 			get_theme_color() {
 				let color_obj = {
 					yellow: '#f6c133', // 黄色
@@ -1841,7 +1842,7 @@
 				return color_obj[theme];
 			},
 			// 数组分组
-			groupArry(array, subGroupLength) {
+			group_arry(array, subGroupLength) {
 				let index = 0;
 				let newArray = [];
 				if (array.length > subGroupLength) {
