@@ -166,7 +166,7 @@
 			// 打开弹窗
 			open_popup_event(e) {
 				this.setData({
-					popupStatus: true
+					popupStatus: e
 				});
 			},
 

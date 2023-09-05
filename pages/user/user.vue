@@ -22,10 +22,10 @@
 						<!-- 右上角 -->
 						<view class="head-right cr-black">
 							<view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" @tap="url_event">
-								<iconfont name="icon-icon-applet-me-settings-acquiesce" size="46rpx"></iconfont>
+								<iconfont name="icon-applet-me-settings-acquiesce" size="46rpx"></iconfont>
 							</view>
 							<view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/message/message" @tap="url_event">
-								<iconfont name="icon-icon-applet-me-message-acquiesce" size="46rpx"></iconfont>
+								<iconfont name="icon-applet-me-message-acquiesce" size="46rpx"></iconfont>
 								<view class="badge-icon pa">
 									<component-badge :propNumber="message_total"></component-badge>
 								</view>
@@ -60,7 +60,7 @@
 								<text>付款码</text>
 							</view>
 						</view>
-						<iconfont v-if="((payment_page_url || null) == null) || ((membership_page_url || null) == null)" name="icon-icon-index-morejiantou pa" color="#FEF6CF"></iconfont>
+						<iconfont v-if="((payment_page_url || null) == null) || ((membership_page_url || null) == null)" name="icon-index-morejiantou pa" color="#FEF6CF"></iconfont>
 					</view>
 				</view>
 

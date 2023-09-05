@@ -101,3 +101,10 @@ button[disabled].bg-main {
 .title-left-border::before {
 	background: linear-gradient(180deg, #ff0036 0%, #ffdbe2 100%);
 }
+
+/**
+ * 导航菜单左侧边线
+ */
+.nav-left-border::before {
+	background: #ff0036;
+}

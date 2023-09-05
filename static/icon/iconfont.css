@@ -17,34 +17,34 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.icon-icon-index-notice:before {
+.icon-index-notice:before {
 	content: "\e6a8";
 }
 
-.icon-icon-index-search:before {
+.icon-index-search:before {
 	content: "\e6a9";
 }
 
-.icon-icon-applet-me-settings-acquiesce:before {
+.icon-applet-me-settings-acquiesce:before {
 	content: "\e6a6";
 }
 
-.icon-icon-applet-me-message-acquiesce:before {
+.icon-applet-me-message-acquiesce:before {
 	content: "\e6a7";
 }
 
-.icon-icon-applet-me-acquiesce:before {
+.icon-applet-me-acquiesce:before {
 	content: "\e6a2";
 }
 
-.icon-icon-applet-sort-acquiesce:before {
+.icon-applet-sort-acquiesce:before {
 	content: "\e6a5";
 }
 
-.icon-icon-applet-index-acquiesce:before {
+.icon-applet-index-acquiesce:before {
 	content: "\e6a4";
 }
 
-.icon-icon-applet-shop-acquiesce:before {
+.icon-applet-shop-acquiesce:before {
 	content: "\e6a3";
 }

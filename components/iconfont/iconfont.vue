@@ -25,7 +25,7 @@
 	/* iconfont.css全局注册需要将src切换成绝对路径 */
 	/* @/static/icon/ */
 	/* @import url("@/static/icon/iconfont.css"); */
-	@import url('https://at.alicdn.com/t/c/font_4227145_sacmbmp2ve.css');
+	@import url('https://at.alicdn.com/t/c/font_4227145_p6vbjfm5ej.css');
 
 	.iconfont {
 		display: inline-block;

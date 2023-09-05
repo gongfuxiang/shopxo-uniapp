@@ -8,7 +8,7 @@
 							<text class="text-size fw-b">新品推荐</text>
 							<view class="hot-go border-radius-main margin-left-sm pr">
 								<text class="cr-white padding-right-sm">GO!</text>
-								<iconfont class="icon-icon-index-xptj-jiantou cr-white"></iconfont>
+								<iconfont class="icon-index-xptj-jiantou cr-white"></iconfont>
 							</view>
 						</view>
 						<view class="cr-grey-9 text-sm margin-bottom-sm">全年最低价 优惠多多</view>

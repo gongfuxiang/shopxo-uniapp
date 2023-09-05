@@ -21,7 +21,7 @@
 			},
 			propIcon: {
 				type: String,
-				default: 'icon-icon-index-notice'
+				default: 'icon-index-notice'
 			},
 			propIconColor: {
 				type: String,

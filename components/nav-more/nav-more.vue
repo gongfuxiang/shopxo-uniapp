@@ -2,7 +2,7 @@
 	<view>
 		<view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" @click="open_popup">
 			<text>更多</text>
-			<iconfont name="icon-icon-fenlei-more"></iconfont>
+			<iconfont name="icon-fenlei-more"></iconfont>
 		</view>
 		<!-- 弹窗 -->
 		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="false" :propTop="propTop" @onclose="quick_close_event">
@@ -12,8 +12,8 @@
 					<slot></slot>
 				</view>
 				<view class="tc padding-top-lg" @click="quick_close_event">
-					<text>点击收起</text>
-					<iconfont name="icon-icon-fenlei-top"></iconfont>
+					<text class="padding-right-sm">点击收起</text>
+					<iconfont name="icon-fenlei-top" color="#ccc"></iconfont>
 				</view>
 			</view>
 		</component-popup>
@@ -65,9 +65,7 @@
 			},
 			// 关闭弹窗
 			quick_close_event(e) {
-				this.setData({
-					popup_status: false
-				});
+				this.$emit('open-popup', false);
 			},
 		}
 	}

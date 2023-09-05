@@ -172,7 +172,7 @@
 														{{item.buy_number}}
 													</view>
 													<view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-														<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+														<iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 													</view>
 												</block>
 												<block v-else>
@@ -233,7 +233,7 @@
 												<view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-base text-size-sm padding-left-xs padding-right-xs va-m">{{goods.stock}}
 												</view>
 												<view class="dis-inline-block va-m cp" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-													<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+													<iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 												</view>
 											</view>
 										</view>

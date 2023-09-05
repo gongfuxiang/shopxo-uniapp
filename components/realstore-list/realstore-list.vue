@@ -15,7 +15,7 @@
 							</view>
 							<view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
 								<view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
-									<iconfont name="icon-icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
+									<iconfont name="icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
 									<view
 										:class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm '+((item.status_info.status == 1) ? 'cr-green' : (item.status_info.type == 1) ? 'cr-red' : 'cr-grey-c')">
 										{{item.status_info.msg}}
@@ -27,7 +27,7 @@
 							<!-- 地址 -->
 							<view class="margin-top-sm oh cp">
 								<view class="dis-inline-block va-m cr-grey-9">
-									<iconfont name="icon-icon-index-zxmd-dress"></iconfont>
+									<iconfont name="icon-index-zxmd-dress"></iconfont>
 								</view>
 								<view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs va-m"
 									:data-value="item.province_name+item.city_name+item.county_name+item.address" @tap.stop="text_copy_event">
@@ -39,11 +39,11 @@
 					<!-- 右侧操作 -->
 					<view class="icon-list pa">
 						<view v-if="item.contacts_tel.length>0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="phone_event">
-							<iconfont name="icon-icon-md-phone" size="40rpx"></iconfont>
+							<iconfont name="icon-md-phone" size="40rpx"></iconfont>
 						</view>
 						<!-- #ifndef MP-KUAISHOU -->
 						<view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-							<iconfont name="icon-icon-md-dh" size="40rpx"></iconfont>
+							<iconfont name="icon-md-dh" size="40rpx"></iconfont>
 						</view>
 						<!-- #endif -->
 					</view>

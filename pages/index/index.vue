@@ -88,17 +88,24 @@
 							</view>
 						</view>
 
-                        <!-- 限时秒杀 - 插件 -->
-                        <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb" :style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
-                            <view class="spacing-nav-title">
-                                <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
-                                <view class="dis-inline-block va-m margin-left-sm">
-                                    <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
-                                </view>
-                                <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-gray fr">更多</navigator>
-                            </view>
-                            <component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
-                        </view>
+						<!-- 限时秒杀 - 插件 -->
+						<view
+							v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
+							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb padding-top-main"
+							:style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
+							<view class="spacing-nav-title flex-row jc-sb align-c">
+								<view class="flex-1">
+									<image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
+									<view class="dis-inline-block va-m margin-left-sm">
+										<component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes"
+											:propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
+									</view>
+								</view>
+								<navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">更多</navigator>
+							</view>
+							<component-goods-list :propData="{style_type: 2, goods_list: plugins_seckill_data.data.goods}" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol"
+								:propIsCartParaCurve="true" propSource="index"></component-goods-list>
+						</view>
 
 						<!-- 活动配置-楼层顶部 - 插件 -->
 						<block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
@@ -182,15 +189,15 @@
 								:propCurrencySymbol="currency_symbol" propSource="index"></component-activity-list>
 						</block>
 
-                <!-- 弹屏广告 - 插件 -->
-                <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
-                    <view class="content pr">
-                        <view class="close pa cp" @tap.stop="plugins_popupscreen_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
-                        </view>
-                        <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
-                    </view>
-                </view>
+						<!-- 弹屏广告 - 插件 -->
+						<view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
+							<view class="content pr">
+								<view class="close pa cp" @tap.stop="plugins_popupscreen_close_event">
+									<uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+								</view>
+								<image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
+							</view>
+						</view>
 
 						<!--- 底部购买记录 - 插件 -->
 						<view

@@ -73,7 +73,7 @@
 			},
 			propIcon: {
 				type: String,
-				default: 'icon-icon-index-search'
+				default: 'icon-index-search'
 			},
 			propIconColor: {
 				type: String,

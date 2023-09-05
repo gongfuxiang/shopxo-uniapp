@@ -1229,9 +1229,9 @@ button[disabled].bg-gray {
 
 .title-left-border::before {
 	content: '';
-	width: 4px;
-	height: 16px;
-	border-radius: 3px;
+	width: 8rpx;
+	height: 32rpx;
+	border-radius: 6rpx;
 	position: absolute;
 	top: 50%;
 	left: 0;
@@ -1239,8 +1239,32 @@ button[disabled].bg-gray {
 }
 
 /**
+ * 导航菜单左侧边线
+ */
+.nav-left-border {
+	position: relative;
+	padding-left: 20rpx;
+}
+
+.nav-left-border::before {
+	content: '';
+	width: 6rpx;
+	height: 40rpx;
+	border-radius: 6rpx;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translateY(-50%);
+}
+
+
+/**
  * 细微偏移量
  */
+.top-0 {
+	top: 0;
+}
+
 .top-xs {
 	top: 2rpx;
 }
@@ -1259,6 +1283,10 @@ button[disabled].bg-gray {
 
 .top-xl {
 	top: 10rpx;
+}
+
+.left-0 {
+	left: 0;
 }
 
 .left-xs {
@@ -1281,6 +1309,10 @@ button[disabled].bg-gray {
 	left: 10rpx;
 }
 
+.bottom-0 {
+	bottom: 0;
+}
+
 .bottom-xs {
 	bottom: 2rpx;
 }
@@ -1299,6 +1331,10 @@ button[disabled].bg-gray {
 
 .bottom-xl {
 	bottom: 10rpx;
+}
+
+.right-0 {
+	right: 0;
 }
 
 .right-xs {

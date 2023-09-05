@@ -29,7 +29,7 @@
 										<text class="sales-price va-m">{{item[propPriceField]}}</text>
 									</view>
 									<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-										<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+										<iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 										<view class="cart-badge-icon pa">
 											<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 										</view>
@@ -71,7 +71,7 @@
 											<text class="sales-price va-m">{{item[propPriceField]}}</text>
 										</view>
 										<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-											<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+											<iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 											<view class="cart-badge-icon pa">
 												<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 											</view>
@@ -119,7 +119,7 @@
 														<text class="sales-price va-m">{{item[propPriceField]}}</text>
 													</view>
 													<view v-if="(item.is_error || 0) == 0 && is_show_cart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-														<iconfont name="icon-icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+														<iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
 														<view class="cart-badge-icon pa">
 															<component-badge :propNumber="item.user_cart_count || 0"></component-badge>
 														</view>
