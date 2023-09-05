@@ -45,7 +45,7 @@
 			},
 			propBgColor: {
 				type: String,
-				default: '#f0f0f0'
+				default: '#fff'
 			},
 			propBrColor: {
 				type: String,

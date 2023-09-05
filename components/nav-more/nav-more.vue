@@ -5,7 +5,7 @@
 			<iconfont name="icon-fenlei-more"></iconfont>
 		</view>
 		<!-- 弹窗 -->
-		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="false" :propTop="propTop" @onclose="quick_close_event">
+		<component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
 			<view class="padding-vertical-lg">
 				<view class="padding-left-main padding-bottom-main">全部分类</view>
 				<view class="divider-b">
@@ -74,7 +74,7 @@
 <style scoped>
 	.more {
 		width: 30rpx;
-		background-color: #fff;
+		/* background-color: #fff; */
 		padding: 15rpx 20rpx;
 		position: absolute;
 		top: 0;

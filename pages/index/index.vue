@@ -91,8 +91,8 @@
 						<!-- 限时秒杀 - 插件 -->
 						<view
 							v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
-							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb padding-top-main"
-							:style="'background: url('+plugins_seckill_data.data.home_bg+') top/100% no-repeat;'">
+							class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb padding-top-main bg-white"
+							:style="'background-image: url('+plugins_seckill_data.data.home_bg+');'">
 							<view class="spacing-nav-title flex-row jc-sb align-c">
 								<view class="flex-1">
 									<image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>

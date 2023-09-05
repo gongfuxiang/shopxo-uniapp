@@ -1,4 +1,18 @@
 /**
+ * 头部背景
+ */
+.goods-top-bg {
+	height: 280rpx;
+}
+
+.goods-top-search-bg {
+	height: 138rpx;
+	/* #ifdef H5 || APP */
+	height: 98rpx;
+	/* #endif */
+}
+
+/**
  * 导航搜索、内容区域
  */
 .nav-search {
@@ -10,6 +24,7 @@
 	padding-right: 20rpx;
 	/* #endif */
 	padding-bottom: 10px;
+	z-index: 101;
 }
 
 .category-content {
@@ -245,7 +260,7 @@
 
 .goods-right-content .word-list {
 	position: sticky;
-	top: 0;
+	top: -2rpx;
 	right: 0;
 	background: #fff;
 	z-index: 1;

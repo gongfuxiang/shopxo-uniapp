@@ -1,9 +1,15 @@
 <template>
 	<view>
 		<view :class="(is_single_page == 1 ? 'margin-top-xxxl single-page-top' : '')">
+			<view class="goods-top-bg pa top-0 left-0 right-0 wh-auto">
+				<image :src="theme_static_url + 'goods-top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
+			</view>
 			<!-- 搜索框 -->
 			<block v-if="is_single_page == 0">
-				<view class="nav-search padding-horizontal-main bg-white" :style="'padding-top:'+(status_bar_height+8)+'px;'">
+				<view class="nav-search padding-horizontal-main pr" :style="'padding-top:'+(status_bar_height+8)+'px;'">
+					<view class="goods-top-search-bg pa top-0 left-0 right-0 wh-auto">
+						<image :src="theme_static_url + 'goods-top-bg.png'" mode="top" class="wh-auto ht-auto"></image>
+					</view>
 					<block v-if="is_goods_category_search_alone == 1">
 						<component-search propPlaceholder="输入商品名称搜索"></component-search>
 					</block>
@@ -37,7 +43,7 @@
 					<!-- 商品列表模式 -->
 					<block v-if="category_show_level == 0">
 						<!-- 一级导航 -->
-						<view class="top-nav bg-white wh-auto pa scroll-view-horizontal">
+						<view class="top-nav wh-auto pa scroll-view-horizontal">
 							<scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-'+nav_active_index" class="top-nav-scroll">
 								<block v-for="(item, index) in category_list" :key="index">
 									<view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-'+index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1"
@@ -51,7 +57,7 @@
 									</view>
 								</block>
 							</scroll-view>
-							<component-nav-more prop-top="98rpx" :prop-status="popupStatus" @open-popup="open_popup_event">
+							<component-nav-more :prop-top="popup_top" :prop-status="popup_status" @open-popup="open_popup_event">
 								<view class="nav-list-more">
 									<view class="flex-row flex-warp align-c">
 										<block v-for="(item, index) in category_list" :key="index">
@@ -132,13 +138,13 @@
 														<view v-if="common_site_type != 1" class="buy-opt tc flex-row align-c">
 															<block v-if="(item.is_error || 0) == 0">
 																<view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-																	<iconfont name="icon-fenlei-jianhao" size="28rpx" :color="themeColor"></iconfont>
+																	<iconfont name="icon-fenlei-jianhao" size="28rpx" :color="theme_color"></iconfont>
 																</view>
 																<view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
 																	{{item.buy_number}}
 																</view>
 																<view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-																	<iconfont name="icon-fenlei-jiahao" size="28rpx" :color="themeColor"></iconfont>
+																	<iconfont name="icon-fenlei-jiahao" size="28rpx" :color="theme_color"></iconfont>
 																</view>
 															</block>
 															<block v-else>
@@ -304,13 +310,13 @@
 												<view class="tc fr flex-row align-c">
 													<block v-if="goods.is_error == 0">
 														<view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-															<iconfont name="icon-fenlei-jianhao" size="28rpx" :color="themeColor"></iconfont>
+															<iconfont name="icon-fenlei-jianhao" size="28rpx" :color="theme_color"></iconfont>
 														</view>
 														<view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">
 															{{goods.stock}}
 														</view>
 														<view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-															<iconfont name="icon-fenlei-jiahao" size="28rpx" :color="themeColor"></iconfont>
+															<iconfont name="icon-fenlei-jiahao" size="28rpx" :color="theme_color"></iconfont>
 														</view>
 													</block>
 													<block v-else>
@@ -374,6 +380,7 @@
 	import componentUserBase from "../../components/user-base/user-base";
 	import componentNavMore from "../../components/nav-more/nav-more";
 
+	var theme_static_url = app.globalData.get_static_url('goods');
 	var common_static_url = app.globalData.get_static_url('common');
 	// 状态栏高度
 	var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -385,6 +392,7 @@
 	export default {
 		data() {
 			return {
+				theme_static_url: theme_static_url,
 				common_static_url: common_static_url,
 				status_bar_height: bar_height,
 				data_bottom_line_status: false,
@@ -427,8 +435,9 @@
 				temp_opt_data: null,
 				// 标签插件
 				plugins_label_data: null,
-				themeColor: app.globalData.get_theme_color(),
-				popupStatus: false
+				theme_color: app.globalData.get_theme_color(),
+				popup_status: false,
+				popup_top: '138rpx',
 			};
 		},
 
@@ -470,6 +479,11 @@
 		// 下拉刷新
 		onPullDownRefresh() {
 			this.init();
+		},
+		created() {
+			// #ifdef H5 || APP
+			this.popup_top = '98rpx';
+			// #endif
 		},
 
 		methods: {
@@ -743,7 +757,7 @@
 					data_page: 1,
 					data_list_loding_status: 1,
 					data_list: [],
-					popupStatus: false
+					popup_status: false
 				});
 
 				// 商品模式则读取商品
@@ -756,7 +770,7 @@
 			// 打开弹窗
 			open_popup_event(e) {
 				this.setData({
-					popupStatus: e
+					popup_status: e
 				});
 			},
 

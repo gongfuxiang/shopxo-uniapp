@@ -85,16 +85,6 @@
 				version: 'v3.0.0',
 				// 货币价格符号
 				currency_symbol: '￥',
-				// 主题类型        主题颜色
-				// 黄色 yellow    #f6c133
-				// 红色 red       #ff0036
-				// 黑色 black     #333333
-				// 绿色 green     #20a53a
-				// 橙色 orange    #fe6f04
-				// 蓝色 blue      #1677ff
-				// 棕色 brown     #8B4513
-				// 紫色 purple    #623cec
-				default_theme: 'yellow',
 			},
 
 			/**
@@ -1292,8 +1282,9 @@
 					// 根据配置的静态url地址+插件标识符
 					return this.data.static_url + 'static/plugins/images/' + type + '/';
 				} else {
+					var theme = this.get_theme_value();
 					// 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
-					return this.data.static_url + 'static/app/' + this.data.default_theme + '/' + type + '/';
+					return this.data.static_url + 'static/app/' + theme + '/' + type + '/';
 				}
 			},
 
@@ -1817,7 +1808,18 @@
 			},
 			// 获取主题
 			get_theme_value() {
-				return uni.getStorageSync('theme') || 'yellow'
+
+				// 主题类型        主题颜色
+				// 黄色 yellow    #f6c133
+				// 红色 red       #ff0036
+				// 黑色 black     #333333
+				// 绿色 green     #20a53a
+				// 橙色 orange    #fe6f04
+				// 蓝色 blue      #1677ff
+				// 棕色 brown     #8B4513
+				// 紫色 purple    #623cec
+				var default_theme = 'brown';
+				return uni.getStorageSync('theme') || default_theme;
 			},
 
 			// 设置主题
