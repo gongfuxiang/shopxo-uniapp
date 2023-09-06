@@ -96,6 +96,11 @@
 				if (this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
 					// 当前缓存用户
 					var user = app.globalData.get_user_cache_info() || {};
+                    // 默认昵称则赋空值
+                    var arr = ['支付宝用户', '百度用户', '头条用户', 'QQ用户', '快手用户', '微信用户', 'WeChat User', 'Usuarios de Wechat'];
+                    if((user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
+                        user.nickname = '';
+                    }
 					// 头像是默认则置为空
 					if (user != null && (user.avatar || null) != null && user.avatar.indexOf('default-user-avatar') != -
 						1) {
