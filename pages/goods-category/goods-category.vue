@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view :class="(is_single_page == 1 ? 'margin-top-xxxl single-page-top' : '')">
+		<view class="pr" :class="(is_single_page == 1 ? 'margin-top-xxxl single-page-top' : '')">
 			<view class="goods-top-bg pa top-0 left-0 right-0 wh-auto">
 				<image :src="theme_static_url + 'goods-top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
 			</view>

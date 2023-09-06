@@ -1,42 +1,52 @@
 <template>
-	<view>
+	<view class="pr">
 		<view v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="pa top-0 left-0 right-0">
 			<image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
 		</view>
-
-		<!-- 优惠劵列表 -->
-		<view v-if="data_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-top-main">
-			<block v-for="(item, index) in data_list" :key="index">
-				<view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
-					<view class="v-left fl">
-						<view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
-							<text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
-							<text class="price">{{item.discount_value}}</text>
-							<text class="unit">{{item.type_unit}}</text>
-							<text v-if="(item.desc || null) != null" class="desc cr-gray">{{item.desc}}</text>
-						</view>
-						<view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{item.use_limit_type_name}}</view>
-					</view>
-					<view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
-						<text class="circle"></text>
-						<text>{{item.is_operable_name}}</text>
-					</view>
+		<view class="plugins-coupon-container">
+			<scroll-view scroll-y class="coupon-content bg-white">
+				<!-- 优惠劵列表 -->
+				<view v-if="data_list.length > 0" class="">
+					<block v-for="(item, index) in data_list" :key="index">
+						<component-poupon-card :prop-data="item" :prop-index="index" @call-back="coupon_receive_event"></component-poupon-card>
+						<!-- <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
+							<view class="v-left fl">
+								<view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
+									<text v-if="item.type == 0" class="symbol">{{currency_symbol}}</text>
+									<text class="price">{{item.discount_value}}</text>
+									<text class="unit">{{item.type_unit}}</text>
+									<text v-if="(item.desc || null) != null" class="desc cr-gray">{{item.desc}}</text>
+								</view>
+								<view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{item.use_limit_type_name}}</view>
+							</view>
+							<view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
+								<text class="circle"></text>
+								<text>{{item.is_operable_name}}</text>
+							</view>
+						</view> -->
+					</block>
 				</view>
-			</block>
-		</view>
-		<view v-else>
-			<!-- 提示信息 -->
-			<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-		</view>
+				<view v-else>
+					<!-- 提示信息 -->
+					<component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+				</view>
 
-		<!-- 结尾 -->
-		<component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+				<!-- 结尾 -->
+				<component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+			</scroll-view>
+		</view>
+		<view class="popup-bottom pf bottom-0 left-0 right-0 bg-white">
+			<view class="popup-btn tc">
+				<navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+			</view>
+		</view>
 	</view>
 </template>
 <script>
 	const app = getApp();
 	import componentNoData from "../../../../components/no-data/no-data";
 	import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+	import componentPouponCard from "@/components/coupon-card/coupon-card.vue"
 
 	export default {
 		data() {
@@ -57,7 +67,8 @@
 
 		components: {
 			componentNoData,
-			componentBottomLine
+			componentBottomLine,
+			componentPouponCard
 		},
 		props: {},
 
@@ -113,6 +124,7 @@
 						if (res.data.code == 0) {
 							var data = res.data.data;
 							var status = (data.data || []).length > 0;
+							console.log(data.data);
 							this.setData({
 								data_base: data.base || null,
 								data_list: data.data || [],
@@ -164,17 +176,15 @@
 			},
 
 			// 优惠劵领取事件
-			coupon_receive_event(e) {
+			coupon_receive_event(index, value) {
 				if (!app.globalData.is_single_page_check()) {
 					return false;
 				}
 				// 参数处理
-				if ((e || null) == null) {
+				if (((index || null) == null) && ((value || null) == null)) {
 					var index = this.temp_coupon_receive_index;
 					var value = this.temp_coupon_receive_value;
 				} else {
-					var index = e.currentTarget.dataset.index;
-					var value = e.currentTarget.dataset.value;
 					this.setData({
 						temp_coupon_receive_index: index,
 						temp_coupon_receive_value: value
@@ -238,5 +248,6 @@
 		}
 	};
 </script>
-<style>
+<style scoped>
+	@import './index.css';
 </style>
