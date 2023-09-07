@@ -1856,6 +1856,19 @@
 				}
 				return new_arry;
 			},
+			// 颜色转rgba hexValue： 色值  alpha：透明度
+			hex_rgba(hexValue, alpha) {
+				const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+				const hex = hexValue.replace(rgx, (m, r, g, b) => r + r + g + g + b + b);
+				const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+				if (!rgb) {
+					return hexValue;
+				}
+				const r = parseInt(rgb[1], 16),
+					g = parseInt(rgb[2], 16),
+					b = parseInt(rgb[3], 16);
+				return `rgba(${r},${g},${b},${alpha})`;
+			}
 		},
 
 		/**

@@ -1117,6 +1117,10 @@ button[disabled].bg-gray {
 	justify-content: space-between;
 }
 
+.jc-c {
+	justify-content: center;
+}
+
 .jc-sa {
 	justify-content: space-around;
 }
@@ -1355,4 +1359,103 @@ button[disabled].bg-gray {
 
 .right-xl {
 	right: 10rpx;
+}
+
+/**
+ * 呼吸
+ */
+/* <div class="breathe"></div> */
+.breathe {
+	background-color: #FF7C74;
+	border-radius: 100%;
+	width: 12rpx;
+	height: 12rpx;
+	position: relative;
+}
+
+.breathe::before,
+.breathe::after {
+	content: '';
+	background-color: rgba(255, 124, 116, 0.7);
+	border-radius: 50%;
+	position: absolute;
+	animation: loading 2s infinite ease-in-out;
+}
+
+.breathe::before {
+	width: 12px;
+	height: 12px;
+	top: -3px;
+	left: -3px;
+}
+
+.breathe::after {
+	width: 18px;
+	height: 18px;
+	top: -6px;
+	left: -6px;
+}
+
+@keyframes loading {
+	0% {
+		opacity: 0.5;
+		-webkit-transform: scale(1);
+	}
+
+	50% {
+		opacity: 0.7;
+		-webkit-transform: scale(1.12);
+	}
+
+	100% {
+		opacity: 0.5;
+		-webkit-transform: scale(1);
+	}
+}
+
+/**
+ * 扩散效果
+ */
+/* <div class="spread margin-left-xxxl">
+	<div class="ring"></div>
+	<div class="ring"></div>
+	<div class="ring"></div>
+</div> */
+.spread {
+	background-color: #FF7C74;
+	height: 16rpx;
+	width: 16rpx;
+	border-radius: 100%;
+	position: relative;
+	z-index: 1;
+}
+
+.spread .ring {
+	position: absolute;
+	background-color: inherit;
+	height: 100%;
+	width: 100%;
+	border-radius: 100%;
+	opacity: .8;
+	/* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
+	animation: pulsing 4.5s ease-out infinite;
+}
+
+/* 速度为1*层数 */
+.spread .ring:nth-of-type(1) {
+	-webkit-animation-delay: -1.5s;
+	animation-delay: -1.5s;
+}
+
+/* 速度为1*层数 */
+.spread .ring:nth-of-type(2) {
+	-webkit-animation-delay: -3s;
+	animation-delay: -3s;
+}
+
+@keyframes pulsing {
+	100% {
+		transform: scale(3);
+		opacity: 0
+	}
 }
