@@ -42,11 +42,11 @@
                     </view>
                     <view v-if="(plugins_intellectstools_data.service_qq || null) != null" class="item padding-main br-t single-text">
                         <text>Q Q：</text>
-                        <text class="cp" @tap="text_copy_event" :data-value="plugins_intellectstools_data.service_qq">{{plugins_intellectstools_data.service_qq}}</text>
+                        <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data.service_qq">{{plugins_intellectstools_data.service_qq}}</text>
                     </view>
                     <view v-if="(plugins_intellectstools_data.service_tel || null) != null" class="item padding-main br-t single-text">
                         <text>电话：</text>
-                        <text class="cp" @tap="tel_event" :data-value="plugins_intellectstools_data.service_tel">{{plugins_intellectstools_data.service_tel}}</text>
+                        <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data.service_tel">{{plugins_intellectstools_data.service_tel}}</text>
                     </view>
                     <view v-if="(plugins_intellectstools_data.service_weixin || null) != null || (plugins_intellectstools_data.service_line || null) != null" class="oh qrcode tc br-t">
                         <view v-if="(plugins_intellectstools_data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
@@ -75,7 +75,13 @@
                 <!-- 退货地址 -->
                 <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="return-address msg-tips msg-tips-warning padding-main border-radius-main spacing-mb">
                     <text class="cr-base fw-b">退货地址：</text>
-                    <text class="cr-blue">{{return_goods_address}}</text>
+                    <view class="cr-blue" @tap="text_event" data-event="copy" :data-value="return_goods_address.name+' '+return_goods_address.tel+' '+return_goods_address.address">
+                        <view>
+                            <text class="margin-right-xxxl">{{return_goods_address.name}}</text>
+                            <text>{{return_goods_address.tel}}</text>
+                        </view>
+                        <view>{{return_goods_address.address}}</view>
+                    </view>
                 </view>
 
                 <!-- 提示 -->
@@ -727,16 +733,6 @@
                 });
             },
 
-            // 客服电话
-            tel_event(e) {
-                app.globalData.call_tel(e.currentTarget.dataset.value);
-            },
-
-            // 剪切板
-            text_copy_event(e) {
-                app.globalData.text_copy_event(e);
-            },
-
             // 图片预览
             image_show_event(e) {
                 app.globalData.image_show_event(e);
@@ -745,7 +741,12 @@
             // 进入客服系统
             chat_event() {
                 app.globalData.chat_entry_handle(this.plugins_intellectstools_data.chat.chat_url);
-            }
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            },
         }
     };
 </script>
