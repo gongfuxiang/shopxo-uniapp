@@ -3,34 +3,42 @@
 		<view v-if="(data || null) != null">
 			<image :src="signin_static_url+'signin-bg.png'" mode="widthFix" class="signin-bg"></image>
 			<view class="signin-opration-group pa right-0 flex-col cr-white">
-				<view class="share oh flex-row">
-					<view class="content">
-						<iconfont name="icon-pp-all"></iconfont>
+				<view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
+					<button class="content" open-type="share">
+						<iconfont name="icon-qiandao-fenxiang" class="pr top-sm" size="32rpx"></iconfont>
 						分享
-					</view>
+					</button>
 				</view>
-				<view class="team oh flex-row">
+				<view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
 					<view class="content">
-						<iconfont name="icon-pp-all"></iconfont>
+						<iconfont name="icon-qiandao-zudui" class="pr top-xs" size="34rpx"></iconfont>
 						组队
 					</view>
 				</view>
 			</view>
 			<view class="signin-btn pa left-0 right-0 tc">
 				<view class="content cr-white" @tap="coming_event">
-					立即签到
+					<block v-if="is_already_coming == 1">
+						已签到
+					</block>
+					<block v-else>
+						立即签到
+						<iconfont name="icon-qiandao-jiantou" color="#fff" size="32rpx" class="margin-left-sm"></iconfont>
+					</block>
 				</view>
 			</view>
 
-			<view class="padding-horizontal-main">
-				<view class="signin-calendar">
+			<view class="padding-horizontal-main padding-bottom-xxxl">
+				<view class="signin-calendar spacing-mb">
 					<view class="calendar-title flex-row align-c jc-sb">
 						<view class="title-left fw-b text-size">
 							{{calendar}}
 						</view>
 						<view class="title-right text-size-md">
-							<iconfont name="icon-pp-all margin-right-sm"></iconfont>
-							我的签到
+							<navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user-signin/user-signin" hover-class="none">
+								<iconfont name="icon-qiandao-wdqd margin-right-sm pr top-sm" size="32rpx"></iconfont>
+								我的签到
+							</navigator>
 						</view>
 					</view>
 					<view class="calendar-week flex-row align-c jc-sa padding-horizontal-main">
@@ -38,20 +46,20 @@
 							{{item}}
 						</view>
 					</view>
-					<view class="calendar-days padding-horizontal-main bg-white">
+					<view class="calendar-days padding-horizontal-main bg-white spacing-mb">
 						<view class="item flex-row jc-sa align-c" v-for="(row,rowIndex) in day_count" :key="rowIndex">
 							<view v-for="(col,colIndex) in row" class="list tc" :class="col.class" :key="colIndex">
-								<block v-if="col.is_signin">
-									<iconfont name="icon-pp-all margin-right-sm"></iconfont>
+								<block v-if="col.today">
+									<block v-if="user_signin_data && user_signin_data.current_day===1">
+										<iconfont name="icon-qiandao-yixuan" color="#E22C08" size="48rpx"></iconfont>
+									</block>
+									<block v-else>
+										<text class="fw-b">今天</text>
+									</block>
 								</block>
 								<block v-else>
-									<block v-if="col.today">
-										<block v-if="user_signin_data.current_day===1">
-
-										</block>
-										<block v-else>
-											<text class="fw-b">今天</text>
-										</block>
+									<block v-if="col.is_signin">
+										<iconfont name="icon-qiandao-yixuan" size="48rpx"></iconfont>
 									</block>
 									<block v-else>
 										{{col.num}}
@@ -60,69 +68,43 @@
 							</view>
 						</view>
 					</view>
-				</view>
-
-
-
-
-
-
-
-
-				<!-- 签到 -->
-				<view class="coming-container tc pr border-radius-main spacing-mb">
-					<navigator v-if="(data_base.is_user_menu || 0) == 1" class="signin-user-menu-submit round pa" url="/pages/plugins/signin/user-signin/user-signin" hover-class="none">我的签到
-					</navigator>
-					<view :class="'coming-submit circle auto ' + ((is_already_coming == 1) ? 'already-coming' : '')" @tap="coming_event">签到</view>
-					<block v-if="(user || null) == null">
-						<view class="cr-white margin-top-lg">登录签到获得积分奖励</view>
-					</block>
-					<block v-else>
-						<!-- 是否已签到 -->
-						<block v-if="(user_signin_data || null) != null && (user_signin_data.integral || 0) > 0">
-							<view class="cr-white margin-top-lg">今日已签到，获得{{user_signin_data.integral}}积分，共{{user_signin_data.total}}次</view>
-							<view class="coming-tips-msg margin-top-xs">请明日继续签到，更多积分奖励</view>
-						</block>
-						<block v-else>
-							<view class="cr-white margin-top-lg am-margin-top-sm">立即签到获得积分奖励</view>
-						</block>
-
-						<!-- 队长 -->
-						<block v-if="(team_signin_data || null) != null && user.id == data.user_id">
-							<view class="cr-white margin-top-lg">
-								<text>今日{{team_signin_data.day}}人签到，共{{team_signin_data.total}}人</text>
-								<navigator class="cr-blue dis-inline margin-left-sm" v-if="(data_base.is_team_show_coming_user || 0) == 1"
-									:url="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" hover-class="none">详情 >></navigator>
-							</view>
-							<view class="coming-tips-msg margin-top-xs">分享获得更多奖励</view>
-						</block>
-					</block>
-
-					<!-- 按钮组 -->
-					<view class="submit-container pa">
-						<button v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team-submit round" type="default" size="mini"
-							@tap="team_event">组队</button>
-						<button v-if="(data_base.is_share || 0) == 1" class="share-submit round" type="default" size="mini" open-type="share">分享</button>
+					<view v-if="(user || null) !== null" class="calendar-foot pr">
+						<image :src="signin_static_url+'calendar-link.png'" mode="widthFix" class="calendar-link-left"></image>
+						<image :src="signin_static_url+'calendar-link.png'" mode="widthFix" class="calendar-link-right"></image>
+						<!-- 判断是组队签到还是个人签到 -->
+						<view v-if="(team_signin_data || null) != null && user.id == data.user_id" class="content bg-white flex-row jc-sb align-c">
+							<text class="fw-b">今日{{team_signin_data.day}}人签到，共{{team_signin_data.total}}人</text>
+							<navigator v-if="(data_base.is_team_show_coming_user || 0) == 1" :url="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" hover-class="none">
+								<iconfont name="icon-qiandao-jiantou2"></iconfont>
+							</navigator>
+						</view>
+						<view v-else class="content bg-white flex-row jc-sb align-c">
+							<text class="fw-b">今日已签到，获得{{user_signin_data.integral}}积分，共{{user_signin_data.total}}次</text>
+							<navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user-signin/user-signin" hover-class="none">
+								<iconfont name="icon-qiandao-jiantou2"></iconfont>
+							</navigator>
+						</view>
 					</view>
 				</view>
 
-				<!-- 公告信息 -->
-				<view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="spacing-mb">
-					<view class="notice-content">
-						<view v-for="(item, index) in data_base.signin_desc" :key="index" class="item">{{item}}</view>
+				<!-- 公告信息 -规则说明 -->
+				<view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="notice-content border-radius-main text-size-md">
+					<view class="title fw-b">规则说明</view>
+					<view class="content">
+						<block v-for="(item, index) in data_base.signin_desc" :key="index">{{item}}</block>
 					</view>
 				</view>
 			</view>
 
 			<!-- 签到成功提示信息 -->
-			<view v-if="is_success_tips == 1" class="coming-tips-container am-text-center">
+			<view v-if="is_success_tips == 1" class="coming-tips-container">
 				<view class="coming-content tc pr">
-					<view class="icon-close-submit pa" @tap="coming_success_close_event">
-						<uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
-					</view>
-					<image :src="data.success_icon" mode="widthFix"></image>
-					<view class="coming-tips-content pa">
-						<text class="cr-red text-size-lg">获得 <text>{{coming_integral}}</text> 积分</text>
+					<image :src="signin_static_url+'signin-popup-title.png'" class="pa" mode="widthFix"></image>
+					<view class="title">签到成功</view>
+					<view class="desc">恭喜您获得 <text>{{coming_integral}}</text> 积分</view>
+					<view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
+					<view class="close-sub pa cr-white" @tap="coming_success_close_event">
+						<iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
 					</view>
 				</view>
 			</view>
@@ -136,11 +118,13 @@
 <script>
 	const app = getApp();
 	import componentNoData from "../../../../components/no-data/no-data";
-	var signin_static_url = app.globalData.get_static_url("signin/app", true);
+	var signin_static_url = app.globalData.get_static_url("signin", true) + 'app/';
 	export default {
 		data() {
 			return {
 				signin_static_url: signin_static_url,
+				// 首页地址
+				home_page_url: app.globalData.data.tabbar_pages[0],
 				data_bottom_line_status: false,
 				data_list_loding_status: 1,
 				data_list_loding_msg: '',
@@ -185,14 +169,19 @@
 		onLoad(params) {
 			//params['id'] = 1;
 			this.setData({
-				params: params,
-				user: app.globalData.get_user_cache_info()
+				params: params
 			});
 		},
 
 		onShow() {
+			// 用户信息
+			this.setData({
+				user: app.globalData.get_user_cache_info()
+			});
 			// 获取数据
 			this.get_data();
+			// 日历渲染
+			this.get_calendar();
 		},
 
 		// 下拉刷新
@@ -209,7 +198,7 @@
 				// 上月计数
 				const first_day_week = new Date().getDay();
 				var defore_days = new Date(this.year, this.month, 0).getDate(); //上月天数
-				for (var i = first_day_week - 1; i >= 0; i--) {
+				for (var i = first_day_week - 1; i > 0; i--) {
 					// 上个月计数
 					day.push({
 						num: defore_days - i,
@@ -220,17 +209,18 @@
 				}
 				// 本月计数
 				for (let i = 1; i <= last_day; i++) {
-					// 判断i是否存在数组signinHistory中    【 true则表示存在于数组中】
-					var index = this.user_signin_data.history_day.some(item => item === i);
+					// 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】
+					var bool = false;
+					if (this.user_signin_data) {
+						bool = this.user_signin_data.history_day.some(item => Number(item) === i);
+					}
 					// 获取当天日期
 					var today = new Date().getDate();
-					// 判断当天是否签到
-					var today_index = this.user_signin_data.history_day.some(item => item === today);
 					day.push({
 						num: i,
-						class: today_index ? 'cr-red' : 'cr-black',
+						class: 'cr-black',
 						today: i === today ? true : false,
-						is_signin: index ? true : false
+						is_signin: bool ? true : false
 					});
 					if (day.length === 7) {
 						days.push(day);
@@ -249,7 +239,6 @@
 					}
 					days.push(day);
 				}
-				console.log("days: " + JSON.stringify(days));
 				this.day_count = days;
 			},
 			// 点击日期
@@ -301,8 +290,6 @@
 						}
 						// 分享菜单处理
 						app.globalData.page_share_handle(this.share_info);
-						// 日历渲染
-						this.get_calendar();
 					},
 					fail: () => {
 						uni.stopPullDownRefresh();
@@ -435,6 +422,11 @@
 						}
 					});
 				}
+			},
+
+			// 打开url
+			url_event(e) {
+				app.globalData.url_event(e);
 			}
 		}
 	};
