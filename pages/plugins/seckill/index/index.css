@@ -1,0 +1,22 @@
+/**
+ * 秒杀导航
+ */
+.nav_seckill .item {
+	width: 176rpx;
+	padding: 26rpx 0;
+}
+
+.nav_seckill .item .time {
+	line-height: 50rpx;
+}
+
+.nav_seckill .item .state {
+	margin-top: 4rpx;
+	padding: 0 14rpx;
+	display: inline-flex;
+}
+
+.nav_seckill .item .state.active {
+	font-size: 22rpx;
+	background-color: #fff;
+}
