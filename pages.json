@@ -233,6 +233,15 @@
 				"enablePullDownRefresh": false
 			}
 		},
+        {
+        	"path": "pages/common/agreement/agreement",
+        	"style": {
+                // #ifndef MP-TOUTIAO
+                "navigationStyle": "custom",
+                // #endif
+        		"enablePullDownRefresh": false
+        	}
+        },
 		{
 			"path": "pages/design/design",
 			"style": {

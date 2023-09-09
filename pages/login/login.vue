@@ -113,7 +113,7 @@
                                 </radio-group>
                             </view>
                             <view class="dis-inline-block va-m">
-                                阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
+                                阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私权政策</text>》
                             </view>
                         </view>
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认登录</button>
@@ -192,7 +192,7 @@
                                 </radio-group>
                             </view>
                             <view class="dis-inline-block va-m">
-                                阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
+                                阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私权政策</text>》
                             </view>
                         </view>
                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认注册</button>
@@ -262,7 +262,7 @@
                             </radio-group>
                         </view>
                         <view class="dis-inline-block va-m">
-                            阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私政策</text>》
+                            阅读并同意 《<text class="cr-main" @tap="agreement_event" data-value="userregister">服务协议</text>》 与 《<text class="cr-main" @tap="agreement_event" data-value="userprivacy">隐私权政策</text>》
                         </view>
                     </view>
                     <view class="margin-top-xxl">

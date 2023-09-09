@@ -116,10 +116,15 @@
 							.interval_time)) {
 						status = false;
 					}
-					this.setData({
-						popup_status: status,
-						user: user
-					});
+
+                    // 1秒后再提示用户填写信息
+                    var self = this;
+                    setTimeout(function() {
+                        self.setData({
+                        	popup_status: status,
+                        	user: user
+                        });
+                    }, 1000);
 				}
 			},
 

@@ -62,6 +62,7 @@
                 "desc" : "你的位置将用于小程序中相应业务位置服务使用"
             }
         },
+        "__usePrivacyCheck__": true,
         "plugins" : {
             // 直播（需要开通权限 https://developers.weixin.qq.com/miniprogram/dev/platform-capabilities/industry/liveplayer/live-player-plugin.html）
             // "live-player-plugin" : {

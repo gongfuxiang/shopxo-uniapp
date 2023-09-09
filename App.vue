@@ -61,6 +61,9 @@
                 is_goods_category_search_alone: 0,
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
+                // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
+                is_weixin_privacy_setting: 1,
+                weixin_privacy_setting_timer: null,
                 // tabbar页面
                 tabbar_pages: [
                     "/pages/index/index",
@@ -1507,6 +1510,11 @@
                 return logo
             },
 
+            // 正方形logo
+            get_application_logo_square() {
+                return this.get_config('config.home_site_logo_square');
+            },
+
             // 分享内容处理
             share_content_handle(data) {
                 // 获取插件配置信息
@@ -1589,6 +1597,9 @@
 
             // 页面地址处理
             page_url_handle(page) {
+                if((page || null) == null) {
+                    return '';
+                }
                 var route = page.route;
                 var options = page.options || {};
                 var query = '';
@@ -1791,17 +1802,37 @@
                         object[method]({status: 1, lng: res.longitude, lat: res.latitude, data: res});
                     }
                 });
+            },
+
+            // 微信隐私弹窗提示
+            weixin_privacy_setting() {
+                if(this.data.is_weixin_privacy_setting == 1) {
+                    var self = this;
+                    self.weixin_privacy_setting_timer = setInterval(function() {
+                        var page = self.get_page_url(false);
+                        if('/'+page == self.data.tabbar_pages[0]) {
+                            uni.getPrivacySetting({
+                                success: res => {
+                                    if (res.needAuthorization) {
+                                        // 需要弹出隐私协议
+                                        uni.navigateTo({
+                                            url: '/pages/common/agreement/agreement'
+                                        });
+                                    }
+                                }
+                            });
+                            // 已执行隐私方法清除定时任务
+                            clearInterval(self.weixin_privacy_setting_timer);
+                        }
+                    }, 100);
+                }
             }
         },
 
-        /**
-         * 小程序初始化
-         */
+        // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {},
 
-        /**
-         * 小程序页面显示
-         */
+        // 启动，或从后台进入前台显示
         onShow(params) {
             // 初始化配置
             this.globalData.init_config();
@@ -1814,6 +1845,23 @@
 
             // 场景值
             this.globalData.set_scene_data(params);
+
+            // #ifdef MP-WEIXIN
+            // 协议验证处理
+            this.globalData.weixin_privacy_setting();
+            // #endif
+        },
+
+        // 从前台进入后台
+        onHide() {
+            // 清除微信隐私方法定时任务
+            clearInterval(this.weixin_privacy_setting_timer);
+        },
+
+        // 监听应用退出
+        onExit() {
+            // 清除微信隐私方法定时任务
+            clearInterval(this.weixin_privacy_setting_timer);
         },
 
         methods: {}
