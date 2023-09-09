@@ -242,24 +242,20 @@
 		padding: 20rpx 10rpx 0 10rpx;
 		position: relative;
 	}
-
 	.user-base-popup .close {
 		position: absolute;
 		top: 20rpx;
 		right: 20rpx;
 		z-index: 2;
 	}
-
 	.user-base-avatar {
 		width: 80rpx;
 		height: 80rpx !important;
 	}
-
 	.user-base-popup .form-gorup-title {
 		line-height: 70rpx;
 		margin-bottom: 0;
 	}
-
 	.user-base-popup .user-nickname-container {
 		width: calc(100% - 120rpx);
 	}
