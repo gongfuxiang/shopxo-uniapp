@@ -1,84 +1,167 @@
 /**
 * 签到
 */
+.signin-container {
+	background-color: rgb(255 209 133);
+}
+
+.signin-bg {
+	width: 100%;
+}
+
+.signin-opration-group {
+	top: 60rpx;
+}
+
+.share,
+.team {
+	margin-bottom: 36rpx;
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 100%);
+	box-shadow: 0 4rpx 8rpx 0 rgba(0, 61, 196, 0.51);
+	border-radius: 32rpx 0 0 32rpx;
+}
+
+.signin-opration-group .content {
+	margin: 2rpx;
+	padding: 12rpx 12rpx 12rpx 36rpx;
+	background: #2A82E1;
+	border-radius: 32rpx 0 0 32rpx;
+}
+
+.content .iconfont {
+	margin-right: 8rpx;
+}
+
+.signin-btn {
+	margin: -120rpx;
+}
+
+.signin-btn .content {
+	padding: 12rpx 58rpx;
+	display: inline-flex;
+	justify-content: center;
+	background: linear-gradient(98deg, #FF9734 0%, #FF1304 100%);
+	box-shadow: 0 4rpx 8rpx 0 rgba(185, 110, 22, 0.66);
+	border-radius: 44rpx;
+	border: 4rpx solid #FFE99B;
+	font-size: 40rpx;
+}
+
+.calendar-title {
+	color: #C48746;
+	padding: 24rpx;
+	background: #FEEBAF;
+	border-radius: 24rpx 24rpx 0 0;
+}
+
+.calendar-week {
+	line-height: 76rpx;
+	height: 76rpx;
+	background: #FEF6F8;
+}
+
+.calendar-days {
+	padding-bottom: 52rpx;
+	border-radius: 0 0 24rpx 24rpx;
+}
+
+.calendar-days .list {
+	width: calc(100% / 7);
+	height: 84rpx;
+	line-height: 84rpx;
+}
+
 .coming-container {
-    background-color: #f6b015;
-    padding: 80rpx 0 120rpx 0;
+	background-color: #f6b015;
+	padding: 80rpx 0 120rpx 0;
 }
+
 .coming-submit {
-    width: 200rpx;
-    height: 200rpx;
-    line-height: 200rpx;
-    background-color: #F37B1D;
-    color: #f8fb0b;
-    border: 12rpx solid #f9f420;
-    font-size: 62rpx;
+	width: 200rpx;
+	height: 200rpx;
+	line-height: 200rpx;
+	background-color: #F37B1D;
+	color: #f8fb0b;
+	border: 12rpx solid #f9f420;
+	font-size: 62rpx;
 }
+
 .already-coming {
-    border: 12rpx solid #bebebe;
-    background-color: #ccc;
-    color: #9f9f9f;
+	border: 12rpx solid #bebebe;
+	background-color: #ccc;
+	color: #9f9f9f;
 }
+
 .coming-tips-msg {
-    color: #ffe7b2;
+	color: #ffe7b2;
 }
+
 .signin-user-menu-submit {
-    border: 1px solid #fff900;
-    color: #fffb62;
-    top: 20rpx;
-    right: 20rpx;
-    padding: 6rpx 20rpx;
+	border: 1px solid #fff900;
+	color: #fffb62;
+	top: 20rpx;
+	right: 20rpx;
+	padding: 6rpx 20rpx;
 }
+
 .submit-container {
-    bottom: 20rpx;
-    right: 20rpx;
+	bottom: 20rpx;
+	right: 20rpx;
 }
+
 .submit-container button {
-    display: inline-flex;
+	display: inline-flex;
 }
+
 .submit-container button:not(:first-child) {
-    margin-left: 20rpx;
+	margin-left: 20rpx;
 }
+
 .submit-container button.team-submit {
-    color: #5eb95e;
-    background-color: #E4F3E4;
-    border-color: #d2e8d2;
+	color: #5eb95e;
+	background-color: #E4F3E4;
+	border-color: #d2e8d2;
 }
+
 .submit-container button.share-submit {
-    color: #F37B1D;
-    background-color: #ffe5be;
-    border-color: #f8d093;
+	color: #F37B1D;
+	background-color: #ffe5be;
+	border-color: #f8d093;
 }
 
 /**
 * 签到成功提示
 */
 .coming-tips-container {
-    position: fixed;
-    left: 0;
-    top: 0;
-    top: calc(88rpx + constant(safe-area-inset-top));
-    width: 100%;
-    height: 100%;
-    z-index: 1050;
-    background: rgb(0 0 0 / 0.6);
-    padding-top: 30%;
+	position: fixed;
+	left: 0;
+	top: 0;
+	top: calc(88rpx + constant(safe-area-inset-top));
+	width: 100%;
+	height: 100%;
+	z-index: 1050;
+	background: rgb(0 0 0 / 0.6);
+	padding-top: 30%;
 }
+
 .coming-content {
-    max-width: 300px;
-    height: 305px;
-    margin: 0 auto;
-    position: relative;
+	max-width: 300px;
+	height: 305px;
+	margin: 0 auto;
+	position: relative;
 }
+
 .coming-content .icon-close-submit {
-    top: 5px;
-    right: 5px;
+	top: 5px;
+	right: 5px;
 }
+
 .coming-tips-container image {
-    max-width: 100%;
-    margin-top: 60rpx;
+	max-width: 100%;
+	margin-top: 60rpx;
 }
+
 .coming-tips-content {
-    bottom: 30rpx;
-    left: calc(50% - 82rpx);
+	bottom: 30rpx;
+	left: calc(50% - 82rpx);
 }

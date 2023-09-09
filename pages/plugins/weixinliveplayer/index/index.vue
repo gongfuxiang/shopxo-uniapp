@@ -22,7 +22,7 @@
 						<navigator class="flex-row jc-sb" :class="Number(item.status) > 3 ? 'expire' : '' " :url="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" hover-class="none">
 							<!-- <view class="pr"> -->
 							<image class="radius" :src="item.share_img" mode="aspectFill"></image>
-							<view class="pa bottom-0 left-0 live-content circle">
+							<view v-if="item.status==='1'" class="pa bottom-0 left-0 live-content circle">
 								<view class="live-action flex-row jc-sa align-e">
 									<view class="live-1"></view>
 									<view class="live-2"></view>
