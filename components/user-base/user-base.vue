@@ -10,7 +10,7 @@
 				<form @submit="form_submit" class="form-container">
 					<view class="padding-horizontal-main padding-top-main">
 						<view class="cr-base margin-bottom-xl tc text-size-xs fw-b">请完善头像及昵称，让我们更好的为您服务！</view>
-						<view v-if="(user.avatar || null) == null" class="form-gorup oh">
+						<view v-if="user != null && (user.avatar || null) == null" class="form-gorup oh">
 							<view class="form-gorup-title fl">头像<text class="form-group-tips-must">*</text></view>
 							<button class="fl bg-white br-0 lh-0 padding-0 margin-left-xxl" hover-class="none"
 								open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
@@ -18,7 +18,7 @@
 									class="circle br user-base-avatar"></image>
 							</button>
 						</view>
-						<view v-if="(user.nickname || null) == null" class="form-gorup oh">
+						<view v-if="user != null && (user.nickname || null) == null" class="form-gorup oh">
 							<view class="form-gorup-title fl">昵称<text class="form-group-tips-must">*</text></view>
 							<view class="fr user-nickname-container">
 								<input :type="(application_client_type == 'weixin') ? 'nickname' : 'text'"
@@ -48,7 +48,7 @@
 				default_avatar: app.globalData.data.default_user_head_src,
 				cache_key: app.globalData.data.cache_user_base_personal_interval_time_key,
 				popup_status: false,
-				user: {},
+				user: null,
 				user_avatar: '',
 				pages: [],
 				client: [],
@@ -95,10 +95,10 @@
 				// 是否需要展示弹窗提示
 				if (this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
 					// 当前缓存用户
-					var user = app.globalData.get_user_cache_info() || {};
+					var user = app.globalData.get_user_cache_info() || null;
                     // 默认昵称则赋空值
                     var arr = ['支付宝用户', '百度用户', '头条用户', 'QQ用户', '快手用户', '微信用户', 'WeChat User', 'Usuarios de Wechat'];
-                    if((user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
+                    if(user != null && (user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
                         user.nickname = '';
                     }
 					// 头像是默认则置为空
