@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" @click="open_popup">
+		<view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" @tap="open_popup">
 			<text>更多</text>
 			<iconfont name="icon-fenlei-more"></iconfont>
 		</view>
@@ -11,7 +11,7 @@
 				<view class="divider-b">
 					<slot></slot>
 				</view>
-				<view class="tc padding-top-lg" @click="quick_close_event">
+				<view class="tc padding-top-lg" @tap="quick_close_event">
 					<text class="padding-right-sm">点击收起</text>
 					<iconfont name="icon-fenlei-top" color="#ccc"></iconfont>
 				</view>

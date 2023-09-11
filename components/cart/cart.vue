@@ -6,7 +6,7 @@
 				<view :class="'padding-main '+(source_type != 'cart' ? 'bottom-line-exclude' : '')">
 					<uni-swipe-action>
 						<view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
-							<uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
+							<uni-swipe-action-item :right-options="swipe_options" @tap="swipe_opt_event" @change="swipe_change($event, index)">
 								<view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
 									<!-- 选择 -->
 									<view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected">

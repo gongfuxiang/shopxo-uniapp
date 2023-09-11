@@ -2,7 +2,7 @@
 	<view class="uni-calendar" @mouseleave="leaveCale">
 
 		<view v-if="!insert && show" class="uni-calendar__mask" :class="{'uni-calendar--mask-show':aniMaskShow}"
-			@click="maskClick"></view>
+			@tap="maskClick"></view>
 
 		<view v-if="insert || show" class="uni-calendar__content"
 			:class="{'uni-calendar--fixed':!insert,'uni-calendar--ani-show':aniMaskShow, 'uni-calendar__content-mobile': aniMaskShow}">
@@ -21,7 +21,7 @@
 					<view class="uni-calendar__header-btn uni-calendar--right"></view>
 				</view>
 
-				<view v-if="!insert" class="dialog-close" @click="close">
+				<view v-if="!insert" class="dialog-close" @tap="close">
 					<view class="dialog-close-plus" data-id="close"></view>
 					<view class="dialog-close-plus dialog-close-rotate" data-id="close"></view>
 				</view>
@@ -94,7 +94,7 @@
 			</view>
 
 			<view v-if="!insert" class="uni-date-changed uni-date-btn--ok">
-				<view class="uni-datetime-picker--btn" @click="confirm">{{confirmText}}</view>
+				<view class="uni-datetime-picker--btn" @tap="confirm">{{confirmText}}</view>
 			</view>
 		</view>
 	</view>

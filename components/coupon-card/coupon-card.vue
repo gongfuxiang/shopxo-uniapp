@@ -23,7 +23,7 @@
 				</view>
 				<view v-if="propData.is_operable == 1" class="card-type">
 					<!-- 按钮状态 1-领取，2-已领取，3-已抢完，4-去使用,5-已使用，6-已过期 -->
-					<view v-if="propData.type===1" class="card-btn dis-inline-block cr-white" @click="receive">{{propData.is_operable_name}}</view>
+					<view v-if="propData.type===1" class="card-btn dis-inline-block cr-white" @tap="receive">{{propData.is_operable_name}}</view>
 					<view v-else-if="propData.type==2" class="card-btn dis-inline-block cr-red br-red received">{{propData.is_operable_name}}</view>
 					<view v-else-if="propData.type==3" class="card-btn dis-inline-block cr-white robbed">{{propData.is_operable_name}}</view>
 					<navigator v-else-if="propData.type==4" :url="home_page_url" open-type="switchTab" hover-class="none">
@@ -37,7 +37,7 @@
 					<view v-else-if="propData.type==6" class="card-image pa top-0 right-0">
 						<image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
 					</view>
-					<view v-else @click="receive">暂无type参数</view>
+					<view v-else @tap="receive">暂无type参数</view>
 				</view>
 			</view>
 			<view class="card-circle-top" :style="{background:`${propBg}`}"></view>

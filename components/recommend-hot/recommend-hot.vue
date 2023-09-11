@@ -16,7 +16,7 @@
 							<swiper-item v-for="(swiperItem,swiperIndex) in item.d" :key="swiperIndex">
 								<view class="swiper-item">
 									<view class="flex-row">
-										<view v-for="(listItem,listIndex) in swiperItem" :key="listIndex" class="flex-1" :class="swiperItem.length > 2 ? '' : 'flex-width-half'" @click="banner_event">
+										<view v-for="(listItem,listIndex) in swiperItem" :key="listIndex" class="flex-1" :class="swiperItem.length > 2 ? '' : 'flex-width-half'" @tap="banner_event">
 											<view class="padding-main">
 												<image src="@/static/images/common/user.png" mode="widthFix" class="wh-auto">
 												</image>

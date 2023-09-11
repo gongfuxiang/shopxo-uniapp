@@ -1,5 +1,5 @@
 <template>
-	<text class="iconfont" :class="name" :style="[{color: color},{'font-size':size}]" @click="$emit('click', $event)"></text>
+	<text class="iconfont" :class="name" :style="[{color: color},{'font-size':size}]" @tap="$emit('click', $event)"></text>
 </template>
 
 <script>

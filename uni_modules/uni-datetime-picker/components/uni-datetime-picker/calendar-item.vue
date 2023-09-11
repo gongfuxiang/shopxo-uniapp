@@ -4,7 +4,7 @@
 		'uni-calendar-item--before-checked-x':weeks.beforeMultiple,
 		'uni-calendar-item--multiple': weeks.multiple,
 		'uni-calendar-item--after-checked-x':weeks.afterMultiple,
-		}" @click="choiceDate(weeks)" @mouseenter="handleMousemove(weeks)">
+		}" @tap="choiceDate(weeks)" @mouseenter="handleMousemove(weeks)">
 		<view class="uni-calendar-item__weeks-box-item" :class="{
 				'uni-calendar-item--checked':calendar.fullDate === weeks.fullDate && (calendar.userChecked || !checkHover),
 				'uni-calendar-item--checked-range-text': checkHover,

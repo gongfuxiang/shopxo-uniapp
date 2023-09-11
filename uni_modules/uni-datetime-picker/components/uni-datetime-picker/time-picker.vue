@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-datetime-picker">
-		<view @click="initTimePicker">
+		<view @tap="initTimePicker">
 			<slot>
 				<view class="uni-datetime-picker-timebox-pointer"
 					:class="{'uni-datetime-picker-disabled': disabled, 'uni-datetime-picker-timebox': border}">
@@ -11,7 +11,7 @@
 				</view>
 			</slot>
 		</view>
-		<view v-if="visible" id="mask" class="uni-datetime-picker-mask" @click="tiggerTimePicker"></view>
+		<view v-if="visible" id="mask" class="uni-datetime-picker-mask" @tap="tiggerTimePicker"></view>
 		<view v-if="visible" class="uni-datetime-picker-popup" :class="[dateShow && timeShow ? '' : 'fix-nvue-height']"
 			:style="fixNvueBug">
 			<view class="uni-title">
@@ -64,14 +64,14 @@
 				<text v-if="!hideSecond" class="uni-datetime-picker-sign sign-right">:</text>
 			</view>
 			<view class="uni-datetime-picker-btn">
-				<view @click="clearTime">
+				<view @tap="clearTime">
 					<text class="uni-datetime-picker-btn-text">{{clearText}}</text>
 				</view>
 				<view class="uni-datetime-picker-btn-group">
-					<view class="uni-datetime-picker-cancel" @click="tiggerTimePicker">
+					<view class="uni-datetime-picker-cancel" @tap="tiggerTimePicker">
 						<text class="uni-datetime-picker-btn-text">{{cancelText}}</text>
 					</view>
-					<view @click="setTime">
+					<view @tap="setTime">
 						<text class="uni-datetime-picker-btn-text">{{okText}}</text>
 					</view>
 				</view>
