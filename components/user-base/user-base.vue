@@ -53,6 +53,7 @@
 				pages: [],
 				client: [],
 				interval_time: 0,
+                timer: null,
 				form_submit_disabled_status: false
 			};
 		},
@@ -93,7 +94,7 @@
 				this.init_config(true);
 
 				// 是否需要展示弹窗提示
-				if (this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
+				if (!this.popup_status && this.pages.indexOf(type) != -1 && this.client.indexOf(this.application_client_type) != -1) {
 					// 当前缓存用户
 					var user = app.globalData.get_user_cache_info() || null;
                     // 默认昵称则赋空值
@@ -119,12 +120,13 @@
 
                     // 1秒后再提示用户填写信息
                     var self = this;
-                    setTimeout(function() {
+                    clearTimeout(this.timer);
+                    this.timer = setTimeout(function() {
                         self.setData({
                         	popup_status: status,
                         	user: user
                         });
-                    }, 1000);
+                    }, 500);
 				}
 			},
 
