@@ -58,8 +58,9 @@
                                     </block>
                                 </block>
                                 <block v-else>
-                                    <block v-if="col.is_signin">
-                                        <iconfont name="icon-qiandao-yixuan" size="48rpx"></iconfont>
+                                    <!-- 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】 -->
+                                    <block v-if="user_signin_data.history_day.some(item => Number(item) === col.num)">
+                                        <iconfont name="icon-qiandao-yixuan" size="48rpx" color="#ccc"></iconfont>
                                     </block>
                                     <block v-else>
                                         {{col.num}}
@@ -180,6 +181,7 @@
             });
             // 获取数据
             this.get_data();
+
             // 日历渲染
             this.get_calendar();
         },
@@ -196,33 +198,26 @@
                 const days = [];
                 let day = [];
                 // 上月计数
-                const first_day_week = new Date().getDay();
+                let firstday = new Date();
+                firstday.setDate(1); //本月第一天的日期
+                const first_day_week = firstday.getDay();
                 var defore_days = new Date(this.year, this.month, 0).getDate(); //上月天数
-                for (var i = first_day_week - 1; i > 0; i--) {
+                for (var i = first_day_week - 1; i >= 0; i--) {
                     // 上个月计数
                     day.push({
                         num: defore_days - i,
                         class: 'cr-grey-c',
-                        today: false,
-                        is_signin: false
+                        today: false
                     });
                 }
-                console.log(first_day_week);
-                console.log(day);
                 // 本月计数
                 for (let i = 1; i <= last_day; i++) {
-                    // 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】
-                    var bool = false;
-                    if (this.user_signin_data) {
-                        bool = this.user_signin_data.history_day.some(item => Number(item) === i);
-                    }
                     // 获取当天日期
                     var today = new Date().getDate();
                     day.push({
                         num: i,
                         class: 'cr-black',
-                        today: i === today ? true : false,
-                        is_signin: bool ? true : false
+                        today: i === today ? true : false
                     });
                     if (day.length === 7) {
                         days.push(day);
@@ -235,13 +230,11 @@
                         day.push({
                             num: i,
                             class: 'cr-grey-c',
-                            today: false,
-                            is_signin: false
+                            today: false
                         });
                     }
                     days.push(day);
                 }
-                console.log(days);
                 this.setData({
                     day_count: days,
                 });
