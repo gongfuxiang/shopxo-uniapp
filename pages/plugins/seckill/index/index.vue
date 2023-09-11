@@ -23,8 +23,8 @@
                     </view>
                     <view class="text-size-xs cr-blak">
                         活动规则
-                        <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-mendian-kefu" size="26rpx" class="margin-left-xs" color="#999"
-                            @tap="quick_open_event"></iconfont>
+                        <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs"
+                            color="#999" @tap="quick_open_event"></iconfont>
                     </view>
                 </view>
 
