@@ -1,9 +1,9 @@
 <template>
     <view class="bg-white">
         <view v-if="(data_base || null) != null">
-            <image :src="membership_level_vip + '/app/bg.png'" mode="widthFix" class="wh-auto"></image>
+            <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="wh-auto"></image>
             <view class="banner tc oh pa top-0 wh-auto">
-                <image :src="membership_level_vip + '/app/title.png'" mode="widthFix" class="title-img"></image>
+                <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
                 <!-- 标题 -->
                 <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl">
                     {{data_base.banner_top_title}}123
@@ -48,7 +48,7 @@
     export default {
         data() {
             return {
-                membership_level_vip: membership_level_vip,
+                membership_level_vip: membership_level_vip + 'app/',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -57,7 +57,7 @@
                 default_images_data: null,
                 // 自定义分享信息
                 share_info: {},
-                join_vip_btn: 'background-image: url(' + membership_level_vip + '/app/join-vip-btn.png) !important;'
+                join_vip_btn: 'background-image: url(' + membership_level_vip + 'app/join-vip-btn.png) !important;'
             };
         },
         components: {

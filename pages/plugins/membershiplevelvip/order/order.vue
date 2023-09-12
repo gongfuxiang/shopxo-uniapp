@@ -27,8 +27,8 @@
                         </navigator>
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index"
-                            hover-class="none">支付</button>
+                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price"
+                            :data-index="index" hover-class="none">支付</button>
                         <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index"
                             hover-class="none">取消</button>
                         <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id"
@@ -44,8 +44,8 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
         <component-payment :prop-payment-list="payment_list" :prop-temp-pay-value="temp_pay_value" :prop-temp-pay-index="temp_pay_index" :prop-is-show-payment="is_show_payment_popup"
-            :prop-is-show-qrcode="popup_view_pay_qrcode_is_show" @close-payment-poupon="payment_popup_event_close" @close-qrcode-poupon="popup_view_pay_qrcode_event_close"
-            @pay-success="order_item_pay_success_handle" :prop-nav-status-index="nav_status_index" @reset-event="reset_event"></component-payment>
+            :prop-pay-price="pay_price" @close-payment-poupon="payment_popup_event_close" @pay-success="order_item_pay_success_handle" :prop-nav-status-index="nav_status_index"
+            @reset-event="reset_event"></component-payment>
     </view>
 </template>
 <script>
@@ -65,8 +65,8 @@
                 data_is_loading: 0,
                 params: null,
                 is_show_payment_popup: false,
+                pay_price: 0,
                 payment_list: [],
-                payment_id: 0,
                 temp_pay_value: 0,
                 temp_pay_index: 0,
                 nav_status_list: [{
@@ -102,9 +102,6 @@
                     field: "pay_price",
                     unit: "元"
                 }],
-                // 支付信息
-                popup_view_pay_qrcode_is_show: false,
-                popup_view_pay_timer: null
             };
         },
         components: {
@@ -259,8 +256,9 @@
             pay_event(e) {
                 this.setData({
                     is_show_payment_popup: true,
-                    temp_pay_value: Number(e.currentTarget.dataset.value),
-                    temp_pay_index: Number(e.currentTarget.dataset.index)
+                    temp_pay_value: e.currentTarget.dataset.value,
+                    temp_pay_index: e.currentTarget.dataset.index,
+                    pay_price: e.currentTarget.dataset.price,
                 });
             },
             // 支付弹窗关闭
@@ -269,18 +267,12 @@
                     is_show_payment_popup: false
                 });
             },
-            // 二维码弹窗关闭
-            popup_view_pay_qrcode_event_close(e) {
-                this.setData({
-                    popup_view_pay_qrcode_is_show: false
-                });
-            },
             // 重置列表数据
             reset_event() {
                 this.get_data_list();
             },
             // 支付成功数据设置
-            order_item_pay_success_handle(data,index) {
+            order_item_pay_success_handle(data, index) {
                 // 数据设置
                 var temp_data_list = this.data_list;
                 temp_data_list[index]['pay_price'] = temp_data_list[index]['price'];

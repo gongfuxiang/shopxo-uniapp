@@ -21,14 +21,31 @@
         </component-popup>
         <!-- 支付方式 popup -->
         <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
-            <view v-if="propPaymentList.length > 0" class="payment-list oh bg-base padding-main">
-                <view class="padding-top-main padding-left-main">
-                    <view v-for="(item, index) in propPaymentList" :key="index" class="item tc fl">
-                        <view class="item-content bg-white border-radius-main margin-right-main margin-bottom-main" :data-value="item.id" @tap="popup_payment_event">
-                            <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
-                            <text class="va-m">{{item.name}}</text>
+            <view class="poupon-title padding-main tc text-size-md pr">
+                付款详情
+                <iconfont name="icon-huiyuan-guanbi" class="pa left-0 margin-left-main margin-top-xs" size="30rpx" color="#999"></iconfont>
+            </view>
+            <view class="payment-price tc padding-top-sm padding-bottom-sm br-b">
+                <text class="text-size-md">{{currency_symbol}}</text>
+                {{propPayPrice}}
+            </view>
+            <view v-if="propPaymentList.length > 0" class="oh">
+                <view class="payment-list">
+                    <scroll-view scroll-y="true" class="scroll-y wh-auto">
+                        <view v-for="(item, index) in propPaymentList" :key="index" class="item br-b flex-row jc-sb align-c" :data-index="index" :data-value="item.id" @tap="checked_payment">
+                            <view class="flex-1">
+                                <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
+                                <text class="va-m">{{item.name}}</text>
+                            </view>
+                            <iconfont :name="selected_index === index ? 'icon-zhifu-yixuan': 'icon-zhifu-weixuan'" size="44rpx" :color="selected_index === index ? '#E22C08' : '#ccc'"></iconfont>
+                            <!-- <iconfont v-else name="icon-qiandao-tancguanbi" size="44rpx" color="#ccc"></iconfont> -->
                         </view>
-                    </view>
+                    </scroll-view>
+                </view>
+                <view class="payment-sub">
+                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">
+                        立即付款
+                    </button>
                 </view>
             </view>
             <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-gray">没有支付方式</view>
@@ -52,25 +69,26 @@
                 type: Boolean,
                 default: false
             },
-            propIsShowQrcode: {
-                type: Boolean,
-                default: false
-            },
             // 订单id
             propTempPayValue: {
-                type: Number,
-                default: 0
+                type: [String, Number],
+                default: ''
             },
             // 订单下标  ---- 用于处理支付成功后前端修改成功状态
             propTempPayIndex: {
-                type: Number,
+                type: [Number, String],
                 default: 0
             },
             // 跳转第三方链接的重定向
             propNavStatusIndex: {
                 type: Number,
                 default: 0
-            }
+            },
+            // 付款金额
+            propPayPrice: {
+                type: [Number, String],
+                default: 0
+            },
         },
         components: {
             componentPopup
@@ -80,13 +98,6 @@
                 if (newVal !== oldVal) {
                     this.setData({
                         is_show_payment_popup: newVal
-                    });
-                }
-            },
-            propIsShowQrcode(newVal, oldVal) {
-                if (newVal !== oldVal) {
-                    this.setData({
-                        popup_view_pay_qrcode_is_show: newVal
                     });
                 }
             }
@@ -101,7 +112,12 @@
                 popup_view_pay_data: null,
                 // 支付id
                 payment_id: 0,
-                order_id: 0
+                order_id: 0,
+                // 支付按钮状态
+                submit_disabled_status: true,
+                // 选择的支付方式的下标
+                selected_index: null,
+                currency_symbol: app.globalData.data.currency_symbol,
             };
         },
         methods: {
@@ -117,14 +133,25 @@
                 this.setData({
                     popup_view_pay_qrcode_is_show: false
                 });
-                this.$emit('close-qrcode-poupon', false)
             },
-            // 支付弹窗发起支付
-            popup_payment_event(e) {
-                var payment_id = e.currentTarget.dataset.value || 0;
+            // 选择支付方式
+            checked_payment(e) {
+                let payment_id = e.currentTarget.dataset.value || 0;
+                let selected_index = e.currentTarget.dataset.index;
                 this.setData({
                     payment_id: payment_id,
-                    is_show_payment_popup: false
+                    selected_index: selected_index,
+                    submit_disabled_status: false,
+                });
+            },
+            // 支付弹窗发起支付
+            popup_payment_event() {
+                if (this.submit_disabled_status) {
+                    app.globalData.showToast('请先选择支付方式');
+                    return false
+                }
+                this.setData({
+                    is_show_payment_popup: false,
                 });
                 this.pay_handle(this.propTempPayValue, this.propTempPayIndex);
                 this.$emit('close-payment-poupon', false)
@@ -204,7 +231,7 @@
                     serviceId: '1',
                     success: res => {
                         // 数据设置
-                        self.order_item_pay_success_handle(data,index);
+                        self.order_item_pay_success_handle(data, index);
                         // 跳转支付页面
                         uni.navigateTo({
                             url: "/pages/paytips/paytips?code=9000"
@@ -212,7 +239,7 @@
                     },
                     fail: res => {
                         app.globalData.showToast('支付失败');
-                        self.order_item_pay_fail_handle(data,index);
+                        self.order_item_pay_fail_handle(data, index);
                     }
                 });
             },
@@ -249,7 +276,7 @@
                         }
                         // #endif
                         // 数据设置
-                        self.order_item_pay_success_handle(data,index);
+                        self.order_item_pay_success_handle(data, index);
                         // 跳转支付页面
                         uni.navigateTo({
                             url: "/pages/paytips/paytips?code=9000"
@@ -257,7 +284,7 @@
                     },
                     fail: res => {
                         app.globalData.showToast('支付失败');
-                        self.order_item_pay_fail_handle(data,index);
+                        self.order_item_pay_fail_handle(data, index);
                     }
                 });
             },
@@ -307,13 +334,13 @@
                             }, function(res) {
                                 if (res.err_msg == "get_brand_wcpay_request:ok") {
                                     // 数据设置
-                                    self.order_item_pay_success_handle(data,index);
+                                    self.order_item_pay_success_handle(data, index);
                                     // 跳转支付页面
                                     uni.navigateTo({
                                         url: "/pages/paytips/paytips?code=9000"
                                     });
                                 } else {
-                                    self.order_item_pay_fail_handle(data,index);
+                                    self.order_item_pay_fail_handle(data, index);
                                 }
                             });
                         }
@@ -355,7 +382,7 @@
                                             popup_view_pay_qrcode_is_show: false
                                         });
                                         // 数据设置
-                                        self.order_item_pay_success_handle(data,index);
+                                        self.order_item_pay_success_handle(data, index);
                                         // 跳转支付页面
                                         uni.navigateTo({
                                             url: "/pages/paytips/paytips?code=9000"
@@ -371,7 +398,7 @@
                                 fail: () => {
                                     clearInterval(self.popup_view_pay_timer);
                                     app.globalData.showToast('服务器请求出错');
-                                    self.order_item_pay_fail_handle(data,index);
+                                    self.order_item_pay_fail_handle(data, index);
                                 }
                             });
                         }, 3000);
@@ -398,12 +425,12 @@
                 }
             },
             // 支付成功数据设置
-            order_item_pay_success_handle(data,index) {
-                this.$emit('pay-success', data,index)
+            order_item_pay_success_handle(data, index) {
+                this.$emit('pay-success', data, index)
             },
             // 支付成功数据设置
-            order_item_pay_fail_handle(data,index) {
-                this.$emit('pay-fail', data,index)
+            order_item_pay_fail_handle(data, index) {
+                this.$emit('pay-fail', data, index)
             },
             // 页面卸载
             onUnload(e) {
@@ -416,16 +443,28 @@
     /**
     * 支付方式
     */
+    .payment-price {
+        font-size: 80rpx;
+    }
+
+    .payment-list .scroll-y {
+        max-height: 430rpx;
+    }
+
     .payment-list .item {
-        width: 50%;
+        padding: 28rpx 28rpx 28rpx 32rpx;
     }
 
     .payment-list .item-content {
-        padding: 20rpx 10rpx;
+        /* padding: 20rpx 10rpx; */
     }
 
     .payment-list .item-content image {
         width: 50rpx;
         height: 50rpx !important;
+    }
+
+    .payment-sub {
+        padding: 86rpx 90rpx 24rpx 90rpx;
     }
 </style>

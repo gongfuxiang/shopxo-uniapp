@@ -29,7 +29,7 @@
                                                     <text class="fw-b">{{((rules.number || null) == null) ? '终身' : rules.value}}</text>
                                                     <text v-if="(rules.unit || null) != null" class="margin-left-sm">{{rules.unit}}</text>
                                                 </view>
-                                                <view class="desc margin-top-sm"> 限时优惠价 等您来抢 </view>
+                                                <view v-if="(rules.desc || null ) != null" class="desc margin-top-sm">{{rules.desc}}</view>
                                                 <view class="price flex-row align-s">
                                                     <text class="cr-red text-size-md pr top-lg margin-right-xs">{{currency_symbol}}</text>
                                                     <text class="fw-b cr-red text-size-xl single-text">{{rules.price}}</text>
@@ -68,11 +68,14 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+        <component-payment :prop-payment-list="payment_list" :prop-temp-pay-value="temp_pay_value" :prop-temp-pay-index="temp_pay_index" :prop-pay-price="pay_price"
+            :prop-is-show-payment="is_show_payment_popup" @close-payment-poupon="payment_popup_event_close"></component-payment>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
+    import componentPayment from "@/components/payment/membershiplevelvip"
     export default {
         data() {
             return {
@@ -86,10 +89,17 @@
                 selected_content_index: null,
                 submit_disabled_status: false,
                 currency_symbol: app.globalData.data.currency_symbol,
+                // 支付弹窗参数
+                payment_list: [],
+                temp_pay_value: '',
+                temp_pay_index: 0,
+                is_show_payment_popup: false,
+                pay_price: 0,
             };
         },
         components: {
-            componentNoData
+            componentNoData,
+            componentPayment
         },
         props: {},
         onLoad(params) {
@@ -134,7 +144,8 @@
                                 data_list: data.data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: status ? 3 : 0,
-                                data_bottom_line_status: status
+                                data_bottom_line_status: status,
+                                payment_list: data.payment_list
                             });
                         } else {
                             this.setData({
@@ -164,15 +175,18 @@
                 this.setData({
                     selected_tabs_index: e.currentTarget.dataset.index || 0,
                     selected_content_index: null,
-                    selected_tabs_value: ''
+                    selected_tabs_value: '',
+                    temp_pay_index: 0,
                 });
             },
             // 时长事件
             content_event(e) {
                 this.setData({
                     selected_content_index: e.currentTarget.dataset.index || 0,
-                    selected_tabs_value: e.currentTarget.dataset.value || ''
+                    selected_tabs_value: e.currentTarget.dataset.value || '',
+                    temp_pay_index: e.currentTarget.dataset.index,
                 });
+                console.log(e.currentTarget.dataset);
             },
             // 确认支付事件
             submit_event(e) {
@@ -208,14 +222,15 @@
                     success: res => {
                         uni.hideLoading();
                         this.setData({
-                            submit_disabled_status: false
+                            submit_disabled_status: false,
+                            is_show_payment_popup: this.is_show_payment_popup ? false : true,
+                            temp_pay_value: res.data.data.id,
+                            pay_price: res.data.data.price
                         });
+                        console.log(res.data)
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
                                 order_ids: res.data.data.id
-                            });
-                            uni.redirectTo({
-                                url: '/pages/plugins/membershiplevelvip/order/order'
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'submit_event')) {
@@ -235,7 +250,13 @@
             // 打开url
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
+            // 支付弹窗关闭
+            payment_popup_event_close(e) {
+                this.setData({
+                    is_show_payment_popup: false
+                });
+            },
         }
     };
 </script>
