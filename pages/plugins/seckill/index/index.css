@@ -18,7 +18,6 @@
     line-height: 50rpx;
 }
 
-
 .nav_seckill .item .state {
     margin-top: 4rpx;
     padding: 0 14rpx;
@@ -44,7 +43,7 @@
 }
 
 .rule button {
-    margin: 20rpx 30rpx 42rpx 30rpx;
+    margin: 20rpx 70rpx 42rpx 70rpx;
     height: 80rpx;
     line-height: 80rpx;
 }

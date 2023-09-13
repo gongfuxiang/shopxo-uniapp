@@ -1198,7 +1198,7 @@
                     return this.data.static_url + 'static/plugins/images/' + type + '/';
                 } else {
                     // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
-                    return this.data.static_url + 'static/app/' + this.data.default_theme + '/' + type + '/';
+                    return this.data.static_url + 'static/app/' + this.get_theme_value() + '/' + type + '/';
                 }
             },
             // rpx转px
@@ -1726,12 +1726,13 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                var default_theme = 'brown';
+                var default_theme = 'blue';
                 return uni.getStorageSync('theme') || default_theme;
             },
             // 设置主题
             set_theme_value() {
                 let theme = this.get_theme_value();
+                console.log(theme);
                 // import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
                 require(`./common/css/theme/${theme}.css`);
             },
@@ -1793,6 +1794,8 @@
             // 协议验证处理
             this.globalData.weixin_privacy_setting();
             // #endif
+            // 主题设置
+            this.globalData.set_theme_value();
         },
         // 从前台进入后台
         onHide() {

@@ -977,11 +977,6 @@ button[disabled].bg-gray {
     right: 8rpx;
 }
 
-.goods-list .right-cart-icon {
-    bottom: 8rpx;
-    right: 20rpx;
-}
-
 .goods-list .error-msg {
     position: absolute;
     top: 0;
@@ -1044,7 +1039,7 @@ button[disabled].bg-gray {
 .goods-data-grid-list .item {
     width: calc(50% - 10rpx);
     float: left;
-    padding-bottom: 10rpx;
+    padding-bottom: 20rpx;
     margin-bottom: 20rpx;
 }
 
