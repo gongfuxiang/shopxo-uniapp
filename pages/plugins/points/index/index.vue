@@ -154,7 +154,6 @@
             this.setData({
                 params: params
             });
-            console.log(app.globalData.get_theme_color());
         },
         onShow() {
             // 用户信息
@@ -303,7 +302,6 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
-                                console.log(res.data.data.data);
                                 this.setData({
                                     integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
                                     integral_list_loding_status: 3,

@@ -3,3 +3,4 @@
 *.log
 unpackage
 sitemap.json
+.prettierrc.cjs

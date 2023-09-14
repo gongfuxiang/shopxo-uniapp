@@ -1,14 +1,31 @@
 /**
+* 头部
+*/
+.realstore {
+    background-color: #F7EDE1;
+}
+
+/**
 * 位置和搜索
 */
 .nav-location {
-    width: 200rpx;
-    height: 30px;
-    line-height: 30px;
-    font-size: 12px;
+    padding: 28rpx 16rpx;
 }
+
 .nav-search {
-    width: calc(100% - 210rpx);
+    margin-top: 80rpx;
+}
+
+.nav-search /deep/ .search-icon {
+    left: 30rpx;
+    margin-top: 2rpx;
+}
+
+.nav-search /deep/ input {
+    padding: 0 32rpx 0 82rpx;
+    font-size: 28rpx;
+    height: 80rpx;
+    line-height: 80rpx;
 }
 
 /**
@@ -20,10 +37,12 @@
     left: 0;
     z-index: 1;
 }
+
 .choice-location-tips .content {
     margin-top: 42%;
     width: 520rpx;
 }
+
 .choice-location-tips .content .close {
     top: 20rpx;
     right: 20rpx;
