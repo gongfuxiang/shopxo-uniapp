@@ -117,7 +117,7 @@
     height: calc(100vh - 294rpx);
     /* #endif */
     /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
-    height: calc(100vh - 450rpx);
+    height: calc(100vh - 454rpx);
     /* #endif */
 }
 
@@ -156,7 +156,10 @@
     top: 0;
     right: 0;
     z-index: 1;
-    padding: 20rpx 20rpx 0 20rpx;
+    background-color: #fff;
+    padding: 0 20rpx;
+    height: 70rpx;
+    line-height: 70rpx;
 }
 
 .goods-list .goods-img {
@@ -188,7 +191,7 @@
 .botton-nav {
     width: calc(100% - 40rpx);
     left: auto;
-    bottom: 20rpx;
+    bottom: calc(20rpx + env(safe-area-inset-bottom));
     z-index: 6;
     max-width: calc(800px - 40rpx);
     margin-left: 20rpx;
@@ -201,11 +204,8 @@
     right: -2rpx;
 }
 
-.botton-nav .cart-total-price {
-    width: calc(100% - 260rpx);
-}
-
 .botton-nav button {
+    width: 160rpx;
     line-height: 84rpx;
     height: 84rpx;
     padding: 0 38rpx;
@@ -217,7 +217,8 @@
 }
 
 .botton-nav .cart-total-price {
-    padding-left: 26rpx;
+    padding-left: 20rpx;
+    width: calc(100% - 260rpx);
 }
 
 .cart {

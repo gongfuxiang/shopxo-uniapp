@@ -8,32 +8,32 @@
     </view>
 </template>
 <script>
-    const app = getApp();
-    import componentQuickNav from "../../components/quick-nav/quick-nav";
-    import componentCart from "../../components/cart/cart";
-    export default {
-        data() {
-            return {};
-        },
-        components: {
-            componentQuickNav,
-            componentCart
-        },
+const app = getApp();
+import componentQuickNav from "../../components/quick-nav/quick-nav";
+import componentCart from "../../components/cart/cart";
+export default {
+    data() {
+        return {};
+    },
+    components: {
+        componentQuickNav,
+        componentCart,
+    },
 
-        onShow() {
-            // 数据加载
-            if((this.$refs.cart || null) != null) {
-                this.$refs.cart.init('cart');
-            }
-        },
+    onShow() {
+        // 数据加载
+        if ((this.$refs.cart || null) != null) {
+            console.log("父组件触发");
+            this.$refs.cart.init("cart");
+        }
+    },
 
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.$refs.cart.init('cart');
-        },
+    // 下拉刷新
+    onPullDownRefresh() {
+        this.$refs.cart.init("cart");
+    },
 
-        methods: {}
-    };
+    methods: {},
+};
 </script>
-<style>
-</style>
+<style></style>

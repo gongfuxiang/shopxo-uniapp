@@ -339,7 +339,7 @@
                 </block>
                 <!-- 购物车底部导航 -->
                 <view class="botton-nav round pa oh flex-row jc-sb align-c">
-                    <view class="flex-row align-c flex-1">
+                    <view class="flex-row align-c flex-1 flex-width">
                         <view class="cart pr cp top-sm" @tap="cart_event">
                             <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#fff"></iconfont>
                             <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">

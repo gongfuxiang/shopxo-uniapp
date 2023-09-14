@@ -40,7 +40,7 @@
                 </view>
                 <!-- 头部基础内容 -->
                 <view class="header-content padding-horizontal-main">
-                    <view class="padding-main border-radius-main bg-white pr box-shadow z-i">
+                    <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
                         <view class="base flex-row">
                             <!-- 基础内容 -->
                             <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
@@ -271,7 +271,7 @@
 
             <!-- 购物车底部导航 -->
             <view class="botton-nav round pa oh flex-row jc-sb align-c">
-                <view class="flex-row align-c flex-1">
+                <view class="flex-row align-c flex-1 flex-width">
                     <view class="cart pr cp top-sm" @tap="cart_event">
                         <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#fff"></iconfont>
                         <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">

@@ -236,6 +236,10 @@ button:before {
     z-index: 1;
 }
 
+.z-i-deep {
+    z-index: 2;
+}
+
 .bs-bb {
     box-sizing: border-box;
 }
@@ -1040,14 +1044,12 @@ button[disabled].bg-gray {
 }
 
 .goods-data-list .base .base-bottom {
-    bottom: 20rpx;
-    right: 20rpx;
     width: calc(100% - 260rpx);
 }
 
 .goods-data-list .error-msg {
-    top: 20rpx;
-    left: 20rpx;
+    top: 24rpx;
+    left: 24rpx;
     line-height: 190rpx;
 }
 
@@ -1070,9 +1072,9 @@ button[disabled].bg-gray {
 /**
  * 商品列表 - 九方格
  */
+
 .goods-data-grid-list .item {
     width: calc(50% - 10rpx);
-    float: left;
     padding-bottom: 20rpx;
     margin-bottom: 20rpx;
 }
