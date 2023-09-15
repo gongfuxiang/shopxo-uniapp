@@ -7,11 +7,7 @@
 }
 
 .goods-top-search-bg {
-    background-color: red;
-    height: 144rpx;
-    /* #ifdef H5 */
-    height: 104rpx !important;
-    /* #endif */
+    background-color: #f5f5f5;
 }
 
 /**

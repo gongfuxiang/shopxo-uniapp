@@ -7,7 +7,7 @@
             <!-- 搜索框 -->
             <block v-if="is_single_page == 0">
                 <view class="nav-search padding-horizontal-main pr" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
-                    <view class="goods-top-search-bg pa top-0 left-0 right-0 wh-auto">
+                    <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto">
                         <image :src="theme_static_url + 'goods-top-bg.png'" mode="top" class="wh-auto ht-auto"></image>
                     </view>
                     <block v-if="is_goods_category_search_alone == 1">
@@ -20,7 +20,7 @@
             </block>
 
             <!-- 分类内容 -->
-            <view v-if="category_list.length > 0" :class="'category-content bs-bb pr bg-green ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + (status_bar_height + 45) + 'px);'">
+            <view v-if="category_list.length > 0" :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + (status_bar_height + 45) + 'px);'">
                 <block v-if="category_show_level == 1">
                     <!-- 一级模式 -->
                     <scroll-view scroll-y class="ht-auto">
@@ -54,7 +54,7 @@
                                     </view>
                                 </block>
                             </scroll-view>
-                            <component-nav-more class="nav-more-top" :prop-top="status_bar_height + 247 + 'px'" :prop-status="popup_status" @open-popup="open_popup_event">
+                            <component-nav-more class="nav-more-top" :prop-top="status_bar_height + 47 + 'px'" :prop-status="popup_status" @open-popup="open_popup_event">
                                 <view class="nav-list-more">
                                     <view class="flex-row flex-warp align-c">
                                         <block v-for="(item, index) in category_list" :key="index">

@@ -23,7 +23,6 @@ export default {
     onShow() {
         // 数据加载
         if ((this.$refs.cart || null) != null) {
-            console.log("父组件触发");
             this.$refs.cart.init("cart");
         }
     },
