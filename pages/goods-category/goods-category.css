@@ -2,13 +2,15 @@
  * 头部背景
  */
 .goods-top-bg {
-    height: 280rpx;
+    height: 286rpx;
+    background-color: #f5f5f5;
 }
 
 .goods-top-search-bg {
-    height: 138rpx;
-    /* #ifdef H5 || APP */
-    height: 98rpx;
+    background-color: red;
+    height: 144rpx;
+    /* #ifdef H5 */
+    height: 104rpx !important;
     /* #endif */
 }
 
@@ -23,14 +25,24 @@
     /* #ifdef H5 || MP-TOUTIAO || APP */
     padding-right: 20rpx;
     /* #endif */
-    padding-bottom: 10px;
+    /* #ifdef H5 */
+    padding-top: 20rpx !important;
+    /* #endif */
+    padding-bottom: 20rpx;
+    height: 64rpx;
     z-index: 101;
 }
 
 .category-content {
-    height: calc(100vh - 68px);
+    height: calc(100vh - 142rpx);
     /* #ifdef H5 || APP */
-    height: calc(100vh - 99px) !important;
+    height: calc(100vh - 210rpx) !important;
+    /* #endif */
+}
+
+.nav-more-top {
+    /* #ifdef H5 || APP */
+    top: 135rpx !important;
     /* #endif */
 }
 
@@ -302,7 +314,7 @@
     width: calc(100% - 40rpx);
     left: auto;
     bottom: 20rpx;
-    z-index: 6;
+    z-index: 2;
     max-width: calc(800px - 40rpx);
     margin-left: 20rpx;
     background: linear-gradient(132deg, #EBEBEB 0%, #F7F7F7 100%);

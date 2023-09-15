@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="propData.length > 0" class="icon-nav-list" :class="propData.length > 5 ? 'swiper-height-max' : 'swiper-height-min'">
+        <view v-if="propData.length > 0" class="icon-nav-list spacing-mb" :class="propData.length > 5 ? 'swiper-height-max' : 'swiper-height-min'">
             <uni-swiper-dot class="uni-swiper-dot-box" mode="default" :dots-styles="dotsStyles" @clickItem="click_item" :info="swiperData" :current="current">
                 <swiper class="swiper-box" :autoplay="autoplay" :duration="duration" @change="swiper_change" :current="swiperDotIndex">
                     <swiper-item v-for="(swiperItemData, i) in swiperData" :key="i">
@@ -66,7 +66,6 @@ export default {
 <style scoped>
 .icon-nav-list {
     overflow: hidden;
-    margin-bottom: 20rpx;
     padding: 20rpx;
 }
 

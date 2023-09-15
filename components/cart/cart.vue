@@ -59,44 +59,6 @@
                         </view>
                     </uni-swipe-action>
                 </view>
-
-                <!-- 操作导航 -->
-                <!-- 展示型 -->
-                <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
-                    <view class="cart-exhibition-mode padding-horizontal-main">
-                        <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
-                            <view class="dis-inline-block va-m margin-right-xl">
-                                <uni-icons type="phone" size="14" color="#fff" />
-                            </view>
-                            <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
-                        </button>
-                    </view>
-                </view>
-                <!-- 销售,自提,虚拟销售 -->
-                <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-t bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
-                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
-                        <view class="cart-selected flex-row align-c">
-                            <view @tap="selected_event" data-type="all">
-                                <image class="icon va-m" :src="common_static_url + 'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
-                            </view>
-                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
-                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
-                        </view>
-                        <view class="price flex-row jc-e flex-nowrap align-c">
-                            <view>合计：</view>
-                            <view class="sales-price single-text fw-b">
-                                <text class="text-size-sm">{{ currency_symbol }}</text>
-                                <text class="text-size-lg">{{ total_price }}</text>
-                            </view>
-                        </view>
-                    </view>
-                    <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                            去结算
-                            <text v-if="total_num > 0">({{ total_num }})</text>
-                        </button>
-                    </view>
-                </view>
             </view>
 
             <!-- 空购物车 -->
@@ -134,6 +96,45 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
         </scroll-view>
+        <!-- 操作导航 -->
+        <!-- 展示型 -->
+        <block v-if="data_list.length > 0">
+            <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                <view class="cart-exhibition-mode padding-horizontal-main">
+                    <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                        <view class="dis-inline-block va-m margin-right-xl">
+                            <uni-icons type="phone" size="14" color="#fff" />
+                        </view>
+                        <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
+                    </button>
+                </view>
+            </view>
+            <!-- 销售,自提,虚拟销售 -->
+            <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-t bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
+                <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
+                    <view class="cart-selected flex-row align-c">
+                        <view @tap="selected_event" data-type="all">
+                            <image class="icon va-m" :src="common_static_url + 'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                        </view>
+                        <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
+                        <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
+                    </view>
+                    <view class="price flex-row jc-e flex-nowrap align-c">
+                        <view>合计：</view>
+                        <view class="sales-price single-text fw-b">
+                            <text class="text-size-sm">{{ currency_symbol }}</text>
+                            <text class="text-size-lg">{{ total_price }}</text>
+                        </view>
+                    </view>
+                </view>
+                <view class="cart-nav-submit">
+                    <button class="bg-main cr-white round" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                        去结算
+                        <text v-if="total_num > 0">({{ total_num }})</text>
+                    </button>
+                </view>
+            </view>
+        </block>
     </view>
 </template>
 <script>
@@ -289,7 +290,7 @@ export default {
         },
 
         // 获取数据
-        get_data() {
+        get_data(type) {
             uni.request({
                 url: app.globalData.get_request_url("index", "cart"),
                 method: "POST",
@@ -314,14 +315,18 @@ export default {
                         let new_goods_list = [];
                         // 判断猜你喜欢是否含有数据
                         if (this.goods_list.length > 0) {
-                            new_goods_list = this.goods_change(data_list, 0, true);
+                            if (type !== 1) {
+                                new_goods_list = this.goods_change(data_list);
+                                this.setData({
+                                    goods_list: new_goods_list,
+                                });
+                            }
                         }
                         // 设置数据
                         this.setData({
                             data_list: data_list,
                             data_list_loding_status: data_list.length == 0 ? 0 : 3,
                             data_list_loding_msg: "购物车空空如也",
-                            goods_list: new_goods_list,
                         });
                         // 选择处理
                         this.cart_selected_calculate();
@@ -373,6 +378,20 @@ export default {
             var buy_number = type == 0 ? temp_number - 1 : temp_number + 1;
             this.goods_buy_number_func(index, buy_number, type);
         },
+        // 删除弹窗
+        model_tips(id) {
+            uni.showModal({
+                title: "温馨提示",
+                content: "挑了这么久，真的要删除吗？",
+                confirmText: "确认",
+                cancelText: "暂不",
+                success: (result) => {
+                    if (result.confirm) {
+                        this.cart_delete(id, "delete");
+                    }
+                },
+            });
+        },
 
         // 数量处理方法
         goods_buy_number_func(index, buy_number, type) {
@@ -384,8 +403,10 @@ export default {
             let new_type = type === 0 ? "del" : "add";
             if (buy_number < buy_min_number) {
                 buy_number = buy_min_number;
+                this.data_list[index].stock = buy_min_number;
                 if (buy_min_number > 1) {
                     app.globalData.showToast("起购" + buy_min_number + inventory_unit);
+                    this.model_tips(temp_data_list[index]["id"]);
                     return false;
                 }
             }
@@ -403,6 +424,7 @@ export default {
             }
 
             if (temp_data_list[index]["stock"] == 1 && buy_number == 1) {
+                this.model_tips(temp_data_list[index]["id"]);
                 return false;
             }
 
@@ -431,7 +453,7 @@ export default {
                         temp_data_list[index]["selected"] = true;
                         delete not_use[temp_data_list[index]["id"]];
 
-                        let new_goods_list = this.goods_change(temp_data_list, buy_number);
+                        let new_goods_list = this.goods_change(temp_data_list);
                         this.setData({
                             data_list: temp_data_list,
                             goods_list: new_goods_list,
@@ -532,8 +554,8 @@ export default {
 
             // 根据操作类型处理数据
             var id = temp_data_list[this.swipe_item_index]["id"];
+            var goods_id = temp_data_list[this.swipe_item_index]["goods_id"];
             if (index == 0) {
-                var goods_id = temp_data_list[this.swipe_item_index]["goods_id"];
                 this.goods_favor_delete(id, goods_id, "favor");
             } else {
                 this.cart_delete(id, "delete");
@@ -559,7 +581,7 @@ export default {
                                 temp_list.push(temp_data_list[i]);
                             }
                         }
-                        let new_goods_list = this.goods_change(temp_data_list);
+                        let new_goods_list = this.goods_change(temp_list);
                         this.setData({
                             data_list: temp_list,
                             data_list_loding_status: temp_list.length == 0 ? 0 : this.data_list_loding_status,
@@ -786,32 +808,55 @@ export default {
                 },
             });
         },
+
         // 猜你喜欢加入购物车回调
         cart_success_event() {
-            this.get_data();
+            // 传1表示为购物车回调方法调用的此方法
+            this.get_data(1);
         },
+
         // 猜你喜欢数据更新
-        // shop_list: 购物车数据； is_init:判断是否是初始化数据，如果是则buy_number参数不生效； buy_number: 购买数量 不传默认为全部删除
-        goods_change(shop_list, buy_number, is_init) {
+        // cart_list: 购物车数据；
+        goods_change(cart_list) {
             // 更新猜你喜欢的数据
             let new_goods_list = this.goods_list;
-            let init = is_init || false;
-            let new_buy_number = buy_number || 0;
             for (let i = 0; i < new_goods_list.length; i++) {
-                let bool = app.globalData.some_arry(shop_list, new_goods_list[i].id, "goods_id");
+                let bool = app.globalData.some_arry(cart_list, new_goods_list[i].id, "goods_id");
                 if (bool) {
-                    if (is_init) {
-                        for (let j = 0; j < shop_list.length; j++) {
-                            if (shop_list[j].goods_id === new_goods_list[i].id) {
-                                new_goods_list[i].user_cart_count = shop_list[j].stock;
-                            }
+                    // 将购物车中相同商品不同规格的商品数量累加
+                    let new_goods_item = this.cart_item_num(cart_list);
+                    for (let j = 0; j < new_goods_item.length; j++) {
+                        if (new_goods_list[i].id === new_goods_item[j].id) {
+                            new_goods_list[i].user_cart_count = new_goods_item[j].num;
                         }
-                    } else {
-                        new_goods_list[i].user_cart_count = new_buy_number;
                     }
+                } else {
+                    new_goods_list[i].user_cart_count = 0;
                 }
             }
             return new_goods_list;
+        },
+
+        // 商品数量去重累加数量
+        cart_item_num(cart_list) {
+            let _res = [];
+            for (let i = 0; i < cart_list.length; ) {
+                let num = 0;
+                let count = 0;
+                for (let j = i; j < cart_list.length; j++) {
+                    if (cart_list[i].goods_id == cart_list[j].goods_id) {
+                        num += Number(cart_list[j].stock ? cart_list[j].stock : 0);
+                        count++;
+                    }
+                }
+                let obj = {
+                    id: cart_list[i].goods_id,
+                    num: num,
+                };
+                _res.push(obj);
+                i += count;
+            }
+            return _res;
         },
     },
 };
@@ -821,10 +866,16 @@ export default {
     * 商品列表
     */
 .scroll-box.active {
+    height: calc(100vh - 125rpx);
+    /* 125rpx */
+    /* #ifdef H5 */
     height: calc(100vh - 224rpx);
+    /* #endif */
 }
 .scroll-box {
+    /* #ifdef H5 */
     height: calc(100vh - 100rpx);
+    /* #endif */
 }
 
 .cart-goods-title {
@@ -912,7 +963,7 @@ export default {
     position: fixed;
     z-index: 2;
     left: 0;
-    bottom: 0;
+    bottom: 0rpx;
     /* #ifdef H5 || APP */
     bottom: var(--window-bottom);
     /* #endif */
