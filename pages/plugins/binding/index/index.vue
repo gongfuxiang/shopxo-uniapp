@@ -3,7 +3,7 @@
         <view v-if="(data_base || null) != null">
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view :class="((shop || null) != null ? 'page' : '')">
+                <view :class="'padding-main '+((shop || null) != null ? 'page' : '')">
                     <block v-if="(data_list || null) != null && data_list.length > 0">
                         <!-- 组合搭配组件 -->
                         <component-binding-list :propConfig="data_base" :propDataList="data_list" :propCurrencySymbol="currency_symbol"></component-binding-list>
