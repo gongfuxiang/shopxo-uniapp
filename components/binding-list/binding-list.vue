@@ -31,8 +31,8 @@
                             </block>
                         </view>
                     </view>
-                    <view :class="'bg-white padding-main wh-auto pa bs-bb bottom-elastic '+((item.is_home_show_goods || 0) != 1 ? 'br-t-dashed' : '')" :data-index="index" @tap="item_more_goods_event">
-                        <view class="arrow-bottom">
+                    <view class="bg-white padding-horizontal-main padding-bottom-main wh-auto pa bs-bb bottom-elastic" :data-index="index" @tap="item_more_goods_event">
+                        <view :class="'padding-top-main arrow-bottom '+((item.is_home_show_goods || 0) != 1 ? 'br-t-dashed' : '')">
                             <view class="cr-grey text-size-xs">{{(item.is_home_show_goods || 0) == 1 ? '收起' : '展开'}}{{item.type_name}}商品</view>
                         </view>
                     </view>
