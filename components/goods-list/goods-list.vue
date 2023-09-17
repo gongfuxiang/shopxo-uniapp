@@ -21,7 +21,6 @@
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-value="item.goods_url" @tap="url_event">
                                 <image class="goods-img fl radius" :src="item.images" mode="aspectFit"></image>
-                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius">{{item.error_msg}}</view>
                                 <view class="base fr">
                                     <view class="multi-text">{{item.title}}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm">{{item.simple_desc}}</view>
@@ -56,7 +55,6 @@
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-value="item.goods_url" @tap="url_event">
                                 <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
-                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{item.title}}</view>
                                     <view class="margin-top-sm">
@@ -95,7 +93,6 @@
                                         <!-- 商品主体内容 -->
                                         <view class="cp" :data-value="item.goods_url" @tap="url_event">
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
-                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa cr-gray tc radius wh-auto">{{item.error_msg}}</view>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="multi-text">{{item.title}}</view>
                                                 <view class="margin-top-sm">

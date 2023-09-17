@@ -83,7 +83,7 @@
                 // 默认logo、如 /static/images/common/logo.png
                 application_logo: '',
                 // 版本号
-                version: 'v3.0.2',
+                version: 'v3.0.3',
                 // 货币价格符号
                 currency_symbol: '￥',
                 // 主题类型        主题颜色
