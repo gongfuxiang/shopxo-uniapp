@@ -1,207 +1,206 @@
 <template>
-	<view class="padding-bottom padding-horizontal-main">
-		<view class="coupon-card oh pr flex-row">
-			<view class="card-left flex-col jc-sa align-c" :class="propData.type > 4 ? 'failure' : ''">
-				<view class="price cr-white">
-					<text v-if="propData.type == 0" class="symbol text-size">{{currency_symbol}}</text>
-					<text class="num text-size-xxl">{{propData.discount_value}}</text>
-					<text v-if="propData.type_unit" class="unit text-size-md">{{propData.type_unit}}</text>
-				</view>
-				<text v-if="(propData.desc || null) != null" class="desc cr-white text-size-xs single-text">{{propData.desc}}</text>
-			</view>
-			<view class="card-right flex-1 flex-width flex-row jc-sb align-c" :class="propData.type > 4 ? 'failure' : ''">
-				<view class="card-info flex-1 flex-width" :class="propData.type > 4 ? 'failure' : ''">
-					<view class="title text-size-lg single-text">{{propData.use_limit_type_name}}</view>
-					<view v-if="prprDate" class="date text-size-md cr-grey-9 single-text padding-top-sm">{{prprDate}}</view>
-					<view v-if="propIsProgress" class="progress padding-top-sm flex-row align-c">
-						<progress class="flex-1" :percent="prprGet" stroke-width="6" activeColor="#FF7004" backgroundColor="#fff" border-radius="3" />
-						<view class="percent text-size-xss cr-grey-9 padding-left-main">
-							已领{{prprGet}}%
-						</view>
-					</view>
-					<view v-if="propIsPeriodOfValidity" class="padding-top-sm text-size-xs cr-red">快过期</view>
-				</view>
-				<view v-if="propData.is_operable == 1" class="card-type">
-					<!-- 按钮状态 1-领取，2-已领取，3-已抢完，4-去使用,5-已使用，6-已过期 -->
-					<view v-if="propData.type===1" class="card-btn dis-inline-block cr-white" @tap="receive">{{propData.is_operable_name}}</view>
-					<view v-else-if="propData.type==2" class="card-btn dis-inline-block cr-red br-red received">{{propData.is_operable_name}}</view>
-					<view v-else-if="propData.type==3" class="card-btn dis-inline-block cr-white robbed">{{propData.is_operable_name}}</view>
-					<navigator v-else-if="propData.type==4" :url="home_page_url" open-type="switchTab" hover-class="none">
-						<view class="card-btn dis-inline-block cr-white">
-							{{propData.is_operable_name}}
-						</view>
-					</navigator>
-					<view v-if="propData.type==5" class="card-image pa top-0 right-0">
-						<image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
-					</view>
-					<view v-else-if="propData.type==6" class="card-image pa top-0 right-0">
-						<image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
-					</view>
-					<view v-else @tap="receive">暂无type参数</view>
-				</view>
-			</view>
-			<view class="card-circle-top" :style="{background:`${propBg}`}"></view>
-			<view class="card-circle-bottom" :style="{background:`${propBg}`}"></view>
-		</view>
-	</view>
+    <view class="padding-bottom padding-horizontal-main">
+        <view class="coupon-card oh pr flex-row">
+            <view class="card-left flex-col jc-sa align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-white'">
+                <view class="price">
+                    <text v-if="propData.type == 0" class="symbol text-size">{{ currency_symbol }}</text>
+                    <text class="num text-size-xxl">{{ propData.discount_value }}</text>
+                    <text v-if="propData.type_unit" class="unit text-size-md">{{ propData.type_unit }}</text>
+                </view>
+                <text v-if="(propData.desc || null) != null" class="desc text-size-xs single-text">{{ propData.desc }}</text>
+            </view>
+            <view class="card-right flex-1 flex-width flex-row jc-sb align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : ''">
+                <view class="card-info flex-1 flex-width padding-right-main" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-black'">
+                    <view class="title text-size-lg single-text">{{ propData.use_limit_type_name }}</view>
+                    <view v-if="propData.time_start && propData.time_end" class="date text-size-md cr-grey-9 single-text padding-top-sm">{{ propData.time_start }}-{{ propData.time_end }}</view>
+                    <view v-if="propIsProgress && propData.process_data" class="progress padding-top-sm flex-row align-c">
+                        <block v-if="propData.process_data.type == 0">
+                            <text class="text-size-xs cr-grey-9"> {{ propData.process_data.msg }} </text>
+                        </block>
+                        <block v-else>
+                            <progress class="flex-1" :percent="propData.process_data.value" stroke-width="6" activeColor="#FF7004" backgroundColor="#fff" border-radius="3" />
+                            <view class="percent text-size-xss cr-grey-9 padding-left-main"> {{ propData.process_data.msg }} </view>
+                        </block>
+                    </view>
+                    <view v-if="propData.expire_tips" class="padding-top-sm text-size-xs cr-red">{{ propData.expire_tips }}</view>
+                </view>
+                <view class="card-type">
+                    <!-- 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期 -->
+                    <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName }}</view>
+                    <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName }}</view>
+                    <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName }}</view>
+                    <navigator v-else-if="propStatusType == 3" :url="home_page_url" open-type="switchTab" hover-class="none">
+                        <view class="card-btn dis-inline-block cr-white">
+                            {{ propStatusOperableName }}
+                        </view>
+                    </navigator>
+                    <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
+                        <image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
+                    </view>
+                    <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
+                        <image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
+                    </view>
+                    <view v-else @tap="receive">暂无type参数</view>
+                </view>
+            </view>
+            <view class="card-circle-top" :style="{ background: `${propBg}` }"></view>
+            <view class="card-circle-bottom" :style="{ background: `${propBg}` }"></view>
+        </view>
+    </view>
 </template>
 
 <script>
-	const app = getApp();
-	var coupon_static_url = app.globalData.get_static_url('coupon', true);
-	export default {
-		name: "coupon-card",
-		props: {
-			propData: {
-				type: Object,
-				default: () => {
-					return {
-						// 按钮状态 1-领取，2-已领取，3-已抢完，4-去使用,5-已使用，6-已过期
-						type: 1
-					}
-				}
-			},
-			// 有效日期 // 2023.08.30-2023.09.1
-			prprDate: {
-				type: String,
-				default: ''
-			},
-			// 领取数量
-			prprGet: {
-				type: Number,
-				default: 10
-			},
-			// 半圆背景
-			propBg: {
-				type: String,
-				default: '#fff'
-			},
-			// 进度条
-			propIsProgress: {
-				type: Boolean,
-				default: false
-			},
-			// 有效期提示
-			propIsPeriodOfValidity: {
-				type: Boolean,
-				default: false
-			},
-			// 按钮状态 1-领取，2-已领取，3-已抢完，4-去使用,5-已使用，6-已过期
-			propStatus: {
-				type: Number,
-				default: 1
-			},
-			// 是否可重复领取
-			propRepeatedClaim: {
-				type: Boolean,
-				default: false
-			},
-			// 是否可点击
-			propDisabled: {
-				type: Boolean,
-				default: false
-			},
-			// 领取 已领取 已抢完 去使用
-			propBtnName: {
-				type: String,
-				default: ''
-			},
-			// 下标
-			propIndex: {
-				type: Number,
-				default: 1
-			}
-
-		},
-		data() {
-			return {
-				coupon_static_url: coupon_static_url,
-				// 符号
-				currency_symbol: app.globalData.data.currency_symbol,
-				// 首页地址
-				home_page_url: app.globalData.data.tabbar_pages[0]
-			};
-		},
-		methods: {
-			receive(e) {
-				this.$emit('call-back', this.propIndex, this.propData.id)
-			}
-		}
-	}
+const app = getApp();
+var coupon_static_url = app.globalData.get_static_url("coupon", true);
+export default {
+    name: "coupon-card",
+    props: {
+        propData: {
+            type: Object,
+            default: () => {
+                return {
+                    // id: "0",
+                    // // 领取数量
+                    // already_send_count: 0,
+                    // // 总数
+                    // process_data: {
+                    //     type: 1, // 0 无限制
+                    //     value: 20,
+                    //     msg: "已领20%",
+                    // },
+                    // // 日期有效日期 // 2023.08.30-2023.09.1
+                    // date: "",
+                    // expire_tips: "",
+                    // time_start: "",
+                    // time_end: "",
+                };
+            },
+        },
+        // 半圆背景
+        propBg: {
+            type: String,
+            default: "#fff",
+        },
+        // 进度条
+        propIsProgress: {
+            type: Boolean,
+            default: false,
+        },
+        // 是否可重复领取
+        propRepeatedClaim: {
+            type: Boolean,
+            default: false,
+        },
+        // 是否可点击
+        propDisabled: {
+            type: Boolean,
+            default: false,
+        },
+        // 下标
+        propIndex: {
+            type: Number,
+            default: 1,
+        },
+        // 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期
+        propStatusType: {
+            type: Number,
+            default: 0,
+        },
+        // 按钮名称： 领取 已领取 已抢完 去使用
+        propStatusOperableName: {
+            type: String,
+            default: "去使用",
+        },
+    },
+    data() {
+        return {
+            coupon_static_url: coupon_static_url,
+            // 符号
+            currency_symbol: app.globalData.data.currency_symbol,
+            // 首页地址
+            home_page_url: app.globalData.data.tabbar_pages[0],
+        };
+    },
+    methods: {
+        receive(e) {
+            this.$emit("call-back", this.propIndex, this.propData.id);
+        },
+    },
+};
 </script>
 
 <style scoped>
-	.coupon-card {
-		border-radius: 24rpx;
-		height: 208rpx;
-	}
+.coupon-card {
+    border-radius: 24rpx;
+    height: 208rpx;
+}
 
-	.card-left {
-		width: 176rpx;
-		padding: 24rpx 12rpx;
-		background: linear-gradient(95deg, #FF994B 0%, #FF6E00 100%);
-	}
+.card-left {
+    width: 176rpx;
+    padding: 24rpx 12rpx;
+    background: linear-gradient(95deg, #ff994b 0%, #ff6e00 100%);
+}
 
-	.card-left.failure {
-		background: linear-gradient(95deg, #EEEEEE 0%, #FAFAFA 100%);
-	}
+.card-left.failure {
+    background: linear-gradient(95deg, #eeeeee 0%, #fafafa 100%);
+}
 
-	.card-right {
-		padding: 32rpx 24rpx 32rpx 46rpx;
-		background-color: #FFE4D1;
-	}
+.card-right {
+    padding: 32rpx 24rpx 32rpx 46rpx;
+    background-color: #ffe4d1;
+}
 
-	.card-right.failure {
-		background: #FFFFFF;
-	}
+.card-right.failure {
+    background: #ffffff;
+}
 
-	.card-info.failure {
-		padding-right: 116rpx;
-	}
+.card-info.failure {
+    padding-right: 116rpx;
+}
 
-	.card-btn {
-		width: 116rpx;
-		text-align: center;
-		padding: 6rpx 0;
-		background: linear-gradient(93deg, #FF9747 0%, #FF6E01 100%);
-		border-radius: 13px;
-	}
+.card-btn {
+    width: 116rpx;
+    text-align: center;
+    padding: 6rpx 0;
+    background: linear-gradient(93deg, #ff9747 0%, #ff6e01 100%);
+    border-radius: 13px;
+}
 
-	.robbed {
-		background: #FBD3B7;
-	}
+.robbed {
+    background: #fbd3b7;
+}
 
-	.received {
-		border-radius: 13px;
-		background: transparent;
-	}
+.received {
+    border-radius: 13px;
+    background: transparent;
+}
 
-	/deep/ .uni-progress-bar,
-	/deep/ .uni-progress-inner-bar {
-		border-radius: 6rpx;
-	}
+::v-deep .uni-progress-bar,
+::v-deep .uni-progress-inner-bar {
+    border-radius: 6rpx;
+}
 
-	.card-circle-top,
-	.card-circle-bottom {
-		width: 40rpx;
-		height: 40rpx;
-		background-color: #fff;
-		border-radius: 50%;
-		position: absolute;
-		left: 180rpx;
-		z-index: 1;
-	}
+.card-circle-top,
+.card-circle-bottom {
+    width: 40rpx;
+    height: 40rpx;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    left: 180rpx;
+    z-index: 1;
+}
 
-	.card-circle-top {
-		top: -20rpx;
-	}
+.card-circle-top {
+    top: -20rpx;
+}
 
-	.card-circle-bottom {
-		bottom: -20rpx;
-	}
+.card-circle-bottom {
+    bottom: -20rpx;
+}
 
-	.card-image image {
-		width: 136rpx;
-		height: 108rpx;
-	}
+.card-image image {
+    width: 136rpx;
+    height: 108rpx;
+}
 </style>

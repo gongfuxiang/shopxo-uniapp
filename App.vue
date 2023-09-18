@@ -67,11 +67,11 @@ export default {
             // tabbar页面
             tabbar_pages: ["/pages/index/index", "/pages/goods-category/goods-category", "/pages/cart/cart", "/pages/user/user"],
             // 请求地址
-            request_url: "https://d1.shopxo.vip/",
-            // request_url: "http://shopxo.com/",
+            // request_url: "https://d1.shopxo.vip/",
+            request_url: "http://shopxo.com/",
             // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-            static_url: "https://d1.shopxo.vip/",
-            // static_url: "http://shopxo.com/",
+            // static_url: "https://d1.shopxo.vip/",
+            static_url: "http://shopxo.com/",
             // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
             system_type: "default",
             // 基础信息
@@ -1741,7 +1741,7 @@ export default {
             require(`./common/css/theme/${theme}.css`);
         },
         // 获取主题色值
-        get_theme_color() {
+        get_theme_color(obj) {
             let color_obj = {
                 yellow: "#f6c133", // 黄色
                 red: "#ff0036", // 红色
@@ -1751,8 +1751,17 @@ export default {
                 orange: "#fe6f04", // 橙色
                 brown: "#8B4513", // 棕色
                 purple: "#623cec", // 紫色
+
+                yellow_light: "#ffebd2", // 黄色
+                red_light: "#ffdbe2", // 红色
+                black_light: "#dcdcdc", // 黑色
+                blue_light: "#d1e4ff", // 蓝色
+                green_light: "#cce8d2", // 绿色
+                orange_light: "#fde4d1", // 橙色
+                brown_light: "#eadcd2", // 棕色
+                purple_light: "#d6cbfb", // 紫色
             };
-            let theme = this.get_theme_value();
+            let theme = obj ? this.get_theme_value() + "_" + obj : this.get_theme_value();
             return color_obj[theme];
         },
         // 数组分组

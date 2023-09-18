@@ -502,6 +502,10 @@ button:before {
     border: solid 1px #d6d6d6 !important;
 }
 
+.br-grey-d {
+    border: solid 1px #dddddd !important;
+}
+
 .br-blue {
     border: solid 1px #2196F3 !important;
 }
@@ -634,6 +638,10 @@ button:before {
     background-color: #d6d6d6 !important;
 }
 
+.bg-grey-d {
+    background-color: #dddddd !important;
+}
+
 .bg-base {
     background-color: #f5f5f5 !important;
 }
@@ -678,9 +686,7 @@ button[disabled].bg-gray {
  * 表单
  */
 .form-container .form-gorup {
-    padding: 20rpx;
-    margin-bottom: 20rpx;
-    border-radius: 20rpx;
+    padding: 24rpx;
 }
 
 .form-container .form-gorup .form-gorup-item-left {
@@ -707,14 +713,9 @@ button[disabled].bg-gray {
     background: #fff;
 }
 
-.form-container .form-gorup-title {
-    margin-bottom: 5rpx;
-    font-weight: 500;
-}
-
 .form-container .form-group-tips,
 .form-container .form-group-tips-must {
-    margin-left: 20rpx;
+    margin-left: 6rpx;
     font-size: 24rpx;
     color: #ccc;
 }

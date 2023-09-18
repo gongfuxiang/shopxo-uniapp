@@ -2,7 +2,7 @@
     <view>
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : '') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
-            <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom') + ' ' + (propIsBar ? 'popup-bar' : '')" :style="[{ left: popup_content_left_value + 'px' }, { top: propShow ? propTop : '' }, { bottom: propShow ? propBottom : '' }]">
+            <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom') + ' ' + (propIsBar ? 'popup-bar' : '')" :style="position_style">
                 <slot></slot>
             </view>
         </view>
@@ -66,6 +66,12 @@ export default {
             this.left_handle();
         },
     },
+    computed: {
+        position_style() {
+            let style = "left:" + this.popup_content_left_value + ";" + (this.propTop ? "top:" + this.propTop : "") + ";" + (this.propBottom ? "bottom:" + this.propBottom : "");
+            return style;
+        },
+    },
     // 组建创建
     created: function () {
         this.left_handle();
@@ -89,7 +95,7 @@ export default {
             if (width > 800) {
                 left = (width - 800) / 2;
             }
-            this.popup_content_left_value = left;
+            this.popup_content_left_value = left + "px";
         },
     },
 };

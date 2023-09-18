@@ -2,17 +2,33 @@
     width: 30rpx;
     height: 35rpx !important;
 }
+
 .address-alias {
     padding: 0 10rpx;
 }
+
 .address .text {
     line-height: 44rpx;
     width: calc(100% - 40rpx);
 }
+
 .default-checkbox image {
     width: 35rpx;
     height: 35rpx !important;
 }
+
+/**
+ * 底部按钮 
+ */
+.btn-bottom {
+    padding: 42rpx 46rpx;
+}
+
+.btn-bottom button {
+    height: 88rpx;
+    line-height: 88rpox;
+}
+
 .submit-list button {
     width: calc(50% - 10rpx);
 }
