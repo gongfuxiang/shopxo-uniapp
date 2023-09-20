@@ -33,7 +33,7 @@
                                             <view v-if="item.spec != null" class="margin-bottom-sm">
                                                 <block v-for="(sv, si) in item.spec" :key="si">
                                                     <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                                    <text class="cr-gray">{{ sv.value }}</text>
+                                                    <text class="cr-grey">{{ sv.value }}</text>
                                                 </block>
                                             </view>
 
@@ -47,9 +47,9 @@
 
                                                 <!-- 数量 -->
                                                 <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="cart-number-content pa tc oh round br">
-                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="0">-</view>
-                                                    <input @blur="goods_buy_number_blur" class="tc cr-gray fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
-                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-gray fl va-m" :data-index="index" data-type="1">+</view>
+                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="0">-</view>
+                                                    <input @blur="goods_buy_number_blur" class="tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
+                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="1">+</view>
                                                 </view>
                                             </view>
                                         </view>

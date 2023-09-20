@@ -1,20 +1,17 @@
-.address .item-icon {
-    width: 30rpx;
-    height: 35rpx !important;
+.default-address {
+    display: inline-block;
+    padding: 0 10rpx;
+    height: 32rpx;
+    line-height: 32rpx;
+    background: #FFEFC2;
+    color: #B77717;
 }
 
 .address-alias {
+    display: inline-block;
     padding: 0 10rpx;
-}
-
-.address .text {
-    line-height: 44rpx;
-    width: calc(100% - 40rpx);
-}
-
-.default-checkbox image {
-    width: 35rpx;
-    height: 35rpx !important;
+    height: 32rpx;
+    line-height: 32rpx;
 }
 
 /**

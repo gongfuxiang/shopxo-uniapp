@@ -3,7 +3,7 @@
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_tabs_list" :key="index">
-                <view :class="'item fl tc cr-gray ' + (item.value == nav_tabs_value ? 'cr-main nav-active-line' : '')" :data-index="index" :data-value="item.value" @tap="nav_tabs_event">{{ item.name }} </view>
+                <view :class="'item fl tc cr-grey ' + (item.value == nav_tabs_value ? 'cr-main nav-active-line' : '')" :data-index="index" :data-value="item.value" @tap="nav_tabs_event">{{ item.name }} </view>
             </block>
         </view>
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" lower-threshold="60">

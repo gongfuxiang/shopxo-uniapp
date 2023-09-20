@@ -2,31 +2,29 @@
     <view>
         <view class="page-bottom-fixed padding-main">
             <view v-if="data_list.length > 0">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-xl bg-white spacing-mb">
-                    <view @tap="address_conent_event" :data-index="index">
-                        <view class="oh padding-vertical-main">
-                            <text v-if="is_default == item.id" class="address-alias br-main cr-main round margin-right-sm">默认</text>
-                            <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main round margin-right-sm">{{ item.alias }}</text>
-                            <text>{{ item.name }}</text>
-                            <text class="fr">{{ item.tel }}</text>
-                        </view>
-                        <view class="address oh padding-bottom-lg">
-                            <image class="item-icon fl margin-top-xs" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
-                            <view class="text fr">
+                <view v-for="(item, index) in data_list" :key="index" class="item padding-xl bg-white spacing-mb flex-row jc-sb align-c">
+                    <view class="flex-1 flex-width padding-right-main" @tap="address_conent_event" :data-index="index">
+                        <view class="flex-row align-c">
+                            <text v-if="is_default == item.id" class="default-address margin-right-sm text-size-xss border-radius-sm">默认</text>
+                            <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main margin-right-sm text-size-xss border-radius-sm">{{ item.alias }}</text>
+                            <view class="single-text flex-1 flex-width fw-b">
                                 <text>{{ item.province_name || "" }}{{ item.city_name || "" }}{{ item.county_name || "" }}{{ item.address || "" }}</text>
-                                <text v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="cr-grey margin-left-lg fr"
-                                    >距离<text class="cr-base">{{ item.distance_value }}</text
-                                    >{{ item.distance_unit }}</text
-                                >
+                                <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="cr-grey margin-left-lg">
+                                    距离
+                                    <text class="cr-base">
+                                        {{ item.distance_value }}
+                                    </text>
+                                    {{ item.distance_unit }}
+                                </view>
                             </view>
                         </view>
-                    </view>
-                    <view class="br-t oh padding-vertical-main">
-                        <view class="item-operation fr oh">
-                            <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">位置</button>
-                            <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_edit_event" :data-index="index" hover-class="none">编辑</button>
-                            <button class="round bg-white cr-red br-red" type="default" size="mini" @tap="address_delete_event" :data-index="index" :data-value="item.id" hover-class="none">删除</button>
+                        <view class="flex-row align-c flex-warp padding-top-main">
+                            <text class="padding-right-main">{{ item.name }}</text>
+                            <text class="cr-grey-9">{{ item.tel }}</text>
                         </view>
+                    </view>
+                    <view class="padding-vertical-main" @tap="address_edit_event" :data-index="index">
+                        <iconfont name="icon-wddz-bianji" size="24rpx"></iconfont>
                     </view>
                 </view>
             </view>
@@ -201,74 +199,6 @@ export default {
                         data_list_loding_status: 2,
                     });
                     app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-
-        // 删除地址
-        address_delete_event(e) {
-            var index = e.currentTarget.dataset.index;
-            var value = e.currentTarget.dataset.value || null;
-            if (value == null) {
-                app.globalData.showToast("地址ID有误");
-                return false;
-            }
-
-            var self = this;
-            uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复，确定继续吗?",
-                confirmText: "确认",
-                cancelText: "不了",
-                success: (result) => {
-                    if (result.confirm) {
-                        // 加载loding
-                        uni.showLoading({
-                            title: "处理中...",
-                        });
-
-                        // 获取数据
-                        uni.request({
-                            url: app.globalData.get_request_url("delete", "useraddress"),
-                            method: "POST",
-                            data: {
-                                id: value,
-                            },
-                            dataType: "json",
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    var temp_data = self.data_list;
-                                    temp_data.splice(index, 1);
-                                    self.setData({
-                                        data_list: temp_data,
-                                        data_list_loding_status: temp_data.length == 0 ? 0 : 3,
-                                        data_bottom_line_status: temp_data.length == 0 ? false : true,
-                                    });
-                                    app.globalData.showToast(res.data.msg, "success");
-
-                                    // 当前删除是否存在缓存中，存在则删除
-                                    var cache_address = uni.getStorageSync(app.globalData.data.cache_buy_user_address_select_key);
-                                    if ((cache_address.data || null) != null) {
-                                        if (cache_address.data.id == value) {
-                                            // 删除地址缓存
-                                            uni.removeStorageSync(app.globalData.data.cache_buy_user_address_select_key);
-                                        }
-                                    }
-                                } else {
-                                    if (app.globalData.is_login_check(res.data)) {
-                                        app.globalData.showToast(res.data.msg);
-                                    } else {
-                                        app.globalData.showToast("提交失败，请重试！");
-                                    }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast("服务器请求出错");
-                            },
-                        });
-                    }
                 },
             });
         },

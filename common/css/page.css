@@ -486,6 +486,26 @@ button:before {
     border-right: 1px solid #EEEEEE !important;
 }
 
+.br-f5 {
+    border: 1px solid #f5f5f5 !important;
+}
+
+.br-b-f5 {
+    border-bottom: 1px solid #f5f5f5 !important;
+}
+
+.br-t-f5 {
+    border-top: 1px solid #f5f5f5 !important;
+}
+
+.br-l-f5 {
+    border-left: 1px solid #f5f5f5 !important;
+}
+
+.br-r-f5 {
+    border-right: 1px solid #f5f5f5 !important;
+}
+
 .br-red {
     border: 1px solid #E22C08 !important;
 }
@@ -498,8 +518,8 @@ button:before {
     border: 1px solid #52C41A !important;
 }
 
-.br-gray {
-    border: solid 1px #d6d6d6 !important;
+.br-grey {
+    border: solid 1px #dddddd !important;
 }
 
 .br-grey-d {
@@ -508,6 +528,10 @@ button:before {
 
 .br-blue {
     border: solid 1px #2196F3 !important;
+}
+
+.br-black {
+    border: solid 1px #333333 !important;
 }
 
 .br-base {
@@ -554,7 +578,7 @@ button:before {
     border: dashed 1px #1AAD19 !important;
 }
 
-.br-dashed-gray {
+.br-dashed-grey {
     border: dashed 1px #d6d6d6 !important;
 }
 
@@ -574,7 +598,7 @@ button:before {
     color: #333 !important;
 }
 
-.cr-gray {
+.cr-grey {
     color: #888 !important;
 }
 
@@ -634,7 +658,7 @@ button:before {
     background-color: #f6c133 !important;
 }
 
-.bg-gray {
+.bg-grey {
     background-color: #d6d6d6 !important;
 }
 
@@ -648,6 +672,10 @@ button:before {
 
 .bg-blue {
     background-color: #2196F3 !important;
+}
+
+.bg-black {
+    background-color: #333333 !important;
 }
 
 button[disabled].bg-white {
@@ -670,7 +698,7 @@ button[disabled].bg-yellow {
     color: #fbd777 !important;
 }
 
-button[disabled].bg-gray {
+button[disabled].bg-grey {
     background-color: #ececec !important;
     color: #ababab !important;
 }

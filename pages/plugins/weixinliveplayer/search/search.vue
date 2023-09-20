@@ -1,276 +1,276 @@
 <template>
-	<view>
-		<!-- 导航 -->
-		<view class="nav bg-white">
-			<block v-for="(item, index) in nav_status_list" :key="index">
-				<view :class="'item fl tc cr-gray ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{item.name}}</view>
-			</block>
-		</view>
+    <view>
+        <!-- 导航 -->
+        <view class="nav bg-white">
+            <block v-for="(item, index) in nav_status_list" :key="index">
+                <view :class="'item fl tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+            </block>
+        </view>
 
-		<!-- 列表 -->
-		<scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-			<view v-if="data_list.length > 0" class="data-list padding-main">
-				<view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white oh pr spacing-mb">
-					<navigator class="flex-row jc-sb" :class="Number(item.status) > 3 ? 'expire' : '' " :url="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" hover-class="none">
-						<image class="radius" :src="item.share_img" mode="aspectFill"></image>
-						<view v-if="item.status==='1'" class="pa bottom-0 left-0 live-content circle">
-							<view class="live-action flex-row jc-sa align-e">
-								<view class="live-1"></view>
-								<view class="live-2"></view>
-								<view class="live-3"></view>
-							</view>
-						</view>
-						<view class="base flex-1 flex-width flex-col jc-sb">
-							<view>
-								<view class="single-text text-size-md fw-b">{{item.name}}</view>
-								<view class="margin-top-sm oh flex-row flex-nowrap align-c">
-									<iconfont name="icon-zhibo-time" color="#ccc" size="28rpx" class="margin-right-sm"></iconfont>
-									<view class="flex-row flex-nowrap align-c flex-1 flex-width cr-grey-9 single-text">
-										{{item.start_time}} - {{item.end_time}}
-									</view>
-								</view>
-							</view>
-							<view class="self-e text-size-xs cr-grey-9 flex-row align-c" :class="'status-' + item.status"><!-- 未开始 -->
-								<iconfont v-if="item.status==='0'" name="icon-zhibo-time margin-right-xs pr top-xs"></iconfont>
-								<!-- 直播中 -->
-								<div v-else-if="item.status==='1'" class="spread margin-right-sm">
-									<div class="ring"></div>
-									<div class="ring"></div>
-									<div class="ring"></div>
-								</div>
-								<!-- 暂停中 -->
-								<iconfont v-else-if="item.status==='2'" name="icon-zhibo-zt margin-right-xs pr top-xs"></iconfont>
-								<!-- 已结束 -->
-								<iconfont v-else-if="item.status==='3'" name="icon-zhibo-jies margin-right-xs pr top-xs"></iconfont>
-								<!-- 其他 -->
-								<iconfont v-else name="icon-zhibo-shixiao margin-right-xs pr top-xs"></iconfont>
-								{{item.status_name}}
-							</view>
-						</view>
-					</navigator>
-				</view>
-			</view>
-			<view v-else>
-				<!-- 提示信息 -->
-				<component-no-data :propStatus="data_list_loding_status"></component-no-data>
-			</view>
+        <!-- 列表 -->
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view v-if="data_list.length > 0" class="data-list padding-main">
+                <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white oh pr spacing-mb">
+                    <navigator class="flex-row jc-sb" :class="Number(item.status) > 3 ? 'expire' : ''" :url="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" hover-class="none">
+                        <image class="radius" :src="item.share_img" mode="aspectFill"></image>
+                        <view v-if="item.status === '1'" class="pa bottom-0 left-0 live-content circle">
+                            <view class="live-action flex-row jc-sa align-e">
+                                <view class="live-1"></view>
+                                <view class="live-2"></view>
+                                <view class="live-3"></view>
+                            </view>
+                        </view>
+                        <view class="base flex-1 flex-width flex-col jc-sb">
+                            <view>
+                                <view class="single-text text-size-md fw-b">{{ item.name }}</view>
+                                <view class="margin-top-sm oh flex-row flex-nowrap align-c">
+                                    <iconfont name="icon-zhibo-time" color="#ccc" size="28rpx" class="margin-right-sm"></iconfont>
+                                    <view class="flex-row flex-nowrap align-c flex-1 flex-width cr-grey-9 single-text"> {{ item.start_time }} - {{ item.end_time }} </view>
+                                </view>
+                            </view>
+                            <view class="self-e text-size-xs cr-grey-9 flex-row align-c" :class="'status-' + item.status"
+                                ><!-- 未开始 -->
+                                <iconfont v-if="item.status === '0'" name="icon-zhibo-time margin-right-xs pr top-xs"></iconfont>
+                                <!-- 直播中 -->
+                                <div v-else-if="item.status === '1'" class="spread margin-right-sm">
+                                    <div class="ring"></div>
+                                    <div class="ring"></div>
+                                    <div class="ring"></div>
+                                </div>
+                                <!-- 暂停中 -->
+                                <iconfont v-else-if="item.status === '2'" name="icon-zhibo-zt margin-right-xs pr top-xs"></iconfont>
+                                <!-- 已结束 -->
+                                <iconfont v-else-if="item.status === '3'" name="icon-zhibo-jies margin-right-xs pr top-xs"></iconfont>
+                                <!-- 其他 -->
+                                <iconfont v-else name="icon-zhibo-shixiao margin-right-xs pr top-xs"></iconfont>
+                                {{ item.status_name }}
+                            </view>
+                        </view>
+                    </navigator>
+                </view>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            </view>
 
-			<!-- 结尾 -->
-			<component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-		</scroll-view>
-	</view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
+    </view>
 </template>
 <script>
-	const app = getApp();
-	import componentNoData from "../../../../components/no-data/no-data";
-	import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+const app = getApp();
+import componentNoData from "../../../../components/no-data/no-data";
+import componentBottomLine from "../../../../components/bottom-line/bottom-line";
 
-	export default {
-		data() {
-			return {
-				data_list_loding_status: 1,
-				data_bottom_line_status: false,
-				data_is_loading: 0,
-				params: null,
-				load_status: 0,
-				data_list: [],
-				data_base: null,
-				data_total: 0,
-				data_page_total: 0,
-				data_page: 1,
-				nav_status_list: [{
-						name: "全部",
-						value: "-1"
-					},
-					{
-						name: "未开始",
-						value: "0"
-					},
-					{
-						name: "直播中",
-						value: "1"
-					},
-					{
-						name: "暂停中",
-						value: "2"
-					},
-					{
-						name: "已结束",
-						value: "3"
-					},
-				],
-				nav_status_index: 0,
-				// 自定义分享信息
-				share_info: {}
-			};
-		},
+export default {
+    data() {
+        return {
+            data_list_loding_status: 1,
+            data_bottom_line_status: false,
+            data_is_loading: 0,
+            params: null,
+            load_status: 0,
+            data_list: [],
+            data_base: null,
+            data_total: 0,
+            data_page_total: 0,
+            data_page: 1,
+            nav_status_list: [
+                {
+                    name: "全部",
+                    value: "-1",
+                },
+                {
+                    name: "未开始",
+                    value: "0",
+                },
+                {
+                    name: "直播中",
+                    value: "1",
+                },
+                {
+                    name: "暂停中",
+                    value: "2",
+                },
+                {
+                    name: "已结束",
+                    value: "3",
+                },
+            ],
+            nav_status_index: 0,
+            // 自定义分享信息
+            share_info: {},
+        };
+    },
 
-		components: {
-			componentNoData,
-			componentBottomLine
-		},
-		props: {},
+    components: {
+        componentNoData,
+        componentBottomLine,
+    },
+    props: {},
 
-		onLoad(params) {
-			// 是否指定状态
-			var nav_status_index = 0;
-			if ((params.status || null) != null) {
-				for (var i in this.nav_status_list) {
-					if (this.nav_status_list[i]['value'] == params.status) {
-						nav_status_index = i;
-						break;
-					}
-				}
-			}
-			this.setData({
-				params: params,
-				nav_status_index: nav_status_index
-			});
-			this.init();
-		},
+    onLoad(params) {
+        // 是否指定状态
+        var nav_status_index = 0;
+        if ((params.status || null) != null) {
+            for (var i in this.nav_status_list) {
+                if (this.nav_status_list[i]["value"] == params.status) {
+                    nav_status_index = i;
+                    break;
+                }
+            }
+        }
+        this.setData({
+            params: params,
+            nav_status_index: nav_status_index,
+        });
+        this.init();
+    },
 
-		onShow() {},
+    onShow() {},
 
-		// 下拉刷新
-		onPullDownRefresh() {
-			this.setData({
-				data_page: 1
-			});
-			this.get_data_list(1);
-		},
+    // 下拉刷新
+    onPullDownRefresh() {
+        this.setData({
+            data_page: 1,
+        });
+        this.get_data_list(1);
+    },
 
-		methods: {
-			init() {
-				// 获取数据
-				this.get_data_list();
-			},
+    methods: {
+        init() {
+            // 获取数据
+            this.get_data_list();
+        },
 
-			// 获取数据
-			get_data_list(is_mandatory) {
-				// 分页是否还有数据
-				if ((is_mandatory || 0) == 0) {
-					if (this.data_bottom_line_status == true) {
-						uni.stopPullDownRefresh();
-						return false;
-					}
-				}
+        // 获取数据
+        get_data_list(is_mandatory) {
+            // 分页是否还有数据
+            if ((is_mandatory || 0) == 0) {
+                if (this.data_bottom_line_status == true) {
+                    uni.stopPullDownRefresh();
+                    return false;
+                }
+            }
 
-				// 是否加载中
-				if (this.data_is_loading == 1) {
-					return false;
-				}
-				this.setData({
-					data_is_loading: 1,
-					data_list_loding_status: 1
-				});
+            // 是否加载中
+            if (this.data_is_loading == 1) {
+                return false;
+            }
+            this.setData({
+                data_is_loading: 1,
+                data_list_loding_status: 1,
+            });
 
-				// 加载loding
-				uni.showLoading({
-					title: '加载中...'
-				});
+            // 加载loding
+            uni.showLoading({
+                title: "加载中...",
+            });
 
-				// 参数
-				var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
+            // 参数
+            var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
 
-				// 获取数据
-				uni.request({
-					url: app.globalData.get_request_url("index", "search", "weixinliveplayer"),
-					method: 'POST',
-					data: {
-						page: this.data_page,
-						status: status,
-						is_more: 1
-					},
-					dataType: 'json',
-					success: res => {
-						uni.hideLoading();
-						uni.stopPullDownRefresh();
-						if (res.data.code == 0) {
-							if (res.data.data.data.length > 0) {
-								if (this.data_page <= 1) {
-									var temp_data_list = res.data.data.data;
-								} else {
-									var temp_data_list = this.data_list || [];
-									var temp_data = res.data.data.data;
-									for (var i in temp_data) {
-										temp_data_list.push(temp_data[i]);
-									}
-								}
-								this.setData({
-									data_base: res.data.data.base || null,
-									data_list: temp_data_list,
-									data_total: res.data.data.total,
-									data_page_total: res.data.data.page_total,
-									data_list_loding_status: 3,
-									data_page: this.data_page + 1,
-									data_is_loading: 0
-								});
+            // 获取数据
+            uni.request({
+                url: app.globalData.get_request_url("index", "search", "weixinliveplayer"),
+                method: "POST",
+                data: {
+                    page: this.data_page,
+                    status: status,
+                    is_more: 1,
+                },
+                dataType: "json",
+                success: (res) => {
+                    uni.hideLoading();
+                    uni.stopPullDownRefresh();
+                    if (res.data.code == 0) {
+                        if (res.data.data.data.length > 0) {
+                            if (this.data_page <= 1) {
+                                var temp_data_list = res.data.data.data;
+                            } else {
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = res.data.data.data;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
+                            }
+                            this.setData({
+                                data_base: res.data.data.base || null,
+                                data_list: temp_data_list,
+                                data_total: res.data.data.total,
+                                data_page_total: res.data.data.page_total,
+                                data_list_loding_status: 3,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
 
-								// 是否还有数据
-								this.setData({
-									data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
-								});
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
 
-								// 首次设置首次加载状态
-								if (this.load_status == 0) {
-									// 基础自定义分享
-									this.setData({
-										load_status: 1,
-										share_info: {
-											title: this.data_base.seo_title || this.data_base.application_name,
-											desc: this.data_base.seo_desc,
-											path: '/pages/plugins/weixinliveplayer/search/search',
-											query: 'status=' + this.nav_status_index
-										}
-									});
+                            // 首次设置首次加载状态
+                            if (this.load_status == 0) {
+                                // 基础自定义分享
+                                this.setData({
+                                    load_status: 1,
+                                    share_info: {
+                                        title: this.data_base.seo_title || this.data_base.application_name,
+                                        desc: this.data_base.seo_desc,
+                                        path: "/pages/plugins/weixinliveplayer/search/search",
+                                        query: "status=" + this.nav_status_index,
+                                    },
+                                });
 
-									// 分享菜单处理
-									app.globalData.page_share_handle(this.share_info);
-								}
-							} else {
-								this.setData({
-									data_list_loding_status: 0,
-									data_list: [],
-									data_bottom_line_status: false,
-									data_is_loading: 0
-								});
-							}
-						} else {
-							this.setData({
-								data_list_loding_status: 0,
-								data_is_loading: 0
-							});
-							app.globalData.showToast(res.data.msg);
-						}
-					},
-					fail: () => {
-						uni.hideLoading();
-						uni.stopPullDownRefresh();
-						this.setData({
-							data_list_loding_status: 2,
-							data_is_loading: 0
-						});
-						app.globalData.showToast('服务器请求出错');
-					}
-				});
-			},
+                                // 分享菜单处理
+                                app.globalData.page_share_handle(this.share_info);
+                            }
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list: [],
+                                data_bottom_line_status: false,
+                                data_is_loading: 0,
+                            });
+                        }
+                    } else {
+                        this.setData({
+                            data_list_loding_status: 0,
+                            data_is_loading: 0,
+                        });
+                        app.globalData.showToast(res.data.msg);
+                    }
+                },
+                fail: () => {
+                    uni.hideLoading();
+                    uni.stopPullDownRefresh();
+                    this.setData({
+                        data_list_loding_status: 2,
+                        data_is_loading: 0,
+                    });
+                    app.globalData.showToast("服务器请求出错");
+                },
+            });
+        },
 
-			// 滚动加载
-			scroll_lower(e) {
-				this.get_data_list();
-			},
+        // 滚动加载
+        scroll_lower(e) {
+            this.get_data_list();
+        },
 
-			// 导航事件
-			nav_event(e) {
-				this.setData({
-					nav_status_index: e.currentTarget.dataset.index || 0,
-					data_page: 1
-				});
-				this.get_data_list(1);
-			}
-		}
-	};
+        // 导航事件
+        nav_event(e) {
+            this.setData({
+                nav_status_index: e.currentTarget.dataset.index || 0,
+                data_page: 1,
+            });
+            this.get_data_list(1);
+        },
+    },
+};
 </script>
 <style>
-	@import './search.css';
+@import "./search.css";
 </style>

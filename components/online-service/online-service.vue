@@ -5,7 +5,7 @@
             <block v-if="is_chat == 1">
                 <view @tap="chat_event">
                     <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
-                    <text class="text dis-block text-size-xs cr-gray">客服</text>
+                    <text class="text dis-block text-size-xs cr-grey">客服</text>
                 </view>
             </block>
             <block v-else>
@@ -21,7 +21,7 @@
                 <button type="default" @tap="call_event">
                     <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                 <!-- #endif -->
-                    <text class="text dis-block text-size-xs cr-gray">客服</text>
+                    <text class="text dis-block text-size-xs cr-grey">客服</text>
                 </button>
             </block>
         </view>

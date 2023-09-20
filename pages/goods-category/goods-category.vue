@@ -98,7 +98,7 @@
                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
                                         <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
                                             <view
-                                                :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')"
+                                                :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                                 :data-index="nav_active_index"
                                                 :data-itemtwoindex="nav_active_item_two_index"
                                                 :data-itemthreeindex="-1"
@@ -107,7 +107,7 @@
                                             >
                                             <block v-for="(item, index) in data_three_content.items" :key="index">
                                                 <view
-                                                    :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')"
+                                                    :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                                     :id="'three-nav-item-' + index"
                                                     :data-index="nav_active_index"
                                                     :data-itemtwoindex="nav_active_item_two_index"
@@ -240,7 +240,7 @@
                                                     <view class="spacing-nav-title flex-row jc-sb align-c">
                                                         <view class="flex-1">
                                                             <text class="text-wrapper text-size-md">{{ v.name }}</text>
-                                                            <text v-if="(v.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{ v.describe }}</text>
+                                                            <text v-if="(v.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ v.describe }}</text>
                                                         </view>
                                                         <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">更多</view>
                                                     </view>

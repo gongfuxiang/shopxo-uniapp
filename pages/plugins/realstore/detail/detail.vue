@@ -145,7 +145,7 @@
                         <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal">
                             <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
                                 <view
-                                    :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')"
+                                    :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                     :data-index="nav_active_index"
                                     :data-itemindex="-1"
                                     @tap="nav_event"
@@ -153,7 +153,7 @@
                                 >
                                 <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
                                     <view
-                                        :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-gray cr-gray')"
+                                        :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                         :id="'two-nav-item-' + ci"
                                         :data-index="nav_active_index"
                                         :data-itemindex="ci"
@@ -283,7 +283,7 @@
                         <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                     </view>
                 </view>
-                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-md radius-0 ' + (info.status_info.status == 1 ? 'bg-main cr-white' : 'bg-gray cr-gray')">{{ info.status_info.status == 1 ? "去结算" : info.status_info.msg }}</button>
+                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-md radius-0 ' + (info.status_info.status == 1 ? 'bg-main cr-white' : 'bg-grey cr-grey')">{{ info.status_info.status == 1 ? "去结算" : info.status_info.msg }}</button>
             </view>
 
             <!-- 购物车抛物线 -->

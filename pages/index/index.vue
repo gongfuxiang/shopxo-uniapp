@@ -158,7 +158,7 @@
                             <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <view class="title-left">
                                     <text class="text-wrapper title-left-border" :style="'color:' + (floor.bg_color || '#333') + ';'">{{ floor.name }}</text>
-                                    <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-gray">{{ floor.describe }}</text>
+                                    <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ floor.describe }}</text>
                                 </view>
                                 <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">更多 </navigator>
                             </view>
@@ -220,7 +220,7 @@
                                                         <text class="margin-left-sm single-text">{{ item.title }}</text>
                                                     </navigator>
                                                 </view>
-                                                <view class="item-content single-text fr tr cr-gray padding-top-xs">
+                                                <view class="item-content single-text fr tr cr-grey padding-top-xs">
                                                     {{ item.add_time }}
                                                 </view>
                                             </view>
