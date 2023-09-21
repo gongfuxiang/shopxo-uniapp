@@ -1,59 +1,87 @@
 /*
 * 头部
 */
-.head-box {
-    background-color: #3e2a1c;
+.head-item image {
+    width: 116rpx;
+    height: 116rpx !important;
 }
-.head-item {
-    width: 260rpx;
-}
-.head-item .avatar,
-.head-item .avatar image {
-    width: 130rpx;
-    height: 130rpx !important;
-    margin: 0 auto;
-}
-.head-base {
-    width: calc(100% - 270rpx);
-}
+
 .head-base .level-icon {
-    width: 35rpx;
-    height: 35rpx !important;
+    width: 30rpx;
+    height: 30rpx !important;
+    left: 10rpx;
+    top: 50%;
+    transform: translateY(-50%);
 }
-.head-base .level-name {
-    color: #e4cb96;
+
+.vip-btn {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
-.head-base .submit-buy {
-    font-size: 26rpx;
-    height: 55rpx;
-    line-height: 55rpx;
-    border: 1px solid #f9d681;
-    background-color: #f9d681;
-    color: #351d06;
-    right: 20rpx;
-    bottom: 20rpx;
-    padding: 0 20rpx;
+
+.submit-buy {
+    /* height: 52rpx;
+    line-height: 52rpx; */
+    padding: 0 44rpx 0 24rpx;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 200rpx 0 0 200rpx;
 }
+
+.submit-buy .iconfont {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.vip-badge {
+    height: 44rpx;
+    line-height: 44rpx;
+    padding: 0 10rpx 0 45rpx;
+    color: #FFAF36;
+}
+
+/*
+* 推广客户
+*/
+.promotion .item {
+    padding: 28rpx 20rpx;
+}
+
+.promotion .item:first-child {
+    background-color: #EAFEF7;
+}
+
+.promotion .item:last-child {
+    background-color: #EBF7FF;
+}
+
+.promotion .item .num {
+    font-size: 48rpx;
+}
+
+.promotion image {
+    width: 68rpx;
+    height: 68rpx !important;
+}
+
+.rebate .item .price {
+    font-size: 44rpx;
+}
+
+/*
+* 返利概况
+*/
 
 /*
 * 导航
 */
 .nav .item {
-    width: calc(50% - 70rpx);
-    margin-bottom: 20rpx;
+    padding: 32rpx 20rpx;
 }
-.nav .item:nth-child(2n) {
-    margin-right: 20rpx;
-    margin-left: 10rpx;
-}
-.nav .item:nth-child(2n+1) {
-    margin-left: 20rpx;
-    margin-right: 10rpx;
-}
+
 .nav .item image {
-    width: 80rpx;
-    height: 80rpx;
-    margin: 0 auto;
+    width: 100rpx;
+    height: 100rpx;
 }
 
 /*
@@ -62,6 +90,7 @@
 .tips-container .tips-item {
     padding: 0 10rpx;
 }
+
 .tips-container .not-opening-vip-desc {
     background: #def2fd;
     border: 1px solid #cfeeff;
@@ -69,4 +98,8 @@
     padding: 10rpx;
     font-size: 26rpx;
     border-radius: 2px;
+}
+
+.uni-noticebar {
+    margin: 0 !important;
 }

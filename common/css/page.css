@@ -526,6 +526,10 @@ button:before {
     border: solid 1px #dddddd !important;
 }
 
+.br-grey-f5 {
+    border: solid 1px #f5f5f5 !important;
+}
+
 .br-blue {
     border: solid 1px #2196F3 !important;
 }
@@ -664,6 +668,10 @@ button:before {
 
 .bg-grey-d {
     background-color: #dddddd !important;
+}
+
+.bg-grey-f5 {
+    background-color: #f5f5f5 !important;
 }
 
 .bg-base {
@@ -832,24 +840,6 @@ button[disabled].bg-grey {
     border: 1px dashed #e9e9e9;
     display: block;
     border-radius: 10rpx;
-}
-
-/**
- * 通知、公告
- */
-.notice-content {
-    color: #666;
-    line-height: 42rpx;
-    font-size: 26rpx;
-}
-
-.notice-content-blue {
-    background: #def2fd;
-    border: 1px solid #cfeeff;
-    color: #1490d2;
-    padding: 10rpx 20rpx;
-    font-size: 26rpx;
-    border-radius: 22rpx;
 }
 
 /**
@@ -1224,6 +1214,10 @@ button[disabled].bg-grey {
     align-self: baseline;
 }
 
+.self-s {
+    align-self: flex-start;
+}
+
 .self-e {
     align-self: flex-end;
 }
@@ -1242,11 +1236,23 @@ button[disabled].bg-grey {
 .divider-l,
 .divider-r,
 .divider-t,
-.divider-b {
+.divider-b,
+.divider-l-f5,
+.divider-r-f5,
+.divider-t-f5,
+.divider-b-f5 {
     position: relative;
 }
 
-.divider-l::before {
+.divider-l-f5::before,
+.divider-r-f5::after,
+.divider-t-f5::before,
+.divider-b-f5::after {
+    background: #f5f5f5 !important;
+}
+
+.divider-l::before,
+.divider-l-f5::before {
     content: '';
     width: 2rpx;
     height: 65%;
@@ -1257,7 +1263,8 @@ button[disabled].bg-grey {
     background: #EEEEEE;
 }
 
-.divider-r::after {
+.divider-r::after,
+.divider-r-f5::after {
     content: '';
     width: 2rpx;
     height: 65%;
@@ -1268,7 +1275,8 @@ button[disabled].bg-grey {
     background: #EEEEEE;
 }
 
-.divider-t::before {
+.divider-t::before,
+.divider-t-f5::before {
     content: '';
     width: 100%;
     height: 2rpx;
@@ -1277,7 +1285,8 @@ button[disabled].bg-grey {
     background: #EEEEEE;
 }
 
-.divider-b::after {
+.divider-b::after,
+.divider-b-f5::after {
     content: '';
     width: 100%;
     height: 2rpx;
@@ -1520,4 +1529,11 @@ button[disabled].bg-grey {
         transform: scale(3);
         opacity: 0
     }
+}
+
+/**
+ * 通知
+ */
+.uni-noticebar {
+    padding: 0 !important;
 }

@@ -56,8 +56,7 @@
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
                 <!-- 商城公告 -->
-                <component-notice v-if="load_status == 1 && (common_shop_notice || null) != null" :propData="common_shop_notice"></component-notice>
-
+                <uni-notice-bar v-if="load_status == 1 && (common_shop_notice || null) != null" class="padding-0" show-icon scrollable :text="common_shop_notice" background-color="transparent" color="#666" />
                 <!-- 推荐文章 -->
                 <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
                     <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>最新</text><text class="cr-red">资讯</text> </view>
@@ -293,7 +292,6 @@ import componentShopList from "../../components/shop-list/shop-list";
 import componentGoodsList from "../../components/goods-list/goods-list";
 import componentUserBase from "../../components/user-base/user-base";
 import componentBindingList from "../../components/binding-list/binding-list";
-import componentNotice from "@/components/notice/notice";
 import componentRecommedHot from "@/components/recommend-hot/recommend-hot";
 
 var common_static_url = app.globalData.get_static_url("common");
@@ -389,7 +387,6 @@ export default {
         componentGoodsList,
         componentUserBase,
         componentBindingList,
-        componentNotice,
         componentRecommedHot,
     },
     props: {},

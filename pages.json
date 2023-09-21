@@ -344,6 +344,9 @@
                 {
                     "path": "user/user",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的会员"
                     }
@@ -411,6 +414,9 @@
             "pages": [{
                     "path": "user/user",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的分销"
                     }
