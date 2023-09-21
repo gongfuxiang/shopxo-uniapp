@@ -1,0 +1,65 @@
+{
+  "id": "4227145",
+  "name": "shopxo-小程序",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "37131264",
+      "name": "icon-index-notice",
+      "font_class": "icon-index-notice",
+      "unicode": "e6a8",
+      "unicode_decimal": 59048
+    },
+    {
+      "icon_id": "37131263",
+      "name": "icon-index-search",
+      "font_class": "icon-index-search",
+      "unicode": "e6a9",
+      "unicode_decimal": 59049
+    },
+    {
+      "icon_id": "37113110",
+      "name": "icon-applet-me-settings-acquiesce",
+      "font_class": "icon-applet-me-settings-acquiesce",
+      "unicode": "e6a6",
+      "unicode_decimal": 59046
+    },
+    {
+      "icon_id": "37113109",
+      "name": "icon-applet-me-message-acquiesce",
+      "font_class": "icon-applet-me-message-acquiesce",
+      "unicode": "e6a7",
+      "unicode_decimal": 59047
+    },
+    {
+      "icon_id": "37112559",
+      "name": "icon-applet-me-acquiesce",
+      "font_class": "icon-applet-me-acquiesce",
+      "unicode": "e6a2",
+      "unicode_decimal": 59042
+    },
+    {
+      "icon_id": "37112562",
+      "name": "icon-applet-sort-acquiesce",
+      "font_class": "icon-applet-sort-acquiesce",
+      "unicode": "e6a5",
+      "unicode_decimal": 59045
+    },
+    {
+      "icon_id": "37112561",
+      "name": "icon-applet-index-acquiesce",
+      "font_class": "icon-applet-index-acquiesce",
+      "unicode": "e6a4",
+      "unicode_decimal": 59044
+    },
+    {
+      "icon_id": "37112560",
+      "name": "icon-applet-shop-acquiesce",
+      "font_class": "icon-applet-shop-acquiesce",
+      "unicode": "e6a3",
+      "unicode_decimal": 59043
+    }
+  ]
+}

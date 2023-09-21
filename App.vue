@@ -1,1876 +1,1842 @@
 <script>
-    import base64 from './common/js/lib/base64.js';
-    export default {
-        globalData: {
-            data: {
-                // 场景值
-                cache_scene_key: "cache_scene_key",
-                // uuid缓存key
-                cache_user_uuid_key: "cache_user_uuid_key",
-                // 配置信息缓存key
-                cache_config_info_key: "cache_config_info_key",
-                // 用户登录缓存key
-                cache_user_login_key: "cache_user_login_key",
-                // 用户信息缓存key
-                cache_user_info_key: "cache_shop_user_info_key",
-                // 设备信息缓存key
-                cache_system_info_key: "cache_shop_system_info_key",
-                // 用户地址选择缓存key
-                cache_buy_user_address_select_key: "cache_buy_user_address_select_key",
-                // 启动参数缓存key
-                cache_launch_info_key: "cache_shop_launch_info_key",
-                // 获取位置选择缓存key
-                cache_userlocation_key: "cache_userlocation_key",
-                // 页面支付临时缓存key
-                cache_page_pay_key: "cache_page_pay_key",
-                // 上一页地址缓存key
-                cache_prev_page_key: 'cache_prev_page_key',
-				// tab页面切换参数
-				cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
-                // 用户基础资料提示间隔key
-                cache_user_base_personal_interval_time_key: 'cache_user_base_personal_interval_time_key',
-                // 用户购物车选择记录key
-                cache_user_cart_not_use_data_key: 'cache_user_cart_not_use_data_key',
-                // 默认用户头像
-                default_user_head_src: "/static/images/common/user.png",
-                // 成功圆形提示图片
-                default_round_success_icon: "/static/images/common/round-success-icon.png",
-                // 错误圆形提示图片
-                default_round_error_icon: "/static/images/common/round-error-icon.png",
-                // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
-                is_share_use_image: 1,
-                // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
-                is_goods_bottom_opt_cart: 1,
-                // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0 否, 1 是）
-                is_goods_bottom_opt_back: 1,
-                // 门店详情顶部导航返回按钮（0 否, 1 是）
-                is_realstore_top_nav_back: 1,
-                // 门店详情搜索框内扫码加购（0否, 1是）
-                is_realstore_top_search_scan: 1,
-                // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
-                is_online_service_fixed: 1,
-                // 分类页面商品列表模式一级分类使用图标类型（0 实景图, 1 icon图标, 2 大图片）
-                category_goods_model_icon_type: 0,
-                // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
-                is_logo_use_text: 0,
-				// 用户中心菜单默认展示模式（0 九方格, 1 列表）
-				user_center_nav_show_model_type: 0,
-                // 商品列表是否展示购物车（0否, 1是）
-                is_goods_list_show_cart_opt: 1,
-                // 商品分类页面搜索进入独立搜索页面（0否, 1是）
-                is_goods_category_search_alone: 0,
-                // 分销页面地图分布是否强制获取当前位置（0否, 1是）
-                is_distribution_map_force_location: 0,
-                // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
-                is_weixin_privacy_setting: 1,
-                weixin_privacy_setting_timer: null,
-                // tabbar页面
-                tabbar_pages: [
-                    "/pages/index/index",
-                    "/pages/goods-category/goods-category",
-                    "/pages/cart/cart",
-                    "/pages/user/user"
-                ],
-                // 请求地址
-                request_url: 'https://d1.shopxo.vip/',
-                // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
-                // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-                system_type: 'default',
-                // 基础信息
-                application_title: 'ShopXO',
-                application_describe: '企业级B2C开源电商系统！',
-                // 默认logo、如 /static/images/common/logo.png
-                application_logo: '',
-                // 版本号
-                version: 'v3.0.3',
-                // 货币价格符号
-                currency_symbol: '￥',
-                // 主题类型        主题颜色
-                // 黄色 yellow    #f6c133
-                // 红色 red       #ff0036
-                // 黑色 black     #333333
-                // 绿色 green     #20a53a
-                // 橙色 orange    #fe6f04
-                // 蓝色 blue      #1677ff
-                // 棕色 brown     #8B4513
-                // 紫色 purple    #623cec
-                default_theme: 'yellow'
-            },
-
-            /**
-             * 启动参数处理
-             */
-            launch_params_handle(params) {
-                // 原有缓存
-                var cache_params = this.get_launch_cache_info();
-
-                // 当前参数、从query读取覆盖
-                if ((params.query || null) != null) {
-                    params = params.query;
-                }
-                // query下scene参数解析处理
-                if ((params.scene || null) != null) {
-                    params = this.url_params_to_json(decodeURIComponent(params.scene));
-                }
-                
-                // 原始缓存是否存在邀请id、邀请使用最开始的用户id
-                if((params['referrer'] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
-                    params['referrer'] = cache_params.referrer;
-                }
-
-                return params;
-            },
-            
-            /**
-             * 当前是否单页模式
-             */
-            is_current_single_page() {
-                var scene = this.get_scene_data();
-                // #ifdef MP-WEIXIN
-                return (scene == 1154) ? 1 : 0;
+import base64 from "./common/js/lib/base64.js";
+export default {
+    globalData: {
+        data: {
+            // 场景值
+            cache_scene_key: "cache_scene_key",
+            // uuid缓存key
+            cache_user_uuid_key: "cache_user_uuid_key",
+            // 配置信息缓存key
+            cache_config_info_key: "cache_config_info_key",
+            // 用户登录缓存key
+            cache_user_login_key: "cache_user_login_key",
+            // 用户信息缓存key
+            cache_user_info_key: "cache_shop_user_info_key",
+            // 设备信息缓存key
+            cache_system_info_key: "cache_shop_system_info_key",
+            // 用户地址选择缓存key
+            cache_buy_user_address_select_key: "cache_buy_user_address_select_key",
+            // 启动参数缓存key
+            cache_launch_info_key: "cache_shop_launch_info_key",
+            // 获取位置选择缓存key
+            cache_userlocation_key: "cache_userlocation_key",
+            // 页面支付临时缓存key
+            cache_page_pay_key: "cache_page_pay_key",
+            // 上一页地址缓存key
+            cache_prev_page_key: "cache_prev_page_key",
+            // tab页面切换参数
+            cache_page_tabbar_switch_params: "cache_page_tabbar_switch_params_key",
+            // 用户基础资料提示间隔key
+            cache_user_base_personal_interval_time_key: "cache_user_base_personal_interval_time_key",
+            // 用户购物车选择记录key
+            cache_user_cart_not_use_data_key: "cache_user_cart_not_use_data_key",
+            // 默认用户头像
+            default_user_head_src: "/static/images/common/user.png",
+            // 成功圆形提示图片
+            default_round_success_icon: "/static/images/common/round-success-icon.png",
+            // 错误圆形提示图片
+            default_round_error_icon: "/static/images/common/round-error-icon.png",
+            // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
+            is_share_use_image: 1,
+            // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
+            is_goods_bottom_opt_cart: 1,
+            // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0 否, 1 是）
+            is_goods_bottom_opt_back: 1,
+            // 门店详情顶部导航返回按钮（0 否, 1 是）
+            is_realstore_top_nav_back: 1,
+            // 门店详情搜索框内扫码加购（0否, 1是）
+            is_realstore_top_search_scan: 1,
+            // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
+            is_online_service_fixed: 1,
+            // 分类页面商品列表模式一级分类使用图标类型（0 实景图, 1 icon图标, 2 大图片）
+            category_goods_model_icon_type: 0,
+            // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
+            is_logo_use_text: 0,
+            // 用户中心菜单默认展示模式（0 九方格, 1 列表）
+            user_center_nav_show_model_type: 0,
+            // 商品列表是否展示购物车（0否, 1是）
+            is_goods_list_show_cart_opt: 1,
+            // 商品分类页面搜索进入独立搜索页面（0否, 1是）
+            is_goods_category_search_alone: 0,
+            // 分销页面地图分布是否强制获取当前位置（0否, 1是）
+            is_distribution_map_force_location: 0,
+            // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
+            is_weixin_privacy_setting: 1,
+            weixin_privacy_setting_timer: null,
+            // tabbar页面
+            tabbar_pages: ["/pages/index/index", "/pages/goods-category/goods-category", "/pages/cart/cart", "/pages/user/user"],
+            // 请求地址
+            // request_url: "https://d1.shopxo.vip/",
+            request_url: "http://shopxo.com/",
+            // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
+            // static_url: "https://d1.shopxo.vip/",
+            static_url: "http://shopxo.com/",
+            // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
+            system_type: "default",
+            // 基础信息
+            application_title: "ShopXO",
+            application_describe: "企业级B2C开源电商系统！",
+            // 默认logo、如 /static/images/common/logo.png
+            application_logo: "",
+            // 版本号
+            version: "v3.0.2",
+            // 货币价格符号
+            currency_symbol: "￥",
+            // 主题类型        主题颜色
+            // 黄色 yellow    #f6c133
+            // 红色 red       #ff0036
+            // 黑色 black     #333333
+            // 绿色 green     #20a53a
+            // 橙色 orange    #fe6f04
+            // 蓝色 blue      #1677ff
+            // 棕色 brown     #8B4513
+            // 紫色 purple    #623cec
+            default_theme: "yellow",
+        },
+        /**
+         * 启动参数处理
+         */
+        launch_params_handle(params) {
+            // 原有缓存
+            var cache_params = this.get_launch_cache_info();
+            // 当前参数、从query读取覆盖
+            if ((params.query || null) != null) {
+                params = params.query;
+            }
+            // query下scene参数解析处理
+            if ((params.scene || null) != null) {
+                params = this.url_params_to_json(decodeURIComponent(params.scene));
+            }
+            // 原始缓存是否存在邀请id、邀请使用最开始的用户id
+            if ((params["referrer"] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
+                params["referrer"] = cache_params.referrer;
+            }
+            return params;
+        },
+        /**
+         * 当前是否单页模式
+         */
+        is_current_single_page() {
+            var scene = this.get_scene_data();
+            // #ifdef MP-WEIXIN
+            return scene == 1154 ? 1 : 0;
+            // #endif
+            return 0;
+        },
+        /**
+         * 场景值获取
+         */
+        get_scene_data() {
+            return uni.getStorageSync(this.data.cache_scene_key) || 0;
+        },
+        /**
+         * 场景值设置
+         */
+        set_scene_data(params) {
+            var scene = (params.scene || null) == null ? 0 : parseInt(params.scene);
+            uni.setStorageSync(this.data.cache_scene_key, scene);
+            return scene;
+        },
+        /**
+         * 获取设备信息
+         * key      指定key
+         * dv       默认数据（不存在则读取、默认null）
+         * is_real  是否实时读取
+         */
+        get_system_info(key, dv, is_real) {
+            var info = null;
+            if ((is_real || false) == true) {
+                info = this.set_system_info() || null;
+            } else {
+                info = uni.getStorageSync(this.data.cache_system_info_key) || null;
+            }
+            if (info == null || (key || null) == null) {
+                return info;
+            }
+            return info[key] == undefined ? (dv == undefined ? null : dv) : info[key];
+        },
+        /**
+         * 设置设备信息
+         */
+        set_system_info() {
+            var system_info = uni.getSystemInfoSync();
+            uni.setStorageSync(this.data.cache_system_info_key, system_info);
+            return system_info;
+        },
+        /**
+         * 请求地址生成
+         * a              方法
+         * c              控制器
+         * plugins        插件标记（传参则表示为插件请求）
+         * params         url请求参数
+         * group          组名称（默认 api）
+         */
+        get_request_url(a, c, plugins, params, group) {
+            a = a || "index";
+            c = c || "index";
+            // 是否插件请求、走api统一插件调用控制器
+            var plugins_params = "";
+            if ((plugins || null) != null) {
+                plugins_params = "&pluginsname=" + plugins + "&pluginscontrol=" + c + "&pluginsaction=" + a;
+                c = "plugins";
+                a = "index";
+            }
+            // 参数处理
+            params = params || "";
+            if (params != "" && params.substr(0, 1) != "&") {
+                params = "&" + params;
+            }
+            // 参数处理
+            var url = this.data.request_url + (group || "api") + ".php?s=" + c + "/" + a + plugins_params;
+            return this.request_params_handle(url) + "&ajax=ajax" + params;
+        },
+        /**
+         * 请求参数处理
+         * url     url地址
+         */
+        request_params_handle(url) {
+            // 用户信息
+            var user = this.get_user_cache_info();
+            var token = user == null ? "" : user.token || "";
+            var uuid = this.request_uuid();
+            var client_value = this.application_client_type();
+            // 启动参数
+            var params = this.get_launch_cache_info();
+            var referrer = params == null ? null : params.referrer || null;
+            var referrer_params = referrer == null ? "" : "&referrer=" + referrer;
+            // 拼接标识
+            var join = url.indexOf("?") == -1 ? "?" : "&";
+            return url + join + "system_type=" + this.data.system_type + "&application=app&application_client_type=" + client_value + "&token=" + token + "&uuid=" + uuid + referrer_params;
+        },
+        /**
+         * 获取tab页面切换参数
+         */
+        get_page_tabbar_switch_params() {
+            return uni.getStorageSync(this.data.cache_page_tabbar_switch_params) || null;
+        },
+        /**
+         * 删除tab页面切换参数
+         */
+        remove_page_tabbar_switch_params() {
+            uni.removeStorageSync(this.data.cache_page_tabbar_switch_params);
+        },
+        /**
+         * 获取用户信息,信息不存在则唤醒授权
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调操请求参数
+         * return     有用户数据直接返回, 则回调调用者
+         */
+        get_user_info(object, method, params) {
+            var user = this.get_user_cache_info();
+            if (user == null) {
+                // #ifdef MP
+                // 小程序唤醒用户授权
+                this.user_login(object, method, params);
                 // #endif
-                return 0;
-            },
-            
-            /**
-             * 场景值获取
-             */
-            get_scene_data() {
-                return uni.getStorageSync(this.data.cache_scene_key) || 0;
-            },
-            
-            /**
-             * 场景值设置
-             */
-            set_scene_data(params) {
-                var scene = ((params.scene || null) == null) ? 0 : parseInt(params.scene);
-                uni.setStorageSync(this.data.cache_scene_key, scene);
-                return scene;
-            },
-
-            /**
-             * 获取设备信息
-             * key      指定key
-             * dv       默认数据（不存在则读取、默认null）
-             * is_real  是否实时读取
-             */
-            get_system_info(key, dv, is_real) {
-                var info = null;
-                if((is_real || false) == true) {
-                    info = this.set_system_info() || null;
-                } else {
-                    info = uni.getStorageSync(this.data.cache_system_info_key) || null;
-                }
-                if(info == null || (key|| null) == null) {
-                    return info;
-                }
-                return (info[key] == undefined) ? (dv == undefined ? null : dv) : info[key];
-            },
-
-            /**
-             * 设置设备信息
-             */
-            set_system_info() {
-                var system_info = uni.getSystemInfoSync();
-                uni.setStorageSync(this.data.cache_system_info_key, system_info);
-                return system_info;
-            },
-
-            /**
-             * 请求地址生成
-             * a              方法
-             * c              控制器
-             * plugins        插件标记（传参则表示为插件请求）
-             * params         url请求参数
-             * group          组名称（默认 api）
-             */
-            get_request_url(a, c, plugins, params, group) {
-                a = a || "index";
-                c = c || "index";
-                
-                // 是否插件请求、走api统一插件调用控制器
-                var plugins_params = "";
-                if ((plugins || null) != null) {
-                    plugins_params = "&pluginsname=" + plugins + "&pluginscontrol=" + c + "&pluginsaction=" + a;
-                    c = "plugins";
-                    a = "index";
-                }
-
-                // 参数处理
-                params = params || "";
-                if (params != "" && params.substr(0, 1) != "&") {
-                    params = "&" + params;
-                }
-
-                // 参数处理
-                var url = this.data.request_url + (group || "api")+".php?s=" + c + "/" + a + plugins_params;
-                return this.request_params_handle(url) + "&ajax=ajax" + params;
-            },
-
-            /**
-             * 请求参数处理
-             * url     url地址
-             */
-            request_params_handle(url) {
-                // 用户信息
-                var user = this.get_user_cache_info();
-                var token = user == null ? '' : (user.token || '');
-                var uuid = this.request_uuid();
-                var client_value = this.application_client_type();
-                // 启动参数
-                var params = this.get_launch_cache_info();
-                var referrer = params == null ? null : (params.referrer || null);
-                var referrer_params = (referrer == null) ? '' : '&referrer='+referrer;
-                // 拼接标识
-                var join = (url.indexOf('?') == -1) ? '?' : '&';
-                return url + join + 'system_type='+ this.data.system_type +'&application=app&application_client_type='+ client_value + '&token=' + token + '&uuid=' + uuid + referrer_params;
-            },
-
-			/**
-			 * 获取tab页面切换参数
-			 */
-			get_page_tabbar_switch_params() {
-				return uni.getStorageSync(this.data.cache_page_tabbar_switch_params) || null;
-			},
-
-			/**
-			 * 删除tab页面切换参数
-			 */
-			remove_page_tabbar_switch_params() {
-				uni.removeStorageSync(this.data.cache_page_tabbar_switch_params);
-			},
-
-            /**
-             * 获取用户信息,信息不存在则唤醒授权
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调操请求参数
-             * return     有用户数据直接返回, 则回调调用者
-             */
-            get_user_info(object, method, params) {
-                var user = this.get_user_cache_info();
-                if (user == null) {
-                    // #ifdef MP
-                    // 小程序唤醒用户授权
-                    this.user_login(object, method, params);
-                    // #endif
-
-                    // #ifdef H5 || APP
-                    // h5、app登录注册
-                    uni.showModal({
-                        title: '温馨提示',
-                        content: '请先登录或注册',
-                        confirmText: '确认',
-                        cancelText: '暂不',
-                        success: result => {
-                            if (result.confirm) {
-                                uni.navigateTo({
-                                    url: "/pages/login/login"
-                                });
-                            }
-                        }
-                    });
-                    // #endif
-
-                    return false;
-                }
-                return user;
-            },
-
-            /**
-             * 从缓存获取用户信息、可指定key和默认值
-             * key              数据key
-             * default_value    默认值
-             */
-            get_user_cache_info(key, default_value) {
-                var user = uni.getStorageSync(this.data.cache_user_info_key) || null;
-                if (user == null) {
-                    // 是否存在默认值
-                    return default_value == undefined ? null : default_value;
-                }
-
-                // 是否读取key
-                if ((key || null) != null) {
-                    return user[key] == undefined ? default_value == undefined ? null : default_value : user[key];
-                }
-
-                return user;
-            },
-
-            /**
-             * 系统参数获取
-             */
-            get_launch_cache_info() {
-                return uni.getStorageSync(this.data.cache_launch_info_key) || null;
-            },
-
-            /**
-             * 系统参数设置
-             */
-            set_launch_cache_info(params) {
-                params = this.launch_params_handle(params);
-                uni.setStorageSync(this.data.cache_launch_info_key, params);
-                return params;
-            },
-
-            /**
-             * 获取登录授权数据
-             */
-            get_login_cache_info() {
-                return uni.getStorageSync(this.data.cache_user_login_key) || null;
-            },
-
-            /**
-             * 用户登录
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调请求参数
-             * auth_data  授权数据
-             */
-            user_auth_login(object, method, params, auth_data) {
-                var self = this;
-                // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
-                uni.checkSession({
-                    success: function() {
-                        var login_data = self.get_login_cache_info();
-                        if (login_data == null) {
-                            self.user_login(object, method, params);
-                        } else {
-                            self.get_user_login_info(object, method, params, login_data, auth_data);
-                        }
-                    },
-                    fail: function() {
-                        uni.removeStorageSync(self.data.cache_user_login_key);
-                        self.user_login(object, method, params);
-                    }
-                });
-                // #endif
-                // #ifdef MP-ALIPAY
-                var login_data = self.get_login_cache_info();
-                if (login_data == null) {
-                    self.user_login(object, method, params);
-                } else {
-                    self.get_user_login_info(object, method, params, login_data, auth_data);
-                }
-                // #endif
-            },
-
-            /**
-             * 用户登录
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调操请求参数
-             */
-            user_login(object, method, params) {
-                var login_data = uni.getStorageSync(this.data.cache_user_login_key) || null;
-                if (login_data == null) {
-                    this.user_login_handle(object, method, params, true);
-                } else {
-                    this.login_to_auth();
-                }
-            },
-
-            /**
-             * 用户登录处理
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调操请求参数
-             * is_to_auth 是否进入授权
-             */
-            user_login_handle(object, method, params, is_to_auth = true) {
-                var self = this;
-                uni.showLoading({
-                    title: "授权中..."
-                });
-                var action = 'login';
-                // #ifdef MP-BAIDU
-                action = 'getLoginCode';
-                // #endif
-                uni[action]({
-                    success: res => {
-                        if (res.code) {
-                            uni.request({
-                                url: self.get_request_url('appminiuserauth', 'user'),
-                                method: 'POST',
-                                data: {
-                                    authcode: res.code
-                                },
-                                dataType: 'json',
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        var data = res.data.data;
-                                        var client_type = this.application_client_type();
-                                        if ((data.is_user_exist || 0) == 1 || client_type == 'weixin') {
-											uni.setStorageSync(self.data.cache_user_info_key, data);
-                                            if (typeof object === 'object' && (method || null) != null) {
-                                                object[method](params);
-                                            }
-                                        } else {
-                                            uni.setStorageSync(self.data.cache_user_login_key, data);
-                                            if(is_to_auth) {
-												var pages = getCurrentPages();
-												if(pages[pages.length-1]['route'] == 'pages/login/login') {
-													if (typeof object === 'object' && (method || null) != null) {
-													    object[method](params);
-													}
-												} else {
-													self.login_to_auth();
-												}
-                                            }
-                                        }
-                                    } else {
-                                        uni.hideLoading();
-                                        self.showToast(res.data.msg);
-                                    }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    self.showToast('服务器请求出错');
-                                }
-                            });
-                        }
-                    },
-                    fail: e => {
-                        uni.hideLoading();
-                        self.showToast('授权失败');
-                    }
-                });
-            },
-
-            /**
-             * 跳转到登录页面授权
-             */
-            login_to_auth() {
+                // #ifdef H5 || APP
+                // h5、app登录注册
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '授权用户信息',
-                    confirmText: '确认',
-                    cancelText: '暂不',
-                    success: result => {
+                    title: "温馨提示",
+                    content: "请先登录或注册",
+                    confirmText: "确认",
+                    cancelText: "暂不",
+                    success: (result) => {
                         if (result.confirm) {
                             uni.navigateTo({
-                                url: "/pages/login/login"
+                                url: "/pages/login/login",
                             });
-                        }
-                    }
-                });
-            },
-
-            /**
-             * 获取用户授权信息
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调请求参数
-             * login_data 登录信息
-             * auth_data  授权数据
-             */
-            get_user_login_info(object, method, params, login_data, auth_data) {
-                // 请求数据
-                var data = {
-                    auth_data: JSON.stringify(auth_data),
-                    openid: login_data.openid,
-                    unionid: login_data.unionid
-                };
-                
-                // 用户信息处理
-                uni.showLoading({
-                    title: "授权中..."
-                });
-                var self = this;
-                uni.request({
-                    url: self.get_request_url('appminiuserinfo', 'user'),
-                    method: 'POST',
-                    data: data,
-                    dataType: 'json',
-                    success: res => {
-                        uni.hideLoading();
-                        if (res.data.code == 0) {
-							uni.setStorageSync(self.data.cache_user_info_key, res.data.data);
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method](params);
-                            }
-                        } else {
-                            self.showToast(res.data.msg);
                         }
                     },
-                    fail: () => {
-                        uni.hideLoading();
-                        self.showToast('服务器请求出错');
-                    }
                 });
-            },
-
-            /**
-             * 字段数据校验
-             * data           待校验的数据, 一维json对象
-             * validation     待校验的字段, 格式 [{fields: 'mobile', msg: '请填写手机号码', is_can_zero: 1(是否可以为0)}, ...]
-             */
-            fields_check(data, validation) {
-                for (var i in validation) {
-                    var temp_value = data[validation[i]["fields"]];
-                    var temp_is_can_zero = validation[i]["is_can_zero"] || null;
-                    if (temp_value == undefined || temp_value.length == 0 || temp_value == -1 || temp_is_can_zero ==
-                        null && temp_value == 0) {
-                        this.showToast(validation[i]['msg']);
-                        return false;
-                    }
-                }
-                return true;
-            },
-
-            /**
-             * 获取当前时间戳
-             */
-            get_timestamp() {
-                return parseInt(new Date().getTime() / 1000);
-            },
-
-            /**
-             * 获取日期
-             * format       日期格式（默认 yyyy-MM-dd h:m:s）
-             * timestamp    时间戳（默认当前时间戳）
-             */
-            get_date(format, timestamp) {
-                var d = new Date((timestamp || this.get_timestamp()) * 1000);
-                var date = {
-                    "M+": d.getMonth() + 1,
-                    "d+": d.getDate(),
-                    "h+": d.getHours(),
-                    "m+": d.getMinutes(),
-                    "s+": d.getSeconds(),
-                    "q+": Math.floor((d.getMonth() + 3) / 3),
-                    "S+": d.getMilliseconds()
-                };
-                if (/(y+)/i.test(format)) {
-                    format = format.replace(RegExp.$1, (d.getFullYear() + '').substr(4 - RegExp.$1.length));
-                }
-                for (var k in date) {
-                    if (new RegExp("(" + k + ")").test(format)) {
-                        format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
-                    }
-                }
-
-                return format;
-            },
-
-            /**
-             * 获取对象、数组的长度、元素个数
-             * obj      要计算长度的元素（object、array、string）
-             */
-            get_length(obj) {
-                var obj_type = typeof obj;
-                if (obj_type == "string") {
-                    return obj.length;
-                } else if (obj_type == "object") {
-                    var obj_len = 0;
-                    for (var i in obj) {
-                        obj_len++;
-                    }
-                    return obj_len;
-                }
+                // #endif
                 return false;
-            },
-
-            /**
-             * 价格保留两位小数
-             * price      价格保留两位小数
-             */
-            price_two_decimal(x) {
-                var f_x = parseFloat(x);
-                if (isNaN(f_x)) {
-                    return 0;
-                }
-                var f_x = Math.round(x * 100) / 100;
-                var s_x = f_x.toString();
-                var pos_decimal = s_x.indexOf('.');
-                if (pos_decimal < 0) {
-                    pos_decimal = s_x.length;
-                    s_x += '.';
-                }
-                while (s_x.length <= pos_decimal + 2) {
-                    s_x += '0';
-                }
-                return s_x;
-            },
-
-            // url主要部分
-            get_url_main_part(url) {
-                if (url.indexOf("?") == -1) {
-                    var value = url;
-                } else {
-                    var temp_str = url.split("?");
-                    var value = temp_str[0];
-                }
-                return value;
-            },
-
-            /**
-             * 当前地址是否存在tabbar中
-             */
-            is_tabbar_pages(url) {
-                var value = this.get_url_main_part(url);
-                if ((value || null) == null) {
-                    return false;
-                }
-                var temp_tabbar_pages = this.data.tabbar_pages;
-                for (var i in temp_tabbar_pages) {
-                    if (temp_tabbar_pages[i] == value) {
-                        return true;
-                    }
-                }
-                return false;
-            },
-
-            /**
-             * 事件操作
-             */
-            operation_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                var type = parseInt(e.currentTarget.dataset.type);
-                if (value != null) {
-                    switch (type) {
-                        // web
-                        case 0:
-                            this.open_web_view(value);
-                            break;
-                        // 内部页面
-                        case 1:
-                            if (this.is_tabbar_pages(value)) {
-								var temp = value.split('?');
-								if(temp.length > 1 && (temp[1] || null) != null)
-								{
-									value = temp[0];
-									var query = this.url_params_to_json(temp[1]);
-									uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
-								}
-                                uni.switchTab({
-                                    url: value
-                                });
-                            } else {
-                                uni.navigateTo({
-                                    url: value
-                                });
-                            }
-                            break;
-                        // 跳转到外部小程序
-                        case 2:
-                            uni.navigateToMiniProgram({
-                                appId: value
-                            });
-                            break;
-                        // 跳转到地图查看位置
-                        case 3:
-                            var values = value.split('|');
-                            if (values.length != 4) {
-                                this.showToast('事件值格式有误');
-                                return false;
-                            }
-                            this.open_location(values[2], values[3], values[0], values[1]);
-                            break;
-                        // 拨打电话
-                        case 4:
-                            this.call_tel(value);
-                            break;
-                    }
-                }
-            },
-
-            /**
-             * 打开 webview页面
-             * value    [string]  url地址
-             */
-            open_web_view(value) {
-                uni.navigateTo({
-                    url: "/pages/web-view/web-view?url=" + encodeURIComponent(value)
-                });
-            },
-
-            /**
-             * 默认弱提示方法
-             * msg    [string]  提示信息
-             * status [string]  状态 默认error [正确success, 错误error]
-             */
-            showToast(msg, status) {
-                if ((status || 'error') == 'success') {
-                    uni.showToast({
-                        icon: 'success',
-                        title: msg,
-                        duration: 3000
-                    });
-                } else {
-                    uni.showToast({
-                        icon: 'none',
-                        title: msg,
-                        duration: 3000
-                    });
-                }
-            },
-
-            /**
-             * alert确认框
-             * title              [string]    标题（默认空）
-             * msg                [string]    提示信息，必传
-             * is_show_cancel     [int]       是否显示取消按钮（默认显示 0否, 1|undefined是）
-             * cancel_text        [string]    取消按钮文字（默认 取消）
-             * cancel_color       [string]    取消按钮的文字颜色，必须是 16 进制格式的颜色字符串（默认 #000000）
-             * confirm_text       [string]    确认按钮文字（默认 确认）
-             * confirm_color      [string]    确认按钮的文字颜色，必须是 16 进制格式的颜色字符串（默认 #000000）
-             * object             [boject]    回调操作对象，点击确认回调参数1，取消回调0
-             * method             [string]    回调操作对象的函数
-             */
-            alert(e) {
-                var msg = e.msg || null;
-                if (msg != null) {
-                    var title = e.title || '';
-                    var is_show_cancel = e.is_show_cancel == 0 ? false : true;
-                    var cancel_text = e.cancel_text || '取消';
-                    var confirm_text = e.confirm_text || '确认';
-                    var cancel_color = e.cancel_color || '#000000';
-                    var confirm_color = e.confirm_color || '#576B95';
-                    uni.showModal({
-                        title: title,
-                        content: msg,
-                        showCancel: is_show_cancel,
-                        cancelText: cancel_text,
-                        cancelColor: cancel_color,
-                        confirmText: confirm_text,
-                        confirmColor: confirm_color,
-                        success(res) {
-                            if ((e.object || null) != null && typeof e.object === 'object' && (e.method || null) != null) {
-                                e.object[e.method](res.confirm ? 1 : 0);
-                            }
-                        }
-                    });
-                } else {
-                    self.showToast('提示信息为空 alert');
-                }
-            },
-
-            /**
-             * 是否需要登录
-             * 是否需要绑定手机号码
-             */
-            user_is_need_login(user) {
-                // 用户信息是否正确
-                if ((user || null) == null) {
-                    return true;
-                }
-                // 是否需要绑定手机号码
-                if ((user.is_mandatory_bind_mobile || 0) == 1) {
-                    if ((user.mobile || null) == null) {
-                        return true;
-                    }
-                }
-                return false;
-            },
-
-            // url参数转json对象
-            url_params_to_json(url_params) {
-                var json = new Object();
-                if ((url_params || null) != null) {
-                    var arr = url_params.split('&');
-                    for (var i = 0; i < arr.length; i++) {
-                        var temp = arr[i].split('=');
-                        json[temp[0]] = temp[1];
-                    }
-                }
-                return json;
-            },
-
-            // json对象转url请求参数
-            json_to_url_params(data) {
-                var str = '';
-                for(var i in data) {
-                    if(str != '') {
-                        str += '&';
-                    }
-                    str += i+'='+data[i];
-                }
-                return str;
-            },
-
-            // 拨打电话
-            call_tel(data) {
-                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (data || null);
-                if (value != null) {
-                    uni.makePhoneCall({
-                        phoneNumber: value.toString()
-                    });
-                }
-            },
-
-            /**
-             * 登录校验
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             * params     回调请求参数
-             */
-            is_login_check(res, object, method, params) {
-                if (res.code == -400) {
-                    uni.clearStorage();
-                    this.get_user_info(object, method, params);
-                    return false;
-                }
-                return true;
-            },
-
-            /**
-             * 设置导航reddot
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
-             */
-            set_tab_bar_reddot(index, type) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.hideTabBarRedDot({
-                            index: Number(index)
-                        });
+            }
+            return user;
+        },
+        /**
+         * 从缓存获取用户信息、可指定key和默认值
+         * key              数据key
+         * default_value    默认值
+         */
+        get_user_cache_info(key, default_value) {
+            var user = uni.getStorageSync(this.data.cache_user_info_key) || null;
+            if (user == null) {
+                // 是否存在默认值
+                return default_value == undefined ? null : default_value;
+            }
+            // 是否读取key
+            if ((key || null) != null) {
+                return user[key] == undefined ? (default_value == undefined ? null : default_value) : user[key];
+            }
+            return user;
+        },
+        /**
+         * 系统参数获取
+         */
+        get_launch_cache_info() {
+            return uni.getStorageSync(this.data.cache_launch_info_key) || null;
+        },
+        /**
+         * 系统参数设置
+         */
+        set_launch_cache_info(params) {
+            params = this.launch_params_handle(params);
+            uni.setStorageSync(this.data.cache_launch_info_key, params);
+            return params;
+        },
+        /**
+         * 获取登录授权数据
+         */
+        get_login_cache_info() {
+            return uni.getStorageSync(this.data.cache_user_login_key) || null;
+        },
+        /**
+         * 用户登录
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调请求参数
+         * auth_data  授权数据
+         */
+        user_auth_login(object, method, params, auth_data) {
+            var self = this;
+            // #ifdef MP-WEIXIN || MP-QQ || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
+            uni.checkSession({
+                success: function () {
+                    var login_data = self.get_login_cache_info();
+                    if (login_data == null) {
+                        self.user_login(object, method, params);
                     } else {
-                        uni.showTabBarRedDot({
-                            index: Number(index)
-                        });
+                        self.get_user_login_info(object, method, params, login_data, auth_data);
                     }
-                }
-            },
-
-            /**
-             * 设置导航车badge
-             * index     tabBar 的哪一项，从左边算起（0开始）
-             * type      0 移出, 1 添加 （默认 0 移出）
-             * value     显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
-             */
-            set_tab_bar_badge(index, type, value) {
-                if (index !== undefined && index !== null) {
-                    if ((type || 0) == 0) {
-                        uni.removeTabBarBadge({
-                            index: Number(index)
-                        });
-                    } else {
-                        uni.setTabBarBadge({
-                            index: Number(index),
-                            "text": value.toString()
-                        });
-                    }
-                }
-            },
-
-            // 页面分享处理
-            page_share_handle(share = null) {
-                // 当前页面
-                var pages = getCurrentPages();
-                var obj = pages[pages.length-1];
-
-                // 分享信息、是否指定参数
-                if((share || null) == null) {
-                    share = {}
-                }
-                // 从页面对象获取参数
-                if(Object.keys(share).length <= 0) {
-                    share = obj.share_info || {};
-                }
-                // 参数处理
-                share = this.share_content_handle(share);
-
-                // #ifdef MP-WEIXIN
-                // 微信小程序展示系统分享好友和朋友圈按钮
-                // 其他端小程序不用展示会调起分享窗口
-                var not_pages = ['/pages/user/user', '/pages/cart/cart'];
-                if(not_pages.indexOf(share.url) == -1) {
-                    uni.showShareMenu({
-                        withShareTicket: true,
-                        title: share.title,
-                        desc: share.desc,
-                        path: share.path + share.query,
-                        imageUrl: share.img,
-                        menus: ['shareAppMessage', 'shareTimeline']
-                    });
-                } else {
-                    wx.hideShareMenu({
-                      menus: ['shareTimeline']
-                    });
-                }
-                // #endif
-                // #ifdef H5
-                // H5处理微信环境分享自定义信息
-                if(this.is_weixin_env()) {
-                    var page_url = this.get_page_url();
-                    uni.request({
-                        url: this.get_request_url("signpackage", "index", "share"),
-                        method: "POST",
-                        data: {
-                            url: encodeURIComponent(page_url)
-                        },
-                        dataType: "json",
-                        success: res => {
-                            if (res.data.code == 0 && (res.data.data.package || null) != null) {
-                                var data = res.data.data.package;
-                                var wx = require('jweixin-module');                                
-                                wx.config({
-                                    debug: false,
-                                    appId: data.appId,
-                                    timestamp: data.timestamp,
-                                    nonceStr: data.nonceStr,
-                                    signature: data.signature,
-                                    jsApiList: [
-                                        'updateAppMessageShareData',
-                                        'updateTimelineShareData',
-                                        'onMenuShareWeibo'
-                                    ]
-                                });
-                                wx.ready(function () {
-                                    // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
-                                    wx.updateAppMessageShareData({
-                                        title: share.title,
-                                        desc: share.desc,
-                                        link: share.url,
-                                        imgUrl: share.img
-                                    });
-                                    // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
-                                    wx.updateTimelineShareData({ 
-                                        title: share.title,
-                                        link: share.url,
-                                        imgUrl: share.img
-                                    });
-                                    // 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
-                                    wx.onMenuShareWeibo({
-                                        title: share.title,
-                                        desc: share.desc,
-                                        link: share.url,
-                                        imgUrl: share.img
-                                    });
-                                });
-                            }
-                        },
-                        fail: () => {
-                            this.showToast("服务器请求出错");
-                        }
-                    });
-                }
-                // #endif
-                
-                // #ifdef MP-BAIDU
-                // 百度小程序wab化搜索引擎数据设置
-                uni.setPageInfo({
-                  title: share.title,
-                  keywords: share.kds || share.desc,
-                  articleTitle: share.title,
-                  description: share.desc,
-                  image: share.img,
-                  video: ((share.video || null) == null) ? [] : [{
-                            url: share.video,
-                            duration: '100',
-                            image: share.img
-                        }]
-                });
-                // #endif
-            },
-
-            /**
-             * 获取配置信息、可指定key和默认值
-             * key              数据key（支持多级读取、以 . 分割key名称）
-             * default_value    默认值
-             */
-            get_config(key, default_value) {
-                var value = null;
-                var config = uni.getStorageSync(this.data.cache_config_info_key) || null;
-                if (config != null) {
-                    // 数据读取
-                    var arr = key.split('.');
-                    if (arr.length == 1) {
-                        value = config[key] == undefined ? null : config[key];
-                    } else {
-                        value = config;
-                        for (var i in arr) {
-                            if (value[arr[i]] != undefined) {
-                                value = value[arr[i]];
-                            } else {
-                                value = null;
-                                break;
-                            }
-                        }
-                    }
-                }
-                // 默认值
-                if(value == null && default_value != undefined) {
-                    value = default_value;
-                }
-                // 无数据则处理自定义字段定义的数据
-                if(value == null) {
-                    switch(key) {
-                        // 货币符号
-                        case 'currency_symbol' :
-                            value = this.data.currency_symbol;
-                            break;
-                    }
-                }
-                return value;
-            },
-
-            // 初始化 配置信息
-            init_config() {
-                uni.request({
-                    url: this.get_request_url('common', 'base'),
-                    method: 'POST',
-                    data: {is_key: 1},
-                    dataType: 'json',
-                    success: res => {
-                        if (res.data.code == 0) {
-                            uni.setStorage({
-                                key: this.data.cache_config_info_key,
-                                data: res.data.data,
-                                fail: () => {
-                                    this.showToast('配置信息缓存失败');
-                                }
-                            });
-                            
-                            // 用户自动登录处理
-                            this.user_auto_login_handle();
-                        } else {
-                            this.showToast(res.data.msg);
-                        }
-                    },
-                    fail: () => {
-                        this.showToast('服务器请求出错');
-                    }
-                });
-            },
-
-            /**
-             * 配置是否有效(100毫秒检验一次、最多检验100次)
-             * object     回调操作对象
-             * method     回调操作对象的函数
-             */
-            is_config(object, method) {
-                var self = this;
-                var count = 0;
-                var timer = setInterval(function() {
-                    if (self.get_config('status') == 1) {
-                        clearInterval(timer);
-
-                        if (typeof object === 'object' && (method || null) != null) {
-                            object[method](true);
-                        }
-                    }
-                    count++;
-
-                    if (count >= 100) {
-                        clearInterval(timer);
-                    }
-                }, 100);
-            },
-
-            /**
-             * 火星坐标GCJ02到百度坐标BD-09(高德，谷歌，腾讯坐标 -> 百度)
-             * lng     经度
-             * lat     纬度
-             */
-            map_gcj_to_bd(lng, lat) {
-                lng = parseFloat(lng);
-                lat = parseFloat(lat);
-                let x_pi = 3.14159265358979324 * 3000.0 / 180.0;
-                let x = lng;
-                let y = lat;
-                let z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
-                let theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
-                let lngs = z * Math.cos(theta) + 0.0065;
-                let lats = z * Math.sin(theta) + 0.006;
-                return {
-                    lng: lngs,
-                    lat: lats
-                };
-            },
-
-            /**
-             * 百度坐标BD-09到火星坐标GCJ02(百度 -> 高德，谷歌，腾讯坐标)
-             * lng     经度
-             * lat     纬度
-             */
-            map_bd_to_gcj(lng, lat) {
-                lng = parseFloat(lng);
-                lat = parseFloat(lat);
-                let x_pi = 3.14159265358979324 * 3000.0 / 180.0;
-                let x = lng - 0.0065;
-                let y = lat - 0.006;
-                let z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
-                let theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
-                let lngs = z * Math.cos(theta);
-                let lats = z * Math.sin(theta);
-                return {
-                    lng: lngs,
-                    lat: lats
-                };
-            },
-
-            /**
-             * 打开地图
-             * lng        经度
-             * lat        纬度
-             * name       地图上面显示的名称
-             * address    地图上面显示的详细地址
-             * scale      缩放比例，范围5~18
-             */
-            open_location(lng, lat, name, address, scale) {
-                // #ifdef MP-KUAISHOU
-                this.showToast('请复制地址到网页地图中查看！');
-                return false;
-                // #endif
-
-                if (lng == undefined || lat == undefined || lng == '' || lat == '') {
-                    this.showToast('坐标有误');
-                    return false;
-                }
-
-                // 转换坐标打开位置
-                uni.openLocation({
-                    name: name || '地理位置',
-                    address: address || '',
-                    scale: scale || 18,
-                    longitude: parseFloat(lng),
-                    latitude: parseFloat(lat)
-                });
-            },
-
-            // uuid生成
-            uuid() {
-                var d = new Date().getTime();
-                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                    var r = (d + Math.random() * 16) % 16 | 0;
-                    d = Math.floor(d / 16);
-                    return (c == 'x' ? r : r & 0x3 | 0x8).toString(16);
-                });
-            },
-
-            // 获取当前uuid
-            request_uuid() {
-                var uuid = uni.getStorageSync(this.data.cache_user_uuid_key) || null;
-                if (uuid == null) {
-                    uuid = this.uuid();
-                    uni.setStorage({
-                        key: this.data.cache_user_uuid_key,
-                        data: uuid,
-                        fail: () => {
-                            this.showToast('uuid缓存失败');
-                        }
-                    });
-                }
-                return uuid;
-            },
-
-            // 链接地址事件
-            url_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
-                this.url_open(value, is_redirect);
-            },
-
-            // url打开
-            url_open(value, is_redirect = false) {
-                if ((value || null) != null) {
-					// web地址
-					var http_arr = ['http:/', 'https:'];
-                    if (http_arr.indexOf(value.substr(0, 6)) != -1) {
-                        this.open_web_view(value);
-
-					// 打开外部小程序协议
-					} else if(value.substr(0, 8) == 'appid://') {
-						uni.navigateToMiniProgram({
-						    appId: value.substr(8)
-						});
-
-					// 地图协议
-					} else if(value.substr(0, 6) == 'map://') {
-						var values = value.substr(6).split('|');
-						if (values.length != 4) {
-						    this.showToast('事件值格式有误');
-						    return false;
-						}
-						this.open_location(values[2], values[3], values[0], values[1]);
-
-					// 电话协议
-					} else if(value.substr(0, 6) == 'tel://') {
-						this.call_tel(value.substr(6));
-
-					// 默认切换或跳转页面
-                    } else {
-                        if (this.is_tabbar_pages(value)) {
-							var temp = value.split('?');
-							if(temp.length > 1 && (temp[1] || null) != null)
-							{
-								value = temp[0];
-								var query = this.url_params_to_json(temp[1]);
-								uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
-							}
-                            uni.switchTab({
-                                url: value
-                            });
-                        } else {
-                            if(is_redirect) {
-                                uni.redirectTo({
-                                    url: value
-                                });
-                            } else {
-                                uni.navigateTo({
-                                    url: value
-                                });
-                            }
-                        }
-                    }
-                }
-            },
-
-            // 文本事件
-            text_event_handle(e) {
-                var event = e.currentTarget.dataset.event || null;
-                if(event != null) {
-                    var value = e.currentTarget.dataset.value;
-                    switch(event) {
-                        // 拨打电话
-                        case 'tel' :
-                            this.call_tel(value);
-                            break;
-                        // 复制文本
-                        case 'copy' :
-                            this.text_copy_event(value);
-                            break;
-                    }
-                }
-            },
-
-            // 剪贴板
-            text_copy_event(data) {
-                var value = (typeof(data) == 'object') ? (data.currentTarget.dataset.value || null) : (data || null);
-                if (value != null) {
-                    var self = this;
-                    uni.setClipboardData({
-                        data: value,
-                        success(res) {
-                            uni.getClipboardData({
-                                success(res) {
-                                    self.showToast('复制成功', 'success');
-                                }
-                            });
-                        }
-                    });
-                } else {
-                    this.showToast('复制内容为空');
-                }
-            },
-
-            // 图片预览
-            image_show_event(e) {
-                var value = e.currentTarget.dataset.value || null;
-                if (value != null) {
-                    uni.previewImage({
-                        current: value,
-                        urls: [value]
-                    });
-                } else {
-                    this.showToast('图片地址为空');
-                }
-            },
-
-            // 静态文件url地址
-            get_static_url(type, is_plugins) {
-                // 默认公共地址
-                if((type || null) == null) {
-                    type = 'common';
-                }
-                
-                // 是否插件
-                if((is_plugins || false) == true) {
-                    // 根据配置的静态url地址+插件标识符
-                    return this.data.static_url+'static/plugins/images/'+type+'/';
-                } else {
-                    // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
-                    return this.data.static_url+'static/app/'+this.data.default_theme+'/'+type+'/';
-                }
-            },
-            
-            // rpx转px
-            rpx_to_px(value) {
-                return ((value || 0) == 0) ? 0 : parseInt(value) / 750 * parseInt(this.get_system_info('windowWidth', 0));
-            },
-            
-            // px转rpx
-            px_to_rpx(value) {
-                return ((value || 0) == 0) ? 0 : parseInt(value) * 750 / parseInt(this.get_system_info('windowWidth', 0));
-            },
-
-            // 终端类型
-            application_client() {
-                var type = '';
-                // #ifdef APP
-                    type = 'app';
-                // #endif
-				// #ifdef H5
-				    type = 'h5';
-				// #endif
-                // #ifdef MP
-                    type = 'mp';
-                // #endif
-                return type;
-            },
-
-            // 终端类型值
-            application_client_type() {
-                var value = '';
-                // #ifdef MP-WEIXIN
-                    value = 'weixin';
-                // #endif
-                // #ifdef MP-ALIPAY
-                    value = 'alipay';
-                // #endif
-                // #ifdef MP-BAIDU
-                    value = 'baidu';
-                // #endif
-                // #ifdef MP-QQ
-                    value = 'qq';
-                // #endif
-                // #ifdef MP-TOUTIAO
-                    value = 'toutiao';
-                // #endif
-                // #ifdef MP-KUAISHOU
-                    value = 'kuaishou';
-                // #endif
-                // #ifdef H5
-                    value = 'h5';
-                // #endif
-                return value;
-            },
-
-            // 授权验证
-            auth_check(object, method, scope, msg) {
-                var self = this;
-                uni.getSetting({
-                    success(res) {
-                        if (!res.authSetting[scope]) {
-                            uni.authorize({
-                                scope: scope,
-                                success (res) {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method](1);
-                                    }
-                                },
-                                fail (res) {
-                                    self.showToast(msg || '请打开授权');
-                                    setTimeout(function() {
-                                        uni.openSetting();
-                                    }, 1000);
-                                }
-                            });
-                        } else {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method](1);
-                            }
-                        }
-                    }
-                });
-            },
-
-            // 窗口宽度处理
-            window_width_handle(width) {
-                // #ifdef H5 || APP
-                if(width > 800) {
-                    width = 800;
-                }
-                // #endif
-                return width;
-            },
-
-            // 窗口高度处理
-            window_height_handle(system) {
-                var height = system.windowHeight;
-                // 状态栏
-                if(system.statusBarHeight > 0) {
-                    height += system.statusBarHeight;
-                }
-                // 导航栏
-                if(system.windowTop > 0) {
-                    height += system.windowTop;
-                }
-                // 底部菜单
-                if(system.windowBottom > 0) {
-                    height += system.windowBottom;
-                }
-                return height;
-            },
-
-            // 获取当前页面地址
-            // is_whole 完整地址（?后面的参数）
-            get_page_url(is_whole = true) {
-                // #ifdef MP || APP
-                var url = this.current_page();
-                // #endif
-                // #ifdef H5
-                var url = window.location.href;
-                // #endif
-                if(is_whole == false) {
-                    var temp = url.split('?');
-                    url = temp[0];
-                }
-                return url;
-            },
-
-            // 是否微信环境
-            is_weixin_env() {
-                var agent = navigator.userAgent.toLowerCase();
-                if(agent.match(/MicroMessenger/i) == 'micromessenger') {
-                    return true;
-                }
-                return false;
-            },
-
-            // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids, payment_id = 0) {
-                // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
-                if(this.is_weixin_env()) {
-                    var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
-                    if(web_openid == null) {
-                        // 已经授权则重新刷新用户信息
-                        var params = this.get_launch_cache_info();
-                        if(params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
-                            uni.showLoading({
-                                title: "处理中..."
-                            });
-                            uni.request({
-                                url: this.get_request_url("tokenuserinfo", "user"),
-                                method: "POST",
-                                data: {},
-                                dataType: "json",
-                                success: res => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+                },
+                fail: function () {
+                    uni.removeStorageSync(self.data.cache_user_login_key);
+                    self.user_login(object, method, params);
+                },
+            });
+            // #endif
+            // #ifdef MP-ALIPAY
+            var login_data = self.get_login_cache_info();
+            if (login_data == null) {
+                self.user_login(object, method, params);
+            } else {
+                self.get_user_login_info(object, method, params, login_data, auth_data);
+            }
+            // #endif
+        },
+        /**
+         * 用户登录
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调操请求参数
+         */
+        user_login(object, method, params) {
+            var login_data = uni.getStorageSync(this.data.cache_user_login_key) || null;
+            if (login_data == null) {
+                this.user_login_handle(object, method, params, true);
+            } else {
+                this.login_to_auth();
+            }
+        },
+        /**
+         * 用户登录处理
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调操请求参数
+         * is_to_auth 是否进入授权
+         */
+        user_login_handle(object, method, params, is_to_auth = true) {
+            var self = this;
+            uni.showLoading({
+                title: "授权中...",
+            });
+            var action = "login";
+            // #ifdef MP-BAIDU
+            action = "getLoginCode";
+            // #endif
+            uni[action]({
+                success: (res) => {
+                    if (res.code) {
+                        uni.request({
+                            url: self.get_request_url("appminiuserauth", "user"),
+                            method: "POST",
+                            data: {
+                                authcode: res.code,
+                            },
+                            dataType: "json",
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    var data = res.data.data;
+                                    var client_type = this.application_client_type();
+                                    if ((data.is_user_exist || 0) == 1 || client_type == "weixin") {
+                                        uni.setStorageSync(self.data.cache_user_info_key, data);
+                                        if (typeof object === "object" && (method || null) != null) {
+                                            object[method](params);
+                                        }
                                     } else {
-                                        this.showToast(res.data.msg);
+                                        uni.setStorageSync(self.data.cache_user_login_key, data);
+                                        if (is_to_auth) {
+                                            var pages = getCurrentPages();
+                                            if (pages[pages.length - 1]["route"] == "pages/login/login") {
+                                                if (typeof object === "object" && (method || null) != null) {
+                                                    object[method](params);
+                                                }
+                                            } else {
+                                                self.login_to_auth();
+                                            }
+                                        }
                                     }
-                                },
-                                fail: () => {
+                                } else {
                                     uni.hideLoading();
-                                    this.showToast("服务器请求出错");
+                                    self.showToast(res.data.msg);
                                 }
-                            });
-                            return true;
-                        } else {
-                            uni.setStorageSync(this.data.cache_page_pay_key,  {
-                                order_ids: (typeof order_ids == 'array') ? order_ids.join(',') : order_ids,
-                                payment_id: payment_id
-                            });
-                            var page_url = this.get_page_url();
-                                page_url += (page_url.indexOf('?') == -1) ? '?' : '&';
-                                page_url += 'is_weixin_auth_web_openid=1';
-                            var request_url = encodeURIComponent(base64.encode(page_url));
-                            var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url="+request_url, "index").replace('&ajax=ajax', '');
-                            window.location.href = url;
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                self.showToast("服务器请求出错");
+                            },
+                        });
+                    }
+                },
+                fail: (e) => {
+                    uni.hideLoading();
+                    self.showToast("授权失败");
+                },
+            });
+        },
+        /**
+         * 跳转到登录页面授权
+         */
+        login_to_auth() {
+            uni.showModal({
+                title: "温馨提示",
+                content: "授权用户信息",
+                confirmText: "确认",
+                cancelText: "暂不",
+                success: (result) => {
+                    if (result.confirm) {
+                        uni.navigateTo({
+                            url: "/pages/login/login",
+                        });
+                    }
+                },
+            });
+        },
+        /**
+         * 获取用户授权信息
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调请求参数
+         * login_data 登录信息
+         * auth_data  授权数据
+         */
+        get_user_login_info(object, method, params, login_data, auth_data) {
+            // 请求数据
+            var data = {
+                auth_data: JSON.stringify(auth_data),
+                openid: login_data.openid,
+                unionid: login_data.unionid,
+            };
+            // 用户信息处理
+            uni.showLoading({
+                title: "授权中...",
+            });
+            var self = this;
+            uni.request({
+                url: self.get_request_url("appminiuserinfo", "user"),
+                method: "POST",
+                data: data,
+                dataType: "json",
+                success: (res) => {
+                    uni.hideLoading();
+                    if (res.data.code == 0) {
+                        uni.setStorageSync(self.data.cache_user_info_key, res.data.data);
+                        if (typeof object === "object" && (method || null) != null) {
+                            object[method](params);
                         }
-                        return false;
+                    } else {
+                        self.showToast(res.data.msg);
                     }
-                }
-                return true;
-            },
-
-            // app标题
-            get_application_title() {
-                var value = null;
-                // 根据终端类型获取对应数据
-                var type = this.application_client_type() || null;
-                if(type !== null) {
-                    value = this.get_config('config.common_app_mini_'+type+'_title') || null;
-                }
-                // 获取公共数据
-                if(value === null) {
-                    value = this.get_config('config.home_site_name', this.data.application_title);
-                }
-                return value;
-            },
-
-            // app描述
-            get_application_describe() {
-                var value = null;
-                // 根据终端类型获取对应数据
-                var type = this.application_client_type() || null;
-                if(type !== null) {
-                    value = this.get_config('config.common_app_mini_'+type+'_describe') || null;
-                }
-                // 获取公共数据
-                if(value === null) {
-                    value = this.data.application_describe;
-                }
-                return value;
-            },
-
-            // applogo
-            get_application_logo() {
-                var logo = this.data.application_logo || null;
-                if(logo == null) {
-                    logo = this.get_config('config.home_site_logo_wap');
-                }
-                return logo
-            },
-
-            // 正方形logo
-            get_application_logo_square() {
-                return this.get_config('config.home_site_logo_square');
-            },
-
-            // 分享内容处理
-            share_content_handle(data) {
-                // 获取插件配置信息
-                var share_config = this.get_config('plugins_base.share.data') || {};
-                var result = {
-                    title: data.title || share_config.title || this.get_application_title(),
-                    desc: data.desc || share_config.desc || this.get_application_describe(),
-                    path: data.path || this.data.tabbar_pages[0],
-                    query: this.share_query_handle(data.query || ''),
-                    img: data.img || share_config.pic || this.get_config('config.home_site_logo_square')
-                };
-                result['url'] = this.get_page_url();
-                // #ifdef H5
-                result['url'] = result.url.split('#')[0] + '#' + ((result.path.substr(0 ,1) == '/') ? '' : '/') + result.path + result.query;
-                // #endif
-                return result;
-            },
-
-            // 分享参数处理
-            share_query_handle(query) {
-                if((query || null) == null || query.indexOf('referrer') == -1) {
-                    var user_id = parseInt(this.get_user_cache_info('id', 0)) || 0;
-                    if(user_id > 0) {
-                        var join = ((query || null) == null) ? '' : '&';
-                        query += join+'referrer='+user_id;
-                    }
-                }
-                return ((query || null) == null) ? '' : '?'+query;
-            },
-
-            // 是否朋友圈单页访问提示
-            is_single_page_check() {
-                if(this.is_current_single_page() == 1) {
-                    this.showToast('请前往小程序使用完整服务');
+                },
+                fail: () => {
+                    uni.hideLoading();
+                    self.showToast("服务器请求出错");
+                },
+            });
+        },
+        /**
+         * 字段数据校验
+         * data           待校验的数据, 一维json对象
+         * validation     待校验的字段, 格式 [{fields: 'mobile', msg: '请填写手机号码', is_can_zero: 1(是否可以为0)}, ...]
+         */
+        fields_check(data, validation) {
+            for (var i in validation) {
+                var temp_value = data[validation[i]["fields"]];
+                var temp_is_can_zero = validation[i]["is_can_zero"] || null;
+                if (temp_value == undefined || temp_value.length == 0 || temp_value == -1 || (temp_is_can_zero == null && temp_value == 0)) {
+                    this.showToast(validation[i]["msg"]);
                     return false;
                 }
-                return true;
-            },
-
-            // 调用页面方法
-            get_page_object(page) {
-                var result = [];
-                var pages = getCurrentPages();
-                for(var i=0; i<pages.length; i++) {
-                    if(pages[i]['route'] == page) {
-                        result.push(pages[i]);
-                    }
+            }
+            return true;
+        },
+        /**
+         * 获取当前时间戳
+         */
+        get_timestamp() {
+            return parseInt(new Date().getTime() / 1000);
+        },
+        /**
+         * 获取日期
+         * format       日期格式（默认 yyyy-MM-dd h:m:s）
+         * timestamp    时间戳（默认当前时间戳）
+         */
+        get_date(format, timestamp) {
+            var d = new Date((timestamp || this.get_timestamp()) * 1000);
+            var date = {
+                "M+": d.getMonth() + 1,
+                "d+": d.getDate(),
+                "h+": d.getHours(),
+                "m+": d.getMinutes(),
+                "s+": d.getSeconds(),
+                "q+": Math.floor((d.getMonth() + 3) / 3),
+                "S+": d.getMilliseconds(),
+            };
+            if (/(y+)/i.test(format)) {
+                format = format.replace(RegExp.$1, (d.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in date) {
+                if (new RegExp("(" + k + ")").test(format)) {
+                    format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
                 }
-                return result;
-            },
-
-            // 当前页面地址
-            current_page() {
-                // 来源地址、拼接当前小程序页面
-                var pages = getCurrentPages();
-                var page = pages[pages.length-1];
-                return this.page_url_handle(page);
-            },
-
-            // 上一页页面地址
-            prev_page() {
-                var value = null;
-                var pages = getCurrentPages();
-                var length = pages.length;
-                if(length > 1) {
-                    value = this.page_url_handle(pages[length-2]);
+            }
+            return format;
+        },
+        /**
+         * 获取对象、数组的长度、元素个数
+         * obj      要计算长度的元素（object、array、string）
+         */
+        get_length(obj) {
+            var obj_type = typeof obj;
+            if (obj_type == "string") {
+                return obj.length;
+            } else if (obj_type == "object") {
+                var obj_len = 0;
+                for (var i in obj) {
+                    obj_len++;
                 }
-                return value;
-            },
-
-            // 返回上一页、则回到shouy 
-            page_back_prev_event() {
-                var prev_page = this.prev_page();
-                if(prev_page == null) {
-                    uni.switchTab({url: this.data.tabbar_pages[0]});
-                } else {
-                    uni.navigateBack();
-                }
-            },
-
-            // 页面地址处理
-            page_url_handle(page) {
-                if((page || null) == null) {
-                    return '';
-                }
-                var route = page.route;
-                var options = page.options || {};
-                var query = '';
-                if(JSON.stringify(options) != '{}') {
-                    for(var i in options) {
-                        query += '&'+i+'='+options[i];
-                    }
-                }
-                if((query || null) != null) {
-                    route += '?'+query.substr(1);
-                }
-                return route;
-            },
-
-            // 进入客服
-            chat_entry_handle(url) {
-                if((url || null) == null) {
-                    this.showToast("客服地址有误");
-                } else {
-                    // 拼接基础参数
-                    url = this.request_params_handle(url);
-
-                    // 拼接当前页面地址
-                    var route = this.current_page();
-                    url += '&source='+encodeURIComponent(base64.encode(route).replace(new RegExp(/=/g), ''));
-
-                    // 打开webview
-                    this.open_web_view(url);
-                }
-            },
-            
-            // 用户自动登录处理
-            user_auto_login_handle() {
-                // #ifdef H5
-                var user = this.get_user_cache_info();
-                if(user == null) {
-                    var params = this.get_launch_cache_info() || {};
-                    var config = this.get_config('plugins_base.thirdpartylogin.data') || null;
-                    var data = this.get_config('plugins_thirdpartylogin_data') || null;
-                    var url = null;
-                    // 是否微信环境
-                    if((params.thirdpartylogin || null) == null && config != null && data != null && this.is_weixin_env()) {
-                        var is_auto = config.weixin_is_env_auto_login || 0;
-                        var weixin = data.weixin || null;
-                        if(is_auto != 0 && weixin != null) {
-                            url = weixin.login_url;
-                        }
-                    }
-
-                    // 存在登录url则跳转登录
-                    if(url != null) {
-                        // 上一个页面记录
-                        var page = this.current_page();
-                        if(page != null) {
-                            uni.setStorageSync(this.data.cache_prev_page_key, page);
-                        }
-
-                        // 跳转登录
-                        window.location.href = url;
-                    }
-                }
-                // #endif
-            },
-
-            // 清除用户缓存
-            remove_user_cache_event() {
-                // 用户登录缓存
-                uni.removeStorageSync(this.data.cache_user_login_key);
-                // 用户信息缓存
-                uni.removeStorageSync(this.data.cache_user_info_key);
-
-                // 非小程序则两秒后回到首页
-                this.showToast('清除成功', 'success');
-                var url = this.data.tabbar_pages[0];
-                setTimeout(function() {
-                    uni.switchTab({url: url});
-                }, 1500);
-            },
-
-            // 是否站点变灰
-            is_app_mourning() {
-                var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
-                if(is_app == 1) {
-                    // 当前时间戳
-                    var time_current = Date.parse(new Date());
-                    // 开始时间
-                    var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
-                    if(time_start != null)
-                    {
-                        if(Date.parse(new Date(time_start)) > time_current)
-                        {
-                            return false;
-                        }
-                    }
-                    // 结束时间
-                    var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
-                    if(time_end != null)
-                    {
-                        if(Date.parse(new Date(time_end)) < time_current)
-                        {
-                            return false;
-                        }
-                    }
+                return obj_len;
+            }
+            return false;
+        },
+        /**
+         * 价格保留两位小数
+         * price      价格保留两位小数
+         */
+        price_two_decimal(x) {
+            var f_x = parseFloat(x);
+            if (isNaN(f_x)) {
+                return 0;
+            }
+            var f_x = Math.round(x * 100) / 100;
+            var s_x = f_x.toString();
+            var pos_decimal = s_x.indexOf(".");
+            if (pos_decimal < 0) {
+                pos_decimal = s_x.length;
+                s_x += ".";
+            }
+            while (s_x.length <= pos_decimal + 2) {
+                s_x += "0";
+            }
+            return s_x;
+        },
+        // url主要部分
+        get_url_main_part(url) {
+            if (url.indexOf("?") == -1) {
+                var value = url;
+            } else {
+                var temp_str = url.split("?");
+                var value = temp_str[0];
+            }
+            return value;
+        },
+        /**
+         * 当前地址是否存在tabbar中
+         */
+        is_tabbar_pages(url) {
+            var value = this.get_url_main_part(url);
+            if ((value || null) == null) {
+                return false;
+            }
+            var temp_tabbar_pages = this.data.tabbar_pages;
+            for (var i in temp_tabbar_pages) {
+                if (temp_tabbar_pages[i] == value) {
                     return true;
                 }
-                return false;
-            },
-
-            // 价格符号
-            currency_symbol() {
-                return this.get_config('currency_symbol') || this.data.currency_symbol;
-            },
-
-            // 位置权限校验
-            get_location_check(type, object, method) {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
-                var self = this;
-                uni.getSetting({
-                    success(res) {
-                        if (!res.authSetting[type]) {
-                            uni.authorize({
-                                scope: type,
-                                success(res) {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method](1);
-                                    }
-                                },
-                                fail: res => {
-                                    if (typeof object === 'object' && (method || null) != null) {
-                                        object[method](0);
-                                    }
-                                }
+            }
+            return false;
+        },
+        /**
+         * 事件操作
+         */
+        operation_event(e) {
+            var value = e.currentTarget.dataset.value || null;
+            var type = parseInt(e.currentTarget.dataset.type);
+            if (value != null) {
+                switch (type) {
+                    // web
+                    case 0:
+                        this.open_web_view(value);
+                        break;
+                    // 内部页面
+                    case 1:
+                        if (this.is_tabbar_pages(value)) {
+                            var temp = value.split("?");
+                            if (temp.length > 1 && (temp[1] || null) != null) {
+                                value = temp[0];
+                                var query = this.url_params_to_json(temp[1]);
+                                uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
+                            }
+                            uni.switchTab({
+                                url: value,
                             });
                         } else {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method](1);
-                            }
-                        }
-                    },
-                    fail: res => {
-                        app.globalData.showToast("请先获取授权");
-                        if (typeof object === 'object' && (method || null) != null) {
-                            object[method](0);
-                        }
-                    }
-                });
-                // #endif
-                // #ifdef MP-ALIPAY || H5 || APP
-                if (typeof object === 'object' && (method || null) != null) {
-                    object[method](1);
-                }
-                // #endif
-                // #ifdef MP-KUAISHOU
-                app.globalData.showToast('不支持地理位置选择！');
-                if (typeof object === 'object' && (method || null) != null) {
-                    object[method](0);
-                }
-                // #endif
-            },
-
-            // 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
-            start_location_update(type = 0, object, method) {
-                // 先停止再调用
-                uni.stopLocationUpdate();
-                // 关闭监听
-                uni.offLocationChange();
-
-                // 根据类型调用api
-                if(type == 0) {
-                    // 打开小程序监听
-                    uni.startLocationUpdate({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: res => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({status: 0, msg: res.errMsg});
-                            }
-                        }
-                    });
-                } else {
-                    // 小程序后台运行监听
-                    uni.startLocationUpdateBackground({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: res => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({status: 0, msg: res.errMsg});
-                            }
-                        }
-                    });
-                }
-            },
-
-            // 位置监听改变
-            start_location_update_change(object, method) {
-                uni.onLocationChange((res) => {
-                    if (typeof object === 'object' && (method || null) != null) {
-                        object[method]({status: 1, lng: res.longitude, lat: res.latitude, data: res});
-                    }
-                });
-            },
-
-            // 微信隐私弹窗提示
-            weixin_privacy_setting() {
-                if(this.data.is_weixin_privacy_setting == 1) {
-                    var self = this;
-                    self.weixin_privacy_setting_timer = setInterval(function() {
-                        var page = self.get_page_url(false);
-                        if('/'+page == self.data.tabbar_pages[0]) {
-                            uni.getPrivacySetting({
-                                success: res => {
-                                    if (res.needAuthorization) {
-                                        // 需要弹出隐私协议
-                                        uni.navigateTo({
-                                            url: '/pages/common/agreement/agreement'
-                                        });
-                                    }
-                                }
+                            uni.navigateTo({
+                                url: value,
                             });
-                            // 已执行隐私方法清除定时任务
-                            clearInterval(self.weixin_privacy_setting_timer);
                         }
-                    }, 100);
+                        break;
+                    // 跳转到外部小程序
+                    case 2:
+                        uni.navigateToMiniProgram({
+                            appId: value,
+                        });
+                        break;
+                    // 跳转到地图查看位置
+                    case 3:
+                        var values = value.split("|");
+                        if (values.length != 4) {
+                            this.showToast("事件值格式有误");
+                            return false;
+                        }
+                        this.open_location(values[2], values[3], values[0], values[1]);
+                        break;
+                    // 拨打电话
+                    case 4:
+                        this.call_tel(value);
+                        break;
                 }
             }
         },
-
-        // 初始化完成时触发（全局只触发一次）
-        onLaunch(params) {},
-
-        // 启动，或从后台进入前台显示
-        onShow(params) {
-            // 初始化配置
-            this.globalData.init_config();
-
-            // 设置设备信息
-            this.globalData.set_system_info();
-
-            // 参数处理+缓存
-            this.globalData.set_launch_cache_info(params);
-
-            // 场景值
-            this.globalData.set_scene_data(params);
-
+        /**
+         * 打开 webview页面
+         * value    [string]  url地址
+         */
+        open_web_view(value) {
+            uni.navigateTo({
+                url: "/pages/web-view/web-view?url=" + encodeURIComponent(value),
+            });
+        },
+        /**
+         * 默认弱提示方法
+         * msg    [string]  提示信息
+         * status [string]  状态 默认error [正确success, 错误error]
+         */
+        showToast(msg, status) {
+            if ((status || "error") == "success") {
+                uni.showToast({
+                    icon: "success",
+                    title: msg,
+                    duration: 3000,
+                });
+            } else {
+                uni.showToast({
+                    icon: "none",
+                    title: msg,
+                    duration: 3000,
+                });
+            }
+        },
+        /**
+         * alert确认框
+         * title              [string]    标题（默认空）
+         * msg                [string]    提示信息，必传
+         * is_show_cancel     [int]       是否显示取消按钮（默认显示 0否, 1|undefined是）
+         * cancel_text        [string]    取消按钮文字（默认 取消）
+         * cancel_color       [string]    取消按钮的文字颜色，必须是 16 进制格式的颜色字符串（默认 #000000）
+         * confirm_text       [string]    确认按钮文字（默认 确认）
+         * confirm_color      [string]    确认按钮的文字颜色，必须是 16 进制格式的颜色字符串（默认 #000000）
+         * object             [boject]    回调操作对象，点击确认回调参数1，取消回调0
+         * method             [string]    回调操作对象的函数
+         */
+        alert(e) {
+            var msg = e.msg || null;
+            if (msg != null) {
+                var title = e.title || "";
+                var is_show_cancel = e.is_show_cancel == 0 ? false : true;
+                var cancel_text = e.cancel_text || "取消";
+                var confirm_text = e.confirm_text || "确认";
+                var cancel_color = e.cancel_color || "#000000";
+                var confirm_color = e.confirm_color || "#576B95";
+                uni.showModal({
+                    title: title,
+                    content: msg,
+                    showCancel: is_show_cancel,
+                    cancelText: cancel_text,
+                    cancelColor: cancel_color,
+                    confirmText: confirm_text,
+                    confirmColor: confirm_color,
+                    success(res) {
+                        if ((e.object || null) != null && typeof e.object === "object" && (e.method || null) != null) {
+                            e.object[e.method](res.confirm ? 1 : 0);
+                        }
+                    },
+                });
+            } else {
+                self.showToast("提示信息为空 alert");
+            }
+        },
+        /**
+         * 是否需要登录
+         * 是否需要绑定手机号码
+         */
+        user_is_need_login(user) {
+            // 用户信息是否正确
+            if ((user || null) == null) {
+                return true;
+            }
+            // 是否需要绑定手机号码
+            if ((user.is_mandatory_bind_mobile || 0) == 1) {
+                if ((user.mobile || null) == null) {
+                    return true;
+                }
+            }
+            return false;
+        },
+        // url参数转json对象
+        url_params_to_json(url_params) {
+            var json = new Object();
+            if ((url_params || null) != null) {
+                var arr = url_params.split("&");
+                for (var i = 0; i < arr.length; i++) {
+                    var temp = arr[i].split("=");
+                    json[temp[0]] = temp[1];
+                }
+            }
+            return json;
+        },
+        // json对象转url请求参数
+        json_to_url_params(data) {
+            var str = "";
+            for (var i in data) {
+                if (str != "") {
+                    str += "&";
+                }
+                str += i + "=" + data[i];
+            }
+            return str;
+        },
+        // 拨打电话
+        call_tel(data) {
+            var value = typeof data == "object" ? data.currentTarget.dataset.value || null : data || null;
+            if (value != null) {
+                uni.makePhoneCall({
+                    phoneNumber: value.toString(),
+                });
+            }
+        },
+        /**
+         * 登录校验
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         * params     回调请求参数
+         */
+        is_login_check(res, object, method, params) {
+            if (res.code == -400) {
+                uni.clearStorage();
+                this.get_user_info(object, method, params);
+                return false;
+            }
+            return true;
+        },
+        /**
+         * 设置导航reddot
+         * index     tabBar 的哪一项，从左边算起（0开始）
+         * type      0 移出, 1 添加 （默认 0 移出）
+         */
+        set_tab_bar_reddot(index, type) {
+            if (index !== undefined && index !== null) {
+                if ((type || 0) == 0) {
+                    uni.hideTabBarRedDot({
+                        index: Number(index),
+                    });
+                } else {
+                    uni.showTabBarRedDot({
+                        index: Number(index),
+                    });
+                }
+            }
+        },
+        /**
+         * 设置导航车badge
+         * index     tabBar 的哪一项，从左边算起（0开始）
+         * type      0 移出, 1 添加 （默认 0 移出）
+         * value     显示的文本，超过 4 个字符则显示成 ...（type参数为1的情况下有效）
+         */
+        set_tab_bar_badge(index, type, value) {
+            if (index !== undefined && index !== null) {
+                if ((type || 0) == 0) {
+                    uni.removeTabBarBadge({
+                        index: Number(index),
+                    });
+                } else {
+                    uni.setTabBarBadge({
+                        index: Number(index),
+                        text: value.toString(),
+                    });
+                }
+            }
+        },
+        // 页面分享处理
+        page_share_handle(share = null) {
+            // 当前页面
+            var pages = getCurrentPages();
+            var obj = pages[pages.length - 1];
+            // 分享信息、是否指定参数
+            if ((share || null) == null) {
+                share = {};
+            }
+            // 从页面对象获取参数
+            if (Object.keys(share).length <= 0) {
+                share = obj.share_info || {};
+            }
+            // 参数处理
+            share = this.share_content_handle(share);
             // #ifdef MP-WEIXIN
-            // 协议验证处理
-            this.globalData.weixin_privacy_setting();
+            // 微信小程序展示系统分享好友和朋友圈按钮
+            // 其他端小程序不用展示会调起分享窗口
+            var not_pages = ["/pages/user/user", "/pages/cart/cart"];
+            if (not_pages.indexOf(share.url) == -1) {
+                uni.showShareMenu({
+                    withShareTicket: true,
+                    title: share.title,
+                    desc: share.desc,
+                    path: share.path + share.query,
+                    imageUrl: share.img,
+                    menus: ["shareAppMessage", "shareTimeline"],
+                });
+            } else {
+                wx.hideShareMenu({
+                    menus: ["shareTimeline"],
+                });
+            }
+            // #endif
+            // #ifdef H5
+            // H5处理微信环境分享自定义信息
+            if (this.is_weixin_env()) {
+                var page_url = this.get_page_url();
+                uni.request({
+                    url: this.get_request_url("signpackage", "index", "share"),
+                    method: "POST",
+                    data: {
+                        url: encodeURIComponent(page_url),
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        if (res.data.code == 0 && (res.data.data.package || null) != null) {
+                            var data = res.data.data.package;
+                            var wx = require("jweixin-module");
+                            wx.config({
+                                debug: false,
+                                appId: data.appId,
+                                timestamp: data.timestamp,
+                                nonceStr: data.nonceStr,
+                                signature: data.signature,
+                                jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", "onMenuShareWeibo"],
+                            });
+                            wx.ready(function () {
+                                // 自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+                                wx.updateAppMessageShareData({
+                                    title: share.title,
+                                    desc: share.desc,
+                                    link: share.url,
+                                    imgUrl: share.img,
+                                });
+                                // 自定义“分享到朋友圈”及“分享到QQ空间”按钮的分享内容
+                                wx.updateTimelineShareData({
+                                    title: share.title,
+                                    link: share.url,
+                                    imgUrl: share.img,
+                                });
+                                // 获取“分享到腾讯微博”按钮点击状态及自定义分享内容接口
+                                wx.onMenuShareWeibo({
+                                    title: share.title,
+                                    desc: share.desc,
+                                    link: share.url,
+                                    imgUrl: share.img,
+                                });
+                            });
+                        }
+                    },
+                    fail: () => {
+                        this.showToast("服务器请求出错");
+                    },
+                });
+            }
+            // #endif
+            // #ifdef MP-BAIDU
+            // 百度小程序wab化搜索引擎数据设置
+            uni.setPageInfo({
+                title: share.title,
+                keywords: share.kds || share.desc,
+                articleTitle: share.title,
+                description: share.desc,
+                image: share.img,
+                video:
+                    (share.video || null) == null
+                        ? []
+                        : [
+                              {
+                                  url: share.video,
+                                  duration: "100",
+                                  image: share.img,
+                              },
+                          ],
+            });
             // #endif
         },
-
-        // 从前台进入后台
-        onHide() {
-            // 清除微信隐私方法定时任务
-            clearInterval(this.weixin_privacy_setting_timer);
+        /**
+         * 获取配置信息、可指定key和默认值
+         * key              数据key（支持多级读取、以 . 分割key名称）
+         * default_value    默认值
+         */
+        get_config(key, default_value) {
+            var value = null;
+            var config = uni.getStorageSync(this.data.cache_config_info_key) || null;
+            if (config != null) {
+                // 数据读取
+                var arr = key.split(".");
+                if (arr.length == 1) {
+                    value = config[key] == undefined ? null : config[key];
+                } else {
+                    value = config;
+                    for (var i in arr) {
+                        if (value[arr[i]] != undefined) {
+                            value = value[arr[i]];
+                        } else {
+                            value = null;
+                            break;
+                        }
+                    }
+                }
+            }
+            // 默认值
+            if (value == null && default_value != undefined) {
+                value = default_value;
+            }
+            // 无数据则处理自定义字段定义的数据
+            if (value == null) {
+                switch (key) {
+                    // 货币符号
+                    case "currency_symbol":
+                        value = this.data.currency_symbol;
+                        break;
+                }
+            }
+            return value;
         },
-
-        // 监听应用退出
-        onExit() {
-            // 清除微信隐私方法定时任务
-            clearInterval(this.weixin_privacy_setting_timer);
+        // 初始化 配置信息
+        init_config() {
+            uni.request({
+                url: this.get_request_url("common", "base"),
+                method: "POST",
+                data: {
+                    is_key: 1,
+                },
+                dataType: "json",
+                success: (res) => {
+                    if (res.data.code == 0) {
+                        uni.setStorage({
+                            key: this.data.cache_config_info_key,
+                            data: res.data.data,
+                            fail: () => {
+                                this.showToast("配置信息缓存失败");
+                            },
+                        });
+                        // 用户自动登录处理
+                        this.user_auto_login_handle();
+                    } else {
+                        this.showToast(res.data.msg);
+                    }
+                },
+                fail: () => {
+                    this.showToast("服务器请求出错");
+                },
+            });
         },
+        /**
+         * 配置是否有效(100毫秒检验一次、最多检验100次)
+         * object     回调操作对象
+         * method     回调操作对象的函数
+         */
+        is_config(object, method) {
+            var self = this;
+            var count = 0;
+            var timer = setInterval(function () {
+                if (self.get_config("status") == 1) {
+                    clearInterval(timer);
+                    if (typeof object === "object" && (method || null) != null) {
+                        object[method](true);
+                    }
+                }
+                count++;
+                if (count >= 100) {
+                    clearInterval(timer);
+                }
+            }, 100);
+        },
+        /**
+         * 火星坐标GCJ02到百度坐标BD-09(高德，谷歌，腾讯坐标 -> 百度)
+         * lng     经度
+         * lat     纬度
+         */
+        map_gcj_to_bd(lng, lat) {
+            lng = parseFloat(lng);
+            lat = parseFloat(lat);
+            let x_pi = (3.14159265358979324 * 3000.0) / 180.0;
+            let x = lng;
+            let y = lat;
+            let z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+            let theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+            let lngs = z * Math.cos(theta) + 0.0065;
+            let lats = z * Math.sin(theta) + 0.006;
+            return {
+                lng: lngs,
+                lat: lats,
+            };
+        },
+        /**
+         * 百度坐标BD-09到火星坐标GCJ02(百度 -> 高德，谷歌，腾讯坐标)
+         * lng     经度
+         * lat     纬度
+         */
+        map_bd_to_gcj(lng, lat) {
+            lng = parseFloat(lng);
+            lat = parseFloat(lat);
+            let x_pi = (3.14159265358979324 * 3000.0) / 180.0;
+            let x = lng - 0.0065;
+            let y = lat - 0.006;
+            let z = Math.sqrt(x * x + y * y) + 0.00002 * Math.sin(y * x_pi);
+            let theta = Math.atan2(y, x) + 0.000003 * Math.cos(x * x_pi);
+            let lngs = z * Math.cos(theta);
+            let lats = z * Math.sin(theta);
+            return {
+                lng: lngs,
+                lat: lats,
+            };
+        },
+        /**
+         * 打开地图
+         * lng        经度
+         * lat        纬度
+         * name       地图上面显示的名称
+         * address    地图上面显示的详细地址
+         * scale      缩放比例，范围5~18
+         */
+        open_location(lng, lat, name, address, scale) {
+            // #ifdef MP-KUAISHOU
+            this.showToast("请复制地址到网页地图中查看！");
+            return false;
+            // #endif
+            if (lng == undefined || lat == undefined || lng == "" || lat == "") {
+                this.showToast("坐标有误");
+                return false;
+            }
+            // 转换坐标打开位置
+            uni.openLocation({
+                name: name || "地理位置",
+                address: address || "",
+                scale: scale || 18,
+                longitude: parseFloat(lng),
+                latitude: parseFloat(lat),
+            });
+        },
+        // uuid生成
+        uuid() {
+            var d = new Date().getTime();
+            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c == "x" ? r : (r & 0x3) | 0x8).toString(16);
+            });
+        },
+        // 获取当前uuid
+        request_uuid() {
+            var uuid = uni.getStorageSync(this.data.cache_user_uuid_key) || null;
+            if (uuid == null) {
+                uuid = this.uuid();
+                uni.setStorage({
+                    key: this.data.cache_user_uuid_key,
+                    data: uuid,
+                    fail: () => {
+                        this.showToast("uuid缓存失败");
+                    },
+                });
+            }
+            return uuid;
+        },
+        // 链接地址事件
+        url_event(e) {
+            var value = e.currentTarget.dataset.value || null;
+            var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
+            this.url_open(value, is_redirect);
+        },
+        // url打开
+        url_open(value, is_redirect = false) {
+            if ((value || null) != null) {
+                // web地址
+                var http_arr = ["http:/", "https:"];
+                if (http_arr.indexOf(value.substr(0, 6)) != -1) {
+                    this.open_web_view(value);
+                    // 打开外部小程序协议
+                } else if (value.substr(0, 8) == "appid://") {
+                    uni.navigateToMiniProgram({
+                        appId: value.substr(8),
+                    });
+                    // 地图协议
+                } else if (value.substr(0, 6) == "map://") {
+                    var values = value.substr(6).split("|");
+                    if (values.length != 4) {
+                        this.showToast("事件值格式有误");
+                        return false;
+                    }
+                    this.open_location(values[2], values[3], values[0], values[1]);
+                    // 电话协议
+                } else if (value.substr(0, 6) == "tel://") {
+                    this.call_tel(value.substr(6));
+                    // 默认切换或跳转页面
+                } else {
+                    if (this.is_tabbar_pages(value)) {
+                        var temp = value.split("?");
+                        if (temp.length > 1 && (temp[1] || null) != null) {
+                            value = temp[0];
+                            var query = this.url_params_to_json(temp[1]);
+                            uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
+                        }
+                        uni.switchTab({
+                            url: value,
+                        });
+                    } else {
+                        if (is_redirect) {
+                            uni.redirectTo({
+                                url: value,
+                            });
+                        } else {
+                            uni.navigateTo({
+                                url: value,
+                            });
+                        }
+                    }
+                }
+            }
+        },
+        // 文本事件
+        text_event_handle(e) {
+            var event = e.currentTarget.dataset.event || null;
+            if (event != null) {
+                var value = e.currentTarget.dataset.value;
+                switch (event) {
+                    // 拨打电话
+                    case "tel":
+                        this.call_tel(value);
+                        break;
+                    // 复制文本
+                    case "copy":
+                        this.text_copy_event(value);
+                        break;
+                }
+            }
+        },
+        // 剪贴板
+        text_copy_event(data) {
+            var value = typeof data == "object" ? data.currentTarget.dataset.value || null : data || null;
+            if (value != null) {
+                var self = this;
+                uni.setClipboardData({
+                    data: value,
+                    success(res) {
+                        uni.getClipboardData({
+                            success(res) {
+                                self.showToast("复制成功", "success");
+                            },
+                        });
+                    },
+                });
+            } else {
+                this.showToast("复制内容为空");
+            }
+        },
+        // 图片预览
+        image_show_event(e) {
+            var value = e.currentTarget.dataset.value || null;
+            if (value != null) {
+                uni.previewImage({
+                    current: value,
+                    urls: [value],
+                });
+            } else {
+                this.showToast("图片地址为空");
+            }
+        },
+        // 静态文件url地址
+        get_static_url(type, is_plugins) {
+            // 默认公共地址
+            if ((type || null) == null) {
+                type = "common";
+            }
+            // 是否插件
+            if ((is_plugins || false) == true) {
+                // 根据配置的静态url地址+插件标识符
+                return this.data.static_url + "static/plugins/images/" + type + "/";
+            } else {
+                // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
+                return this.data.static_url + "static/app/" + this.get_theme_value() + "/" + type + "/";
+            }
+        },
+        // rpx转px
+        rpx_to_px(value) {
+            return (value || 0) == 0 ? 0 : (parseInt(value) / 750) * parseInt(this.get_system_info("windowWidth", 0));
+        },
+        // px转rpx
+        px_to_rpx(value) {
+            return (value || 0) == 0 ? 0 : (parseInt(value) * 750) / parseInt(this.get_system_info("windowWidth", 0));
+        },
+        // 终端类型
+        application_client() {
+            var type = "";
+            // #ifdef APP
+            type = "app";
+            // #endif
+            // #ifdef H5
+            type = "h5";
+            // #endif
+            // #ifdef MP
+            type = "mp";
+            // #endif
+            return type;
+        },
+        // 终端类型值
+        application_client_type() {
+            var value = "";
+            // #ifdef MP-WEIXIN
+            value = "weixin";
+            // #endif
+            // #ifdef MP-ALIPAY
+            value = "alipay";
+            // #endif
+            // #ifdef MP-BAIDU
+            value = "baidu";
+            // #endif
+            // #ifdef MP-QQ
+            value = "qq";
+            // #endif
+            // #ifdef MP-TOUTIAO
+            value = "toutiao";
+            // #endif
+            // #ifdef MP-KUAISHOU
+            value = "kuaishou";
+            // #endif
+            // #ifdef H5
+            value = "h5";
+            // #endif
+            return value;
+        },
+        // 授权验证
+        auth_check(object, method, scope, msg) {
+            var self = this;
+            uni.getSetting({
+                success(res) {
+                    if (!res.authSetting[scope]) {
+                        uni.authorize({
+                            scope: scope,
+                            success(res) {
+                                if (typeof object === "object" && (method || null) != null) {
+                                    object[method](1);
+                                }
+                            },
+                            fail(res) {
+                                self.showToast(msg || "请打开授权");
+                                setTimeout(function () {
+                                    uni.openSetting();
+                                }, 1000);
+                            },
+                        });
+                    } else {
+                        if (typeof object === "object" && (method || null) != null) {
+                            object[method](1);
+                        }
+                    }
+                },
+            });
+        },
+        // 窗口宽度处理
+        window_width_handle(width) {
+            // #ifdef H5 || APP
+            if (width > 800) {
+                width = 800;
+            }
+            // #endif
+            return width;
+        },
+        // 窗口高度处理
+        window_height_handle(system) {
+            var height = system.windowHeight;
+            // 状态栏
+            if (system.statusBarHeight > 0) {
+                height += system.statusBarHeight;
+            }
+            // 导航栏
+            if (system.windowTop > 0) {
+                height += system.windowTop;
+            }
+            // 底部菜单
+            if (system.windowBottom > 0) {
+                height += system.windowBottom;
+            }
+            return height;
+        },
+        // 获取当前页面地址
+        // is_whole 完整地址（?后面的参数）
+        get_page_url(is_whole = true) {
+            // #ifdef MP || APP
+            var url = this.current_page();
+            // #endif
+            // #ifdef H5
+            var url = window.location.href;
+            // #endif
+            if (is_whole == false) {
+                var temp = url.split("?");
+                url = temp[0];
+            }
+            return url;
+        },
+        // 是否微信环境
+        is_weixin_env() {
+            var agent = navigator.userAgent.toLowerCase();
+            if (agent.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            }
+            return false;
+        },
+        // 用户微信webopenid是否存在
+        is_user_weixin_web_openid(order_ids, payment_id = 0) {
+            // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
+            if (this.is_weixin_env()) {
+                var web_openid = this.get_user_cache_info("weixin_web_openid") || null;
+                if (web_openid == null) {
+                    // 已经授权则重新刷新用户信息
+                    var params = this.get_launch_cache_info();
+                    if (params != null && (params.is_weixin_auth_web_openid || 0) == 1) {
+                        uni.showLoading({
+                            title: "处理中...",
+                        });
+                        uni.request({
+                            url: this.get_request_url("tokenuserinfo", "user"),
+                            method: "POST",
+                            data: {},
+                            dataType: "json",
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    uni.setStorageSync(this.data.cache_user_info_key, res.data.data);
+                                } else {
+                                    this.showToast(res.data.msg);
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                this.showToast("服务器请求出错");
+                            },
+                        });
+                        return true;
+                    } else {
+                        uni.setStorageSync(this.data.cache_page_pay_key, {
+                            order_ids: typeof order_ids == "array" ? order_ids.join(",") : order_ids,
+                            payment_id: payment_id,
+                        });
+                        var page_url = this.get_page_url();
+                        page_url += page_url.indexOf("?") == -1 ? "?" : "&";
+                        page_url += "is_weixin_auth_web_openid=1";
+                        var request_url = encodeURIComponent(base64.encode(page_url));
+                        var url = this.get_request_url("index", "pay", "weixinwebauthorization", "request_url=" + request_url, "index").replace("&ajax=ajax", "");
+                        window.location.href = url;
+                    }
+                    return false;
+                }
+            }
+            return true;
+        },
+        // app标题
+        get_application_title() {
+            var value = null;
+            // 根据终端类型获取对应数据
+            var type = this.application_client_type() || null;
+            if (type !== null) {
+                value = this.get_config("config.common_app_mini_" + type + "_title") || null;
+            }
+            // 获取公共数据
+            if (value === null) {
+                value = this.get_config("config.home_site_name", this.data.application_title);
+            }
+            return value;
+        },
+        // app描述
+        get_application_describe() {
+            var value = null;
+            // 根据终端类型获取对应数据
+            var type = this.application_client_type() || null;
+            if (type !== null) {
+                value = this.get_config("config.common_app_mini_" + type + "_describe") || null;
+            }
+            // 获取公共数据
+            if (value === null) {
+                value = this.data.application_describe;
+            }
+            return value;
+        },
+        // applogo
+        get_application_logo() {
+            var logo = this.data.application_logo || null;
+            if (logo == null) {
+                logo = this.get_config("config.home_site_logo_wap");
+            }
+            return logo;
+        },
+        // 正方形logo
+        get_application_logo_square() {
+            return this.get_config("config.home_site_logo_square");
+        },
+        // 分享内容处理
+        share_content_handle(data) {
+            // 获取插件配置信息
+            var share_config = this.get_config("plugins_base.share.data") || {};
+            var result = {
+                title: data.title || share_config.title || this.get_application_title(),
+                desc: data.desc || share_config.desc || this.get_application_describe(),
+                path: data.path || this.data.tabbar_pages[0],
+                query: this.share_query_handle(data.query || ""),
+                img: data.img || share_config.pic || this.get_config("config.home_site_logo_square"),
+            };
+            result["url"] = this.get_page_url();
+            // #ifdef H5
+            result["url"] = result.url.split("#")[0] + "#" + (result.path.substr(0, 1) == "/" ? "" : "/") + result.path + result.query;
+            // #endif
+            return result;
+        },
+        // 分享参数处理
+        share_query_handle(query) {
+            if ((query || null) == null || query.indexOf("referrer") == -1) {
+                var user_id = parseInt(this.get_user_cache_info("id", 0)) || 0;
+                if (user_id > 0) {
+                    var join = (query || null) == null ? "" : "&";
+                    query += join + "referrer=" + user_id;
+                }
+            }
+            return (query || null) == null ? "" : "?" + query;
+        },
+        // 是否朋友圈单页访问提示
+        is_single_page_check() {
+            if (this.is_current_single_page() == 1) {
+                this.showToast("请前往小程序使用完整服务");
+                return false;
+            }
+            return true;
+        },
+        // 调用页面方法
+        get_page_object(page) {
+            var result = [];
+            var pages = getCurrentPages();
+            for (var i = 0; i < pages.length; i++) {
+                if (pages[i]["route"] == page) {
+                    result.push(pages[i]);
+                }
+            }
+            return result;
+        },
+        // 当前页面地址
+        current_page() {
+            // 来源地址、拼接当前小程序页面
+            var pages = getCurrentPages();
+            var page = pages[pages.length - 1];
+            return this.page_url_handle(page);
+        },
+        // 上一页页面地址
+        prev_page() {
+            var value = null;
+            var pages = getCurrentPages();
+            var length = pages.length;
+            if (length > 1) {
+                value = this.page_url_handle(pages[length - 2]);
+            }
+            return value;
+        },
+        // 返回上一页、则回到shouy
+        page_back_prev_event() {
+            var prev_page = this.prev_page();
+            if (prev_page == null) {
+                uni.switchTab({
+                    url: this.data.tabbar_pages[0],
+                });
+            } else {
+                uni.navigateBack();
+            }
+        },
+        // 页面地址处理
+        page_url_handle(page) {
+            if ((page || null) == null) {
+                return "";
+            }
+            var route = page.route;
+            var options = page.options || {};
+            var query = "";
+            if (JSON.stringify(options) != "{}") {
+                for (var i in options) {
+                    query += "&" + i + "=" + options[i];
+                }
+            }
+            if ((query || null) != null) {
+                route += "?" + query.substr(1);
+            }
+            return route;
+        },
+        // 进入客服
+        chat_entry_handle(url) {
+            if ((url || null) == null) {
+                this.showToast("客服地址有误");
+            } else {
+                // 拼接基础参数
+                url = this.request_params_handle(url);
+                // 拼接当前页面地址
+                var route = this.current_page();
+                url += "&source=" + encodeURIComponent(base64.encode(route).replace(new RegExp(/=/g), ""));
+                // 打开webview
+                this.open_web_view(url);
+            }
+        },
+        // 用户自动登录处理
+        user_auto_login_handle() {
+            // #ifdef H5
+            var user = this.get_user_cache_info();
+            if (user == null) {
+                var params = this.get_launch_cache_info() || {};
+                var config = this.get_config("plugins_base.thirdpartylogin.data") || null;
+                var data = this.get_config("plugins_thirdpartylogin_data") || null;
+                var url = null;
+                // 是否微信环境
+                if ((params.thirdpartylogin || null) == null && config != null && data != null && this.is_weixin_env()) {
+                    var is_auto = config.weixin_is_env_auto_login || 0;
+                    var weixin = data.weixin || null;
+                    if (is_auto != 0 && weixin != null) {
+                        url = weixin.login_url;
+                    }
+                }
+                // 存在登录url则跳转登录
+                if (url != null) {
+                    // 上一个页面记录
+                    var page = this.current_page();
+                    if (page != null) {
+                        uni.setStorageSync(this.data.cache_prev_page_key, page);
+                    }
+                    // 跳转登录
+                    window.location.href = url;
+                }
+            }
+            // #endif
+        },
+        // 清除用户缓存
+        remove_user_cache_event() {
+            // 用户登录缓存
+            uni.removeStorageSync(this.data.cache_user_login_key);
+            // 用户信息缓存
+            uni.removeStorageSync(this.data.cache_user_info_key);
+            // 非小程序则两秒后回到首页
+            this.showToast("清除成功", "success");
+            var url = this.data.tabbar_pages[0];
+            setTimeout(function () {
+                uni.switchTab({
+                    url: url,
+                });
+            }, 1500);
+        },
+        // 是否站点变灰
+        is_app_mourning() {
+            var is_app = parseInt(this.get_config("plugins_base.mourning.data.is_app", 0));
+            if (is_app == 1) {
+                // 当前时间戳
+                var time_current = Date.parse(new Date());
+                // 开始时间
+                var time_start = this.get_config("plugins_base.mourning.data.time_start") || null;
+                if (time_start != null) {
+                    if (Date.parse(new Date(time_start)) > time_current) {
+                        return false;
+                    }
+                }
+                // 结束时间
+                var time_end = this.get_config("plugins_base.mourning.data.time_end") || null;
+                if (time_end != null) {
+                    if (Date.parse(new Date(time_end)) < time_current) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        },
+        // 价格符号
+        currency_symbol() {
+            return this.get_config("currency_symbol") || this.data.currency_symbol;
+        },
+        // 位置权限校验
+        get_location_check(type, object, method) {
+            // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
+            var self = this;
+            uni.getSetting({
+                success(res) {
+                    if (!res.authSetting[type]) {
+                        uni.authorize({
+                            scope: type,
+                            success(res) {
+                                if (typeof object === "object" && (method || null) != null) {
+                                    object[method](1);
+                                }
+                            },
+                            fail: (res) => {
+                                if (typeof object === "object" && (method || null) != null) {
+                                    object[method](0);
+                                }
+                            },
+                        });
+                    } else {
+                        if (typeof object === "object" && (method || null) != null) {
+                            object[method](1);
+                        }
+                    }
+                },
+                fail: (res) => {
+                    app.globalData.showToast("请先获取授权");
+                    if (typeof object === "object" && (method || null) != null) {
+                        object[method](0);
+                    }
+                },
+            });
+            // #endif
+            // #ifdef MP-ALIPAY || H5 || APP
+            if (typeof object === "object" && (method || null) != null) {
+                object[method](1);
+            }
+            // #endif
+            // #ifdef MP-KUAISHOU
+            app.globalData.showToast("不支持地理位置选择！");
+            if (typeof object === "object" && (method || null) != null) {
+                object[method](0);
+            }
+            // #endif
+        },
+        // 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
+        start_location_update(type = 0, object, method) {
+            // 先停止再调用
+            uni.stopLocationUpdate();
+            // 关闭监听
+            uni.offLocationChange();
+            // 根据类型调用api
+            if (type == 0) {
+                // 打开小程序监听
+                uni.startLocationUpdate({
+                    success: (res) => {
+                        this.start_location_update_change(object, method);
+                    },
+                    fail: (res) => {
+                        if (typeof object === "object" && (method || null) != null) {
+                            object[method]({
+                                status: 0,
+                                msg: res.errMsg,
+                            });
+                        }
+                    },
+                });
+            } else {
+                // 小程序后台运行监听
+                uni.startLocationUpdateBackground({
+                    success: (res) => {
+                        this.start_location_update_change(object, method);
+                    },
+                    fail: (res) => {
+                        if (typeof object === "object" && (method || null) != null) {
+                            object[method]({
+                                status: 0,
+                                msg: res.errMsg,
+                            });
+                        }
+                    },
+                });
+            }
+        },
+        // 位置监听改变
+        start_location_update_change(object, method) {
+            uni.onLocationChange((res) => {
+                if (typeof object === "object" && (method || null) != null) {
+                    object[method]({
+                        status: 1,
+                        lng: res.longitude,
+                        lat: res.latitude,
+                        data: res,
+                    });
+                }
+            });
+        },
+        // 微信隐私弹窗提示
+        weixin_privacy_setting() {
+            if (this.data.is_weixin_privacy_setting == 1) {
+                var self = this;
+                self.weixin_privacy_setting_timer = setInterval(function () {
+                    var page = self.get_page_url(false);
+                    if ("/" + page == self.data.tabbar_pages[0]) {
+                        uni.getPrivacySetting({
+                            success: (res) => {
+                                if (res.needAuthorization) {
+                                    // 需要弹出隐私协议
+                                    uni.navigateTo({
+                                        url: "/pages/common/agreement/agreement",
+                                    });
+                                }
+                            },
+                        });
+                        // 已执行隐私方法清除定时任务
+                        clearInterval(self.weixin_privacy_setting_timer);
+                    }
+                }, 100);
+            }
+        },
+        // 获取主题
+        get_theme_value() {
+            // 主题类型        主题颜色
+            // 黄色 yellow    #f6c133
+            // 红色 red       #ff0036
+            // 黑色 black     #333333
+            // 绿色 green     #20a53a
+            // 橙色 orange    #fe6f04
+            // 蓝色 blue      #1677ff
+            // 棕色 brown     #8B4513
+            // 紫色 purple    #623cec
+            var default_theme = "blue";
+            return uni.getStorageSync("theme") || default_theme;
+        },
+        // 设置主题
+        set_theme_value() {
+            let theme = this.get_theme_value();
+            // import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
+            require(`./common/css/theme/${theme}.css`);
+        },
+        // 获取主题色值
+        get_theme_color(obj) {
+            let color_obj = {
+                yellow: "#f6c133", // 黄色
+                red: "#ff0036", // 红色
+                black: "#333333", // 黑色
+                blue: "#1677ff", // 蓝色
+                green: "#20a53a", // 绿色
+                orange: "#fe6f04", // 橙色
+                brown: "#8B4513", // 棕色
+                purple: "#623cec", // 紫色
 
-        methods: {}
-    };
+                yellow_light: "#ffebd2", // 黄色
+                red_light: "#ffdbe2", // 红色
+                black_light: "#dcdcdc", // 黑色
+                blue_light: "#d1e4ff", // 蓝色
+                green_light: "#cce8d2", // 绿色
+                orange_light: "#fde4d1", // 橙色
+                brown_light: "#eadcd2", // 棕色
+                purple_light: "#d6cbfb", // 紫色
+            };
+            let theme = obj ? this.get_theme_value() + "_" + obj : this.get_theme_value();
+            return color_obj[theme];
+        },
+        // 数组分组
+        group_arry(arry, sub_group_length) {
+            let index = 0;
+            let new_arry = [];
+            if (arry.length > sub_group_length) {
+                while (index < arry.length) {
+                    new_arry.push(arry.slice(index, (index += sub_group_length)));
+                }
+            } else {
+                new_arry = [arry];
+            }
+            return new_arry;
+        },
+        // 颜色转rgba hexValue： 色值  alpha：透明度
+        hex_rgba(hexValue, alpha) {
+            const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            const hex = hexValue.replace(rgx, (m, r, g, b) => r + r + g + g + b + b);
+            const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            if (!rgb) {
+                return hexValue;
+            }
+            const r = parseInt(rgb[1], 16),
+                g = parseInt(rgb[2], 16),
+                b = parseInt(rgb[3], 16);
+            return `rgba(${r},${g},${b},${alpha})`;
+        },
+        // 判断数组内是否含有相同字段
+        some_arry(arr, val, params) {
+            return arr.some(function (arrVal) {
+                if (params) {
+                    return val === arrVal[params];
+                } else {
+                    return val === arrVal;
+                }
+            });
+        },
+    },
+    // 初始化完成时触发（全局只触发一次）
+    onLaunch(params) {},
+    // 启动，或从后台进入前台显示
+    onShow(params) {
+        // 初始化配置
+        this.globalData.init_config();
+        // 设置设备信息
+        this.globalData.set_system_info();
+        // 参数处理+缓存
+        this.globalData.set_launch_cache_info(params);
+        // 场景值
+        this.globalData.set_scene_data(params);
+        // #ifdef MP-WEIXIN
+        // 协议验证处理
+        this.globalData.weixin_privacy_setting();
+        // #endif
+        // 主题设置
+        this.globalData.set_theme_value();
+    },
+    // 从前台进入后台
+    onHide() {
+        // 清除微信隐私方法定时任务
+        clearInterval(this.weixin_privacy_setting_timer);
+    },
+    // 监听应用退出
+    onExit() {
+        // 清除微信隐私方法定时任务
+        clearInterval(this.weixin_privacy_setting_timer);
+    },
+    methods: {},
+};
 </script>
 <style>
-    @import './common/css/page.css';
-    @import './common/css/business.css';
-    @import './common/css/plugins.css';
-    @import './common/css/lib.css';
-    @import './common/css/theme/yellow.css';
+@import "./common/css/page.css";
+@import "./common/css/business.css";
+@import "./common/css/plugins.css";
+@import "./common/css/lib.css";
+@import "./common/css/theme/yellow.css";
 </style>
