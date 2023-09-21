@@ -1,9 +1,16 @@
 <template>
     <view>
+        <view class="bg-main flex-row">
+            <view class="bg-red" style="height: 100px; width: 100px">1</view>
+            <view class="bg-grey flex-col jc-sb">
+                <view class="bg-base">2</view>
+                <view class="bg-yellow">3</view>
+            </view>
+        </view>
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item border-radius-main bg-white padding-main oh pr spacing-mb">
-                    <view class="oh flex-row align-c" :data-value="item.url" @tap="url_event">
+                    <view class="oh flex-row" :data-value="item.url" @tap="url_event">
                         <image :src="item.images" mode="aspectFit" class="images dis-block border-radius-main"></image>
                         <view class="flex-1 flex-width flex-col jc-sb">
                             <view class="base-right bs-bb padding-left-main">
@@ -28,9 +35,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <view class="self-e">
-                                <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit">{{ item.type_name }}购买</button>
-                            </view>
+                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0">{{ item.type_name }}购买</button>
                         </view>
                     </view>
                     <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 146 + 36 : '0') + 'rpx'">
