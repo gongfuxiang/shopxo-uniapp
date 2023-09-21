@@ -28,7 +28,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0">{{ item.type_name }}购买</button>
+                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}购买</button>
                         </view>
                     </view>
                     <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 146 + 36 : '0') + 'rpx'">
@@ -120,8 +120,9 @@
         animation: gradient 5s ease infinite;
         padding: 0 16rpx;
     }
-    .plugins-binding-data-list .item .base-right .buy-submit {
+    .plugins-binding-data-list .item .buy-submit {
         padding: 0 20rpx;
+        height: 46rpx;
         line-height: 46rpx;
     }
     .plugins-binding-data-list .item .binding-goods-list {
