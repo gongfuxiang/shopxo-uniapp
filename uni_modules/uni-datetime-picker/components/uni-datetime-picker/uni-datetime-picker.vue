@@ -1,6 +1,6 @@
 <template>
 	<view class="uni-date">
-		<view class="uni-date-editor" @click="show">
+		<view class="uni-date-editor" @tap="show">
 			<slot>
 				<view class="uni-date-editor--x" :class="{'uni-date-editor--x__disabled': disabled,'uni-date-x--border': border}">
 					<view v-if="!isRange" class="uni-date-x uni-date-single">
@@ -20,7 +20,7 @@
 			</slot>
 		</view>
 
-		<view v-show="pickerVisible" class="uni-date-mask--pc" @click="close"></view>
+		<view v-show="pickerVisible" class="uni-date-mask--pc" @tap="close"></view>
 
 		<view v-if="!isPhone" v-show="pickerVisible" ref="datePicker" class="uni-date-picker__container">
 			<view v-if="!isRange" class="uni-date-single--x" :style="pickerPositionStyle">
@@ -43,7 +43,7 @@
 					style="padding: 0 8px;" />
 
 				<view v-if="hasTime" class="popup-x-footer">
-					<text class="confirm-text" @click="confirmSingleChange">{{okText}}</text>
+					<text class="confirm-text" @tap="confirmSingleChange">{{okText}}</text>
 				</view>
 			</view>
 
@@ -87,8 +87,8 @@
 				</view>
 
 				<view v-if="hasTime" class="popup-x-footer">
-					<text @click="clear">{{clearText}}</text>
-					<text class="confirm-text" @click="confirmRangeChange">{{okText}}</text>
+					<text @tap="clear">{{clearText}}</text>
+					<text class="confirm-text" @tap="confirmRangeChange">{{okText}}</text>
 				</view>
 			</view>
 		</view>

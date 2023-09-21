@@ -1,199 +1,198 @@
 <template>
-	<view>
-		<view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
-			<block v-for="(item, index) in data_list" :key="index">
-				<view class="item bg-white padding-vertical-xl padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type===2 ? 'opacity' :''" :data-value="item.url"
-					@tap="url_event">
-					<view class="base oh flex-row">
-						<!-- 基础内容 -->
-						<image :src="item.logo" mode="widthFix" class="logo circle br"></image>
-						<view class="base-right flex-1 flex-width">
-							<view class="title fw-b text-size single-text">
-								<text v-if="(item.alias || null) != null"
-									class="va-m title-icon border-radius-xs br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{item.alias}}</text>
-								<text class="va-m">{{item.name}}</text>
-							</view>
-							<view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
-								<view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
-									<iconfont name="icon-icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
-									<view
-										:class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm '+((item.status_info.status == 1) ? 'cr-green' : (item.status_info.type == 1) ? 'cr-red' : 'cr-grey-c')">
-										{{item.status_info.msg}}
-									</view>
-									{{item.status_info.time}}
-								</view>
-								<view v-if="(item.distance || null) != null">距离您{{item.distance}}</view>
-							</view>
-							<!-- 地址 -->
-							<view class="margin-top-sm oh cp">
-								<view class="dis-inline-block va-m cr-grey-9">
-									<iconfont name="icon-icon-index-zxmd-dress"></iconfont>
-								</view>
-								<view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs va-m"
-									:data-value="item.province_name+item.city_name+item.county_name+item.address" @tap.stop="text_copy_event">
-									{{item.province_name}}{{item.city_name}}{{item.county_name}}{{item.address}}
-								</view>
-							</view>
-						</view>
-					</view>
-					<!-- 右侧操作 -->
-					<view class="icon-list pa">
-						<view v-if="item.contacts_tel.length>0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="phone_event">
-							<iconfont name="icon-icon-md-phone" size="40rpx"></iconfont>
-						</view>
-						<!-- #ifndef MP-KUAISHOU -->
-						<view v-if="(item.lat != 0 && item.lng != 0)" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
-							<iconfont name="icon-icon-md-dh" size="40rpx"></iconfont>
-						</view>
-						<!-- #endif -->
-					</view>
-				</view>
-			</block>
-		</view>
-	</view>
+    <view>
+        <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
+            <block v-for="(item, index) in data_list" :key="index">
+                <view class="item bg-white padding-vertical-xl padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url" @tap="url_event">
+                    <view class="base oh flex-row">
+                        <!-- 基础内容 -->
+                        <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
+                        <view class="base-right flex-1 flex-width">
+                            <view class="title fw-b text-size single-text">
+                                <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-xs br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
+                                <text class="va-m">{{ item.name }}</text>
+                            </view>
+                            <view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
+                                <view v-if="(item.status_info.time || null) != null" class="flex-row align-c">
+                                    <iconfont name="icon-index-zxmd-time pr top-xs cr-grey-9"></iconfont>
+                                    <view :class="'status-icon text-size-xs divider-r padding-left-xs padding-right-sm margin-right-sm ' + (item.status_info.status == 1 ? 'cr-green' : item.status_info.type == 1 ? 'cr-red' : 'cr-grey-c')">
+                                        {{ item.status_info.msg }}
+                                    </view>
+                                    {{ item.status_info.time }}
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
+                        <!-- 地址 -->
+                        <view class="oh cp padding-top-xs">
+                            <view class="dis-inline-block va-m cr-grey-9 pr top-sm">
+                                <iconfont name="icon-mendian-dingwei"></iconfont>
+                            </view>
+                            <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs va-m" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
+                                {{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}
+                            </view>
+                        </view>
+                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c padding-top-xs">距离您{{ item.distance }}</view>
+                    </view>
+                    <!-- 右侧操作 -->
+                    <view class="icon-list pa">
+                        <view v-if="(item.contacts_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.contacts_tel" @tap.stop="tel_event">
+                            <iconfont name="icon-md-phone" size="40rpx"></iconfont>
+                        </view>
+                        <!-- #ifndef MP-KUAISHOU -->
+                        <view v-if="item.lat != 0 && item.lng != 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="address_map_event">
+                            <iconfont name="icon-md-dh" size="40rpx"></iconfont>
+                        </view>
+                        <!-- #endif -->
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
 </template>
 <script>
-	const app = getApp();
-	export default {
-		data() {
-			return {
-				data_list: [],
-				favor_user: []
-			};
-		},
-		components: {},
-		props: {
-			propIsFavor: {
-				type: Boolean,
-				default: true
-			},
-			propDataList: {
-				type: Array,
-				default: () => []
-			},
-			propFavorUser: {
-				type: Array,
-				default: () => []
-			}
-		},
-		// 属性值改变监听
-		watch: {
-			// 数据列表
-			propDataList(value, old_value) {
-				this.setData({
-					data_list: value
-				});
-				this.data_list_handle();
-			}
-		},
-		// 页面被展示
-		created: function(e) {
-			this.setData({
-				data_list: this.propDataList,
-				favor_user: this.propFavorUser
-			});
-			this.data_list_handle();
-		},
-		methods: {
-			// 数据列表处理
-			data_list_handle() {
-				var temp_data_list = this.data_list;
-				for (var i in temp_data_list) {
-					temp_data_list[i]['is_favor'] = (this.favor_user.indexOf(temp_data_list[i]['id']) == -1) ? 0 : 1;
-				}
-				this.setData({
-					data_list: temp_data_list
-				});
-			},
+const app = getApp();
+export default {
+    data() {
+        return {
+            data_list: [],
+            favor_user: [],
+        };
+    },
+    components: {},
+    props: {
+        propIsFavor: {
+            type: Boolean,
+            default: true,
+        },
+        propDataList: {
+            type: Array,
+            default: () => [],
+        },
+        propFavorUser: {
+            type: Array,
+            default: () => [],
+        },
+    },
+    // 属性值改变监听
+    watch: {
+        // 数据列表
+        propDataList(value, old_value) {
+            this.setData({
+                data_list: value,
+            });
+            this.data_list_handle();
+        },
+    },
+    // 页面被展示
+    created: function (e) {
+        this.setData({
+            data_list: this.propDataList,
+            favor_user: this.propFavorUser,
+        });
+        this.data_list_handle();
+    },
+    methods: {
+        // 数据列表处理
+        data_list_handle() {
+            var temp_data_list = this.data_list;
+            for (var i in temp_data_list) {
+                temp_data_list[i]["is_favor"] = this.favor_user.indexOf(temp_data_list[i]["id"]) == -1 ? 0 : 1;
+            }
+            this.setData({
+                data_list: temp_data_list,
+            });
+        },
 
-			// 收藏事件
-			favor_event(e) {
-				if (!app.globalData.is_single_page_check()) {
-					return false;
-				}
-				var user = app.globalData.get_user_info(this, 'favor_event');
-				if (user != false) {
-					// 用户未绑定用户则转到登录页面
-					if (app.globalData.user_is_need_login(user)) {
-						uni.navigateTo({
-							url: "/pages/login/login?event_callback=favor_event"
-						});
-						return false;
-					} else {
-						var index = e.currentTarget.dataset.index;
-						var info = this.data_list[index];
-						uni.showLoading({
-							title: '处理中...'
-						});
-						uni.request({
-							url: app.globalData.get_request_url("reversal", "favor", "realstore"),
-							method: 'POST',
-							data: {
-								"id": info.id
-							},
-							dataType: 'json',
-							success: res => {
-								uni.hideLoading();
-								if (res.data.code == 0) {
-									var temp_data = this.data_list;
-									var temp_favor = this.favor_user;
-									temp_data[index]['is_favor'] = res.data.data.status;
-									if (res.data.data.status == 1) {
-										if (temp_favor.indexOf(info.id) == -1) {
-											temp_favor.push(info.id);
-										}
-									} else {
-										if (temp_favor.indexOf(info.id) != -1) {
-											temp_favor.splice(index, 1);
-										}
-									}
-									this.setData({
-										data_list: temp_data,
-										favor_user: temp_favor
-									});
-									app.globalData.showToast(res.data.msg, "success");
-								} else {
-									if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
-										app.globalData.showToast(res.data.msg);
-									}
-								}
-							},
-							fail: () => {
-								uni.hideLoading();
-								app.globalData.showToast('服务器请求出错');
-							}
-						});
-					}
-				}
-			},
+        // 收藏事件
+        favor_event(e) {
+            if (!app.globalData.is_single_page_check()) {
+                return false;
+            }
+            var user = app.globalData.get_user_info(this, "favor_event");
+            if (user != false) {
+                // 用户未绑定用户则转到登录页面
+                if (app.globalData.user_is_need_login(user)) {
+                    uni.navigateTo({
+                        url: "/pages/login/login?event_callback=favor_event",
+                    });
+                    return false;
+                } else {
+                    var index = e.currentTarget.dataset.index;
+                    var info = this.data_list[index];
+                    uni.showLoading({
+                        title: "处理中...",
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url("reversal", "favor", "realstore"),
+                        method: "POST",
+                        data: {
+                            id: info.id,
+                        },
+                        dataType: "json",
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                var temp_data = this.data_list;
+                                var temp_favor = this.favor_user;
+                                temp_data[index]["is_favor"] = res.data.data.status;
+                                if (res.data.data.status == 1) {
+                                    if (temp_favor.indexOf(info.id) == -1) {
+                                        temp_favor.push(info.id);
+                                    }
+                                } else {
+                                    if (temp_favor.indexOf(info.id) != -1) {
+                                        temp_favor.splice(index, 1);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data,
+                                    favor_user: temp_favor,
+                                });
+                                app.globalData.showToast(res.data.msg, "success");
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, "favor_event")) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast("服务器请求出错");
+                        },
+                    });
+                }
+            }
+        },
 
-			phone_event(e) {
-				app.globalData.call_tel(e);
-			},
-			// 剪切板
-			text_copy_event(e) {
-				app.globalData.text_copy_event(e);
-			},
+        // 电话
+        tel_event(e) {
+            app.globalData.call_tel(e);
+        },
 
-			// 地图查看
-			address_map_event(e) {
-				var info = this.data_list[e.currentTarget.dataset.index];
-				if (info.lat == 0 || info.lng == 0) {
-					app.globalData.showToast("地址有误");
-					return false;
-				}
+        // 剪切板
+        text_copy_event(e) {
+            app.globalData.text_copy_event(e);
+        },
 
-				// 打开地图
-				var address = (info.province_name || '') + (info.city_name || '') + (info.county_name || '') + (info.address || '');
-				app.globalData.open_location(info.lng, info.lat, info.name, address);
-			},
+        // 地图查看
+        address_map_event(e) {
+            var info = this.data_list[e.currentTarget.dataset.index];
+            if (info.lat == 0 || info.lng == 0) {
+                app.globalData.showToast("地址有误");
+                return false;
+            }
 
-			// url事件
-			url_event(e) {
-				app.globalData.url_event(e);
-			}
-		}
-	};
+            // 打开地图
+            var address = (info.province_name || "") + (info.city_name || "") + (info.county_name || "") + (info.address || "");
+            app.globalData.open_location(info.lng, info.lat, info.name, address);
+        },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        },
+    },
+};
 </script>
-<style>
-</style>
+<style></style>

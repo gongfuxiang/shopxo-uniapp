@@ -73,6 +73,13 @@
 	background-color: #20a53a !important;
 }
 
+/**
+ * 导航伪类背景色
+ */
+.nav-active-line::before {
+	background: #20a53a;
+}
+
 button[disabled].bg-main-pair {
 	background-color: #cfaae2 !important;
 	color: #e6deea !important;
@@ -93,4 +100,11 @@ button[disabled].bg-main {
 */
 .title-left-border::before {
 	background: linear-gradient(180deg, #20a53a 0%, #cce8d2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.nav-left-border::before {
+	background: #20a53a;
 }

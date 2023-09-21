@@ -8,7 +8,7 @@
 							<text class="text-size fw-b">新品推荐</text>
 							<view class="hot-go border-radius-main margin-left-sm pr">
 								<text class="cr-white padding-right-sm">GO!</text>
-								<iconfont class="icon-icon-index-xptj-jiantou cr-white"></iconfont>
+								<iconfont class="icon-index-xptj-jiantou cr-white"></iconfont>
 							</view>
 						</view>
 						<view class="cr-grey-9 text-sm margin-bottom-sm">全年最低价 优惠多多</view>
@@ -16,7 +16,7 @@
 							<swiper-item v-for="(swiperItem,swiperIndex) in item.d" :key="swiperIndex">
 								<view class="swiper-item">
 									<view class="flex-row">
-										<view v-for="(listItem,listIndex) in swiperItem" :key="listIndex" class="flex-1" :class="swiperItem.length > 2 ? '' : 'flex-width-half'" @click="banner_event">
+										<view v-for="(listItem,listIndex) in swiperItem" :key="listIndex" class="flex-1" :class="swiperItem.length > 2 ? '' : 'flex-width-half'" @tap="banner_event">
 											<view class="padding-main">
 												<image src="@/static/images/common/user.png" mode="widthFix" class="wh-auto">
 												</image>
@@ -107,13 +107,13 @@
 					let swiperData = [];
 					if (this.hotData.length % 2 == 0) {
 						// 偶数
-						swiperData = app.globalData.groupArry(item.d, 2);
+						swiperData = app.globalData.group_arry(item.d, 2);
 					} else {
 						// 奇数
 						if (this.hotData.length === i + 1) {
-							swiperData = app.globalData.groupArry(item.d, 4);
+							swiperData = app.globalData.group_arry(item.d, 4);
 						} else {
-							swiperData = app.globalData.groupArry(item.d, 2);
+							swiperData = app.globalData.group_arry(item.d, 2);
 						}
 					}
 					item.d = swiperData

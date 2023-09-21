@@ -1,4 +1,8 @@
-.item-value {
-    right: 20rpx;
-    bottom: 20rpx;
+.points-integral .list {
+    border-bottom: 2rpx solid #eee;
+    padding: 30rpx 0;
+}
+
+.points-integral .list:last-of-type {
+    border: 0;
 }

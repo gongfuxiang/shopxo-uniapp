@@ -59,6 +59,13 @@
 }
 
 /**
+ * 导航伪类背景色
+ */
+.nav-active-line::before {
+	background: #f6c133;
+}
+
+/**
  * 背景色 搭配色、次主色、主色
  */
 .bg-main-pair {
@@ -93,4 +100,11 @@ button[disabled].bg-main {
 */
 .title-left-border::before {
 	background: linear-gradient(180deg, #f6c133 0%, #ffebd2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.nav-left-border::before {
+	background: #f6c133;
 }

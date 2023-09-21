@@ -1,26 +1,29 @@
 <template>
-    <view>
+    <view class="padding-main">
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white pr spacing-mb">
-                    <view class="oh">
-                        <view class="fl">
-                            <text class="cr-base">原始</text>
-                            <text class="cr-base fw-b margin-left-xs">{{item.original_integral}}</text>
-                            <text class="cr-base margin-left-lg">最新</text>
-                            <text class="cr-main fw-b margin-left-xs">{{item.new_integral}}</text>
+            <view v-if="data_list.length > 0" class="padding-horizontal-main points-integral bg-white border-radius-main">
+                <view v-for="(item,index) in data_list" class="list" :key="index">
+                    <view class="flex-row jc-sb align-c">
+                        <view class="cr-grey-9">
+                            原始
+                            <text class="cr-black fw-b padding-left-sm">{{item.original_integral}}</text>
+                            <text class="padding-horizontal-sm">/</text>
+                            最新
+                            <text class="cr-black fw-b padding-left-sm">{{item.new_integral}}</text>
                         </view>
-                        <text class="fr cr-base ">{{item.add_time_time}}</text>
+                        <view class="cr-grey-9">{{item.add_time_time}}</view>
                     </view>
-                    <view class="cr-grey margin-top-lg">{{item.msg}}</view>
-                    <text :class="'fw-b pa item-value '+(item.type == 1 ? 'cr-green' : 'cr-red')">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</text>
+                    <view class="flex-row jc-sb align-c margin-top-main">
+                        <view>{{item.msg}}</view>
+                        <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</view>
+                    </view>
                 </view>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
-            
+
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
@@ -30,7 +33,6 @@
     const app = getApp();
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
-
     export default {
         data() {
             return {
@@ -42,20 +44,16 @@
                 data_bottom_line_status: false
             };
         },
-
         components: {
             componentNoData,
             componentBottomLine
         },
         props: {},
-
         onShow() {
             this.init();
-            
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
-
         // 下拉刷新
         onPullDownRefresh() {
             this.setData({
@@ -63,7 +61,6 @@
             });
             this.get_data_list(1);
         },
-
         methods: {
             init() {
                 var user = app.globalData.get_user_info(this, "init");
@@ -85,7 +82,6 @@
                     });
                 }
             },
-
             get_data_list(is_mandatory) {
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
@@ -94,21 +90,18 @@
                         return false;
                     }
                 }
-                
                 // 是否加载中
-                if(this.data_is_loading == 1) {
+                if (this.data_is_loading == 1) {
                     return false;
                 }
                 this.setData({
                     data_is_loading: 1,
                     data_list_loding_status: 1
                 });
-                
                 // 加载loding
                 uni.showLoading({
                     title: '加载中...'
                 });
-                
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("index", "userintegral"),
@@ -131,7 +124,6 @@
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
-
                                 this.setData({
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
@@ -140,7 +132,6 @@
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0
                                 });
-                                
                                 // 是否还有数据
                                 this.setData({
                                     data_bottom_line_status: (this.data_page > 1 && this.data_page > this.data_page_total)
@@ -172,7 +163,6 @@
                     }
                 });
             },
-
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();

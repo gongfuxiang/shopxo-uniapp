@@ -1,11 +1,11 @@
 <template>
     <view>
-        <view class="time-select-content" @click="_dataOpen">
+        <view class="time-select-content" @tap="_dataOpen">
             <slot></slot>
         </view>
-        <view :class="'time-select-popup-mask '+(propIsShow ? 'time-select-popup-show' : '')" @click="_maskClose">
+        <view :class="'time-select-popup-mask '+(propIsShow ? 'time-select-popup-show' : '')" @tap="_maskClose">
             <view class="time-select-popup-content" @click.stop="_stopFunc">
-                <view class="time-select-close-btn" v-if="propCloseBtn" @click="_closeBtnClose">×</view>
+                <view class="time-select-close-btn" v-if="propCloseBtn" @tap="_closeBtnClose">×</view>
                 <view class="time-select-title">
                     <view v-if="(propTitle || null) != null">{{ propTitle }}</view>
                     <view v-if="(propSubhead || null) != null">{{ propSubhead }}</view>
@@ -13,15 +13,15 @@
                 <view class="time-select-time-box">
                     <view class="left_box">
                         <block v-if="item.timeArr.length > 0" v-for="(item, index) in timeList" :key="item.dateStr">
-                            <view @click="_changeDay(index)" :class="{ active: item.checked }">
+                            <view @tap="_changeDay(index)" :class="{ active: item.checked }">
                                 {{ item.name }}
                             </view>
                         </block>
                     </view>
                     <view class="right_box">
-                        <view v-if="day_active_index == 0 && (propPlaceholder || null) != null" @click="_changeTime('')" :class="(time_active_index === '' ? 'active' : '')">{{propPlaceholder}}</view>
+                        <view v-if="day_active_index == 0 && (propPlaceholder || null) != null" @tap="_changeTime('')" :class="(time_active_index === '' ? 'active' : '')">{{propPlaceholder}}</view>
                         <block v-for="(item, index) in activeTimeArr" :key="item.time">
-                            <view @click="_changeTime(index)" :class="{ active: item.checked }">
+                            <view @tap="_changeTime(index)" :class="{ active: item.checked }">
                                 {{ item.time }}{{ propRangeType ? '-' + item.endtime : '' }}
                             </view>
                         </block>
