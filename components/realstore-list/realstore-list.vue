@@ -36,7 +36,7 @@
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
-                        <view v-if="item.contacts_tel && item.contacts_tel.length > 0" class="icon-item dis-inline-block tc cp" :data-index="index" @tap.stop="phone_event">
+                        <view v-if="(item.contacts_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.contacts_tel" @tap.stop="tel_event">
                             <iconfont name="icon-md-phone" size="40rpx"></iconfont>
                         </view>
                         <!-- #ifndef MP-KUAISHOU -->
@@ -165,9 +165,11 @@ export default {
             }
         },
 
-        phone_event(e) {
+        // 电话
+        tel_event(e) {
             app.globalData.call_tel(e);
         },
+
         // 剪切板
         text_copy_event(e) {
             app.globalData.text_copy_event(e);
