@@ -20,7 +20,7 @@
                 </view>
             </view>
             <view class="buttom tc margin-top-xxxl padding-top-lg">
-                <button type="default" size="mini" class="br-base cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">不同意</button>
+                <button type="default" size="mini" class="br-gray cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">不同意</button>
                 <button type="default" size="mini" class="br-main cr-white bg-main text-size-sm round margin-left-xxxl" open-type="agreePrivacyAuthorization" @agreeprivacyauthorization="agree_privacy_auth_event">同意</button>
             </view>
         </view>

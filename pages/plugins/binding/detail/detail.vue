@@ -26,7 +26,7 @@
                                 <view :class="'multi-text ' + (data.type == 1 ? 'padding-right' : '')">{{ item.title }}</view>
                                 <view class="single-text margin-top-sm">
                                     <text class="sales-price">{{ currency_symbol }}{{ item.price }}</text>
-                                    <text v-if="item.original_price != 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.original_price }}</text>
+                                    <text v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">节省{{ currency_symbol }}{{ item.discount_price }}</text>
                                 </view>
                                 <view class="margin-top-xs">
                                     <view v-if="item.is_error == 0">
@@ -36,8 +36,8 @@
                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                             </view>
                                         </view>
-                                        <text class="cr-grey text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
-                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-grey cr-grey round fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{ item.spec_choice_text || "选择规格" }}</view>
+                                        <text class="cr-gray text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
+                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-gray cr-gray round fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{ item.spec_choice_text || "选择规格" }}</view>
                                     </view>
                                     <view v-else class="cr-yellow text-size-xs">{{ item.error_msg }}</view>
                                 </view>
@@ -236,53 +236,38 @@ export default {
             // 已选商品
             var min_price = 0;
             var max_price = 0;
-            var min_original_price = 0;
-            var max_original_price = 0;
-            var price = 0;
-            var discount_price = 0;
+            var min_discount_price = 0;
+            var max_discount_price = 0;
             for (var i in goods) {
                 if ((goods[i]["checked"] == undefined || goods[i]["checked"] == true) && goods[i]["is_error"] == 0) {
                     min_price += parseFloat(goods[i]["min_price"] || 0);
                     max_price += parseFloat(goods[i]["max_price"] || 0);
-                    min_original_price += parseFloat(goods[i]["min_original_price"] || 0);
-                    max_original_price += parseFloat(goods[i]["max_original_price"] || 0);
+                    var discount_price = goods[i]["discount_price"] || null;
+                    if (discount_price != null) {
+                        if (discount_price.indexOf("-") == -1) {
+                            min_discount_price += parseFloat(discount_price);
+                            max_discount_price += parseFloat(discount_price);
+                        } else {
+                            var temp = discount_price.split("-");
+                            min_discount_price += parseFloat(temp[0]);
+                            max_discount_price += parseFloat(temp[1]);
+                        }
+                    }
                 }
             }
 
-            // 价格信息
-            price = parseFloat(temp_data.price || 0);
-            var rate = parseFloat(temp_data.rate || 0);
-            // 组合价
-            if (price > 0) {
-                if (min_price == max_price) {
-                    var original_price = min_price;
-                    var dv = parseFloat(app.globalData.price_two_decimal(original_price - price));
-                    discount_price = dv <= 0 ? 0 : dv;
-                } else {
-                    var original_price = min_price + "-" + max_price;
-                    var d1 = parseFloat(app.globalData.price_two_decimal(min_price - price));
-                    var d2 = parseFloat(app.globalData.price_two_decimal(max_price - price));
-                    discount_price = d1 == d2 ? d1 : d1 <= 0 && d2 <= 0 ? 0 : (d1 <= 0 ? 0 : d1) + "-" + (d2 <= 0 ? 0 : d2);
-                }
+            // 价格
+            if (min_price == max_price) {
+                var price = app.globalData.price_two_decimal(min_price);
             } else {
-                // 折扣率
-                if (rate > 0) {
-                    min_original_price = min_price;
-                    max_original_price = max_price;
-                    min_price = min_price * rate;
-                    max_price = max_price * rate;
-                }
+                var price = app.globalData.price_two_decimal(min_price) + "-" + app.globalData.price_two_decimal(max_price);
+            }
 
-                price = min_price != max_price ? min_price + "-" + max_price : min_price;
-                var original_price = min_original_price != max_original_price ? min_original_price + "-" + max_original_price : min_original_price;
-                if (price.toString().indexOf("-") == -1 && original_price.toString().indexOf("-") == -1) {
-                    var dv = parseFloat(app.globalData.price_two_decimal(original_price - price));
-                    discount_price = dv <= 0 ? 0 : dv;
-                } else {
-                    var d1 = parseFloat(app.globalData.price_two_decimal(min_original_price - min_price));
-                    var d2 = parseFloat(app.globalData.price_two_decimal(max_original_price - max_price));
-                    discount_price = d1 == d2 ? d1 : d1 <= 0 && d2 <= 0 ? 0 : (d1 <= 0 ? 0 : d1) + "-" + (d2 <= 0 ? 0 : d2);
-                }
+            // 节省
+            if (min_discount_price == max_discount_price) {
+                var discount_price = app.globalData.price_two_decimal(min_discount_price);
+            } else {
+                var discount_price = app.globalData.price_two_decimal(min_discount_price) + "-" + app.globalData.price_two_decimal(max_discount_price);
             }
 
             // 购买价格
@@ -357,6 +342,7 @@ export default {
 
             // 进入订单确认页面
             var data = {
+                binding_id: this.data.id,
                 buy_type: "goods",
                 goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
             };
