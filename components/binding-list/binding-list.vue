@@ -1,12 +1,5 @@
 <template>
     <view>
-        <view class="bg-main flex-row">
-            <view class="bg-red" style="height: 100px; width: 100px">1</view>
-            <view class="bg-grey flex-col jc-sb">
-                <view class="bg-base">2</view>
-                <view class="bg-yellow">3</view>
-            </view>
-        </view>
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item border-radius-main bg-white padding-main oh pr spacing-mb">
