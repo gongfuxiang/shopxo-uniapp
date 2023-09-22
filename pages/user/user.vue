@@ -45,15 +45,15 @@
                     </view>
                     <!-- 会员码 付款码 -->
                     <view v-if="(payment_page_url || null) !== null || (membership_page_url || null) !== null" class="qrcode padding-horizontal-main pr">
-                        <view class="qrcode-content flex-row align-c padding-main text-size-md" style="background-image: url(/static/images/common/qrcod-bg.png)" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
-                            <view class="qrcode-left flex-row jc-sa align-c" v-if="(membership_page_url || null) != null">
-                                <view class="item pr dis-inline-block" :data-value="membership_page_url" @tap="url_event">
+                        <view class="qrcode-content flex-row align-c text-size-md" style="background-image: url(/static/images/common/qrcod-bg.png)" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
+                            <view class="tc flex-width-half" v-if="(membership_page_url || null) != null" :data-value="membership_page_url" @tap="url_event">
+                                <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" src="@/static/images/common/membership-code.png" mode="widthFix"></image>
                                 </view>
                                 会员码
                             </view>
-                            <view class="qrcode-right flex-row jc-sa align-c" v-if="(payment_page_url || null) != null">
-                                <view class="item pr dis-inline-block" :data-value="payment_page_url" @tap="url_event">
+                            <view class="tc flex-width-half" v-if="(payment_page_url || null) != null" :data-value="payment_page_url" @tap="url_event">
+                                <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" src="@/static/images/common/payment-code.png" mode="widthFix"></image>
                                 </view>
                                 <text>付款码</text>

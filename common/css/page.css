@@ -670,6 +670,10 @@ button:before {
     background-color: #dddddd !important;
 }
 
+.bg-grey-e {
+    background-color: #eeeeee !important;
+}
+
 .bg-grey-f5 {
     background-color: #f5f5f5 !important;
 }

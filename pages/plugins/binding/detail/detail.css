@@ -11,12 +11,36 @@
 }
 
 .data-list .item .spec-choice {
-    max-width: calc(100% - 220rpx);
+    height: 40rpx;
+    line-height: 40rpx;
+    padding: 0 34rpx 0 20rpx;
 }
 
 .data-list .item .cart-badge-icon {
     top: -16rpx;
     right: 0;
+}
+
+.lose-efficacy {
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.lose-efficacy .rotate {
+    width: 130rpx;
+    transform: rotate(-30deg);
+}
+
+.lose-efficacy .rotate-img {
+    width: 100%;
+    transform: rotate(30deg);
+}
+
+.lose-efficacy .rotate-text {
+    margin-left: 18rpx;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
 }
 
 /**

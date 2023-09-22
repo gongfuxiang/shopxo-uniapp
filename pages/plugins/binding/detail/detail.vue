@@ -9,32 +9,49 @@
                 <view v-if="(data.goods || null) != null && data.goods.length > 0">
                     <!-- 商品 -->
                     <view class="data-list oh">
-                        <view v-for="(item, index) in data.goods" :key="index" :class="'item padding-main border-radius-main bg-white oh spacing-mb flex-row ' + (item.is_error == 0 ? '' : 'br-red')">
+                        <view v-for="(item, index) in data.goods" :key="index" class="item padding-main border-radius-main bg-white oh spacing-mb flex-row pr">
                             <image class="goods-img dis-block border-radius-main" :src="item.images" mode="aspectFit" :data-value="item.goods_url" @tap="url_event"></image>
                             <view class="right-base flex-1 flex-width padding-left-main">
                                 <view class="flex-row jc-c">
                                     <view :class="'multi-text flex-1 flex-width ' + (data.type == 1 ? 'padding-right' : '')">{{ item.title }}</view>
-                                    <label v-if="data.type == 1 && item.is_error == 0" class="binding-check tr" :data-index="index" @tap="goods_choice_event">
-                                        <radio :checked="item.checked == undefined || item.checked == true" style="transform: scale(0.7)" />
+                                    <label v-if="data.type == 1 && item.is_error == 0" class="tr binding-check pr bottom-sm" :data-index="index" @tap="goods_choice_event">
+                                        <radio :checked="item.checked == undefined || item.checked == true" :color="theme_color" style="transform: scale(0.7)" />
                                     </label>
-                                    <label class="tr binding-check" :data-index="index" @tap="goods_choice_event"> <radio :checked="item.checked == undefined || item.checked == true" :color="theme_color" style="transform: scale(0.7)" /> </label>
                                 </view>
-                                <view class="single-text margin-top-sm">
-                                    <text class="sales-price">{{ currency_symbol }}{{ item.price }}</text>
-                                    <text v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">节省{{ currency_symbol }}{{ item.discount_price }}</text>
+                                <view class="single-text margin-top-sm flex-row align-c">
+                                    <view class="sales-price">
+                                        <text class="text-size-xs">{{ currency_symbol }}</text>
+                                        <text class="text-size-lg fw-b">{{ item.price }}</text>
+                                    </view>
+                                    <view v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">
+                                        节省
+                                        <text class="text-size-xs">{{ currency_symbol }}</text>
+                                        {{ item.discount_price }}
+                                    </view>
                                 </view>
                                 <view class="margin-top-xs">
-                                    <view v-if="item.is_error == 0">
-                                        <view class="va-m dis-inline-block margin-right-xl pr" :data-index="index" @tap="goods_cart_event">
-                                            <uni-icons type="cart" size="46rpx" color="#999"></uni-icons>
-                                            <view class="cart-badge-icon pa">
-                                                <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                    <view v-if="item.is_error == 0" class="flex-row jc-sb align-c">
+                                        <view class="flex-row align-c">
+                                            <view class="margin-right-sm pr" :data-index="index" @tap="goods_cart_event">
+                                                <iconfont name="icon-zuhedap-shoping" size="42rpx" color="#E22C08"></iconfont>
+                                                <view class="cart-badge-icon pa">
+                                                    <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
+                                                </view>
                                             </view>
+                                            <text class="cr-grey-9 text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
                                         </view>
-                                        <text class="cr-gray text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
-                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="br-gray cr-gray round fr padding-left padding-right single-text text-size-xs spec-choice" :data-index="index" @tap="spec_choice_event">{{ item.spec_choice_text || '选择规格' }}</view>
+                                        <view v-if="(item.is_exist_many_spec || 0) == 1" class="bg-grey-e cr-grey round single-text text-size-xss spec-choice" :data-index="index" @tap="spec_choice_event">
+                                            {{ item.spec_choice_text || '选择规格' }}
+                                            <iconfont name="icon-mendian-jiantou2" size="14rpx" color="#666" class="pa"></iconfont>
+                                        </view>
                                     </view>
-                                    <view v-else class="cr-yellow text-size-xs">{{ item.error_msg }}</view>
+                                    <view v-else class="cr-grey-9 text-size-xs">{{ item.error_msg }}</view>
+                                </view>
+                            </view>
+                            <view v-if="item.is_error !== 0" class="pa left-0 right-0 top-0 bottom-0 lose-efficacy flex-row jc-c align-c">
+                                <view class="rotate pr">
+                                    <image :src="binding_static_url + 'lapse-icon.png'" mode="widthFix" class="dis-block rotate-img"></image>
+                                    <text class="rotate-text pa cr-red text-size">已失效</text>
                                 </view>
                             </view>
                         </view>
@@ -89,10 +106,12 @@
     import componentGoodsBuy from '../../../../components/goods-buy/goods-buy';
     import componentBadge from '../../../../components/badge/badge';
     import componentSharePopup from '../../../../components/share-popup/share-popup';
+    let binding_static_url = app.globalData.get_static_url('binding', true);
 
     export default {
         data() {
             return {
+                binding_static_url: binding_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -372,6 +391,6 @@
         },
     };
 </script>
-<style>
+<style scoped>
     @import './detail.css';
 </style>

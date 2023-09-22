@@ -2,16 +2,16 @@
     <view>
         <view class="countdown" v-if="is_show && !is_end">
             <block v-if="propMsecShow">
-                <view class="time" :style="time_style">{{msec}}</view>
-                <view class="ds" :style="ds_style">{{propSecondDs}}</view>
+                <view class="time" :style="time_style">{{ msec }}</view>
+                <view class="ds" :style="ds_style">{{ propSecondDs }}</view>
             </block>
-            <view class="time" :style="time_style">{{second}}</view>
-            <view class="ds" :style="ds_style">{{propMinuteDs}}</view>
-            <view class="time" :style="time_style">{{minute}}</view>
-            <view class="ds" :style="ds_style">{{propHourDs}}</view>
-            <view class="time" :style="time_style">{{hour}}</view>
+            <view class="time" :style="time_style">{{ second }}</view>
+            <view class="ds" :style="ds_style">{{ propMinuteDs }}</view>
+            <view class="time" :style="time_style">{{ minute }}</view>
+            <view class="ds" :style="ds_style">{{ propHourDs }}</view>
+            <view class="time" :style="time_style">{{ hour }}</view>
         </view>
-        <view v-if="is_show && is_end" class="timer-title">{{propMsg}}</view>
+        <view v-if="is_show && is_end" class="timer-title">{{ propMsg }}</view>
     </view>
 </template>
 <script>
@@ -32,90 +32,89 @@
         props: {
             propHour: {
                 type: [String, Number],
-                default: '00'
+                default: '00',
             },
             propMinute: {
                 type: [String, Number],
-                default: '00'
+                default: '00',
             },
             propSecond: {
                 type: [String, Number],
-                default: '00'
+                default: '00',
             },
             propEndShow: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             propMsecShow: {
                 type: Boolean,
-                default: false
+                default: false,
             },
             propMsg: {
                 type: String,
-                default: '已结束'
+                default: '已结束',
             },
             propHourDs: {
                 type: String,
-                default: ':'
+                default: ':',
             },
             propMinuteDs: {
                 type: String,
-                default: ':'
+                default: ':',
             },
             propSecondDs: {
                 type: String,
-                default: ':'
+                default: ':',
             },
             propTimePadding: {
                 type: [Number, String],
-                default: 0
+                default: 0,
             },
             propTimeSize: {
                 type: [Number, String],
-                default: 24
+                default: 24,
             },
             propTimeBackgroundColor: {
                 type: String,
-                default: 'linear-gradient(180deg, #FF601B 0%, #FE1B33 100%);'
+                default: 'linear-gradient(180deg, #FF601B 0%, #FE1B33 100%);',
             },
             propTimeColor: {
                 type: String,
-                default: '#FFF'
+                default: '#FFF',
             },
             propTimeWeight: {
                 type: [Number, String],
-                default: '400'
+                default: '400',
             },
             propDsColor: {
                 type: String,
-                default: '#4B5459'
+                default: '#4B5459',
             },
             propDsSize: {
                 type: [Number, String],
-                default: 24
+                default: 24,
             },
             propDsWeight: {
                 type: [Number, String],
-                default: '400'
-            }
+                default: '400',
+            },
         },
         computed: {
             time_style() {
-                return 'padding: 0 ' + this.propTimePadding + 'rpx;background-color:' + this.propTimeBackgroundColor + ';color:' + this.propTimeColor + ';font-size:' + this.propTimeSize +
-                    'rpx;font-weight:' + this.propTimeWeight
+                return 'padding: 0 ' + this.propTimePadding + 'rpx;background:' + this.propTimeBackgroundColor + ';color:' + this.propTimeColor + ';font-size:' + this.propTimeSize + 'rpx;font-weight:' + this.propTimeWeight;
             },
             ds_style() {
-                return 'color:' + this.propDsColor + ';font-size:' + this.propDsSize + 'rpx;font-weight:' + this.propDsWeight
-            }
+                return 'color:' + this.propDsColor + ';font-size:' + this.propDsSize + 'rpx;font-weight:' + this.propDsWeight;
+            },
         },
-        created: function(e) {
+        created: function (e) {
             // 参数处理
             this.hour = this.propHour;
             this.minute = this.propMinute;
             this.second = this.propSecond;
 
             // 定时处理
-            this.countdown()
+            this.countdown();
         },
         // #ifndef VUE2
         destroyed() {
@@ -141,7 +140,7 @@
                 var hour = parseInt(self.hour);
                 var minute = parseInt(self.minute);
                 var second = parseInt(self.second);
-                self.timer = setInterval(function() {
+                self.timer = setInterval(function () {
                     if (second <= 0) {
                         if (minute > 0) {
                             minute--;
@@ -173,7 +172,7 @@
 
                 // 毫秒
                 var count = 0;
-                self.timers = setInterval(function() {
+                self.timers = setInterval(function () {
                     count++;
                     self.msec = count;
                     if (count > 9) {
@@ -183,11 +182,11 @@
                         clearInterval(self.timers);
                     }
                 }, 100);
-            }
-        }
+            },
+        },
     };
 </script>
-<style>
+<style scoped>
     .countdown {
         line-height: 38rpx;
     }
@@ -211,7 +210,7 @@
     }
 
     .countdown .ds {
-        color: #4B5459;
+        color: #4b5459;
         padding: 0 8rpx;
     }
 </style>

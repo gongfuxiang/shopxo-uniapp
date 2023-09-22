@@ -1731,7 +1731,7 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                var default_theme = 'blue';
+                var default_theme = 'purple';
                 return uni.getStorageSync('theme') || default_theme;
             },
             // 设置主题

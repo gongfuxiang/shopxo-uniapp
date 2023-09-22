@@ -3,6 +3,7 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="banner_list.length > 0 ? slider_bg : top_content_style">
+                <image class="wh-auto pa top-0 left-0 right-0" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
                 <!-- logo/标题 -->
                 <!-- #ifndef MP-TOUTIAO -->
                 <view class="home-top-nav-logo">
@@ -17,7 +18,7 @@
 
                 <!-- 搜索 -->
                 <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
-                <view v-if="load_status == 1" :class="'pr ' + (search_is_fixed == 1 ? 'search-content-fixed bg-main' : '')" :style="search_is_fixed == 1 ? top_content_style : ''">
+                <view v-if="load_status == 1" :class="'pr ' + (search_is_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_title_style : ''">
                     <view v-if="common_app_is_enable_search == 1" :style="search_style">
                         <view class="margin-horizontal-main">
                             <component-search propPlaceholder="输入商品名称搜索" :propIsBtn="true" propBgColor="#fff"></component-search>
@@ -44,7 +45,7 @@
                     <component-banner :propData="banner_list" @changeBanner="changeBanner"></component-banner>
                 </view>
                 <!-- 导航 -->
-                <view v-if="navigation.length > 0">
+                <view v-if="navigation.length > 0" class="spacing-mt">
                     <view class="padding-horizontal-main">
                         <view class="bg-white border-radius-main">
                             <component-icon-nav :propData="navigation"></component-icon-nav>
@@ -97,7 +98,7 @@
                                 </view>
                                 <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">更多</navigator>
                             </view>
-                            <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :prop-open-cart="false"></component-goods-list>
                         </view>
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
@@ -192,7 +193,7 @@
                         <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
                             <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <view class="title-left">
-                                    <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || "最新购买" }}</text>
+                                    <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || '最新购买' }}</text>
                                     <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ plugins_salerecords_data.base.home_bottom_desc }}</text>
                                 </view>
                             </view>
@@ -273,341 +274,352 @@
 </template>
 
 <script>
-const app = getApp();
-import componentSearch from "../../components/search/search";
-import componentQuickNav from "../../components/quick-nav/quick-nav";
-import componentIconNav from "../../components/icon-nav/icon-nav";
-import componentBanner from "../../components/slider/slider";
-import componentCountdown from "../../components/countdown/countdown";
-import componentLayout from "../../components/layout/layout";
-import componentBadge from "../../components/badge/badge";
-import componentNoData from "../../components/no-data/no-data";
-import componentBottomLine from "../../components/bottom-line/bottom-line";
-import componentCopyright from "../../components/copyright/copyright";
-import componentOnlineService from "../../components/online-service/online-service";
-import componentActivityList from "../../components/activity-list/activity-list";
-import componentBlogList from "../../components/blog-list/blog-list";
-import componentRealstoreList from "../../components/realstore-list/realstore-list";
-import componentShopList from "../../components/shop-list/shop-list";
-import componentGoodsList from "../../components/goods-list/goods-list";
-import componentUserBase from "../../components/user-base/user-base";
-import componentBindingList from "../../components/binding-list/binding-list";
-import componentRecommedHot from "@/components/recommend-hot/recommend-hot";
+    const app = getApp();
+    import componentSearch from '../../components/search/search';
+    import componentQuickNav from '../../components/quick-nav/quick-nav';
+    import componentIconNav from '../../components/icon-nav/icon-nav';
+    import componentBanner from '../../components/slider/slider';
+    import componentCountdown from '../../components/countdown/countdown';
+    import componentLayout from '../../components/layout/layout';
+    import componentBadge from '../../components/badge/badge';
+    import componentNoData from '../../components/no-data/no-data';
+    import componentBottomLine from '../../components/bottom-line/bottom-line';
+    import componentCopyright from '../../components/copyright/copyright';
+    import componentOnlineService from '../../components/online-service/online-service';
+    import componentActivityList from '../../components/activity-list/activity-list';
+    import componentBlogList from '../../components/blog-list/blog-list';
+    import componentRealstoreList from '../../components/realstore-list/realstore-list';
+    import componentShopList from '../../components/shop-list/shop-list';
+    import componentGoodsList from '../../components/goods-list/goods-list';
+    import componentUserBase from '../../components/user-base/user-base';
+    import componentBindingList from '../../components/binding-list/binding-list';
+    import componentRecommedHot from '@/components/recommend-hot/recommend-hot';
 
-var common_static_url = app.globalData.get_static_url("common");
-var static_url = app.globalData.get_static_url("home");
-// 状态栏高度
-var bar_height = parseInt(app.globalData.get_system_info("statusBarHeight", 0, true));
-// #ifdef MP-TOUTIAO
-bar_height = 0;
-// #endif
+    var common_static_url = app.globalData.get_static_url('common');
+    var static_url = app.globalData.get_static_url('home');
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
+    let theme_color = app.globalData.get_theme_color();
 
-export default {
-    data() {
-        return {
-            common_static_url: common_static_url,
-            static_url: static_url,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            load_status: 0,
-            currency_symbol: app.globalData.data.currency_symbol,
-            data_list: [],
-            banner_list: [],
-            navigation: [],
-            article_list: [],
-            cart_total: 0,
-            message_total: 0,
-            right_icon_list: [],
-            // 基础配置
-            common_shop_notice: null,
-            home_index_floor_data_type: 0,
-            common_app_is_enable_search: 0,
-            common_app_is_enable_answer: 0,
-            common_app_is_header_nav_fixed: 0,
-            common_app_is_online_service: 0,
-            // 名称
-            application_title: app.globalData.data.application_title,
-            application_logo: app.globalData.data.application_logo,
-            is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
-            // 顶部+搜索样式配置
-            top_content_style: 'background-image: url("' + static_url + 'nav-top.png");' + "padding-top:" + (bar_height + 8) + "px;",
-            search_style: "",
-            search_is_fixed: 0,
-            // 是否单页预览
-            is_single_page: app.globalData.is_current_single_page() || 0,
-            // 轮播滚动时，背景色替换
-            slider_bg: null,
-            // 插件顺序列表
-            plugins_sort_list: [],
-            // 限时秒杀插件
-            plugins_seckill_data: null,
-            // 购买记录插件
-            plugins_salerecords_data: null,
-            // 活动配置插件
-            plugins_activity_data: null,
-            // 标签插件
-            plugins_label_data: null,
-            // 首页中间广告插件
-            plugins_homemiddleadv_data: null,
-            // 弹屏广告、这里设置一天后可以再次显示
-            plugins_popupscreen_data: null,
-            plugins_popupscreen_status: 0,
-            plugins_popupscreen_cache_key: "plugins_popupscreen_cache_key",
-            plugins_popupscreen_timer: null,
-            // 哀悼灰度插件
-            plugins_mourning_data_is_app: app.globalData.is_app_mourning(),
-            // 标签插件
-            plugins_blog_data: null,
-            // 门店插件
-            plugins_realstore_data: null,
-            // 多商户插件
-            plugins_shop_data: null,
-            // 组合搭配插件
-            plugins_binding_data: null,
-        };
-    },
-
-    components: {
-        componentSearch,
-        componentQuickNav,
-        componentIconNav,
-        componentBanner,
-        componentCountdown,
-        componentLayout,
-        componentBadge,
-        componentNoData,
-        componentBottomLine,
-        componentCopyright,
-        componentOnlineService,
-        componentActivityList,
-        componentBlogList,
-        componentRealstoreList,
-        componentShopList,
-        componentGoodsList,
-        componentUserBase,
-        componentBindingList,
-        componentRecommedHot,
-    },
-    props: {},
-
-    onShow() {
-        // 数据加载
-        this.init();
-
-        // 初始化配置
-        this.init_config();
-
-        // 用户头像和昵称设置提示
-        if ((this.$refs.user_base || null) != null) {
-            this.$refs.user_base.init("index");
-        }
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 初始化配置
-        init_config(status) {
-            if ((status || false) == true) {
-                this.setData({
-                    currency_symbol: app.globalData.get_config("currency_symbol"),
-                    common_shop_notice: app.globalData.get_config("config.common_shop_notice"),
-                    home_index_floor_data_type: app.globalData.get_config("config.home_index_floor_data_type"),
-                    common_app_is_enable_search: app.globalData.get_config("config.common_app_is_enable_search"),
-                    common_app_is_enable_answer: app.globalData.get_config("config.common_app_is_enable_answer"),
-                    common_app_is_header_nav_fixed: app.globalData.get_config("config.common_app_is_header_nav_fixed"),
-                    common_app_is_online_service: app.globalData.get_config("config.common_app_is_online_service"),
-                    application_title: app.globalData.get_application_title(),
-                    application_logo: app.globalData.get_application_logo(),
-                });
-            } else {
-                app.globalData.is_config(this, "init_config");
-            }
-        },
-
-        // 获取数据
-        init() {
-            this.setData({
+    export default {
+        data() {
+            return {
+                common_static_url: common_static_url,
+                static_url: static_url,
+                theme_color: theme_color,
                 data_list_loding_status: 1,
-            });
-            uni.request({
-                url: app.globalData.get_request_url("index", "index"),
-                method: "POST",
-                data: {},
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    // 获取最新缓存
-                    if (this.load_status == 0) {
-                        this.init_config(true);
-                    }
-
-                    // 设置首次加载状态
-                    this.setData({
-                        load_status: 1,
-                    });
-
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            data_bottom_line_status: true,
-                            banner_list: data.banner_list || [],
-                            navigation: data.navigation || [],
-                            article_list: data.article_list || [],
-                            data_list: data.data_list,
-                            cart_total: data.cart_total.buy_number || 0,
-                            message_total: parseInt(data.message_total || 0),
-                            right_icon_list: data.right_icon_list || [],
-                            data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
-                            plugins_sort_list: data.plugins_sort_list || [],
-                            plugins_seckill_data: data.plugins_seckill_data || null,
-                            plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
-                            plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
-                            plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
-                            plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
-                            plugins_popupscreen_data: data.plugins_popupscreen_data || null,
-                            plugins_mourning_data_is_app: parseInt(data.plugins_mourning_data || 0) == 1,
-                            plugins_blog_data: data.plugins_blog_data || null,
-                            plugins_realstore_data: data.plugins_realstore_data || null,
-                            plugins_shop_data: data.plugins_shop_data || null,
-                            plugins_binding_data: data.plugins_binding_data || null,
-                        });
-                        // 轮播数据处理
-                        if (data.banner_list && data.banner_list.length > 0) {
-                            this.slider_bg = "background: linear-gradient(180deg, " + data.banner_list[0].bg_color + " 0%, #f5f5f5 80%);padding-top:" + (bar_height + 8) + "px;";
-                        }
-
-                        // 弹屏广告插件处理
-                        this.plugins_popupscreen_handle();
-
-                        // 导航购物车处理
-                        if (this.cart_total <= 0) {
-                            app.globalData.set_tab_bar_badge(2, 0);
-                        } else {
-                            app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
-                        }
-
-                        // 搜索框宽度处理
-                        // #ifdef MP-TOUTIAO
-                        var len = (this.right_icon_list || []).length;
-                        var val = len <= 0 ? 0 : 66 * len;
-                        this.setData({
-                            search_style: "width: calc(100% - " + val + "rpx);",
-                        });
-                        // #endif
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 0,
-                            data_list_loding_msg: res.data.msg,
-                            data_bottom_line_status: true,
-                        });
-                        app.globalData.showToast(res.data.msg);
-                    }
-
-                    // 分享菜单处理、延时执行，确保基础数据已加载完成
-                    setTimeout(function () {
-                        app.globalData.page_share_handle();
-                    }, 3000);
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
-                        data_bottom_line_status: true,
-                        load_status: 1,
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-
-        // 页面滚动监听
-        onPageScroll(e) {
-            if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
-                var top = e.scrollTop > 35 ? 35 : e.scrollTop;
-                var num = top * 7;
-                var base = 230;
-                // #ifdef MP-ALIPAY
-                base = 235;
-                // #endif
-                // #ifdef H5 || MP-TOUTIAO || APP
-                var len = (this.right_icon_list || []).length;
-                base = len <= 0 ? 0 : 66 * len;
-                // #endif
-                // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
-                if (!this.plugins_mourning_data_is_app) {
-                    var top_val = 35;
-                    var val = num > base ? base : num;
-                    // #ifdef MP-TOUTIAO
-                    top_val = 0;
-                    val = base;
-                    // #endif
-                    this.setData({
-                        search_style: "width: calc(100% - " + (val < 0 ? 0 : val) + "rpx);",
-                        search_is_fixed: top >= top_val ? 1 : 0,
-                    });
-                }
-            }
-        },
-
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        },
-
-        // 弹屏广告插件处理
-        plugins_popupscreen_handle() {
-            if (this.plugins_popupscreen_data != null) {
-                // 不存在关闭缓存或者超过间隔时间则显示
-                var cv = parseInt(uni.getStorageSync(this.plugins_popupscreen_cache_key)) || 0;
-                var pv = parseInt(this.plugins_popupscreen_data.interval_time) || 86400;
-                if (cv == 0 || cv + pv < app.globalData.get_timestamp()) {
-                    // 是否开启自动关闭
-                    var timer = null;
-                    var ct = parseInt(this.plugins_popupscreen_data.close_time) || 0;
-                    if (ct > 0) {
-                        var self = this;
-                        timer = setTimeout(function () {
-                            self.setData({
-                                plugins_popupscreen_status: 0,
-                            });
-                            uni.setStorage({
-                                key: self.plugins_popupscreen_cache_key,
-                                data: app.globalData.get_timestamp(),
-                            });
-                        }, ct * 1000);
-                    }
-                    this.setData({
-                        plugins_popupscreen_status: 1,
-                        plugins_popupscreen_timer: timer,
-                    });
-                }
-            }
-        },
-
-        // 弹屏广告 - 插件 关闭事件
-        plugins_popupscreen_close_event(e) {
-            this.setData({
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
+                load_status: 0,
+                currency_symbol: app.globalData.data.currency_symbol,
+                data_list: [],
+                banner_list: [],
+                navigation: [],
+                article_list: [],
+                cart_total: 0,
+                message_total: 0,
+                right_icon_list: [],
+                // 基础配置
+                common_shop_notice: null,
+                home_index_floor_data_type: 0,
+                common_app_is_enable_search: 0,
+                common_app_is_enable_answer: 0,
+                common_app_is_header_nav_fixed: 0,
+                common_app_is_online_service: 0,
+                // 名称
+                application_title: app.globalData.data.application_title,
+                application_logo: app.globalData.data.application_logo,
+                is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
+                // 顶部+搜索样式配置
+                top_content_style: 'padding-top:' + (bar_height + 8) + 'px;background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
+                top_content_title_style: 'background-image: url("' + static_url + 'nav-top.png");' + 'padding-top:' + (bar_height + 8) + 'px;background-color:' + theme_color,
+                search_style: '',
+                search_is_fixed: 0,
+                // 是否单页预览
+                is_single_page: app.globalData.is_current_single_page() || 0,
+                // 轮播滚动时，背景色替换
+                slider_bg: null,
+                // 插件顺序列表
+                plugins_sort_list: [],
+                // 限时秒杀插件
+                plugins_seckill_data: null,
+                // 购买记录插件
+                plugins_salerecords_data: null,
+                // 活动配置插件
+                plugins_activity_data: null,
+                // 标签插件
+                plugins_label_data: null,
+                // 首页中间广告插件
+                plugins_homemiddleadv_data: null,
+                // 弹屏广告、这里设置一天后可以再次显示
+                plugins_popupscreen_data: null,
                 plugins_popupscreen_status: 0,
-            });
-            uni.setStorage({
-                key: this.plugins_popupscreen_cache_key,
-                data: app.globalData.get_timestamp(),
-            });
-            clearInterval(this.plugins_popupscreen_timer);
+                plugins_popupscreen_cache_key: 'plugins_popupscreen_cache_key',
+                plugins_popupscreen_timer: null,
+                // 哀悼灰度插件
+                plugins_mourning_data_is_app: app.globalData.is_app_mourning(),
+                // 标签插件
+                plugins_blog_data: null,
+                // 门店插件
+                plugins_realstore_data: null,
+                // 多商户插件
+                plugins_shop_data: null,
+                // 组合搭配插件
+                plugins_binding_data: null,
+            };
         },
-        // 轮播改变
-        changeBanner(color) {
-            this.slider_bg = "background: linear-gradient(180deg," + color + " 0%, #f5f5f5 80%);padding-top:" + (bar_height + 8) + "px;";
+
+        components: {
+            componentSearch,
+            componentQuickNav,
+            componentIconNav,
+            componentBanner,
+            componentCountdown,
+            componentLayout,
+            componentBadge,
+            componentNoData,
+            componentBottomLine,
+            componentCopyright,
+            componentOnlineService,
+            componentActivityList,
+            componentBlogList,
+            componentRealstoreList,
+            componentShopList,
+            componentGoodsList,
+            componentUserBase,
+            componentBindingList,
+            componentRecommedHot,
         },
-    },
-};
+        props: {},
+
+        onShow() {
+            // 数据加载
+            this.init();
+
+            // 初始化配置
+            this.init_config();
+
+            // 用户头像和昵称设置提示
+            if ((this.$refs.user_base || null) != null) {
+                this.$refs.user_base.init('index');
+            }
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                        common_shop_notice: app.globalData.get_config('config.common_shop_notice'),
+                        home_index_floor_data_type: app.globalData.get_config('config.home_index_floor_data_type'),
+                        common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
+                        common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
+                        common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
+                        common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
+                        application_title: app.globalData.get_application_title(),
+                        application_logo: app.globalData.get_application_logo(),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 获取数据
+            init() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'index'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        // 获取最新缓存
+                        if (this.load_status == 0) {
+                            this.init_config(true);
+                        }
+
+                        // 设置首次加载状态
+                        this.setData({
+                            load_status: 1,
+                        });
+
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_bottom_line_status: true,
+                                banner_list: data.banner_list || [],
+                                navigation: data.navigation || [],
+                                article_list: data.article_list || [],
+                                data_list: data.data_list,
+                                cart_total: data.cart_total.buy_number || 0,
+                                message_total: parseInt(data.message_total || 0),
+                                right_icon_list: data.right_icon_list || [],
+                                data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
+                                plugins_sort_list: data.plugins_sort_list || [],
+                                plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
+                                plugins_activity_data: (data.plugins_activity_data || null) == null || data.plugins_activity_data.length <= 0 ? null : data.plugins_activity_data,
+                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
+                                plugins_homemiddleadv_data: (data.plugins_homemiddleadv_data || null) == null || data.plugins_homemiddleadv_data.length <= 0 ? null : data.plugins_homemiddleadv_data,
+                                plugins_popupscreen_data: data.plugins_popupscreen_data || null,
+                                plugins_mourning_data_is_app: parseInt(data.plugins_mourning_data || 0) == 1,
+                                plugins_blog_data: data.plugins_blog_data || null,
+                                plugins_realstore_data: data.plugins_realstore_data || null,
+                                plugins_shop_data: data.plugins_shop_data || null,
+                                plugins_binding_data: data.plugins_binding_data || null,
+                            });
+                            // 轮播数据处理
+                            if (data.banner_list && data.banner_list.length > 0) {
+                                if (data.banner_list[0].bg_color) {
+                                    this.slider_bg = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                                } else {
+                                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                                }
+                            }
+
+                            // 弹屏广告插件处理
+                            this.plugins_popupscreen_handle();
+
+                            // 导航购物车处理
+                            if (this.cart_total <= 0) {
+                                app.globalData.set_tab_bar_badge(2, 0);
+                            } else {
+                                app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
+                            }
+
+                            // 搜索框宽度处理
+                            // #ifdef MP-TOUTIAO
+                            var len = (this.right_icon_list || []).length;
+                            var val = len <= 0 ? 0 : 66 * len;
+                            this.setData({
+                                search_style: 'width: calc(100% - ' + val + 'rpx);',
+                            });
+                            // #endif
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
+                                data_bottom_line_status: true,
+                            });
+                            app.globalData.showToast(res.data.msg);
+                        }
+
+                        // 分享菜单处理、延时执行，确保基础数据已加载完成
+                        setTimeout(function () {
+                            app.globalData.page_share_handle();
+                        }, 3000);
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: '服务器请求出错',
+                            data_bottom_line_status: true,
+                            load_status: 1,
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 页面滚动监听
+            onPageScroll(e) {
+                if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
+                    var top = e.scrollTop > 35 ? 35 : e.scrollTop;
+                    var num = top * 7;
+                    var base = 230;
+                    // #ifdef MP-ALIPAY
+                    base = 235;
+                    // #endif
+                    // #ifdef H5 || MP-TOUTIAO || APP
+                    var len = (this.right_icon_list || []).length;
+                    base = len <= 0 ? 0 : 66 * len;
+                    // #endif
+                    // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
+                    if (!this.plugins_mourning_data_is_app) {
+                        var top_val = 35;
+                        var val = num > base ? base : num;
+                        // #ifdef MP-TOUTIAO
+                        top_val = 0;
+                        val = base;
+                        // #endif
+                        this.setData({
+                            search_style: 'width: calc(100% - ' + (val < 0 ? 0 : val) + 'rpx);',
+                            search_is_fixed: top >= top_val ? 1 : 0,
+                        });
+                    }
+                }
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
+            // 弹屏广告插件处理
+            plugins_popupscreen_handle() {
+                if (this.plugins_popupscreen_data != null) {
+                    // 不存在关闭缓存或者超过间隔时间则显示
+                    var cv = parseInt(uni.getStorageSync(this.plugins_popupscreen_cache_key)) || 0;
+                    var pv = parseInt(this.plugins_popupscreen_data.interval_time) || 86400;
+                    if (cv == 0 || cv + pv < app.globalData.get_timestamp()) {
+                        // 是否开启自动关闭
+                        var timer = null;
+                        var ct = parseInt(this.plugins_popupscreen_data.close_time) || 0;
+                        if (ct > 0) {
+                            var self = this;
+                            timer = setTimeout(function () {
+                                self.setData({
+                                    plugins_popupscreen_status: 0,
+                                });
+                                uni.setStorage({
+                                    key: self.plugins_popupscreen_cache_key,
+                                    data: app.globalData.get_timestamp(),
+                                });
+                            }, ct * 1000);
+                        }
+                        this.setData({
+                            plugins_popupscreen_status: 1,
+                            plugins_popupscreen_timer: timer,
+                        });
+                    }
+                }
+            },
+
+            // 弹屏广告 - 插件 关闭事件
+            plugins_popupscreen_close_event(e) {
+                this.setData({
+                    plugins_popupscreen_status: 0,
+                });
+                uni.setStorage({
+                    key: this.plugins_popupscreen_cache_key,
+                    data: app.globalData.get_timestamp(),
+                });
+                clearInterval(this.plugins_popupscreen_timer);
+            },
+            // 轮播改变
+            changeBanner(color) {
+                if (color) {
+                    this.slider_bg = 'background: linear-gradient(180deg,' + color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                } else {
+                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                }
+            },
+        },
+    };
 </script>
 <style>
-@import "./index.css";
+    @import './index.css';
 </style>
