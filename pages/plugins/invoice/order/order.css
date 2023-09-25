@@ -10,9 +10,11 @@
 * 合并按钮
 */
 .invoice-merge-submit {
-    width: 220rpx;
-    height: 70rpx !important;
-    line-height: 74rpx !important;
-    left: calc(50% - 110rpx);
-    bottom: 50rpx;
+    padding: 42rpx 46rpx;
+    z-index: 0;
+}
+
+.invoice-merge-submit button {
+    height: 88rpx;
+    line-height: 88rpx;
 }

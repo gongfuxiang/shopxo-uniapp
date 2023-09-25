@@ -552,13 +552,6 @@
                     }
                 },
                 {
-                    "path": "wallet-log/wallet-log",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "账户明细"
-                    }
-                },
-                {
                     "path": "wallet-log-detail/wallet-log-detail",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -566,24 +559,10 @@
                     }
                 },
                 {
-                    "path": "user-recharge/user-recharge",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "充值记录"
-                    }
-                },
-                {
                     "path": "user-recharge-detail/user-recharge-detail",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "充值详情"
-                    }
-                },
-                {
-                    "path": "user-cash/user-cash",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "提现记录"
                     }
                 },
                 {
@@ -657,13 +636,7 @@
         },
         {
             "root": "pages/plugins/invoice",
-            "pages": [{
-                    "path": "user/user",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "我的发票"
-                    }
-                },
+            "pages": [
                 {
                     "path": "invoice/invoice",
                     "style": {

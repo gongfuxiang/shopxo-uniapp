@@ -1,28 +1,69 @@
 /*
 * 基础
 */
-.submit-container {
-    right: 20rpx;
-    bottom: 20rpx;
+.wallet-bg {
+    /* #ifdef H5 || APP */
+    top: -80rpx !important;
+    /* #endif */
+}
+
+.scroll-wallet {
+    height: calc(100vh - 172rpx);
+}
+
+.wallet-head .content {
+    border-radius: 24rpx;
+    padding: 24rpx;
+}
+
+.content-padding-1 {
+    padding: 2rpx;
+    left: -4rpx;
+    right: -4rpx;
+    top: -4rpx;
+}
+
+.filter-blur {
+    backdrop-filter: blur(40rpx);
+}
+
+.filter-blur-child {
+    top: 0;
+    bottom: 0;
+    filter: blur(0rpx);
+}
+
+.effective {
+    font-size: 72rpx;
+}
+
+.freeze,
+.give {
+    font-size: 42rpx;
+    text-shadow: 0px 1px 4px rgba(234, 44, 44, 0.46);
 }
 
 /*
 * 导航
 */
-.nav .item {
-    width: calc(50% - 70rpx);
-    margin-bottom: 20rpx;
+.nav .active {
+    width: 64px;
+    height: 4px;
+    bottom: 0;
 }
-.nav .item:nth-child(2n) {
-    margin-right: 20rpx;
-    margin-left: 10rpx;
+/*
+* 底部按钮
+*/
+.submit-container {
+    padding: 42rpx 46rpx;
+    z-index: 0;
 }
-.nav .item:nth-child(2n+1) {
-    margin-left: 20rpx;
-    margin-right: 10rpx;
+
+.submit-container .sub-btn {
+    width: calc(50% - 20rpx);
 }
-.nav .item image {
-    width: 80rpx;
-    height: 80rpx;
-    margin: 0 auto;
+
+.submit-container button {
+    height: 88rpx;
+    line-height: 88rpx;
 }

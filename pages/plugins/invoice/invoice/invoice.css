@@ -1,6 +1,28 @@
 /*
 * 导航
 */
-.nav-base .item {
-    width: 20%;
+.scroll-box-ece-nav {
+    height: calc(100vh - 312rpx);
+}
+
+/*
+* 发票内容
+*/
+.item-operation button {
+    padding: 0 48rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+}
+
+/*
+* 底部按钮
+*/
+.submit-container {
+    padding: 42rpx 46rpx;
+    z-index: 0;
+}
+
+.submit-container button {
+    height: 88rpx;
+    line-height: 88rpx;
 }

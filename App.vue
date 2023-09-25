@@ -1595,6 +1595,31 @@
                 }
                 return false;
             },
+
+            // 是否站点变灰
+            is_app_mourning() {
+                var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
+                if (is_app == 1) {
+                    // 当前时间戳
+                    var time_current = Date.parse(new Date());
+                    // 开始时间
+                    var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
+                    if (time_start != null) {
+                        if (Date.parse(new Date(time_start)) > time_current) {
+                            return false;
+                        }
+                    }
+                    // 结束时间
+                    var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
+                    if (time_end != null) {
+                        if (Date.parse(new Date(time_end)) < time_current) {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            },
             // 价格符号
             currency_symbol() {
                 return this.get_config('currency_symbol') || this.data.currency_symbol;

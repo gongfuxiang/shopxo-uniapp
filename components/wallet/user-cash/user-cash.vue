@@ -1,62 +1,59 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="data-list">
-                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                        <view class="base oh br-b-dashed padding-bottom-main">
-                            <iconfont
-                                class="margin-right-sm pr top-md"
-                                :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
-                                size="34rpx"
-                                :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
-                                data-type="node"
-                                :data-value="item.id"
-                                @tap="selected_event"
-                            ></iconfont>
-                            <text class="cr-grey-9 va-m">{{ item.add_time }}</text>
-                        </view>
-                        <view class="content margin-top">
-                            <navigator :url="'/pages/user-order-detail/user-order-detail?id=' + item.id" hover-class="none">
-                                <block v-for="(fv, fi) in content_list" :key="fi">
-                                    <view class="single-text margin-top-xs">
-                                        <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                        <text class="fw-b">{{ item[fv.field] }}</text>
-                                        <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
-                                    </view>
-                                </block>
-                            </navigator>
-                        </view>
-                        <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">开票</button>
-                        </view>
-                    </view>
+        <!-- 导航 -->
+        <view class="nav-child flex-row align-c margin-bottom-lg">
+            <block v-for="(item, index) in nav_status_list" :key="index">
+                <view class="item dis-inline-block round bg-grey-e margin-right-main tc" :class="'cr-grey ' + (nav_status_index == index ? 'cr-main bg-main-light' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+            </block>
+        </view>
 
-                    <!-- 合并开票 -->
-                    <view class="bottom-fixed bg-white invoice-merge-submit">
-                        <button v-if="select_ids.length > 0" class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
-                    </view>
+        <!-- 列表 -->
+        <view v-if="data_list.length > 0" class="data-list">
+            <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
+                    <text :class="item.status === 0 ? 'cr-black' : item.status === 1 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
                 </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <view class="content margin-top">
+                    <navigator :url="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" hover-class="none">
+                        <block v-for="(fv, fi) in content_list" :key="fi">
+                            <view class="single-text margin-top-sm">
+                                <text class="cr-grey-9 margin-right-main">{{ fv.name }}</text>
+                                <text class="fw-b">{{ item[fv.field] }}</text>
+                                <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
+                            </view>
+                        </block>
+                    </navigator>
                 </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
-        </scroll-view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </view>
+
+        <!-- 结尾 -->
+        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
 
     export default {
+        props: {
+            propPullDownRefresh: {
+                type: Boolean,
+                default: false,
+            },
+            propScrollLower: {
+                type: Boolean,
+                default: false,
+            },
+        },
         data() {
             return {
-                data_base: null,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -65,12 +62,16 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
-                select_ids: [],
+                nav_status_list: [
+                    { name: '全部', value: '-1' },
+                    { name: '未打款', value: '0' },
+                    { name: '已打款', value: '1' },
+                    { name: '打款失败', value: '2' },
+                ],
+                nav_status_index: 0,
                 content_list: [
-                    { name: '订单编号', field: 'order_no' },
-                    { name: '订单总额', field: 'total_price', unit: '元' },
-                    { name: '支付金额', field: 'pay_price', unit: '元' },
-                    { name: '订单单价', field: 'price', unit: '元' },
+                    { name: '提现单号', field: 'cash_no' },
+                    { name: '提现金额', field: 'money', unit: '元' },
                 ],
             };
         },
@@ -79,27 +80,27 @@
             componentNoData,
             componentBottomLine,
         },
-        props: {},
-
-        onLoad(params) {
-            this.setData({
-                params: params,
-            });
-        },
-
-        onShow() {
+        created() {
             this.init();
-
+        },
+        mounted() {
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
-
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.setData({
-                data_page: 1,
-            });
-            this.get_data_list(1);
+        watch: {
+            propPullDownRefresh(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    this.setData({
+                        data_page: 1,
+                    });
+                    this.get_data_list(1);
+                }
+            },
+            propScrollLower(newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    this.get_data_list();
+                }
+            },
         },
 
         methods: {
@@ -148,12 +149,17 @@
                     title: '加载中...',
                 });
 
+                // 参数
+                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
+
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'order', 'invoice'),
+                    url: app.globalData.get_request_url('index', 'cash', 'wallet'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
+                        status: status,
+                        is_more: 1,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -171,7 +177,6 @@
                                     }
                                 }
                                 this.setData({
-                                    data_base: res.data.data.base || null,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -214,50 +219,22 @@
                 });
             },
 
-            // 滚动加载
-            scroll_lower(e) {
-                this.get_data_list();
-            },
-
-            // 选择
-            selected_event(e) {
-                var value = e.currentTarget.dataset.value;
-                var temp_select_ids = this.select_ids;
-                var index = temp_select_ids.indexOf(value);
-                if (index == -1) {
-                    temp_select_ids.push(value);
-                } else {
-                    temp_select_ids.splice(index, 1);
-                }
+            // 导航事件
+            nav_event(e) {
                 this.setData({
-                    select_ids: temp_select_ids,
+                    nav_status_index: e.currentTarget.dataset.index || 0,
+                    data_page: 1,
                 });
-            },
-
-            // 合并开票
-            invoice_event(e) {
-                var type = e.currentTarget.dataset.type || 'all';
-                var ids = e.currentTarget.dataset.ids || null;
-                if (type == 'all') {
-                    if (this.select_ids.length <= 0) {
-                        app.globalData.showToast('请先选择数据');
-                        return false;
-                    } else {
-                        ids = this.select_ids.join(',');
-                    }
-                } else {
-                    if (ids === null) {
-                        app.globalData.showToast('元素参数id有误');
-                        return false;
-                    }
-                }
-                uni.navigateTo({
-                    url: '/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?ids=' + ids + '&type=order&is_redirect=1',
-                });
+                this.get_data_list(1);
             },
         },
     };
 </script>
-<style>
-    @import './order.css';
+<style scoped>
+    .nav-detail .nav-child .item {
+        height: 60rpx;
+        line-height: 60rpx;
+        padding: 0 30rpx;
+        min-width: 84rpx;
+    }
 </style>
