@@ -40,7 +40,7 @@
 }
 
 .superior-item {
-    background: #FF8273;
+    background: rgba(255, 72, 110, 0.51);
     height: 90rpx;
     line-height: 90rpx;
     padding: 0 24rpx;
@@ -80,8 +80,7 @@
 /*
 * 导航
 */
-
-.nav {
+.nav.nav-bottom {
     padding-bottom: 150rpx;
 }
 

@@ -526,6 +526,9 @@
             "pages": [{
                     "path": "user/user",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的钱包"
                     }
@@ -683,20 +686,20 @@
                         "navigationBarTitleText": "签到"
                     }
                 },
-                {
-                    "path": "user-signin/user-signin",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "我的签到"
-                    }
-                },
-                {
-                    "path": "user-qrcode/user-qrcode",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "签到码管理"
-                    }
-                },
+                // {
+                //     "path": "user-signin/user-signin",
+                //     "style": {
+                //         "enablePullDownRefresh": true,
+                //         "navigationBarTitleText": "我的签到"
+                //     }
+                // },
+                // {
+                //     "path": "user-qrcode/user-qrcode",
+                //     "style": {
+                //         "enablePullDownRefresh": true,
+                //         "navigationBarTitleText": "签到码管理"
+                //     }
+                // },
                 {
                     "path": "user-qrcode-detail/user-qrcode-detail",
                     "style": {

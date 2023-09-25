@@ -6,7 +6,7 @@
             <view class="pr z-i">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
                     <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
                 </view>
                 <!-- #endif -->
@@ -29,7 +29,7 @@
                             <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
                                 <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
                                     <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                        {{ (extraction || null) == null ? "申请" : "" }}取货点
+                                        {{ (extraction || null) == null ? '申请' : '' }}取货点
                                         <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" class="pa"></iconfont>
                                     </button>
                                 </navigator>
@@ -39,9 +39,9 @@
                 </view>
 
                 <!-- 会员中心通知 -->
-                <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main">
+                <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
                     <view :class="(superior || null) != null ? 'padding-horizontal-main margin-horizontal-xs' : ''">
-                        <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
+                        <uni-notice-bar show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
                     </view>
                 </view>
 
@@ -122,7 +122,7 @@
                 </view>
 
                 <!-- 导航 -->
-                <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm">
+                <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'padding-bottom-main' : 'nav-bottom'">
                     <block v-for="(item, index) in nav_list" :key="index">
                         <view class="flex-width-half">
                             <view class="item bg-white border-radius-main margin-sm">
@@ -200,287 +200,287 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentPopup from "../../../../components/popup/popup";
-var currency_symbol = app.globalData.currency_symbol();
-var distribution_static_url = app.globalData.get_static_url("distribution", true) + "app/";
-export default {
-    data() {
-        return {
-            status_bar_height: parseInt(app.globalData.get_system_info("statusBarHeight", 0)),
-            // 顶部导航返回按钮
-            is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-            distribution_static_url: distribution_static_url,
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            currency_symbol: currency_symbol,
-            avatar: app.globalData.data.default_user_head_src,
-            nickname: "用户名",
-            data_base: null,
-            user_level: null,
-            extraction: null,
-            superior: null,
-            profit_ladder: null,
-            nav_list: [],
-            time_data: null,
-            base_data: null,
-            user_promotion_data: null,
-            profit_data: null,
-            stats_user_promotion_data_list: [],
-            stats_base_data_list: [],
-            stats_base_data_list_children: [],
-            stats_profit_data_list: [],
-            popup_time_status: false,
-            form_submit_disabled_status: false,
-            popup_time_value: { name: "自定义", start: "", end: "", index: "" },
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentPopup,
-    },
-    props: {},
-
-    onLoad(params) {},
-
-    onShow() {
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        init(e) {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.showModal({
-                        title: "温馨提示",
-                        content: "绑定手机号码",
-                        confirmText: "确认",
-                        cancelText: "暂不",
-                        success: (result) => {
-                            uni.stopPullDownRefresh();
-                            if (result.confirm) {
-                                uni.navigateTo({
-                                    url: "/pages/login/login?event_callback=init",
-                                });
-                            }
-                            this.set_user_base(user);
-                        },
-                    });
-                } else {
-                    this.set_user_base(user);
-                    this.get_data();
-                }
-            }
+    const app = getApp();
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentPopup from '../../../../components/popup/popup';
+    var currency_symbol = app.globalData.currency_symbol();
+    var distribution_static_url = app.globalData.get_static_url('distribution', true) + 'app/';
+    export default {
+        data() {
+            return {
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                distribution_static_url: distribution_static_url,
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                currency_symbol: currency_symbol,
+                avatar: app.globalData.data.default_user_head_src,
+                nickname: '用户名',
+                data_base: null,
+                user_level: null,
+                extraction: null,
+                superior: null,
+                profit_ladder: null,
+                nav_list: [],
+                time_data: null,
+                base_data: null,
+                user_promotion_data: null,
+                profit_data: null,
+                stats_user_promotion_data_list: [],
+                stats_base_data_list: [],
+                stats_base_data_list_children: [],
+                stats_profit_data_list: [],
+                popup_time_status: false,
+                form_submit_disabled_status: false,
+                popup_time_value: { name: '自定义', start: '', end: '', index: '' },
+            };
         },
 
-        // 设置用户基础信息
-        set_user_base(user) {
-            if ((user.avatar || null) != null) {
-                this.setData({ avatar: user.avatar });
-            }
-            if ((user.user_name_view || null) != null) {
-                this.setData({ nickname: user.user_name_view });
-            }
+        components: {
+            componentNoData,
+            componentPopup,
+        },
+        props: {},
+
+        onLoad(params) {},
+
+        onShow() {
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("index", "user", "distribution"),
-                method: "POST",
-                data: {},
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        // 选择时间处理
-                        var time_data = data.time_data || null;
-                        var temp_value = this.popup_time_value;
-                        if (time_data != null) {
-                            var temp = time_data[data.default_day];
-                            temp_value.start = temp.start;
-                            temp_value.end = temp.end;
-                            temp_value.name = temp.name;
-                        }
-                        this.setData({
-                            data_base: data.base || null,
-                            user_level: data.user_level || null,
-                            extraction: data.extraction || null,
-                            superior: data.superior || null,
-                            profit_ladder: data.profit_ladder || null,
-                            nav_list: data.nav_list || [],
-                            time_data: time_data,
-                            stats_user_promotion_data_list: data.stats_user_promotion_data_list || [],
-                            stats_base_data_list: data.stats_base_data_list || [],
-                            stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
-                            stats_profit_data_list: data.stats_profit_data_list || [],
-                            popup_time_value: temp_value,
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: false,
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        methods: {
+            init(e) {
+                var user = app.globalData.get_user_info(this, 'init');
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.showModal({
+                            title: '温馨提示',
+                            content: '绑定手机号码',
+                            confirmText: '确认',
+                            cancelText: '暂不',
+                            success: (result) => {
+                                uni.stopPullDownRefresh();
+                                if (result.confirm) {
+                                    uni.navigateTo({
+                                        url: '/pages/login/login?event_callback=init',
+                                    });
+                                }
+                                this.set_user_base(user);
+                            },
                         });
                     } else {
+                        this.set_user_base(user);
+                        this.get_data();
+                    }
+                }
+            },
+
+            // 设置用户基础信息
+            set_user_base(user) {
+                if ((user.avatar || null) != null) {
+                    this.setData({ avatar: user.avatar });
+                }
+                if ((user.user_name_view || null) != null) {
+                    this.setData({ nickname: user.user_name_view });
+                }
+            },
+
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'user', 'distribution'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            // 选择时间处理
+                            var time_data = data.time_data || null;
+                            var temp_value = this.popup_time_value;
+                            if (time_data != null) {
+                                var temp = time_data[data.default_day];
+                                temp_value.start = temp.start;
+                                temp_value.end = temp.end;
+                                temp_value.name = temp.name;
+                            }
+                            this.setData({
+                                data_base: data.base || null,
+                                user_level: data.user_level || null,
+                                extraction: data.extraction || null,
+                                superior: data.superior || null,
+                                profit_ladder: data.profit_ladder || null,
+                                nav_list: data.nav_list || [],
+                                time_data: time_data,
+                                stats_user_promotion_data_list: data.stats_user_promotion_data_list || [],
+                                stats_base_data_list: data.stats_base_data_list || [],
+                                stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
+                                stats_profit_data_list: data.stats_profit_data_list || [],
+                                popup_time_value: temp_value,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                            });
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-
-        // 头像查看
-        preview_event() {
-            if (app.globalData.data.default_user_head_src != this.avatar) {
-                uni.previewImage({
-                    current: this.avatar,
-                    urls: [this.avatar],
+                        app.globalData.showToast('服务器请求出错');
+                    },
                 });
-            }
-        },
+            },
 
-        // 头像加载错误
-        user_avatar_error(e) {
-            this.setData({
-                avatar: app.globalData.data.default_user_head_src,
-            });
-        },
+            // 头像查看
+            preview_event() {
+                if (app.globalData.data.default_user_head_src != this.avatar) {
+                    uni.previewImage({
+                        current: this.avatar,
+                        urls: [this.avatar],
+                    });
+                }
+            },
 
-        // 时间选择开启弹层
-        popup_time_event(e) {
-            this.setData({
-                popup_time_status: true,
-            });
-        },
+            // 头像加载错误
+            user_avatar_error(e) {
+                this.setData({
+                    avatar: app.globalData.data.default_user_head_src,
+                });
+            },
 
-        // 时间选择关闭弹层
-        popup_time_close_event(e) {
-            this.setData({
-                popup_time_status: false,
-            });
-        },
+            // 时间选择开启弹层
+            popup_time_event(e) {
+                this.setData({
+                    popup_time_status: true,
+                });
+            },
 
-        // 时间快捷选择
-        quit_time_event(e) {
-            var index = e.currentTarget.dataset.index;
-            var item = this.time_data[index];
-            var temp_value = this.popup_time_value;
-            temp_value.start = item.start;
-            temp_value.end = item.end;
-            temp_value.index = index;
-            this.setData({
-                popup_time_value: temp_value,
-            });
-        },
+            // 时间选择关闭弹层
+            popup_time_close_event(e) {
+                this.setData({
+                    popup_time_status: false,
+                });
+            },
 
-        // 自定义开始时间事件
-        time_start_change_event(e) {
-            var temp_value = this.popup_time_value;
-            temp_value.start = e;
-            temp_value.index = "";
-            this.setData({
-                popup_time_value: temp_value,
-            });
-        },
+            // 时间快捷选择
+            quit_time_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var item = this.time_data[index];
+                var temp_value = this.popup_time_value;
+                temp_value.start = item.start;
+                temp_value.end = item.end;
+                temp_value.index = index;
+                this.setData({
+                    popup_time_value: temp_value,
+                });
+            },
 
-        // 自定义结束时间事件
-        time_end_change_event(e) {
-            var temp_value = this.popup_time_value;
-            temp_value.end = e;
-            temp_value.index = "";
-            this.setData({
-                popup_time_value: temp_value,
-            });
-        },
+            // 自定义开始时间事件
+            time_start_change_event(e) {
+                var temp_value = this.popup_time_value;
+                temp_value.start = e;
+                temp_value.index = '';
+                this.setData({
+                    popup_time_value: temp_value,
+                });
+            },
 
-        // 数据提交
-        form_submit(e) {
-            this.setData({
-                form_submit_disabled_status: true,
-            });
-            uni.showLoading({
-                title: "查询中...",
-            });
-            uni.request({
-                url: app.globalData.get_request_url("stats", "user", "distribution"),
-                method: "POST",
-                data: this.popup_time_value,
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        var temp_value = this.popup_time_value;
-                        temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? "全部" : "自定义") : this.time_data[temp_value.index]["name"];
-                        this.setData({
-                            popup_time_status: false,
-                            form_submit_disabled_status: false,
-                            stats_user_promotion_data_list: data.stats_user_promotion_data_list || [],
-                            stats_base_data_list: data.stats_base_data_list || [],
-                            stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
-                            popup_time_value: temp_value,
-                        });
-                    } else {
-                        this.setData({
-                            form_submit_disabled_status: false,
-                        });
-                        if (app.globalData.is_login_check(res.data)) {
-                            app.globalData.showToast(res.data.msg);
+            // 自定义结束时间事件
+            time_end_change_event(e) {
+                var temp_value = this.popup_time_value;
+                temp_value.end = e;
+                temp_value.index = '';
+                this.setData({
+                    popup_time_value: temp_value,
+                });
+            },
+
+            // 数据提交
+            form_submit(e) {
+                this.setData({
+                    form_submit_disabled_status: true,
+                });
+                uni.showLoading({
+                    title: '查询中...',
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('stats', 'user', 'distribution'),
+                    method: 'POST',
+                    data: this.popup_time_value,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var temp_value = this.popup_time_value;
+                            temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? '全部' : '自定义') : this.time_data[temp_value.index]['name'];
+                            this.setData({
+                                popup_time_status: false,
+                                form_submit_disabled_status: false,
+                                stats_user_promotion_data_list: data.stats_user_promotion_data_list || [],
+                                stats_base_data_list: data.stats_base_data_list || [],
+                                stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
+                                popup_time_value: temp_value,
+                            });
                         } else {
-                            app.globalData.showToast("提交失败，请重试！");
+                            this.setData({
+                                form_submit_disabled_status: false,
+                            });
+                            if (app.globalData.is_login_check(res.data)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast('提交失败，请重试！');
+                            }
                         }
-                    }
-                },
-                fail: () => {
-                    this.setData({
-                        form_submit_disabled_status: false,
-                    });
-                    uni.hideLoading();
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-        // 顶部返回操作
-        top_nav_left_back_event(e) {
-            var pages = getCurrentPages();
-            if (pages.length <= 1) {
-                uni.switchTab({
-                    url: app.globalData.data.tabbar_pages[0],
+                    },
+                    fail: () => {
+                        this.setData({
+                            form_submit_disabled_status: false,
+                        });
+                        uni.hideLoading();
+                        app.globalData.showToast('服务器请求出错');
+                    },
                 });
-            } else {
-                uni.navigateBack();
-            }
+            },
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./user.css";
+    @import './user.css';
 </style>

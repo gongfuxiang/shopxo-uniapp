@@ -7,7 +7,7 @@
                 <view class="pr z-i">
                     <!-- 返回 -->
                     <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                    <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
+                    <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
                         <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
                     </view>
                     <!-- #endif -->
@@ -115,6 +115,7 @@
                 // 是否显示价格
                 is_price_show: false,
                 // 账户明细
+                params: null,
                 current: 0,
                 propPullDownRefresh: false,
                 scroll_lower_bool: false,
@@ -132,10 +133,10 @@
 
         onLoad(params) {
             // 是否指定状态
-            if ((params.status || null) != null) {
+            if ((params.type || null) != null) {
                 this.setData({
                     params: params,
-                    current: Number(params.status),
+                    current: Number(params.type),
                 });
             }
             this.init();
@@ -230,6 +231,9 @@
                 this.setData({
                     current: e.currentTarget.dataset.index || 0,
                 });
+                var newurl = app.globalData.updateQueryStringParameter(window.location.href.split('?')[0], 'type', e.currentTarget.dataset.index + '');
+                //向当前url添加参数，没有历史记录
+                window.history.replaceState({ path: newurl }, '', newurl);
             },
             // 滚动加载
             scroll_lower(e) {
@@ -237,9 +241,20 @@
                     scroll_lower_bool: !this.scroll_lower_bool,
                 });
             },
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
+            },
         },
     };
 </script>
-<style>
+<style scoped>
     @import './user.css';
 </style>

@@ -1,39 +1,27 @@
 <template>
     <view>
-        <!-- 导航 -->
-        <view class="nav-child flex-row align-c margin-bottom-lg">
-            <block v-for="(item, index) in nav_status_list" :key="index">
-                <view class="item dis-inline-block round bg-grey-e margin-right-main tc" :class="'cr-grey ' + (nav_status_index == index ? 'cr-main bg-main-light' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
-        </view>
-
-        <!-- 列表 -->
-        <view v-if="data_list.length > 0" class="data-list">
-            <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text>{{ item.status_name }}</text>
-                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
-                </view>
-                <view class="content margin-top-main">
-                    <navigator :url="'/pages/plugins/wallet/wallet-log-detail/wallet-log-detail?id=' + item.id" hover-class="none">
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="data-list">
+                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-sm">
-                                <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                <text class="fw-b">{{ item[fv.field] }}</text>
-                                <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
+                            <view class="single-text margin-top-xs" :class="fi === 0 ? 'fw-b cr-black' : 'cr-grey-9'">
+                                <text class="margin-right-sm">{{ fv.name }}</text>
+                                <text>{{ item[fv.field] }}</text>
+                                <text v-if="(fv.unit || null) != null">{{ fv.unit }}</text>
                             </view>
                         </block>
-                    </navigator>
+                    </view>
                 </view>
-            </view>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-        </view>
+                <view wx:else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                </view>
 
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            </view>
+        </scroll-view>
     </view>
 </template>
 <script>
@@ -61,19 +49,9 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                params: null,
-                nav_status_index: 0,
-                nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '减少', value: '0' },
-                    { name: '增加', value: '1' },
-                ],
                 content_list: [
-                    { name: '业务类型', field: 'business_type_name' },
-                    { name: '金额类型', field: 'money_type_name' },
-                    { name: '操作金额', field: 'operation_money', unit: '元' },
-                    { name: '原始金额', field: 'original_money', unit: '元' },
-                    { name: '最新金额', field: 'latest_money', unit: '元' },
+                    { name: '奖励积分', field: 'integral' },
+                    { name: '签到时间', field: 'add_time' },
                 ],
             };
         },
@@ -151,17 +129,12 @@
                     title: '加载中...',
                 });
 
-                // 参数
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
-
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'walletlog', 'wallet'),
+                    url: app.globalData.get_request_url('index', 'usersignin', 'signin'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        operation_type: status,
-                        is_more: 1,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -220,23 +193,11 @@
                     },
                 });
             },
-
-            // 导航事件
-            nav_event(e) {
-                this.setData({
-                    nav_status_index: e.currentTarget.dataset.index || 0,
-                    data_page: 1,
-                });
-                this.get_data_list(1);
-            },
         },
     };
 </script>
 <style scoped>
-    .nav-child .item {
-        height: 60rpx;
-        line-height: 60rpx;
-        padding: 0 30rpx;
-        min-width: 84rpx;
+    .scroll-box {
+        height: calc(100vh - 144rpx);
     }
 </style>

@@ -101,7 +101,7 @@
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, { order_ids: res.data.data.recharge_id });
                             uni.redirectTo({
-                                url: '/pages/plugins/wallet/user/user?status=1',
+                                url: '/pages/plugins/wallet/user/user?type=1',
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data)) {

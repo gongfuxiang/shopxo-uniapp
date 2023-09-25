@@ -1538,6 +1538,7 @@ button[disabled].bg-grey {
 /**
  * 通知
  */
-.uni-noticebar.margin-0 {
+.uni-noticebar {
     padding: 0 !important;
+    margin: 0 !important;
 }

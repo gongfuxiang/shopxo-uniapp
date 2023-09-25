@@ -276,7 +276,7 @@
                             });
                             if (res.data.code == 0) {
                                 uni.redirectTo({
-                                    url: '/pages/plugins/wallet/user/user?status=2',
+                                    url: '/pages/plugins/wallet/user/user?type=2',
                                 });
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

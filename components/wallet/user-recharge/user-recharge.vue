@@ -707,7 +707,7 @@
     };
 </script>
 <style scoped>
-    .nav-detail .nav-child .item {
+    .nav-child .item {
         height: 60rpx;
         line-height: 60rpx;
         padding: 0 30rpx;

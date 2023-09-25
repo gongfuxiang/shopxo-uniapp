@@ -161,6 +161,7 @@
                                 nav_status_list: data.nav || [],
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
+                                data_page: 1,
                             });
                             this.get_data_list();
                         } else {

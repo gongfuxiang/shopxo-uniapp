@@ -6,7 +6,7 @@
             <view class="pr z-i">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m pr top-sm" @tap="top_nav_left_back_event">
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m pr top-sm" @tap="top_nav_left_back_event">
                     <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
                 </view>
                 <!-- #endif -->
@@ -176,211 +176,210 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-var membershiplevelvip_static_url = app.globalData.get_static_url("membershiplevelvip", true) + "app/";
+    const app = getApp();
+    import componentNoData from '../../../../components/no-data/no-data';
+    var membershiplevelvip_static_url = app.globalData.get_static_url('membershiplevelvip', true) + 'app/';
 
-export default {
-    data() {
-        return {
-            membershiplevelvip_static_url: membershiplevelvip_static_url,
-            status_bar_height: parseInt(app.globalData.get_system_info("statusBarHeight", 0)),
-            // 顶部导航返回按钮
-            is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_base: null,
-            user_vip: null,
-            nav_list: [],
-            avatar: app.globalData.data.default_user_head_src,
-            nickname: "用户名",
-            submit_disabled_status: false,
-            // 推广客户，反力概况
-            statistics_data: null,
-        };
-    },
-
-    components: {
-        componentNoData,
-    },
-    props: {},
-
-    onLoad(params) {},
-
-    onShow() {
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        init(e) {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.showModal({
-                        title: "温馨提示",
-                        content: "绑定手机号码",
-                        confirmText: "确认",
-                        cancelText: "暂不",
-                        success: (result) => {
-                            uni.stopPullDownRefresh();
-                            if (result.confirm) {
-                                uni.navigateTo({
-                                    url: "/pages/login/login?event_callback=init",
-                                });
-                            }
-                            this.set_user_base(user);
-                        },
-                    });
-                } else {
-                    this.set_user_base(user);
-                    this.get_data();
-                }
-            }
+    export default {
+        data() {
+            return {
+                membershiplevelvip_static_url: membershiplevelvip_static_url,
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_base: null,
+                user_vip: null,
+                nav_list: [],
+                avatar: app.globalData.data.default_user_head_src,
+                nickname: '用户名',
+                submit_disabled_status: false,
+                // 推广客户，反力概况
+                statistics_data: null,
+            };
         },
-        // 设置用户基础信息
-        set_user_base(user) {
-            if ((user.avatar || null) != null) {
-                this.setData({ avatar: user.avatar });
-            }
-            if ((user.user_name_view || null) != null) {
-                this.setData({ nickname: user.user_name_view });
-            }
+
+        components: {
+            componentNoData,
         },
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("index", "vip", "membershiplevelvip"),
-                method: "POST",
-                data: {},
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        console.log(res.data.data);
-                        var data = res.data.data;
-                        this.setData({
-                            data_base: data.base || null,
-                            user_vip: data.user_vip || null,
-                            nav_list: data.nav_list || [],
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: false,
-                            statistics_data: data.statistics_data || null,
+        props: {},
+
+        onLoad(params) {},
+
+        onShow() {
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        methods: {
+            init(e) {
+                var user = app.globalData.get_user_info(this, 'init');
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.showModal({
+                            title: '温馨提示',
+                            content: '绑定手机号码',
+                            confirmText: '确认',
+                            cancelText: '暂不',
+                            success: (result) => {
+                                uni.stopPullDownRefresh();
+                                if (result.confirm) {
+                                    uni.navigateTo({
+                                        url: '/pages/login/login?event_callback=init',
+                                    });
+                                }
+                                this.set_user_base(user);
+                            },
                         });
                     } else {
+                        this.set_user_base(user);
+                        this.get_data();
+                    }
+                }
+            },
+            // 设置用户基础信息
+            set_user_base(user) {
+                if ((user.avatar || null) != null) {
+                    this.setData({ avatar: user.avatar });
+                }
+                if ((user.user_name_view || null) != null) {
+                    this.setData({ nickname: user.user_name_view });
+                }
+            },
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'vip', 'membershiplevelvip'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                user_vip: data.user_vip || null,
+                                nav_list: data.nav_list || [],
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                                statistics_data: data.statistics_data || null,
+                            });
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                        if (app.globalData.is_login_check(res.data, this, "get_data")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 头像查看
+            preview_event() {
+                if (app.globalData.data.default_user_head_src != this.avatar) {
+                    uni.previewImage({
+                        current: this.avatar,
+                        urls: [this.avatar],
                     });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
+                }
+            },
 
-        // 头像查看
-        preview_event() {
-            if (app.globalData.data.default_user_head_src != this.avatar) {
-                uni.previewImage({
-                    current: this.avatar,
-                    urls: [this.avatar],
+            // 头像加载错误
+            user_avatar_error(e) {
+                this.setData({
+                    avatar: app.globalData.data.default_user_head_src,
                 });
-            }
-        },
+            },
 
-        // 头像加载错误
-        user_avatar_error(e) {
-            this.setData({
-                avatar: app.globalData.data.default_user_head_src,
-            });
-        },
-
-        // 连续开通会员事件
-        uservip_renew_event(e) {
-            var self = this;
-            uni.showModal({
-                title: "温馨提示",
-                content: "按照原时长和费用续费，确定继续吗？",
-                confirmText: "确认",
-                cancelText: "暂不",
-                success: (result) => {
-                    if (result.confirm) {
-                        // 请求生成支付订单
-                        self.setData({
-                            submit_disabled_status: true,
-                        });
-                        uni.showLoading({
-                            title: "处理中...",
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url("renew", "buy", "membershiplevelvip"),
-                            method: "POST",
-                            data: {},
-                            dataType: "json",
-                            success: (res) => {
-                                uni.hideLoading();
-                                self.setData({
-                                    submit_disabled_status: false,
-                                });
-                                if (res.data.code == 0) {
-                                    uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
-                                    uni.redirectTo({
-                                        url: "/pages/plugins/membershiplevelvip/order/order",
+            // 连续开通会员事件
+            uservip_renew_event(e) {
+                var self = this;
+                uni.showModal({
+                    title: '温馨提示',
+                    content: '按照原时长和费用续费，确定继续吗？',
+                    confirmText: '确认',
+                    cancelText: '暂不',
+                    success: (result) => {
+                        if (result.confirm) {
+                            // 请求生成支付订单
+                            self.setData({
+                                submit_disabled_status: true,
+                            });
+                            uni.showLoading({
+                                title: '处理中...',
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('renew', 'buy', 'membershiplevelvip'),
+                                method: 'POST',
+                                data: {},
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    self.setData({
+                                        submit_disabled_status: false,
                                     });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, self, "uservip_renew_event")) {
-                                        app.globalData.showToast(res.data.msg);
+                                    if (res.data.code == 0) {
+                                        uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
+                                        uni.redirectTo({
+                                            url: '/pages/plugins/membershiplevelvip/order/order',
+                                        });
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data, self, 'uservip_renew_event')) {
+                                            app.globalData.showToast(res.data.msg);
+                                        }
                                     }
-                                }
-                            },
-                            fail: () => {
-                                self.setData({
-                                    submit_disabled_status: false,
-                                });
-                                uni.hideLoading();
-                                app.globalData.showToast("服务器请求出错");
-                            },
-                        });
-                    }
-                },
-            });
-        },
-        // 顶部返回操作
-        top_nav_left_back_event(e) {
-            var pages = getCurrentPages();
-            if (pages.length <= 1) {
-                uni.switchTab({
-                    url: app.globalData.data.tabbar_pages[0],
+                                },
+                                fail: () => {
+                                    self.setData({
+                                        submit_disabled_status: false,
+                                    });
+                                    uni.hideLoading();
+                                    app.globalData.showToast('服务器请求出错');
+                                },
+                            });
+                        }
+                    },
                 });
-            } else {
-                uni.navigateBack();
-            }
+            },
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
+            },
         },
-    },
-};
+    };
 </script>
-<style>
-@import "./user.css";
+<style scoped>
+    @import './user.css';
 </style>

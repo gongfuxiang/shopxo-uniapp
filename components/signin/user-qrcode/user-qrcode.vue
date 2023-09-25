@@ -1,39 +1,43 @@
 <template>
     <view>
-        <!-- 导航 -->
-        <view class="nav-child flex-row align-c margin-bottom-lg">
-            <block v-for="(item, index) in nav_status_list" :key="index">
-                <view class="item dis-inline-block round bg-grey-e margin-right-main tc" :class="'cr-grey ' + (nav_status_index == index ? 'cr-main bg-main-light' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
-        </view>
-
-        <!-- 列表 -->
-        <view v-if="data_list.length > 0" class="data-list">
-            <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text>{{ item.status_name }}</text>
-                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="data-list">
+                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                        <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                            <text class="cr-grey-9">{{ item.add_time }}</text>
+                            <text>{{ item.is_enable_name }}</text>
+                        </view>
+                        <view class="content margin-top">
+                            <navigator :url="'/pages/plugins/signin/user-qrcode-detail/user-qrcode-detail?id=' + item.id" hover-class="none">
+                                <block v-for="(fv, fi) in content_list" :key="fi">
+                                    <view class="single-text margin-top-xs">
+                                        <text class="cr-grey-9 margin-right-xl">{{ fv.name }}:</text>
+                                        <text class="fw-b">{{ item[fv.field] }}</text>
+                                        <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
+                                    </view>
+                                </block>
+                            </navigator>
+                        </view>
+                        <view class="item-operation tr margin-top-main">
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="show_event">签到</button>
+                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="coming_event">用户</button>
+                            <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="edit_event">编辑</button>
+                        </view>
+                    </view>
                 </view>
-                <view class="content margin-top-main">
-                    <navigator :url="'/pages/plugins/wallet/wallet-log-detail/wallet-log-detail?id=' + item.id" hover-class="none">
-                        <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-sm">
-                                <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                <text class="fw-b">{{ item[fv.field] }}</text>
-                                <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
-                            </view>
-                        </block>
-                    </navigator>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                    <!-- 组队 -->
+                    <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container bg-white">
+                        <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">组队签到</button>
+                    </view>
                 </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-        </view>
-
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
     </view>
 </template>
 <script>
@@ -54,26 +58,17 @@
         },
         data() {
             return {
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+                data_base: null,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
-                data_list_loding_status: 1,
-                data_bottom_line_status: false,
-                data_is_loading: 0,
-                params: null,
-                nav_status_index: 0,
-                nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '减少', value: '0' },
-                    { name: '增加', value: '1' },
-                ],
                 content_list: [
-                    { name: '业务类型', field: 'business_type_name' },
-                    { name: '金额类型', field: 'money_type_name' },
-                    { name: '操作金额', field: 'operation_money', unit: '元' },
-                    { name: '原始金额', field: 'original_money', unit: '元' },
-                    { name: '最新金额', field: 'latest_money', unit: '元' },
+                    { name: '邀请人奖励', field: 'reward_master', unit: '积分' },
+                    { name: '受邀人奖励', field: 'reward_invitee', unit: '积分' },
                 ],
             };
         },
@@ -151,17 +146,12 @@
                     title: '加载中...',
                 });
 
-                // 参数
-                var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
-
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'walletlog', 'wallet'),
+                    url: app.globalData.get_request_url('index', 'userqrcode', 'signin'),
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        operation_type: status,
-                        is_more: 1,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -179,6 +169,7 @@
                                     }
                                 }
                                 this.setData({
+                                    data_base: res.data.data.base || null,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -193,6 +184,7 @@
                                 });
                             } else {
                                 this.setData({
+                                    data_base: res.data.data.base || null,
                                     data_list_loding_status: 0,
                                     data_list: [],
                                     data_bottom_line_status: false,
@@ -220,23 +212,48 @@
                     },
                 });
             },
-
-            // 导航事件
-            nav_event(e) {
-                this.setData({
-                    nav_status_index: e.currentTarget.dataset.index || 0,
-                    data_page: 1,
+            // 查看详情
+            show_event(e) {
+                var value = e.currentTarget.dataset.value;
+                uni.navigateTo({
+                    url: '/pages/plugins/signin/index-detail/index-detail?id=' + value,
                 });
-                this.get_data_list(1);
+            },
+
+            // 签到用户
+            coming_event(e) {
+                var value = e.currentTarget.dataset.value;
+                uni.navigateTo({
+                    url: '/pages/plugins/signin/user-coming-list/user-coming-list?id=' + value,
+                });
+            },
+
+            // 编辑
+            edit_event(e) {
+                var value = e.currentTarget.dataset.value;
+                uni.navigateTo({
+                    url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + value,
+                });
+            },
+
+            // 组队签到
+            team_event(e) {
+                uni.navigateTo({
+                    url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo',
+                });
             },
         },
     };
 </script>
 <style scoped>
-    .nav-child .item {
-        height: 60rpx;
-        line-height: 60rpx;
-        padding: 0 30rpx;
-        min-width: 84rpx;
+    .scroll-box {
+        height: calc(100vh - 144rpx);
+    }
+    .user-team-container {
+        padding: 42rpx 90rpx;
+    }
+    .user-team-container button {
+        height: 88rpx;
+        line-height: 88rpx;
     }
 </style>
