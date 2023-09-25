@@ -104,22 +104,26 @@
                     :markers="markers"
                     @markertap="marker_tap_event"
                 ></map>
-                <view v-if="(markers_active_data || null) != null" class="map-markers-active-data pa border-radius-main padding-main bs-bb">
-                    <view>
-                        <text>单ID：</text>
-                        <text class="cp" data-event="copy" :data-value="markers_active_data.main_order_id" @tap="text_event">{{markers_active_data.main_order_id}}</text>
-                    </view>
-                    <view>
-                        <text>单号：</text>
-                        <text class="cp" data-event="copy" :data-value="markers_active_data.main_order_no" @tap="text_event">{{markers_active_data.main_order_no}}</text>
-                    </view>
-                    <view class="single-text">
-                        <text>地址：</text>
-                        <text class="cp" data-event="copy" :data-value="markers_active_data.address_data.address_info" @tap="text_event">{{ markers_active_data.address_data.address_info }}</text>
-                    </view>
-                    <view v-if="(markers_active_data.address_data.lng || 0) != 0 && (markers_active_data.address_data.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" @tap.stop="address_map_event">
-                        <uni-icons type="paperplane-filled" size="44rpx" color="#666"></uni-icons>
-                    </view>
+                <view v-if="markers_active_data.length > 0" class="map-markers-active-data pa border-radius-main padding-main bs-bb">
+                    <block v-for="(item,index) in markers_active_data" :key="index">
+                        <view :class="'pr '+(index > 0 ? 'br-t padding-top-sm margin-top-sm' : '')">
+                            <view>
+                                <text>单ID：</text>
+                                <text class="cp" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{item.main_order_id}}</text>
+                            </view>
+                            <view>
+                                <text>单号：</text>
+                                <text class="cp" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{item.main_order_no}}</text>
+                            </view>
+                            <view class="single-text">
+                                <text>地址：</text>
+                                <text class="cp" data-event="copy" :data-value="item.address_data.address_info" @tap="text_event">{{ item.address_data.address_info }}</text>
+                            </view>
+                            <view v-if="(item.address_data.lng || 0) != 0 && (item.address_data.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" :data-index="index" @tap.stop="address_map_event">
+                                <uni-icons type="paperplane-filled" size="44rpx" color="#666"></uni-icons>
+                            </view>
+                        </view>
+                    </block>
                 </view>
             </block>
             <block v-else>
@@ -182,7 +186,7 @@
                 show_type: 0,
                 scale: 10,
                 markers: [],
-                markers_active_data: null
+                markers_active_data: []
             };
         },
 
@@ -431,11 +435,11 @@
 
             // 地图查看
             address_map_event(e) {
+                var index = e.currentTarget.dataset.index;
                 var type = e.currentTarget.dataset.type || null;
                 if(type == 'map') {
-                    this.address_map_handle(this.markers_active_data.address_data);
+                    this.address_map_handle(this.markers_active_data[index]['address_data']);
                 } else {
-                    var index = e.currentTarget.dataset.index;
                     var temp_data = this.data_list;
                     if ((temp_data[index] || null) == null || (temp_data[index]["address_data"] || null) == null) {
                         app.globalData.showToast("地址有误");
@@ -589,12 +593,21 @@
                         temp_markers[i]['iconPath'] = plugins_static_url+'order.png';
                     }
                 }
-                // 订单数据
-                var markers_active_data = null;
+                // 订单数据、先匹配实际点击的订单
+                var temp = null;
                 var temp_data_list = this.data_list;
                 for(var i in temp_data_list) {
                     if(i == index) {
-                        markers_active_data = temp_data_list[i];
+                        temp = temp_data_list[i];
+                    }
+                }
+                // 再匹配相同坐标的订单
+                var markers_active_data = [];
+                if(temp != null) {
+                    for(var i in temp_data_list) {
+                        if((temp_data_list[i]['address_data'] || null) != null && (temp_data_list[i]['address_data']['lng'] || 0) != 0 && (temp_data_list[i]['address_data']['lat'] || 0) != 0 && temp.address_data.lng == temp_data_list[i]['address_data']['lng'] && temp.address_data.lat == temp_data_list[i]['address_data']['lat']) {
+                            markers_active_data.push(temp_data_list[i]);
+                        }
                     }
                 }
                 this.setData({
