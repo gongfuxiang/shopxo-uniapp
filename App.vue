@@ -1851,31 +1851,19 @@
                 // 菜单
                 uni.setTabBarItem({
                     index: 0,
-                    pagePath: 'pages/index/index',
-                    iconPath: 'static/images/common/tabbar/home.png',
                     selectedIconPath: 'static/images/'+theme+'/tabbar/home.png',
-                    text: '首页'
                 });
                 uni.setTabBarItem({
                     index: 1,
-                    pagePath: 'pages/goods-category/goods-category',
-                    iconPath: 'static/images/common/tabbar/category.png',
                     selectedIconPath: 'static/images/'+theme+'/tabbar/category.png',
-                    text: '分类'
                 });
                 uni.setTabBarItem({
                     index: 2,
-                    pagePath: 'pages/cart/cart',
-                    iconPath: 'static/images/common/tabbar/cart.png',
                     selectedIconPath: 'static/images/'+theme+'/tabbar/cart.png',
-                    text: '购物车'
                 });
                 uni.setTabBarItem({
                     index: 3,
-                    pagePath: 'pages/user/user',
-                    iconPath: 'static/images/common/tabbar/user.png',
                     selectedIconPath: 'static/images/'+theme+'/tabbar/user.png',
-                    text: '我的'
                 });
             },
 
