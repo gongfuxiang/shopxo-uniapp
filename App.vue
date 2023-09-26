@@ -1775,36 +1775,7 @@
             // 引入主题
             require_theme() {
                 let theme = this.get_theme_value();
-                // import `@/common/css/theme/${theme}.css`;  //记住不能import哦
-                switch (theme) {
-                    case 'yellow':
-                        require(`@/common/css/theme/yellow.css`);
-                        break;
-                    case 'red':
-                        require(`@/common/css/theme/red.css`);
-                        break;
-                    case 'black':
-                        require(`@/common/css/theme/black.css`);
-                        break;
-                    case 'green':
-                        require(`@/common/css/theme/green.css`);
-                        break;
-                    case 'orange':
-                        require(`@/common/css/theme/orange.css`);
-                        break;
-                    case 'blue':
-                        require(`@/common/css/theme/blue.css`);
-                        break;
-                    case 'brown':
-                        require(`@/common/css/theme/brown.css`);
-                        break;
-                    case 'purple':
-                        require(`@/common/css/theme/purple.css`);
-                        break;
-                    default:
-                        require(`@/common/css/theme/red.css`);
-                        break;
-                }
+                require(`@/common/css/theme/${theme}.css`);
             },
 
             // 获取主题色值

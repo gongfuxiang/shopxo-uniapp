@@ -99,60 +99,18 @@
             <button class="bottom-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
 
-        <!-- 支付二维码展示 -->
-        <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
-            <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
-                <block v-if="(popup_view_pay_data || null) == null || (popup_view_pay_data.qrcode_url || null) == null || (popup_view_pay_data.name || null) == null || (popup_view_pay_data.check_url || null) == null || (popup_view_pay_data.order_no || null) == null">
-                    <text class="cr-grey">无支付信息</text>
-                </block>
-                <block v-else>
-                    <view class="fw-b text-size cr-base margin-bottom-sm">{{ popup_view_pay_data.name }}</view>
-                    <image :src="popup_view_pay_data.qrcode_url" mode="aspectFit" class="dis-block auto max-w"></image>
-                    <view v-if="(popup_view_pay_data.msg || null) != null" class="cr-yellow margin-top-sm">{{ popup_view_pay_data.msg }}</view>
-                    <!-- #ifdef H5 -->
-                    <view v-if="popup_view_pay_data.pay_url != null" class="margin-top-xl">
-                        <a :href="popup_view_pay_data.pay_url" target="_blank" class="dis-inline-block cr-green">尝试点击去支付</a>
-                    </view>
-                    <!-- #endif -->
-                </block>
-            </view>
-        </component-popup>
-
-        <!-- 支付html展示 -->
-        <component-popup :propShow="popup_view_pay_html_is_show" propPosition="bottom" @onclose="popup_view_pay_html_event_close">
-            <view class="popup-pay-html-content padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
-                <block v-if="(popup_view_pay_data || null) == null">
-                    <text class="cr-grey">无支付信息</text>
-                </block>
-                <block v-else>
-                    <mp-html :content="popup_view_pay_data" />
-                </block>
-            </view>
-        </component-popup>
-
-        <!-- 支付方式 popup -->
-        <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
-            <view v-if="payment_list.length > 0" class="payment-list oh bg-base padding-main">
-                <view class="padding-top-main padding-left-main">
-                    <view v-for="(item, index) in payment_list" :key="index" class="item tc fl">
-                        <view class="item-content bg-white border-radius-main margin-right-main margin-bottom-main" :data-value="item.id" :data-type="item.payment" @tap="popup_payment_event">
-                            <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
-                            <text class="va-m">{{ item.name }}</text>
-                        </view>
-                    </view>
-                </view>
-            </view>
-            <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">没有支付方式</view>
-        </component-popup>
         <component-payment
             :prop-pay-url="pay_url"
             :prop-qrcode-url="qrcode_url"
             :prop-payment-list="payment_list"
+            :prop-to-page="to_page"
+            prop-pay-data-key="ids"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-pay-price="pay_price"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
         ></component-payment>
     </view>
 </template>
@@ -178,12 +136,7 @@
                 data_is_loading: 0,
                 params: null,
                 input_keyword_value: '',
-                load_status: 0,
-                is_show_payment_popup: false,
-                payment_list: [],
-                payment_id: 0,
                 payment_type: '',
-                temp_pay_value: '',
                 nav_status_list: [
                     { name: '全部', value: '-1' },
                     { name: '待付款', value: '1' },
@@ -203,6 +156,20 @@
                 home_is_enable_order_bulk_pay: 0,
                 // 页面从其他页面跳转过来携带的参数
                 params: '',
+                // 前往页面携带的参数
+                to_page: {
+                    title: '前往订单页',
+                    page: 'user-order/user-order',
+                    msg: '支付成功',
+                },
+                pay_price: 0,
+                pay_url: '',
+                qrcode_url: '',
+                payment_list: [],
+                temp_pay_value: '',
+                temp_pay_index: 0,
+                payment_id: 0,
+                is_show_payment_popup: false,
             };
         },
 
@@ -348,8 +315,6 @@
                                         temp_data_list.push(temp_data[i]);
                                     }
                                 }
-
-                                var temp_load_status = this.load_status;
                                 this.setData({
                                     payment_list: res.data.data.payment_list || [],
                                     data_list: temp_data_list,
@@ -357,20 +322,8 @@
                                     data_page_total: res.data.data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
-                                    load_status: 1,
                                     data_is_loading: 0,
                                 });
-
-                                // 下订单支付处理
-                                if (temp_load_status == 0) {
-                                    var ck = app.globalData.data.cache_page_pay_key;
-                                    var pay_data = uni.getStorageSync(ck) || null;
-                                    if (pay_data != null) {
-                                        uni.removeStorageSync(ck);
-                                        this.setData({ payment_id: parseInt(pay_data.payment_id || 0) });
-                                        this.pay_handle(pay_data.order_ids);
-                                    }
-                                }
 
                                 // 是否还有数据
                                 this.setData({
@@ -395,14 +348,12 @@
                                     data_list_loding_status: 0,
                                     data_bottom_line_status: false,
                                     data_list: [],
-                                    load_status: 1,
                                     data_is_loading: 0,
                                 });
                             }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                load_status: 1,
                                 data_is_loading: 0,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
@@ -415,7 +366,6 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            load_status: 1,
                             data_is_loading: 0,
                         });
                         app.globalData.showToast('服务器请求出错');
@@ -458,43 +408,6 @@
 
             // 支付方法
             pay_handle(order_ids) {
-                // #ifdef H5
-                // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                if (!app.globalData.is_user_weixin_web_openid(order_ids, this.payment_id)) {
-                    return false;
-                }
-                // #endif
-
-                // 支付方式
-                var payment = null;
-                for (var i in this.payment_list) {
-                    if (this.payment_list[i]['id'] == this.payment_id) {
-                        payment = this.payment_list[i];
-                    }
-                }
-
-                // 请求数据
-                var post_data = {
-                    ids: order_ids,
-                    payment_id: this.payment_id,
-                };
-
-                // h5自定义重定向地址
-                // #ifdef H5
-                if (payment != null) {
-                    post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false) + (this.nav_status_index > 0 ? '?status=' + this.nav_status_index : '')));
-                    // paypal支付方式使用respond_url返回地址、移除重定向地址
-                    if (payment.payment == 'PayPal') {
-                        post_data['respond_url'] = post_data['redirect_url'];
-                        delete post_data['redirect_url'];
-                    }
-                }
-                // #endif
-
-                // 请求支付接口
-                uni.showLoading({
-                    title: '请求中...',
-                });
                 uni.request({
                     url: app.globalData.get_request_url('pay', 'order'),
                     method: 'POST',
@@ -572,214 +485,9 @@
                 });
             },
 
-            // 快手小程序
-            kuaishou_pay_handle(self, data, order_ids) {
-                uni.pay({
-                    orderInfo: data.data,
-                    serviceId: '1',
-                    success: (res) => {
-                        // 数据设置
-                        self.order_item_pay_success_handle(order_ids);
-
-                        // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?code=9000',
-                        });
-                    },
-                    fail: (res) => {
-                        app.globalData.showToast('支付失败');
-                    },
-                });
-            },
-
-            // 微信、支付宝、百度、头条、QQ
-            common_pay_handle(self, data, order_ids) {
-                uni.requestPayment({
-                    // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO || MP-KUAISHOU
-                    orderInfo: data.data,
-                    // #endif
-                    // #ifdef MP-QQ
-                    package: data.data,
-                    // #endif
-                    // #ifdef MP-WEIXIN
-                    timeStamp: data.data.timeStamp,
-                    nonceStr: data.data.nonceStr,
-                    package: data.data.package,
-                    signType: data.data.signType,
-                    paySign: data.data.paySign,
-                    // #endif
-                    // #ifdef MP-TOUTIAO
-                    service: 5,
-                    // #endif
-                    success: (res) => {
-                        // #ifdef MP-ALIPAY
-                        if (res.resultCode != 9000) {
-                            app.globalData.showToast(res.memo || '支付失败');
-                            return false;
-                        }
-                        // #endif
-                        // #ifdef MP-TOUTIAO
-                        if (res.code != 0) {
-                            app.globalData.showToast('支付失败');
-                            return false;
-                        }
-                        // #endif
-
-                        // 数据设置
-                        self.order_item_pay_success_handle(order_ids);
-
-                        // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?code=9000',
-                        });
-                    },
-                    fail: (res) => {
-                        app.globalData.showToast('支付失败');
-                    },
-                });
-            },
-
-            // QQ支付处理
-            qq_pay_handle(self, data, order_ids) {
-                // 是否微信支付
-                if (data.payment.payment == 'Weixin') {
-                    uni.requestWxPayment({
-                        url: data.data,
-                        referer: app.globalData.data.request_url,
-                        success: function (res) {
-                            app.globalData.alert({ msg: '支付成功后、请不要重复支付、如果订单状态未成功请联系客服处理', is_show_cancel: 0 });
-                            self.get_data_list();
-                        },
-                        fail: function (res) {
-                            app.globalData.showToast('支付失败');
-                        },
-                    });
-                } else {
-                    self.common_pay_handle(self, data, order_ids);
-                }
-            },
-
-            // h5支付处理
-            h5_pay_handle(self, data, order_ids) {
-                // 字符串则为跳转地址直接进入
-                if (typeof data.data == 'string') {
-                    window.location.href = data.data;
-                } else {
-                    var status = false;
-                    // 微信jsapi
-                    if (data.payment.payment == 'Weixin' && (data.data.appId || null) != null && (data.data.timeStamp || null) != null && (data.data.nonceStr || null) != null && (data.data.package || null) != null && (data.data.signType || null) != null && (data.data.paySign || null) != null) {
-                        status = true;
-                        function onBridgeReady() {
-                            WeixinJSBridge.invoke(
-                                'getBrandWCPayRequest',
-                                {
-                                    appId: data.data.appId,
-                                    timeStamp: data.data.timeStamp,
-                                    nonceStr: data.data.nonceStr,
-                                    package: data.data.package,
-                                    signType: data.data.signType,
-                                    paySign: data.data.paySign,
-                                },
-                                function (res) {
-                                    if (res.err_msg == 'get_brand_wcpay_request:ok') {
-                                        // 数据设置
-                                        self.order_item_pay_success_handle(order_ids);
-
-                                        // 跳转支付页面
-                                        uni.navigateTo({
-                                            url: '/pages/paytips/paytips?code=9000',
-                                        });
-                                    }
-                                }
-                            );
-                        }
-                        if (typeof WeixinJSBridge == 'undefined') {
-                            if (document.addEventListener) {
-                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                            } else if (document.attachEvent) {
-                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                            }
-                        } else {
-                            onBridgeReady();
-                        }
-                    }
-
-                    // 二维码展示
-                    if ((data.data.qrcode_url || null) != null && (data.data.name || null) != null && (data.data.check_url || null) != null && (data.data.order_no || null) != null) {
-                        status = true;
-                        // 显示支付窗口
-                        this.setData({
-                            popup_view_pay_data: data.data,
-                            popup_view_pay_qrcode_is_show: true,
-                        });
-                        // 定时校验支付状态
-                        var timer = setInterval(function () {
-                            uni.request({
-                                url: app.globalData.get_request_url('paycheck', 'order'),
-                                method: 'POST',
-                                data: {
-                                    order_no: self.popup_view_pay_data.order_no,
-                                },
-                                dataType: 'json',
-                                success: (res) => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        // 清除定时和支付数据
-                                        clearInterval(self.popup_view_pay_timer);
-                                        self.setData({
-                                            popup_view_pay_data: null,
-                                            popup_view_pay_qrcode_is_show: false,
-                                        });
-
-                                        // 数据设置
-                                        self.order_item_pay_success_handle(order_ids);
-
-                                        // 跳转支付页面
-                                        uni.navigateTo({
-                                            url: '/pages/paytips/paytips?code=9000',
-                                        });
-                                    } else {
-                                        // -300支付中、其它状态则提示错误
-                                        if (res.data.code != -300) {
-                                            clearInterval(self.popup_view_pay_timer);
-                                            app.globalData.showToast(res.data.msg);
-                                        }
-                                    }
-                                },
-                                fail: () => {
-                                    clearInterval(self.popup_view_pay_timer);
-                                    app.globalData.showToast('服务器请求出错');
-                                },
-                            });
-                        }, 3000);
-                        self.setData({
-                            popup_view_pay_timer: timer,
-                        });
-                    }
-
-                    // 返回html表单
-                    if ((data.data.html || null) != null) {
-                        status = true;
-                        var div = document.createElement('paydivform');
-                        div.innerHTML = data.data.html;
-                        document.body.appendChild(div);
-                        var fm = document.forms;
-                        var fm_len = fm.length;
-                        if (fm_len > 0) {
-                            fm[fm_len - 1].submit();
-                        }
-                    }
-
-                    // 未匹配到的支付处理方式
-                    if (!status) {
-                        app.globalData.showToast(data.payment.name + '支付方式还未适配');
-                    }
-                }
-            },
-
             // 支付成功数据设置
-            order_item_pay_success_handle(order_ids) {
+            // 订单完成回调
+            order_item_pay_success_handle(data, index, order_ids) {
                 var order_ids_arr = order_ids.split(',');
                 var temp_data_list = this.data_list;
 

@@ -10,7 +10,6 @@
                 <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">返回</button>
             </view>
             <view v-if="(params.page || null) != null && (params.title || null) != null" class="margin-top-lg">
-                <!-- <navigator class="dis-inline-block" :url="'/pages/' + params.page + '/' + params.page" open-type="redirect"> -->
                 <navigator class="dis-inline-block" :url="'/pages/' + params.page" open-type="redirect">
                     <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini">{{ params.title }}</button>
                 </navigator>
