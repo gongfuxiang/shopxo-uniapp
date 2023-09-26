@@ -98,8 +98,8 @@
                     :enable-zoom="true"
                     :enable-scroll="true"
                     :show-location="true"
-                    :latitude="latitude || markers[0]['latitude']"
-                    :longitude="longitude || markers[0]['longitude']"
+                    :latitude="markers[0]['latitude'] || latitude"
+                    :longitude="markers[0]['longitude'] || longitude"
                     :scale="scale"
                     :markers="markers"
                     @markertap="marker_tap_event"
@@ -599,6 +599,7 @@
                 for(var i in temp_data_list) {
                     if(i == index) {
                         temp = temp_data_list[i];
+                        break;
                     }
                 }
                 // 再匹配相同坐标的订单
