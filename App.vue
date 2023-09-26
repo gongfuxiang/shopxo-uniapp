@@ -92,7 +92,7 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                default_theme: 'purple',
+                default_theme: 'brown',
             },
             /**
              * 启动参数处理
@@ -1749,6 +1749,37 @@
                     }, 100);
                 }
             },
+            
+            // 获取主题色值
+            // is_light 是否获取浅主色（false, true）
+            get_theme_color(is_light = false) {
+                let color_obj = {
+                    // 主色
+                    yellow: '#f6c133', // 黄色
+                    red: '#ff0036', // 红色
+                    black: '#333333', // 黑色
+                    blue: '#1677ff', // 蓝色
+                    green: '#20a53a', // 绿色
+                    orange: '#fe6f04', // 橙色
+                    brown: '#8B4513', // 棕色
+                    purple: '#623cec', // 紫色
+            
+                    // 浅主色
+                    yellow_light: '#ffebd2', // 黄色
+                    red_light: '#ffdbe2', // 红色
+                    black_light: '#dcdcdc', // 黑色
+                    blue_light: '#d1e4ff', // 蓝色
+                    green_light: '#cce8d2', // 绿色
+                    orange_light: '#fde4d1', // 橙色
+                    brown_light: '#eadcd2', // 棕色
+                    purple_light: '#d6cbfb', // 紫色
+                };
+                var theme = this.get_theme_value();
+                if (is_light) {
+                    theme += '_light';
+                }
+                return color_obj[theme];
+            },
 
             // 获取主题
             get_theme_value() {
@@ -1807,35 +1838,45 @@
                 }
             },
 
-            // 获取主题色值
-            // is_light 是否获取浅主色（false, true）
-            get_theme_color(is_light = false) {
-                let color_obj = {
-                    // 主色
-                    yellow: '#f6c133', // 黄色
-                    red: '#ff0036', // 红色
-                    black: '#333333', // 黑色
-                    blue: '#1677ff', // 蓝色
-                    green: '#20a53a', // 绿色
-                    orange: '#fe6f04', // 橙色
-                    brown: '#8B4513', // 棕色
-                    purple: '#623cec', // 紫色
-
-                    // 浅主色
-                    yellow_light: '#ffebd2', // 黄色
-                    red_light: '#ffdbe2', // 红色
-                    black_light: '#dcdcdc', // 黑色
-                    blue_light: '#d1e4ff', // 蓝色
-                    green_light: '#cce8d2', // 绿色
-                    orange_light: '#fde4d1', // 橙色
-                    brown_light: '#eadcd2', // 棕色
-                    purple_light: '#d6cbfb', // 紫色
-                };
+            // 底部菜单设置
+            set_tabbar() {
+                // 当前主题
                 var theme = this.get_theme_value();
-                if (is_light) {
-                    theme += '_light';
-                }
-                return color_obj[theme];
+
+                // 整体样式
+                uni.setTabBarStyle({
+                  selectedColor: this.get_theme_color(),
+                });
+
+                // 菜单
+                uni.setTabBarItem({
+                    index: 0,
+                    pagePath: 'pages/index/index',
+                    iconPath: 'static/images/common/tabbar/home.png',
+                    selectedIconPath: 'static/images/'+theme+'/tabbar/home.png',
+                    text: '首页'
+                });
+                uni.setTabBarItem({
+                    index: 1,
+                    pagePath: 'pages/goods-category/goods-category',
+                    iconPath: 'static/images/common/tabbar/category.png',
+                    selectedIconPath: 'static/images/'+theme+'/tabbar/category.png',
+                    text: '分类'
+                });
+                uni.setTabBarItem({
+                    index: 2,
+                    pagePath: 'pages/cart/cart',
+                    iconPath: 'static/images/common/tabbar/cart.png',
+                    selectedIconPath: 'static/images/'+theme+'/tabbar/cart.png',
+                    text: '购物车'
+                });
+                uni.setTabBarItem({
+                    index: 3,
+                    pagePath: 'pages/user/user',
+                    iconPath: 'static/images/common/tabbar/user.png',
+                    selectedIconPath: 'static/images/'+theme+'/tabbar/user.png',
+                    text: '我的'
+                });
             },
 
             // 数组分组
@@ -1889,7 +1930,7 @@
                 } else {
                     return uri + separator + key + '=' + value;
                 }
-            },
+            }
         },
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {},
@@ -1909,6 +1950,8 @@
             // #endif
             // 引入主题
             this.globalData.require_theme();
+            // 设置底部菜单
+            this.globalData.set_tabbar();
         },
         // 从前台进入后台
         onHide() {
