@@ -92,7 +92,7 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                default_theme: 'yellow',
+                default_theme: 'purple',
             },
             /**
              * 启动参数处理
@@ -1620,10 +1620,12 @@
                 }
                 return false;
             },
+
             // 价格符号
             currency_symbol() {
                 return this.get_config('currency_symbol') || this.data.currency_symbol;
             },
+
             // 位置权限校验
             get_location_check(type, object, method) {
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-TOUTIAO || MP-QQ
@@ -1709,6 +1711,7 @@
                     });
                 }
             },
+
             // 位置监听改变
             start_location_update_change(object, method) {
                 uni.onLocationChange((res) => {
@@ -1722,6 +1725,7 @@
                     }
                 });
             },
+
             // 微信隐私弹窗提示
             weixin_privacy_setting() {
                 if (this.data.is_weixin_privacy_setting == 1) {
@@ -1745,6 +1749,7 @@
                     }, 100);
                 }
             },
+
             // 获取主题
             get_theme_value() {
                 // 主题类型        主题颜色
@@ -1756,18 +1761,29 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                var default_theme = 'purple';
-                return uni.getStorageSync('theme') || default_theme;
+                return uni.getStorageSync('theme') || this.data.default_theme;
             },
-            // 设置主题
-            set_theme_value() {
+
+            // 切换主题
+            set_theme_value(value) {
+                // 设置主题缓存
+                uni.setStorageSync('theme', value);
+                // 重新引入主题
+                this.require_theme();
+            },
+
+            // 引入主题
+            require_theme() {
                 let theme = this.get_theme_value();
                 // import `@/common/theme/theme-${mode}.scss`;  //记住不能import哦
                 require(`./common/css/theme/${theme}.css`);
             },
+
             // 获取主题色值
-            get_theme_color(obj) {
+            // is_light 是否获取浅主色（false, true）
+            get_theme_color(is_light = false) {
                 let color_obj = {
+                    // 主色
                     yellow: '#f6c133', // 黄色
                     red: '#ff0036', // 红色
                     black: '#333333', // 黑色
@@ -1777,6 +1793,7 @@
                     brown: '#8B4513', // 棕色
                     purple: '#623cec', // 紫色
 
+                    // 浅主色
                     yellow_light: '#ffebd2', // 黄色
                     red_light: '#ffdbe2', // 红色
                     black_light: '#dcdcdc', // 黑色
@@ -1786,9 +1803,13 @@
                     brown_light: '#eadcd2', // 棕色
                     purple_light: '#d6cbfb', // 紫色
                 };
-                let theme = obj ? this.get_theme_value() + '_' + obj : this.get_theme_value();
+                var theme = this.get_theme_value();
+                if(is_light) {
+                    theme += '_light';
+                }
                 return color_obj[theme];
             },
+
             // 数组分组
             group_arry(arry, sub_group_length) {
                 let index = 0;
@@ -1802,6 +1823,7 @@
                 }
                 return new_arry;
             },
+
             // 颜色转rgba hexValue： 色值  alpha：透明度
             hex_rgba(hexValue, alpha) {
                 const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
@@ -1815,6 +1837,7 @@
                     b = parseInt(rgb[3], 16);
                 return `rgba(${r},${g},${b},${alpha})`;
             },
+
             // 判断数组内是否含有相同字段
             some_arry(arr, val, params) {
                 return arr.some(function (arrVal) {
@@ -1825,6 +1848,7 @@
                     }
                 });
             },
+
             // 更新url参数
             updateQueryStringParameter(uri, key, value) {
                 if (!value) {
@@ -1855,8 +1879,8 @@
             // 协议验证处理
             this.globalData.weixin_privacy_setting();
             // #endif
-            // 主题设置
-            this.globalData.set_theme_value();
+            // 引入主题
+            this.globalData.require_theme();
         },
         // 从前台进入后台
         onHide() {

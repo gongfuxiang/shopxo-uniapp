@@ -950,7 +950,7 @@
             "pages": [{
                     "path": "order/order",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": "配送订单"
                     }
                 },
