@@ -1,17 +1,30 @@
 <template>
     <view>
         <view class="form-container padding-main">
-            <view class="form-gorup padding-vertical-main">
+            <view class="form-gorup padding-vertical-main border-radius-main">
                 <input type="digit" name="money" :value="recharge_money_value || ''" placeholder-class="cr-grey" class="cr-base text-size-xxl" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6" />
             </view>
             <view class="form-gorup form-gorup-submit">
                 <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">提交</button>
             </view>
         </view>
+        <!-- 支付弹窗 -->
+        <component-payment
+            :prop-pay-url="pay_url"
+            :prop-qrcode-url="qrcode_url"
+            prop-pay-data-key="recharge_id"
+            :prop-payment-list="payment_list"
+            :prop-temp-pay-value="temp_pay_value"
+            :prop-pay-price="pay_price"
+            :propIsRedirectTo="true"
+            :prop-is-show-payment="is_show_payment_popup"
+            @close-payment-poupon="payment_popup_event_close"
+        ></component-payment>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentPayment from '@/components/payment/payment';
 
     export default {
         data() {
@@ -22,10 +35,23 @@
                 data_list_loding_msg: '',
                 recharge_money_value: '',
                 form_submit_disabled_status: false,
+
+                // 支付弹窗参数
+                pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
+                payment_list: [],
+                temp_pay_value: '',
+                is_show_payment_popup: false,
+                pay_price: 0,
+                // 支付失败跳转的页面
+                to_fail_page: '/pages/plugins/wallet/user/user',
             };
         },
 
-        components: {},
+        components: {
+            componentPayment,
+        },
+
         props: {},
 
         onLoad(params) {
@@ -99,9 +125,12 @@
                         });
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, { order_ids: res.data.data.recharge_id });
-                            uni.redirectTo({
-                                url: '/pages/plugins/wallet/user/user?type=1',
+                            uni.setStorageSync(app.globalData.data.cache_page_pay_key, { type: 1 });
+                            this.setData({
+                                is_show_payment_popup: true,
+                                pay_price: res.data.data.money,
+                                temp_pay_value: res.data.data.recharge_id,
+                                payment_list: res.data.data.payment_list,
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
@@ -118,6 +147,11 @@
                         uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
                     },
+                });
+            },
+            order_item_pay_success_handle() {
+                this.setData({
+                    is_show_payment_popup: false,
                 });
             },
         },

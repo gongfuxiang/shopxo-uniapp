@@ -65,7 +65,7 @@
                                 <component-wallet-log :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-wallet-log>
                             </view>
                             <view v-if="current === 1">
-                                <component-user-recharge :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-recharge>
+                                <component-user-recharge :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
                             </view>
                             <view v-if="current === 2">
                                 <component-user-cash :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-cash>
@@ -138,6 +138,17 @@
                     params: params,
                     current: Number(params.type),
                 });
+            }
+
+            var ck = app.globalData.data.cache_page_pay_key;
+            var pay_data = uni.getStorageSync(ck) || null;
+            if (pay_data) {
+                this.setData({
+                    current: pay_data.type || 0,
+                });
+                var newurl = app.globalData.updateQueryStringParameter(window.location.href.split('?')[0], 'type', pay_data.type + '');
+                //向当前url添加参数，没有历史记录
+                window.history.replaceState({ path: newurl }, '', newurl);
             }
             this.init();
         },
@@ -251,6 +262,10 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+            // 支付成功回调
+            pay_success_event() {
+                this.get_data();
             },
         },
     };

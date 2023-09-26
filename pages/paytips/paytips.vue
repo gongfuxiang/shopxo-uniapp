@@ -3,7 +3,7 @@
         <view class="content tc">
             <image class="pay-icon dis-block" v-if="params.code == '9000'" mode="widthFix" :src="default_round_success_icon"></image>
             <image class="pay-icon dis-block" v-else mode="widthFix" :src="default_round_error_icon"></image>
-            <view class="text-size-lg cr-base">{{ params.msg }}</view>
+            <view class="text-size-lg cr-base">{{ params.msg || '支付成功' }}</view>
         </view>
         <view class="btn-box tc">
             <view>
@@ -39,7 +39,7 @@
          */
         onLoad(options) {
             if (options) {
-                let url_params = JSON.parse(decodeURIComponent(base64.decode(options.params)));
+                let url_params = JSON.parse(base64.decode(decodeURIComponent(options.params)));
                 var msg = null;
                 switch (url_params.code) {
                     // 支付成功

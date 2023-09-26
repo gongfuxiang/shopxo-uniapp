@@ -88,7 +88,6 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
-                load_status: 0,
                 payment_id: 0,
                 nav_status_list: [
                     { name: '全部', value: '-1' },
@@ -217,28 +216,6 @@
                             if (res.data.data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = res.data.data.data;
-                                    // 下订单支付处理
-                                    if (this.load_status == 0) {
-                                        var ck = app.globalData.data.cache_page_pay_key;
-                                        var pay_data = uni.getStorageSync(ck) || null;
-                                        if (pay_data != null) {
-                                            uni.removeStorageSync(ck);
-                                            this.setData({ payment_id: parseInt(pay_data.payment_id || 0) });
-                                            for (var i in temp_data_list) {
-                                                if (pay_data.order_ids == temp_data_list[i]['id']) {
-                                                    if (this.payment_id == 0) {
-                                                        this.setData({
-                                                            is_show_payment_popup: true,
-                                                            temp_pay_value: temp_data_list[i]['id'],
-                                                            pay_price: temp_data_list[i]['money'],
-                                                            temp_pay_index: i,
-                                                        });
-                                                    }
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
                                 } else {
                                     var temp_data_list = this.data_list || [];
                                     var temp_data = res.data.data.data;
@@ -254,7 +231,6 @@
                                     data_page_total: res.data.data.page_total,
                                     data_list_loding_status: 3,
                                     data_page: this.data_page + 1,
-                                    load_status: 1,
                                     data_is_loading: 0,
                                 });
 
@@ -265,7 +241,6 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    load_status: 1,
                                     data_list: [],
                                     data_bottom_line_status: false,
                                     data_is_loading: 0,
@@ -274,7 +249,6 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                load_status: 1,
                                 data_is_loading: 0,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
@@ -287,7 +261,6 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            load_status: 1,
                             data_is_loading: 0,
                         });
                         app.globalData.showToast('服务器请求出错');
@@ -321,6 +294,7 @@
                 this.setData({
                     data_list: temp_data_list,
                 });
+                this.$emit('pay-success');
             },
 
             // 删除

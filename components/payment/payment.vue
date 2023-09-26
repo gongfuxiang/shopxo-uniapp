@@ -123,6 +123,16 @@
                     return {};
                 },
             },
+            // 支付失败跳转页面
+            propTofailPage: {
+                type: String,
+                default: '',
+            },
+            //
+            propIsRedirectTo: {
+                type: Boolean,
+                default: false,
+            },
         },
         components: {
             componentPopup,
@@ -242,8 +252,11 @@
                                 // 是否直接支付成功
                                 if ((res.data.data.is_success || 0) == 1) {
                                     // 数据设置
-                                    this.order_item_pay_success_handle(data, order_id);
+                                    this.order_item_pay_success_handle(data, order_id, false);
                                     app.globalData.showToast('支付成功', 'success');
+                                    setTimeout(() => {
+                                        this.to_success_page_event();
+                                    }, 2000);
                                 } else {
                                     // 支付方式类型
                                     let payment_type = Number(res.data.data.is_payment_type || 0);
@@ -266,6 +279,7 @@
                                             break;
                                         // 线下支付
                                         case 1:
+                                            // 现金支付
                                             uni.showModal({
                                                 content: res.data.msg,
                                                 success(res) {
@@ -281,7 +295,6 @@
                                         // 钱包支付
                                         case 2:
                                             this.order_item_pay_success_handle(data, order_id);
-                                            app.globalData.showToast('支付成功', 'success');
                                             break;
                                         // 默认
                                         default:
@@ -317,14 +330,6 @@
                     success: (res) => {
                         // 数据设置
                         self.order_item_pay_success_handle(data, order_id);
-                        let url_data = {
-                            code: '9000',
-                        };
-                        url_data = Object.assign({}, url_data, this.propToPage);
-                        // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                        });
                     },
                     fail: (res) => {
                         app.globalData.showToast('支付失败');
@@ -366,14 +371,6 @@
                         // #endif
                         // 数据设置
                         self.order_item_pay_success_handle(data, order_id);
-                        let url_data = {
-                            code: '9000',
-                        };
-                        url_data = Object.assign({}, url_data, this.propToPage);
-                        // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?params=' + base64.encode(JSON.stringify(url_data)),
-                        });
                     },
                     fail: (res) => {
                         app.globalData.showToast('支付失败');
@@ -430,14 +427,6 @@
                                     if (res.err_msg == 'get_brand_wcpay_request:ok') {
                                         // 数据设置
                                         self.order_item_pay_success_handle(data, order_id);
-                                        let url_data = {
-                                            code: '9000',
-                                        };
-                                        url_data = Object.assign({}, url_data, this.propToPage);
-                                        // 跳转支付页面
-                                        uni.navigateTo({
-                                            url: '/pages/paytips/paytips?params=' + base64.encode(JSON.stringify(url_data)),
-                                        });
                                     } else {
                                         self.order_item_pay_fail_handle(data, order_id);
                                     }
@@ -484,14 +473,6 @@
                                             });
                                             // 数据设置
                                             self.order_item_pay_success_handle(data, order_id);
-                                            let url_data = {
-                                                code: '9000',
-                                            };
-                                            url_data = Object.assign({}, url_data, this.propToPage);
-                                            // 跳转支付页面
-                                            uni.navigateTo({
-                                                url: '/pages/paytips/paytips?params=' + base64.encode(JSON.stringify(url_data)),
-                                            });
                                         } else {
                                             // -300支付中、其它状态则提示错误
                                             if (res.data.code != -300) {
@@ -530,21 +511,54 @@
                     }
                 }
             },
-            // 支付成功数据设置
-            order_item_pay_success_handle(data, order_id) {
+            // 支付成功数据设置 bool:成功是否需要跳转页面
+            order_item_pay_success_handle(data, order_id, is_to_page = true) {
                 let newData = {
                     data: data,
                     order_id: order_id,
+                    is_to_page: is_to_page,
                 };
                 this.$emit('pay-success', newData, this.propTempPayIndex, this.propPaymentId);
+                if (is_to_page) {
+                    this.to_success_page_event();
+                }
             },
-            // 支付成功数据设置
+            // 支付失败数据设置 bool:失败是否需要跳转页面
             order_item_pay_fail_handle(data, order_id) {
                 let newData = {
                     data: data,
                     order_id: order_id,
+                    is_to_page: is_to_page,
+                    temp_pay_index: this.propTempPayIndex,
+                    payment_id: this.propPaymentId,
                 };
-                this.$emit('pay-fail', newData, this.propTempPayIndex, this.propPaymentId);
+                this.$emit('pay-fail', newData);
+                this.to_fail_page_event();
+            },
+            to_success_page_event() {
+                let url_data = {
+                    code: '9000',
+                };
+                url_data = Object.assign({}, url_data, this.propToPage);
+                if (this.propIsRedirectTo) {
+                    // 跳转支付页面
+                    uni.redirectTo({
+                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                    });
+                } else {
+                    // 跳转支付页面
+                    uni.navigateTo({
+                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                    });
+                }
+            },
+            to_fail_page_event() {
+                if (this.propTofailPage) {
+                    // 跳转支付页面
+                    uni.navigateTo({
+                        url: this.propTofailPage + '?data=' + data.order_id,
+                    });
+                }
             },
             // 页面卸载
             onUnload(e) {

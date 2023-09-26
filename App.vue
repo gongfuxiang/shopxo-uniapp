@@ -67,11 +67,11 @@
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
                 // 请求地址
-                // request_url: "https://d1.shopxo.vip/",
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
+                // request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                // static_url: "https://d1.shopxo.vip/",
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://d1.shopxo.vip/',
+                // static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1749,7 +1749,7 @@
                     }, 100);
                 }
             },
-            
+
             // 获取主题色值
             // is_light 是否获取浅主色（false, true）
             get_theme_color(is_light = false) {
@@ -1763,7 +1763,7 @@
                     orange: '#fe6f04', // 橙色
                     brown: '#8B4513', // 棕色
                     purple: '#623cec', // 紫色
-            
+
                     // 浅主色
                     yellow_light: '#ffebd2', // 黄色
                     red_light: '#ffdbe2', // 红色
@@ -1816,25 +1816,25 @@
 
                 // 整体样式
                 uni.setTabBarStyle({
-                  selectedColor: this.get_theme_color(),
+                    selectedColor: this.get_theme_color(),
                 });
 
                 // 菜单
                 uni.setTabBarItem({
                     index: 0,
-                    selectedIconPath: 'static/images/'+theme+'/tabbar/home.png',
+                    selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
                 });
                 uni.setTabBarItem({
                     index: 1,
-                    selectedIconPath: 'static/images/'+theme+'/tabbar/category.png',
+                    selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
                 });
                 uni.setTabBarItem({
                     index: 2,
-                    selectedIconPath: 'static/images/'+theme+'/tabbar/cart.png',
+                    selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
                 });
                 uni.setTabBarItem({
                     index: 3,
-                    selectedIconPath: 'static/images/'+theme+'/tabbar/user.png',
+                    selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
                 });
             },
 
@@ -1889,7 +1889,7 @@
                 } else {
                     return uri + separator + key + '=' + value;
                 }
-            }
+            },
         },
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {},

@@ -70,6 +70,8 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-pay-price="pay_price"
+            :prop-to-page="to_page"
+            :prop-to-fail-page="to_fail_page"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
         ></component-payment>
@@ -100,6 +102,13 @@
                 temp_pay_index: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
+                // 前往页面携带的参数
+                to_page: {
+                    title: '进入我的会员列表',
+                    page: 'pages/plugins/membershiplevelvip/user/user',
+                },
+                // 支付失败跳转的页面
+                to_fail_page: 'pages/plugins/membershiplevelvip/order/order',
             };
         },
         components: {
@@ -255,6 +264,11 @@
             // 打开url
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            payment_popup_event_close() {
+                this.setData({
+                    is_show_payment_popup: false,
+                });
             },
         },
     };

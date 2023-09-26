@@ -258,7 +258,7 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page="to_page"></component-payment>
+            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page="to_page" :prop-to-fail-page="to_fail_page"></component-payment>
         </block>
     </view>
 </template>
@@ -322,10 +322,11 @@
                 qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                 // 前往页面携带的参数
                 to_page: {
-                    title: '前往订单页',
+                    title: '进入我的订单',
                     page: 'user-order/user-order',
-                    msg: '支付成功',
                 },
+                // 支付失败跳转的页面
+                to_fail_page: 'page/user-order/user-order',
             };
         },
 

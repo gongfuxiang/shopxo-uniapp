@@ -103,7 +103,6 @@
             :prop-pay-url="pay_url"
             :prop-qrcode-url="qrcode_url"
             :prop-payment-list="payment_list"
-            :prop-to-page="to_page"
             prop-pay-data-key="ids"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
@@ -157,11 +156,6 @@
                 // 页面从其他页面跳转过来携带的参数
                 params: '',
                 // 前往页面携带的参数
-                to_page: {
-                    title: '前往订单页',
-                    page: 'user-order/user-order',
-                    msg: '支付成功',
-                },
                 pay_price: 0,
                 pay_url: app.globalData.get_request_url('pay', 'order'),
                 qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
@@ -399,7 +393,7 @@
             // 支付成功数据设置
             // 订单完成回调
             order_item_pay_success_handle(data, index, order_ids) {
-                var order_ids_arr = order_ids.split(',');
+                var order_ids_arr = data.order_id.split(',');
                 var temp_data_list = this.data_list;
 
                 // 数据设置
@@ -676,6 +670,6 @@
         },
     };
 </script>
-<style>
+<style scoped>
     @import './user-order.css';
 </style>
