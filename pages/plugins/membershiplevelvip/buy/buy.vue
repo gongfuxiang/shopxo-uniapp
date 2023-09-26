@@ -5,9 +5,8 @@
                 <!-- 导航 -->
                 <scroll-view class="nav scroll-view-horizontal bg-white oh tc" :class="data_list.length < 4 ? 'average-' + data_list.length : ''" scroll-x="true">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <view :class="'item dis-inline-block padding-left-xxl padding-right-xxl cr-black ' + (selected_tabs_index === index ? 'cr-main nav-active-line' : '')" @tap="tabs_event"
-                            :data-index="index">
-                            {{item.name}}
+                        <view :class="'item dis-inline-block padding-left-xxl padding-right-xxl cr-black ' + (selected_tabs_index === index ? 'cr-main nav-active-line' : '')" @tap="tabs_event" :data-index="index">
+                            {{ item.name }}
                         </view>
                     </block>
                 </scroll-view>
@@ -22,26 +21,23 @@
                             <block v-if="(item.pay_period_rules || null) != null">
                                 <view class="data-list flex-row flex-warp align-c">
                                     <block v-for="(rules, ri) in item.pay_period_rules" :key="ri">
-                                        <view class="list padding-sm oh" @tap="content_event" :data-index="ri"
-                                            :data-value="currency_symbol + rules.price + '/' + (((rules.number || null) == null) ? '终身' : rules.value  + rules.unit)">
+                                        <view class="list padding-sm oh" @tap="content_event" :data-index="ri" :data-value="currency_symbol + rules.price + '/' + ((rules.number || null) == null ? '终身' : rules.value + rules.unit)">
                                             <view class="item flex-col" :class="selected_content_index === ri ? 'active' : ''">
                                                 <view class="number single-text text-size-lg">
-                                                    <text class="fw-b">{{((rules.number || null) == null) ? '终身' : rules.value}}</text>
-                                                    <text v-if="(rules.unit || null) != null" class="margin-left-sm">{{rules.unit}}</text>
+                                                    <text class="fw-b">{{ (rules.number || null) == null ? '终身' : rules.value }}</text>
+                                                    <text v-if="(rules.unit || null) != null" class="margin-left-sm">{{ rules.unit }}</text>
                                                 </view>
-                                                <view v-if="(rules.desc || null ) != null" class="desc margin-top-sm">{{rules.desc}}</view>
+                                                <view v-if="(rules.desc || null) != null" class="desc margin-top-sm">{{ rules.desc }}</view>
                                                 <view class="price flex-row align-s">
-                                                    <text class="cr-red text-size-md pr top-lg margin-right-xs">{{currency_symbol}}</text>
-                                                    <text class="fw-b cr-red text-size-xl single-text">{{rules.price}}</text>
+                                                    <text class="cr-red text-size-md pr top-lg margin-right-xs">{{ currency_symbol }}</text>
+                                                    <text class="fw-b cr-red text-size-xl single-text">{{ rules.price }}</text>
                                                     <!-- <text class="cr-grey margin-left-sm">元</text> -->
                                                 </view>
                                             </view>
                                         </view>
                                     </block>
                                     <view class="bottom-fixed sub-pay bg-white padding-vertical-main">
-                                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">
-                                            立即开通{{selected_tabs_value}}
-                                        </button>
+                                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">立即开通{{ selected_tabs_value }}</button>
                                     </view>
                                 </view>
                             </block>
@@ -53,9 +49,7 @@
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view>
-                        <iconfont name="icon-pp-all" class="margin-right-sm" color="#666"></iconfont> 所有订单
-                    </view>
+                    <view> <iconfont name="icon-pp-all" class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
                     <iconfont name="icon-index-morejiantou" size="12rpx" color="#666"></iconfont>
                 </view>
             </view>
@@ -68,14 +62,23 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
-        <component-payment :prop-payment-list="payment_list" :prop-temp-pay-value="temp_pay_value" :prop-temp-pay-index="temp_pay_index" :prop-pay-price="pay_price"
-            :prop-is-show-payment="is_show_payment_popup" @close-payment-poupon="payment_popup_event_close"></component-payment>
+        <component-payment
+            :prop-pay-url="pay_url"
+            :prop-qrcode-url="qrcode_url"
+            prop-pay-data-key="recharge_id"
+            :prop-payment-list="payment_list"
+            :prop-temp-pay-value="temp_pay_value"
+            :prop-temp-pay-index="temp_pay_index"
+            :prop-pay-price="pay_price"
+            :prop-is-show-payment="is_show_payment_popup"
+            @close-payment-poupon="payment_popup_event_close"
+        ></component-payment>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentPayment from "@/components/payment/membershiplevelvip"
+    import componentNoData from '@/components/no-data/no-data';
+    import componentPayment from '@/components/payment/payment';
     export default {
         data() {
             return {
@@ -90,6 +93,8 @@
                 submit_disabled_status: false,
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 支付弹窗参数
+                pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
@@ -99,7 +104,7 @@
         },
         components: {
             componentNoData,
-            componentPayment
+            componentPayment,
         },
         props: {},
         onLoad(params) {
@@ -121,19 +126,19 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: '加载中...'
+                    title: '加载中...',
                 });
                 if (this.data_list.length <= 0) {
                     this.setData({
-                        data_list_loding_status: 1
+                        data_list_loding_status: 1,
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url("index", "buy", "membershiplevelvip"),
+                    url: app.globalData.get_request_url('index', 'buy', 'membershiplevelvip'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -145,13 +150,13 @@
                                 data_list_loding_msg: '',
                                 data_list_loding_status: status ? 3 : 0,
                                 data_bottom_line_status: status,
-                                payment_list: data.payment_list
+                                payment_list: data.payment_list,
                             });
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
@@ -164,10 +169,10 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: '服务器请求出错',
                         });
                         app.globalData.showToast('服务器请求出错');
-                    }
+                    },
                 });
             },
             // tabs事件
@@ -207,30 +212,30 @@
                 }
                 // 请求生成支付订单
                 this.setData({
-                    submit_disabled_status: true
+                    submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...'
+                    title: '处理中...',
                 });
                 uni.request({
-                    url: app.globalData.get_request_url("create", "buy", "membershiplevelvip"),
+                    url: app.globalData.get_request_url('create', 'buy', 'membershiplevelvip'),
                     method: 'POST',
                     data: {
-                        opening: item['id'] + '-' + rules['number']
+                        opening: item['id'] + '-' + rules['number'],
                     },
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         uni.hideLoading();
                         this.setData({
                             submit_disabled_status: false,
                             is_show_payment_popup: this.is_show_payment_popup ? false : true,
                             temp_pay_value: res.data.data.id,
-                            pay_price: res.data.data.price
+                            pay_price: res.data.data.price,
                         });
-                        console.log(res.data)
+                        console.log(res.data);
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
-                                order_ids: res.data.data.id
+                                order_ids: res.data.data.id,
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'submit_event')) {
@@ -240,24 +245,18 @@
                     },
                     fail: () => {
                         this.setData({
-                            submit_disabled_status: false
+                            submit_disabled_status: false,
                         });
                         uni.hideLoading();
                         app.globalData.showToast('服务器请求出错');
-                    }
+                    },
                 });
             },
             // 打开url
             url_event(e) {
                 app.globalData.url_event(e);
             },
-            // 支付弹窗关闭
-            payment_popup_event_close(e) {
-                this.setData({
-                    is_show_payment_popup: false
-                });
-            },
-        }
+        },
     };
 </script>
 <style>

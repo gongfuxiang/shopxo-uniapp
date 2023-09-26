@@ -5,15 +5,15 @@
             <block v-if="data_list_loding_status == 3">
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right oh" data-value="/pages/personal/personal" @tap="url_event">
-                        <image :src="(user.avatar || default_avatar)" mode="widthFix" class="circle br fl user-avatar"></image>
+                        <image :src="user.avatar || default_avatar" mode="widthFix" class="circle br fl user-avatar"></image>
                         <view class="fl margin-left">
-                            <view>{{user.user_name_view || '用户名'}}</view>
-                            <view v-if="(user || null) != null" class="br-main cr-main round tc padding-left-lg padding-right-lg margin-top-xs dis-inline-block">ID {{user.id}}</view>
+                            <view>{{ user.user_name_view || '用户名' }}</view>
+                            <view v-if="(user || null) != null" class="br-main cr-main round tc padding-left-lg padding-right-lg margin-top-xs dis-inline-block">ID {{ user.id }}</view>
                         </view>
                     </view>
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">
                         <text>更换手机</text>
-                        <text class="fr cr-grey">{{user.mobile_security || ''}} 点击更换</text>
+                        <text class="fr cr-grey">{{ user.mobile_security || '' }} 点击更换</text>
                     </view>
                 </view>
 
@@ -22,7 +22,7 @@
                         <text>地址管理</text>
                         <text class="fr cr-grey">点击管理</text>
                     </view>
-                    <view v-if="(plugins_invoice || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/plugins/invoice/user/user" @tap="url_event">
+                    <view v-if="(plugins_invoice || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/plugins/invoice/invoice/invoice" @tap="url_event">
                         <text>发票管理</text>
                         <text class="fr cr-grey">点击前往</text>
                     </view>
@@ -41,7 +41,7 @@
                     </view>
                     <view v-if="(common_app_customer_service_tel || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="call_event">
                         <text>客服电话</text>
-                        <text class="fr cr-grey">{{common_app_customer_service_tel || ''}} 点击拨打</text>
+                        <text class="fr cr-grey">{{ common_app_customer_service_tel || '' }} 点击拨打</text>
                     </view>
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
                         <text>账号注销</text>
@@ -57,7 +57,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../components/no-data/no-data";
+    import componentNoData from '../../components/no-data/no-data';
 
     export default {
         data() {
@@ -67,12 +67,12 @@
                 default_avatar: app.globalData.data.default_user_head_src,
                 user: null,
                 common_app_customer_service_tel: null,
-                plugins_invoice: null
-            }
+                plugins_invoice: null,
+            };
         },
 
         components: {
-            componentNoData
+            componentNoData,
         },
 
         onShow() {
@@ -89,7 +89,7 @@
                 if ((status || false) == true) {
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
-                        plugins_invoice: app.globalData.get_config('plugins_base.invoice', null)
+                        plugins_invoice: app.globalData.get_config('plugins_base.invoice', null),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -103,23 +103,23 @@
                     // 用户未绑定用户则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init"
+                            url: '/pages/login/login?event_callback=init',
                         });
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: '请先绑定手机'
+                            data_list_loding_msg: '请先绑定手机',
                         });
                         return false;
                     } else {
                         this.setData({
                             data_list_loding_status: 3,
-                            user: user
+                            user: user,
                         });
                     }
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: '请先登录'
+                        data_list_loding_msg: '请先登录',
                     });
                 }
             },
@@ -147,8 +147,8 @@
             remove_user_cache_event(e) {
                 app.globalData.remove_user_cache_event();
             },
-        }
-    }
+        },
+    };
 </script>
 <style>
     @import './setup.css';

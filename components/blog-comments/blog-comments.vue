@@ -12,9 +12,9 @@
                     </view>
                     <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="item dis-inline-block" :data-blogid="data.id" @tap="give_thumbs_event">
                         <view class="va-m dis-inline-block">
-                            <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'gray')"></uni-icons>
+                            <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'grey')"></uni-icons>
                         </view>
-                        <text :class="'va-m text-size-xs cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'gray')">点赞({{ data.give_thumbs_count }})</text>
+                        <text :class="'va-m text-size-xs cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'grey')">点赞({{ data.give_thumbs_count }})</text>
                     </view>
                     <view class="item dis-inline-block" @tap="popup_share_event">
                         <view class="va-m dis-inline-block">
@@ -57,9 +57,9 @@
                                         </view>
                                         <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="item dis-inline-block">
                                             <view class="va-m dis-inline-block">
-                                                <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : 'gray')"></uni-icons>
+                                                <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : 'grey')"></uni-icons>
                                             </view>
-                                            <text :class="'va-m cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : 'gray')" data-type="1" :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="give_thumbs_event">点赞({{ item.give_thumbs_count }})</text>
+                                            <text :class="'va-m cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : 'grey')" data-type="1" :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="give_thumbs_event">点赞({{ item.give_thumbs_count }})</text>
                                         </view>
                                     </view>
                                 </view>
@@ -89,10 +89,10 @@
                                                         </view>
                                                         <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="item dis-inline-block">
                                                             <view class="va-m dis-inline-block">
-                                                                <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : 'gray')"></uni-icons>
+                                                                <uni-icons type="hand-up" size="30rpx" :styleClass="'cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : 'grey')"></uni-icons>
                                                             </view>
                                                             <text
-                                                                :class="'va-m cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : 'gray')"
+                                                                :class="'va-m cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : 'grey')"
                                                                 data-type="2"
                                                                 :data-index="index"
                                                                 :data-indexs="index2"
@@ -168,439 +168,439 @@
     </view>
 </template>
 <script>
-const app = getApp();
-var common_static_url = app.globalData.get_static_url("common");
-import componentPopup from "../../components/popup/popup";
-import componentSharePopup from "../../components/share-popup/share-popup";
-import componentEmojiPopup from "../../components/emoji-popup/emoji-popup";
-export default {
-    data() {
-        return {
-            common_static_url: common_static_url,
-            avatar: app.globalData.data.default_user_head_src,
-            user: null,
-            data_base: null,
-            data: null,
-            emoji_list: [],
-            input_comments_value: "",
-            input_comments_cursor: 0,
-            input_comments_length_value: 500,
-            input_comments_length_max: 500,
-            input_comments_modal_status: false,
-            input_comments_modal_index: 0,
-            input_comments_modal_username: "",
-            input_comments_modal_blog_comments_id: 0,
-            input_comments_modal_reply_comments_id: 0,
-        };
-    },
-    props: {
-        propType: {
-            type: String,
-            default: "detail",
-        },
-        propData: {
-            type: [Object, null],
-            default: null,
-        },
-        propDataBase: {
-            type: [Object, null],
-            default: null,
-        },
-        propEmojiList: {
-            type: [Array, null],
-            default: [],
-        },
-    },
-    components: {
-        componentPopup,
-        componentSharePopup,
-        componentEmojiPopup,
-    },
-
-    // 页面被展示
-    created: function (e) {
-        var avatar = app.globalData.data.default_user_head_src;
-        var user = app.globalData.get_user_cache_info() || null;
-        this.setData({
-            user: user,
-            avatar: user == null ? avatar : user.avatar || avatar,
-            data: this.propData,
-            data_base: this.propDataBase,
-            emoji_list: this.propEmojiList,
-        });
-    },
-
-    methods: {
-        // 分享开启弹层
-        popup_share_event(e) {
-            if ((this.$refs.share || null) != null) {
-                this.$refs.share.init();
-            }
-        },
-
-        // 评论弹窗关闭
-        modal_close_event(e) {
-            this.setData({
+    const app = getApp();
+    var common_static_url = app.globalData.get_static_url('common');
+    import componentPopup from '../../components/popup/popup';
+    import componentSharePopup from '../../components/share-popup/share-popup';
+    import componentEmojiPopup from '../../components/emoji-popup/emoji-popup';
+    export default {
+        data() {
+            return {
+                common_static_url: common_static_url,
+                avatar: app.globalData.data.default_user_head_src,
+                user: null,
+                data_base: null,
+                data: null,
+                emoji_list: [],
+                input_comments_value: '',
+                input_comments_cursor: 0,
+                input_comments_length_value: 500,
+                input_comments_length_max: 500,
                 input_comments_modal_status: false,
                 input_comments_modal_index: 0,
-                input_comments_modal_username: "",
+                input_comments_modal_username: '',
                 input_comments_modal_blog_comments_id: 0,
                 input_comments_modal_reply_comments_id: 0,
-            });
+            };
+        },
+        props: {
+            propType: {
+                type: String,
+                default: 'detail',
+            },
+            propData: {
+                type: [Object, null],
+                default: null,
+            },
+            propDataBase: {
+                type: [Object, null],
+                default: null,
+            },
+            propEmojiList: {
+                type: [Array, null],
+                default: [],
+            },
+        },
+        components: {
+            componentPopup,
+            componentSharePopup,
+            componentEmojiPopup,
         },
 
-        // 评论弹窗开启
-        modal_open_event(e) {
-            if (!app.globalData.is_single_page_check()) {
-                return false;
-            }
-            var user = app.globalData.get_user_info();
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=favor_event",
-                    });
-                    return false;
-                } else {
-                    var index = parseInt(e.currentTarget.dataset.index || 0);
-                    var username = e.currentTarget.dataset.username;
-                    var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-                    var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
-                    this.setData({
-                        input_comments_modal_status: true,
-                        input_comments_modal_index: index,
-                        input_comments_modal_username: username,
-                        input_comments_modal_blog_comments_id: blog_comments_id,
-                        input_comments_modal_reply_comments_id: reply_comments_id,
-                    });
-                }
-            }
-        },
-
-        // 表情选择事件
-        emoji_event() {
-            if (this.input_comments_length_value == 0) {
-                app.globalData.showToast("已超过最大输入字符限制");
-                return false;
-            }
-            if ((this.$refs.emoji || null) != null) {
-                this.$refs.emoji.init({ emoji_list: this.emoji_list });
-            }
-        },
-
-        // 评论输入和失去焦点事件
-        comments_input_event(e) {
-            var value = e.detail.value.trim();
-            var length = this.input_comments_length_max - value.length;
+        // 页面被展示
+        created: function (e) {
+            var avatar = app.globalData.data.default_user_head_src;
+            var user = app.globalData.get_user_cache_info() || null;
             this.setData({
-                input_comments_cursor: e.detail.cursor || 0,
-                input_comments_value: value,
-                input_comments_length_value: length <= 0 ? 0 : length,
+                user: user,
+                avatar: user == null ? avatar : user.avatar || avatar,
+                data: this.propData,
+                data_base: this.propDataBase,
+                emoji_list: this.propEmojiList,
             });
         },
 
-        // 表情选择确认事件
-        emoji_choice_confirm_event(emoji) {
-            var value = this.input_comments_value;
-            var cursor = parseInt(this.input_comments_cursor || 0);
-            if (value != "") {
-                if (cursor == 0) {
-                    value = emoji + value;
-                } else {
-                    var first = value.substr(0, cursor);
-                    var last = value.substr(cursor, value.length);
-                    value = first + emoji + last;
+        methods: {
+            // 分享开启弹层
+            popup_share_event(e) {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init();
                 }
-            } else {
-                value = emoji;
-            }
-            var length = this.input_comments_length_max - value.length;
-            this.setData({
-                input_comments_value: value,
-                input_comments_length_value: length <= 0 ? 0 : length,
-            });
-        },
+            },
 
-        // 获取评论列表
-        comments_list_reply_event(e) {
-            var temp_data = this.data;
-            var page = 1;
-            var index = parseInt(e.currentTarget.dataset.index || 0);
-            var blog_id = e.currentTarget.dataset.blogid;
-            var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-            if (blog_comments_id == 0) {
-                if ((temp_data["page"] || null) == null) {
-                    temp_data["page"] = 1;
-                } else {
-                    temp_data["page"] += 1;
-                }
-                page = temp_data["page"];
-            } else {
-                if ((temp_data["comments_list"][index]["page"] || null) == null) {
-                    temp_data["comments_list"][index]["page"] = 1;
-                } else {
-                    temp_data["comments_list"][index]["page"] += 1;
-                }
-                page = temp_data["comments_list"][index]["page"];
-            }
-            uni.showLoading({
-                title: "加载中...",
-            });
-            uni.request({
-                url: app.globalData.get_request_url("commentsreplylist", "index", "blog"),
-                method: "POST",
-                data: {
-                    blog_id: blog_id,
-                    blog_comments_id: blog_comments_id,
-                    page: page,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        if (blog_comments_id == 0) {
-                            var temp_list = temp_data["comments_list"] || [];
-                        } else {
-                            var temp_list = temp_data["comments_list"][index]["reply_comments_list"] || [];
-                        }
-                        var data = res.data.data.data;
-                        for (var i in data) {
-                            temp_list.push(data[i]);
-                        }
-                        if (blog_comments_id == 0) {
-                            temp_data["comments_list"] = temp_list;
-                            temp_data["is_comments_list_submit"] = res.data.data.page >= res.data.data.page_total ? 0 : 1;
-                        } else {
-                            temp_data["comments_list"][index]["reply_comments_list"] = temp_list;
-                            temp_data["comments_list"][index]["is_comments_list_submit"] = res.data.data.page >= res.data.data.page_total ? 0 : 1;
-                        }
-                        this.setData({ data: temp_data });
-                    } else {
-                        app.globalData.showToast(res.data.msg);
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
+            // 评论弹窗关闭
+            modal_close_event(e) {
+                this.setData({
+                    input_comments_modal_status: false,
+                    input_comments_modal_index: 0,
+                    input_comments_modal_username: '',
+                    input_comments_modal_blog_comments_id: 0,
+                    input_comments_modal_reply_comments_id: 0,
+                });
+            },
 
-        // 评论
-        comments_event() {
-            if (!app.globalData.is_single_page_check()) {
-                return false;
-            }
-            var user = app.globalData.get_user_info();
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=favor_event",
-                    });
+            // 评论弹窗开启
+            modal_open_event(e) {
+                if (!app.globalData.is_single_page_check()) {
                     return false;
-                } else {
-                    if (this.input_comments_value == "") {
-                        app.globalData.showToast("请填写评论内容");
+                }
+                var user = app.globalData.get_user_info();
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=favor_event',
+                        });
                         return false;
+                    } else {
+                        var index = parseInt(e.currentTarget.dataset.index || 0);
+                        var username = e.currentTarget.dataset.username;
+                        var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                        var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
+                        this.setData({
+                            input_comments_modal_status: true,
+                            input_comments_modal_index: index,
+                            input_comments_modal_username: username,
+                            input_comments_modal_blog_comments_id: blog_comments_id,
+                            input_comments_modal_reply_comments_id: reply_comments_id,
+                        });
                     }
-                    uni.showLoading({
-                        title: "提交中...",
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url("comments", "index", "blog"),
-                        method: "POST",
-                        data: {
-                            blog_id: this.data.id,
-                            content: this.input_comments_value,
-                            blog_comments_id: this.input_comments_modal_blog_comments_id,
-                            reply_comments_id: this.input_comments_modal_reply_comments_id,
-                        },
-                        dataType: "json",
-                        success: (res) => {
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
-                                var temp_data = this.data;
-                                if ((this.input_comments_modal_blog_comments_id || 0) == 0) {
-                                    var temp_list = temp_data.comments_list || [];
-                                    temp_list.splice(0, 0, res.data.data);
-                                    temp_data["comments_list"] = temp_list;
-                                    temp_data["comments_count"] = parseInt(temp_data["comments_count"]) + 1;
-                                } else {
-                                    var index = this.input_comments_modal_index;
-                                    var temp_list = temp_data.comments_list[index]["reply_comments_list"] || [];
-                                    temp_list.splice(0, 0, res.data.data);
-                                    if ((this.input_comments_modal_reply_comments_id || 0) != 0) {
-                                        for (var i in temp_list) {
-                                            if (temp_list[i]["id"] == this.input_comments_modal_reply_comments_id) {
-                                                temp_list[i]["comments_count"] = parseInt(temp_list[i]["comments_count"]) + 1;
-                                                break;
+                }
+            },
+
+            // 表情选择事件
+            emoji_event() {
+                if (this.input_comments_length_value == 0) {
+                    app.globalData.showToast('已超过最大输入字符限制');
+                    return false;
+                }
+                if ((this.$refs.emoji || null) != null) {
+                    this.$refs.emoji.init({ emoji_list: this.emoji_list });
+                }
+            },
+
+            // 评论输入和失去焦点事件
+            comments_input_event(e) {
+                var value = e.detail.value.trim();
+                var length = this.input_comments_length_max - value.length;
+                this.setData({
+                    input_comments_cursor: e.detail.cursor || 0,
+                    input_comments_value: value,
+                    input_comments_length_value: length <= 0 ? 0 : length,
+                });
+            },
+
+            // 表情选择确认事件
+            emoji_choice_confirm_event(emoji) {
+                var value = this.input_comments_value;
+                var cursor = parseInt(this.input_comments_cursor || 0);
+                if (value != '') {
+                    if (cursor == 0) {
+                        value = emoji + value;
+                    } else {
+                        var first = value.substr(0, cursor);
+                        var last = value.substr(cursor, value.length);
+                        value = first + emoji + last;
+                    }
+                } else {
+                    value = emoji;
+                }
+                var length = this.input_comments_length_max - value.length;
+                this.setData({
+                    input_comments_value: value,
+                    input_comments_length_value: length <= 0 ? 0 : length,
+                });
+            },
+
+            // 获取评论列表
+            comments_list_reply_event(e) {
+                var temp_data = this.data;
+                var page = 1;
+                var index = parseInt(e.currentTarget.dataset.index || 0);
+                var blog_id = e.currentTarget.dataset.blogid;
+                var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                if (blog_comments_id == 0) {
+                    if ((temp_data['page'] || null) == null) {
+                        temp_data['page'] = 1;
+                    } else {
+                        temp_data['page'] += 1;
+                    }
+                    page = temp_data['page'];
+                } else {
+                    if ((temp_data['comments_list'][index]['page'] || null) == null) {
+                        temp_data['comments_list'][index]['page'] = 1;
+                    } else {
+                        temp_data['comments_list'][index]['page'] += 1;
+                    }
+                    page = temp_data['comments_list'][index]['page'];
+                }
+                uni.showLoading({
+                    title: '加载中...',
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('commentsreplylist', 'index', 'blog'),
+                    method: 'POST',
+                    data: {
+                        blog_id: blog_id,
+                        blog_comments_id: blog_comments_id,
+                        page: page,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            if (blog_comments_id == 0) {
+                                var temp_list = temp_data['comments_list'] || [];
+                            } else {
+                                var temp_list = temp_data['comments_list'][index]['reply_comments_list'] || [];
+                            }
+                            var data = res.data.data.data;
+                            for (var i in data) {
+                                temp_list.push(data[i]);
+                            }
+                            if (blog_comments_id == 0) {
+                                temp_data['comments_list'] = temp_list;
+                                temp_data['is_comments_list_submit'] = res.data.data.page >= res.data.data.page_total ? 0 : 1;
+                            } else {
+                                temp_data['comments_list'][index]['reply_comments_list'] = temp_list;
+                                temp_data['comments_list'][index]['is_comments_list_submit'] = res.data.data.page >= res.data.data.page_total ? 0 : 1;
+                            }
+                            this.setData({ data: temp_data });
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 评论
+            comments_event() {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info();
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=favor_event',
+                        });
+                        return false;
+                    } else {
+                        if (this.input_comments_value == '') {
+                            app.globalData.showToast('请填写评论内容');
+                            return false;
+                        }
+                        uni.showLoading({
+                            title: '提交中...',
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url('comments', 'index', 'blog'),
+                            method: 'POST',
+                            data: {
+                                blog_id: this.data.id,
+                                content: this.input_comments_value,
+                                blog_comments_id: this.input_comments_modal_blog_comments_id,
+                                reply_comments_id: this.input_comments_modal_reply_comments_id,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    var temp_data = this.data;
+                                    if ((this.input_comments_modal_blog_comments_id || 0) == 0) {
+                                        var temp_list = temp_data.comments_list || [];
+                                        temp_list.splice(0, 0, res.data.data);
+                                        temp_data['comments_list'] = temp_list;
+                                        temp_data['comments_count'] = parseInt(temp_data['comments_count']) + 1;
+                                    } else {
+                                        var index = this.input_comments_modal_index;
+                                        var temp_list = temp_data.comments_list[index]['reply_comments_list'] || [];
+                                        temp_list.splice(0, 0, res.data.data);
+                                        if ((this.input_comments_modal_reply_comments_id || 0) != 0) {
+                                            for (var i in temp_list) {
+                                                if (temp_list[i]['id'] == this.input_comments_modal_reply_comments_id) {
+                                                    temp_list[i]['comments_count'] = parseInt(temp_list[i]['comments_count']) + 1;
+                                                    break;
+                                                }
                                             }
                                         }
+                                        temp_data.comments_list[index]['reply_comments_list'] = temp_list;
+                                        temp_data.comments_list[index]['comments_count'] = parseInt(temp_data.comments_list[index]['comments_count']) + 1;
                                     }
-                                    temp_data.comments_list[index]["reply_comments_list"] = temp_list;
-                                    temp_data.comments_list[index]["comments_count"] = parseInt(temp_data.comments_list[index]["comments_count"]) + 1;
-                                }
-                                this.setData({
-                                    data: temp_data,
-                                    input_comments_value: "",
-                                    input_comments_length_value: this.input_comments_length_max,
-                                    input_comments_modal_status: false,
-                                });
-                            } else {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        },
-                        fail: () => {
-                            uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
-                        },
-                    });
-                }
-            }
-        },
-
-        // 点赞
-        give_thumbs_event(e) {
-            if (!app.globalData.is_single_page_check()) {
-                return false;
-            }
-            var user = app.globalData.get_user_info();
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=favor_event",
-                    });
-                    return false;
-                } else {
-                    var type = parseInt(e.currentTarget.dataset.type || 0);
-                    var blog_id = e.currentTarget.dataset.blogid;
-                    var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-                    var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
-                    uni.request({
-                        url: app.globalData.get_request_url("givethumbs", "index", "blog"),
-                        method: "POST",
-                        data: {
-                            blog_id: blog_id,
-                            blog_comments_id: blog_comments_id,
-                            reply_comments_id: reply_comments_id,
-                        },
-                        dataType: "json",
-                        success: (res) => {
-                            if (res.data.code == 0) {
-                                var data = res.data.data;
-                                var temp_data = this.data;
-                                switch (type) {
-                                    // 博客
-                                    case 0:
-                                        temp_data.is_give_thumbs = data.is_active;
-                                        temp_data.give_thumbs_count = data.count;
-                                        break;
-                                    // 博客评论
-                                    case 1:
-                                        var index = parseInt(e.currentTarget.dataset.index || 0);
-                                        temp_data["comments_list"][index]["is_give_thumbs"] = data.is_active;
-                                        temp_data["comments_list"][index]["give_thumbs_count"] = data.count;
-                                        break;
-                                    // 博客评论回复
-                                    case 2:
-                                        var index = parseInt(e.currentTarget.dataset.index || 0);
-                                        var indexs = parseInt(e.currentTarget.dataset.indexs || 0);
-                                        temp_data["comments_list"][index]["reply_comments_list"][indexs]["is_give_thumbs"] = data.is_active;
-                                        temp_data["comments_list"][index]["reply_comments_list"][indexs]["give_thumbs_count"] = data.count;
-                                        break;
-                                }
-                                this.setData({ data: temp_data });
-                            } else {
-                                if (app.globalData.is_login_check(res.data)) {
+                                    this.setData({
+                                        data: temp_data,
+                                        input_comments_value: '',
+                                        input_comments_length_value: this.input_comments_length_max,
+                                        input_comments_modal_status: false,
+                                    });
+                                } else {
                                     app.globalData.showToast(res.data.msg);
                                 }
-                            }
-                        },
-                        fail: () => {
-                            app.globalData.showToast("服务器请求出错");
-                        },
-                    });
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast('服务器请求出错');
+                            },
+                        });
+                    }
                 }
-            }
-        },
+            },
 
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
+            // 点赞
+            give_thumbs_event(e) {
+                if (!app.globalData.is_single_page_check()) {
+                    return false;
+                }
+                var user = app.globalData.get_user_info();
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=favor_event',
+                        });
+                        return false;
+                    } else {
+                        var type = parseInt(e.currentTarget.dataset.type || 0);
+                        var blog_id = e.currentTarget.dataset.blogid;
+                        var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                        var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
+                        uni.request({
+                            url: app.globalData.get_request_url('givethumbs', 'index', 'blog'),
+                            method: 'POST',
+                            data: {
+                                blog_id: blog_id,
+                                blog_comments_id: blog_comments_id,
+                                reply_comments_id: reply_comments_id,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                if (res.data.code == 0) {
+                                    var data = res.data.data;
+                                    var temp_data = this.data;
+                                    switch (type) {
+                                        // 博客
+                                        case 0:
+                                            temp_data.is_give_thumbs = data.is_active;
+                                            temp_data.give_thumbs_count = data.count;
+                                            break;
+                                        // 博客评论
+                                        case 1:
+                                            var index = parseInt(e.currentTarget.dataset.index || 0);
+                                            temp_data['comments_list'][index]['is_give_thumbs'] = data.is_active;
+                                            temp_data['comments_list'][index]['give_thumbs_count'] = data.count;
+                                            break;
+                                        // 博客评论回复
+                                        case 2:
+                                            var index = parseInt(e.currentTarget.dataset.index || 0);
+                                            var indexs = parseInt(e.currentTarget.dataset.indexs || 0);
+                                            temp_data['comments_list'][index]['reply_comments_list'][indexs]['is_give_thumbs'] = data.is_active;
+                                            temp_data['comments_list'][index]['reply_comments_list'][indexs]['give_thumbs_count'] = data.count;
+                                            break;
+                                    }
+                                    this.setData({ data: temp_data });
+                                } else {
+                                    if (app.globalData.is_login_check(res.data)) {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                }
+                            },
+                            fail: () => {
+                                app.globalData.showToast('服务器请求出错');
+                            },
+                        });
+                    }
+                }
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-/**
+    /**
      * 聚合点赞、评论、分享
      */
-.blog-comments-bottom-container .item:not(:last-child) {
-    margin-right: 50rpx;
-}
-.blog-comments-reply-container .emoji-icon,
-.blog-comments-modal .emoji-icon {
-    width: 40rpx;
-    height: 40rpx !important;
-}
-.blog-comments-reply-container .user-avatar {
-    width: 100rpx;
-    height: 100rpx !important;
-    border: 1px solid #eee;
-}
-.blog-comments-reply-container .right-base {
-    width: calc(100% - 130rpx);
-}
-.blog-comments-reply-container .right-base textarea {
-    height: 120rpx;
-}
-.blog-comments-modal {
-    top: 0;
-    left: 0;
-    width: calc(100% - 80rpx);
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 40rpx;
-    z-index: 10;
-}
-.blog-comments-modal-content {
-    padding: 10px;
-    border-radius: 10px;
-    margin: 0 auto;
-    margin-top: 30%;
-    max-width: calc(800px - 180rpx);
-}
-.blog-comments-modal-content textarea {
-    height: 200rpx;
-}
-.blog-comments-modal-content .close {
-    top: 8rpx;
-    right: 14rpx;
-}
+    .blog-comments-bottom-container .item:not(:last-child) {
+        margin-right: 50rpx;
+    }
+    .blog-comments-reply-container .emoji-icon,
+    .blog-comments-modal .emoji-icon {
+        width: 40rpx;
+        height: 40rpx !important;
+    }
+    .blog-comments-reply-container .user-avatar {
+        width: 100rpx;
+        height: 100rpx !important;
+        border: 1px solid #eee;
+    }
+    .blog-comments-reply-container .right-base {
+        width: calc(100% - 130rpx);
+    }
+    .blog-comments-reply-container .right-base textarea {
+        height: 120rpx;
+    }
+    .blog-comments-modal {
+        top: 0;
+        left: 0;
+        width: calc(100% - 80rpx);
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 40rpx;
+        z-index: 10;
+    }
+    .blog-comments-modal-content {
+        padding: 10px;
+        border-radius: 10px;
+        margin: 0 auto;
+        margin-top: 30%;
+        max-width: calc(800px - 180rpx);
+    }
+    .blog-comments-modal-content textarea {
+        height: 200rpx;
+    }
+    .blog-comments-modal-content .close {
+        top: 8rpx;
+        right: 14rpx;
+    }
 
-/**
+    /**
      * 评论列表
      */
-.blog-comments-list > .item .user-avatar {
-    width: 50rpx;
-    height: 50rpx;
-    border: 1px solid #eee;
-}
-.blog-comments-list > .item:not(:last-child) {
-    border-bottom: 1px dashed #f6f6f6;
-}
-.blog-comments-list > .item .right-content {
-    width: calc(100% - 70rpx);
-}
-.blog-comments-list > .item .right-content .reply-content {
-    background: #f3fafc;
-    border: 1px solid #e5f6ff;
-    color: #617580;
-}
-.blog-comments-right-content-operate > .item:not(:last-child) {
-    margin-right: 30rpx;
-}
+    .blog-comments-list > .item .user-avatar {
+        width: 50rpx;
+        height: 50rpx;
+        border: 1px solid #eee;
+    }
+    .blog-comments-list > .item:not(:last-child) {
+        border-bottom: 1px dashed #f6f6f6;
+    }
+    .blog-comments-list > .item .right-content {
+        width: calc(100% - 70rpx);
+    }
+    .blog-comments-list > .item .right-content .reply-content {
+        background: #f3fafc;
+        border: 1px solid #e5f6ff;
+        color: #617580;
+    }
+    .blog-comments-right-content-operate > .item:not(:last-child) {
+        margin-right: 30rpx;
+    }
 </style>
