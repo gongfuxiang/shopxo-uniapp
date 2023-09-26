@@ -71,7 +71,7 @@
                         class="item-operation tr br-t padding-vertical-main"
                     >
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" hover-class="none">支付</button>
+                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                         <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
                         <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
@@ -163,8 +163,8 @@
                     msg: '支付成功',
                 },
                 pay_price: 0,
-                pay_url: '',
-                qrcode_url: '',
+                pay_url: app.globalData.get_request_url('pay', 'order'),
+                qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
@@ -193,7 +193,6 @@
                 }
             }
             this.setData({
-                params: params,
                 nav_status_index: nav_status_index,
             });
             if ((params.data || null) != null) {
@@ -332,6 +331,7 @@
 
                                 // 判断url是否含有从其他页面携带过来的参数
                                 if (this.params) {
+                                    console.log(this.params);
                                     var order_ids_arr = this.params.split(',');
                                     var temp_data_list = this.data_list;
                                     for (var i in temp_data_list) {
@@ -383,6 +383,8 @@
                 this.setData({
                     is_show_payment_popup: true,
                     temp_pay_value: e.currentTarget.dataset.value,
+                    temp_pay_index: e.currentTarget.dataset.index,
+                    pay_price: e.currentTarget.dataset.price,
                     order_select_ids: [],
                 });
             },
@@ -391,97 +393,6 @@
             payment_popup_event_close(e) {
                 this.setData({
                     is_show_payment_popup: false,
-                });
-            },
-
-            // 支付弹窗发起支付
-            popup_payment_event(e) {
-                var payment_id = e.currentTarget.dataset.value || 0;
-                var payment_type = e.currentTarget.dataset.type || '';
-                this.setData({
-                    payment_id: payment_id,
-                    payment_type: payment_type,
-                });
-                this.payment_popup_event_close();
-                this.pay_handle(this.temp_pay_value);
-            },
-
-            // 支付方法
-            pay_handle(order_ids) {
-                uni.request({
-                    url: app.globalData.get_request_url('pay', 'order'),
-                    method: 'POST',
-                    data: post_data,
-                    dataType: 'json',
-                    success: (res) => {
-                        uni.hideLoading();
-                        if (res.data.code == 0) {
-                            // 是否直接支付成功
-                            if ((res.data.data.is_success || 0) == 1) {
-                                this.order_item_pay_success_handle(order_ids);
-                                app.globalData.showToast('支付成功', 'success');
-                            } else {
-                                // 支付方式类型
-                                switch (res.data.data.is_payment_type) {
-                                    // 正常线上支付
-                                    case 0:
-                                        var data = res.data.data;
-                                        // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
-                                        this.common_pay_handle(this, data, order_ids);
-                                        // #endif
-                                        // #ifdef MP-KUAISHOU
-                                        this.kuaishou_pay_handle(this, data, order_ids);
-                                        // #endif
-                                        // #ifdef MP-QQ
-                                        this.qq_pay_handle(this, data, order_ids);
-                                        // #endif
-                                        // #ifdef H5
-                                        this.h5_pay_handle(this, data, order_ids);
-                                        // #endif
-                                        break;
-                                    // 线下支付
-                                    case 1:
-                                        var order_ids_arr = order_ids.split(',');
-                                        var temp_data_list = this.data_list;
-                                        for (var i in temp_data_list) {
-                                            if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
-                                                temp_data_list[i]['is_under_line'] = 1;
-                                            }
-                                        }
-                                        this.setData({
-                                            data_list: temp_data_list,
-                                        });
-                                        app.globalData.alert({
-                                            msg: res.data.msg,
-                                            is_show_cancel: 0,
-                                        });
-                                        break;
-                                    // 钱包支付
-                                    case 2:
-                                        this.order_item_pay_success_handle(order_ids);
-                                        app.globalData.showToast('支付成功', 'success');
-                                        break;
-                                    // 默认
-                                    default:
-                                        app.globalData.showToast('支付类型有误');
-                                }
-                            }
-                        } else {
-                            // 是否返回html代码展示、则提示错误
-                            if (res.data.code == -6666 && (res.data.data || null) != null) {
-                                this.setData({
-                                    popup_view_pay_data: res.data.data,
-                                    popup_view_pay_html_is_show: true,
-                                });
-                            } else {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        }
-                    },
-                    fail: () => {
-                        uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
-                    },
                 });
             },
 
