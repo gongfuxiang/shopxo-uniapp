@@ -17,7 +17,6 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-pay-price="pay_price"
             :propIsRedirectTo="true"
-            :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
         ></component-payment>
     </view>
@@ -149,7 +148,7 @@
                     },
                 });
             },
-            order_item_pay_success_handle() {
+            payment_popup_event_close() {
                 this.setData({
                     is_show_payment_popup: false,
                 });

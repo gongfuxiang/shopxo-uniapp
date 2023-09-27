@@ -65,12 +65,12 @@
         <component-payment
             :prop-pay-url="pay_url"
             :prop-qrcode-url="qrcode_url"
-            prop-pay-data-key="recharge_id"
+            prop-pay-data-key="id"
             :prop-payment-list="payment_list"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-pay-price="pay_price"
-            :prop-to-page="to_page"
+            :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
@@ -102,11 +102,6 @@
                 temp_pay_index: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
-                // 前往页面携带的参数
-                to_page: {
-                    title: '进入我的会员列表',
-                    page: 'pages/plugins/membershiplevelvip/user/user',
-                },
                 // 支付失败跳转的页面
                 to_fail_page: 'pages/plugins/membershiplevelvip/order/order',
             };
@@ -241,7 +236,6 @@
                             temp_pay_value: res.data.data.id,
                             pay_price: res.data.data.price,
                         });
-                        console.log(res.data);
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
                                 order_ids: res.data.data.id,

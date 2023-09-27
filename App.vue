@@ -1877,18 +1877,29 @@
                 });
             },
 
-            // 更新url参数
-            updateQueryStringParameter(uri, key, value) {
-                if (!value) {
-                    return uri;
-                }
-                var re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
-                var separator = uri.indexOf('?') !== -1 ? '&' : '?';
-                if (uri.match(re)) {
-                    return uri.replace(re, '$1' + key + '=' + value + '$2');
+            // 更新当前url参数
+            // query:[{key:'',value:''}]
+            updateQueryStringParameter(query = []) {
+                // #ifdef H5
+                let url = window.location.href;
+                // 判断没有参数时
+                if (query.length < 1) {
+                    //向当前url添加参数，没有历史记录
+                    window.history.replaceState({ path: url }, '', url);
                 } else {
-                    return uri + separator + key + '=' + value;
+                    query.forEach((item) => {
+                        let re = new RegExp('([?&])' + item.key + '=.*?(&|$)', 'i');
+                        let separator = url.indexOf('?') !== -1 ? '&' : '?';
+                        if (url.match(re)) {
+                            url = url.replace(re, '$1' + item.key + '=' + item.value + '$2');
+                        } else {
+                            url += separator + item.key + '=' + item.value;
+                        }
+                    });
+                    //向当前url添加参数，没有历史记录
+                    window.history.replaceState({ path: url }, '', url);
                 }
+                // #endif
             },
         },
         // 初始化完成时触发（全局只触发一次）

@@ -159,9 +159,7 @@
                 this.setData({
                     current: e.currentTarget.dataset.index || 0,
                 });
-                var newurl = app.globalData.updateQueryStringParameter(window.location.href.split('?')[0], 'type', e.currentTarget.dataset.index + '');
-                //向当前url添加参数，没有历史记录
-                window.history.replaceState({ path: newurl }, '', newurl);
+                app.globalData.updateQueryStringParameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
             },
             // 滚动加载
             scroll_lower(e) {

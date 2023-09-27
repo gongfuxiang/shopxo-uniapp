@@ -142,13 +142,14 @@
 
             var ck = app.globalData.data.cache_page_pay_key;
             var pay_data = uni.getStorageSync(ck) || null;
-            if (pay_data) {
+            if (pay_data !== null) {
+                uni.removeStorageSync(ck);
                 this.setData({
                     current: pay_data.type || 0,
                 });
-                var newurl = app.globalData.updateQueryStringParameter(window.location.href.split('?')[0], 'type', pay_data.type + '');
-                //向当前url添加参数，没有历史记录
-                window.history.replaceState({ path: newurl }, '', newurl);
+                setTimeout(() => {
+                    app.globalData.updateQueryStringParameter([{ key: 'type', value: pay_data.type }]);
+                }, 200);
             }
             this.init();
         },
@@ -242,9 +243,7 @@
                 this.setData({
                     current: e.currentTarget.dataset.index || 0,
                 });
-                var newurl = app.globalData.updateQueryStringParameter(window.location.href.split('?')[0], 'type', e.currentTarget.dataset.index + '');
-                //向当前url添加参数，没有历史记录
-                window.history.replaceState({ path: newurl }, '', newurl);
+                app.globalData.updateQueryStringParameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
             },
             // 滚动加载
             scroll_lower(e) {
