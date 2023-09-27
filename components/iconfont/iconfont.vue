@@ -24,8 +24,8 @@
 <style scoped>
     /* iconfont.css全局注册需要将src切换成绝对路径 */
     /* @/static/icon/ */
-    @import url('@/static/icon/iconfont.css');
-    /* @import url('https://at.alicdn.com/t/c/font_4227145_4zljgwpfojt.css'); */
+    /* @import url('@/static/icon/iconfont.css'); */
+    @import url('https://at.alicdn.com/t/c/font_4227145_klds40ixeqs.css');
 
     .iconfont {
         display: inline-block;

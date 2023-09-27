@@ -506,6 +506,26 @@ button:before {
     border-right: 1px solid #f5f5f5 !important;
 }
 
+.br-e {
+    border: 1px solid #eeeeee !important;
+}
+
+.br-b-e {
+    border-bottom: 1px solid #eeeeee !important;
+}
+
+.br-t-e {
+    border-top: 1px solid #eeeeee !important;
+}
+
+.br-l-e {
+    border-left: 1px solid #eeeeee !important;
+}
+
+.br-r-e {
+    border-right: 1px solid #eeeeee !important;
+}
+
 .br-red {
     border: 1px solid #E22C08 !important;
 }

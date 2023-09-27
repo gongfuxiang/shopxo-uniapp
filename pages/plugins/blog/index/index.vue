@@ -2,12 +2,12 @@
     <view>
         <view v-if="(data_base || null) != null">
             <!-- 搜索框 -->
-            <view class="nav-search padding-horizontal-main padding-top-main">
+            <view class="nav-search padding-main">
                 <component-search propBrColor="#efefef" propBgColor="#fff" propUrl="/pages/plugins/blog/search/search"></component-search>
             </view>
 
             <!-- 轮播 -->
-            <view v-if="slide_list.length > 0" class="padding-horizontal-main padding-top-main">
+            <view v-if="slide_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <component-banner :propData="slide_list"></component-banner>
             </view>
 
@@ -33,13 +33,9 @@
             </view>
 
             <!-- 分类 -->
-            <view class="spacing-nav-title padding-horizontal-main">
-                <text class="text-wrapper va-m">所有{{ blog_main_name }}</text>
-                <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-list scroll-view-horizontal dis-inline-block oh va-m margin-left-sm" scroll-x="true">
-                    <block v-for="(item, index) in category" :key="index">
-                        <view class="item cr-base dis-inline-block padding-horizontal-main" :data-value="item.url" @tap="url_event">{{ item.name }}</view>
-                    </block>
-                </scroll-view>
+            <view class="spacing-nav-title padding-horizontal-main spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                <text class="text-wrapper title-left-border">所有{{ blog_main_name }}</text>
+                <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
             </view>
 
             <!-- 博文列表 -->
@@ -117,139 +113,139 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentSearch from "../../../../components/search/search";
-import componentBanner from "../../../../components/slider/slider";
-import componentCountdown from "../../../../components/countdown/countdown";
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentGoodsList from "../../../../components/goods-list/goods-list";
+    const app = getApp();
+    import componentSearch from '../../../../components/search/search';
+    import componentBanner from '../../../../components/slider/slider';
+    import componentCountdown from '../../../../components/countdown/countdown';
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentGoodsList from '../../../../components/goods-list/goods-list';
 
-export default {
-    data() {
-        return {
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            currency_symbol: app.globalData.data.currency_symbol,
-            data_base: null,
-            category: [],
-            data_list: [],
-            slide_list: [],
-            goods_list: [],
-            hot_list: [],
-            right_list: [],
-            blog_main_name: "博文",
-            // 自定义分享信息
-            share_info: {},
-        };
-    },
-
-    components: {
-        componentSearch,
-        componentBanner,
-        componentCountdown,
-        componentNoData,
-        componentBottomLine,
-        componentGoodsList,
-    },
-    props: {},
-
-    onLoad() {},
-
-    onShow() {
-        // 初始化配置
-        this.init_config();
-
-        // 获取数据
-        this.get_data();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        // 初始化配置
-        init_config(status) {
-            if ((status || false) == true) {
-                this.setData({
-                    currency_symbol: app.globalData.get_config("currency_symbol"),
-                });
-            } else {
-                app.globalData.is_config(this, "init_config");
-            }
+    export default {
+        data() {
+            return {
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
+                data_base: null,
+                category: [],
+                data_list: [],
+                slide_list: [],
+                goods_list: [],
+                hot_list: [],
+                right_list: [],
+                blog_main_name: '博文',
+                // 自定义分享信息
+                share_info: {},
+            };
         },
 
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("index", "index", "blog"),
-                method: "POST",
-                data: {},
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            data_base: data.base || null,
-                            category: data.category || [],
-                            data_list: data.data_list || [],
-                            slide_list: data.slide_list || [],
-                            goods_list: data.goods_list || [],
-                            hot_list: data.hot_list || [],
-                            right_list: data.right_list || [],
-                            blog_main_name: (data.base || null) == null ? "博文" : data.base.blog_main_name || "博文",
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: true,
-                        });
+        components: {
+            componentSearch,
+            componentBanner,
+            componentCountdown,
+            componentNoData,
+            componentBottomLine,
+            componentGoodsList,
+        },
+        props: {},
 
-                        // 基础自定义分享
-                        var title = this.data_base.seo_title || this.data_base.application_name;
-                        this.setData({
-                            share_info: {
-                                title: title,
-                                desc: this.data_base.seo_desc,
-                                path: "/pages/plugins/blog/index/index",
-                                img: (this.slide_list || null) != null && this.slide_list.length > 0 ? this.slide_list[0]["images_url"] : "",
-                            },
-                        });
-                    } else {
+        onLoad() {},
+
+        onShow() {
+            // 初始化配置
+            this.init_config();
+
+            // 获取数据
+            this.get_data();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'index', 'blog'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                category: data.category || [],
+                                data_list: data.data_list || [],
+                                slide_list: data.slide_list || [],
+                                goods_list: data.goods_list || [],
+                                hot_list: data.hot_list || [],
+                                right_list: data.right_list || [],
+                                blog_main_name: (data.base || null) == null ? '博文' : data.base.blog_main_name || '博文',
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: true,
+                            });
+
+                            // 基础自定义分享
+                            var title = this.data_base.seo_title || this.data_base.application_name;
+                            this.setData({
+                                share_info: {
+                                    title: title,
+                                    desc: this.data_base.seo_desc,
+                                    path: '/pages/plugins/blog/index/index',
+                                    img: (this.slide_list || null) != null && this.slide_list.length > 0 ? this.slide_list[0]['images_url'] : '',
+                                },
+                            });
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                        }
+
+                        // 标题
+                        uni.setNavigationBarTitle({ title: title });
+
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                    }
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
 
-                    // 标题
-                    uni.setNavigationBarTitle({ title: title });
-
-                    // 分享菜单处理
-                    app.globalData.page_share_handle(this.share_info);
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
         },
-
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        },
-    },
-};
+    };
 </script>
 <style>
-@import "./index.css";
+    @import './index.css';
 </style>

@@ -86,10 +86,10 @@
                         <!-- 限时秒杀 - 插件 -->
                         <view
                             v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
-                            class="plugins-seckill-data border-radius-main padding-horizontal-main spacing-mb padding-top-main bg-white"
-                            :style="'background-image: url(' + plugins_seckill_data.data.home_bg + ');'"
+                            class="plugins-seckill-data border-radius-main spacing-mb bg-white"
+                            :style="'background-image: url(' + seckill_static_url + 'seckill-bg.png);'"
                         >
-                            <view class="spacing-nav-title flex-row jc-sb align-c">
+                            <view class="flex-row jc-sb align-c padding-top-main padding-horizontal-main">
                                 <view class="flex-1">
                                     <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
                                     <view class="dis-inline-block va-m margin-left-sm">
@@ -176,7 +176,7 @@
                     <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
                         <!-- 活动配置-楼层底部 - 插件 -->
                         <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index"></component-activity-list>
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :prop-open-cart="false"></component-activity-list>
                         </block>
 
                         <!-- 弹屏广告 - 插件 -->
@@ -296,6 +296,7 @@
     import componentRecommedHot from '@/components/recommend-hot/recommend-hot';
 
     var common_static_url = app.globalData.get_static_url('common');
+    var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
     var static_url = app.globalData.get_static_url('home');
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -308,6 +309,7 @@
         data() {
             return {
                 common_static_url: common_static_url,
+                seckill_static_url: seckill_static_url,
                 static_url: static_url,
                 theme_color: theme_color,
                 data_list_loding_status: 1,
