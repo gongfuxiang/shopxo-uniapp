@@ -341,7 +341,7 @@
                 <view class="botton-nav round pa oh flex-row jc-sb align-c z-i">
                     <view class="flex-row align-c flex-1 flex-width">
                         <view class="cart pr cp top-sm" @tap="cart_event">
-                            <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#fff"></iconfont>
+                            <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
                             <view v-if="(cart || null) != null && (cart.buy_number || 0) != 0" class="badge-icon pa">
                                 <component-badge :propNumber="cart.buy_number"></component-badge>
                             </view>

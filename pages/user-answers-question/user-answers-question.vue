@@ -1,0 +1,191 @@
+<template>
+    <view>
+        <view v-if="data_list.length > 0" class="padding-main">
+            <view v-for="(item, index) in data_list" :key="index">
+                <navigator url="/pages/user-answers-detail/user-answers-detail" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                    <view class="margin-bottom-xs flex-row jc-sb align-c">
+                        <text class="fw-b text-size">{{ item.name }}</text>
+                        <text class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.reply === '1' ? '已回' : '未回' }}</text>
+                    </view>
+                    <view class="cr-grey-9">{{ item.add_time_time }}</view>
+                    <view class="spacing-mt">
+                        <view class="margin-bottom-sm flex-row jc-sb align-c">
+                            <view class="padding-right-sm">标题:</view>
+                            <view class="cr-grey flex-1 flex-width single-text">
+                                {{ item.title }}
+                            </view>
+                        </view>
+                        <view class="margin-bottom-sm flex-row jc-sb align-c">
+                            <view class="padding-right-sm">内容:</view>
+                            <view class="cr-grey flex-1 flex-width single-text">
+                                {{ item.content }}
+                            </view>
+                        </view>
+                    </view>
+                </navigator>
+            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </view>
+        <!-- 结尾 -->
+        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+        <view class="bottom-fixed question-btn bg-white">
+            <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none">
+                <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
+            </navigator>
+        </view>
+    </view>
+</template>
+<script>
+    const app = getApp();
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+
+    export default {
+        data() {
+            return {
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+            };
+        },
+
+        components: {
+            componentNoData,
+            componentBottomLine,
+        },
+        props: {},
+
+        onLoad() {},
+
+        onShow() {
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        methods: {
+            init() {
+                var user = app.globalData.get_user_info(this, 'init');
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.redirectTo({
+                            url: '/pages/login/login?event_callback=init',
+                        });
+                        return false;
+                    } else {
+                        // 获取数据
+                        this.get_data_list();
+                    }
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
+                    }
+                }
+
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+
+                // 加载loding
+                uni.showLoading({
+                    title: '加载中...',
+                });
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'answer'),
+                    method: 'POST',
+                    data: {
+                        page: this.data_page,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = res.data.data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: res.data.data.total,
+                                    data_page_total: res.data.data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_is_loading: 0,
+                                });
+                            }
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_is_loading: 0,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_is_loading: 0,
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
+        },
+    };
+</script>
+<style scoped>
+    @import './user-answers-question.css';
+</style>

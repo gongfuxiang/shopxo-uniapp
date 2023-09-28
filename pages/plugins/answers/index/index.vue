@@ -1,0 +1,276 @@
+<template>
+    <view>
+        <view class="bg-white padding-horizontal-main padding-top-main" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+            <view class="flex-row align-c spacing-mb">
+                <!-- 返回 -->
+                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m pr top-sm" @tap="top_nav_left_back_event">
+                    <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
+                </view>
+                <!-- #ifdef H5 -->
+                <component-search class="flex-1 flex-width" @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                <!-- #endif -->
+            </view>
+            <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c">
+                <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
+            </view>
+        </view>
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <navigator :url="'/pages/plugins/answers/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
+                        <view v-if="nav_index === 1">
+                            <view class="answers-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
+                        </view>
+                        <view class="flex-1 flex-width">
+                            <view class="title text-size fw-b">{{ item.title }}</view>
+                            <view class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
+                            <view class="status flex-row align-c spacing-mt text-size-xs">
+                                <view v-if="nav_index !== 1" class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
+                                <view class="num cr-grey-9 flex-row self-c">
+                                    {{ item.add_time_date }}
+                                    <view class="fw-b padding-horizontal-xs">·</view>
+                                    {{ item.access_count || '0' }}浏览
+                                </view>
+                            </view>
+                        </view>
+                    </navigator>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            </view>
+
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
+        <view class="bottom-fixed flex-row jc-sa align-c bg-white text-size fw-b">
+            <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+                <view class="divider-r-d">
+                    <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
+                    我要提问
+                </view>
+            </navigator>
+            <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+                <view>
+                    <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
+                    我的提问
+                </view>
+            </navigator>
+        </view>
+    </view>
+</template>
+<script>
+    const app = getApp();
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentSearch from '@/components/search/search';
+
+    export default {
+        data() {
+            return {
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                data_list: [],
+                data_total: 0,
+                data_page_total: 0,
+                data_page: 1,
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                data_is_loading: 0,
+                // 导航分类
+                nav_list: [],
+                nav_index: 0,
+                nav_type: '',
+                // 搜索框关键字
+                search_bwg: '',
+            };
+        },
+
+        components: {
+            componentNoData,
+            componentBottomLine,
+            componentSearch,
+        },
+        props: {},
+
+        onLoad() {},
+
+        onShow() {
+            this.get_nav_list();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
+        },
+
+        methods: {
+            get_nav_list() {
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'index', 'answers'),
+                    method: 'POST',
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.search_tab_list.length > 0) {
+                                this.setData({
+                                    nav_list: res.data.data.search_tab_list || [],
+                                });
+                                this.get_data_list();
+                            }
+                        }
+                    },
+                    fail: () => {
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
+                    }
+                }
+
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url('datalist', 'index', 'answers'),
+                    method: 'POST',
+                    data: {
+                        page: this.data_page,
+                        type: this.nav_type,
+                        bwd: this.search_bwg,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = res.data.data.data;
+                                } else {
+                                    var temp_data_list = this.data_list || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+
+                                this.setData({
+                                    data_list: temp_data_list,
+                                    data_total: res.data.data.total,
+                                    data_page_total: res.data.data.page_total,
+                                    data_list_loding_status: 3,
+                                    data_page: this.data_page + 1,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                this.setData({
+                                    data_list_loding_status: 0,
+                                    data_is_loading: 0,
+                                });
+                            }
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_is_loading: 0,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_is_loading: 0,
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
+
+            // 查询
+            search_button_event(e) {
+                this.setData({
+                    search_bwg: e || '',
+                    data_page: 1,
+                });
+                this.reset_scroll();
+                this.get_data_list(1);
+            },
+
+            // 重置滑动位置
+            reset_scroll() {
+                this.setData({
+                    scroll_top: this.scroll_top_old,
+                });
+                this.$nextTick(() => {
+                    this.setData({
+                        scroll_top: 0,
+                    });
+                });
+            },
+
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
+            },
+            nav_change_event(e) {
+                // 索引值
+                var index = e.currentTarget.dataset.index || 0;
+                var type = e.currentTarget.dataset.type || 0;
+                this.setData({
+                    nav_index: index,
+                    nav_type: type,
+                    data_page: 1,
+                });
+                this.reset_scroll();
+                this.get_data_list(1);
+            },
+        },
+    };
+</script>
+<style>
+    @import './index.css';
+</style>

@@ -1,0 +1,22 @@
+.answers-status {
+    padding: 4rpx 10rpx;
+}
+
+.answers-bg-green {
+    background-color: #5FB95E;
+}
+
+.answers-bg-yellow {
+    background-color: #FAAD14;
+}
+
+
+.question-btn {
+    padding: 30rpx 90rpx;
+}
+
+.question-btn button {
+    height: 88rpx;
+    line-height: 88rpx;
+    padding: 0;
+}

@@ -299,7 +299,8 @@ button:before {
 .bottom-fixed {
     position: fixed;
     left: 0;
-    bottom: 0;
+    /* bottom: 0; */
+    bottom: var(--window-bottom);
     border: none;
     width: 100%;
     box-sizing: border-box;
@@ -1264,7 +1265,11 @@ button[disabled].bg-grey {
 .divider-l-f5,
 .divider-r-f5,
 .divider-t-f5,
-.divider-b-f5 {
+.divider-b-f5,
+.divider-l-d,
+.divider-r-d,
+.divider-t-d,
+.divider-b-d {
     position: relative;
 }
 
@@ -1275,8 +1280,16 @@ button[disabled].bg-grey {
     background: #f5f5f5 !important;
 }
 
+.divider-l-d::before,
+.divider-r-d::after,
+.divider-t-d::before,
+.divider-b-d::after {
+    background: #dddddd !important;
+}
+
 .divider-l::before,
-.divider-l-f5::before {
+.divider-l-f5::before,
+.divider-l-d::before {
     content: '';
     width: 2rpx;
     height: 65%;
@@ -1288,7 +1301,8 @@ button[disabled].bg-grey {
 }
 
 .divider-r::after,
-.divider-r-f5::after {
+.divider-r-f5::after,
+.divider-r-d::after {
     content: '';
     width: 2rpx;
     height: 65%;
@@ -1300,7 +1314,8 @@ button[disabled].bg-grey {
 }
 
 .divider-t::before,
-.divider-t-f5::before {
+.divider-t-f5::before,
+.divider-t-d::before {
     content: '';
     width: 100%;
     height: 2rpx;
@@ -1310,7 +1325,8 @@ button[disabled].bg-grey {
 }
 
 .divider-b::after,
-.divider-b-f5::after {
+.divider-b-f5::after,
+.divider-b-d::after {
     content: '';
     width: 100%;
     height: 2rpx;
