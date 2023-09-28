@@ -1578,3 +1578,11 @@ button[disabled].bg-grey {
     padding: 0 !important;
     margin: 0 !important;
 }
+
+
+/**
+ * 顶部搜索按钮宽度
+ */
+.top-search-width {
+    width: calc(100% - 250rpx) !important;
+}

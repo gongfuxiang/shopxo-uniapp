@@ -4,9 +4,10 @@
             <view class="flex-row align-c">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m pr top-sm" @tap="top_nav_left_back_event">
-                    <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m" @tap="top_nav_left_back_event">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
                 </view>
+                <!-- #endif -->
             </view>
         </view>
         <!-- true为空对象 false为非空对象 Object.keys(detail_data).length == 0 -->

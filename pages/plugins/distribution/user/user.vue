@@ -6,8 +6,8 @@
             <view class="pr z-i">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
-                    <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white" @tap="top_nav_left_back_event">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
                 </view>
                 <!-- #endif -->
                 <view class="padding-top-xxxl oh">

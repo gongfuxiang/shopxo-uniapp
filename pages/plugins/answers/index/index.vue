@@ -4,12 +4,13 @@
             <view class="flex-row align-c spacing-mb">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m pr top-sm" @tap="top_nav_left_back_event">
-                    <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m" @tap="top_nav_left_back_event">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
                 </view>
-                <!-- #ifdef H5 -->
-                <component-search class="flex-1 flex-width" @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 <!-- #endif -->
+                <view :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+                    <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
+                </view>
             </view>
             <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c">
                 <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>

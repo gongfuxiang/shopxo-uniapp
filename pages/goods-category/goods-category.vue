@@ -489,7 +489,6 @@
             query
                 .select('.nav-search')
                 .boundingClientRect((data) => {
-                    console.log(data);
                     // 获取搜索框高度
                     this.setData({
                         search_height: data.height,

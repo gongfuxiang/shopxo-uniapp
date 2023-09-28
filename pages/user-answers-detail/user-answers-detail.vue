@@ -5,9 +5,10 @@
         </view>
         <!-- 返回 -->
         <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-        <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
-            <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
+        <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m cr-white" @tap="top_nav_left_back_event">
+            <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
         </view>
+        <!-- #endif -->
         <view v-if="Object.keys(detail_data.length !== 0)" class="padding-main pr z-i margin-top-main">
             <view class="bg-white border-radius-main padding-main text-size">
                 <view class="fw-b text-size-lg spacing-mb">提问详情</view>
