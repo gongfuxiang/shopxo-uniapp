@@ -5,7 +5,7 @@
         </view>
         <!-- 返回 -->
         <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-        <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m cr-white" @tap="top_nav_left_back_event">
+        <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m cr-white pr z-i" @tap="top_nav_left_back_event">
             <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
         </view>
         <!-- #endif -->
