@@ -2,10 +2,10 @@
     <view>
         <view v-if="data_list.length > 0" class="padding-main">
             <view v-for="(item, index) in data_list" :key="index">
-                <navigator url="/pages/user-answers-detail/user-answers-detail" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                <navigator :url="'/pages/user-answers-detail/user-answers-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
                     <view class="margin-bottom-xs flex-row jc-sb align-c">
                         <text class="fw-b text-size">{{ item.name }}</text>
-                        <text class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.reply === '1' ? '已回' : '未回' }}</text>
+                        <text class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
                     </view>
                     <view class="cr-grey-9">{{ item.add_time_time }}</view>
                     <view class="spacing-mt">

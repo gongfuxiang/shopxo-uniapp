@@ -8,36 +8,36 @@
         <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m pr top-sm cr-white" @tap="top_nav_left_back_event">
             <iconfont name="icon-tongyong-fanhui" size="32rpx"></iconfont>
         </view>
-        <view class="padding-main pr z-i margin-top-main">
+        <view v-if="Object.keys(detail_data.length !== 0)" class="padding-main pr z-i margin-top-main">
             <view class="bg-white border-radius-main padding-main text-size">
                 <view class="fw-b text-size-lg spacing-mb">提问详情</view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.user && detail_data.user.user_name_view" class="spacing-mb">
                     <view class="cr-grey-9">联系人</view>
-                    <view class="">李小雨</view>
+                    <view class="margin-top-xs">{{ detail_data.user.user_name_view }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.tel" class="spacing-mb">
                     <view class="cr-grey-9">联系电话</view>
-                    <view class="">15555555555</view>
+                    <view class="margin-top-xs">{{ detail_data.tel }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.title" class="spacing-mb">
                     <view class="cr-grey-9">标题</view>
-                    <view class="">国庆中秋怎么过</view>
+                    <view class="margin-top-xs">{{ detail_data.title }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.content" class="spacing-mb">
                     <view class="cr-grey-9">内容</view>
-                    <view class="">这是一个demo</view>
+                    <view class="margin-top-xs">{{ detail_data.content }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.reply" class="spacing-mb">
                     <view class="cr-grey-9">回复内容</view>
-                    <view class="">这是demo</view>
+                    <view class="margin-top-xs">{{ detail_data.reply }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.reply_time_time" class="spacing-mb">
                     <view class="cr-grey-9">回复时间</view>
-                    <view class="">2023-09-20 15:18:50</view>
+                    <view class="margin-top-xs">{{ detail_data.reply_time_time }}</view>
                 </view>
-                <view class="spacing-mb">
+                <view v-if="detail_data.add_time_time" class="spacing-mb">
                     <view class="cr-grey-9">创建时间</view>
-                    <view class="">2023-09-20 15:18:50</view>
+                    <view class="margin-top-xs">{{ detail_data.add_time_time }}</view>
                 </view>
             </view>
         </view>
@@ -95,7 +95,7 @@
                         return false;
                     } else {
                         // 获取数据
-                        this.get_data_list();
+                        this.get_data();
                     }
                 } else {
                     this.setData({
@@ -105,11 +105,40 @@
                 }
             },
 
-            get_data_list(is_mandatory) {},
-
-            // 滚动加载
-            scroll_lower(e) {
-                this.get_data_list();
+            get_data() {
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'answer'),
+                    method: 'POST',
+                    data: {
+                        id: this.$route.query.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res.data.data);
+                        if (res.data.code == 0) {
+                            this.setData({
+                                detail_data: res.data.data || {},
+                                data_list_loding_status: 3,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
             },
 
             // 顶部返回操作
