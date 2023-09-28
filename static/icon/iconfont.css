@@ -1,6 +1,7 @@
 @font-face {
     font-family: "iconfont";
     /* Project id 4227145 */
+    /* Project id 4227145 */
     /* 全局注册需要切换成绝对路径 */
     /* @/static/icon/ */
     src: url('@/static/icon/iconfont.woff2?t=1693280977762') format('woff2'),
@@ -15,6 +16,38 @@
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-wenda-wytw:before {
+    content: "\e6de";
+}
+
+.icon-wenda-wdtw:before {
+    content: "\e6df";
+}
+
+.icon-bowenxiangqing-dianzan-xuaz:before {
+    content: "\e6dd";
+}
+
+.icon-bowenxiangqing-fenxiang:before {
+    content: "\e6dc";
+}
+
+.icon-bowenxiangqing-huifu:before {
+    content: "\e6ce";
+}
+
+.icon-bowenxiangqing-dianzan:before {
+    content: "\e6da";
+}
+
+.icon-wodeqianbao-eyeclo2:before {
+    content: "\e6db";
+}
+
+.icon-zuhedap-shoping:before {
+    content: "\e6d9";
 }
 
 .icon-wdhy-gaoji:before {
@@ -51,10 +84,6 @@
 
 .icon-tongyong-fanhui:before {
     content: "\e6d1";
-}
-
-.icon-wodeqianbao-eyeclo:before {
-    content: "\e6ce";
 }
 
 .icon-mendian-sousuosm:before {

@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "37550661",
+      "name": "wenda-wytw",
+      "font_class": "wenda-wytw",
+      "unicode": "e6de",
+      "unicode_decimal": 59102
+    },
+    {
+      "icon_id": "37550660",
+      "name": "wenda-wdtw",
+      "font_class": "wenda-wdtw",
+      "unicode": "e6df",
+      "unicode_decimal": 59103
+    },
+    {
+      "icon_id": "37539354",
+      "name": "bowenxiangqing-dianzan-xuaz",
+      "font_class": "bowenxiangqing-dianzan-xuaz",
+      "unicode": "e6dd",
+      "unicode_decimal": 59101
+    },
+    {
+      "icon_id": "37538544",
+      "name": "bowenxiangqing-fenxiang",
+      "font_class": "bowenxiangqing-fenxiang",
+      "unicode": "e6dc",
+      "unicode_decimal": 59100
+    },
+    {
+      "icon_id": "37538541",
+      "name": "bowenxiangqing-huifu",
+      "font_class": "bowenxiangqing-huifu",
+      "unicode": "e6ce",
+      "unicode_decimal": 59086
+    },
+    {
+      "icon_id": "37538540",
+      "name": "bowenxiangqing-dianzan",
+      "font_class": "bowenxiangqing-dianzan",
+      "unicode": "e6da",
+      "unicode_decimal": 59098
+    },
+    {
+      "icon_id": "37494984",
+      "name": "wodeqianbao-eyeclo2",
+      "font_class": "wodeqianbao-eyeclo2",
+      "unicode": "e6db",
+      "unicode_decimal": 59099
+    },
+    {
+      "icon_id": "37482928",
+      "name": "zuhedap-shoping",
+      "font_class": "zuhedap-shoping",
+      "unicode": "e6d9",
+      "unicode_decimal": 59097
+    },
+    {
       "icon_id": "37362566",
       "name": "wdhy-gaoji",
       "font_class": "wdhy-gaoji",
@@ -67,13 +123,6 @@
       "font_class": "tongyong-fanhui",
       "unicode": "e6d1",
       "unicode_decimal": 59089
-    },
-    {
-      "icon_id": "37354115",
-      "name": "wodeqianbao-eyeclo",
-      "font_class": "wodeqianbao-eyeclo",
-      "unicode": "e6ce",
-      "unicode_decimal": 59086
     },
     {
       "icon_id": "37354114",

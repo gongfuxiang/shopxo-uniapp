@@ -52,7 +52,7 @@
 
                 <!-- 虚拟销售数据 -->
                 <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || "密钥信息" }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || '密钥信息' }}</view>
                     <view class="panel-content oh padding-top-main">
                         <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
                             <mp-html :content="site_fictitious.tips" />
@@ -73,7 +73,7 @@
                     <view class="panel-content oh padding-top-main">
                         <view>
                             <text>取货码：</text>
-                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || "取货码不存在、请联系管理员" }}</text>
+                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || '取货码不存在、请联系管理员' }}</text>
                         </view>
                         <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
@@ -83,9 +83,9 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main flex-row jc-sb align-c">
+                            <view class="title padding-right-main cr-grey">{{ item.name }}</view>
+                            <view class="content br-l padding-left-main flex-1 flex-width">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -112,160 +112,160 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "../../components/no-data/no-data";
-import componentBottomLine from "../../components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentNoData from '../../components/no-data/no-data';
+    import componentBottomLine from '../../components/bottom-line/bottom-line';
 
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            common_static_url: common_static_url,
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            detail: null,
-            detail_list: [],
-            extension_data: [],
-            site_fictitious: null,
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        //params['id'] = 5;
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 数据加载
-        this.init();
-
-        // 分享菜单处理
-        app.globalData.page_share_handle();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 获取数据
-        init() {
-            var self = this;
-            uni.showLoading({
-                title: "加载中...",
-            });
-            this.setData({
+    var common_static_url = app.globalData.get_static_url('common');
+    export default {
+        data() {
+            return {
+                common_static_url: common_static_url,
+                params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
+                detail: null,
+                detail_list: [],
+                extension_data: [],
+                site_fictitious: null,
+            };
+        },
+
+        components: {
+            componentNoData,
+            componentBottomLine,
+        },
+        props: {},
+
+        onLoad(params) {
+            //params['id'] = 5;
+            this.setData({
+                params: params,
             });
-            uni.request({
-                url: app.globalData.get_request_url("detail", "order"),
-                method: "POST",
-                data: {
-                    id: this.params.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        self.setData({
-                            detail: data.data,
-                            detail_list: [
-                                { name: "出货服务", value: data.data.warehouse_name || "" },
-                                { name: "订单模式", value: data.data.order_model_name || "" },
-                                { name: "订单编号", value: data.data.order_no || "" },
-                                { name: "订单状态", value: data.data.status_name || "" },
-                                { name: "支付状态", value: data.data.pay_status_name || "" },
-                                { name: "订单单价", value: data.data.price || "" },
-                                { name: "订单总价", value: data.data.total_price || "" },
-                                { name: "优惠金额", value: data.data.preferential_price || "" },
-                                { name: "增加金额", value: data.data.increase_price || "" },
-                                { name: "支付金额", value: data.data.pay_price || "" },
-                                { name: "支付方式", value: (data.data.payment_name || "") + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? "" : "（" + data.data.is_under_line_text + "）") },
-                                { name: "快递公司", value: data.data.express_name || "" },
-                                { name: "快递单号", value: data.data.express_number || "" },
-                                { name: "用户留言", value: data.data.user_note || "" },
-                                { name: "创建时间", value: data.data.add_time || "" },
-                                { name: "确认时间", value: data.data.confirm_time || "" },
-                                { name: "支付时间", value: data.data.pay_time || "" },
-                                { name: "发货时间", value: data.data.delivery_time || "" },
-                                { name: "收货时间", value: data.data.collect_time || "" },
-                                { name: "取消时间", value: data.data.cancel_time || "" },
-                                { name: "关闭时间", value: data.data.close_time || "" },
-                            ],
-                            extension_data: data.data.extension_data || [],
-                            site_fictitious: data.site_fictitious || null,
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                        });
-                    } else {
+        },
+
+        onShow() {
+            // 数据加载
+            this.init();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            // 获取数据
+            init() {
+                var self = this;
+                uni.showLoading({
+                    title: '加载中...',
+                });
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'order'),
+                    method: 'POST',
+                    data: {
+                        id: this.params.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            self.setData({
+                                detail: data.data,
+                                detail_list: [
+                                    { name: '出货服务', value: data.data.warehouse_name || '' },
+                                    { name: '订单模式', value: data.data.order_model_name || '' },
+                                    { name: '订单编号', value: data.data.order_no || '' },
+                                    { name: '订单状态', value: data.data.status_name || '' },
+                                    { name: '支付状态', value: data.data.pay_status_name || '' },
+                                    { name: '订单单价', value: data.data.price || '' },
+                                    { name: '订单总价', value: data.data.total_price || '' },
+                                    { name: '优惠金额', value: data.data.preferential_price || '' },
+                                    { name: '增加金额', value: data.data.increase_price || '' },
+                                    { name: '支付金额', value: data.data.pay_price || '' },
+                                    { name: '支付方式', value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
+                                    { name: '快递公司', value: data.data.express_name || '' },
+                                    { name: '快递单号', value: data.data.express_number || '' },
+                                    { name: '用户留言', value: data.data.user_note || '' },
+                                    { name: '创建时间', value: data.data.add_time || '' },
+                                    { name: '确认时间', value: data.data.confirm_time || '' },
+                                    { name: '支付时间', value: data.data.pay_time || '' },
+                                    { name: '发货时间', value: data.data.delivery_time || '' },
+                                    { name: '收货时间', value: data.data.collect_time || '' },
+                                    { name: '取消时间', value: data.data.cancel_time || '' },
+                                    { name: '关闭时间', value: data.data.close_time || '' },
+                                ],
+                                extension_data: data.data.extension_data || [],
+                                site_fictitious: data.site_fictitious || null,
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: '',
+                            });
+                        } else {
+                            self.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, self, 'init')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         self.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                        if (app.globalData.is_login_check(res.data, self, "init")) {
-                            app.globalData.showToast(res.data.msg);
-                        }
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    self.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+
+            // 售后订单事件
+            orderaftersale_event(e) {
+                var oid = e.currentTarget.dataset.oid || 0;
+                var did = e.currentTarget.dataset.did || 0;
+                if (oid == 0 || did == 0) {
+                    app.globalData.showToast('参数有误');
+                    return false;
+                }
+
+                // 进入售后页面
+                uni.navigateTo({
+                    url: '/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did,
+                });
+            },
+
+            // 地图查看
+            address_map_event(e) {
+                if ((this.detail.address_data || null) == null) {
+                    app.globalData.showToast('地址有误');
+                    return false;
+                }
+
+                // 打开地图
+                var data = this.detail.address_data;
+                var name = data.alias || data.name || '';
+                var address = (data.province_name || '') + (data.city_name || '') + (data.county_name || '') + (data.address || '');
+                app.globalData.open_location(data.lng, data.lat, name, address);
+            },
         },
-
-        // 售后订单事件
-        orderaftersale_event(e) {
-            var oid = e.currentTarget.dataset.oid || 0;
-            var did = e.currentTarget.dataset.did || 0;
-            if (oid == 0 || did == 0) {
-                app.globalData.showToast("参数有误");
-                return false;
-            }
-
-            // 进入售后页面
-            uni.navigateTo({
-                url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" + did,
-            });
-        },
-
-        // 地图查看
-        address_map_event(e) {
-            if ((this.detail.address_data || null) == null) {
-                app.globalData.showToast("地址有误");
-                return false;
-            }
-
-            // 打开地图
-            var data = this.detail.address_data;
-            var name = data.alias || data.name || "";
-            var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
-            app.globalData.open_location(data.lng, data.lat, name, address);
-        },
-    },
-};
+    };
 </script>
 <style>
-@import "./user-order-detail.css";
+    @import './user-order-detail.css';
 </style>
