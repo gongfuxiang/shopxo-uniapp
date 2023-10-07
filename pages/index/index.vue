@@ -337,7 +337,7 @@
                 is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
                 top_content_style: 'padding-top:' + (bar_height + 8) + 'px;background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
-                top_content_title_style: 'background-image: url("' + static_url + 'nav-top.png");' + 'padding-top:' + (bar_height + 8) + 'px;background-color:' + theme_color,
+                top_content_title_style: 'background-image: url("' + static_url + 'nav-top.png");' + 'padding-top:' + (bar_height + 5) + 'px;background-color:' + theme_color,
                 search_style: '',
                 search_is_fixed: 0,
                 // 是否单页预览
