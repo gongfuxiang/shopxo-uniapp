@@ -28,7 +28,7 @@
             </view>
 
             <!-- 导航 -->
-            <view class="nav wh-auto oh bottom-line-exclude flex-row jc-sb">
+            <view class="bottom-fixed nav wh-auto oh bottom-line-exclude flex-row jc-sb">
                 <button class="share-friend-submit fl cr-white text-size-sm round" type="default" hover-class="none" open-type="share">
                     <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-share-friend-icon.png'" mode="widthFix"></image>
                     <text class="va-m">分享</text>
@@ -53,169 +53,169 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    const app = getApp();
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
 
-var static_url = app.globalData.get_static_url("weixinliveplayer", true);
-export default {
-    data() {
-        return {
-            static_url: static_url + "app/",
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            data_bottom_line_status: false,
-            detail: null,
-            // 自定义分享信息
-            share_info: {},
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-    },
-    props: {},
-
-    onLoad(params) {
-        this.setData({
-            params: app.globalData.launch_params_handle(params),
-        });
-        this.init();
-    },
-
-    onShow() {},
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        init() {
-            uni.showLoading({
-                title: "加载中...",
-            });
-            this.setData({
+    var static_url = app.globalData.get_static_url('weixinliveplayer', true);
+    export default {
+        data() {
+            return {
+                static_url: static_url + 'app/',
+                params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
+                detail: null,
+                // 自定义分享信息
+                share_info: {},
+            };
+        },
+
+        components: {
+            componentNoData,
+            componentBottomLine,
+        },
+        props: {},
+
+        onLoad(params) {
+            this.setData({
+                params: app.globalData.launch_params_handle(params),
             });
-            uni.request({
-                url: app.globalData.get_request_url("detail", "search", "weixinliveplayer"),
-                method: "POST",
-                data: {
-                    id: this.params.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            detail: data.data || null,
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
-                        });
+            this.init();
+        },
 
-                        if ((this.detail || null) != null) {
-                            // 基础自定义分享
+        onShow() {},
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
+
+        methods: {
+            init() {
+                uni.showLoading({
+                    title: '加载中...',
+                });
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'search', 'weixinliveplayer'),
+                    method: 'POST',
+                    data: {
+                        id: this.params.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
                             this.setData({
-                                share_info: {
-                                    title: this.detail.seo_title || this.detail.name,
-                                    desc: this.detail.seo_desc,
-                                    path: "/pages/plugins/weixinliveplayer/detail/detail",
-                                    query: "id=" + this.detail.id,
-                                    img: this.detail.share_img,
-                                },
+                                detail: data.data || null,
+                                data_list_loding_status: 3,
+                                data_bottom_line_status: true,
+                                data_list_loding_msg: '',
                             });
 
-                            // 标题
-                            uni.setNavigationBarTitle({
-                                title: this.detail.name,
+                            if ((this.detail || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.detail.seo_title || this.detail.name,
+                                        desc: this.detail.seo_desc,
+                                        path: '/pages/plugins/weixinliveplayer/detail/detail',
+                                        query: 'id=' + this.detail.id,
+                                        img: this.detail.share_img,
+                                    },
+                                });
+
+                                // 标题
+                                uni.setNavigationBarTitle({
+                                    title: this.detail.name,
+                                });
+                            }
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_bottom_line_status: false,
+                                data_list_loding_msg: res.data.msg,
                             });
+                            app.globalData.showToast(res.data.msg);
                         }
-                    } else {
+
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                        app.globalData.showToast(res.data.msg);
-                    }
-
-                    // 分享菜单处理
-                    app.globalData.page_share_handle(this.share_info);
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_bottom_line_status: false,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-
-        // 详情图片查看
-        detail_images_view_event(e) {
-            var value = e.currentTarget.dataset.value || null;
-            if (value != null) {
-                uni.previewImage({
-                    current: value,
-                    urls: [value],
+                        app.globalData.showToast('服务器请求出错');
+                    },
                 });
-            }
-        },
+            },
 
-        // 进入直播
-        player_event(e) {
-            var params = encodeURIComponent(
-                JSON.stringify({
-                    type: "detail",
-                })
-            );
-            uni.navigateTo({
-                url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${this.detail.roomid}&custom_params=${params}`,
-            });
-        },
+            // 详情图片查看
+            detail_images_view_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                if (value != null) {
+                    uni.previewImage({
+                        current: value,
+                        urls: [value],
+                    });
+                }
+            },
 
-        // 海报分享
-        share_poster_event() {
-            uni.showLoading({
-                title: "生成中...",
-            });
-            uni.request({
-                url: app.globalData.get_request_url("poster", "index", "weixinliveplayer"),
-                method: "POST",
-                data: {
-                    id: this.detail.id,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        uni.previewImage({
-                            current: res.data.data,
-                            urls: [res.data.data],
-                        });
-                    } else {
-                        app.globalData.showToast(res.data.msg);
-                    }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
+            // 进入直播
+            player_event(e) {
+                var params = encodeURIComponent(
+                    JSON.stringify({
+                        type: 'detail',
+                    })
+                );
+                uni.navigateTo({
+                    url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${this.detail.roomid}&custom_params=${params}`,
+                });
+            },
+
+            // 海报分享
+            share_poster_event() {
+                uni.showLoading({
+                    title: '生成中...',
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('poster', 'index', 'weixinliveplayer'),
+                    method: 'POST',
+                    data: {
+                        id: this.detail.id,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            uni.previewImage({
+                                current: res.data.data,
+                                urls: [res.data.data],
+                            });
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./detail.css";
+    @import './detail.css';
 </style>

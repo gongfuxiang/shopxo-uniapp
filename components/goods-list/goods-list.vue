@@ -60,7 +60,7 @@
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-value="item.goods_url" @tap="url_event">
-                                <image class="goods-img dis-block wh-auto" :src="item.images" mode="scaleToFill"></image>
+                                <image class="goods-img dis-block wh-auto" :src="item.images" mode="widthFix"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{ item.title }}</view>
                                     <view class="margin-top-sm flex-row jc-sb align-c">

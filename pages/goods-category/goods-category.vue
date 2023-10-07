@@ -8,7 +8,7 @@
             <block v-if="is_single_page == 0">
                 <view class="nav-search padding-horizontal-main pr" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
                     <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto">
-                        <image :src="theme_static_url + 'goods-top-bg.png'" mode="top" class="wh-auto ht-auto"></image>
+                        <image :src="theme_static_url + 'goods-top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
                     </view>
                     <block v-if="is_goods_category_search_alone == 1">
                         <component-search propPlaceholder="输入商品名称搜索"></component-search>
@@ -338,7 +338,7 @@
                     </view>
                 </block>
                 <!-- 购物车底部导航 -->
-                <view class="botton-nav round pa oh flex-row jc-sb align-c z-i">
+                <view class="botton-nav round pa oh flex-row jc-sb align-c">
                     <view class="flex-row align-c flex-1 flex-width">
                         <view class="cart pr cp top-sm" @tap="cart_event">
                             <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>

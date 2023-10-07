@@ -1135,7 +1135,7 @@ button[disabled].bg-grey {
 
 .goods-data-grid-list .item .error-msg,
 .goods-data-grid-list .item .goods-img {
-    height: 341rpx !important;
+    /* height: 341rpx !important; */
 }
 
 .goods-data-grid-list .item .error-msg {

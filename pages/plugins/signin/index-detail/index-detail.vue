@@ -1,6 +1,6 @@
 <template>
     <view class="signin-container">
-        <view v-if="(data || null) != null">
+        <view v-if="(data || null) != null" class="pr">
             <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="signin-bg"></image>
             <view class="signin-opration-group pa right-0 flex-col cr-white">
                 <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">

@@ -2,15 +2,11 @@
 * 数据列表
 */
 .data-list {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
 }
 
 .data-list .item {
-	width: calc(50% - 10rpx);
-}
-
-.data-list .item image {
-	width: 100%;
+    width: calc(50% - 10rpx);
 }

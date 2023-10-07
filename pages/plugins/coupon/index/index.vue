@@ -4,11 +4,11 @@
             <image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
         </view>
         <view class="plugins-coupon-container">
-            <scroll-view scroll-y class="coupon-content bg-white">
+            <scroll-view scroll-y class="coupon-content bg-white pr">
                 <!-- 优惠劵列表 -->
                 <view v-if="data_list.length > 0" class="flex-col">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <component-poupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-poupon-card>
+                        <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
                     </block>
                 </view>
                 <view v-else>
@@ -31,7 +31,7 @@
     const app = getApp();
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentPouponCard from '@/components/coupon-card/coupon-card.vue';
+    import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
 
     export default {
         data() {
@@ -53,7 +53,7 @@
         components: {
             componentNoData,
             componentBottomLine,
-            componentPouponCard,
+            componentCouponCard,
         },
         props: {},
 
@@ -209,6 +209,7 @@
                                                 data_list: temp_list,
                                             });
                                         }
+                                        this.get_data_list();
                                     } else {
                                         if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
                                             app.globalData.showToast(res.data.msg);

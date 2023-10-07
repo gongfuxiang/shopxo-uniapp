@@ -40,7 +40,7 @@
 }
 
 .signin-btn .content {
-    width: 216rpx;
+    min-width: 216rpx;
     padding: 12rpx 48rpx;
     display: inline-flex;
     justify-content: center;
@@ -170,4 +170,19 @@
     bottom: -150rpx;
     left: 50%;
     transform: translateX(-50%);
+}
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .signin-btn .content {
+        font-size: 64rpx;
+        border-radius: 128rpx;
+        padding: 24rpx 168rpx;
+    }
+
+    .signin-btn {
+        margin: -240rpx;
+    }
 }
