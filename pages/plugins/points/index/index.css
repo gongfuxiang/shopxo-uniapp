@@ -2,7 +2,7 @@
 * 顶部
 */
 .points-content {
-    padding-top: 448rpx;
+    padding-top: 350rpx;
 }
 
 .points-user {
@@ -42,7 +42,7 @@
  * 积分规则
  */
 .rule-btn {
-    top: 242rpx;
+    top: 140rpx;
     width: 148rpx;
     height: 52rpx;
     padding: 0;
@@ -65,4 +65,17 @@
     margin: 20rpx 70rpx 42rpx 70rpx;
     height: 80rpx;
     line-height: 80rpx;
+}
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .points-content {
+        padding-top: 51%;
+    }
+
+    .rule-btn {
+        top: 11%;
+    }
 }

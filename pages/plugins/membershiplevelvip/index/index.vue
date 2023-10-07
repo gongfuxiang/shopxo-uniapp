@@ -2,16 +2,14 @@
     <view class="bg-white">
         <view v-if="(data_base || null) != null">
             <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="wh-auto"></image>
-            <view class="banner tc oh pa top-0 wh-auto">
+            <view class="banner tc oh pa top-0 pa-w wh-auto">
                 <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
                 <!-- 标题 -->
-                <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl">
-                    {{data_base.banner_top_title}}123
-                </view>
+                <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
                 <!-- 购买按钮 -->
                 <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
                     <button class="banner-buy fw-b round margin-top-xxxl" type="default" size="mini" hover-class="none" :style="join_vip_btn">
-                        {{data_base.banner_middle_name || '加入会员'}}
+                        {{ data_base.banner_middle_name || '加入会员' }}
                     </button>
                 </navigator>
             </view>
@@ -20,8 +18,8 @@
                 <block v-for="(item, index) in introduce_data" :key="index">
                     <view class="item tc bg-white">
                         <image class="dis-block auto" :src="item.images_url" mode="scaleToFill"></image>
-                        <view class="single-text text-size margin-top-main">{{item.name}}</view>
-                        <view class="multi-text cr-grey-c text-size-xs margin-top-xs">{{item.desc}}</view>
+                        <view class="single-text text-size margin-top-main">{{ item.name }}</view>
+                        <view class="multi-text cr-grey-c text-size-xs margin-top-xs">{{ item.desc }}</view>
                     </view>
                 </block>
             </view>
@@ -42,8 +40,8 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
     let membership_level_vip = app.globalData.get_static_url('membershiplevelvip', true);
     export default {
         data() {
@@ -57,12 +55,12 @@
                 default_images_data: null,
                 // 自定义分享信息
                 share_info: {},
-                join_vip_btn: 'background-image: url(' + membership_level_vip + 'app/join-vip-btn.png) !important;'
+                join_vip_btn: 'background-image: url(' + membership_level_vip + 'app/join-vip-btn.png) !important;',
             };
         },
         components: {
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
         },
         props: {},
         onLoad(params) {
@@ -81,19 +79,19 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: '加载中...'
+                    title: '加载中...',
                 });
                 if (this.introduce_data.length <= 0) {
                     this.setData({
-                        data_list_loding_status: 1
+                        data_list_loding_status: 1,
                     });
                 }
                 uni.request({
-                    url: app.globalData.get_request_url("index", "index", "membershiplevelvip"),
+                    url: app.globalData.get_request_url('index', 'index', 'membershiplevelvip'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
-                    success: res => {
+                    success: (res) => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
@@ -104,7 +102,7 @@
                                 introduce_data: data.introduce_data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
-                                data_bottom_line_status: true
+                                data_bottom_line_status: true,
                             });
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享
@@ -113,13 +111,13 @@
                                         title: this.data_base.seo_title || this.data_base.application_name,
                                         desc: this.data_base.seo_desc,
                                         path: '/pages/plugins/membershiplevelvip/index/index',
-                                        img: this.default_images_data.default_bg_images || this.default_images_data.default_logo || ''
-                                    }
+                                        img: this.default_images_data.default_bg_images || this.default_images_data.default_logo || '',
+                                    },
                                 });
                                 // 导航名称
                                 if ((this.data_base.application_name || null) != null) {
                                     uni.setNavigationBarTitle({
-                                        title: this.data_base.application_name
+                                        title: this.data_base.application_name,
                                     });
                                 }
                             }
@@ -127,7 +125,7 @@
                             this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg
+                                data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
@@ -142,13 +140,13 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错'
+                            data_list_loding_msg: '服务器请求出错',
                         });
                         app.globalData.showToast('服务器请求出错');
-                    }
+                    },
                 });
-            }
-        }
+            },
+        },
     };
 </script>
 <style>

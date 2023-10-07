@@ -3,7 +3,7 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="banner_list.length > 0 ? slider_bg : top_content_style">
-                <image class="wh-auto pa top-0 left-0 right-0" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
+                <image class="pa top-0 bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
                 <!-- logo/标题 -->
                 <!-- #ifndef MP-TOUTIAO -->
                 <view class="home-top-nav-logo">

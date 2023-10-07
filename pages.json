@@ -731,6 +731,9 @@
             "pages": [{
                 "path": "index/index",
                 "style": {
+                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                    "navigationStyle": "custom",
+                    // #endif
                     "enablePullDownRefresh": true,
                     "navigationBarTitleText": "积分商城"
                 }

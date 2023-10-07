@@ -30,7 +30,9 @@ iframe,
 .bottom-fixed,
 .buy-nav,
 .plugins-popupscreen .content,
-.cart-buy-nav {
+.cart-buy-nav,
+.bg-img,
+.pa-w {
     max-width: 800px !important;
     margin: 0 auto !important;
 }

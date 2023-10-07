@@ -2,12 +2,12 @@
     <view>
         <view v-if="(data_base || null) != null" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
             <!-- 头部背景 -->
-            <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="wh-auto pa top-0 left-0 right-0" />
+            <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
             <view class="pr z-i">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white" @tap="top_nav_left_back_event">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx"></iconfont>
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
                 </view>
                 <!-- #endif -->
                 <view class="padding-top-xxxl oh">

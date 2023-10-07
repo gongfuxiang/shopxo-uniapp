@@ -10,8 +10,8 @@
                     <view v-if="is_single_page == 0" class="header-top padding-horizontal-main flex-row align-c" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
                         <!-- 返回 -->
                         <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                        <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m" @tap="top_nav_left_back_event">
-                            <iconfont name="icon-tongyong-fanhui" size="40rpx" color="#333"></iconfont>
+                        <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m">
+                            <iconfont name="icon-tongyong-fanhui" size="40rpx" color="#333" @tap="top_nav_left_back_event"></iconfont>
                         </view>
                         <!-- #endif -->
                         <!-- 搜索 -->

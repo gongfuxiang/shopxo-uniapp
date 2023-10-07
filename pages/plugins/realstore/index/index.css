@@ -5,6 +5,7 @@
     background-color: #F7EDE1;
 }
 
+
 /**
 * 位置和搜索
 */
@@ -39,11 +40,27 @@
 }
 
 .choice-location-tips .content {
-    margin-top: 42%;
+    margin-top: 30%;
     width: 520rpx;
 }
 
 .choice-location-tips .content .close {
     top: 20rpx;
     right: 20rpx;
+}
+
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .realstore-nav-bg {
+        background-size: cover;
+    }
+}
+
+@media only screen and (max-width:960px) {
+    .realstore-nav-bg {
+        background-size: auto 100%;
+    }
 }
