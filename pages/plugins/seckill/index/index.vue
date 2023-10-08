@@ -10,20 +10,12 @@
                         <image :src="seckill_title_url" mode="widthFix" class="title pr top-sm"></image>
                     </view>
                 </view>
+                <!-- #endif -->
                 <!-- 秒杀时段 -->
                 <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll wh-auto">
                     <view class="nav_seckill flex-row flex-nowrap cr-white">
-                        <view
-                            v-for="(item, index) in periods_list"
-                            :key="index"
-                            class="item tc cp text-size-xss"
-                            :class="nav_active_index === index ? 'active' : ''"
-                            :id="'one-nav-item-' + index"
-                            :data-index="index"
-                            :data-text="item.time.time_first_text"
-                            :data-status="item.time.status"
-                            @tap="nav_event"
-                        >
+                        <view v-for="(item, index) in periods_list" :key="index" class="item tc cp text-size-xss" :class="nav_active_index === index ? 'active' : ''" :id="'one-nav-item-' + index"
+                            :data-index="index" :data-text="item.time.time_first_text" :data-status="item.time.status" @tap="nav_event">
                             <view class="time text-size-lg">{{ item.name }}</view>
                             <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-main' : ''">{{ item.time.msg }}</view>
                         </view>
@@ -36,18 +28,21 @@
                     <view>
                         <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
                         <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+                            <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds"
+                                :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
                         </view>
                     </view>
                     <view class="text-size-xs cr-blak" @tap="quick_open_event">
                         活动规则
-                        <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
+                        <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs"
+                            color="#999"></iconfont>
                     </view>
                 </view>
 
                 <!-- 商品 -->
                 <view v-if="goods.length > 0">
-                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
+                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig"
+                        :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -58,7 +53,8 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             <!-- 弹窗 -->
-            <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+            <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom"
+                @onclose="quick_close_event">
                 <view class="rule">
                     <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
                     <scroll-view :scroll-y="true" class="item">

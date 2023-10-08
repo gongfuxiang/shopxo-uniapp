@@ -18,6 +18,7 @@
                     <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
                     <text class="text-size flex-1 tc">积分</text>
                 </view>
+                <!-- #endif -->
                 <view class="padding-horizontal-main points-content pr">
                     <!-- 顶部 -->
                     <view class="border-radius-main bg-white pr spacing-mb">
@@ -34,8 +35,7 @@
                                     <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
                                     <view class="padding-left-main">
                                         <view class="text-size fw-b">{{ user.user_name_view }}</view>
-                                        <view class="desc margin-top-sm cr-grey"
-                                            >当前可用
+                                        <view class="desc margin-top-sm cr-grey">当前可用
                                             <text class="cr-black fw-b padding-horizontal-xs">
                                                 {{ user_integral.integral || 0 }}
                                             </text>
@@ -77,26 +77,22 @@
                     </view>
 
                     <!-- 公告信息 -->
-                    <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">积分规则</button>
+                    <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md"
+                        @tap="quick_open_event">积分规则</button>
 
                     <!-- 商品兑换 -->
                     <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                        <component-goods-list
-                            :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }"
-                            prop-more-url-key="url"
-                            :propCurrencySymbol="currency_symbol"
-                            :prop-grid-btn-config="gridBtnConfig"
-                            :prop-is-open-grid-btn-set="isOpenGridBtnSet"
-                            propPriceField="price"
-                            propIntegral
-                        ></component-goods-list>
+                        <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" prop-more-url-key="url"
+                            :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="price"
+                            propIntegral></component-goods-list>
                     </view>
                 </view>
 
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 <!-- 积分规则弹窗 -->
-                <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+                <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom"
+                    @onclose="quick_close_event">
                     <view class="rule">
                         <view class="cr-black text-size-md fw-b margin-bottom-main tc">积分规则</view>
                         <scroll-view :scroll-y="true" class="item">

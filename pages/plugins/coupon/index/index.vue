@@ -6,16 +6,19 @@
             <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
                 <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
             </view>
+            <!-- #endif -->
         </view>
         <view class="pa top-0 bg-img wh-auto">
-            <image v-if="(data_base || null) != null" class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
+            <image v-if="(data_base || null) != null" class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix"
+                :data-value="data_base.url || ''" @tap="url_event"></image>
         </view>
         <view class="plugins-coupon-container">
             <view class="coupon-content bg-white pr">
                 <!-- 优惠劵列表 -->
                 <view v-if="data_list.length > 0" class="flex-col">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                        <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress
+                            @call-back="coupon_receive_event"></component-coupon-card>
                     </block>
                 </view>
                 <view v-else>
@@ -40,7 +43,6 @@
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
     import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
     var coupon_static_url = app.globalData.get_static_url('coupon', true);
-
     export default {
         data() {
             return {
@@ -61,27 +63,22 @@
                 share_info: {},
             };
         },
-
         components: {
             componentNoData,
             componentBottomLine,
             componentCouponCard,
         },
         props: {},
-
         onShow() {
             // 数据加载
             this.init();
-
             // 初始化配置
             this.init_config();
         },
-
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data_list();
         },
-
         methods: {
             // 初始化配置
             init_config(status) {
@@ -93,12 +90,10 @@
                     app.globalData.is_config(this, 'init_config');
                 }
             },
-
             // 获取数据
             init() {
                 this.get_data_list();
             },
-
             // 获取数据
             get_data_list() {
                 var self = this;
@@ -129,7 +124,6 @@
                                 data_list_loding_status: status ? 3 : 0,
                                 data_bottom_line_status: status,
                             });
-
                             if ((this.data_base || null) != null) {
                                 // 基础自定义分享
                                 this.setData({
@@ -139,7 +133,6 @@
                                         path: '/pages/plugins/coupon/index/index',
                                     },
                                 });
-
                                 // 导航名称
                                 if ((this.data_base.application_name || null) != null) {
                                     uni.setNavigationBarTitle({
@@ -155,7 +148,6 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
-
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
                     },
@@ -171,7 +163,6 @@
                     },
                 });
             },
-
             // 优惠劵领取事件
             coupon_receive_event(index, value) {
                 if (!app.globalData.is_single_page_check()) {
@@ -187,7 +178,6 @@
                         temp_coupon_receive_value: value,
                     });
                 }
-
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
@@ -237,12 +227,10 @@
                     }
                 }
             },
-
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
-
             // 顶部返回操作
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();

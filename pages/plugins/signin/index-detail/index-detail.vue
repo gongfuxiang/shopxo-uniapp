@@ -7,6 +7,7 @@
                 <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
                     <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
                 </view>
+                <!-- #endif -->
             </view>
             <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="signin-bg"></image>
             <view class="signin-opration-group pa right-0 flex-col cr-white">
@@ -107,9 +108,7 @@
                 <view class="coming-content tc pr">
                     <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
                     <view class="title">签到成功</view>
-                    <view class="desc"
-                        >恭喜您获得 <text>{{ coming_integral }}</text> 积分</view
-                    >
+                    <view class="desc">恭喜您获得 <text>{{ coming_integral }}</text> 积分</view>
                     <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
                     <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                         <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
@@ -167,7 +166,6 @@
                 day_count: [],
             };
         },
-
         components: {
             componentNoData,
             componentSharePopup,
@@ -179,14 +177,12 @@
                 return date.getDate();
             },
         },
-
         onLoad(params) {
             //params['id'] = 1;
             this.setData({
                 params: params,
             });
         },
-
         onShow() {
             // 用户信息
             this.setData({
@@ -194,11 +190,9 @@
             });
             // 获取数据
             this.get_data();
-
             // 日历渲染
             this.get_calendar();
         },
-
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
@@ -277,7 +271,6 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
                             });
-
                             if ((this.data || null) != null) {
                                 // 基础自定义分享
                                 this.setData({
@@ -311,7 +304,6 @@
                     },
                 });
             },
-
             // 初始化
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
@@ -338,7 +330,6 @@
                 }
                 return false;
             },
-
             // 签到
             coming_event(e) {
                 if (!app.globalData.is_single_page_check()) {
@@ -377,14 +368,12 @@
                     });
                 }
             },
-
             // 签到成功提示关闭
             coming_success_close_event(e) {
                 this.setData({
                     is_success_tips: 0,
                 });
             },
-
             // 组队事件
             team_event(e) {
                 if (this.init()) {
@@ -408,11 +397,10 @@
                                         this.setData({
                                             params: temp_params,
                                         });
-
                                         // 重新拉取数据
                                         this.get_data();
                                         break;
-                                    // 需要填写联系人信息
+                                        // 需要填写联系人信息
                                     case 1:
                                         uni.navigateTo({
                                             url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + res.data.data.qrcode_id + '&is_team=1',
@@ -432,19 +420,16 @@
                     });
                 }
             },
-
             // 打开url
             url_event(e) {
                 app.globalData.url_event(e);
             },
-
             // 分享开启弹层
             share_event(e) {
                 if ((this.$refs.share || null) != null) {
                     this.$refs.share.init();
                 }
             },
-
             // 顶部返回操作
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();
