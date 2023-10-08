@@ -969,6 +969,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "订单详情"
                     }
+                },
+                {
+                    "path": "logistics/logistics",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "物流信息"
+                    }
                 }
             ]
         },

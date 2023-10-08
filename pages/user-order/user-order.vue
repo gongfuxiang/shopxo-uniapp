@@ -56,32 +56,29 @@
                     </view>
                     <view
                         v-if="
-                            item.operate_data.is_cancel +
-                                item.operate_data.is_pay +
-                                item.operate_data.is_collect +
-                                item.operate_data.is_comments +
-                                item.operate_data.is_delete +
-                                (item.plugins_is_order_allot_button || 0) +
-                                (item.plugins_is_order_batch_button || 0) +
-                                (item.plugins_is_order_frequencycard_button || 0) >
-                                0 ||
+                            (item.operate_data.is_cancel +
+                            item.operate_data.is_pay +
+                            item.operate_data.is_collect +
+                            item.operate_data.is_comments +
+                            item.operate_data.is_delete +
+                            (item.plugins_is_order_allot_button || 0) +
+                            (item.plugins_is_order_batch_button || 0) +
+                            (item.plugins_is_order_frequencycard_button || 0)) > 0 ||
                             (item.status == 2 && item.order_model != 2) ||
-                            ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null)
-                        "
-                        class="item-operation tr br-t padding-vertical-main"
-                    >
+                            ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
+                            (item.plugins_delivery_data || 0) == 1
+                        " class="item-operation tr br-t padding-vertical-main">
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                         <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                         <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
+                        <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
                         <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
                         <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
                         <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                         <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
                         <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
-                        <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">
-                            次卡
-                        </button>
+                        <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">次卡</button>
                     </view>
                 </view>
             </view>
@@ -194,15 +191,15 @@
                     params: params.data,
                 });
             }
-        },
-
-        onShow() {
-            // 数据加载
-            this.init();
 
             // 初始化配置
             this.init_config();
 
+            // 数据加载
+            this.init();
+        },
+
+        onShow() {
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
