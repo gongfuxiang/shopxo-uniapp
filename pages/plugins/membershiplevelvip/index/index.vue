@@ -2,16 +2,24 @@
     <view class="bg-white">
         <view v-if="(data_base || null) != null">
             <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="wh-auto"></image>
-            <view class="banner tc oh pa top-0 pa-w wh-auto">
-                <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
-                <!-- 标题 -->
-                <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
-                <!-- 购买按钮 -->
-                <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
-                    <button class="banner-buy fw-b round margin-top-xxxl" type="default" size="mini" hover-class="none" :style="join_vip_btn">
-                        {{ data_base.banner_middle_name || '加入会员' }}
-                    </button>
-                </navigator>
+            <view class="banner oh pa top-0 pa-w wh-auto" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+                <!-- 返回 -->
+                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+                </view>
+                <!-- #endif -->
+                <view class="tc">
+                    <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
+                    <!-- 标题 -->
+                    <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
+                    <!-- 购买按钮 -->
+                    <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
+                        <button class="banner-buy fw-b round margin-top-xxxl" type="default" size="mini" hover-class="none" :style="join_vip_btn">
+                            {{ data_base.banner_middle_name || '加入会员' }}
+                        </button>
+                    </navigator>
+                </view>
             </view>
             <!-- 介绍列表 -->
             <view v-if="(introduce_data || null) != null && introduce_data.length > 0" class="data-list oh flex-row jc-sa align-c">
@@ -47,6 +55,9 @@
         data() {
             return {
                 membership_level_vip: membership_level_vip + 'app/',
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -145,6 +156,16 @@
                         app.globalData.showToast('服务器请求出错');
                     },
                 });
+            },
+            top_nav_left_back_event() {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
             },
         },
     };

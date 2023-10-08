@@ -119,7 +119,7 @@
         },
         data() {
             return {
-                coupon_static_url: coupon_static_url,
+                coupon_static_url: coupon_static_url + 'app/',
                 // 符号
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 首页地址

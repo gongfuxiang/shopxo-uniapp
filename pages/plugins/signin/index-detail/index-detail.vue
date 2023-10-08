@@ -1,6 +1,13 @@
 <template>
     <view class="signin-container">
         <view v-if="(data || null) != null" class="pr">
+            <view class="pa z-i left-0 top-0 right-0" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+                <!-- 返回 -->
+                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+                </view>
+            </view>
             <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="signin-bg"></image>
             <view class="signin-opration-group pa right-0 flex-col cr-white">
                 <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
@@ -126,6 +133,9 @@
         data() {
             return {
                 signin_static_url: signin_static_url,
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 // 首页地址
                 home_page_url: app.globalData.data.tabbar_pages[0],
                 data_bottom_line_status: false,
@@ -427,10 +437,23 @@
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
             // 分享开启弹层
             share_event(e) {
                 if ((this.$refs.share || null) != null) {
                     this.$refs.share.init();
+                }
+            },
+
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
                 }
             },
         },

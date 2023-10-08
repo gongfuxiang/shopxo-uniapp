@@ -55,13 +55,12 @@
 }
 
 .nav-button .right-button {
-    width: 250rpx;
+    width: 240rpx;
 }
 
-.nav-button .left-price .estimate-discount-price {
-    top: 6rpx;
-    left: 20rpx;
-    width: calc(100% - 270rpx);
+.nav-button .right-button button {
+    height: 80rpx;
+    line-height: 78rpx;
 }
 
 .nav-button .left-price .discount-icon {
@@ -71,6 +70,10 @@
     background-size: 400%;
     animation: gradient 5s ease infinite;
     padding: 0 16rpx;
+}
+
+.sales-price .price {
+    font-size: 40rpx;
 }
 
 @keyframes gradient {

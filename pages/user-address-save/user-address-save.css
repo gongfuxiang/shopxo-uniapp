@@ -38,9 +38,9 @@
 }
 
 .intelligent-identification button {
+    width: 96rpx;
     height: 44rpx;
     line-height: 44rpx;
-    padding: 0 24rpx !important;
 }
 
 /*
@@ -154,11 +154,12 @@
 /**
  * 底部保存按钮
  */
-.bottom-fixed {
-    padding-left: 90rpx;
-    padding-right: 90rpx;
+.bottom-line-exclude {
+    padding-left: 66rpx;
+    padding-right: 66rpx;
 }
 
-.rotate-180 {
-    transform: rotate(180deg);
+.bottom-line-exclude button {
+    height: 88rpx;
+    line-height: 88rpx;
 }

@@ -9,7 +9,7 @@
     padding: 0 20rpx;
     height: 48rpx;
     line-height: 48rpx;
-    background-color: #FF8273;
+    background-color: #FF8AA1;
 }
 
 .head-item .level-icon {
@@ -75,6 +75,10 @@
 
 .anti-mercenary-count {
     padding: 10rpx 40rpx;
+}
+
+.promotion-size {
+    font-size: 44rpx;
 }
 
 /*

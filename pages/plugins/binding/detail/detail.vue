@@ -59,16 +59,28 @@
 
                     <!-- 导航 -->
                     <view class="nav-button bottom-fixed padding-main pr bg-white">
-                        <view class="bottom-line-exclude oh">
-                            <view class="left-price fl">
-                                <view v-if="data.estimate_discount_price != 0" class="pa single-text estimate-discount-price">
-                                    <text class="discount-icon cr-white text-size-xs">节省</text>
-                                    <text class="cr-green">{{ currency_symbol }}{{ data.estimate_discount_price }}</text>
+                        <view class="bottom-line-exclude oh flex-row jc-sb align-c">
+                            <view class="left-price">
+                                <view class="sales-price single-text">
+                                    <text class="text-size-xs">
+                                        {{ currency_symbol }}
+                                    </text>
+                                    <text class="price">
+                                        {{ data.estimate_price }}
+                                    </text>
                                 </view>
-                                <view :class="'sales-price single-text margin-top-' + (data.estimate_discount_price == 0 ? 'sm' : 'xl')">{{ currency_symbol }}{{ data.estimate_price }}</view>
+                                <view v-if="data.estimate_discount_price != 0" class="single-text estimate-discount-price margin-top-sm">
+                                    <text class="discount-icon cr-white text-size-xs">节省</text>
+                                    <text class="cr-green text-size-md">
+                                        <text class="text-size-xss">
+                                            {{ currency_symbol }}
+                                        </text>
+                                        {{ data.estimate_discount_price }}
+                                    </text>
+                                </view>
                             </view>
-                            <view class="right-button fr tr">
-                                <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                            <view class="right-button">
+                                <button type="default" size="mini" class="bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">立即购买</button>
                             </view>
                         </view>
                     </view>

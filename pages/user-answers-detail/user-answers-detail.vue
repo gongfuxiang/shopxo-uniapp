@@ -1,5 +1,5 @@
 <template>
-    <view :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+    <view class="pr" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
         <view class="pa top-0 left-0 right-0 nav-top">
             <image mode="widthFix" :src="answers_static_url + 'nav-top.png'" class="wh-auto"></image>
         </view>

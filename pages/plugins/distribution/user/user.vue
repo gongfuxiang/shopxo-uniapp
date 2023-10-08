@@ -72,8 +72,8 @@
                                 <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
                                     <view class="cr-base">{{ item.name }}</view>
                                     <view class="single-text margin-top-sm">
-                                        <text :class="'fw-b text-size ' + item.ent">{{ item.value }}</text>
-                                        <text v-if="(item.unit || null) != null" class="cr-grey text-size-xs margin-left-sm">人</text>
+                                        <text class="fw-b promotion-size">{{ item.value }}</text>
+                                        <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
                                     </view>
                                 </view>
                             </block>

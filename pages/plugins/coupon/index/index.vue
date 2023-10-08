@@ -1,10 +1,17 @@
 <template>
     <view class="pr">
-        <view v-if="(data_base || null) != null && (data_base.banner_images || null) != null" class="pa top-0 bg-img wh-auto">
-            <image class="wh-auto dis-block border-radius-main" :src="data_base.banner_images" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
+        <view class="pa z-i left-0 top-0 right-0" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+            <!-- 返回 -->
+            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+            </view>
+        </view>
+        <view class="pa top-0 bg-img wh-auto">
+            <image v-if="(data_base || null) != null" class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
         </view>
         <view class="plugins-coupon-container">
-            <scroll-view scroll-y class="coupon-content bg-white pr">
+            <view class="coupon-content bg-white pr">
                 <!-- 优惠劵列表 -->
                 <view v-if="data_list.length > 0" class="flex-col">
                     <block v-for="(item, index) in data_list" :key="index">
@@ -18,9 +25,9 @@
 
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </scroll-view>
+            </view>
         </view>
-        <view class="popup-bottom pf bottom-0 left-0 right-0 bg-white">
+        <view class="popup-bottom bottom-fixed bg-white">
             <view class="popup-btn tc">
                 <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
             </view>
@@ -32,10 +39,15 @@
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
     import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
+    var coupon_static_url = app.globalData.get_static_url('coupon', true);
 
     export default {
         data() {
             return {
+                coupon_static_url: coupon_static_url + 'app/',
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                // 顶部导航返回按钮
+                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -229,6 +241,18 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 顶部返回操作
+            top_nav_left_back_event(e) {
+                var pages = getCurrentPages();
+                if (pages.length <= 1) {
+                    uni.switchTab({
+                        url: app.globalData.data.tabbar_pages[0],
+                    });
+                } else {
+                    uni.navigateBack();
+                }
             },
         },
     };
