@@ -22,7 +22,7 @@
         <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
             <view class="poupon-title padding-main tc text-size-md pr">
                 付款详情
-                <iconfont name="icon-huiyuan-guanbi" class="pa left-0 margin-left-main margin-top-xs" size="30rpx" color="#999"></iconfont>
+                <iconfont name="icon-huiyuan-guanbi" class="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
             </view>
             <view class="payment-price tc padding-top-sm padding-bottom-sm br-b">
                 <text class="text-size-md">{{ currency_symbol }}</text>
@@ -319,7 +319,7 @@
                         },
                     });
                 } else {
-                    app.globalData.showToast('支付组件借口不能为空');
+                    app.globalData.showToast('支付组件接口不能为空');
                 }
             },
             // 快手小程序
@@ -390,7 +390,7 @@
                                 msg: '支付成功后、请不要重复支付、如果订单状态未成功请联系客服处理',
                                 is_show_cancel: 0,
                             });
-                            // 支付借口调用成功，但是不知道是否支付成功，所以需要重新获取列表数据
+                            // 支付接口调用成功，但是不知道是否支付成功，所以需要重新获取列表数据
                             this.$emit('reset-event');
                         },
                         fail: function (res) {
