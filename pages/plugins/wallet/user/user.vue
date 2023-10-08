@@ -21,7 +21,7 @@
                             </view>
                             <view class="content oh cr-white pr filter-blur">
                                 <view class="pa content-padding-1 oh filter-blur-child">
-                                    <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto" />
+                                    <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
                                 </view>
                                 <view class="pr z-i flex-row jc-c">
                                     <view class="flex-1 flex-width">

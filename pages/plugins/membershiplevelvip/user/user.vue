@@ -104,7 +104,7 @@
 
                 <!-- 会员中心通知 -->
                 <view v-if="(user_vip || null) != null && (data_base.user_vip_center_notice || null) != null && data_base.user_vip_center_notice.length > 0" class="padding-horizontal-main">
-                    <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.user_vip_center_notice.join('')" background-color="transparent" color="#333" />
+                    <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.user_vip_center_notice.join('')" background-color="transparent" color="#666" />
                 </view>
 
                 <view v-if="statistics_data !== null" class="padding-horizontal-main spacing-mt">
@@ -165,7 +165,7 @@
                 </view>
                 <!-- 会员中心通知 -->
                 <view v-if="(data_base.not_opening_vip_desc || null) != null && data_base.not_opening_vip_desc.length > 0" class="padding-horizontal-main padding-bottom-lg">
-                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.not_opening_vip_desc.join('')" background-color="transparent" color="#333" />
+                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.not_opening_vip_desc.join('')" background-color="transparent" color="#666" />
                 </view>
             </view>
         </view>

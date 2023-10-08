@@ -160,7 +160,7 @@
 
                     <!-- 用户中心公告 -->
                     <view v-if="(common_user_center_notice || null) != null" class="padding-horizontal-main">
-                        <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="common_user_center_notice" background-color="transparent" color="#333" />
+                        <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="common_user_center_notice" background-color="transparent" color="#666" />
                     </view>
                     <!-- 在线客服 -->
                     <component-online-service :propIsNav="true" :propIsBar="true"></component-online-service>

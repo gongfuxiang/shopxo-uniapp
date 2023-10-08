@@ -74,8 +74,23 @@
 */
 @media only screen and (min-width:960px) {
     .wallet-bg {
-        /* #ifdef H5 || APP */
+        /* #ifdef H5 */
         top: -540rpx !important;
+        /* #endif */
+    }
+
+    .filter-blur-child {
+        /* #ifdef H5 */
+        left: -30rpx;
+        top: -30px;
+        right: -30px;
+        bottom: -30px;
+        /* #endif */
+    }
+
+    .wallet-child-bg {
+        /* #ifdef H5 */
+        height: 100% !important;
         /* #endif */
     }
 }
