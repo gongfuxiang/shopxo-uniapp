@@ -131,8 +131,12 @@ button:before {
     padding-top: 20rpx;
 }
 
-.spacing-10 {
-    padding-top: 10rpx;
+.spacing-mt-10 {
+    margin-top: 20rpx;
+}
+
+.spacing-mb-10 {
+    margin-bottom: 20rpx;
 }
 
 .spacing-mb {

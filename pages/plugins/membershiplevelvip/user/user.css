@@ -9,7 +9,7 @@
 .head-base .level-icon {
     width: 30rpx;
     height: 30rpx !important;
-    left: 10rpx;
+    left: 16rpx;
     top: 50%;
     transform: translateY(-50%);
 }
@@ -36,7 +36,7 @@
 .vip-badge {
     height: 44rpx;
     line-height: 44rpx;
-    padding: 0 10rpx 0 45rpx;
+    padding: 0 16rpx 0 51rpx;
     color: #FFAF36;
 }
 
