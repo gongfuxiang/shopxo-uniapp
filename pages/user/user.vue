@@ -45,16 +45,16 @@
                     </view>
                     <!-- 会员码 付款码 -->
                     <view v-if="(payment_page_url || null) !== null || (membership_page_url || null) !== null" class="qrcode padding-horizontal-main pr">
-                        <view class="qrcode-content flex-row align-c text-size-md" style="background-image: url(/static/images/common/qrcod-bg.png)" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
+                        <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
                             <view class="tc flex-width-half" v-if="(membership_page_url || null) != null" :data-value="membership_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
-                                    <image class="icon" src="@/static/images/common/membership-code.png" mode="widthFix"></image>
+                                    <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image>
                                 </view>
                                 会员码
                             </view>
                             <view class="tc flex-width-half" v-if="(payment_page_url || null) != null" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
-                                    <image class="icon" src="@/static/images/common/payment-code.png" mode="widthFix"></image>
+                                    <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
                                 <text>付款码</text>
                             </view>
