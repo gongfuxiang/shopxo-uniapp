@@ -44,7 +44,7 @@
                                         </view>
                                     </block>
                                     <block v-else>
-                                        <view v-if="(address_data.province_name || null) != null" class="padding-top-xxxl" :class="home_user_address_map_status == 1 ? 'br-t-dashed padding-top-sm margin-top-sm' : ''">
+                                        <view v-if="(address_data.province_name || null) != null" :class="home_user_address_map_status == 1 ? 'br-t-dashed padding-top-sm margin-top-sm' : ''">
                                             {{ address_data.province_name }}{{ (address_data.city_name || null) === null ? '' : '-' + address_data.city_name }}{{ (address_data.county_name || null) === null ? '' : '-' + address_data.county_name }}
                                         </view>
                                     </block>
@@ -60,11 +60,11 @@
                             <view v-if="is_user_address_discern == 1" class="pr padding-top-sm">
                                 <view class="intelligent-identification oh" :style="identfication_show ? 'height:254rpx;' : 'height:0;'">
                                     <view class="bg-base border-radius-main padding-main oh">
-                                        <textarea @input="address_discern_value_event" class="margin-0" placeholder="粘贴整段地址，自动拆分姓名、电话及地址" placeholder-class="cr-grey" />
-                                        <cover-view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
-                                            <button type="default" size="mini" class="round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="address_discern_submit_event">清除</button>
+                                        <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" placeholder="粘贴整段地址，自动拆分姓名、电话及地址" placeholder-class="cr-grey" />
+                                        <view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
+                                            <button type="default" size="mini" class="round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">清除</button>
                                             <button type="default" size="mini" class="round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">识别</button>
-                                        </cover-view>
+                                        </view>
                                     </view>
                                 </view>
                                 <view class="tc padding-top-main" @tap="identfication_change">
@@ -489,6 +489,12 @@
 
                 // 地址识别处理
                 this.address_discern_handle({ address: this.address_discern_value }, 1, 0);
+            },
+            // 清除
+            clear_discern_submit_event() {
+                this.setData({
+                    address_discern_value: '',
+                });
             },
 
             // 地址识别处理

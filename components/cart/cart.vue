@@ -3,7 +3,7 @@
         <scroll-view :scroll-y="true" class="scroll-box" :class="data_list.length > 0 ? 'active' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="cart-page">
                 <!-- 数据列表 -->
-                <view :class="'padding-main ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                <view class="padding-horizontal-main padding-top-main" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
                     <uni-swipe-action>
                         <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                             <uni-swipe-action-item :right-options="swipe_options" @tap="swipe_opt_event" @change="swipe_change($event, index)">
@@ -77,10 +77,10 @@
 
             <!-- 猜你喜欢 -->
             <view v-if="goods_list.length > 0" class="padding-horizontal-main">
-                <view class="tc">
+                <view class="tc spacing-mb">
                     <view class="guess-like fw-b text-size-md">猜你喜欢</view>
                 </view>
-                <component-goods-list class="padding-top-main" :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event">
+                <component-goods-list class="spacing-mt" :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event">
                 </component-goods-list>
             </view>
             <!-- 结尾 -->
@@ -857,6 +857,9 @@
     /**
     * 商品列表
     */
+    .cart-page {
+        margin-bottom: 40rpx;
+    }
     .scroll-box.active {
         height: calc(100vh - 125rpx);
         /* 125rpx */

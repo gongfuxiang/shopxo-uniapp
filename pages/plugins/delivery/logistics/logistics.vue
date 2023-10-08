@@ -11,7 +11,6 @@
                     :scale="scale"
                     :markers="markers"
                     :polyline="polyline"
-                    @markertap="marker_tap_event"
                 ></map>
                 <view class="team bs-bb oh pa border-radius-main padding-main">
                     <view class="top pr">
@@ -160,40 +159,7 @@
             // 文本事件
             text_event(e) {
                 app.globalData.text_event_handle(e);
-            },
-
-            // 打开url事件
-            url_event(e) {
-                app.globalData.url_event(e);
-            },
-
-            // 地图查看
-            address_map_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var type = e.currentTarget.dataset.type || null;
-                if(type == 'map') {
-                    this.address_map_handle(this.markers_active_data[index]['address_data']);
-                } else {
-                    var temp_data = this.data_list;
-                    if ((temp_data[index] || null) == null || (temp_data[index]["address_data"] || null) == null) {
-                        app.globalData.showToast("地址有误");
-                        return false;
-                    }
-                    this.address_map_handle(temp_data[index]["address_data"]);
-                }
-            },
-
-            // 地址打开地图
-            address_map_handle(ads) {
-                var name = ads.alias || ads.name || "";
-                app.globalData.open_location(ads.lng, ads.lat, name, ads.address_info);
-            },
-
-            // 点击标记点事件
-            marker_tap_event(e) {
-                var index = e.detail.markerId;
-                console.log(index)
-            },
+            }
         },
     };
 </script>

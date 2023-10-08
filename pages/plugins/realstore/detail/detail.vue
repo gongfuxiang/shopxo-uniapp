@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="(info || null) != null">
+        <view v-if="(info || null) != null" class="pr">
             <view class="pr">
                 <!-- 头部背景 -->
                 <image :src="info.banner" mode="widthFix" class="wh-auto pa left-0 right-0" />
