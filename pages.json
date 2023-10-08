@@ -311,6 +311,9 @@
             "pages": [{
                     "path": "index/index",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "领券中心"
                     }
@@ -336,6 +339,9 @@
             "pages": [{
                     "path": "index/index",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "会员VIP"
                     }
@@ -688,6 +694,9 @@
                 {
                     "path": "index-detail/index-detail",
                     "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "签到"
                     }

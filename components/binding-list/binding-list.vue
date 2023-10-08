@@ -123,7 +123,7 @@
     .plugins-binding-data-list .item .buy-submit {
         padding: 0 20rpx;
         height: 46rpx;
-        line-height: 46rpx;
+        line-height: 44rpx;
     }
     .plugins-binding-data-list .item .binding-goods-list {
         background: #f8f8f8;

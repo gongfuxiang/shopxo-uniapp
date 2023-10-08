@@ -336,7 +336,7 @@
                 application_logo: app.globalData.data.application_logo,
                 is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
-                top_content_style: 'padding-top:' + (bar_height + 8) + 'px;background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
+                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
                 top_content_title_style: 'background-image: url("' + static_url + 'nav-top.png");' + 'padding-top:' + (bar_height + 5) + 'px;background-color:' + theme_color,
                 search_style: '',
                 search_is_fixed: 0,
@@ -485,9 +485,9 @@
                             // 轮播数据处理
                             if (data.banner_list && data.banner_list.length > 0) {
                                 if (data.banner_list[0].bg_color) {
-                                    this.slider_bg = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                                    this.slider_bg = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 5) + 'px;';
                                 } else {
-                                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 5) + 'px;';
                                 }
                             }
 
@@ -614,9 +614,9 @@
             // 轮播改变
             changeBanner(color) {
                 if (color) {
-                    this.slider_bg = 'background: linear-gradient(180deg,' + color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                    this.slider_bg = 'background: linear-gradient(180deg,' + color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 5) + 'px;';
                 } else {
-                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 8) + 'px;';
+                    this.slider_bg = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 5) + 'px;';
                 }
             },
         },
