@@ -1,0 +1,202 @@
+<template>
+    <view>
+        <block v-if="data_list_loding_status == 3">
+            <view class="map-container pr">
+                <map class="wh-auto ht-auto"
+                    :enable-zoom="true"
+                    :enable-scroll="true"
+                    :show-location="true"
+                    :latitude="latitude"
+                    :longitude="longitude"
+                    :scale="scale"
+                    :markers="markers"
+                    :polyline="polyline"
+                    @markertap="marker_tap_event"
+                ></map>
+                <view class="team bs-bb oh pa border-radius-main padding-main">
+                    <view class="top pr">
+                        <view class="base">
+                            <image class="avatar circle br va-m" :src="team.work_photo" mode="aspectFit"></image>
+                            <text class="cr-base text-size-sm margin-left-sm">{{team.idcard_name}}</text>
+                        </view>
+                        <view class="tel circle bg-base br tc cp pa" data-event="tel" :data-value="team.user.mobile" @tap="text_event">
+                            <uni-icons type="phone" size="34rpx" color="#fd8008"></uni-icons>
+                        </view>
+                    </view>
+                    <view class="br-t-dashed margin-top-sm padding-top-sm text-size-sm cr-base">
+                        <view>
+                            <text>配送时间：</text>
+                            <text v-if="(start_delivery_time || null) != null">{{start_delivery_time}}</text>
+                            <text v-else class="cr-grey-9">未开始配送</text>
+                        </view>
+                        <view class="margin-top-sm">
+                            <text>送达时间：</text>
+                            <text v-if="(success_delivery_time || null) != null">{{success_delivery_time}}</text>
+                            <text v-else class="cr-grey-9">还没有送达</text>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </block>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
+    </view>
+</template>
+<script>
+    const app = getApp();
+    import componentNoData from "../../../../components/no-data/no-data";
+    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+
+    var plugins_static_url = app.globalData.get_static_url('delivery', true);
+    export default {
+        data() {
+            return {
+                data_list_loding_msg: '',
+                data_list_loding_status: 1,
+                data_bottom_line_status: false,
+                params: {},
+                scale: 10,
+                latitude: 39.909,
+                longitude: 116.39742,
+                markers: [],
+                polyline: [],
+                team: null,
+                start_delivery_time: null,
+                success_delivery_time: null,
+            };
+        },
+
+        components: {
+            componentNoData,
+            componentBottomLine
+        },
+        props: {},
+
+        onLoad(params) {
+            this.setData({
+                params: params
+            });
+            this.init();
+        },
+
+        methods: {
+            // 初始化
+            init() {
+                var user = app.globalData.get_user_info(this, "init");
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.redirectTo({
+                            url: "/pages/login/login?event_callback=init",
+                        });
+                        return false;
+                    } else {
+                        this.get_data();
+                    }
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
+            },
+
+            // 获取数据
+            get_data() {
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+
+                // 加载loding
+                uni.showLoading({
+                    title: "加载中...",
+                });
+
+                // 获取数据
+                uni.request({
+                    url: app.globalData.get_request_url("logistics", "order", "delivery"),
+                    method: "POST",
+                    data: {
+                        id: this.params.id || 0
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                latitude: data.latitude || 39.909,
+                                longitude: data.longitude || 116.39742,
+                                markers: data.markers || [],
+                                polyline: data.polyline || [],
+                                scale: data.scale || 10,
+                                team: data.team || null,
+                                start_delivery_time: data.start_delivery_time || null,
+                                success_delivery_time: data.success_delivery_time || null,
+                                data_list_loding_status: 3,
+                                data_list_loding_msg: ''
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg
+                            });
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: '服务器请求出错'
+                        });
+                        app.globalData.showToast("服务器请求出错");
+                    },
+                });
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            },
+
+            // 打开url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+
+            // 地图查看
+            address_map_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var type = e.currentTarget.dataset.type || null;
+                if(type == 'map') {
+                    this.address_map_handle(this.markers_active_data[index]['address_data']);
+                } else {
+                    var temp_data = this.data_list;
+                    if ((temp_data[index] || null) == null || (temp_data[index]["address_data"] || null) == null) {
+                        app.globalData.showToast("地址有误");
+                        return false;
+                    }
+                    this.address_map_handle(temp_data[index]["address_data"]);
+                }
+            },
+
+            // 地址打开地图
+            address_map_handle(ads) {
+                var name = ads.alias || ads.name || "";
+                app.globalData.open_location(ads.lng, ads.lat, name, ads.address_info);
+            },
+
+            // 点击标记点事件
+            marker_tap_event(e) {
+                var index = e.detail.markerId;
+                console.log(index)
+            },
+        },
+    };
+</script>
+<style>
+    @import "./logistics.css";
+</style>
