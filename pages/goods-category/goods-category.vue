@@ -2,13 +2,13 @@
     <view>
         <view class="pr" :class="is_single_page == 1 ? 'margin-top-xxxl single-page-top' : ''">
             <view class="goods-top-bg pa top-0 left-0 right-0 wh-auto">
-                <image :src="theme_static_url + 'goods-top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
+                <image :src="theme_static_url + 'top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
             </view>
             <!-- 搜索框 -->
             <block v-if="is_single_page == 0">
                 <view class="nav-search padding-horizontal-main pr" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
                     <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto">
-                        <image :src="theme_static_url + 'goods-top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
+                        <image :src="theme_static_url + 'top-bg.png'" mode="scaleToFill" class="wh-auto ht-auto"></image>
                     </view>
                     <block v-if="is_goods_category_search_alone == 1">
                         <component-search propPlaceholder="输入商品名称搜索"></component-search>
@@ -204,13 +204,13 @@
                                     <view class="padding-top-main padding-horizontal-main">
                                         <!-- 一级基础信息 -->
                                         <block v-if="data_content.id === '1'">
-                                            <view class="one-content border-radius-main cp spacing-mb" :data-value="data_content.id" @tap="category_event">
-                                                <image src="/static/images/common/type.png" mode="scaleToFill" class="wh-auto radius"></image>
+                                            <view v-if="(data_content.banner_images || null) !== null" class="one-content border-radius-main cp spacing-mb" :data-value="data_content.id" @tap="category_event">
+                                                <image :src="data_content.banner_images" mode="scaleToFill" class="wh-auto radius"></image>
                                             </view>
                                         </block>
                                         <block v-else>
                                             <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" class="one-content border-radius-main cp spacing-mb pr" :data-value="data_content.id" @tap="category_event">
-                                                <image src="/static/images/common/goods-level2-bg.png" mode="scaleToFill" class="wh-auto ht-auto radius pa top-0 left-0"></image>
+                                                <image :src="theme_static_url + 'level2-content-bg.png'" mode="scaleToFill" class="wh-auto ht-auto radius pa top-0 left-0"></image>
                                                 <view class="pr padding-main">
                                                     <view v-if="(data_content.vice_name || null) != null" class="text-size-md fw-b" :style="'color:' + data_content.bg_color + ';'">
                                                         {{ data_content.vice_name }}
@@ -383,7 +383,7 @@
     import componentUserBase from '../../components/user-base/user-base';
     import componentNavMore from '../../components/nav-more/nav-more';
 
-    var theme_static_url = app.globalData.get_static_url('goods');
+    var theme_static_url = app.globalData.get_static_url('goods-category');
     var common_static_url = app.globalData.get_static_url('common');
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));

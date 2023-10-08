@@ -51,6 +51,7 @@
     height: 4px;
     bottom: 0;
 }
+
 /*
 * 底部按钮
 */
@@ -66,4 +67,15 @@
 .submit-container button {
     height: 88rpx;
     line-height: 88rpx;
+}
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .wallet-bg {
+        /* #ifdef H5 || APP */
+        top: -540rpx !important;
+        /* #endif */
+    }
 }

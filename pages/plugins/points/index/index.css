@@ -72,10 +72,14 @@
 */
 @media only screen and (min-width:960px) {
     .points-content {
+        /* #ifdef H5 */
         padding-top: 51%;
+        /* #endif */
     }
 
     .rule-btn {
+        /* #ifdef H5 */
         top: 11%;
+        /* #endif */
     }
 }
