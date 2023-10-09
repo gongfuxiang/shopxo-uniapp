@@ -24,7 +24,7 @@
                 </view>
             </view>
             <!-- 猜你喜欢 -->
-            <view v-if="goods_list.length > 0" class="padding-horizontal-main">
+            <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-sm">
                 <view class="tc">
                     <view class="guess-like fw-b text-size-md">猜你喜欢</view>
                 </view>
