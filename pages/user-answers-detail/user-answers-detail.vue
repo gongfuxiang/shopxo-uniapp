@@ -59,6 +59,7 @@
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 detail_data: {},
                 data_list_loding_status: 1,
+                params: '',
             };
         },
 
@@ -67,7 +68,13 @@
         },
         props: {},
 
-        onLoad() {},
+        onLoad(params) {
+            if (params) {
+                this.setData({
+                    params: params.id,
+                });
+            }
+        },
 
         onShow() {
             this.init();
@@ -112,7 +119,7 @@
                     url: app.globalData.get_request_url('detail', 'answer'),
                     method: 'POST',
                     data: {
-                        id: this.$route.query.id,
+                        id: this.params,
                     },
                     dataType: 'json',
                     success: (res) => {

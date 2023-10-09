@@ -86,7 +86,12 @@
                             </navigator>
                         </view>
                         <view v-else class="content bg-white flex-row jc-sb align-c">
-                            <text class="fw-b">今日已签到，获得{{ user_signin_data.integral }}积分，共{{ user_signin_data.total }}次</text>
+                            <text class="fw-b">
+                                今日
+                                <block v-if="user_signin_data.integral">已</block>
+                                <block v-else>未</block>
+                                签到，获得{{ user_signin_data.integral || 0 }}积分，共{{ user_signin_data.total }}次
+                            </text>
                             <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
                                 <iconfont name="icon-qiandao-jiantou2"></iconfont>
                             </navigator>
@@ -108,7 +113,9 @@
                 <view class="coming-content tc pr">
                     <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
                     <view class="title">签到成功</view>
-                    <view class="desc">恭喜您获得 <text>{{ coming_integral }}</text> 积分</view>
+                    <view class="desc"
+                        >恭喜您获得 <text>{{ coming_integral }}</text> 积分</view
+                    >
                     <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
                     <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                         <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
@@ -400,7 +407,7 @@
                                         // 重新拉取数据
                                         this.get_data();
                                         break;
-                                        // 需要填写联系人信息
+                                    // 需要填写联系人信息
                                     case 1:
                                         uni.navigateTo({
                                             url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + res.data.data.qrcode_id + '&is_team=1',

@@ -1,6 +1,15 @@
 <template>
     <view>
-        <view v-if="(data_base || null) != null" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
+            <!-- 返回 -->
+            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m flex-row" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+                <text class="text-size flex-1 tc">积分</text>
+            </view>
+            <!-- #endif -->
+        </view>
+        <view v-if="(data_base || null) != null">
             <!-- 广告图片 -->
             <view class="pa top-0 bg-img wh-auto">
                 <block v-if="(data_base.right_images || null) != null">
@@ -11,13 +20,7 @@
                     <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
                 </block>
             </view>
-            <view class="pr z-i">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white flex-row">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                    <text class="text-size flex-1 tc">积分</text>
-                </view>
+            <view class="pr">
                 <!-- #endif -->
                 <view class="padding-horizontal-main points-content pr">
                     <!-- 顶部 -->
@@ -35,7 +38,8 @@
                                     <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
                                     <view class="padding-left-main">
                                         <view class="text-size fw-b">{{ user.user_name_view }}</view>
-                                        <view class="desc margin-top-sm cr-grey">当前可用
+                                        <view class="desc margin-top-sm cr-grey"
+                                            >当前可用
                                             <text class="cr-black fw-b padding-horizontal-xs">
                                                 {{ user_integral.integral || 0 }}
                                             </text>
@@ -77,22 +81,26 @@
                     </view>
 
                     <!-- 公告信息 -->
-                    <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md"
-                        @tap="quick_open_event">积分规则</button>
+                    <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">积分规则</button>
 
                     <!-- 商品兑换 -->
                     <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                        <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" prop-more-url-key="url"
-                            :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="price"
-                            propIntegral></component-goods-list>
+                        <component-goods-list
+                            :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }"
+                            prop-more-url-key="url"
+                            :propCurrencySymbol="currency_symbol"
+                            :prop-grid-btn-config="gridBtnConfig"
+                            :prop-is-open-grid-btn-set="isOpenGridBtnSet"
+                            propPriceField="price"
+                            propIntegral
+                        ></component-goods-list>
                     </view>
                 </view>
 
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 <!-- 积分规则弹窗 -->
-                <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom"
-                    @onclose="quick_close_event">
+                <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
                     <view class="rule">
                         <view class="cr-black text-size-md fw-b margin-bottom-main tc">积分规则</view>
                         <scroll-view :scroll-y="true" class="item">
@@ -124,6 +132,8 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // 顶部返回导航背景透明度
+                opacity: 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -192,6 +202,7 @@
                     app.globalData.is_config(this, 'init_config');
                 }
             },
+
             // 获取数据
             get_data() {
                 uni.request({
@@ -248,6 +259,7 @@
                     },
                 });
             },
+
             // 立即登录
             login_event() {
                 var user = app.globalData.get_user_info(this, 'login_event');
@@ -274,10 +286,12 @@
                     user: user || null,
                 });
             },
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
             // 头像查看
             preview_event() {
                 if (app.globalData.data.default_user_head_src != this.user.avatar) {
@@ -287,6 +301,7 @@
                     });
                 }
             },
+
             get_integral_data_list(is_mandatory) {
                 // 是否加载中
                 if (this.integral_is_loading == 1) {
@@ -345,18 +360,21 @@
                     },
                 });
             },
+
             // 弹层开启
             quick_open_event(e) {
                 this.setData({
                     popup_status: true,
                 });
             },
+
             // 弹层关闭
             quick_close_event(e) {
                 this.setData({
                     popup_status: false,
                 });
             },
+
             // 顶部返回操作
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();
@@ -367,6 +385,14 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+
+            // 页面滚动监听
+            onPageScroll(e) {
+                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
+                this.setData({
+                    opacity: top,
+                });
             },
         },
     };

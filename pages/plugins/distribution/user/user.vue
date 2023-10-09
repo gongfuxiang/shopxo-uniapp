@@ -1,15 +1,17 @@
 <template>
-    <view>
-        <view v-if="(data_base || null) != null" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
+    <view class="pr">
+        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
+            <!-- 返回 -->
+            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+            </view>
+            <!-- #endif -->
+        </view>
+        <view v-if="(data_base || null) != null" class="padding-top-xxxl">
             <!-- 头部背景 -->
             <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
-            <view class="pr z-i">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                </view>
-                <!-- #endif -->
+            <view class="pr padding-top-main">
                 <view class="padding-top-xxxl oh">
                     <!-- 头部 -->
                     <view class="padding-main border-radius-main oh pr">
@@ -211,6 +213,8 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // 顶部返回导航背景透明度
+                opacity: 0,
                 distribution_static_url: distribution_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
@@ -467,6 +471,7 @@
                     },
                 });
             },
+
             // 顶部返回操作
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();
@@ -477,6 +482,14 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+
+            // 页面滚动监听
+            onPageScroll(e) {
+                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
+                this.setData({
+                    opacity: top,
+                });
             },
         },
     };

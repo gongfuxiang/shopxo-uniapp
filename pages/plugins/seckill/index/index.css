@@ -51,3 +51,13 @@
     height: 80rpx;
     line-height: 80rpx;
 }
+
+/**
+ * 内容
+ */
+.scroll-y {
+    height: calc(100vh - 198rpx - var(--window-top) - 5px);
+    /* #ifdef H5 */
+    height: calc(100vh - 198rpx - 10px);
+    /* #endif */
+}
