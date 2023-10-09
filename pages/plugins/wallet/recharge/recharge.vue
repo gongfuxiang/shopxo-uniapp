@@ -17,6 +17,7 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-pay-price="pay_price"
             :propIsRedirectTo="true"
+            :prop-to-fail-page="to_fail_page"
             @close-payment-poupon="payment_popup_event_close"
         ></component-payment>
     </view>

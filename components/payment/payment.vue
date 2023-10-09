@@ -124,7 +124,7 @@
                 },
             },
             // 支付失败跳转页面
-            propTofailPage: {
+            propToFailPage: {
                 type: String,
                 default: '',
             },
@@ -311,6 +311,7 @@
                                 } else {
                                     app.globalData.showToast(res.data.msg);
                                 }
+                                this.order_item_pay_fail_handle(res.data.data, order_id);
                             }
                         },
                         fail: () => {
@@ -511,7 +512,7 @@
                     }
                 }
             },
-            // 支付成功数据设置 bool:成功是否需要跳转页面
+            // 支付成功数据设置 data:后台返回的参数， order_id: 订单id，is_to_page，是否需要跳转页面的参数控制
             order_item_pay_success_handle(data, order_id, is_to_page = true) {
                 let newData = {
                     data: data,
@@ -523,18 +524,18 @@
                     this.to_success_page_event();
                 }
             },
-            // 支付失败数据设置 bool:失败是否需要跳转页面
+            // 支付失败数据设置 data:后台返回的参数， order_id: 订单id
             order_item_pay_fail_handle(data, order_id) {
                 let newData = {
                     data: data,
                     order_id: order_id,
-                    is_to_page: is_to_page,
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.propPaymentId,
                 };
                 this.$emit('pay-fail', newData);
                 this.to_fail_page_event();
             },
+            // 成功跳转
             to_success_page_event() {
                 let url_data = {
                     code: '9000',
@@ -552,11 +553,13 @@
                     });
                 }
             },
+            // 失败跳转
             to_fail_page_event() {
-                if (this.propTofailPage) {
+                console.log(this.propToFailPage);
+                if (this.propToFailPage) {
                     // 跳转支付页面
                     uni.navigateTo({
-                        url: this.propTofailPage + '?data=' + data.order_id,
+                        url: this.propToFailPage,
                     });
                 }
             },
