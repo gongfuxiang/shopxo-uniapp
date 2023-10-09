@@ -1592,3 +1592,12 @@ button[disabled].bg-grey {
 .top-search-width {
     width: calc(100% - 250rpx) !important;
 }
+
+/**
+ * 小程序端距离顶部位置的控制
+ */
+.weixin-nav-padding-top {
+    /* #ifdef MP-WEIXIN */
+    padding-top: calc(var(--status-bar-height) + 5px);
+    /* #endif */
+}

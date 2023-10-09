@@ -4,10 +4,7 @@
     /* Project id 4227145 */
     /* 全局注册需要切换成绝对路径 */
     /* @/static/icon/ */
-    src: url('@/static/icon/iconfont.woff2?t=1693280977762') format('woff2'),
-        url('@/static/icon/iconfont.woff?t=1693280977762') format('woff'),
-        url('@/static/icon/iconfont.ttf?t=1693280977762') format('truetype'),
-        url('@/static/icon/iconfont.svg?t=1693280977762#iconfont') format('svg');
+    src: url('@/static/icon/iconfont.ttf?t=1693280977762') format('truetype');
 }
 
 .iconfont {

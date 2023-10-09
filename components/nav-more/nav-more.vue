@@ -34,6 +34,7 @@
                     return [];
                 },
             },
+            // 顶部定位的距离
             propTop: {
                 type: String,
                 default: '',

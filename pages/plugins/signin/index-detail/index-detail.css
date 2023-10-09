@@ -3,6 +3,7 @@
 */
 .signin-container {
     background-color: rgb(255 209 133);
+    min-height: 100vh;
 }
 
 .signin-bg {
@@ -10,7 +11,7 @@
 }
 
 .signin-opration-group {
-    top: 156rpx;
+    top: calc(156rpx + var(--status-bar-height) + 5px);
 }
 
 .share,

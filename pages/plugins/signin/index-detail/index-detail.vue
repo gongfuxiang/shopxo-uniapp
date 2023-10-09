@@ -65,7 +65,7 @@
                                 </block>
                                 <block v-else>
                                     <!-- 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】 -->
-                                    <block v-if="user_signin_data.history_day.some((item) => Number(item) === col.num)">
+                                    <block v-if="user_signin_data && user_signin_data.history_day.some((item) => Number(item) === col.num)">
                                         <iconfont name="icon-qiandao-yixuan" size="48rpx" color="#ccc"></iconfont>
                                     </block>
                                     <block v-else>
@@ -90,7 +90,7 @@
                                 今日
                                 <block v-if="user_signin_data.integral">已</block>
                                 <block v-else>未</block>
-                                签到，获得{{ user_signin_data.integral || 0 }}积分，共{{ user_signin_data.total }}次
+                                签到，获得{{ user_signin_data.integral || 0 }}积分，共{{ user_signin_data.total || 0 }}次
                             </text>
                             <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
                                 <iconfont name="icon-qiandao-jiantou2"></iconfont>
@@ -113,9 +113,11 @@
                 <view class="coming-content tc pr">
                     <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
                     <view class="title">签到成功</view>
-                    <view class="desc"
-                        >恭喜您获得 <text>{{ coming_integral }}</text> 积分</view
-                    >
+                    <view class="desc">
+                        恭喜您获得
+                        <text>{{ coming_integral }}</text>
+                        积分
+                    </view>
                     <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
                     <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                         <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>

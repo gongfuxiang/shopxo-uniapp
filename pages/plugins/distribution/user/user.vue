@@ -8,191 +8,193 @@
             </view>
             <!-- #endif -->
         </view>
-        <view v-if="(data_base || null) != null" class="padding-top-xxxl">
-            <!-- 头部背景 -->
-            <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
-            <view class="pr padding-top-main">
-                <view class="padding-top-xxxl oh">
-                    <!-- 头部 -->
-                    <view class="padding-main border-radius-main oh pr">
-                        <view class="flex-row align-c">
-                            <view class="head-img avatar bg-white circle">
-                                <image class="wh-auto circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
-                            </view>
-                            <view class="head-item padding-left-main flex-1 flex-width">
-                                <view class="cr-white text-size fw-b">{{ nickname }}</view>
-                                <view v-if="(user_level || null) != null" class="single-text level-item round dis-inline-block margin-top-sm">
-                                    <image v-if="(user_level.images_url || null) != null" class="level-icon margin-right-sm pr top-sm" :src="user_level.images_url" mode="widthFix"></image>
-                                    <text v-if="(user_level.name || null) != null" class="cr-white text-size-xs">{{ user_level.name }}</text>
+        <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
+            <view class="padding-top-xxxl">
+                <!-- 头部背景 -->
+                <image :src="distribution_static_url + 'distribution-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
+                <view class="pr padding-top-main">
+                    <view class="padding-top-xxxl oh">
+                        <!-- 头部 -->
+                        <view class="padding-main border-radius-main oh pr">
+                            <view class="flex-row align-c">
+                                <view class="head-img avatar bg-white circle">
+                                    <image class="wh-auto circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
                                 </view>
-                            </view>
-                        </view>
-                        <view class="head-base pa">
-                            <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
-                                <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
-                                    <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                        {{ (extraction || null) == null ? '申请' : '' }}取货点
-                                        <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" class="pa"></iconfont>
-                                    </button>
-                                </navigator>
-                            </block>
-                        </view>
-                    </view>
-                </view>
-
-                <!-- 会员中心通知 -->
-                <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
-                    <view :class="(superior || null) != null ? 'padding-horizontal-main margin-horizontal-xs' : ''">
-                        <uni-notice-bar show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
-                    </view>
-                </view>
-
-                <!-- 上级用户 -->
-                <view v-if="(superior || null) != null" class="superior">
-                    <view class="superior-item flex-row jc-sb align-c oh border-radius-top-main">
-                        <view class="superior-title cr-white fw-b va-m text-size">上级用户</view>
-                        <view class="superior-content">
-                            <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
-                            <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
-                        </view>
-                    </view>
-                </view>
-
-                <!-- 数据统计 -->
-                <view v-if="stats_user_promotion_data_list.length > 0 || stats_base_data_list.length > 0 || stats_profit_data_list.length > 0" class="padding-horizontal-main oh">
-                    <view class="stats-container padding-main border-radius-main bg-white pr spacing-mb">
-                        <view class="flex-row jc-sb align-c">
-                            <view class="title-left-border text-size fw-b">基础统计</view>
-                            <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
-                                {{ popup_time_value.name }}
-                                <iconfont name="icon-mendian-jiantou2" size="24rpx" class="pa"></iconfont>
-                            </button>
-                        </view>
-                        <!-- 推广统计 -->
-                        <view v-if="stats_user_promotion_data_list.length > 0" class="margin-top-main oh tc flex-row jc-sa align-c">
-                            <block v-for="(item, index) in stats_user_promotion_data_list" :key="index">
-                                <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
-                                    <view class="cr-base">{{ item.name }}</view>
-                                    <view class="single-text margin-top-sm">
-                                        <text class="fw-b promotion-size">{{ item.value }}</text>
-                                        <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
+                                <view class="head-item padding-left-main flex-1 flex-width">
+                                    <view class="cr-white text-size fw-b">{{ nickname }}</view>
+                                    <view v-if="(user_level || null) != null" class="single-text level-item round dis-inline-block margin-top-sm">
+                                        <image v-if="(user_level.images_url || null) != null" class="level-icon margin-right-sm pr top-sm" :src="user_level.images_url" mode="widthFix"></image>
+                                        <text v-if="(user_level.name || null) != null" class="cr-white text-size-xs">{{ user_level.name }}</text>
                                     </view>
                                 </view>
-                            </block>
+                            </view>
+                            <view class="head-base pa">
+                                <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
+                                    <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
+                                        <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
+                                            {{ (extraction || null) == null ? '申请' : '' }}取货点
+                                            <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" class="pa"></iconfont>
+                                        </button>
+                                    </navigator>
+                                </block>
+                            </view>
                         </view>
-                        <!-- 基础统计 -->
-                        <view v-if="stats_base_data_list.length > 0" class="margin-top oh tc">
-                            <block v-for="(item, index) in stats_base_data_list_children" :key="index">
-                                <view class="flex-row jc-sa align-c bg-grey-f5 border-radius-main" :class="stats_base_data_list_children.length - 1 > index ? 'spacing-mb' : ''">
-                                    <block v-for="(child, i) in item" :key="i">
-                                        <view class="flex-width-half">
-                                            <view class="padding-vertical-main padding-horizontal-xxxl flex-row jc-c align-c">
-                                                <image :src="child.icon" mode="widthFix" class="count-img" />
-                                                <view class="tl flex-1 flex-width padding-left-main">
-                                                    <view class="text-size-xs single-text">{{ child.name }}</view>
-                                                    <view class="single-text margin-top-sm">
-                                                        <text v-if="(child.first || null) != null" class="text-size-xs">{{ child.first }}</text>
-                                                        <text class="text-size-lg fw-b">{{ child.value }}</text>
-                                                        <text v-if="(child.unit || null) != null" class="cr-grey-9 text-size-xs">{{ child.unit }}</text>
+                    </view>
+
+                    <!-- 会员中心通知 -->
+                    <view v-if="(user_level || null) != null && (data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0" class="padding-horizontal-main padding-bottom-main">
+                        <view :class="(superior || null) != null ? 'padding-horizontal-main margin-horizontal-xs' : ''">
+                            <uni-notice-bar show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
+                        </view>
+                    </view>
+
+                    <!-- 上级用户 -->
+                    <view v-if="(superior || null) != null" class="superior">
+                        <view class="superior-item flex-row jc-sb align-c oh border-radius-top-main">
+                            <view class="superior-title cr-white fw-b va-m text-size">上级用户</view>
+                            <view class="superior-content">
+                                <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
+                                <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
+                            </view>
+                        </view>
+                    </view>
+
+                    <!-- 数据统计 -->
+                    <view v-if="stats_user_promotion_data_list.length > 0 || stats_base_data_list.length > 0 || stats_profit_data_list.length > 0" class="padding-horizontal-main oh">
+                        <view class="stats-container padding-main border-radius-main bg-white pr spacing-mb">
+                            <view class="flex-row jc-sb align-c">
+                                <view class="title-left-border text-size fw-b">基础统计</view>
+                                <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
+                                    {{ popup_time_value.name }}
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" class="pa"></iconfont>
+                                </button>
+                            </view>
+                            <!-- 推广统计 -->
+                            <view v-if="stats_user_promotion_data_list.length > 0" class="margin-top-main oh tc flex-row jc-sa align-c">
+                                <block v-for="(item, index) in stats_user_promotion_data_list" :key="index">
+                                    <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
+                                        <view class="cr-base">{{ item.name }}</view>
+                                        <view class="single-text margin-top-sm">
+                                            <text class="fw-b promotion-size">{{ item.value }}</text>
+                                            <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
+                                        </view>
+                                    </view>
+                                </block>
+                            </view>
+                            <!-- 基础统计 -->
+                            <view v-if="stats_base_data_list.length > 0" class="margin-top oh tc">
+                                <block v-for="(item, index) in stats_base_data_list_children" :key="index">
+                                    <view class="flex-row jc-sa align-c bg-grey-f5 border-radius-main" :class="stats_base_data_list_children.length - 1 > index ? 'spacing-mb' : ''">
+                                        <block v-for="(child, i) in item" :key="i">
+                                            <view class="flex-width-half">
+                                                <view class="padding-vertical-main padding-horizontal-xxxl flex-row jc-c align-c">
+                                                    <image :src="child.icon" mode="widthFix" class="count-img" />
+                                                    <view class="tl flex-1 flex-width padding-left-main">
+                                                        <view class="text-size-xs single-text">{{ child.name }}</view>
+                                                        <view class="single-text margin-top-sm">
+                                                            <text v-if="(child.first || null) != null" class="text-size-xs">{{ child.first }}</text>
+                                                            <text class="text-size-lg fw-b">{{ child.value }}</text>
+                                                            <text v-if="(child.unit || null) != null" class="cr-grey-9 text-size-xs">{{ child.unit }}</text>
+                                                        </view>
                                                     </view>
                                                 </view>
                                             </view>
-                                        </view>
-                                    </block>
-                                </view>
-                            </block>
-                        </view>
-                    </view>
-
-                    <!-- 返佣统计 -->
-                    <view v-if="stats_profit_data_list.length > 0" class="stats-container padding-sm border-radius-main bg-white pr">
-                        <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">返佣统计</view>
-                        <view class="flex-row flex-warp">
-                            <block v-for="(item, index) in stats_profit_data_list" :key="index">
-                                <view class="flex-width-half">
-                                    <view class="anti-mercenary-count bg-grey-f5 border-radius-main margin-sm">
-                                        <view class="text-size-xs single-text">{{ item.name }}</view>
-                                        <view class="single-text margin-top-sm">
-                                            <text class="text-size-xs">{{ currency_symbol }}</text>
-                                            <text class="text-size-lg fw-b">{{ item.value }}</text>
-                                        </view>
+                                        </block>
                                     </view>
-                                </view>
-                            </block>
-                        </view>
-                    </view>
-                </view>
-
-                <!-- 导航 -->
-                <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'padding-bottom-main' : 'nav-bottom'">
-                    <block v-for="(item, index) in nav_list" :key="index">
-                        <view class="flex-width-half">
-                            <view class="item bg-white border-radius-main margin-sm">
-                                <navigator :url="item.url" hover-class="none" class="flex-row align-c">
-                                    <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
-                                    <view class="padding-left-main text-size fw-b flex-1 flex-width single-text">{{ item.title }}</view>
-                                </navigator>
+                                </block>
                             </view>
                         </view>
-                    </block>
-                </view>
 
-                <!-- 不符合分销条件描述 -->
-                <view v-if="(user_level || null) == null && (data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main">
-                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.non_conformity_desc.join" background-color="transparent" color="#fff" />
-                </view>
-
-                <!-- 阶梯返佣提示 -->
-                <view v-if="(profit_ladder || null) != null" class="padding-main bottom-fixed bg-white">
-                    <view class="flex-row jc-sb align-c">
-                        <text class="cr-base">{{ profit_ladder.msg }}</text>
-                        <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
-                    </view>
-                </view>
-                <view class="padding-main bottom-fixed bg-white">
-                    <view class="flex-row jc-sb align-c">
-                        <text class="cr-base">123123213</text>
-                        <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
-                    </view>
-                </view>
-
-                <!-- 时间选择弹窗 -->
-                <component-popup :propShow="popup_time_status" propPosition="bottom" @onclose="popup_time_close_event">
-                    <view class="padding-horizontal-main padding-top-main bg-white">
-                        <view class="close oh">
-                            <view class="tr" @tap.stop="popup_time_close_event">
-                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <!-- 返佣统计 -->
+                        <view v-if="stats_profit_data_list.length > 0" class="stats-container padding-sm border-radius-main bg-white pr">
+                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">返佣统计</view>
+                            <view class="flex-row flex-warp">
+                                <block v-for="(item, index) in stats_profit_data_list" :key="index">
+                                    <view class="flex-width-half">
+                                        <view class="anti-mercenary-count bg-grey-f5 border-radius-main margin-sm">
+                                            <view class="text-size-xs single-text">{{ item.name }}</view>
+                                            <view class="single-text margin-top-sm">
+                                                <text class="text-size-xs">{{ currency_symbol }}</text>
+                                                <text class="text-size-lg fw-b">{{ item.value }}</text>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </block>
                             </view>
                         </view>
-                        <view class="popup-time-container page-bottom-fixed">
-                            <form @submit="form_submit" class="form-container">
-                                <view v-if="(time_data || null) != null" class="quit-time oh">
-                                    <block v-for="(item, index) in time_data" :key="index">
-                                        <view class="item fl padding-main bs-bb">
-                                            <view class="br-grey cr-grey text-size-xs round padding-top-xs padding-bottom-xs tc" :data-index="index" @tap="quit_time_event">{{ item.name }}</view>
-                                        </view>
-                                    </block>
-                                </view>
+                    </view>
 
-                                <view class="form-gorup bg-white">
-                                    <view class="form-gorup-title">开始时间</view>
-                                    <view class="br-b">
-                                        <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
-                                    </view>
+                    <!-- 导航 -->
+                    <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'padding-bottom-main' : 'nav-bottom'">
+                        <block v-for="(item, index) in nav_list" :key="index">
+                            <view class="flex-width-half">
+                                <view class="item bg-white border-radius-main margin-sm">
+                                    <navigator :url="item.url" hover-class="none" class="flex-row align-c">
+                                        <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
+                                        <view class="padding-left-main text-size fw-b flex-1 flex-width single-text">{{ item.title }}</view>
+                                    </navigator>
                                 </view>
-                                <view class="form-gorup bg-white">
-                                    <view class="form-gorup-title">结束时间</view>
-                                    <view class="br-b">
-                                        <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
-                                    </view>
-                                </view>
-                                <view class="bottom-fixed padding-main">
-                                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
-                                </view>
-                            </form>
+                            </view>
+                        </block>
+                    </view>
+
+                    <!-- 不符合分销条件描述 -->
+                    <view v-if="(user_level || null) == null && (data_base.non_conformity_desc || null) != null && data_base.non_conformity_desc.length > 0" class="padding-horizontal-main">
+                        <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.non_conformity_desc.join" background-color="transparent" color="#fff" />
+                    </view>
+
+                    <!-- 阶梯返佣提示 -->
+                    <view v-if="(profit_ladder || null) != null" class="padding-main bottom-fixed bg-white">
+                        <view class="flex-row jc-sb align-c">
+                            <text class="cr-base">{{ profit_ladder.msg }}</text>
+                            <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
                         </view>
                     </view>
-                </component-popup>
+                    <view class="padding-main bottom-fixed bg-white">
+                        <view class="flex-row jc-sb align-c">
+                            <text class="cr-base">123123213</text>
+                            <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
+                        </view>
+                    </view>
+
+                    <!-- 时间选择弹窗 -->
+                    <component-popup :propShow="popup_time_status" propPosition="bottom" @onclose="popup_time_close_event">
+                        <view class="padding-horizontal-main padding-top-main bg-white">
+                            <view class="close oh">
+                                <view class="tr" @tap.stop="popup_time_close_event">
+                                    <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                </view>
+                            </view>
+                            <view class="popup-time-container page-bottom-fixed">
+                                <form @submit="form_submit" class="form-container">
+                                    <view v-if="(time_data || null) != null" class="quit-time oh">
+                                        <block v-for="(item, index) in time_data" :key="index">
+                                            <view class="item fl padding-main bs-bb">
+                                                <view class="br-grey cr-grey text-size-xs round padding-top-xs padding-bottom-xs tc" :data-index="index" @tap="quit_time_event">{{ item.name }}</view>
+                                            </view>
+                                        </block>
+                                    </view>
+
+                                    <view class="form-gorup bg-white">
+                                        <view class="form-gorup-title">开始时间</view>
+                                        <view class="br-b">
+                                            <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
+                                        </view>
+                                    </view>
+                                    <view class="form-gorup bg-white">
+                                        <view class="form-gorup-title">结束时间</view>
+                                        <view class="br-b">
+                                            <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
+                                        </view>
+                                    </view>
+                                    <view class="bottom-fixed padding-main">
+                                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
+                                    </view>
+                                </form>
+                            </view>
+                        </view>
+                    </component-popup>
+                </view>
             </view>
         </view>
         <view v-else>
