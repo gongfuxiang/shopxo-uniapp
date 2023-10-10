@@ -6,10 +6,10 @@
                 <view class="padding-horizontal-main padding-top-main" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
                     <uni-swipe-action>
                         <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
-                            <uni-swipe-action-item :right-options="swipe_options" @tap="swipe_opt_event" @change="swipe_change($event, index)">
+                            <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
                                 <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                     <!-- 选择 -->
-                                    <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected">
+                                    <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
                                         <image class="icon" :src="common_static_url + 'select' + (item.selected || false ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                                     </view>
                                     <view class="items oh padding-left-main flex-1 flex-row">
@@ -535,6 +535,7 @@
             swipe_opt_event(e) {
                 var index = e.index || 0;
                 var temp_data_list = this.data_list;
+                console.log('this.swipe_item_index', this.swipe_item_index);
                 if (this.swipe_item_index === null) {
                     app.globalData.showToast('请先滑动要操作的数据');
                     return false;

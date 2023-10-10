@@ -2,12 +2,11 @@
 * 签到
 */
 .signin-container {
-    background-color: rgb(255 209 133);
     min-height: 100vh;
 }
 
 .signin-bg {
-    width: 100%;
+    background-color: rgb(255 209 133);
 }
 
 .signin-opration-group {

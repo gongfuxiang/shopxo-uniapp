@@ -33,6 +33,10 @@
     /* #endif */
 }
 
+.ht-vh {
+    height: calc(100vh - var(--window-bottom));
+}
+
 /**
  * 右侧图标导航
  */
@@ -86,7 +90,7 @@
 .search-content-animation {
     transition: all 0.2s ease;
     /* #ifdef MP-WEIXIN */
-    transition: all 1s linear;
+    transition: all 0.2s linear;
     /* #endif */
 }
 
