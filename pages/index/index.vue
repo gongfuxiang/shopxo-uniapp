@@ -26,7 +26,7 @@
                 <!-- --- -->
                 <!-- 待优化 -->
                 <!-- 搜索 -->
-                <!-- <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view> -->
+                <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
                 <view v-if="load_status == 1" :class="'pr ' + (search_is_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_title_style : ''">
                     <view v-if="common_app_is_enable_search == 1" :style="search_style" class="search-content-animation">
                         <view class="margin-horizontal-main">
@@ -558,38 +558,6 @@
 
             // 页面滚动监听
             onPageScroll(e) {
-                // if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
-                //     var top = e.scrollTop > 42 ? 42 : e.scrollTop;
-                //     var num = top;
-                //     var base = 230;
-                //     // #ifdef MP-ALIPAY
-                //     base = 235;
-                //     // #endif
-                //     // #ifdef H5 || MP-TOUTIAO || APP
-                //     var len = (this.right_icon_list || []).length;
-                //     base = len <= 0 ? 0 : 66 * len;
-                //     // #endif
-                //     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
-                //     if (!this.plugins_mourning_data_is_app) {
-                //         var top_val = 42;
-                //         var val = num * 6 > base ? base : num * 6;
-                //         // #ifdef MP-TOUTIAO
-                //         top_val = 0;
-                //         val = base;
-                //         // #endif
-                //         console.log('num', num);
-                //         // console.log('base', base);
-                //         this.setData({
-                //             // #ifdef H5 || MP-TOUTIAO || APP
-                //             search_style: 'width: calc(100% - ' + (val < 0 ? 0 : val) + 'rpx);',
-                //             // #endif
-                //             // #ifdef MP-WEIXIN
-                //             search_style: 'width: calc(100% - ' + (e.scrollTop > 200 ? 200 : e.scrollTop) + 'px);',
-                //             // #endif
-                //             search_is_fixed: top >= top_val ? 1 : 0,
-                //         });
-                //     }
-                // }
                 if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
                     var top = e.scrollTop > 42 ? 42 : e.scrollTop;
                     var num = top * 7;
