@@ -66,27 +66,27 @@
  * 搜索
  */
 .search-fixed-seat {
-    padding-top: 70rpx;
+    padding-top: 82rpx;
     /* #ifdef MP-TOUTIAO */
     padding-top: 60rpx;
     /* #endif */
 }
-
 .search-content-fixed {
     position: fixed !important;
     top: 0;
     z-index: 11;
-    padding-bottom: 20rpx;
     width: 100%;
+}
+.search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    padding-top: 25px;
+    background-position: 0 13%;
+    padding-bottom: 20rpx;
     /* #ifdef H5 || APP */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;
     /* #endif */
 }
-
 /* #ifdef H5 || MP-TOUTIAO || APP */
 .search-content-fixed .nav-top-right-icon {
     top: 9px !important;
@@ -98,7 +98,7 @@
  * 轮播
  */
 .banner-content {
-    margin-top: 26rpx;
+    margin-top: 10rpx;
 }
 
 /**
