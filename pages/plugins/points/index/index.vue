@@ -9,106 +9,107 @@
             </view>
             <!-- #endif -->
         </view>
-        <view v-if="(data_base || null) != null">
-            <!-- 广告图片 -->
-            <view class="pa top-0 bg-img wh-auto">
-                <block v-if="(data_base.right_images || null) != null">
-                    <!-- <image class="wh-auto advertisement" :src="data_base.right_images" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image> -->
-                    <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
-                </block>
-                <block v-else>
-                    <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
-                </block>
-            </view>
-            <view class="pr">
-                <!-- #endif -->
-                <view class="padding-horizontal-main points-content pr">
-                    <!-- 顶部 -->
-                    <view class="border-radius-main bg-white pr spacing-mb">
-                        <view class="points-user">
-                            <view class="flex-row">
-                                <block v-if="(user || null) == null">
-                                    <image class="avatar dis-block circle" @tap="preview_event" :src="avatar_default" mode="widthFix"></image>
-                                    <view class="padding-left-main">
-                                        <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">立即登录</view>
-                                        <view class="desc margin-top-sm cr-grey-9">获知会员积分详情</view>
-                                    </view>
-                                </block>
-                                <block v-else>
-                                    <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
-                                    <view class="padding-left-main">
-                                        <view class="text-size fw-b">{{ user.user_name_view }}</view>
-                                        <view class="desc margin-top-sm cr-grey"
-                                            >当前可用
-                                            <text class="cr-black fw-b padding-horizontal-xs">
-                                                {{ user_integral.integral || 0 }}
-                                            </text>
-                                            积分
+        <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
+            <view class="padding-top-xxxl">
+                <!-- 广告图片 -->
+                <view class="pa top-0 bg-img wh-auto">
+                    <block v-if="(data_base.right_images || null) != null">
+                        <!-- <image class="wh-auto advertisement" :src="data_base.right_images" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image> -->
+                        <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
+                    </block>
+                    <block v-else>
+                        <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
+                    </block>
+                </view>
+                <view class="pr padding-top-main">
+                    <view class="padding-horizontal-main points-content pr">
+                        <!-- 顶部 -->
+                        <view class="border-radius-main bg-white pr spacing-mb">
+                            <view class="points-user">
+                                <view class="flex-row">
+                                    <block v-if="(user || null) == null">
+                                        <image class="avatar dis-block circle" @tap="preview_event" :src="avatar_default" mode="widthFix"></image>
+                                        <view class="padding-left-main">
+                                            <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">立即登录</view>
+                                            <view class="desc margin-top-sm cr-grey-9">获知会员积分详情</view>
                                         </view>
-                                    </view>
-                                </block>
-                            </view>
-                            <!-- 分享 -->
-                            <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" open-type="share">分享</button>
-                        </view>
-                        <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
-                            <component-title prop-title="积分明细" prop-more-url="/pages/user-integral/user-integral"></component-title>
-                            <view v-if="integral_list.length > 0">
-                                <view class="item">
-                                    <view v-for="(item, index) in integral_list" class="list" :key="index">
-                                        <view class="flex-row jc-sb align-c">
-                                            <view class="cr-grey-9">
-                                                原始
-                                                <text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
-                                                <text class="padding-horizontal-sm">/</text>
-                                                最新
-                                                <text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
+                                    </block>
+                                    <block v-else>
+                                        <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
+                                        <view class="padding-left-main">
+                                            <view class="text-size fw-b">{{ user.user_name_view }}</view>
+                                            <view class="desc margin-top-sm cr-grey"
+                                                >当前可用
+                                                <text class="cr-black fw-b padding-horizontal-xs">
+                                                    {{ user_integral.integral || 0 }}
+                                                </text>
+                                                积分
                                             </view>
-                                            <view class="cr-grey-9">{{ item.add_time_time }}</view>
                                         </view>
-                                        <view class="flex-row jc-sb align-c margin-top-main">
-                                            <view>{{ item.msg }}</view>
-                                            <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{ item.type == 1 ? '+' : '-' }} {{ item.operation_integral }}</view>
+                                    </block>
+                                </view>
+                                <!-- 分享 -->
+                                <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" open-type="share">分享</button>
+                            </view>
+                            <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
+                                <component-title prop-title="积分明细" prop-more-url="/pages/user-integral/user-integral"></component-title>
+                                <view v-if="integral_list.length > 0">
+                                    <view class="item">
+                                        <view v-for="(item, index) in integral_list" class="list" :key="index">
+                                            <view class="flex-row jc-sb align-c">
+                                                <view class="cr-grey-9">
+                                                    原始
+                                                    <text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
+                                                    <text class="padding-horizontal-sm">/</text>
+                                                    最新
+                                                    <text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
+                                                </view>
+                                                <view class="cr-grey-9">{{ item.add_time_time }}</view>
+                                            </view>
+                                            <view class="flex-row jc-sb align-c margin-top-main">
+                                                <view>{{ item.msg }}</view>
+                                                <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{ item.type == 1 ? '+' : '-' }} {{ item.operation_integral }}</view>
+                                            </view>
                                         </view>
                                     </view>
                                 </view>
+                                <view v-else>
+                                    <!-- 提示信息 -->
+                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                                </view>
                             </view>
-                            <view v-else>
-                                <!-- 提示信息 -->
-                                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                            </view>
+                        </view>
+
+                        <!-- 公告信息 -->
+                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">积分规则</button>
+
+                        <!-- 商品兑换 -->
+                        <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
+                            <component-goods-list
+                                :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }"
+                                prop-more-url-key="url"
+                                :propCurrencySymbol="currency_symbol"
+                                :prop-grid-btn-config="gridBtnConfig"
+                                :prop-is-open-grid-btn-set="isOpenGridBtnSet"
+                                propPriceField="price"
+                                propIntegral
+                            ></component-goods-list>
                         </view>
                     </view>
 
-                    <!-- 公告信息 -->
-                    <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">积分规则</button>
-
-                    <!-- 商品兑换 -->
-                    <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                        <component-goods-list
-                            :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }"
-                            prop-more-url-key="url"
-                            :propCurrencySymbol="currency_symbol"
-                            :prop-grid-btn-config="gridBtnConfig"
-                            :prop-is-open-grid-btn-set="isOpenGridBtnSet"
-                            propPriceField="price"
-                            propIntegral
-                        ></component-goods-list>
-                    </view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <!-- 积分规则弹窗 -->
+                    <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+                        <view class="rule">
+                            <view class="cr-black text-size-md fw-b margin-bottom-main tc">积分规则</view>
+                            <scroll-view :scroll-y="true" class="item">
+                                <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
+                            </scroll-view>
+                            <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
+                        </view>
+                    </component-popup>
                 </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-                <!-- 积分规则弹窗 -->
-                <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
-                    <view class="rule">
-                        <view class="cr-black text-size-md fw-b margin-bottom-main tc">积分规则</view>
-                        <scroll-view :scroll-y="true" class="item">
-                            <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
-                        </scroll-view>
-                        <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
-                    </view>
-                </component-popup>
             </view>
         </view>
         <view v-else>
