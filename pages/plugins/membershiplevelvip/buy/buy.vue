@@ -69,6 +69,7 @@
             :prop-payment-list="payment_list"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
+            :prop-payment-id="payment_id"
             :prop-pay-price="pay_price"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
@@ -100,6 +101,7 @@
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
+                payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
                 // 支付失败跳转的页面
@@ -235,6 +237,7 @@
                             is_show_payment_popup: this.is_show_payment_popup ? false : true,
                             temp_pay_value: res.data.data.id,
                             pay_price: res.data.data.price,
+                            payment_id: res.data.data.payment_user_id,
                         });
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, {

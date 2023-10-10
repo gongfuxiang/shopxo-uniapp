@@ -27,7 +27,7 @@
                 </view>
                 <view v-if="item.status == 0" class="item-operation tr margin-top-main">
                     <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" hover-class="none">去支付</button>
+                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">去支付</button>
                 </view>
             </view>
         </view>
@@ -107,6 +107,7 @@
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
+                payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
             };
@@ -275,6 +276,7 @@
                     temp_pay_value: e.currentTarget.dataset.value,
                     temp_pay_index: e.currentTarget.dataset.index,
                     pay_price: e.currentTarget.dataset.price,
+                    payment_id: e.currentTarget.dataset.payment,
                 });
             },
 

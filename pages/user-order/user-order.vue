@@ -14,7 +14,7 @@
                 <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                     <view class="item-base oh br-b padding-bottom-main">
                         <!-- 选择 -->
-                        <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" @tap="selected_event" :data-oid="item.id" class="fl selected">
+                        <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="fl selected" @tap="selected_event">
                             <image class="icon va-m" :src="common_static_url + 'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
                         </view>
                         <!-- 基础信息 -->
@@ -56,20 +56,23 @@
                     </view>
                     <view
                         v-if="
-                            (item.operate_data.is_cancel +
-                            item.operate_data.is_pay +
-                            item.operate_data.is_collect +
-                            item.operate_data.is_comments +
-                            item.operate_data.is_delete +
-                            (item.plugins_is_order_allot_button || 0) +
-                            (item.plugins_is_order_batch_button || 0) +
-                            (item.plugins_is_order_frequencycard_button || 0)) > 0 ||
+                            item.operate_data.is_cancel +
+                                item.operate_data.is_pay +
+                                item.operate_data.is_collect +
+                                item.operate_data.is_comments +
+                                item.operate_data.is_delete +
+                                (item.plugins_is_order_allot_button || 0) +
+                                (item.plugins_is_order_batch_button || 0) +
+                                (item.plugins_is_order_frequencycard_button || 0) >
+                                0 ||
                             (item.status == 2 && item.order_model != 2) ||
                             ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
                             (item.plugins_delivery_data || 0) == 1
-                        " class="item-operation tr br-t padding-vertical-main">
+                        "
+                        class="item-operation tr br-t padding-vertical-main"
+                    >
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" hover-class="none">支付</button>
+                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                         <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
                         <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
@@ -78,7 +81,9 @@
                         <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                         <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
                         <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
-                        <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">次卡</button>
+                        <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">
+                            次卡
+                        </button>
                     </view>
                 </view>
             </view>
@@ -92,8 +97,8 @@
         </scroll-view>
 
         <!-- 合并支付 -->
-        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1">
-            <button class="bottom-fixed pay-merge-submit bg-green cr-white round" type="default" size="mini" hover-class="none" @tap="pay_merge_event">合并支付</button>
+        <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed bg-white tc">
+            <button class="pay-merge-submit bg-green cr-white round" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
 
         <component-payment
@@ -103,6 +108,7 @@
             prop-pay-data-key="ids"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
+            :prop-payment-id="payment_id"
             :prop-pay-price="pay_price"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
@@ -132,7 +138,6 @@
                 data_is_loading: 0,
                 params: null,
                 input_keyword_value: '',
-                payment_type: '',
                 nav_status_list: [
                     { name: '全部', value: '-1' },
                     { name: '待付款', value: '1' },
@@ -141,8 +146,11 @@
                     { name: '已完成', value: '4' },
                     { name: '已失效', value: '5,6' },
                 ],
-                nav_status_index: 0,
+                mult_payment_id: 0,
+                mult_payment_id_list: [],
                 order_select_ids: [],
+                mult_pay_price: [],
+                nav_status_index: 0,
                 // 支付信息
                 popup_view_pay_html_is_show: false,
                 popup_view_pay_qrcode_is_show: false,
@@ -159,7 +167,7 @@
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
-                payment_id: 0,
+                payment_id: '',
                 is_show_payment_popup: false,
             };
         },
@@ -307,6 +315,7 @@
                                 }
                                 this.setData({
                                     payment_list: res.data.data.payment_list || [],
+                                    mult_payment_id: res.data.data.default_payment_id || '',
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -375,6 +384,7 @@
                     is_show_payment_popup: true,
                     temp_pay_value: e.currentTarget.dataset.value,
                     temp_pay_index: e.currentTarget.dataset.index,
+                    payment_id: e.currentTarget.dataset.payment || this.mult_payment_id || '',
                     pay_price: e.currentTarget.dataset.price,
                     order_select_ids: [],
                 });
@@ -617,26 +627,44 @@
             // 选中处理
             selected_event(e) {
                 var oid = e.currentTarget.dataset.oid || 0;
+                var price = e.currentTarget.dataset.price || 0;
+                var payment_id = e.currentTarget.dataset.payment || '';
                 var temp_select_ids = this.order_select_ids;
+                var temp_mult_pay_price = this.mult_pay_price;
+                var temp_payment_id = this.mult_payment_id_list;
                 if (temp_select_ids.indexOf(oid) == -1) {
                     temp_select_ids.push(oid);
+                    temp_mult_pay_price.push(price);
+                    temp_payment_id.push(payment_id);
                 } else {
                     for (var i in temp_select_ids) {
                         if (temp_select_ids[i] == oid) {
                             temp_select_ids.splice(i, 1);
+                            temp_mult_pay_price.splice(i, 1);
+                            temp_payment_id.splice(i, 1);
                         }
                     }
                 }
                 this.setData({
                     order_select_ids: temp_select_ids,
+                    mult_pay_price: temp_mult_pay_price,
+                    mult_payment_id_list: temp_payment_id,
                 });
             },
 
             // 合并支付
             pay_merge_event(e) {
+                var num = 0;
+                if (this.mult_pay_price.length > 0) {
+                    num = this.mult_pay_price.reduce((old, now) => {
+                        return Number(old) + Number(now);
+                    }, 0);
+                }
                 this.setData({
                     is_show_payment_popup: true,
                     temp_pay_value: this.order_select_ids.join(','),
+                    pay_price: Math.round(parseFloat(num) * 100) / 100,
+                    payment_id: this.order_select_ids.length > 1 ? this.mult_payment_id : this.mult_payment_id_list[0],
                 });
             },
 

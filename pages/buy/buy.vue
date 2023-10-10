@@ -482,7 +482,7 @@
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],
                                     payment_list: data.payment_list || [],
-                                    payment_id: data.default_payment_id || 0,
+                                    payment_id: data.default_payment_id || '',
                                     buy_datetime_info: datetime,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null,

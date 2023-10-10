@@ -27,7 +27,7 @@
                         </navigator>
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" hover-class="none">支付</button>
+                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">支付</button>
                         <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                         <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                     </view>
@@ -44,6 +44,7 @@
             :prop-payment-list="payment_list"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
+            :prop-payment-id="payment_id"
             :prop-is-show-payment="is_show_payment_popup"
             :prop-pay-price="pay_price"
             @close-payment-poupon="payment_popup_event_close"
@@ -74,6 +75,7 @@
                 payment_list: [],
                 temp_pay_value: 0,
                 temp_pay_index: 0,
+                payment_id: 0,
                 nav_status_list: [
                     {
                         name: '全部',
@@ -275,6 +277,7 @@
                     temp_pay_value: e.currentTarget.dataset.value,
                     temp_pay_index: e.currentTarget.dataset.index,
                     pay_price: e.currentTarget.dataset.price,
+                    payment_id: e.currentTarget.dataset.payment || '',
                 });
             },
             // 支付弹窗关闭

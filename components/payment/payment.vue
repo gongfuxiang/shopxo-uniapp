@@ -31,12 +31,12 @@
             <view v-if="propPaymentList.length > 0" class="oh">
                 <view class="payment-list">
                     <scroll-view scroll-y="true" class="scroll-y wh-auto">
-                        <view v-for="(item, index) in propPaymentList" :key="index" class="item br-b flex-row jc-sb align-c" :data-index="index" :data-value="item.id" @tap="checked_payment">
+                        <view v-for="(item, index) in propPaymentList" :key="index" class="item br-b flex-row jc-sb align-c" :data-value="item.id" @tap="checked_payment">
                             <view class="flex-1">
                                 <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                                 <text class="va-m">{{ item.name }}</text>
                             </view>
-                            <iconfont :name="selected_index === index ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="44rpx" :color="selected_index === index ? '#E22C08' : '#ccc'"></iconfont>
+                            <iconfont :name="payment_id === item.id ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="44rpx" :color="payment_id === item.id ? '#E22C08' : '#ccc'"></iconfont>
                             <!-- <iconfont v-else name="icon-qiandao-tancguanbi" size="44rpx" color="#ccc"></iconfont> -->
                         </view>
                     </scroll-view>
@@ -140,9 +140,26 @@
         watch: {
             propIsShowPayment(newVal, oldVal) {
                 if (newVal !== oldVal) {
+                    let bool = true;
+                    if (this.propPaymentList.length < 2) {
+                        bool = false;
+                        this.setData({
+                            payment_id: this.propPaymentList[0].id,
+                        });
+                    } else {
+                        let self = this;
+                        self.propPaymentList.forEach((item) => {
+                            if (item.id == self.propPaymentId) {
+                                bool = false;
+                            }
+                        });
+                        this.setData({
+                            payment_id: this.propPaymentId,
+                        });
+                    }
                     this.setData({
                         is_show_payment_popup: newVal,
-                        selected_index: null,
+                        submit_disabled_status: bool,
                     });
                 }
             },
@@ -156,12 +173,9 @@
                 popup_view_pay_timer: null,
                 popup_view_pay_data: null,
                 // 支付id
-                payment_id: 0,
-                order_id: 0,
-                // 支付按钮状态
+                payment_id: this.propPaymentId || '',
                 submit_disabled_status: true,
-                // 选择的支付方式的下标
-                selected_index: null,
+                order_id: 0,
                 currency_symbol: app.globalData.data.currency_symbol,
 
                 popup_view_pay_html_is_show: false,
@@ -183,11 +197,9 @@
             },
             // 选择支付方式
             checked_payment(e) {
-                let payment_id = e.currentTarget.dataset.value || 0;
-                let selected_index = e.currentTarget.dataset.index;
+                let payment_id = e.currentTarget.dataset.value;
                 this.setData({
-                    payment_id: payment_id,
-                    selected_index: selected_index,
+                    payment_id: e.currentTarget.dataset.value,
                     submit_disabled_status: false,
                 });
             },
@@ -527,7 +539,7 @@
                     data: data,
                     order_id: order_id,
                     temp_pay_index: this.propTempPayIndex,
-                    payment_id: this.propPaymentId,
+                    payment_id: this.payment_id,
                 };
                 this.$emit('pay-fail', newData);
                 this.to_fail_page_event(msg);
