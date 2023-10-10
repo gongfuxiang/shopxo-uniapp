@@ -60,7 +60,7 @@
 
                 <!-- 轮播 -->
                 <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
-                    <component-banner :propData="banner_list" @changeBanner="changeBanner"></component-banner>
+                    <component-banner :propData="banner_list" @changeBanner="change_banner"></component-banner>
                 </view>
                 <!-- 导航 -->
                 <view v-if="navigation.length > 0" class="spacing-mt">
@@ -631,8 +631,9 @@
                 });
                 clearInterval(this.plugins_popupscreen_timer);
             },
+
             // 轮播改变
-            changeBanner(color) {
+            change_banner(color) {
                 if (color) {
                     this.slider_bg = 'background: linear-gradient(180deg,' + color + ' 0%, #f5f5f5 80%);padding-top:' + (bar_height + 5) + 'px;';
                 } else {

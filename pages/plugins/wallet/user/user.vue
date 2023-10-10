@@ -153,7 +153,7 @@
                     current: pay_data.type || 0,
                 });
                 setTimeout(() => {
-                    app.globalData.updateQueryStringParameter([{ key: 'type', value: pay_data.type }]);
+                    app.globalData.update_query_string_parameter([{ key: 'type', value: pay_data.type }]);
                 }, 200);
             }
             this.init();
@@ -248,7 +248,7 @@
                 this.setData({
                     current: e.currentTarget.dataset.index || 0,
                 });
-                app.globalData.updateQueryStringParameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
+                app.globalData.update_query_string_parameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
             },
 
             // 滚动加载

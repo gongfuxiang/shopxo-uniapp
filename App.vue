@@ -53,7 +53,7 @@
                 category_goods_model_icon_type: 0,
                 // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
                 is_logo_use_text: 0,
-                // 用户中心菜单默认展示模式（0 九方格, 1 列表）
+                // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
                 user_center_nav_show_model_type: 0,
                 // 商品列表是否展示购物车（0否, 1是）
                 is_goods_list_show_cart_opt: 1,
@@ -1879,7 +1879,7 @@
 
             // 更新当前url参数
             // query:[{key:'',value:''}]
-            updateQueryStringParameter(query = []) {
+            update_query_string_parameter(query = []) {
                 // #ifdef H5
                 let url = window.location.href;
                 // 判断没有参数时

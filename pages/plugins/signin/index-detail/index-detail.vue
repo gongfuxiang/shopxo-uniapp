@@ -12,7 +12,7 @@
             <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
             <view class="signin-opration-group pa right-0 flex-col cr-white">
                 <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
-                    <button class="content" open-type="share" @tap="share_event">
+                    <button type="default" class="content" @tap="share_event">
                         <iconfont name="icon-qiandao-fenxiang" class="pr top-sm" size="32rpx"></iconfont>
                         分享
                     </button>

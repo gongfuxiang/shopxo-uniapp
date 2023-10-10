@@ -63,19 +63,13 @@
                     </view>
                 </view>
 
+                <!-- 中间导航 -->
                 <view class="user-bottom padding-horizontal-main" :style="(payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow: 0px -8px 8px 2px rgba(0, 0, 0, 0.2);' : ''">
                     <!-- 订单导航 -->
                     <view v-if="(navigation_order || null) != null" class="nav-list bg-white bg-white padding-vertical-main border-radius-main spacing-mb">
                         <!-- 订单导航 -->
                         <view class="nav-content flex-row jc-sb align-c">
                             <!-- 主导航 -->
-                            <!-- <view :data-value="navigation_order.event_value" :data-type="navigation_order.event_type" @tap="navigation_event" class="nav-item br-b cp padding-main">
-							<view class="arrow-right">
-								<image :src="navigation_order.images_url" class="item-icon va-m" mode="widthFix"></image>
-								<text class="item-name va-m cr-base margin-left-sm">{{navigation_order.name}}</text>
-								<text v-if="(navigation_order.desc || null) != null" class="item-desc fr tr single-text cr-grey">{{navigation_order.desc}}</text>
-							</view>
-						</view> -->
                             <view class="nav-list-sub oh flex-row jc-sa align-c flex-1">
                                 <!-- 订单自定义副导航 -->
                                 <block v-for="(items, index) in user_order_status_list" :key="index">
@@ -101,16 +95,12 @@
 
                     <!-- 聚合导航 -->
                     <view class="service-nav padding-main border-radius-main bg-white spacing-mb">
-                        <view class="padding-main pr">
-                            <text class="fw-b text-size">我的服务</text>
-                            <image class="show-type-submit pa cp" :src="common_static_url + 'show-' + (nav_show_model_type == 0 ? 'list' : 'grid') + '-icon.png'" mode="aspectFill" @tap="nav_show_type_event"> </image>
-                        </view>
                         <!-- 列表模式 -->
                         <view v-if="nav_show_model_type == 1" class="nav-list">
                             <block v-for="(item, index) in navigation" :key="index">
                                 <!-- 这里不展示订单导航 -->
                                 <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item br-t cp padding-main">
+                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :class="'nav-item cp padding-main '+(index > 0 ? 'br-t-e' : '')">
                                         <view class="arrow-right">
                                             <image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
                                             <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ item.name }}</text>
@@ -135,7 +125,7 @@
                             </view>
                         </view>
                         <!-- 默认九方格模式 -->
-                        <view v-else class="nav-box oh br-t margin-top-sm">
+                        <view v-else class="nav-box oh margin-top-sm">
                             <block v-for="(item, index) in navigation" :key="index">
                                 <!-- 这里不展示订单导航 -->
                                 <block v-if="item.event_value != '/pages/user-order/user-order'">
@@ -492,14 +482,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            },
-
-            // 数据展示类型
-            nav_show_type_event(e) {
-                this.setData({
-                    nav_show_model_type: this.nav_show_model_type == 0 ? 1 : 0,
-                });
-            },
+            }
         },
     };
 </script>

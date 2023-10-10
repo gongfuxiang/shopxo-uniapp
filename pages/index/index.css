@@ -87,13 +87,6 @@
     /* #endif */
 }
 
-.search-content-animation {
-    transition: all 0.2s ease;
-    /* #ifdef MP-WEIXIN */
-    transition: all 0.2s linear;
-    /* #endif */
-}
-
 /* #ifdef H5 || MP-TOUTIAO || APP */
 .search-content-fixed .nav-top-right-icon {
     top: 9px !important;

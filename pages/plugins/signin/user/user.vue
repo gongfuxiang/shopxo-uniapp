@@ -159,7 +159,7 @@
                 this.setData({
                     current: e.currentTarget.dataset.index || 0,
                 });
-                app.globalData.updateQueryStringParameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
+                app.globalData.update_query_string_parameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
             },
             // 滚动加载
             scroll_lower(e) {
