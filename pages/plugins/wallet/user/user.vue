@@ -1,85 +1,88 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box scroll-wallet" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="(data_base || null) != null" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
-                <!-- 头部背景 -->
-                <image :src="wallet_static_url + 'title-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto wallet-bg" />
-                <view class="pr z-i">
-                    <!-- 返回 -->
-                    <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                    <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
-                        <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                    </view>
-                    <!-- #endif -->
-
-                    <!-- 钱包信息 -->
-                    <view class="padding-top-xxxl oh margin-top-main">
-                        <view class="wallet-head padding-horizontal-xxxl">
-                            <!-- 用户中心公告 -->
-                            <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0">
-                                <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
-                            </view>
-                            <view class="content oh cr-white pr filter-blur">
-                                <view class="pa content-padding-1 oh filter-blur-child">
-                                    <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
-                                </view>
-                                <view class="pr z-i flex-row jc-c">
-                                    <view class="flex-1 flex-width">
-                                        <view>有效(元)</view>
-                                        <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
-                                        <view class="flex-row jc-sb align-c margin-top-main">
-                                            <view class="flex-1">
-                                                <view class="tetx-size-xs">冻结(元)</view>
-                                                <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
-                                            </view>
-                                            <view class="flex-1">
-                                                <view class="tetx-size-xs">赠送(元)</view>
-                                                <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
-                                            </view>
-                                        </view>
-                                    </view>
-                                    <view class="is-price-show">
-                                        <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                    <view class="padding-main padding-top-xxxl">
-                        <!-- 导航 -->
-                        <view v-if="nav_list.length > 0" class="nav oh margin-bottom-xl">
-                            <view class="flex-row jc-sb align-c">
-                                <block v-for="(item, index) in nav_list" :key="index">
-                                    <view class="text-size fw-b" :data-index="index" @tap="nav_change">
-                                        <view class="pr dis-inline-block">
-                                            {{ item.title }}
-                                            <view v-if="current === index" class="pa active" :style="'background: linear-gradient(90deg, ' + theme_color + ' 0%, rgba(255, 255, 255, 0.27) 100%)'"></view>
-                                        </view>
-                                    </view>
-                                </block>
-                            </view>
-                        </view>
-                        <!-- 明细 -->
-                        <view class="nav-detail margin-bottom-lg">
-                            <view v-if="current === 0">
-                                <component-wallet-log :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-wallet-log>
-                            </view>
-                            <view v-if="current === 1">
-                                <component-user-recharge :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
-                            </view>
-                            <view v-if="current === 2">
-                                <component-user-cash :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-cash>
-                            </view>
-                        </view>
-                    </view>
+        <scroll-view :scroll-y="true" class="scroll-box scroll-wallet" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
+            <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
+                <!-- 返回 -->
+                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
+                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
                 </view>
-                <view class="bottom-fixed bg-white submit-container flex-row jc-sb align-c">
-                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" url="/pages/plugins/wallet/recharge/recharge" hover-class="none" class="sub-btn">
-                        <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">充值</button>
-                    </navigator>
-                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none" class="sub-btn">
-                        <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">提现</button>
-                    </navigator>
+                <!-- #endif -->
+            </view>
+            <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
+                <view class="padding-top-xxxl">
+                    <!-- 头部背景 -->
+                    <image :src="wallet_static_url + 'title-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto wallet-bg" />
+                    <view class="pr padding-top-main">
+                        <!-- 钱包信息 -->
+                        <view class="padding-top-xxxl oh margin-top-main">
+                            <view class="wallet-head padding-horizontal-xxxl">
+                                <!-- 用户中心公告 -->
+                                <view v-if="(data_base.user_center_notice || null) != null && data_base.user_center_notice.length > 0">
+                                    <uni-notice-bar class="padding-0" show-icon scrollable :text="data_base.user_center_notice.join('')" background-color="transparent" color="#fff" />
+                                </view>
+                                <view class="content oh cr-white pr filter-blur">
+                                    <view class="pa content-padding-1 oh filter-blur-child">
+                                        <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
+                                    </view>
+                                    <view class="pr z-i flex-row jc-c">
+                                        <view class="flex-1 flex-width">
+                                            <view>有效(元)</view>
+                                            <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
+                                            <view class="flex-row jc-sb align-c margin-top-main">
+                                                <view class="flex-1">
+                                                    <view class="tetx-size-xs">冻结(元)</view>
+                                                    <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
+                                                </view>
+                                                <view class="flex-1">
+                                                    <view class="tetx-size-xs">赠送(元)</view>
+                                                    <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
+                                                </view>
+                                            </view>
+                                        </view>
+                                        <view class="is-price-show">
+                                            <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="padding-main padding-top-xxxl">
+                            <!-- 导航 -->
+                            <view v-if="nav_list.length > 0" class="nav oh margin-bottom-xl">
+                                <view class="flex-row jc-sb align-c">
+                                    <block v-for="(item, index) in nav_list" :key="index">
+                                        <view class="text-size fw-b" :data-index="index" @tap="nav_change">
+                                            <view class="pr dis-inline-block">
+                                                {{ item.title }}
+                                                <view v-if="current === index" class="pa active" :style="'background: linear-gradient(90deg, ' + theme_color + ' 0%, rgba(255, 255, 255, 0.27) 100%)'"></view>
+                                            </view>
+                                        </view>
+                                    </block>
+                                </view>
+                            </view>
+                            <!-- 明细 -->
+                            <view class="nav-detail margin-bottom-lg">
+                                <view v-if="current === 0">
+                                    <component-wallet-log :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-wallet-log>
+                                </view>
+                                <view v-if="current === 1">
+                                    <component-user-recharge :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
+                                </view>
+                                <view v-if="current === 2">
+                                    <component-user-cash :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-cash>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="bottom-fixed bg-white submit-container flex-row jc-sb align-c">
+                        <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" url="/pages/plugins/wallet/recharge/recharge" hover-class="none" class="sub-btn">
+                            <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">充值</button>
+                        </navigator>
+                        <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none" class="sub-btn">
+                            <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">提现</button>
+                        </navigator>
+                    </view>
                 </view>
             </view>
             <view v-else>
@@ -105,6 +108,8 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // 顶部返回导航背景透明度
+                opacity: 0,
                 theme_color: app.globalData.get_theme_color(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -245,12 +250,14 @@
                 });
                 app.globalData.updateQueryStringParameter([{ key: 'type', value: e.currentTarget.dataset.index }]);
             },
+
             // 滚动加载
             scroll_lower(e) {
                 this.setData({
                     scroll_lower_bool: !this.scroll_lower_bool,
                 });
             },
+
             // 顶部返回操作
             top_nav_left_back_event(e) {
                 var pages = getCurrentPages();
@@ -262,9 +269,18 @@
                     uni.navigateBack();
                 }
             },
+
             // 支付成功回调
             pay_success_event() {
                 this.get_data();
+            },
+
+            // 页面滚动监听
+            scroll_event(e) {
+                var top = e.detail.scrollTop > 47 ? 1 : e.detail.scrollTop / 47;
+                this.setData({
+                    opacity: top,
+                });
             },
         },
     };

@@ -124,7 +124,7 @@
                 },
             },
             // 支付失败跳转页面
-            propTofailPage: {
+            propToFailPage: {
                 type: String,
                 default: '',
             },
@@ -282,6 +282,7 @@
                                             // 现金支付
                                             uni.showModal({
                                                 content: res.data.msg,
+                                                showCancel: false,
                                                 success(res) {
                                                     if (res.confirm) {
                                                         // 跳转订单列表页
@@ -309,13 +310,13 @@
                                         popup_view_pay_html_is_show: true,
                                     });
                                 } else {
-                                    app.globalData.showToast(res.data.msg);
+                                    this.order_item_pay_fail_handle(res.data.data, order_id, res.data.msg);
                                 }
                             }
                         },
-                        fail: () => {
+                        fail: (res) => {
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            this.order_item_pay_fail_handle(res.data.data, order_id, '服务器请求出错');
                         },
                     });
                 } else {
@@ -332,8 +333,7 @@
                         self.order_item_pay_success_handle(data, order_id);
                     },
                     fail: (res) => {
-                        app.globalData.showToast('支付失败');
-                        self.order_item_pay_fail_handle(data, order_id);
+                        self.order_item_pay_fail_handle(data, order_id, '支付失败');
                     },
                 });
             },
@@ -359,13 +359,13 @@
                     success: (res) => {
                         // #ifdef MP-ALIPAY
                         if (res.resultCode != 9000) {
-                            app.globalData.showToast(res.memo || '支付失败');
+                            self.order_item_pay_fail_handle(data, order_id, res.memo || '支付失败');
                             return false;
                         }
                         // #endif
                         // #ifdef MP-TOUTIAO
                         if (res.code != 0) {
-                            app.globalData.showToast('支付失败');
+                            self.order_item_pay_fail_handle(data, order_id, '支付失败');
                             return false;
                         }
                         // #endif
@@ -373,8 +373,7 @@
                         self.order_item_pay_success_handle(data, order_id);
                     },
                     fail: (res) => {
-                        app.globalData.showToast('支付失败');
-                        self.order_item_pay_fail_handle(data, order_id);
+                        self.order_item_pay_fail_handle(data, order_id, '支付失败');
                     },
                 });
             },
@@ -394,7 +393,7 @@
                             this.$emit('reset-event');
                         },
                         fail: function (res) {
-                            app.globalData.showToast('支付失败');
+                            self.order_item_pay_fail_handle(data, order_id, '支付失败');
                         },
                     });
                 } else {
@@ -428,7 +427,7 @@
                                         // 数据设置
                                         self.order_item_pay_success_handle(data, order_id);
                                     } else {
-                                        self.order_item_pay_fail_handle(data, order_id);
+                                        self.order_item_pay_fail_handle(data, order_id, res.err_msg);
                                     }
                                 }
                             );
@@ -483,8 +482,7 @@
                                     },
                                     fail: () => {
                                         clearInterval(self.popup_view_pay_timer);
-                                        app.globalData.showToast('服务器请求出错');
-                                        self.order_item_pay_fail_handle(data, order_id);
+                                        self.order_item_pay_fail_handle(data, order_id, '服务器请求出错');
                                     },
                                 });
                             }, 3000);
@@ -511,7 +509,7 @@
                     }
                 }
             },
-            // 支付成功数据设置 bool:成功是否需要跳转页面
+            // 支付成功数据设置 data:后台返回的参数， order_id: 订单id，is_to_page，是否需要跳转页面的参数控制
             order_item_pay_success_handle(data, order_id, is_to_page = true) {
                 let newData = {
                     data: data,
@@ -523,18 +521,18 @@
                     this.to_success_page_event();
                 }
             },
-            // 支付失败数据设置 bool:失败是否需要跳转页面
-            order_item_pay_fail_handle(data, order_id) {
+            // 支付失败数据设置 data:后台返回的参数， order_id: 订单id, msg: 错误提示信息
+            order_item_pay_fail_handle(data, order_id, msg) {
                 let newData = {
                     data: data,
                     order_id: order_id,
-                    is_to_page: is_to_page,
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.propPaymentId,
                 };
                 this.$emit('pay-fail', newData);
-                this.to_fail_page_event();
+                this.to_fail_page_event(msg);
             },
+            // 成功跳转
             to_success_page_event() {
                 let url_data = {
                     code: '9000',
@@ -552,12 +550,34 @@
                     });
                 }
             },
-            to_fail_page_event() {
-                if (this.propTofailPage) {
-                    // 跳转支付页面
-                    uni.navigateTo({
-                        url: this.propTofailPage + '?data=' + data.order_id,
-                    });
+            // 失败跳转
+            to_fail_page_event(msg) {
+                let to_fail_page = this.propToFailPage;
+                if (to_fail_page) {
+                    if (msg) {
+                        // 现金支付
+                        uni.showModal({
+                            content: msg,
+                            showCancel: false,
+                            success(res) {
+                                if (res.confirm) {
+                                    // 跳转支付页面
+                                    uni.redirectTo({
+                                        url: to_fail_page,
+                                    });
+                                }
+                            },
+                        });
+                    } else {
+                        // 跳转支付页面
+                        uni.redirectTo({
+                            url: to_fail_page,
+                        });
+                    }
+                } else {
+                    if (msg) {
+                        app.globalData.showToast(msg);
+                    }
                 }
             },
             // 页面卸载
@@ -569,6 +589,7 @@
                 this.setData({
                     popup_view_pay_html_is_show: false,
                 });
+                this.to_fail_page_event();
             },
         },
     };

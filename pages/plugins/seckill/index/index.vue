@@ -13,56 +13,52 @@
                 <!-- #endif -->
                 <!-- 秒杀时段 -->
                 <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll wh-auto">
-                    <view class="nav_seckill flex-row flex-nowrap cr-white">
-                        <view v-for="(item, index) in periods_list" :key="index" class="item tc cp text-size-xss" :class="nav_active_index === index ? 'active' : ''" :id="'one-nav-item-' + index"
-                            :data-index="index" :data-text="item.time.time_first_text" :data-status="item.time.status" @tap="nav_event">
+                    <view class="nav_seckill flex-row flex-nowrap cr-white tc">
+                        <view v-for="(item, index) in periods_list" :key="index" class="item text-size-xss" :class="nav_active_index === index ? 'active' : ''" :id="'one-nav-item-' + index" :data-index="index" :data-text="item.time.time_first_text" :data-status="item.time.status" @tap="nav_event">
                             <view class="time text-size-lg">{{ item.name }}</view>
                             <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-main' : ''">{{ item.time.msg }}</view>
                         </view>
                     </view>
                 </scroll-view>
             </view>
-            <view class="padding-horizontal-main padding-top-main">
-                <!-- 基础信息、倒计时 -->
-                <view class="oh spacing-mb flex-row jc-sb align-c">
-                    <view>
-                        <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
-                        <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds"
-                                :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+            <scroll-view :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event">
+                <view class="padding-horizontal-main padding-top-main">
+                    <!-- 基础信息、倒计时 -->
+                    <view class="oh spacing-mb flex-row jc-sb align-c">
+                        <view>
+                            <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
+                            <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
+                                <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+                            </view>
+                        </view>
+                        <view class="text-size-xs cr-blak" @tap="quick_open_event">
+                            活动规则
+                            <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
                         </view>
                     </view>
-                    <view class="text-size-xs cr-blak" @tap="quick_open_event">
-                        活动规则
-                        <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs"
-                            color="#999"></iconfont>
+
+                    <!-- 商品 -->
+                    <view v-if="goods.length > 0">
+                        <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="grid_btn_config" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
+                    </view>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
                     </view>
                 </view>
-
-                <!-- 商品 -->
-                <view v-if="goods.length > 0">
-                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig"
-                        :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
-                </view>
-            </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            <!-- 弹窗 -->
-            <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom"
-                @onclose="quick_close_event">
-                <view class="rule">
-                    <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
-                    <scroll-view :scroll-y="true" class="item">
-                        <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
-                    </scroll-view>
-                    <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
-                </view>
-            </component-popup>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                <!-- 弹窗 -->
+                <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+                    <view class="rule">
+                        <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
+                        <scroll-view :scroll-y="true" class="item">
+                            <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
+                        </scroll-view>
+                        <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
+                    </view>
+                </component-popup>
+            </scroll-view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -86,6 +82,8 @@
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 seckill_bg: 'background: url(' + seckill_static_url + 'header-bg.png) top/100% no-repeat;',
                 seckill_title_url: seckill_static_url + 'seckill-title.png',
+                scroll_top: 0,
+                scroll_top_old: 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -111,7 +109,7 @@
                 seckill_status: 0,
                 // 配置商品列表按钮
                 isOpenGridBtnSet: false,
-                gridBtnConfig: {
+                grid_btn_config: {
                     name: '即将开抢',
                     disabled: true,
                 },
@@ -143,14 +141,14 @@
                         name: '即将开抢',
                     };
                     this.setData({
-                        gridBtnConfig: Object.assign({}, gridBtnConfig, newData),
+                        grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
                     });
                 } else if (val === 2) {
                     let newData = {
                         name: '已结束',
                     };
                     this.setData({
-                        gridBtnConfig: Object.assign({}, gridBtnConfig, newData),
+                        grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
                     });
                 }
             },
@@ -250,6 +248,7 @@
                     goods: this.periods_list[index].goods,
                     isOpenGridBtnSet: seckill_status === 1 ? false : true,
                 });
+                this.reset_scroll();
             },
             // 弹层开启
             quick_open_event(e) {
@@ -273,6 +272,25 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+
+            // 重置滑动位置
+            reset_scroll() {
+                this.setData({
+                    scroll_top: this.scroll_top_old,
+                });
+                this.$nextTick(() => {
+                    this.setData({
+                        scroll_top: 0,
+                    });
+                });
+            },
+
+            // 滑动事件位置记录
+            scroll_event(e) {
+                this.setData({
+                    scroll_top_old: e.detail.scrollTop,
+                });
             },
         },
     };

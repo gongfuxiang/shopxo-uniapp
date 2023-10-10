@@ -701,20 +701,6 @@
                         "navigationBarTitleText": "签到"
                     }
                 },
-                // {
-                //     "path": "user-signin/user-signin",
-                //     "style": {
-                //         "enablePullDownRefresh": true,
-                //         "navigationBarTitleText": "我的签到"
-                //     }
-                // },
-                // {
-                //     "path": "user-qrcode/user-qrcode",
-                //     "style": {
-                //         "enablePullDownRefresh": true,
-                //         "navigationBarTitleText": "签到码管理"
-                //     }
-                // },
                 {
                     "path": "user-qrcode-detail/user-qrcode-detail",
                     "style": {

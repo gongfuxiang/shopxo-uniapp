@@ -326,7 +326,7 @@
                     page: 'user-order/user-order',
                 },
                 // 支付失败跳转的页面
-                to_fail_page: 'page/user-order/user-order',
+                to_fail_page: '/pages/user-order/user-order',
             };
         },
 
@@ -647,10 +647,10 @@
                                 this.buy_submit_response_handle(res.data.data);
                             } else {
                                 app.globalData.showToast(res.data.msg);
-                                this.setData({
-                                    buy_submit_disabled_status: false,
-                                });
                             }
+                            this.setData({
+                                buy_submit_disabled_status: false,
+                            });
                         },
                         fail: () => {
                             uni.hideLoading();

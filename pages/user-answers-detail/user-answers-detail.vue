@@ -1,49 +1,57 @@
 <template>
-    <view class="pr" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
-        <view class="pa top-0 left-0 right-0 nav-top">
-            <image mode="widthFix" :src="answers_static_url + 'nav-top.png'" class="wh-auto"></image>
+    <view>
+        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
+            <!-- 返回 -->
+            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+            </view>
+            <!-- #endif -->
         </view>
-        <!-- 返回 -->
-        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-        <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-left-main round va-m cr-white pr z-i">
-            <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-        </view>
-        <!-- #endif -->
-        <view v-if="Object.keys(detail_data.length !== 0)" class="padding-main pr z-i margin-top-main">
-            <view class="bg-white border-radius-main padding-main text-size">
-                <view class="fw-b text-size-lg spacing-mb">提问详情</view>
-                <view v-if="detail_data.user && detail_data.user.user_name_view" class="spacing-mb">
-                    <view class="cr-grey-9">联系人</view>
-                    <view class="margin-top-xs">{{ detail_data.user.user_name_view }}</view>
+        <view v-if="Object.keys(detail_data.length !== 0)" class="weixin-nav-padding-top">
+            <view class="padding-top-xxxl">
+                <view class="pa top-0 left-0 right-0 nav-top pa-w">
+                    <image mode="widthFix" :src="answers_static_url + 'nav-top.png'" class="wh-auto"></image>
                 </view>
-                <view v-if="detail_data.tel" class="spacing-mb">
-                    <view class="cr-grey-9">联系电话</view>
-                    <view class="margin-top-xs">{{ detail_data.tel }}</view>
-                </view>
-                <view v-if="detail_data.title" class="spacing-mb">
-                    <view class="cr-grey-9">标题</view>
-                    <view class="margin-top-xs">{{ detail_data.title }}</view>
-                </view>
-                <view v-if="detail_data.content" class="spacing-mb">
-                    <view class="cr-grey-9">内容</view>
-                    <view class="margin-top-xs">{{ detail_data.content }}</view>
-                </view>
-                <view v-if="detail_data.reply" class="spacing-mb">
-                    <view class="cr-grey-9">回复内容</view>
-                    <view class="margin-top-xs">{{ detail_data.reply }}</view>
-                </view>
-                <view v-if="detail_data.reply_time_time" class="spacing-mb">
-                    <view class="cr-grey-9">回复时间</view>
-                    <view class="margin-top-xs">{{ detail_data.reply_time_time }}</view>
-                </view>
-                <view v-if="detail_data.add_time_time" class="spacing-mb">
-                    <view class="cr-grey-9">创建时间</view>
-                    <view class="margin-top-xs">{{ detail_data.add_time_time }}</view>
+                <view class="padding-main pr margin-top-xxxl">
+                    <view class="bg-white border-radius-main padding-main text-size">
+                        <view class="fw-b text-size-lg spacing-mb">提问详情</view>
+                        <view v-if="detail_data.user && detail_data.user.user_name_view" class="spacing-mb">
+                            <view class="cr-grey-9">联系人</view>
+                            <view class="margin-top-xs">{{ detail_data.user.user_name_view }}</view>
+                        </view>
+                        <view v-if="detail_data.tel" class="spacing-mb">
+                            <view class="cr-grey-9">联系电话</view>
+                            <view class="margin-top-xs">{{ detail_data.tel }}</view>
+                        </view>
+                        <view v-if="detail_data.title" class="spacing-mb">
+                            <view class="cr-grey-9">标题</view>
+                            <view class="margin-top-xs">{{ detail_data.title }}</view>
+                        </view>
+                        <view v-if="detail_data.content" class="spacing-mb">
+                            <view class="cr-grey-9">内容</view>
+                            <view class="margin-top-xs">{{ detail_data.content }}</view>
+                        </view>
+                        <view v-if="detail_data.reply" class="spacing-mb">
+                            <view class="cr-grey-9">回复内容</view>
+                            <view class="margin-top-xs">{{ detail_data.reply }}</view>
+                        </view>
+                        <view v-if="detail_data.reply_time_time" class="spacing-mb">
+                            <view class="cr-grey-9">回复时间</view>
+                            <view class="margin-top-xs">{{ detail_data.reply_time_time }}</view>
+                        </view>
+                        <view v-if="detail_data.add_time_time" class="spacing-mb">
+                            <view class="cr-grey-9">创建时间</view>
+                            <view class="margin-top-xs">{{ detail_data.add_time_time }}</view>
+                        </view>
+                    </view>
                 </view>
             </view>
         </view>
-        <!-- 提示信息 -->
-        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </view>
     </view>
 </template>
 <script>
@@ -57,8 +65,11 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // 顶部返回导航背景透明度
+                opacity: 0,
                 detail_data: {},
                 data_list_loding_status: 1,
+                params: '',
             };
         },
 
@@ -67,7 +78,13 @@
         },
         props: {},
 
-        onLoad() {},
+        onLoad(params) {
+            if (params) {
+                this.setData({
+                    params: params.id,
+                });
+            }
+        },
 
         onShow() {
             this.init();
@@ -112,7 +129,7 @@
                     url: app.globalData.get_request_url('detail', 'answer'),
                     method: 'POST',
                     data: {
-                        id: this.$route.query.id,
+                        id: this.params,
                     },
                     dataType: 'json',
                     success: (res) => {
@@ -152,6 +169,14 @@
                 } else {
                     uni.navigateBack();
                 }
+            },
+
+            // 页面滚动监听
+            onPageScroll(e) {
+                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
+                this.setData({
+                    opacity: top,
+                });
             },
         },
     };
