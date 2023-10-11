@@ -66,11 +66,6 @@
 /**
  * 开通支付
  */
-
-.sub-pay {
-    padding: 42rpx 90rpx;
-}
-
 .sub-pay button {
     height: 88rpx;
     line-height: 88rpx;

@@ -20,6 +20,8 @@
 }
 
 .head-base .head-id {
+    height: 36rpx;
+    line-height: 36rpx;
     background: linear-gradient(90deg, #FFE3DC 0%, #FF9F67 100%);
 }
 

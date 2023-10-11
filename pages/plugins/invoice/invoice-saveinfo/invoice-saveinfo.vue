@@ -100,7 +100,7 @@
                         <view class="form-gorup-title">备注</view>
                         <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" placeholder="备注最多230个字符" maxlength="60" :value="data.user_note || ''" />
                     </view>
-                    <view class="bottom-fixed invoice-bottom bg-white">
+                    <view class="bottom-fixed invoice-bottom">
                         <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
                     </view>
                 </view>
@@ -407,6 +407,4 @@
         },
     };
 </script>
-<style scoped>
-    @import './invoice-saveinfo.css';
-</style>
+<style></style>

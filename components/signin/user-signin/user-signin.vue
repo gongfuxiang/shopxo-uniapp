@@ -1,6 +1,6 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60">
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -198,6 +198,9 @@
 </script>
 <style scoped>
     .scroll-box {
+        height: calc(calc(100vh - 144rpx - env(safe-area-inset-bottom) + 40rpx));
+        /* #ifdef H5 */
         height: calc(100vh - 144rpx);
+        /* #endif */
     }
 </style>

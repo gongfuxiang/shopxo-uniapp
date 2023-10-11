@@ -22,7 +22,7 @@
                     <textarea class="cr-base textarea-height" name="content" maxlength="160" placeholder-class="cr-grey-9" placeholder="请详细描述问题，我们将尽快为您解答！"></textarea>
                 </view>
 
-                <view class="form-gorup form-gorup-submit bottom-fixed form-btn bg-white">
+                <view class="form-gorup form-gorup-submit bottom-fixed form-btn">
                     <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
                 </view>
             </view>

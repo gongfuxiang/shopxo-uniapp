@@ -37,7 +37,7 @@
 
         <!-- 底部操作 -->
         <view class="bottom-fixed btn-bottom bg-white">
-            <view class="bottom-line-exclude oh">
+            <view class="oh">
                 <block v-if="common_user_address_platform_import_list.length > 0 && common_user_address_platform_import_list.indexOf(client_value) != -1">
                     <view class="submit-list flex-row jc-sb align-c">
                         <button class="cr-white round text-size" type="default" hover-class="none" @tap="address_add_event" :style="btn_bg_color">添加新地址</button>

@@ -45,13 +45,15 @@
                     </view>
 
                     <!-- 导航 -->
-                    <view class="nav-button bottom-fixed padding-main pr bg-white">
-                        <view class="oh">
-                            <view class="left-price fl">
-                                <view class="sales-price single-text margin-top-sm">{{ currency_symbol }}{{ data.total_price }}</view>
-                            </view>
-                            <view class="right-button fr tr">
-                                <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                    <view class="nav-button bg-white pf pa-w bottom-0 left-0 right-0 wh-auto">
+                        <view class="padding-main">
+                            <view class="oh">
+                                <view class="left-price fl">
+                                    <view class="sales-price single-text margin-top-sm">{{ currency_symbol }}{{ data.total_price }}</view>
+                                </view>
+                                <view class="right-button fr tr">
+                                    <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                                </view>
                             </view>
                         </view>
                     </view>

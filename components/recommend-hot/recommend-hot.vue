@@ -126,8 +126,12 @@
 </script>
 
 <style scoped>
+    .hot-list > .flex-width-half {
+        margin-bottom: 12rpx;
+    }
     .hot-list > .flex-width-half:last-of-type {
         width: 100%;
+        margin-bottom: 0;
     }
 
     .hot-list .swiper {

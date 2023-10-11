@@ -25,10 +25,6 @@
 /**
 * 导航
 */
-.nav {
-    padding-bottom: 20rpx;
-}
-
 .nav button image {
     width: 32rpx;
     height: 32rpx !important;

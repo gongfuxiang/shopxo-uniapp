@@ -288,10 +288,10 @@
                                 <view class="oh br-b padding-vertical-main padding-horizontal-main">
                                     <text class="va-m text-size-xs cr-base">已选商品</text>
                                     <view class="fr cp" @tap="cart_all_delete_event">
-                                        <view class="dis-inline-block va-m">
-                                            <uni-icons type="trash" size="12" color="#f00"></uni-icons>
+                                        <view class="dis-inline-block va-m pr top-xs">
+                                            <uni-icons type="trash" size="16" color="#f00"></uni-icons>
                                         </view>
-                                        <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
+                                        <text class="cr-red va-m text-size-xs">清空</text>
                                     </view>
                                 </view>
                                 <scroll-view :scroll-y="true" class="cart-list goods-list">

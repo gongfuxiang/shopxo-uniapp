@@ -46,8 +46,8 @@
 /**
  * 导航
  */
-.nav-button {
-    box-shadow: 0 -2px 6px #e2e2e2;
+.nav-button.bottom-fixed {
+    padding: 24rpx !important;
 }
 
 .nav-button .left-price {

@@ -58,7 +58,7 @@
                         </view>
                     </view>
 
-                    <view class="bottom-fixed padding-main">
+                    <view class="bottom-fixed">
                         <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
                     </view>
                 </view>
@@ -78,7 +78,7 @@
                         <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
                             <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
                                 <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
-                                    {{ popup_goods_cetagory_index == 0 ? "商品分类" : goods_category_list[popup_goods_cetagory_index]["name"] }}
+                                    {{ popup_goods_cetagory_index == 0 ? '商品分类' : goods_category_list[popup_goods_cetagory_index]['name'] }}
                                 </view>
                             </picker>
                             <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" placeholder="请输入商品名称" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
@@ -119,458 +119,458 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import base64 from "../../../../common/js/lib/base64.js";
-import componentNoData from "../../../../components/no-data/no-data";
-import componentPopup from "../../../../components/popup/popup";
-import componentGoodsSpecChoice from "../../../../components/goods-spec-choice/goods-spec-choice";
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            common_static_url: common_static_url,
-            params: null,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            recommend_data: {},
-            form_submit_disabled_status: false,
-            currency_symbol: app.globalData.currency_symbol(),
-            // 商品选择弹窗
-            popup_goods_choice_status: false,
-            goods_category_list: [],
-            popup_goods_cetagory_index: 0,
-            popup_keywords_value: "",
-            popup_search_goods_list: [],
-            search_data_list_loding_status: 1,
-            search_data_list_loding_msg: "请先搜索数据！",
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentPopup,
-        componentGoodsSpecChoice,
-    },
-    props: {},
-
-    onLoad(params) {
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 数据加载
-        this.init();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.init();
-    },
-
-    methods: {
-        // 初始数据
-        init() {
-            var user = app.globalData.get_user_info(this, "init");
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.redirectTo({
-                        url: "/pages/login/login?event_callback=init",
-                    });
-                    this.setData({
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "请先绑定手机号码",
-                    });
-                    uni.stopPullDownRefresh();
-                    return false;
-                } else {
-                    if ((this.params.id || null) != null) {
-                        this.get_data();
-                    } else {
-                        uni.stopPullDownRefresh();
-                        this.setData({
-                            data_list_loding_status: 3,
-                        });
-                    }
-                }
-            } else {
-                uni.stopPullDownRefresh();
-                this.setData({
-                    data_list_loding_status: 2,
-                    data_list_loding_msg: "请先授权用户信息",
-                });
-            }
+    const app = getApp();
+    import base64 from '../../../../common/js/lib/base64.js';
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentPopup from '../../../../components/popup/popup';
+    import componentGoodsSpecChoice from '../../../../components/goods-spec-choice/goods-spec-choice';
+    var common_static_url = app.globalData.get_static_url('common');
+    export default {
+        data() {
+            return {
+                common_static_url: common_static_url,
+                params: null,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                recommend_data: {},
+                form_submit_disabled_status: false,
+                currency_symbol: app.globalData.currency_symbol(),
+                // 商品选择弹窗
+                popup_goods_choice_status: false,
+                goods_category_list: [],
+                popup_goods_cetagory_index: 0,
+                popup_keywords_value: '',
+                popup_search_goods_list: [],
+                search_data_list_loding_status: 1,
+                search_data_list_loding_msg: '请先搜索数据！',
+            };
         },
 
-        // 自提点信息
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("savedata", "recommend", "distribution"),
-                method: "POST",
-                data: { id: this.params.id },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        // 如果存在分类则在最前面增加全部分类额度选项
-                        var goods_category_list = data.goods_category_list || [];
-                        if (goods_category_list.length > 0) {
-                            goods_category_list.unshift({ id: null, name: "全部分类" });
-                        }
-                        this.setData({
-                            data_list_loding_status: 3,
-                            recommend_data: data.data || {},
-                            goods_category_list: goods_category_list,
-                            editor_path_type: data.editor_path_type || "",
-                        });
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 0,
-                            data_list_loding_msg: res.data.msg,
-                        });
-                    }
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_list_loding_status: 0,
-                        data_list_loding_msg: "获取数据失败",
-                    });
-                },
+        components: {
+            componentNoData,
+            componentPopup,
+            componentGoodsSpecChoice,
+        },
+        props: {},
+
+        onLoad(params) {
+            this.setData({
+                params: params,
             });
         },
 
-        // 数据提交
-        form_submit(e) {
-            // 表单数据
-            var form_data = e.detail.value;
+        onShow() {
+            // 数据加载
+            this.init();
+        },
 
-            // 基础数据
-            if ((this.recommend_data || null) != null) {
-                form_data["id"] = this.recommend_data.id || "";
-                form_data["icon"] = this.recommend_data.icon || "";
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.init();
+        },
 
-                // 关联商品
-                if ((this.recommend_data.detail_list || null) != null && this.recommend_data.detail_list.length > 0) {
-                    var goods_data = [];
-                    this.recommend_data.detail_list.forEach((item, index) => {
-                        goods_data.push({
-                            goods_id: item.goods_id,
-                            spec: item.spec || "",
+        methods: {
+            // 初始数据
+            init() {
+                var user = app.globalData.get_user_info(this, 'init');
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.redirectTo({
+                            url: '/pages/login/login?event_callback=init',
                         });
-                    });
-                    if (goods_data.length > 0) {
-                        form_data["goods_data"] = encodeURIComponent(base64.encode(JSON.stringify(goods_data)));
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: '请先绑定手机号码',
+                        });
+                        uni.stopPullDownRefresh();
+                        return false;
+                    } else {
+                        if ((this.params.id || null) != null) {
+                            this.get_data();
+                        } else {
+                            uni.stopPullDownRefresh();
+                            this.setData({
+                                data_list_loding_status: 3,
+                            });
+                        }
                     }
+                } else {
+                    uni.stopPullDownRefresh();
+                    this.setData({
+                        data_list_loding_status: 2,
+                        data_list_loding_msg: '请先授权用户信息',
+                    });
                 }
-            }
+            },
 
-            // 校验参数并提交
-            var validation = [
-                { fields: "title", msg: "请填写标题" },
-                { fields: "goods_data", msg: "请选择商品" },
-            ];
-            if (app.globalData.fields_check(form_data, validation)) {
-                this.setData({
-                    form_submit_disabled_status: true,
-                });
-                uni.showLoading({
-                    title: "处理中...",
-                });
+            // 自提点信息
+            get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url("save", "recommend", "distribution"),
-                    method: "POST",
-                    data: form_data,
-                    dataType: "json",
+                    url: app.globalData.get_request_url('savedata', 'recommend', 'distribution'),
+                    method: 'POST',
+                    data: { id: this.params.id },
+                    dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            app.globalData.showToast(res.data.msg, "success");
-                            setTimeout(function () {
-                                uni.navigateBack();
-                            }, 1000);
+                            var data = res.data.data;
+                            // 如果存在分类则在最前面增加全部分类额度选项
+                            var goods_category_list = data.goods_category_list || [];
+                            if (goods_category_list.length > 0) {
+                                goods_category_list.unshift({ id: null, name: '全部分类' });
+                            }
+                            this.setData({
+                                data_list_loding_status: 3,
+                                recommend_data: data.data || {},
+                                goods_category_list: goods_category_list,
+                                editor_path_type: data.editor_path_type || '',
+                            });
                         } else {
                             this.setData({
-                                form_submit_disabled_status: false,
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(res.data.msg);
-                            } else {
-                                app.globalData.showToast("提交失败，请重试！");
-                            }
                         }
                     },
                     fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
-                            form_submit_disabled_status: false,
+                            data_list_loding_status: 0,
+                            data_list_loding_msg: '获取数据失败',
                         });
-                        uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
                     },
                 });
-            }
-        },
+            },
 
-        // 上传图片预览
-        upload_show_event(e) {
-            uni.previewImage({
-                current: this.recommend_data.icon,
-                urls: [this.recommend_data.icon],
-            });
-        },
+            // 数据提交
+            form_submit(e) {
+                // 表单数据
+                var form_data = e.detail.value;
 
-        // 图片删除
-        upload_delete_event(e) {
-            var self = this;
-            uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复、继续吗？",
-                success(res) {
-                    if (res.confirm) {
-                        var temp_data = self.recommend_data || {};
-                        temp_data["icon"] = "";
-                        self.setData({
-                            recommend_data: temp_data,
+                // 基础数据
+                if ((this.recommend_data || null) != null) {
+                    form_data['id'] = this.recommend_data.id || '';
+                    form_data['icon'] = this.recommend_data.icon || '';
+
+                    // 关联商品
+                    if ((this.recommend_data.detail_list || null) != null && this.recommend_data.detail_list.length > 0) {
+                        var goods_data = [];
+                        this.recommend_data.detail_list.forEach((item, index) => {
+                            goods_data.push({
+                                goods_id: item.goods_id,
+                                spec: item.spec || '',
+                            });
                         });
+                        if (goods_data.length > 0) {
+                            form_data['goods_data'] = encodeURIComponent(base64.encode(JSON.stringify(goods_data)));
+                        }
                     }
-                },
-            });
-        },
+                }
 
-        // 文件上传
-        file_upload_event(e) {
-            var self = this;
-            uni.chooseImage({
-                count: 1,
-                success(res) {
-                    var success = 0;
-                    var fail = 0;
-                    var length = res.tempFilePaths.length;
-                    var count = 0;
-                    self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
-                },
-            });
-        },
+                // 校验参数并提交
+                var validation = [
+                    { fields: 'title', msg: '请填写标题' },
+                    { fields: 'goods_data', msg: '请选择商品' },
+                ];
+                if (app.globalData.fields_check(form_data, validation)) {
+                    this.setData({
+                        form_submit_disabled_status: true,
+                    });
+                    uni.showLoading({
+                        title: '处理中...',
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('save', 'recommend', 'distribution'),
+                        method: 'POST',
+                        data: form_data,
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                                setTimeout(function () {
+                                    uni.navigateBack();
+                                }, 1000);
+                            } else {
+                                this.setData({
+                                    form_submit_disabled_status: false,
+                                });
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(res.data.msg);
+                                } else {
+                                    app.globalData.showToast('提交失败，请重试！');
+                                }
+                            }
+                        },
+                        fail: () => {
+                            this.setData({
+                                form_submit_disabled_status: false,
+                            });
+                            uni.hideLoading();
+                            app.globalData.showToast('服务器请求出错');
+                        },
+                    });
+                }
+            },
 
-        // 采用递归的方式上传多张
-        upload_one_by_one(img_paths, success, fail, count, length) {
-            var self = this;
-            uni.uploadFile({
-                url: app.globalData.get_request_url("index", "ueditor"),
-                filePath: img_paths[count],
-                name: "upfile",
-                formData: {
-                    action: "uploadimage",
-                    path_type: self.editor_path_type,
-                },
-                success: function (res) {
-                    success++;
-                    if (res.statusCode == 200) {
-                        var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
-                        if (data.code == 0 && (data.data.url || null) != null) {
+            // 上传图片预览
+            upload_show_event(e) {
+                uni.previewImage({
+                    current: this.recommend_data.icon,
+                    urls: [this.recommend_data.icon],
+                });
+            },
+
+            // 图片删除
+            upload_delete_event(e) {
+                var self = this;
+                uni.showModal({
+                    title: '温馨提示',
+                    content: '删除后不可恢复、继续吗？',
+                    success(res) {
+                        if (res.confirm) {
                             var temp_data = self.recommend_data || {};
-                            temp_data["icon"] = data.data.url;
+                            temp_data['icon'] = '';
                             self.setData({
                                 recommend_data: temp_data,
                             });
+                        }
+                    },
+                });
+            },
+
+            // 文件上传
+            file_upload_event(e) {
+                var self = this;
+                uni.chooseImage({
+                    count: 1,
+                    success(res) {
+                        var success = 0;
+                        var fail = 0;
+                        var length = res.tempFilePaths.length;
+                        var count = 0;
+                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
+                    },
+                });
+            },
+
+            // 采用递归的方式上传多张
+            upload_one_by_one(img_paths, success, fail, count, length) {
+                var self = this;
+                uni.uploadFile({
+                    url: app.globalData.get_request_url('index', 'ueditor'),
+                    filePath: img_paths[count],
+                    name: 'upfile',
+                    formData: {
+                        action: 'uploadimage',
+                        path_type: self.editor_path_type,
+                    },
+                    success: function (res) {
+                        success++;
+                        if (res.statusCode == 200) {
+                            var data = typeof res.data == 'object' ? res.data : JSON.parse(res.data);
+                            if (data.code == 0 && (data.data.url || null) != null) {
+                                var temp_data = self.recommend_data || {};
+                                temp_data['icon'] = data.data.url;
+                                self.setData({
+                                    recommend_data: temp_data,
+                                });
+                            } else {
+                                app.globalData.showToast(data.msg);
+                            }
+                        }
+                    },
+                    fail: function (e) {
+                        fail++;
+                    },
+                    complete: function (e) {
+                        count++;
+
+                        // 下一张
+                        if (count >= length) {
+                            // 上传完毕，作一下提示
+                            //app.showToast('上传成功' + success +'张', 'success');
                         } else {
-                            app.globalData.showToast(data.msg);
+                            // 递归调用，上传下一张
+                            self.upload_one_by_one(img_paths, success, fail, count, length);
+                        }
+                    },
+                });
+            },
+
+            // 商品移除
+            goods_remove_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var temp_data = this.recommend_data;
+                temp_data.detail_list.splice(index, 1);
+                this.setData({
+                    recommend_data: temp_data,
+                });
+            },
+
+            // 商品选择开启弹层
+            goods_add_event(e) {
+                this.setData({
+                    popup_goods_choice_status: true,
+                });
+                // 没有商品列表则调用商品搜索方法
+                if (this.popup_search_goods_list.length == 0) {
+                    this.popup_goods_search_event();
+                }
+            },
+
+            // 商品选择关闭弹层
+            popup_goods_choice_close_event(e) {
+                this.setData({
+                    popup_goods_choice_status: false,
+                });
+            },
+
+            // 商品分类选择事件
+            popup_goods_category_event(e) {
+                this.setData({
+                    popup_goods_cetagory_index: parseInt(e.detail.value || 0),
+                });
+            },
+
+            // 商品关键字名称输入事件
+            popup_keywords_value_event(e) {
+                this.setData({
+                    popup_keywords_value: e.detail.value,
+                });
+            },
+
+            // 商品搜索事件
+            popup_goods_search_event() {
+                var data = {
+                    keywords: this.popup_keywords_value,
+                };
+                if (this.popup_goods_cetagory_index > 0) {
+                    data['category_id'] = this.goods_category_list[this.popup_goods_cetagory_index]['id'];
+                }
+
+                uni.showLoading({
+                    title: '处理中...',
+                });
+                this.setData({
+                    search_data_list_loding_status: 1,
+                    search_data_list_loding_msg: '搜索中...',
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('goodssearch', 'recommend', 'distribution'),
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var list = res.data.data || [];
+                            this.setData({
+                                popup_search_goods_list: list,
+                                search_data_list_loding_status: list.length > 0 ? 3 : 0,
+                                search_data_list_loding_msg: list.length > 0 ? '' : '没有相关商品',
+                            });
+                        } else {
+                            this.setData({
+                                search_data_list_loding_status: 0,
+                                search_data_list_loding_msg: res.data.msg,
+                            });
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        this.setData({
+                            search_data_list_loding_status: 2,
+                            search_data_list_loding_msg: '服务器请求出错',
+                        });
+                    },
+                });
+            },
+
+            // 弹窗商品选择
+            popup_goods_choice_event(e) {
+                var index = e.currentTarget.dataset.index || 0;
+                var goods = this.popup_search_goods_list[index];
+                var temp_data = this.recommend_data;
+                // 是否多规格
+                if (parseInt(goods.is_exist_many_spec || 0) == 1) {
+                    if ((this.$refs.goods_spec_choice || null) != null) {
+                        this.$refs.goods_spec_choice.init(goods.id, goods['specifications']['choose'], goods.buy_min_number, index);
+                    }
+                } else {
+                    var status = true;
+                    if ((temp_data.detail_list || null) == null) {
+                        temp_data.detail_list = [];
+                    }
+                    if (temp_data.detail_list.length > 0) {
+                        for (var i in temp_data.detail_list) {
+                            if (temp_data.detail_list[i]['goods_id'] == goods['id']) {
+                                status = false;
+                                break;
+                            }
                         }
                     }
-                },
-                fail: function (e) {
-                    fail++;
-                },
-                complete: function (e) {
-                    count++;
-
-                    // 下一张
-                    if (count >= length) {
-                        // 上传完毕，作一下提示
-                        //app.showToast('上传成功' + success +'张', 'success');
-                    } else {
-                        // 递归调用，上传下一张
-                        self.upload_one_by_one(img_paths, success, fail, count, length);
-                    }
-                },
-            });
-        },
-
-        // 商品移除
-        goods_remove_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var temp_data = this.recommend_data;
-            temp_data.detail_list.splice(index, 1);
-            this.setData({
-                recommend_data: temp_data,
-            });
-        },
-
-        // 商品选择开启弹层
-        goods_add_event(e) {
-            this.setData({
-                popup_goods_choice_status: true,
-            });
-            // 没有商品列表则调用商品搜索方法
-            if (this.popup_search_goods_list.length == 0) {
-                this.popup_goods_search_event();
-            }
-        },
-
-        // 商品选择关闭弹层
-        popup_goods_choice_close_event(e) {
-            this.setData({
-                popup_goods_choice_status: false,
-            });
-        },
-
-        // 商品分类选择事件
-        popup_goods_category_event(e) {
-            this.setData({
-                popup_goods_cetagory_index: parseInt(e.detail.value || 0),
-            });
-        },
-
-        // 商品关键字名称输入事件
-        popup_keywords_value_event(e) {
-            this.setData({
-                popup_keywords_value: e.detail.value,
-            });
-        },
-
-        // 商品搜索事件
-        popup_goods_search_event() {
-            var data = {
-                keywords: this.popup_keywords_value,
-            };
-            if (this.popup_goods_cetagory_index > 0) {
-                data["category_id"] = this.goods_category_list[this.popup_goods_cetagory_index]["id"];
-            }
-
-            uni.showLoading({
-                title: "处理中...",
-            });
-            this.setData({
-                search_data_list_loding_status: 1,
-                search_data_list_loding_msg: "搜索中...",
-            });
-            uni.request({
-                url: app.globalData.get_request_url("goodssearch", "recommend", "distribution"),
-                method: "POST",
-                data: data,
-                dataType: "json",
-                success: (res) => {
-                    uni.hideLoading();
-                    if (res.data.code == 0) {
-                        var list = res.data.data || [];
-                        this.setData({
-                            popup_search_goods_list: list,
-                            search_data_list_loding_status: list.length > 0 ? 3 : 0,
-                            search_data_list_loding_msg: list.length > 0 ? "" : "没有相关商品",
+                    // 追加到关联商品中
+                    if (status) {
+                        temp_data.detail_list.push({
+                            goods: goods,
+                            goods_id: goods['id'],
+                            spec: '',
+                            spec_text_view: '',
                         });
-                    } else {
                         this.setData({
-                            search_data_list_loding_status: 0,
-                            search_data_list_loding_msg: res.data.msg,
+                            recommend_data: temp_data,
                         });
+                        app.globalData.showToast('选择成功', 'success');
+                    } else {
+                        app.globalData.showToast('已存在选择列表');
                     }
-                },
-                fail: () => {
-                    uni.hideLoading();
-                    this.setData({
-                        search_data_list_loding_status: 2,
-                        search_data_list_loding_msg: "服务器请求出错",
-                    });
-                },
-            });
-        },
-
-        // 弹窗商品选择
-        popup_goods_choice_event(e) {
-            var index = e.currentTarget.dataset.index || 0;
-            var goods = this.popup_search_goods_list[index];
-            var temp_data = this.recommend_data;
-            // 是否多规格
-            if (parseInt(goods.is_exist_many_spec || 0) == 1) {
-                if ((this.$refs.goods_spec_choice || null) != null) {
-                    this.$refs.goods_spec_choice.init(goods.id, goods["specifications"]["choose"], goods.buy_min_number, index);
                 }
-            } else {
+            },
+
+            // 规格确认回调事件
+            spec_confirm_event(value) {
+                var goods = this.popup_search_goods_list[value.out_value];
+                var temp_data = this.recommend_data;
+                var spec_str = JSON.stringify(value.spec);
+                // 数据判断处理
                 var status = true;
                 if ((temp_data.detail_list || null) == null) {
                     temp_data.detail_list = [];
                 }
                 if (temp_data.detail_list.length > 0) {
                     for (var i in temp_data.detail_list) {
-                        if (temp_data.detail_list[i]["goods_id"] == goods["id"]) {
+                        if (temp_data.detail_list[i]['goods_id'] == goods['id'] && temp_data.detail_list[i]['spec'] == spec_str) {
                             status = false;
                             break;
                         }
                     }
                 }
+
                 // 追加到关联商品中
                 if (status) {
                     temp_data.detail_list.push({
                         goods: goods,
-                        goods_id: goods["id"],
-                        spec: "",
-                        spec_text_view: "",
+                        goods_id: goods['id'],
+                        spec: spec_str,
+                        spec_text_view: value.spec
+                            .map((v) => {
+                                return v.value;
+                            })
+                            .join(' / '),
                     });
                     this.setData({
                         recommend_data: temp_data,
                     });
-                    app.globalData.showToast("选择成功", "success");
+                    app.globalData.showToast('选择成功', 'success');
                 } else {
-                    app.globalData.showToast("已存在选择列表");
+                    app.globalData.showToast('已存在选择列表');
                 }
-            }
+            },
         },
-
-        // 规格确认回调事件
-        spec_confirm_event(value) {
-            var goods = this.popup_search_goods_list[value.out_value];
-            var temp_data = this.recommend_data;
-            var spec_str = JSON.stringify(value.spec);
-            // 数据判断处理
-            var status = true;
-            if ((temp_data.detail_list || null) == null) {
-                temp_data.detail_list = [];
-            }
-            if (temp_data.detail_list.length > 0) {
-                for (var i in temp_data.detail_list) {
-                    if (temp_data.detail_list[i]["goods_id"] == goods["id"] && temp_data.detail_list[i]["spec"] == spec_str) {
-                        status = false;
-                        break;
-                    }
-                }
-            }
-
-            // 追加到关联商品中
-            if (status) {
-                temp_data.detail_list.push({
-                    goods: goods,
-                    goods_id: goods["id"],
-                    spec: spec_str,
-                    spec_text_view: value.spec
-                        .map((v) => {
-                            return v.value;
-                        })
-                        .join(" / "),
-                });
-                this.setData({
-                    recommend_data: temp_data,
-                });
-                app.globalData.showToast("选择成功", "success");
-            } else {
-                app.globalData.showToast("已存在选择列表");
-            }
-        },
-    },
-};
+    };
 </script>
 <style>
-@import "./recommend-form.css";
+    @import './recommend-form.css';
 </style>

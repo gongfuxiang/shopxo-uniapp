@@ -144,10 +144,12 @@
                     </view>
 
                     <!-- 阶梯返佣提示 -->
-                    <view v-if="(profit_ladder || null) != null" class="padding-main bottom-fixed bg-white">
-                        <view class="flex-row jc-sb align-c">
-                            <text class="cr-base">{{ profit_ladder.msg }}</text>
-                            <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
+                    <view v-if="(profit_ladder || null) != null" class="bg-white pf pa-w bottom-0 left-0 right-0 wh-auto">
+                        <view class="padding-main">
+                            <view class="flex-row jc-sb align-c bottom-line-exclude">
+                                <text class="cr-base">{{ profit_ladder.msg }}</text>
+                                <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
+                            </view>
                         </view>
                     </view>
 
@@ -181,7 +183,7 @@
                                             <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
                                         </view>
                                     </view>
-                                    <view class="bottom-fixed padding-main">
+                                    <view class="bottom-fixed br-0">
                                         <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
                                     </view>
                                 </form>

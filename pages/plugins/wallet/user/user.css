@@ -57,8 +57,7 @@
 
 /*
 * 底部按钮
-*/
-.submit-container {
+*/.submit-container {
     padding: 42rpx 46rpx;
 }
 

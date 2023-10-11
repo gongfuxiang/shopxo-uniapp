@@ -9,3 +9,8 @@
 .form-container .form-gorup:not(:last-child) {
     border-bottom: 2rpx solid #F5F5F5;
 }
+
+.bottom-fixed button {
+    height: 88rpx;
+    line-height: 88rpx;
+}

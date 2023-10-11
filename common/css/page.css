@@ -310,11 +310,15 @@ button:before {
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
-    padding: 40rpx 90rpx;
-    padding-bottom: calc(40rpx + env(safe-area-inset-bottom) - 40rpx) !important;
+    padding-top: 40rpx;
+    padding-left: 90rpx;
+    padding-right: 90rpx;
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom) - 40rpx);
     /* #ifdef H5 */
-    padding-bottom: 40rpx 90rpx !important;
+    padding-bottom: 40rpx;
     /* #endif */
+    background-color: #fff;
+    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
 }
 
 /**

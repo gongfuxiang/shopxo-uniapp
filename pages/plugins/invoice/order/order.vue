@@ -36,7 +36,7 @@
                 </view>
             </scroll-view>
             <!-- 合并开票 -->
-            <view v-if="select_ids.length > 0" class="bottom-fixed bg-white invoice-merge-submit">
+            <view v-if="select_ids.length > 0" class="bottom-fixed invoice-merge-submit">
                 <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
             </view>
         </view>

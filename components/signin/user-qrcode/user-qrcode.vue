@@ -1,6 +1,6 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60">
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -30,7 +30,7 @@
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                     <!-- 组队 -->
-                    <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container bg-white">
+                    <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container">
                         <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">组队签到</button>
                     </view>
                 </view>
@@ -247,10 +247,10 @@
 </script>
 <style scoped>
     .scroll-box {
+        height: calc(calc(100vh - 144rpx - env(safe-area-inset-bottom) + 40rpx));
+        /* #ifdef H5 */
         height: calc(100vh - 144rpx);
-    }
-    .user-team-container {
-        padding: 42rpx 90rpx;
+        /* #endif */
     }
     .user-team-container button {
         height: 88rpx;

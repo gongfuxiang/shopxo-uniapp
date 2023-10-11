@@ -75,7 +75,7 @@
                             </view>
                         </view>
                     </view>
-                    <view class="bottom-fixed bg-white submit-container flex-row jc-sb align-c">
+                    <view class="bottom-fixed submit-container flex-row jc-sb align-c">
                         <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" url="/pages/plugins/wallet/recharge/recharge" hover-class="none" class="sub-btn">
                             <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">充值</button>
                         </navigator>

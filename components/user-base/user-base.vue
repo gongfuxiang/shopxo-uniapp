@@ -25,7 +25,7 @@
                             </view>
                         </view>
 
-                        <view class="bottom-fixed padding-main tc">
+                        <view class="bottom-fixed tc">
                             <button class="sub-btn cr-white text-size" :class="form_submit_disabled_status ? 'bg-grey-d br-grey-d' : 'bg-main br-main'" type="default" form-type="submit" hover-class="none">保存</button>
                         </view>
                     </view>
@@ -280,11 +280,6 @@
     }
     .form-container .form-gorup-title {
         font-weight: 400;
-    }
-    .bottom-fixed {
-        /* #ifdef H5 */
-        bottom: var(--window-bottom) !important;
-        /* #endif */
     }
     .sub-btn {
         width: 336rpx;

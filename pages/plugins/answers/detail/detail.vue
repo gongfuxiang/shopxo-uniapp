@@ -40,7 +40,7 @@
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status" class="bottom-line"></component-bottom-line>
             </view>
-            <view class="bottom-fixed flex-row jc-sa align-c bg-white text-size fw-b">
+            <view class="bottom-fixed flex-row jc-sa align-c text-size fw-b">
                 <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
                     <view class="divider-r-d">
                         <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>

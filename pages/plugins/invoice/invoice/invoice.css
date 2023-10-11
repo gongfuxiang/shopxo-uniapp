@@ -3,7 +3,7 @@
 */
 .scroll-box-ece-nav {
     height: calc(calc(100vh - 252rpx - env(safe-area-inset-bottom) + 40rpx));
-    /* #ifdef H5 || APP */
+    /* #ifdef H5 */
     height: calc(100vh - 252rpx);
     /* #endif */
 }
@@ -20,11 +20,6 @@
 /*
 * 底部按钮
 */
-.submit-container {
-    padding: 42rpx 46rpx;
-    z-index: 0;
-}
-
 .submit-container button {
     height: 88rpx;
     line-height: 88rpx;

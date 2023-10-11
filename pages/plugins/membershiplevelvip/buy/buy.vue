@@ -36,7 +36,7 @@
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="bottom-fixed sub-pay bg-white">
+                                    <view class="bottom-fixed sub-pay">
                                         <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">立即开通{{ selected_tabs_value }}</button>
                                     </view>
                                 </view>

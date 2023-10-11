@@ -29,7 +29,7 @@
         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
         <!-- 回到店铺 -->
-        <view v-if="(shop || null) != null" class="bottom-fixed padding-main">
+        <view v-if="(shop || null) != null" class="bottom-fixed">
             <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
                 <view class="dis-inline-block va-m">
                     <uni-icons type="shop" size="16" color="#fff"></uni-icons>

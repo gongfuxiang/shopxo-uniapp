@@ -58,7 +58,7 @@
                     </view>
 
                     <!-- 导航 -->
-                    <view class="nav-button bottom-fixed padding-main pr bg-white">
+                    <view class="nav-button bottom-fixed pr">
                         <view class="bottom-line-exclude oh flex-row jc-sb align-c">
                             <view class="left-price">
                                 <view class="sales-price single-text">

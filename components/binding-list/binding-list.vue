@@ -38,8 +38,8 @@
                                     <image :src="gv.images" mode="aspectFit" class="goods-images fl dis-block radius"></image>
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>
-                                        <view class="single-text sales-price text-size-xs">{{ propCurrencySymbol }}{{ gv.price }}</view>
-                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xs">节省{{ propCurrencySymbol }}{{ gv.discount_price }}</view>
+                                        <view class="single-text sales-price text-size-xss">{{ propCurrencySymbol }}{{ gv.price }}</view>
+                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">节省{{ propCurrencySymbol }}{{ gv.discount_price }}</view>
                                     </view>
                                 </view>
                             </block>
