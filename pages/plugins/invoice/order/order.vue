@@ -256,6 +256,6 @@
         },
     };
 </script>
-<style>
+<style scoped>
     @import './order.css';
 </style>

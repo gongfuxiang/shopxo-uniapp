@@ -71,12 +71,14 @@
     padding-top: 60rpx;
     /* #endif */
 }
+
 .search-content-fixed {
     position: fixed !important;
     top: 0;
     z-index: 11;
     width: 100%;
 }
+
 .search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -87,6 +89,7 @@
     padding-bottom: 15rpx !important;
     /* #endif */
 }
+
 /* #ifdef H5 || MP-TOUTIAO || APP */
 .search-content-fixed .nav-top-right-icon {
     top: 9px !important;
@@ -115,6 +118,10 @@
 
 .article-list .right-content swiper {
     height: 40rpx;
+}
+
+.notice {
+    margin: 20rpx 0 14rpx 0;
 }
 
 /*

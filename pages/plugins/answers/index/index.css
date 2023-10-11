@@ -41,11 +41,3 @@
 .hot-bg-2 {
     background: linear-gradient(150deg, #FFCE90 0%, #FFAA4E 100%);
 }
-
-/**
- * 底部按钮
- */
-.answers-btn {
-    height: 142rpx;
-    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
-}

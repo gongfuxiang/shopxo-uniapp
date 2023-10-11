@@ -34,7 +34,7 @@
         <!-- 图标 -->
         <view v-if="icon_list.length > 0" class="padding-horizontal-main">
             <view class="bg-white border-radius-main">
-                <component-icon-nav :propData="icon_list"></component-icon-nav>
+                <component-icon-nav :propData="icon_list" class="spacing-mb"></component-icon-nav>
             </view>
         </view>
 

@@ -2,7 +2,7 @@
     <view>
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
-            <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color+top_content_style">
+            <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color + top_content_style">
                 <image class="pa top-0 bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
                 <!-- logo/标题 -->
                 <!-- #ifndef MP-TOUTIAO -->
@@ -28,7 +28,7 @@
                 <!-- 搜索 -->
                 <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
                 <view v-if="load_status == 1" :class="'pr ' + (search_is_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view class="search-content-fixed-content" :style="search_is_fixed == 1 ? top_content_search_content_style+top_content_style : ''">
+                    <view class="search-content-fixed-content" :style="search_is_fixed == 1 ? top_content_search_content_style + top_content_style : ''">
                         <view v-if="common_app_is_enable_search == 1" :style="top_content_search_style">
                             <view class="margin-horizontal-main">
                                 <component-search propPlaceholder="输入商品名称搜索" :propIsBtn="true" propBgColor="#fff"></component-search>
@@ -77,7 +77,7 @@
             <!-- 内容 -->
             <view class="content padding-horizontal-main">
                 <!-- 商城公告 -->
-                <view v-if="load_status == 1 && (common_shop_notice || null) != null" class="spacing-mb">
+                <view v-if="load_status == 1 && (common_shop_notice || null) != null" class="notice">
                     <uni-notice-bar show-icon scrollable :text="common_shop_notice" background-color="transparent" color="#666" />
                 </view>
                 <!-- 推荐文章 -->
@@ -647,7 +647,7 @@
                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
                     this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' -20%, #f5f5f5 350%);';
                 }
-            }
+            },
         },
     };
 </script>

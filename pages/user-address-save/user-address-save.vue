@@ -1,5 +1,5 @@
 <template>
-    <view class="page-bottom-fixed">
+    <view>
         <view v-if="data_list_loding_status === 3">
             <form @submit="form_submit" class="form-container">
                 <view class="padding-main oh">

@@ -9,7 +9,7 @@
         </view>
 
         <!-- 订单列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1 ? 'order-scroll-merge' : 'order-scroll'" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                     <view class="item-base oh br-b padding-bottom-main">
@@ -86,19 +86,18 @@
                         </button>
                     </view>
                 </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
 
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed bg-white tc">
-            <button class="pay-merge-submit bg-green cr-white round" hover-class="none" @tap="pay_merge_event">合并支付</button>
+            <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">合并支付</button>
         </view>
 
         <component-payment

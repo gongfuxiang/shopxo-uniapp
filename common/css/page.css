@@ -305,19 +305,26 @@ button:before {
 .bottom-fixed {
     position: fixed;
     left: 0;
-    /* bottom: 0; */
-    bottom: var(--window-bottom);
     border: none;
+    bottom: 0;
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
+    padding: 40rpx 90rpx;
+    padding-bottom: calc(40rpx + env(safe-area-inset-bottom) - 40rpx) !important;
+    /* #ifdef H5 */
+    padding-bottom: 40rpx 90rpx !important;
+    /* #endif */
 }
 
 /**
  * 页面底部浮动、增加底部边距
  */
 .page-bottom-fixed {
-    padding-bottom: 120rpx !important;
+    padding-bottom: calc(172rpx + env(safe-area-inset-bottom) - 40rpx) !important;
+    /* #ifdef H5 */
+    padding-bottom: 172rpx !important;
+    /* #endif */
 }
 
 /**

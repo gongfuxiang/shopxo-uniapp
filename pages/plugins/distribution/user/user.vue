@@ -150,12 +150,6 @@
                             <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
                         </view>
                     </view>
-                    <view class="padding-main bottom-fixed bg-white">
-                        <view class="flex-row jc-sb align-c">
-                            <text class="cr-base">123123213</text>
-                            <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
-                        </view>
-                    </view>
 
                     <!-- 时间选择弹窗 -->
                     <component-popup :propShow="popup_time_status" propPosition="bottom" @onclose="popup_time_close_event">

@@ -50,7 +50,7 @@
 .data-list .item {
     background: #F7F7F7;
     border-radius: 8px 40px 8px 8px;
-    padding: 50rpx 56rpx 20rpx 32rpx;
+    padding: 50rpx 32rpx 20rpx 32rpx;
     border: 1px solid #F7F7F7;
 }
 
@@ -66,8 +66,12 @@
 /**
  * 开通支付
  */
+
+.sub-pay {
+    padding: 42rpx 90rpx;
+}
+
 .sub-pay button {
-    margin: 0 90rpx;
     height: 88rpx;
     line-height: 88rpx;
 }

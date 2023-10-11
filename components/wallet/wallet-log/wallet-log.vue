@@ -3,7 +3,7 @@
         <!-- 导航 -->
         <view class="nav-child flex-row align-c margin-bottom-lg">
             <block v-for="(item, index) in nav_status_list" :key="index">
-                <view class="item dis-inline-block round bg-grey-e margin-right-main tc" :class="'cr-grey ' + (nav_status_index == index ? 'cr-main bg-main-light' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
 

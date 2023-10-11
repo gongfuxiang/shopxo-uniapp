@@ -48,13 +48,13 @@
         </scroll-view>
         <view class="bottom-fixed flex-row jc-sa align-c bg-white text-size fw-b">
             <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                <view class="divider-r-d">
+                <view class="divider-r-d wh-auto">
                     <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
                     我要提问
                 </view>
             </navigator>
             <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                <view>
+                <view class="wh-auto">
                     <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
                     我的提问
                 </view>
@@ -272,6 +272,6 @@
         },
     };
 </script>
-<style>
+<style scoped>
     @import './index.css';
 </style>

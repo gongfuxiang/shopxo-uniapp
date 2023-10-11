@@ -5,6 +5,20 @@
     width: 16.66%;
 }
 
+.order-scroll {
+    height: calc(calc(100vh - 80rpx - env(safe-area-inset-bottom) + 40rpx));
+    /* #ifdef H5 || APP */
+    height: calc(100vh - 80rpx);
+    /* #endif */
+}
+
+.order-scroll-merge {
+    height: calc(calc(100vh - 248rpx - env(safe-area-inset-bottom) + 40rpx));
+    /* #ifdef H5 || APP */
+    height: calc(100vh - 248rpx);
+    /* #endif */
+}
+
 /*
 * 列表
 */
@@ -59,10 +73,6 @@
 */
 .pay-merge-submit {
     width: 100%;
-    height: 70rpx !important;
-    line-height: 74rpx !important;
-}
-
-.bottom-fixed {
-    padding: 24rpx 90rpx;
+    height: 88rpx !important;
+    line-height: 88rpx !important;
 }
