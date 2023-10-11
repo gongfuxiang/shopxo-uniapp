@@ -181,16 +181,16 @@
 
     .search-content input {
         font-size: 24rpx;
-        padding: 0 32rpx 0 76rpx;
+        padding: 0 32rpx 0 54rpx;
         box-sizing: border-box;
-        height: 56rpx;
-        line-height: 56rpx;
+        height: 58rpx;
+        line-height: 58rpx;
     }
 
     .search-content .search-btn {
         width: 106rpx;
-        height: 46rpx;
-        line-height: 46rpx;
+        height: 48rpx;
+        line-height: 48rpx;
         font-size: 28rpx;
         border-radius: 30rpx;
         padding: 0;

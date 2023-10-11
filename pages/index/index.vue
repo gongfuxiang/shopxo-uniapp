@@ -341,7 +341,7 @@
                 top_content_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
                 top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 360%)',
                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
-                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;',
                 // #ifdef H5 || MP-TOUTIAO || APP
                 top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
                 // #endif
@@ -505,10 +505,10 @@
                             var width = this.is_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : ((this.application_logo || null) == null ? 0 : 112);
                             // #ifdef H5 || MP-TOUTIAO || APP
                             var len = (this.right_icon_list || []).length;
-                            width += (len <= 0) ? 0 : 72 * len;
+                            width += (len <= 0) ? 0 : 70 * len;
                             // #endif
                             // #ifdef MP
-                            width += 200;
+                            width += 220;
                             // #endif
                             this.setData({
                                 top_content_search_style: 'width: calc(100% - ' + width + 'rpx);',
