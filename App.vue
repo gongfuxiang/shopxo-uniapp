@@ -92,7 +92,7 @@
                 // 蓝色 blue      #1677ff
                 // 棕色 brown     #8B4513
                 // 紫色 purple    #623cec
-                default_theme: 'brown',
+                default_theme: 'purple',
             },
             /**
              * 启动参数处理
@@ -1930,7 +1930,7 @@
             this.globalData.weixin_privacy_setting();
             // #endif
             // 引入主题
-            this.globalData.require_theme();
+            //this.globalData.require_theme();
             // 设置底部菜单
             this.globalData.set_tabbar();
         },
@@ -1952,5 +1952,5 @@
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/lib.css';
-    /* @import './common/css/theme/yellow.css'; */
+    @import './common/css/theme/purple.css';
 </style>
