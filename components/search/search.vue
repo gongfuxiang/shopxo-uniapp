@@ -2,7 +2,7 @@
     <view>
         <view class="search-content pr">
             <view class="search-icon dis-inline-block pa" @tap="search_event">
-                <iconfont :name="propIcon" :color="propIconColor" size="28rpx"></iconfont>
+                <iconfont :name="propIcon" :color="propIconColor" size="20rpx"></iconfont>
             </view>
             <input
                 type="text"
@@ -184,19 +184,19 @@
         font-size: 24rpx;
         padding: 0 32rpx 0 76rpx;
         box-sizing: border-box;
-        height: 64rpx;
-        line-height: 64rpx;
+        height: 56rpx;
+        line-height: 56rpx;
     }
 
     .search-content .search-btn {
         width: 106rpx;
-        height: 56rpx;
-        line-height: 56rpx;
+        height: 46rpx;
+        line-height: 46rpx;
         font-size: 28rpx;
         border-radius: 30rpx;
         padding: 0;
         color: #fff;
-        right: 4rpx;
+        right: 6rpx;
         top: 50%;
         transform: translateY(-50%);
         z-index: 1;

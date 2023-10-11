@@ -3,36 +3,26 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color+top_content_style">
+                <!-- 顶部背景图片 -->
                 <image class="pa top-0 bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
-                <!-- logo/标题 -->
-                <!-- #ifndef MP-TOUTIAO -->
-                <view class="home-top-nav-logo">
-                    <block v-if="is_logo_use_text == 0 && (application_logo || null) != null">
-                        <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
-                    </block>
-                    <block v-else>
-                        <view class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
-                    </block>
-                </view>
-                <!-- #endif -->
 
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- 待优化 -->
                 <!-- 搜索 -->
-                <view v-if="search_is_fixed == 1" class="search-fixed-seat"></view>
-                <view v-if="load_status == 1" :class="'pr ' + (search_is_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view class="search-content-fixed-content" :style="search_is_fixed == 1 ? top_content_search_content_style+top_content_style : ''">
-                        <view v-if="common_app_is_enable_search == 1" :style="top_content_search_style">
-                            <view class="margin-horizontal-main">
-                                <component-search propPlaceholder="输入商品名称搜索" :propIsBtn="true" propBgColor="#fff"></component-search>
-                            </view>
+                <view v-if="common_app_is_header_nav_fixed == 1" class="search-fixed-seat"></view>
+                <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_search_bg_color : ''">
+                    <view class="search-content-fixed-content padding-left-main" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '')+(search_is_fixed == 1 ? top_content_search_content_style : '')">
+                        <!-- logo/标题 -->
+                        <!-- #ifndef MP-TOUTIAO -->
+                        <view v-if="(is_logo_use_text == 0 && (application_logo || null) != null) || (is_logo_use_text == 1 && (application_title || null) != null)" class="home-top-nav-logo dis-inline-block va-m margin-right-xxl">
+                            <block v-if="is_logo_use_text == 0 && (application_logo || null) != null">
+                                <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
+                            </block>
+                            <block v-else>
+                                <view v-if="is_logo_use_text == 1 && (application_title || null) != null" class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
+                            </block>
+                        </view>
+                        <!-- #endif -->
+                        <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
+                            <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)"></component-search>
                         </view>
                         <!-- #ifdef H5 || MP-TOUTIAO || APP -->
                         <!-- 右上角icon列表 -->
@@ -49,16 +39,6 @@
                         <!-- #endif -->
                     </view>
                 </view>
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
-                <!-- --- -->
 
                 <!-- 轮播 -->
                 <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
@@ -359,9 +339,12 @@
                 is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
                 top_content_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
-                top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 350%)',
+                top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 360%)',
                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
                 top_content_style: 'padding-top:' + (bar_height + 5) + 'px;',
+                // #ifdef H5 || MP-TOUTIAO || APP
+                top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
+                // #endif
                 top_content_search_style: '',
                 search_is_fixed: 0,
                 // 是否单页预览
@@ -506,16 +489,30 @@
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                             });
+
                             // 轮播数据处理
                             if (data.banner_list && data.banner_list.length > 0) {
                                 if ((data.banner_list[0]['bg_color'] || null) != null) {
                                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' -20%, #f5f5f5 350%);';
+                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 360%);';
                                 } else {
                                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' -20%, #f5f5f5 350%);';
+                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 360%);';
                                 }
                             }
+
+                            // 搜索框宽度处理
+                            var width = this.is_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : ((this.application_logo || null) == null ? 0 : 112);
+                            // #ifdef H5 || MP-TOUTIAO || APP
+                            var len = (this.right_icon_list || []).length;
+                            width += (len <= 0) ? 0 : 72 * len;
+                            // #endif
+                            // #ifdef MP
+                            width += 200;
+                            // #endif
+                            this.setData({
+                                top_content_search_style: 'width: calc(100% - ' + width + 'rpx);',
+                            });
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
@@ -526,15 +523,6 @@
                             } else {
                                 app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
                             }
-
-                            // 搜索框宽度处理
-                            // #ifdef MP-TOUTIAO
-                            var len = (this.right_icon_list || []).length;
-                            var val = len <= 0 ? 0 : 66 * len;
-                            this.setData({
-                                top_content_search_style: 'width: calc(100% - ' + val + 'rpx);',
-                            });
-                            // #endif
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -565,27 +553,10 @@
             // 页面滚动监听
             onPageScroll(e) {
                 if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
-                    var top = e.scrollTop > 44 ? 44 : e.scrollTop;
-                    var num = top * 7;
-                    var base = 230;
-                    // #ifdef MP-ALIPAY
-                    base = 235;
-                    // #endif
-                    // #ifdef H5 || MP-TOUTIAO || APP
-                    var len = (this.right_icon_list || []).length;
-                    base = len <= 0 ? 0 : 66 * len;
-                    // #endif
                     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
                     if (!this.plugins_mourning_data_is_app) {
-                        var top_val = 44;
-                        var val = num > base ? base : num;
-                        // #ifdef MP-TOUTIAO
-                        top_val = 0;
-                        val = base;
-                        // #endif
                         this.setData({
-                            top_content_search_style: 'width: calc(100% - ' + (val < 0 ? 0 : val) + 'rpx);',
-                            search_is_fixed: top >= top_val ? 1 : 0,
+                            search_is_fixed: (e.scrollTop > 0) ? 1 : 0,
                         });
                     }
                 }
@@ -642,10 +613,10 @@
             change_banner(color) {
                 if ((color || null) != null) {
                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + color + ' -20%, #f5f5f5 350%);';
+                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 360%);';
                 } else {
                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' -20%, #f5f5f5 350%);';
+                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 360%);';
                 }
             }
         },
