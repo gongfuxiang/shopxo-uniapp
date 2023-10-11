@@ -1,8 +1,8 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="data-list">
-                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+        <view v-if="data_list.length > 0" class="data-list">
+            <scroll-view :scroll-y="true" :class="select_ids.length > 0 ? 'select-scroll-box' : 'scroll-box'" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view class="padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main">
                             <iconfont
@@ -31,21 +31,19 @@
                             <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">开票</button>
                         </view>
                     </view>
-
-                    <!-- 合并开票 -->
-                    <view class="bottom-fixed bg-white invoice-merge-submit">
-                        <button v-if="select_ids.length > 0" class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
-                    </view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-                </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            </scroll-view>
+            <!-- 合并开票 -->
+            <view v-if="select_ids.length > 0" class="bottom-fixed bg-white invoice-merge-submit">
+                <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
             </view>
-        </scroll-view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </view>
     </view>
 </template>
 <script>

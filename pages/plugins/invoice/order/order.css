@@ -1,6 +1,10 @@
 /*
 * 列表
 */
+.select-scroll-box {
+    height: calc(100vh - 182rpx);
+}
+
 .data-list .item .select-icon {
     width: 35rpx;
     height: 35rpx !important;
@@ -10,8 +14,9 @@
 * 合并按钮
 */
 .invoice-merge-submit {
-    padding: 42rpx 46rpx;
+    padding: 44rpx 90rpx;
     z-index: 0;
+    box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
 }
 
 .invoice-merge-submit button {
