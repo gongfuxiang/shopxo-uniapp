@@ -48,6 +48,8 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-pay-price="pay_price"
+            :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
@@ -56,7 +58,6 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '@/common/js/lib/base64.js';
     import componentPopup from '@/components/popup/popup';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -88,7 +89,6 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
-                payment_id: 0,
                 nav_status_list: [
                     { name: '全部', value: '-1' },
                     { name: '待支付', value: '0' },
@@ -108,6 +108,7 @@
                 temp_pay_value: '',
                 temp_pay_index: 0,
                 payment_id: 0,
+                default_payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
             };
@@ -227,6 +228,7 @@
 
                                 this.setData({
                                     payment_list: res.data.data.payment_list || [],
+                                    default_payment_id: res.data.data.default_payment_id || 0,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -276,8 +278,9 @@
                     temp_pay_value: e.currentTarget.dataset.value,
                     temp_pay_index: e.currentTarget.dataset.index,
                     pay_price: e.currentTarget.dataset.price,
-                    payment_id: e.currentTarget.dataset.payment,
+                    payment_id: e.currentTarget.dataset.payment || 0,
                 });
+                console.log(this.payment_id);
             },
 
             // 支付弹窗关闭

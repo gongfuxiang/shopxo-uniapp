@@ -14,29 +14,40 @@
                 <!-- 头部背景 -->
                 <image :src="wallet_static_url + 'rechage-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
                 <view class="pr padding-top-main">
-                    <view class="wallet-price">
+                    <view class="wallet-price cr-white">
                         <view class="text-size-lg fw-b">账号余额</view>
                         <view class="margin-top-sm">
                             <text class="unit">{{ currency_symbol }}</text>
                             <text class="price fw-b">380</text>
                         </view>
                     </view>
-                    <view class="recharge-content bg-white">
-                        <view class="padding-horizontal-sm">选择充值金额</view>
-                        <view class="flex-row flex-warp tc">
-                            <view v-for="(item, index) in data" :key="index" class="recharge-price-list padding-sm" @tap="change_price_event">
-                                <view class="recharge-price-content border-radius-main single-text" :class="select_index === index ? 'active' : ''">
-                                    <text class="text-size-md">{{ currency_symbol }}</text>
-                                    <text class="text-size-xl">100</text>
+                    <view class="recharge-content bg-white spacing-mt">
+                        <view class="padding-horizontal-sm spacing-mb">选择充值金额</view>
+                        <view class="flex-row flex-warp tc spacing-mb">
+                            <view v-for="(item, index) in data" :key="index" class="recharge-price-list" :data-index="index" :data-value="item.value" @tap="change_price_event">
+                                <view class="recharge-price-content border-radius-main pr" :class="select_index === index ? 'active' : ''">
+                                    <view v-if="item.tips" class="tips cr-white dis-inline-block pa left-0 text-size-xss">{{ item.tips }}</view>
+                                    <view class="single-text">
+                                        <text class="text-size-md">{{ currency_symbol }}</text>
+                                        <text class="text-size-xl">{{ item.value }}</text>
+                                    </view>
                                 </view>
                             </view>
                         </view>
-                        <view class="form-container padding-main">
-                            <view class="form-gorup padding-vertical-main border-radius-main">
-                                <input type="digit" name="money" :value="recharge_money_value || ''" placeholder-class="cr-grey" class="cr-base text-size-xxl" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6" />
+                        <view class="form-container padding-top-sm padding-horizontal-sm">
+                            <view class="form-gorup border-radius-main custom-price flex-row align-c">
+                                <view class="margin-right-xxl">其他金额</view>
+                                <input type="digit" name="money" v-model="recharge_money_value" placeholder-class="cr-grey-9" class="cr-base text-size-md flex-1 flex-width" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6" />
                             </view>
-                            <view class="form-gorup form-gorup-submit">
-                                <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">提交</button>
+                            <view class="form-gorup form-gorup-submit spacing-mt">
+                                <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">立即充值</button>
+                            </view>
+                        </view>
+                        <view class="recharge-desc padding-top-xxl padding-horizontal-sm">
+                            <view class="recharge-desc-title padding-bottom-sm">充值说明</view>
+                            <view v-for="(item, index) in recharge_desc" :key="index" class="recharge-desc-content cr-grey-9 flex-row align-c">
+                                <text class="dis-inline-block circle bg-main circle-poiont margin-right-sm"></text>
+                                <text class="flex-1 flex-width text-size-xs">{{ item }}</text>
                             </view>
                         </view>
                     </view>
@@ -56,6 +67,7 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-pay-price="pay_price"
             :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
             :prop-is-show-payment="is_show_payment_popup"
@@ -83,9 +95,11 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 recharge_money_value: '',
+                sub_recharge_money_value: '',
                 form_submit_disabled_status: false,
                 data: [],
                 recharge_desc: '',
+                select_index: null,
 
                 // 支付弹窗参数
                 pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
@@ -95,6 +109,7 @@
                 is_show_payment_popup: false,
                 pay_price: 0,
                 payment_id: 0,
+                default_payment_id: 0,
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/wallet/user/user',
             };
@@ -158,7 +173,8 @@
                             console.log(data);
                             this.setData({
                                 data: data.preset_data || [],
-                                payment_id: data.default_payment_id || '',
+                                payment_id: data.default_payment_id || 0,
+                                default_payment_id: data.default_payment_id || 0,
                                 recharge_desc: data.recharge_desc || '',
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
@@ -185,19 +201,27 @@
             },
 
             // 选择充值金额
-            change_price_event(e) {},
+            change_price_event(e) {
+                this.setData({
+                    select_index: e.currentTarget.dataset.index,
+                    sub_recharge_money_value: e.currentTarget.dataset.value,
+                    recharge_money_value: '',
+                });
+                console.log(this.recharge_money_value);
+            },
 
             // 充值金额输入事件
             recharge_money_value_input_event(e) {
                 this.setData({
-                    recharge_money_value: e.detail.value || '',
+                    sub_recharge_money_value: e.detail.value || '',
+                    select_index: null,
                 });
             },
 
             // 数据提交
             form_submit_event(e) {
                 // 参数
-                if ((this.recharge_money_value || null) == null) {
+                if ((this.sub_recharge_money_value || null) == null) {
                     app.globalData.showToast('请输入充值金额');
                     return false;
                 }
@@ -212,7 +236,7 @@
                     url: app.globalData.get_request_url('create', 'recharge', 'wallet'),
                     method: 'POST',
                     data: {
-                        money: this.recharge_money_value,
+                        money: this.sub_recharge_money_value,
                     },
                     dataType: 'json',
                     success: (res) => {

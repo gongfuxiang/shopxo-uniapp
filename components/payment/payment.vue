@@ -101,10 +101,15 @@
                 type: [Number, String],
                 default: 0,
             },
-            // 支付id
+            // 支付id 值为0表示没有配置支付方式
             propPaymentId: {
-                type: [String, Number],
-                default: '',
+                type: [Number, String],
+                default: 0,
+            },
+            // 默认支付id 值为0表示没有默认
+            propDefaultPaymentId: {
+                type: [Number, String],
+                default: 0,
             },
             // 跳转第三方链接的重定向
             propNavStatusIndex: {
@@ -141,7 +146,7 @@
             propIsShowPayment(newVal, oldVal) {
                 if (newVal !== oldVal) {
                     let bool = true;
-                    if (this.propPaymentList.length < 2) {
+                    if (this.propPaymentList.length === 1) {
                         bool = false;
                         this.setData({
                             payment_id: this.propPaymentList[0].id,
@@ -149,12 +154,13 @@
                     } else {
                         let self = this;
                         self.propPaymentList.forEach((item) => {
-                            if (item.id == self.propPaymentId) {
+                            let new_payment_id = Number(self.propPaymentId) === 0 ? self.propDefaultPaymentId : Number(self.propPaymentId);
+                            if (item.id == new_payment_id) {
                                 bool = false;
                             }
                         });
                         this.setData({
-                            payment_id: this.propPaymentId,
+                            payment_id: Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
                         });
                     }
                     this.setData({
@@ -173,7 +179,7 @@
                 popup_view_pay_timer: null,
                 popup_view_pay_data: null,
                 // 支付id
-                payment_id: this.propPaymentId || '',
+                payment_id: Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
                 submit_disabled_status: true,
                 order_id: 0,
                 currency_symbol: app.globalData.data.currency_symbol,
@@ -212,7 +218,7 @@
                 this.setData({
                     is_show_payment_popup: false,
                 });
-                this.pay_handle(this.propTempPayValue, this.propPaymentId);
+                this.pay_handle(this.propTempPayValue, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
                 this.$emit('close-payment-poupon', false);
             },
             // 支付方法
@@ -528,7 +534,7 @@
                     order_id: order_id,
                     is_to_page: is_to_page,
                 };
-                this.$emit('pay-success', newData, this.propTempPayIndex, this.propPaymentId);
+                this.$emit('pay-success', newData, this.propTempPayIndex, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
                 if (is_to_page) {
                     this.to_success_page_event();
                 }

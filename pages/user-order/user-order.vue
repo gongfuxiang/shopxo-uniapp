@@ -109,6 +109,7 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
             :prop-pay-price="pay_price"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
@@ -146,7 +147,6 @@
                     { name: '已完成', value: '4' },
                     { name: '已失效', value: '5,6' },
                 ],
-                mult_payment_id: 0,
                 mult_payment_id_list: [],
                 order_select_ids: [],
                 mult_pay_price: [],
@@ -167,7 +167,8 @@
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
-                payment_id: '',
+                payment_id: 0,
+                default_payment_id: 0,
                 is_show_payment_popup: false,
             };
         },
@@ -315,7 +316,7 @@
                                 }
                                 this.setData({
                                     payment_list: res.data.data.payment_list || [],
-                                    mult_payment_id: res.data.data.default_payment_id || '',
+                                    default_payment_id: res.data.data.default_payment_id || 0,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -384,7 +385,7 @@
                     is_show_payment_popup: true,
                     temp_pay_value: e.currentTarget.dataset.value,
                     temp_pay_index: e.currentTarget.dataset.index,
-                    payment_id: e.currentTarget.dataset.payment || this.mult_payment_id || '',
+                    payment_id: e.currentTarget.dataset.payment || 0,
                     pay_price: e.currentTarget.dataset.price,
                     order_select_ids: [],
                 });
@@ -664,7 +665,7 @@
                     is_show_payment_popup: true,
                     temp_pay_value: this.order_select_ids.join(','),
                     pay_price: Math.round(parseFloat(num) * 100) / 100,
-                    payment_id: this.order_select_ids.length > 1 ? this.mult_payment_id : this.mult_payment_id_list[0],
+                    payment_id: this.order_select_ids.length > 1 ? this.default_payment_id : this.mult_payment_id_list[0],
                 });
             },
 

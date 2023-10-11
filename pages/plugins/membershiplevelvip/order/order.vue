@@ -45,6 +45,7 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
             :prop-is-show-payment="is_show_payment_popup"
             :prop-pay-price="pay_price"
             @close-payment-poupon="payment_popup_event_close"
@@ -76,6 +77,7 @@
                 temp_pay_value: 0,
                 temp_pay_index: 0,
                 payment_id: 0,
+                default_payment_id: 0,
                 nav_status_list: [
                     {
                         name: '全部',
@@ -226,6 +228,7 @@
                                 }
                                 this.setData({
                                     payment_list: res.data.data.payment_list || [],
+                                    default_payment_id: res.data.data.default_payment_id || 0,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,

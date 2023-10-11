@@ -70,6 +70,7 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
             :prop-pay-price="pay_price"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
@@ -102,6 +103,7 @@
                 temp_pay_value: '',
                 temp_pay_index: 0,
                 payment_id: 0,
+                default_payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
                 // 支付失败跳转的页面
@@ -153,6 +155,7 @@
                             this.setData({
                                 data_base: data.base || null,
                                 data_list: data.data || [],
+                                default_payment_id: data.default_payment_id || 0,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: status ? 3 : 0,
                                 data_bottom_line_status: status,
