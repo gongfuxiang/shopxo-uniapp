@@ -1952,5 +1952,5 @@
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/lib.css';
-    @import './common/css/theme/purple.css';
+    @import './common/css/theme/green.css';
 </style>
