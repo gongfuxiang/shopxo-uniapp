@@ -8,8 +8,8 @@
 
                 <!-- 搜索 -->
                 <view v-if="common_app_is_header_nav_fixed == 1" class="search-fixed-seat"></view>
-                <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view class="search-content-fixed-content padding-left-main" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '')+(search_is_fixed == 1 ? top_content_search_content_style : '')">
+                <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
+                    <view class="search-content-fixed-content padding-left-main" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '')+(common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
                         <!-- logo/标题 -->
                         <!-- #ifndef MP-TOUTIAO -->
                         <view v-if="(is_logo_use_text == 0 && (application_logo || null) != null) || (is_logo_use_text == 1 && (application_title || null) != null)" class="home-top-nav-logo dis-inline-block va-m margin-right-xxl">
