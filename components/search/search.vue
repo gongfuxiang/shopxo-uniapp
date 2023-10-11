@@ -174,10 +174,9 @@
 <style>
     .search-content .search-icon {
         z-index: 1;
-        padding: 10rpx;
         left: 20rpx;
-        top: 50%;
-        transform: translateY(-50%);
+        top: calc(50% - 12rpx);
+        line-height: 22rpx;
     }
 
     .search-content input {
