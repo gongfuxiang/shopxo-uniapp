@@ -1411,7 +1411,7 @@
             get_application_logo() {
                 var logo = this.data.application_logo || null;
                 if (logo == null) {
-                    logo = this.get_config('config.home_site_logo_wap');
+                    logo = this.get_config('config.home_site_logo_app');
                 }
                 return logo;
             },
@@ -1901,6 +1901,17 @@
                 }
                 // #endif
             },
+
+            // 计算文本宽度
+            string_width(value) {
+                var width = 0;
+                var reg = /^[A-Za-z0-0]+$/;
+                var arr = value.split('');
+                for (var i in arr) {
+                    width += reg.test(arr[i]) ? 34 : 50;
+                }
+                return width;
+            },
         },
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {},
@@ -1919,7 +1930,7 @@
             this.globalData.weixin_privacy_setting();
             // #endif
             // 引入主题
-            this.globalData.require_theme();
+            //this.globalData.require_theme();
             // 设置底部菜单
             this.globalData.set_tabbar();
         },
@@ -1941,5 +1952,5 @@
     @import './common/css/business.css';
     @import './common/css/plugins.css';
     @import './common/css/lib.css';
-    /* @import './common/css/theme/yellow.css'; */
+    @import './common/css/theme/purple.css';
 </style>

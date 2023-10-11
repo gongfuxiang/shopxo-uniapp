@@ -13,15 +13,11 @@
 
 .home-top-nav-logo {
     text-align: left;
-    padding: 2px 250rpx 10rpx 20rpx;
-    height: 37px;
-    /* #ifdef H5 || MP-TOUTIAO || APP */
-    padding-top: 0;
-    /* #endif */
+    height: 56rpx;
 }
 
 .home-top-nav-logo-image {
-    width: 240rpx;
+    width: 56rpx;
     height: 100% !important;
 }
 
@@ -31,10 +27,6 @@
     /* #ifdef H5 || MP-TOUTIAO || APP */
     font-size: 24px;
     /* #endif */
-}
-
-.ht-vh {
-    height: calc(100vh - var(--window-bottom));
 }
 
 /**
@@ -82,6 +74,16 @@
 .search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
+    padding-bottom: 20rpx;
+}
+
+.search-content-input {
+    width: calc(100% - 320rpx);
+}
+
+.search-content-fixed-content {
+    background-repeat: no-repeat;
+    background-size: 100% auto;
     background-position: 0 13%;
     padding-bottom: 20rpx;
     /* #ifdef H5 || APP */
@@ -92,17 +94,10 @@
 
 /* #ifdef H5 || MP-TOUTIAO || APP */
 .search-content-fixed .nav-top-right-icon {
-    top: 9px !important;
+    top: 11px !important;
 }
 
 /* #endif */
-
-/**
- * 轮播
- */
-.banner-content {
-    margin-top: 10rpx;
-}
 
 /**
  * 推荐文章
