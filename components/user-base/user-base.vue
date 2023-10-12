@@ -1,7 +1,7 @@
 <template>
     <view>
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
-            <view :class="'user-base-popup bg-white page-bottom-fixed ' + (propIsGrayscale ? 'grayscale' : '')">
+            <view :class="'user-base-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
                         <iconfont name="icon-huiyuan-guanbi" size="24rpx" color="#999"></iconfont>
@@ -25,7 +25,7 @@
                             </view>
                         </view>
 
-                        <view class="bottom-fixed tc">
+                        <view class="tc padding-top-xxl">
                             <button class="sub-btn cr-white text-size" :class="form_submit_disabled_status ? 'bg-grey-d br-grey-d' : 'bg-main br-main'" type="default" form-type="submit" hover-class="none">保存</button>
                         </view>
                     </view>
