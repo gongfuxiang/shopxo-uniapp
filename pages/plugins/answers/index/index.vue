@@ -46,15 +46,15 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
-        <view class="bottom-fixed text-size fw-b answers-btn-content">
-            <view class="flex-row jc-sa align-c bottom-line-exclude">
-                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+        <view class="bottom-fixed answers-btn-content">
+            <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
+                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="divider-r-d wh-auto">
                         <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
                         我要提问
                     </view>
                 </navigator>
-                <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+                <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="wh-auto">
                         <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
                         我的提问

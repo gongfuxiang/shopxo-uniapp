@@ -110,17 +110,19 @@
 
             <!-- 签到成功提示信息 -->
             <view v-if="is_success_tips == 1" class="coming-tips-container">
-                <view class="coming-content tc pr">
-                    <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
-                    <view class="title">签到成功</view>
-                    <view class="desc">
-                        恭喜您获得
-                        <text>{{ coming_integral }}</text>
-                        积分
-                    </view>
-                    <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
-                    <view class="close-sub pa cr-white" @tap="coming_success_close_event">
-                        <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
+                <view class="coming-content">
+                    <view class="coming-item tc pr">
+                        <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
+                        <view class="title">签到成功</view>
+                        <view class="desc">
+                            恭喜您获得
+                            <text>{{ coming_integral }}</text>
+                            积分
+                        </view>
+                        <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
+                        <view class="close-sub pa cr-white" @tap="coming_success_close_event">
+                            <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
+                        </view>
                     </view>
                 </view>
             </view>
