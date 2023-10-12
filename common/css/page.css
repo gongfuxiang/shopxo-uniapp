@@ -310,15 +310,16 @@ button:before {
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
-    padding-top: 40rpx;
-    padding-left: 90rpx;
-    padding-right: 90rpx;
-    padding-bottom: calc(40rpx + env(safe-area-inset-bottom) - 40rpx);
-    /* #ifdef H5 */
-    padding-bottom: 40rpx;
-    /* #endif */
+    padding: 40rpx 90rpx;
     background-color: #fff;
     box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
+}
+
+/**
+ * 兼容底部横线底部内边距
+ */
+.bottom-line-exclude {
+    padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
 }
 
 /**
@@ -754,13 +755,6 @@ button[disabled].bg-grey {
 }
 
 /**
- * 兼容底部横线底部内边距
- */
-.bottom-line-exclude {
-    padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
-}
-
-/**
  * 表单
  */
 .form-container .form-gorup {
@@ -1135,17 +1129,17 @@ button[disabled].bg-grey {
  */
 
 .goods-data-grid-list .item {
-    width: calc(50% - 10rpx);
-    padding-bottom: 20rpx;
-    margin-bottom: 20rpx;
+    width: calc(50% - 12rpx);
+    padding-bottom: 24rpx;
+    margin-bottom: 24rpx;
 }
 
 .goods-data-grid-list .item:nth-of-type(2n + 1) {
-    margin-right: 10rpx;
+    margin-right: 12rpx;
 }
 
 .goods-data-grid-list .item:nth-of-type(2n) {
-    margin-left: 10rpx;
+    margin-left: 12rpx;
 }
 
 .goods-data-grid-list .item .error-msg,

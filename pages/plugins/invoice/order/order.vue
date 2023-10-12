@@ -1,8 +1,8 @@
 <template>
     <view>
         <view v-if="data_list.length > 0" class="data-list">
-            <scroll-view :scroll-y="true" :class="select_ids.length > 0 ? 'select-scroll-box' : 'scroll-box'" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view class="padding-horizontal-main padding-top-main">
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view class="padding-horizontal-main padding-top-main" :class="select_ids.length > 0 ? 'page-bottom-fixed' : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main">
                             <iconfont
@@ -37,7 +37,9 @@
             </scroll-view>
             <!-- 合并开票 -->
             <view v-if="select_ids.length > 0" class="bottom-fixed invoice-merge-submit">
-                <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
+                <view class="bottom-line-exclude">
+                    <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
+                </view>
             </view>
         </view>
         <view v-else>

@@ -11,7 +11,6 @@
 }
 
 .coupon-content {
-    padding-bottom: 148rpx;
     border-top: 42rpx solid #fff;
     border-radius: 32rpx 32rpx 0 0;
     min-height: calc(100% - 42rpx);
@@ -32,7 +31,6 @@
     border-radius: 22px;
     font-size: 32rpx;
     padding: 20rpx 0;
-    margin: 30rpx 90rpx 30rpx 90rpx;
 }
 
 @media screen and (min-width: 960px) {

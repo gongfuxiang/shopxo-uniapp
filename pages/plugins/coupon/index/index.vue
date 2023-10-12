@@ -1,10 +1,11 @@
 <template>
-    <view class="pr">
+    <view class="pr" v-if="(data_base || null) != null">
         <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
             <!-- 返回 -->
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m pr z-i" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
-                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
+                <view class="text-size flex-1 tc pa left-0 right-0 padding-top-xs" :style="'color:rgba(51,51,51,' + opacity + ')'">{{ data_base.application_name || '领券中心' }}</view>
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event" class="pr z-i"></iconfont>
             </view>
             <!-- #endif -->
         </view>
@@ -12,7 +13,7 @@
             <image v-if="(data_base || null) != null" class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
         </view>
         <view class="plugins-coupon-container">
-            <view class="coupon-content bg-white pr">
+            <view class="coupon-content bg-white pr page-bottom-fixed">
                 <!-- 优惠劵列表 -->
                 <view v-if="data_list.length > 0" class="flex-col">
                     <block v-for="(item, index) in data_list" :key="index">
@@ -29,8 +30,10 @@
             </view>
         </view>
         <view class="popup-bottom bottom-fixed bg-white">
-            <view class="popup-btn tc">
-                <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+            <view class="bottom-line-exclude">
+                <view class="popup-btn tc">
+                    <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+                </view>
             </view>
         </view>
     </view>

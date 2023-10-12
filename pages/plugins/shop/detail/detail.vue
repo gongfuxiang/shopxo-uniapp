@@ -10,7 +10,7 @@
                             <input class="text-size-md flex-1 wh-auto padding-left-sm" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                         </view>
                         <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&'">
-                            {{ is_shop_search_all_search_button == 1 ? "搜本店" : "搜索" }}
+                            {{ is_shop_search_all_search_button == 1 ? '搜本店' : '搜索' }}
                         </button>
                     </view>
                 </view>
@@ -129,9 +129,11 @@
             <!-- 数据模式 -->
             <!-- 自动模式 -->
             <block v-if="(shop.data_model || 0) == 0">
-                <view v-if="(data || null) != null && data.length > 0" class="padding-main oh">
-                    <component-goods-list :propData="{ style_type: 1, goods_list: data }" :propCurrencySymbol="currency_symbol"></component-goods-list>
-                    <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">查看更多商品 >></button>
+                <view v-if="(data || null) != null && data.length > 0" class="wh-auto">
+                    <view class="padding-main">
+                        <component-goods-list :propData="{ style_type: 1, goods_list: data }" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                        <button class="bg-main br-main cr-white round dis-block margin-top-xl margin-bottom-xl margin-horizontal-main" @tap="url_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id" size="mini">查看更多商品 >></button>
+                    </view>
                 </view>
                 <block v-else>
                     <component-no-data propStatus="0"></component-no-data>
@@ -181,275 +183,275 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentLayout from "../../../../components/layout/layout";
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentBanner from "../../../../components/slider/slider";
-import componentGoodsList from "../../../../components/goods-list/goods-list";
-var common_static_url = app.globalData.get_static_url("common");
-export default {
-    data() {
-        return {
-            common_static_url: common_static_url,
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            currency_symbol: app.globalData.data.currency_symbol,
-            is_shop_search_all_search_button: 0,
-            params: null,
-            user: null,
-            data_base: null,
-            shop: null,
-            shop_favor_user: [],
-            shop_navigation: [],
-            shop_goods_category: [],
-            slider: [],
-            data: [],
-            search_keywords_value: "",
-            header_service_status: false,
-            nav_category_status: false,
-            shop_favor_info: {
-                text: "收藏",
-                status: 0,
-                count: 0,
-            },
-            // 自定义分享信息
-            share_info: {},
-        };
-    },
-    components: {
-        componentLayout,
-        componentNoData,
-        componentBottomLine,
-        componentBanner,
-        componentGoodsList,
-    },
-    props: {},
-    onLoad(params) {
-        this.setData({
-            params: params,
-            user: app.globalData.get_user_cache_info(),
-        });
-    },
-    onShow() {
-        this.get_data();
-        // 初始化配置
-        this.init_config();
-    },
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-    methods: {
-        // 初始化配置
-        init_config(status) {
-            if ((status || false) == true) {
-                this.setData({
-                    currency_symbol: app.globalData.get_config("currency_symbol"),
-                });
-            } else {
-                app.globalData.is_config(this, "init_config");
-            }
-        },
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("detail", "index", "shop"),
-                method: "POST",
-                data: {
-                    id: this.params.id || 0,
+    const app = getApp();
+    import componentLayout from '../../../../components/layout/layout';
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentBanner from '../../../../components/slider/slider';
+    import componentGoodsList from '../../../../components/goods-list/goods-list';
+    var common_static_url = app.globalData.get_static_url('common');
+    export default {
+        data() {
+            return {
+                common_static_url: common_static_url,
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
+                is_shop_search_all_search_button: 0,
+                params: null,
+                user: null,
+                data_base: null,
+                shop: null,
+                shop_favor_user: [],
+                shop_navigation: [],
+                shop_goods_category: [],
+                slider: [],
+                data: [],
+                search_keywords_value: '',
+                header_service_status: false,
+                nav_category_status: false,
+                shop_favor_info: {
+                    text: '收藏',
+                    status: 0,
+                    count: 0,
                 },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        var base = data.base || null;
-                        var temp_data = data.data || [];
-                        this.setData({
-                            data_base: base,
-                            shop: data.shop || null,
-                            shop_favor_user: data.shop_favor_user || [],
-                            shop_navigation: data.shop_navigation || [],
-                            shop_goods_category: data.shop_goods_category || [],
-                            is_shop_search_all_search_button: base == null || parseInt(base.is_shop_search_all_search_button || 0) != 1 ? 0 : 1,
-                            data: temp_data,
-                            slider: data.slider || [],
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: temp_data.length > 0,
-                        });
-                        if ((this.shop || null) != null) {
-                            // 收藏信息
-                            var status = this.shop_favor_user.indexOf(this.shop.id) != -1 ? 1 : 0;
+                // 自定义分享信息
+                share_info: {},
+            };
+        },
+        components: {
+            componentLayout,
+            componentNoData,
+            componentBottomLine,
+            componentBanner,
+            componentGoodsList,
+        },
+        props: {},
+        onLoad(params) {
+            this.setData({
+                params: params,
+                user: app.globalData.get_user_cache_info(),
+            });
+        },
+        onShow() {
+            this.get_data();
+            // 初始化配置
+            this.init_config();
+        },
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+        methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'index', 'shop'),
+                    method: 'POST',
+                    data: {
+                        id: this.params.id || 0,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            var base = data.base || null;
+                            var temp_data = data.data || [];
                             this.setData({
-                                shop_favor_info: {
-                                    count: this.shop.shop_favor_count || 0,
-                                    status: status,
-                                    text: (status == 1 ? "已" : "") + "收藏",
-                                },
+                                data_base: base,
+                                shop: data.shop || null,
+                                shop_favor_user: data.shop_favor_user || [],
+                                shop_navigation: data.shop_navigation || [],
+                                shop_goods_category: data.shop_goods_category || [],
+                                is_shop_search_all_search_button: base == null || parseInt(base.is_shop_search_all_search_button || 0) != 1 ? 0 : 1,
+                                data: temp_data,
+                                slider: data.slider || [],
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: temp_data.length > 0,
                             });
-                            // 基础自定义分享
+                            if ((this.shop || null) != null) {
+                                // 收藏信息
+                                var status = this.shop_favor_user.indexOf(this.shop.id) != -1 ? 1 : 0;
+                                this.setData({
+                                    shop_favor_info: {
+                                        count: this.shop.shop_favor_count || 0,
+                                        status: status,
+                                        text: (status == 1 ? '已' : '') + '收藏',
+                                    },
+                                });
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.shop.seo_title || this.shop.name,
+                                        desc: this.shop.seo_desc || this.shop.describe,
+                                        path: '/pages/plugins/shop/detail/detail',
+                                        query: 'id=' + this.shop.id,
+                                        img: this.shop.logo,
+                                    },
+                                });
+                                // 标题名称
+                                uni.setNavigationBarTitle({
+                                    title: this.shop.name,
+                                });
+                            }
+                        } else {
                             this.setData({
-                                share_info: {
-                                    title: this.shop.seo_title || this.shop.name,
-                                    desc: this.shop.seo_desc || this.shop.describe,
-                                    path: "/pages/plugins/shop/detail/detail",
-                                    query: "id=" + this.shop.id,
-                                    img: this.shop.logo,
-                                },
-                            });
-                            // 标题名称
-                            uni.setNavigationBarTitle({
-                                title: this.shop.name,
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
                             });
                         }
-                    } else {
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
+                        });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
+            // 店铺收藏事件
+            shop_favor_event(e) {
+                var user = app.globalData.get_user_info(this, 'shop_favor_event');
+                if (user != false) {
+                    // 用户未绑定用户则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=shop_favor_event',
+                        });
+                        return false;
+                    } else {
+                        uni.showLoading({
+                            title: '处理中...',
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url('favor', 'shopfavor', 'shop'),
+                            method: 'POST',
+                            data: {
+                                id: this.shop.id,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    this.setData({
+                                        shop_favor_info: res.data.data,
+                                    });
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                } else {
+                                    if (app.globalData.is_login_check(res.data, this, 'shop_favor_event')) {
+                                        app.globalData.showToast(res.data.msg);
+                                    }
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast('服务器请求出错');
+                            },
                         });
                     }
-                    // 分享菜单处理
-                    app.globalData.page_share_handle(this.share_info);
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
-        },
-        // 店铺收藏事件
-        shop_favor_event(e) {
-            var user = app.globalData.get_user_info(this, "shop_favor_event");
-            if (user != false) {
-                // 用户未绑定用户则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=shop_favor_event",
-                    });
-                    return false;
-                } else {
-                    uni.showLoading({
-                        title: "处理中...",
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url("favor", "shopfavor", "shop"),
-                        method: "POST",
-                        data: {
-                            id: this.shop.id,
-                        },
-                        dataType: "json",
-                        success: (res) => {
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
-                                this.setData({
-                                    shop_favor_info: res.data.data,
-                                });
-                                app.globalData.showToast(res.data.msg, "success");
-                            } else {
-                                if (app.globalData.is_login_check(res.data, this, "shop_favor_event")) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
-                            }
-                        },
-                        fail: () => {
-                            uni.hideLoading();
-                            app.globalData.showToast("服务器请求出错");
-                        },
-                    });
                 }
-            }
-        },
-        // 搜索输入事件
-        search_keywords_event(e) {
-            this.setData({
-                search_keywords_value: e.detail.value || "",
-            });
-        },
-        // 搜索事件
-        search_button_event(e) {
-            var value = e.currentTarget.dataset.value || null;
-            uni.navigateTo({
-                url: value + "keywords=" + this.search_keywords_value || "",
-            });
-        },
-        // 导航分类事件
-        header_service_event(e) {
-            this.setData({
-                header_service_status: !this.header_service_status,
-            });
-        },
-        // 导航分类事件
-        nav_shop_category_event(e) {
-            var temp_nav = this.shop_navigation;
-            for (var i in temp_nav) {
-                temp_nav[i]["items_status"] = 0;
-            }
-            this.setData({
-                shop_navigation: temp_nav,
-                nav_category_status: !this.nav_category_status,
-            });
-        },
-        // 导航分类事件
-        shop_category_event(e) {
-            var value = e.currentTarget.dataset.value || null;
-            uni.navigateTo({
-                url: "/pages/plugins/shop/search/search?shop_id=" + this.shop.id + "&category_id=" + value,
-            });
-        },
-        // 导航事件
-        nav_event(e) {
-            // 存在子级则做子级显示隐藏处理
-            var value = e.currentTarget.dataset.value || null;
-            if (value == null) {
-                var index = e.currentTarget.dataset.index;
+            },
+            // 搜索输入事件
+            search_keywords_event(e) {
+                this.setData({
+                    search_keywords_value: e.detail.value || '',
+                });
+            },
+            // 搜索事件
+            search_button_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                uni.navigateTo({
+                    url: value + 'keywords=' + this.search_keywords_value || '',
+                });
+            },
+            // 导航分类事件
+            header_service_event(e) {
+                this.setData({
+                    header_service_status: !this.header_service_status,
+                });
+            },
+            // 导航分类事件
+            nav_shop_category_event(e) {
                 var temp_nav = this.shop_navigation;
                 for (var i in temp_nav) {
-                    if (i == index) {
-                        temp_nav[i]["items_status"] = (temp_nav[i]["items_status"] || 0) == 0 ? 1 : 0;
-                    } else {
-                        temp_nav[i]["items_status"] = 0;
-                    }
+                    temp_nav[i]['items_status'] = 0;
                 }
                 this.setData({
                     shop_navigation: temp_nav,
-                    nav_category_status: false,
+                    nav_category_status: !this.nav_category_status,
                 });
-            } else {
+            },
+            // 导航分类事件
+            shop_category_event(e) {
+                var value = e.currentTarget.dataset.value || null;
+                uni.navigateTo({
+                    url: '/pages/plugins/shop/search/search?shop_id=' + this.shop.id + '&category_id=' + value,
+                });
+            },
+            // 导航事件
+            nav_event(e) {
+                // 存在子级则做子级显示隐藏处理
+                var value = e.currentTarget.dataset.value || null;
+                if (value == null) {
+                    var index = e.currentTarget.dataset.index;
+                    var temp_nav = this.shop_navigation;
+                    for (var i in temp_nav) {
+                        if (i == index) {
+                            temp_nav[i]['items_status'] = (temp_nav[i]['items_status'] || 0) == 0 ? 1 : 0;
+                        } else {
+                            temp_nav[i]['items_status'] = 0;
+                        }
+                    }
+                    this.setData({
+                        shop_navigation: temp_nav,
+                        nav_category_status: false,
+                    });
+                } else {
+                    app.globalData.url_event(e);
+                }
+            },
+            // url事件
+            url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
+            // 剪切板
+            text_copy_event(e) {
+                app.globalData.text_copy_event(e);
+            },
+            // 电话
+            tel_event(e) {
+                app.globalData.call_tel(e.currentTarget.dataset.value || null);
+            },
+            // 图片预览
+            image_show_event(e) {
+                app.globalData.image_show_event(e);
+            },
+            // 进入客服系统
+            chat_event() {
+                app.globalData.chat_entry_handle(this.shop.chat_info.chat_url);
+            },
         },
-        // url事件
-        url_event(e) {
-            app.globalData.url_event(e);
-        },
-        // 剪切板
-        text_copy_event(e) {
-            app.globalData.text_copy_event(e);
-        },
-        // 电话
-        tel_event(e) {
-            app.globalData.call_tel(e.currentTarget.dataset.value || null);
-        },
-        // 图片预览
-        image_show_event(e) {
-            app.globalData.image_show_event(e);
-        },
-        // 进入客服系统
-        chat_event() {
-            app.globalData.chat_entry_handle(this.shop.chat_info.chat_url);
-        },
-    },
-};
+    };
 </script>
 <style>
-@import "./detail.css";
+    @import './detail.css';
 </style>

@@ -1,7 +1,7 @@
 <template>
     <view class="bg-white">
-        <view v-if="(data_base || null) != null">
-            <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="wh-auto"></image>
+        <view v-if="(data_base || null) != null" class="oh wh-auto">
+            <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="vip-bg"></image>
             <view class="banner oh pa top-0 pa-w wh-auto" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
@@ -15,7 +15,7 @@
                     <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
                     <!-- 购买按钮 -->
                     <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
-                        <button class="banner-buy fw-b round margin-top-xxxl" type="default" size="mini" hover-class="none" :style="join_vip_btn">
+                        <button class="banner-buy fw-b round margin-top-xxxl" hover-class="none" :style="join_vip_btn">
                             {{ data_base.banner_middle_name || '加入会员' }}
                         </button>
                     </navigator>

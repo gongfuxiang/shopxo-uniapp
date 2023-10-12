@@ -6,11 +6,11 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c br-b-f5 padding-bottom-sm">
-                                <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">姓名<text class="form-group-tips-must">*</text></view>
                                 <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="联系人2~16个字符" />
                             </view>
                             <view class="flex-row jc-sb align-c padding-top-sm">
-                                <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">电话<text class="form-group-tips-must">*</text></view>
                                 <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="座机或手机" />
                             </view>
                         </view>
@@ -20,7 +20,7 @@
                         <view class="form-gorup">
                             <view class="flex-row jc-sb br-b-f5 padding-vertical-sm pr">
                                 <view class="form-gorup-title">
-                                    <text>所在地区</text>
+                                    <text>地区</text>
                                     <text class="form-group-tips-must">*</text>
                                 </view>
                                 <view class="flex-1 flex-width flex-col">
@@ -51,7 +51,7 @@
                                 </view>
                             </view>
                             <view class="flex-row jc-sb align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">地址<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width">
                                     <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey-9" :class="'cr-base bs-bb ' + (home_user_address_map_status == 1 ? 'address-value' : '')" placeholder="详细地址1~80个字符" />
                                 </view>
@@ -69,7 +69,7 @@
                                 </view>
                                 <view class="tc padding-top-main" @tap="identfication_change">
                                     <text class="padding-right-sm">地址粘贴板</text>
-                                    <iconfont :name="identfication_show ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="28rpx" color="#666"></iconfont>
+                                    <iconfont :name="identfication_show ? 'icon-fenlei-top' : 'icon-mendian-jiantou2'" size="28rpx" color="#666"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -78,12 +78,12 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row br-b-f5 padding-top-sm padding-bottom-main">
-                                <view class="form-gorup-title padding-top-sm alias-title">别名</view>
+                                <view class="form-gorup-title padding-top-sm alias-title">标签</view>
                                 <view class="flex-1 flex-width">
                                     <view class="flex-row">
                                         <view v-for="(item, index) in alias_list" :key="index" class="alias-btn" :class="item === (address_data.alias || null) ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" :data-value="item" @tap="alias_change">{{ item }}</view>
                                     </view>
-                                    <view class="padding-top-lg padding-right-lg">
+                                    <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
                                             <input type="text" name="alias" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="请输入标签名称" />
                                             <button type="default" size="mini" class="round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">确定</button>
@@ -114,15 +114,15 @@
                         <view class="form-gorup">
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
                                 <view class="form-gorup-title">身份证姓名<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="-9" class="cr-base flex-1 flex-width" placeholder="请填写真实姓名" />
+                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="请填写真实姓名" />
                             </view>
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
                                 <view class="form-gorup-title">身份证号码<text class="form-group-tips-must">*</text></view>
-                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="-9" class="cr-base flex-1 flex-width" placeholder="请填写身份证号" />
+                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="请填写身份证号" />
                             </view>
                             <view class="flex-row align-c padding-vertical-sm margin-bottom-lg">
                                 <view class="form-gorup-title">身份证照片<text class="form-group-tips-must">*</text></view>
-                                <view class="form-upload-data"> </view>
+                                <view class="form-upload-data cr-grey-9">请填使用身份证原件进行拍摄，图片清晰</view>
                             </view>
                             <view class="flex-row align-c">
                                 <view class="flex-width-half oh padding-right-main pr">

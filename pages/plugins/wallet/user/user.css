@@ -7,13 +7,6 @@
     /* #endif */
 }
 
-.scroll-wallet {
-    height: calc(calc(100vh - 172rpx - env(safe-area-inset-bottom) + 40rpx));
-    /* #ifdef H5 */
-    height: calc(100vh - 172rpx);
-    /* #endif */
-}
-
 .wallet-head .content {
     border-radius: 24rpx;
     padding: 24rpx;
@@ -57,7 +50,8 @@
 
 /*
 * 底部按钮
-*/.submit-container {
+*/
+.submit-container {
     padding: 42rpx 46rpx;
 }
 

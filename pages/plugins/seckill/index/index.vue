@@ -1,7 +1,7 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null">
-            <view class="bg-red" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;' + seckill_bg">
+            <view :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;' + seckill_bg">
                 <!-- 返回 -->
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
                 <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white flex-row">
@@ -31,9 +31,9 @@
                                 <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
                             </view>
                         </view>
-                        <view class="text-size-xs cr-blak" @tap="quick_open_event">
+                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
                             活动规则
-                            <iconfont v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
+                            <iconfont name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
                         </view>
                     </view>
 
@@ -80,7 +80,7 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                seckill_bg: 'background: url(' + seckill_static_url + 'header-bg.png) top/100% no-repeat;',
+                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;',
                 seckill_title_url: seckill_static_url + 'seckill-title.png',
                 scroll_top: 0,
                 scroll_top_old: 0,

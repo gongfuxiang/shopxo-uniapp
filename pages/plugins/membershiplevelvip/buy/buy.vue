@@ -37,7 +37,9 @@
                                         </view>
                                     </block>
                                     <view class="bottom-fixed sub-pay">
-                                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">立即开通{{ selected_tabs_value }}</button>
+                                        <view class="bottom-line-exclude">
+                                            <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">立即开通{{ selected_tabs_value }}</button>
+                                        </view>
                                     </view>
                                 </view>
                             </block>
@@ -49,8 +51,8 @@
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-pp-all" class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
-                    <iconfont name="icon-index-morejiantou" size="12rpx" color="#666"></iconfont>
+                    <view> <iconfont name="icon-kaitonghuiy-dingdan" class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
+                    <iconfont name="icon-index-morejiantou" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>
             <view v-else>

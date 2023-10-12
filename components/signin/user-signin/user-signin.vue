@@ -198,9 +198,6 @@
 </script>
 <style scoped>
     .scroll-box {
-        height: calc(calc(100vh - 144rpx - env(safe-area-inset-bottom) + 40rpx));
-        /* #ifdef H5 */
         height: calc(100vh - 144rpx);
-        /* #endif */
     }
 </style>

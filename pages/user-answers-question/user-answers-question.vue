@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view class="page-bottom-fixed">
         <view v-if="data_list.length > 0" class="padding-main">
             <view v-for="(item, index) in data_list" :key="index">
                 <navigator :url="'/pages/user-answers-detail/user-answers-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
@@ -33,9 +33,11 @@
         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
         <view class="bottom-fixed question-btn bg-white">
-            <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none">
-                <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
-            </navigator>
+            <view class="bottom-line-exclude">
+                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none">
+                    <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
+                </navigator>
+            </view>
         </view>
     </view>
 </template>

@@ -4,7 +4,10 @@
 }
 
 .scroll-box {
-    height: calc(100vh - 314rpx - var(--status-bar-height) - var(--window-bottom));
+    height: calc(100vh - 166rpx - var(--status-bar-height) + 20rpx);
+    /* #ifdef H5 */
+    height: calc(100vh - 166rpx);
+    /* #endif */
 }
 
 .status .answers-status {
@@ -40,4 +43,9 @@
 
 .hot-bg-2 {
     background: linear-gradient(150deg, #FFCE90 0%, #FFAA4E 100%);
+}
+
+.answers-btn-content {
+    padding-top: 54rpx;
+    padding-bottom: 54rpx;
 }

@@ -66,18 +66,18 @@
                                 <view class="title-left-border text-size fw-b">基础统计</view>
                                 <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
                                     {{ popup_time_value.name }}
-                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" class="pa"></iconfont>
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" class="pa" color="#999"></iconfont>
                                 </button>
                             </view>
                             <!-- 推广统计 -->
                             <view v-if="stats_user_promotion_data_list.length > 0" class="margin-top-main oh tc flex-row jc-sa align-c">
                                 <block v-for="(item, index) in stats_user_promotion_data_list" :key="index">
                                     <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
-                                        <view class="cr-base">{{ item.name }}</view>
                                         <view class="single-text margin-top-sm">
                                             <text class="fw-b promotion-size">{{ item.value }}</text>
                                             <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
                                         </view>
+                                        <view class="cr-grey text-size-xs">{{ item.name }}</view>
                                     </view>
                                 </block>
                             </view>
@@ -166,7 +166,9 @@
                                     <view v-if="(time_data || null) != null" class="quit-time oh">
                                         <block v-for="(item, index) in time_data" :key="index">
                                             <view class="item fl padding-main bs-bb">
-                                                <view class="br-grey cr-grey text-size-xs round padding-top-xs padding-bottom-xs tc" :data-index="index" @tap="quit_time_event">{{ item.name }}</view>
+                                                <view class="text-size-xs round padding-top-xs padding-bottom-xs tc" :class="quit_time_checked_name === item.name ? 'br-main bg-main cr-white' : 'br-grey cr-grey bg-white'" :data-value="item.name" :data-index="index" @tap="quit_time_event">
+                                                    {{ item.name }}
+                                                </view>
                                             </view>
                                         </block>
                                     </view>
@@ -184,7 +186,9 @@
                                         </view>
                                     </view>
                                     <view class="bottom-fixed br-0">
-                                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
+                                        <view class="bottom-line-exclude">
+                                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
+                                        </view>
                                     </view>
                                 </form>
                             </view>
@@ -237,6 +241,7 @@
                 popup_time_status: false,
                 form_submit_disabled_status: false,
                 popup_time_value: { name: '自定义', start: '', end: '', index: '' },
+                quit_time_checked_name: '',
             };
         },
 
@@ -331,6 +336,7 @@
                                 stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
                                 stats_profit_data_list: data.stats_profit_data_list || [],
                                 popup_time_value: temp_value,
+                                quit_time_checked_name: temp_value.name || '',
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
@@ -399,6 +405,7 @@
                 temp_value.index = index;
                 this.setData({
                     popup_time_value: temp_value,
+                    quit_time_checked_name: e.currentTarget.dataset.value,
                 });
             },
 
@@ -409,6 +416,7 @@
                 temp_value.index = '';
                 this.setData({
                     popup_time_value: temp_value,
+                    quit_time_checked_name: '',
                 });
             },
 
@@ -419,6 +427,7 @@
                 temp_value.index = '';
                 this.setData({
                     popup_time_value: temp_value,
+                    quit_time_checked_name: '',
                 });
             },
 
@@ -448,6 +457,7 @@
                                 stats_base_data_list: data.stats_base_data_list || [],
                                 stats_base_data_list_children: app.globalData.group_arry(data.stats_base_data_list, 2) || [],
                                 popup_time_value: temp_value,
+                                quit_time_checked_name: temp_value.name || '',
                             });
                         } else {
                             this.setData({

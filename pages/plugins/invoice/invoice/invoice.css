@@ -2,10 +2,7 @@
 * 导航
 */
 .scroll-box-ece-nav {
-    height: calc(calc(100vh - 252rpx - env(safe-area-inset-bottom) + 40rpx));
-    /* #ifdef H5 */
-    height: calc(100vh - 252rpx);
-    /* #endif */
+    height: calc(100vh - 140rpx);
 }
 
 /*

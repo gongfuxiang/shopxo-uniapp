@@ -9,95 +9,101 @@
         </view>
 
         <!-- 订单列表 -->
-        <scroll-view :scroll-y="true" :class="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1 ? 'order-scroll-merge' : 'order-scroll'" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
-                    <view class="item-base oh br-b padding-bottom-main">
-                        <!-- 选择 -->
-                        <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="fl selected" @tap="selected_event">
-                            <image class="icon va-m" :src="common_static_url + 'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+        <scroll-view :scroll-y="true" class="order-scroll" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view :class="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1 ? 'page-bottom-fixed' : ''">
+                <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                    <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
+                        <view class="item-base oh br-b padding-bottom-main">
+                            <!-- 选择 -->
+                            <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="fl selected" @tap="selected_event">
+                                <image class="icon va-m" :src="common_static_url + 'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                            </view>
+                            <!-- 基础信息 -->
+                            <view class="fl cp" @tap="url_event" :data-value="item.warehouse_url || ''">
+                                <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-sm" :src="item.warehouse_icon" mode="aspectFit"></image>
+                                <text class="cr-base va-m">{{ item.warehouse_name }}</text>
+                            </view>
+                            <text class="fr cr-red"
+                                >{{ item.status_name }}<text v-if="(item.is_under_line_text || null) != null">（{{ item.is_under_line_text }}）</text></text
+                            >
                         </view>
-                        <!-- 基础信息 -->
-                        <view class="fl cp" @tap="url_event" :data-value="item.warehouse_url || ''">
-                            <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-sm" :src="item.warehouse_icon" mode="aspectFit"></image>
-                            <text class="cr-base va-m">{{ item.warehouse_name }}</text>
-                        </view>
-                        <text class="fr cr-red"
-                            >{{ item.status_name }}<text v-if="(item.is_under_line_text || null) != null">（{{ item.is_under_line_text }}）</text></text
-                        >
-                    </view>
-                    <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
-                        <view :data-value="'/pages/user-order-detail/user-order-detail?id=' + item.id" @tap="url_event">
-                            <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
-                            <view class="goods-base pr">
-                                <view class="multi-text">{{ detail.title }}</view>
-                                <view v-if="detail.spec != null" class="margin-top-sm">
-                                    <block v-for="(sv, si) in detail.spec" :key="si">
-                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                        <text class="cr-grey">{{ sv.value }}</text>
-                                    </block>
+                        <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
+                            <view :data-value="'/pages/user-order-detail/user-order-detail?id=' + item.id" @tap="url_event">
+                                <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
+                                <view class="goods-base pr">
+                                    <view class="multi-text">{{ detail.title }}</view>
+                                    <view v-if="detail.spec != null" class="margin-top-sm">
+                                        <block v-for="(sv, si) in detail.spec" :key="si">
+                                            <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                            <text class="cr-grey">{{ sv.value }}</text>
+                                        </block>
+                                    </view>
+                                    <view class="margin-top-sm">
+                                        <text class="fw-b">{{ item.currency_data.currency_symbol }}{{ detail.price }}</text>
+                                        <text class="margin-left-sm">x{{ detail.buy_number }}</text>
+                                    </view>
+                                    <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{
+                                        detail.orderaftersale_btn_text
+                                    }}</view>
                                 </view>
-                                <view class="margin-top-sm">
-                                    <text class="fw-b">{{ item.currency_data.currency_symbol }}{{ detail.price }}</text>
-                                    <text class="margin-left-sm">x{{ detail.buy_number }}</text>
-                                </view>
-                                <view v-if="item.is_can_launch_aftersale == 1 && (detail.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="item.id" :data-did="detail.id">{{
-                                    detail.orderaftersale_btn_text
-                                }}</view>
                             </view>
                         </view>
-                    </view>
-                    <view class="padding-vertical-main tr cr-base text-size">
-                        <text
-                            >共<text class="fw-b">{{ item.buy_number_count }}</text
-                            >件 合计 <text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text
-                            >元</text
+                        <view class="padding-vertical-main tr cr-base text-size">
+                            <text
+                                >共<text class="fw-b">{{ item.buy_number_count }}</text
+                                >件 合计 <text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text
+                                >元</text
+                            >
+                        </view>
+                        <view
+                            v-if="
+                                item.operate_data.is_cancel +
+                                    item.operate_data.is_pay +
+                                    item.operate_data.is_collect +
+                                    item.operate_data.is_comments +
+                                    item.operate_data.is_delete +
+                                    (item.plugins_is_order_allot_button || 0) +
+                                    (item.plugins_is_order_batch_button || 0) +
+                                    (item.plugins_is_order_frequencycard_button || 0) >
+                                    0 ||
+                                (item.status == 2 && item.order_model != 2) ||
+                                ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
+                                (item.plugins_delivery_data || 0) == 1
+                            "
+                            class="item-operation tr br-t padding-vertical-main"
                         >
+                            <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                            <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" hover-class="none">支付</button>
+                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
+                            <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">
+                                物流
+                            </button>
+                            <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
+                            <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
+                            <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
+                            <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
+                            <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
+                            <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
+                            <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">
+                                次卡
+                            </button>
+                        </view>
                     </view>
-                    <view
-                        v-if="
-                            item.operate_data.is_cancel +
-                                item.operate_data.is_pay +
-                                item.operate_data.is_collect +
-                                item.operate_data.is_comments +
-                                item.operate_data.is_delete +
-                                (item.plugins_is_order_allot_button || 0) +
-                                (item.plugins_is_order_batch_button || 0) +
-                                (item.plugins_is_order_frequencycard_button || 0) >
-                                0 ||
-                            (item.status == 2 && item.order_model != 2) ||
-                            ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
-                            (item.plugins_delivery_data || 0) == 1
-                        "
-                        class="item-operation tr br-t padding-vertical-main"
-                    >
-                        <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" hover-class="none">支付</button>
-                        <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
-                        <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
-                        <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
-                        <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
-                        <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
-                        <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                        <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
-                        <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
-                        <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">
-                            次卡
-                        </button>
-                    </view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                </view>
             </view>
         </scroll-view>
 
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed tc">
-            <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">合并支付</button>
+            <view class="bottom-line-exclude">
+                <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">合并支付</button>
+            </view>
         </view>
 
         <component-payment

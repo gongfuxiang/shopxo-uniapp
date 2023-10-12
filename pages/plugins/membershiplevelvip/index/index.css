@@ -1,6 +1,11 @@
 /**
 * banner
 */
+.vip-bg {
+    width: calc(100% + 8rpx);
+    margin: 0 -4rpx;
+}
+
 .banner .title-img {
     width: 476rpx;
     margin-top: 64rpx;
@@ -11,7 +16,7 @@
 }
 
 .banner-buy {
-    background-size: auto 100%;
+    background-size: 100%;
     background-color: transparent;
     border: 0;
     color: #88651F !important;

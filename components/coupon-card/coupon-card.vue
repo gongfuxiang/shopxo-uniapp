@@ -3,9 +3,9 @@
         <view class="coupon-card oh pr flex-row">
             <view class="card-left flex-col jc-sa align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-white'">
                 <view class="price">
-                    <text v-if="propData.type == 0" class="symbol text-size">{{ currency_symbol }}</text>
+                    <text v-if="propData.type == '0'" class="symbol text-size">{{ currency_symbol }}</text>
                     <text class="num text-size-xxl">{{ propData.discount_value }}</text>
-                    <text v-if="propData.type_unit" class="unit text-size-md">{{ propData.type_unit }}</text>
+                    <text v-if="propData.type !== '0'" class="unit text-size-md">{{ propData.type_unit }}</text>
                 </view>
                 <text v-if="(propData.desc || null) != null" class="desc text-size-xs single-text">{{ propData.desc }}</text>
             </view>

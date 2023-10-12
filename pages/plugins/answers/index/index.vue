@@ -16,7 +16,7 @@
                 <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
             </view>
         </view>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" class="scroll-box page-bottom-fixed" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <block v-for="(item, index) in data_list" :key="index">
                     <navigator :url="'/pages/plugins/answers/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
@@ -46,19 +46,21 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
-        <view class="bottom-fixed flex-row jc-sa align-c text-size fw-b">
-            <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                <view class="divider-r-d wh-auto">
-                    <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
-                    我要提问
-                </view>
-            </navigator>
-            <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                <view class="wh-auto">
-                    <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
-                    我的提问
-                </view>
-            </navigator>
+        <view class="bottom-fixed text-size fw-b answers-btn-content">
+            <view class="flex-row jc-sa align-c bottom-line-exclude">
+                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+                    <view class="divider-r-d wh-auto">
+                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
+                        我要提问
+                    </view>
+                </navigator>
+                <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
+                    <view class="wh-auto">
+                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
+                        我的提问
+                    </view>
+                </navigator>
+            </view>
         </view>
     </view>
 </template>

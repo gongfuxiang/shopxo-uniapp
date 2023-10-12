@@ -35,7 +35,9 @@
                         <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" placeholder="备注最多230个字符" maxlength="60" :value="data.note || ''" />
                     </view>
                     <view class="bottom-fixed">
-                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                        <view class="bottom-line-exclude">
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                        </view>
                     </view>
                 </view>
             </form>

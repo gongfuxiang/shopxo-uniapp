@@ -1,7 +1,7 @@
 <template>
     <view>
         <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60">
-            <view class="data-list">
+            <view class="data-list" :class="(data_base || null) != null && (data_base.is_team || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
@@ -31,7 +31,9 @@
                     <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container">
-                        <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">组队签到</button>
+                        <view class="bottom-line-exclude">
+                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">组队签到</button>
+                        </view>
                     </view>
                 </view>
                 <!-- 结尾 -->
@@ -247,10 +249,7 @@
 </script>
 <style scoped>
     .scroll-box {
-        height: calc(calc(100vh - 144rpx - env(safe-area-inset-bottom) + 40rpx));
-        /* #ifdef H5 */
         height: calc(100vh - 144rpx);
-        /* #endif */
     }
     .user-team-container button {
         height: 88rpx;

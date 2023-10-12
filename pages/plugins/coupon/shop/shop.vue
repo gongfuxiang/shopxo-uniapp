@@ -30,12 +30,14 @@
 
         <!-- 回到店铺 -->
         <view v-if="(shop || null) != null" class="bottom-fixed">
-            <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
-                <view class="dis-inline-block va-m">
-                    <uni-icons type="shop" size="16" color="#fff"></uni-icons>
-                </view>
-                <text class="va-m margin-left-sm">回到店铺</text>
-            </button>
+            <view class="bottom-line-exclude">
+                <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
+                    <view class="dis-inline-block va-m">
+                        <uni-icons type="shop" size="16" color="#fff"></uni-icons>
+                    </view>
+                    <text class="va-m margin-left-sm">回到店铺</text>
+                </button>
+            </view>
         </view>
     </view>
 </template>

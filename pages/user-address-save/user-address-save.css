@@ -2,7 +2,7 @@
 * 表单
 */
 .form-container .form-gorup .form-gorup-title {
-    width: 160rpx;
+    width: 100rpx;
     font-weight: 500;
 }
 
@@ -149,6 +149,10 @@
 
 .default-title {
     width: 200rpx !important;
+}
+
+.label-edit-right {
+    padding-right: 130rpx;
 }
 
 /**

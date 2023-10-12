@@ -11,43 +11,46 @@
             </block>
         </view>
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
-                    <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                        <text class="cr-grey-9">{{ item.add_time }}</text>
-                        <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+        <scroll-view :scroll-y="true" class="scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="page-bottom-fixed">
+                <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+                    <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
+                        <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
+                            <text class="cr-grey-9">{{ item.add_time }}</text>
+                            <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
+                        </view>
+                        <view class="content margin-top-main">
+                            <navigator :url="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" hover-class="none">
+                                <block v-for="(fv, fi) in content_list" :key="fi">
+                                    <view class="single-text margin-top-xs">
+                                        <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
+                                        <text class="cr-black fw-b">{{ item[fv.field] }}</text>
+                                        <text v-if="(fv.unit || null) != null" class="cr-grey fw-b">{{ fv.unit }}</text>
+                                    </view>
+                                </block>
+                            </navigator>
+                        </view>
+                        <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
+                        <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
+                            <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
+                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
+                        </view>
                     </view>
-                    <view class="content margin-top-main">
-                        <navigator :url="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                    <text class="cr-black fw-b">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey fw-b">{{ fv.unit }}</text>
-                                </view>
-                            </block>
-                        </navigator>
-                    </view>
-                    <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
-                    <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
-                        <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                        <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
+                    <view class="bottom-fixed">
+                        <view class="bottom-line-exclude">
+                            <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
+                                <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">订单开票</button>
+                            </navigator>
+                        </view>
                     </view>
                 </view>
-                <view class="bottom-fixed">
-                    <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
-                        <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">订单开票</button>
-                    </navigator>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                 </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-            </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
     </view>
 </template>

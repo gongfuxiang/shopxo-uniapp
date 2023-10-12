@@ -28,8 +28,11 @@
     border-radius: 200rpx 0 0 200rpx;
 }
 
-.submit-buy .iconfont {
+.submit-buy .right-icon {
+    top: 64%;
+    /* #ifdef H5 */
     top: 50%;
+    /* #endif */
     transform: translateY(-50%);
 }
 
@@ -67,10 +70,6 @@
 .rebate .item .price {
     font-size: 44rpx;
 }
-
-/*
-* 返利概况
-*/
 
 /*
 * 导航
