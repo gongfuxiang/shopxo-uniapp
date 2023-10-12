@@ -2,7 +2,10 @@
  * 头部背景
  */
 .goods-top-bg {
+    height: calc(320rpx + var(--status-bar-height) + 5px);
+    /* #ifdef H5 */
     height: 286rpx;
+    /* #endif */
     background-color: #f5f5f5;
 }
 
@@ -26,7 +29,7 @@
     /* #endif */
     padding-bottom: 20rpx;
     height: 64rpx;
-    z-index: 101;
+    z-index: 5;
 }
 
 .category-content {

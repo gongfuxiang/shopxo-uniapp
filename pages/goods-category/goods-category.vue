@@ -1,8 +1,8 @@
 <template>
-    <view>
+    <view :class="popup_status ? 'fixed-top' : ''">
         <view class="pr" :class="is_single_page == 1 ? 'margin-top-xxxl single-page-top' : ''">
-            <view class="goods-top-bg pa top-0 left-0 right-0 wh-auto oh">
-                <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
+            <view v-if="category_list.length > 0" class="goods-top-bg pa top-0 left-0 right-0 wh-auto oh">
+                <image :src="theme_static_url + 'top-bg.png'" mode="scaleToFill" class="wh-auto"></image>
             </view>
             <!-- 搜索框 -->
             <block v-if="is_single_page == 0">
@@ -18,12 +18,12 @@
                     </block>
                 </view>
             </block>
-            <view v-if="category_list.length > 0">
+            <view v-if="category_list.length > 0" class="category-container">
                 <!-- 分类内容 -->
-                <view v-if="category_list.length > 0" :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + search_height + 'px);'">
+                <view :class="'category-content bs-bb pr ' + (category_show_level == 0 ? 'goods-model' : '')" :style="'height:calc(100vh - ' + search_height + 'px);'">
                     <block v-if="category_show_level == 1">
                         <!-- 一级模式 -->
-                        <scroll-view scroll-y class="ht-auto">
+                        <scroll-view scroll-y class="ht-auto" show-scrollbar="false">
                             <view class="model-one padding-sm oh flex-row flex-warp">
                                 <block v-for="(item, index) in category_list" :key="index">
                                     <view class="content-item cp" :data-value="item.id" @tap="category_event">
@@ -43,8 +43,8 @@
                         <!-- 商品列表模式 -->
                         <block v-if="category_show_level == 0">
                             <!-- 一级导航 -->
-                            <view class="top-nav wh-auto pa scroll-view-horizontal">
-                                <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
+                            <view class="top-nav wh-auto pa scroll-view-horizontal bottom-0">
+                                <scroll-view :scroll-x="true" show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll">
                                     <block v-for="(item, index) in category_list" :key="index">
                                         <view class="item tc cp dis-inline-block text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                             <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
@@ -73,7 +73,7 @@
                             </view>
                             <!-- 二级导航 -->
                             <view v-if="category_one_subset_count > 0" class="left-nav bg-white ht-auto">
-                                <scroll-view :scroll-y="true" class="ht-auto">
+                                <scroll-view :scroll-y="true" show-scrollbar="false" class="ht-auto">
                                     <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
                                         <view class="left-content-actual-list ht-auto">
                                             <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
@@ -92,11 +92,11 @@
                             </view>
                             <!-- 商品列表 -->
                             <view :class="'goods-right-content pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
-                                <scroll-view :scroll-y="true" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
+                                <scroll-view :scroll-y="true" show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                                     <view class="padding-top-main padding-left-sm" :class="(common_site_type != 1 ? 'right-content-actual' : '') + ' pr'">
                                         <!-- 三级导航 -->
                                         <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
-                                            <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
+                                            <scroll-view :scroll-x="true" show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
                                                 <view
                                                     :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                                     :data-index="nav_active_index"
@@ -185,7 +185,7 @@
                         <block v-else>
                             <!-- 一级导航 -->
                             <view class="left-nav bg-white ht-auto">
-                                <scroll-view :scroll-y="true" class="ht-auto">
+                                <scroll-view :scroll-y="true" class="ht-auto" show-scrollbar="false">
                                     <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
                                         <view class="left-content-actual-list ht-auto padding-0">
                                             <block v-for="(item, index) in category_list" :key="index">
@@ -198,7 +198,7 @@
                                 </scroll-view>
                             </view>
                             <view class="right-container pa">
-                                <scroll-view :scroll-y="true" class="ht-auto bg-white">
+                                <scroll-view :scroll-y="true" class="ht-auto bg-white" show-scrollbar="false">
                                     <!-- 一级内容基础容 -->
                                     <view v-if="(data_content || null) != null" class="oh">
                                         <view class="padding-top-main padding-horizontal-main">
@@ -294,7 +294,7 @@
                                         <text class="cr-red va-m text-size-xs">清空</text>
                                     </view>
                                 </view>
-                                <scroll-view :scroll-y="true" class="cart-list goods-list">
+                                <scroll-view :scroll-y="true" class="cart-list goods-list" show-scrollbar="false">
                                     <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
                                         <navigator :url="goods.goods_url" hover-class="none">
                                             <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>

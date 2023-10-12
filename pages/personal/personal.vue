@@ -5,7 +5,7 @@
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-main">
-                        <view class="bg-white border-radius-main">
+                        <view class="bg-white border-radius-main oh">
                             <view class="form-gorup oh flex-row jc-sb align-c">
                                 <view>头像</view>
                                 <view class="flex-row align-c">
