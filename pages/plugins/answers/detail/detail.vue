@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view v-if="Object.keys(detail_data).length !== 0">
+        <view v-if="Object.keys(detail_data).length !== 0" class="page-bottom-fixed">
             <!-- true为空对象 false为非空对象 Object.keys(detail_data).length == 0 -->
             <view class="answers-container bg-white spacing-mb">
                 <view class="padding-main br-b-dashed">
@@ -38,21 +38,23 @@
                     @CartSuccessEvent="cart_success_event"
                 ></component-goods-list>
                 <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status" class="bottom-line"></component-bottom-line>
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
-            <view class="bottom-fixed flex-row jc-sa align-c text-size fw-b">
-                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                    <view class="divider-r-d">
-                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
-                        我要提问
-                    </view>
-                </navigator>
-                <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc answers-btn flex-col jc-c align-c">
-                    <view>
-                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
-                        我的提问
-                    </view>
-                </navigator>
+            <view class="bottom-fixed">
+                <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
+                    <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view class="divider-r-d">
+                            <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
+                            我要提问
+                        </view>
+                    </navigator>
+                    <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view>
+                            <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
+                            我的提问
+                        </view>
+                    </navigator>
+                </view>
             </view>
         </view>
         <view v-else>

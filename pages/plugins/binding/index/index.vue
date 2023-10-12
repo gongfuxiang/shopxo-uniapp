@@ -3,7 +3,7 @@
         <view v-if="(data_base || null) != null">
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view :class="'padding-main ' + ((shop || null) != null ? 'page' : '')">
+                <view :class="'padding-main ' + ((shop || null) != null ? 'page-bottom-fixed' : '')">
                     <block v-if="(data_list || null) != null && data_list.length > 0">
                         <!-- 组合搭配组件 -->
                         <component-binding-list :propConfig="data_base" :propDataList="data_list" :propCurrencySymbol="currency_symbol"></component-binding-list>
@@ -20,11 +20,9 @@
                 <!-- 回到店铺 -->
                 <view v-if="(shop || null) != null" class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
-                            <view class="dis-inline-block va-m">
-                                <uni-icons type="shop" size="16" color="#fff"></uni-icons>
-                            </view>
-                            <text class="va-m margin-left-sm">回到店铺</text>
+                        <button class="bg-main br-main cr-white round dis-block text-size" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
+                            <uni-icons type="shop" size="20" color="#fff" class="pa back-icon"></uni-icons>
+                            <text class="va-m margin-left-xxxl">回到店铺</text>
                         </button>
                     </view>
                 </view>

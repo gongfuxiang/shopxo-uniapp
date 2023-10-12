@@ -4,7 +4,7 @@
             <!-- 主体内容 -->
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
-                    <view class="padding-main">
+                    <view class="padding-main page-bottom-fixed">
                         <view class="bg-white border-radius-main oh">
                             <view class="form-gorup oh flex-row jc-sb align-c">
                                 <view>头像</view>
@@ -54,7 +54,9 @@
                         </view>
 
                         <view class="bottom-fixed">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+                            <view class="bottom-line-exclude">
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+                            </view>
                         </view>
                     </view>
                 </form>
