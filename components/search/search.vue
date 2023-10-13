@@ -177,14 +177,14 @@
         font-size: 24rpx;
         padding: 0 32rpx 0 54rpx;
         box-sizing: border-box;
-        height: 58rpx;
-        line-height: 58rpx;
+        height: 56rpx;
+        line-height: 56rpx;
     }
 
     .search-content .search-btn {
         width: 106rpx;
-        height: 48rpx;
-        line-height: 48rpx;
+        height: 46rpx;
+        line-height: 46rpx;
         font-size: 28rpx;
         border-radius: 30rpx;
         padding: 0;

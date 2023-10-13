@@ -1,12 +1,8 @@
 <template>
     <view class="realstore">
         <view v-if="(data_base || null) != null" class="realstore-nav-bg">
-            <block v-if="screenWidth > 960">
-                <image :src="realstore_static_url + 'title-bg-pc.png'" mode="widthFix" class="wh-auto pa bg-img" />
-            </block>
-            <block v-else>
-                <image :src="realstore_static_url + 'title-bg.png'" mode="widthFix" class="wh-auto pa bg-img" />
-            </block>
+            <!-- 背景图片 -->
+            <image :src="realstore_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
             <!-- 顶部 -->
             <view class="spacing-mb pr z-i cr-white">
                 <!-- 位置 -->
@@ -81,14 +77,15 @@
     import componentRealstoreList from '../../../../components/realstore-list/realstore-list';
     import componentTitle from '../../../../components/title/title';
 
-    let realstore_static_url = app.globalData.get_static_url('realstore', true);
+    var realstore_static_url = app.globalData.get_static_url('realstore', true);
 
     export default {
         data() {
             return {
                 realstore_static_url: realstore_static_url,
-                // 屏幕宽度
-                screenWidth: window.innerWidth,
+                // #ifdef H5
+                screen_width: window.innerWidth,
+                // #endif
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -123,8 +120,11 @@
             this.setData({
                 params: params,
             });
+            
+            // #ifdef H5
             // 监听屏幕宽度和高度变化
-            window.addEventListener('resize', this.handleResize, true);
+            window.addEventListener('resize', this.handle_resize, true);
+            // #endif
         },
 
         onShow() {
@@ -142,7 +142,7 @@
 
         // 页面销毁时执行
         onUnload: function () {
-            window.removeEventListener('resize', this.handleResize);
+            window.removeEventListener('resize', this.handle_resize);
         },
 
         methods: {
@@ -259,10 +259,14 @@
                     location_tips_close_status: false,
                 });
             },
-            handleResize() {
+            
+            // 页面宽度变化监听
+            handle_resize() {
+                // #ifdef H5
                 this.setData({
-                    screenWidth: window.innerWidth,
+                    screen_width: window.innerWidth,
                 });
+                // #endif
             },
         },
     };

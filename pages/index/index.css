@@ -71,12 +71,6 @@
     width: 100%;
 }
 
-.search-content-fixed-content {
-    background-repeat: no-repeat;
-    background-size: 100% auto;
-    padding-bottom: 20rpx;
-}
-
 .search-content-input {
     width: calc(100% - 320rpx);
 }
@@ -85,7 +79,7 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: top;
-    padding-bottom: 20rpx;
+    padding-bottom: 6px;
     /* #ifdef H5 || APP */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;

@@ -32,7 +32,7 @@
                                 {{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}
                             </view>
                         </view>
-                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c padding-top-xs">距离您{{ item.distance }}</view>
+                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c padding-top-xs">距您{{ item.distance }}</view>
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">

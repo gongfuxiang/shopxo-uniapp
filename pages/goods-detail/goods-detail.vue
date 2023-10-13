@@ -7,7 +7,7 @@
                 <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
                 <!-- 小导航 -->
                 <view class="top-nav-left-icon pf" :style="'top:' + top_nav_icon_top_value + 'px;'">
-                    <uni-icons type="arrowleft" size="20" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
+                    <uni-icons type="arrowleft" size="22" color="#333" class="icon round cp" @tap="top_nav_left_back_event"></uni-icons>
                     <uni-icons v-if="nav_more_list.length > 0" type="list" size="20" color="#333" class="icon round cp margin-left-lg" @tap="top_nav_left_more_event"></uni-icons>
                 </view>
                 <!-- #endif -->
@@ -630,7 +630,6 @@ export default {
             indicator_active_color: "#666",
             autoplay: true,
             circular: true,
-            load_status: 0,
             data_bottom_line_status: false,
             data_list_loding_status: 1,
             data_list_loding_msg: "",
@@ -695,7 +694,7 @@ export default {
             top_nav_more_top_value: 50,
             top_nav_right_icon_left_value: win_width <= 800 ? win_width - 40 : win_width - (win_width - 800) / 2 - 40,
             // #endif
-            top_nav_height: 23,
+            top_nav_height: 20,
             top_nav_title_index: 0,
             top_nav_title_scroll: true,
             top_nav_title_timer: null,
@@ -859,14 +858,6 @@ export default {
 
         // 获取数据
         init() {
-            if (this.load_status == 0) {
-                uni.showLoading({
-                    title: "加载中...",
-                });
-            }
-            this.setData({
-                data_list_loding_status: 1,
-            });
             uni.request({
                 url: app.globalData.get_request_url("detail", "goods"),
                 method: "POST",
@@ -874,55 +865,47 @@ export default {
                 dataType: "json",
                 success: (res) => {
                     uni.stopPullDownRefresh();
-                    if (this.load_status == 0) {
-                        uni.hideLoading();
-                    }
                     if (res.data.code == 0) {
                         var data = res.data.data;
                         var goods = data.goods;
-                        if (this.load_status == 1) {
-                            this.setData({ quick_nav_cart_count: data.cart_total.buy_number || 0 });
-                        } else {
-                            var price_text_arr = ["售价", "价格", "销售价"];
-                            var upd_data = {
-                                data_bottom_line_status: true,
-                                data_list_loding_status: 3,
-                                load_status: 1,
-                                goods: goods,
-                                indicator_dots: goods.photo.length > 1,
-                                autoplay: goods.photo.length > 1,
-                                goods_photo: goods.photo,
-                                nav_more_list: data.nav_more_list || [],
-                                goods_content_app: goods.content_app || [],
-                                nav_favor_button_info: {
-                                    text: (goods.is_favor == 1 ? "已" : "") + "收藏",
-                                    status: goods.is_favor,
-                                },
-                                buy_button: data.buy_button || null,
-                                top_nav_title_data: data.middle_tabs_nav || [],
-                                goods_spec_base_price: goods.price,
-                                goods_spec_base_original_price: goods.original_price || 0,
-                                show_field_price_text: price_text_arr.indexOf(goods.show_field_price_text) != -1 ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
-                                plugins_seckill_data: data.plugins_seckill_data || null,
-                                plugins_coupon_data: data.plugins_coupon_data || null,
-                                quick_nav_cart_count: data.cart_total.buy_number || 0,
-                                plugins_salerecords_data: data.plugins_salerecords_data || null,
-                                plugins_shop_data: data.plugins_shop_data || null,
-                                plugins_wholesale_data: (data.plugins_wholesale_data || null) == null ? null : data.plugins_wholesale_data,
-                                plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
-                                plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                plugins_chat_data: data.plugins_chat_data || null,
-                                plugins_realstore_data: data.plugins_realstore_data || null,
-                                plugins_binding_data: data.plugins_binding_data || null,
-                                plugins_goodsservice_data: data.plugins_goodsservice_data || null,
-                                plugins_batchbuy_data: data.plugins_batchbuy_data || null,
-                            };
-                            // 导航首页按钮
-                            if ((data.nav_home_button_info || null) != null) {
-                                upd_data["nav_home_button_info"] = data.nav_home_button_info;
-                            }
-                            this.setData(upd_data);
+                        var price_text_arr = ["售价", "价格", "销售价"];
+                        var upd_data = {
+                            data_bottom_line_status: true,
+                            data_list_loding_status: 3,
+                            goods: goods,
+                            indicator_dots: goods.photo.length > 1,
+                            autoplay: goods.photo.length > 1,
+                            goods_photo: goods.photo,
+                            nav_more_list: data.nav_more_list || [],
+                            goods_content_app: goods.content_app || [],
+                            nav_favor_button_info: {
+                                text: (goods.is_favor == 1 ? "已" : "") + "收藏",
+                                status: goods.is_favor,
+                            },
+                            buy_button: data.buy_button || null,
+                            top_nav_title_data: data.middle_tabs_nav || [],
+                            goods_spec_base_price: goods.price,
+                            goods_spec_base_original_price: goods.original_price || 0,
+                            show_field_price_text: price_text_arr.indexOf(goods.show_field_price_text) != -1 ? null : goods.show_field_price_text.replace(/<[^>]+>/g, "") || null,
+                            plugins_seckill_data: data.plugins_seckill_data || null,
+                            plugins_coupon_data: data.plugins_coupon_data || null,
+                            quick_nav_cart_count: data.cart_total.buy_number || 0,
+                            plugins_salerecords_data: data.plugins_salerecords_data || null,
+                            plugins_shop_data: data.plugins_shop_data || null,
+                            plugins_wholesale_data: (data.plugins_wholesale_data || null) == null ? null : data.plugins_wholesale_data,
+                            plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
+                            plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                            plugins_chat_data: data.plugins_chat_data || null,
+                            plugins_realstore_data: data.plugins_realstore_data || null,
+                            plugins_binding_data: data.plugins_binding_data || null,
+                            plugins_goodsservice_data: data.plugins_goodsservice_data || null,
+                            plugins_batchbuy_data: data.plugins_batchbuy_data || null,
+                        };
+                        // 导航首页按钮
+                        if ((data.nav_home_button_info || null) != null) {
+                            upd_data["nav_home_button_info"] = data.nav_home_button_info;
                         }
+                        this.setData(upd_data);
 
                         // 如果已默认开启购买弹窗，库存为0则不开启
                         if (this.popup_buy_status && parseInt(goods.inventory) > 0) {
@@ -963,9 +946,6 @@ export default {
                 },
                 fail: () => {
                     uni.stopPullDownRefresh();
-                    if (this.load_status == 0) {
-                        uni.hideLoading();
-                    }
                     this.setData({
                         data_bottom_line_status: false,
                         data_list_loding_status: 2,

@@ -17,18 +17,6 @@
     margin-top: 80rpx;
 }
 
-.nav-search /deep/ .search-icon {
-    left: 30rpx;
-    margin-top: 2rpx;
-}
-
-.nav-search /deep/ input {
-    padding: 0 32rpx 0 82rpx;
-    font-size: 28rpx;
-    height: 80rpx;
-    line-height: 80rpx;
-}
-
 /**
 * 位置选择提示
 */

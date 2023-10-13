@@ -30,7 +30,7 @@
 }
 .top-nav {
     position: absolute;
-    bottom: 4rpx;
+    bottom: 0;
     width: calc(100% - 40rpx);
     /* #ifdef H5 || APP */
     bottom: 6px;
@@ -53,8 +53,7 @@
 }
 .top-nav-content .nav-active {
     font-weight: 500;
-    padding-bottom: 5rpx;
-    padding-bottom: 5rpx;
+    padding-bottom: 2rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
     /* #ifdef H5 || APP */

@@ -70,9 +70,9 @@
     }
 
     .icon-nav-list .item {
-        width: calc(20% - 40rpx);
+        width: 20%;
         float: left;
-        padding: 20rpx;
+        padding: 16rpx 0;
         /* #ifdef H5 */
         cursor: pointer;
         /* #endif */
