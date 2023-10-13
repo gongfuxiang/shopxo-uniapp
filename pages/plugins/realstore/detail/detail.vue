@@ -178,13 +178,13 @@
                                                 <view class="tc flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0">
                                                         <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                            <iconfont name="icon-fenlei-jianhao" size="28rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-dec" size="28rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                         <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
                                                             {{ item.buy_number }}
                                                         </view>
                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                            <iconfont name="icon-fenlei-jiahao" size="28rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                     </block>
                                                     <block v-else>
@@ -241,11 +241,11 @@
                                                 <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ currency_symbol }}{{ goods.price }}</view>
                                                 <view class="tc fr flex-row align-c">
                                                     <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">
-                                                        <iconfont name="icon-fenlei-jianhao" size="28rpx" :color="theme_color"></iconfont>
+                                                        <iconfont name="icon-cart-dec" size="28rpx" :color="theme_color"></iconfont>
                                                     </view>
                                                     <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
                                                     <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_buy_number_event">
-                                                        <iconfont name="icon-fenlei-jiahao" size="28rpx" :color="theme_color"></iconfont>
+                                                        <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color"></iconfont>
                                                     </view>
                                                 </view>
                                             </view>

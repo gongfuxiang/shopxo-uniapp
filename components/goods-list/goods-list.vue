@@ -27,7 +27,7 @@
                                         </view>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                             <view v-if="propOpenCart" class="bg-white right-cart-icon 123" :data-index="index" @tap.stop="goods_cart_event">
-                                                <iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+                                                <iconfont name="icon-cart-dec" size="40rpx" :color="themeColor"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                 </view>
@@ -92,7 +92,7 @@
                                         <block v-else>
                                             <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                 <view v-if="propOpenCart" class="bg-white pr" :data-index="index" @tap.stop="goods_cart_event">
-                                                    <iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+                                                    <iconfont name="icon-cart-dec" size="40rpx" :color="themeColor"></iconfont>
                                                     <view class="cart-badge-icon pa">
                                                         <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                     </view>
@@ -148,7 +148,7 @@
 
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                         <view v-if="propOpenCart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                            <iconfont name="icon-index-smbg-tj" size="40rpx" :color="themeColor"></iconfont>
+                                                            <iconfont name="icon-cart-dec" size="40rpx" :color="themeColor"></iconfont>
                                                             <view class="cart-badge-icon pa">
                                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                             </view>
