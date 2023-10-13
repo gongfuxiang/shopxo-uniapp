@@ -25,7 +25,9 @@
                     <view>
                         <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
                         <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                            <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+                            <view v-for="(item,index) in periods_list" :key="index">
+                                <component-countdown v-show="nav_active_index === index" :propHour="item.time.hours" :propMinute="item.time.minutes" :propSecond="item.time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+                            </view>
                         </view>
                     </view>
                     <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
