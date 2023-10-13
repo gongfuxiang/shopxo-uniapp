@@ -84,7 +84,7 @@
 .search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    background-position: 0 13%;
+    background-position: top;
     padding-bottom: 20rpx;
     /* #ifdef H5 || APP */
     padding-top: 15rpx !important;
