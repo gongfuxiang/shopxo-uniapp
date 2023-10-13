@@ -1,5 +1,7 @@
 <template>
-    <view>
+    <view class="pr">
+        <!-- 头部背景 -->
+        <image v-if="(info || null) != null" :src="info.banner" mode="widthFix" class="header-bg wh-auto pa top-0 left-0 right-0" />
         <!-- 头部 -->
         <view class="header pr z-i">
             <component-nav-back :prop-fixed="false" prop-color="#333">
@@ -32,8 +34,6 @@
         </view>
         <view v-if="(info || null) != null" class="pr">
             <view class="pr">
-                <!-- 头部背景 -->
-                <image :src="info.banner" mode="widthFix" class="header-bg wh-auto pa left-0 right-0" />
                 <!-- 头部基础内容 -->
                 <view class="header-content padding-horizontal-main">
                     <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">

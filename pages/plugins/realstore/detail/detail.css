@@ -1,3 +1,6 @@
+page {
+    background: #fff;
+}
 /**
  * 顶部
  */
@@ -32,9 +35,6 @@
     /* #endif */
     box-shadow: 0 0 8px rgb(0 0 0 / 6%);
     min-height: 242rpx;
-}
-.header-bg {
-    top: -162rpx;
 }
 
 .header-content .address-content {
