@@ -339,7 +339,7 @@
                 is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
                 top_content_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
-                top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 360%)',
+                top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 460%)',
                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
                 top_content_style: 'padding-top:' + (bar_height + 7) + 'px;',
                 // #ifdef H5 || MP-TOUTIAO || APP
@@ -494,10 +494,10 @@
                             if (data.banner_list && data.banner_list.length > 0) {
                                 if ((data.banner_list[0]['bg_color'] || null) != null) {
                                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 360%);';
+                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 460%);';
                                 } else {
                                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 360%);';
+                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
                                 }
                             }
 
@@ -613,10 +613,10 @@
             change_banner(color) {
                 if ((color || null) != null) {
                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 360%);';
+                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 460%);';
                 } else {
                     this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 360%);';
+                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
                 }
             },
         },
