@@ -16,11 +16,6 @@ page {
     padding-bottom: 10px;
 }
 
-.nav-back {
-    height: 64rpx;
-    line-height: 64rpx;
-}
-
 .nav-search {
     width: 100%;
 }
