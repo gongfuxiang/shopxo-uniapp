@@ -12,7 +12,7 @@
                     <view class="nav_seckill flex-row flex-nowrap cr-white tc">
                         <view v-for="(item, index) in periods_list" :key="index" class="item text-size-xss" :class="nav_active_index === index ? 'active' : ''" :id="'one-nav-item-' + index" :data-index="index" :data-text="item.time.time_first_text" :data-status="item.time.status" @tap="nav_event">
                             <view class="time text-size-lg">{{ item.name }}</view>
-                            <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-main' : ''">{{ item.time.msg }}</view>
+                            <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-red' : ''">{{ item.time.msg }}</view>
                         </view>
                     </view>
                 </scroll-view>
