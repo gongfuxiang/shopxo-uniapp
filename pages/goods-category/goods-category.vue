@@ -296,20 +296,20 @@
                                 </view>
                                 <scroll-view :scroll-y="true" class="cart-list goods-list" :show-scrollbar="false">
                                     <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                        <navigator :url="goods.goods_url" hover-class="none">
-                                            <image :src="goods.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                            <view class="goods-base fr">
+                                        <navigator :url="goods.goods_url" hover-class="none" class="flex-row jc-sb">
+                                            <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
+                                            <view class="goods-base flex-1 flex-width flex-col jc-sb">
                                                 <view class="goods-base-content">
                                                     <view class="goods-title text-size-sm single-text">{{ goods.title }}</view>
-                                                    <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-sm">
+                                                    <view v-if="goods.spec != null" class="text-size-xs cr-grey margin-top-xs">
                                                         <block v-for="(sv, si) in goods.spec" :key="si">
                                                             <text v-if="si > 0" class="padding-left-xs padding-right-xs">;</text>
                                                             <text>{{ sv.value }}</text>
                                                         </block>
                                                     </view>
                                                 </view>
-                                                <view class="margin-top-sm oh">
-                                                    <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ currency_symbol }}{{ goods.price }}</view>
+                                                <view class="margin-top-xs oh">
+                                                    <view class="sales-price text-size single-text dis-inline-block va-m pr top-sm">{{ currency_symbol }}{{ goods.price }}</view>
                                                     <view class="tc fr flex-row align-c">
                                                         <block v-if="goods.is_error == 0">
                                                             <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_buy_number_event">

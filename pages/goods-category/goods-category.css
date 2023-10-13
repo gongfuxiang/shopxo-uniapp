@@ -370,14 +370,14 @@
 }
 
 .cart-content .cart-list .goods-img {
-    width: 120rpx;
-    height: 120rpx !important;
+    width: 132rpx;
+    height: 132rpx !important;
 }
 
 .cart-content .cart-list .goods-base {
-    width: calc(100% - 160rpx);
+    padding-right: 0;
+    padding-left: 24rpx;
 }
-
 .cart-content .cart-list .goods-base-content {
     min-height: 60rpx;
 }
