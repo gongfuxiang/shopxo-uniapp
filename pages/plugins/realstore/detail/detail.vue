@@ -33,7 +33,7 @@
         <view v-if="(info || null) != null" class="pr">
             <view class="pr">
                 <!-- 头部背景 -->
-                <image :src="info.banner" mode="widthFix" class="wh-auto pa left-0 right-0" />
+                <image :src="info.banner" mode="widthFix" class="header-bg wh-auto pa left-0 right-0" />
                 <!-- 头部基础内容 -->
                 <view class="header-content padding-horizontal-main">
                     <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
@@ -117,7 +117,7 @@
             </view>
 
             <!-- 内容 -->
-            <view class="content oh bg-white pr flex-row jc-sb" :class="(tablecode || null) === null ? '' : 'content-tablecode'">
+            <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
                 <!-- 左侧 -->
                 <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
                     <view class="left-content-actual text-size-xs">
@@ -149,7 +149,7 @@
                                 >
                                 <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
                                     <view
-                                        :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
+                                        :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
                                         :id="'two-nav-item-' + ci"
                                         :data-index="nav_active_index"
                                         :data-itemindex="ci"
@@ -178,13 +178,13 @@
                                                 <view class="tc flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0">
                                                         <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                            <iconfont name="icon-cart-dec" size="28rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                         <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
                                                             {{ item.buy_number }}
                                                         </view>
                                                         <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color"></iconfont>
+                                                            <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
                                                         </view>
                                                     </block>
                                                     <block v-else>
@@ -306,11 +306,13 @@
     import componentCartParaCurve from '../../../../components/cart-para-curve/cart-para-curve';
 
     var common_static_url = app.globalData.get_static_url('common');
+    var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     export default {
         data() {
             return {
                 theme_color: app.globalData.get_theme_color(),
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                status_bar_height: status_bar_height,
+                content_style: '',
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -434,13 +436,22 @@
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            // 门店数据
                             var data = res.data.data;
+                            // 桌码
+                            var tablecode = data.tablecode || null;
+                            // 内容其他高度
+                            var content_other_height = '364rpx';
+                            // #ifdef H5
+                            content_other_height = '376rpx';
+                            // #endif
                             this.setData({
                                 data_base: data.base || null,
                                 info: data.info || null,
                                 goods_category: data.goods_category || [],
                                 favor_user: data.favor_user || [],
-                                tablecode: data.tablecode || null,
+                                tablecode: tablecode,
+                                content_style: 'height: calc(100vh - '+content_other_height+' - '+status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+');',
                             });
 
                             // 下单类型是否存在索引

@@ -188,14 +188,7 @@
                         uni.stopPullDownRefresh();
                         return false;
                     } else {
-                        if ((this.params.id || null) != null) {
-                            this.get_data();
-                        } else {
-                            uni.stopPullDownRefresh();
-                            this.setData({
-                                data_list_loding_status: 3,
-                            });
-                        }
+                        this.get_data();
                     }
                 } else {
                     uni.stopPullDownRefresh();
@@ -206,12 +199,12 @@
                 }
             },
 
-            // 自提点信息
+            // 获取数据
             get_data() {
                 uni.request({
                     url: app.globalData.get_request_url('savedata', 'recommend', 'distribution'),
                     method: 'POST',
-                    data: { id: this.params.id },
+                    data: { id: this.params.id || 0 },
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();

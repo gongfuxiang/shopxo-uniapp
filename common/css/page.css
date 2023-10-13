@@ -936,7 +936,7 @@ button[disabled].bg-grey {
     border-radius: 4rpx;
     border: 2rpx solid #FFCAC0;
     color: #FFCAC0;
-    padding: 0 8rpx;
+    padding: 0 16rpx;
 }
 
 .word-list .word-icon:not(:last-child) {

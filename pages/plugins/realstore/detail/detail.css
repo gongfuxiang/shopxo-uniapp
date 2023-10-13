@@ -31,7 +31,10 @@
     margin-top: 20rpx;
     /* #endif */
     box-shadow: 0 0 8px rgb(0 0 0 / 6%);
-    min-height: 172rpx;
+    min-height: 242rpx;
+}
+.header-bg {
+    top: -162rpx;
 }
 
 .header-content .address-content {
@@ -101,23 +104,6 @@
     padding: 2rpx 20rpx;
     /* #ifdef MP-ALIPAY || MP-TOUTIAO */
     margin-top: 15rpx;
-    /* #endif */
-}
-
-/**
- * 中间内容
- */
-.content {
-    height: calc(100vh - 382rpx - var(--status-bar-height) - 5px);
-    /* #ifdef H5 */
-    height: calc(100vh - 358rpx);
-    /* #endif */
-}
-
-.content.content-tablecode {
-    height: calc(100vh - 426rpx - var(--status-bar-height) - 5px);
-    /* #ifdef H5 */
-    height: calc(100vh - 402rpx);
     /* #endif */
 }
 
