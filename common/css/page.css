@@ -1597,6 +1597,8 @@ button[disabled].bg-grey {
  */
 .top-search-width {
     width: calc(100% - 250rpx) !important;
+    position: relative;
+    top: -4rpx;
 }
 
 /**

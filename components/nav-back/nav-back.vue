@@ -5,7 +5,7 @@
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
             <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? 'padding-bottom-main' : 'padding-vertical-main')">
                 <view v-if="propName" class="text-size tc pa left-0 right-0 padding-top-xs" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ propName }}</view>
-                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event" class="pr top-xs z-i" :color="propColor"></iconfont>
+                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event" class="pr top-sm z-i" :color="propColor"></iconfont>
                 <slot name="right"></slot>
             </view>
             <!-- #endif -->
