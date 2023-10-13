@@ -1,13 +1,6 @@
 <template>
     <view>
-        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
-            <!-- 返回 -->
-            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
-                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-            </view>
-            <!-- #endif -->
-        </view>
+        <component-nav-back></component-nav-back>
         <view v-if="Object.keys(detail_data.length !== 0)" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <view class="pa top-0 left-0 right-0 nav-top pa-w">
@@ -56,17 +49,13 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
 
     export default {
         data() {
             return {
                 answers_static_url: app.globalData.get_static_url('answers', true),
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                // 顶部返回导航背景透明度
-                opacity: 0,
                 detail_data: {},
                 data_list_loding_status: 1,
                 params: '',
@@ -74,6 +63,7 @@
         },
 
         components: {
+            componentNavBack,
             componentNoData,
         },
         props: {},
@@ -172,11 +162,8 @@
             },
 
             // 页面滚动监听
-            onPageScroll(e) {
-                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
-                this.setData({
-                    opacity: top,
-                });
+            onPageScroll(res) {
+                uni.$emit('onPageScroll', res);
             },
         },
     };

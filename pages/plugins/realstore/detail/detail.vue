@@ -1,43 +1,39 @@
 <template>
     <view>
+        <!-- 头部 -->
+        <view class="header pr z-i">
+            <component-nav-back :prop-fixed="false" prop-color="#333">
+                <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+                    <view :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
+                        <!-- #ifndef H5 -->
+                        <component-search
+                            @onsearch="search_button_event"
+                            @onicon="search_icon_event"
+                            :propIsIconOnEvent="is_realstore_top_search_scan == 1"
+                            :propIsOnEvent="true"
+                            :propIsRequired="false"
+                            :propIcon="is_realstore_top_search_scan == 1 ? 'icon-mendian-sousuosm' : 'icon-qiandao-dqxz'"
+                            propPlaceholderClass="cr-grey-c"
+                            propBgColor="#fff"
+                            propIconColor="#333"
+                            propPlaceholder="商品搜索"
+                        ></component-search>
+                        <!-- #endif -->
+                        <!-- #ifdef H5 -->
+                        <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" propPlaceholder="商品搜索" propBgColor="#fff"></component-search>
+                        <!-- #endif -->
+                    </view>
+                </template>
+                <template slot="content">
+                    <!-- 桌码 -->
+                    <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red"> {{ tablecode.name }}({{ tablecode.code }}) </view>
+                </template>
+            </component-nav-back>
+        </view>
         <view v-if="(info || null) != null" class="pr">
             <view class="pr">
                 <!-- 头部背景 -->
                 <image :src="info.banner" mode="widthFix" class="wh-auto pa left-0 right-0" />
-                <!-- 头部 -->
-                <view class="header pr z-i">
-                    <!-- 顶部 -->
-                    <view v-if="is_single_page == 0" class="header-top padding-horizontal-main flex-row align-c" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
-                        <!-- 返回 -->
-                        <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                        <view v-if="is_realstore_top_nav_back == 1" class="nav-back dis-inline-block round tc va-m">
-                            <iconfont name="icon-tongyong-fanhui" size="40rpx" color="#333" @tap="top_nav_left_back_event"></iconfont>
-                        </view>
-                        <!-- #endif -->
-                        <!-- 搜索 -->
-                        <view :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
-                            <!-- #ifndef H5 -->
-                            <component-search
-                                @onsearch="search_button_event"
-                                @onicon="search_icon_event"
-                                :propIsIconOnEvent="is_realstore_top_search_scan == 1"
-                                :propIsOnEvent="true"
-                                :propIsRequired="false"
-                                :propIcon="is_realstore_top_search_scan == 1 ? 'icon-mendian-sousuosm' : 'icon-qiandao-dqxz'"
-                                propPlaceholderClass="cr-grey-c"
-                                propBgColor="#fff"
-                                propIconColor="#333"
-                                propPlaceholder="商品搜索"
-                            ></component-search>
-                            <!-- #endif -->
-                            <!-- #ifdef H5 -->
-                            <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" propPlaceholder="商品搜索" propBgColor="#fff"></component-search>
-                            <!-- #endif -->
-                        </view>
-                    </view>
-                    <!-- 桌码 -->
-                    <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red"> {{ tablecode.name }}({{ tablecode.code }}) </view>
-                </view>
                 <!-- 头部基础内容 -->
                 <view class="header-content padding-horizontal-main">
                     <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
@@ -121,7 +117,7 @@
             </view>
 
             <!-- 内容 -->
-            <view class="content oh bg-white pr flex-row jc-sb">
+            <view class="content oh bg-white pr flex-row jc-sb" :class="(tablecode || null) === null ? '' : 'content-tablecode'">
                 <!-- 左侧 -->
                 <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
                     <view class="left-content-actual text-size-xs">
@@ -300,6 +296,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import base64 from '../../../../common/js/lib/base64.js';
     import componentGoodsBuy from '../../../../components/goods-buy/goods-buy';
     import componentNoData from '../../../../components/no-data/no-data';
@@ -368,6 +365,7 @@
         },
 
         components: {
+            componentNavBack,
             componentGoodsBuy,
             componentNoData,
             componentSearch,
@@ -1281,18 +1279,6 @@
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
-            },
-
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
             },
 
             // 地址信息初始化

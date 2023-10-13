@@ -108,16 +108,16 @@
  * 中间内容
  */
 .content {
-    height: calc(100vh - 334rpx);
-    /* #ifdef H5 || APP */
-    /* height: calc(100vh - 505rpx); */
-    height: calc(100vh - 384rpx);
+    height: calc(100vh - 382rpx - var(--status-bar-height) - 5px);
+    /* #ifdef H5 */
+    height: calc(100vh - 358rpx);
     /* #endif */
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
-    height: calc(100vh - 294rpx);
-    /* #endif */
-    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
-    height: calc(100vh - 454rpx);
+}
+
+.content.content-tablecode {
+    height: calc(100vh - 426rpx - var(--status-bar-height) - 5px);
+    /* #ifdef H5 */
+    height: calc(100vh - 402rpx);
     /* #endif */
 }
 

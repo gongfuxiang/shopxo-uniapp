@@ -4,9 +4,9 @@
 }
 
 .scroll-box {
-    height: calc(100vh - 166rpx - var(--status-bar-height) + 20rpx);
+    height: calc(100vh - 194rpx - var(--status-bar-height) - 5px);
     /* #ifdef H5 */
-    height: calc(100vh - 166rpx);
+    height: calc(100vh - 170rpx);
     /* #endif */
 }
 

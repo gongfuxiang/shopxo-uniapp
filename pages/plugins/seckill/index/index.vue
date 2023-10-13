@@ -1,16 +1,12 @@
 <template>
     <view>
-        <view v-if="(data_base || null) != null">
-            <view :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;' + seckill_bg">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white flex-row">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                    <view class="flex-1 tc">
-                        <image :src="seckill_title_url" mode="widthFix" class="title pr top-sm"></image>
-                    </view>
+        <component-nav-back :prop-fixed="false" :prop-style="seckill_bg">
+            <template slot="right" class="flex-1 flex-width seckill-right-title">
+                <view class="flex-1 seckill-right-title tc">
+                    <image :src="seckill_title_url" mode="widthFix" class="title pr top-md"></image>
                 </view>
-                <!-- #endif -->
+            </template>
+            <template v-if="periods_list.length > 0" slot="content">
                 <!-- 秒杀时段 -->
                 <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll wh-auto">
                     <view class="nav_seckill flex-row flex-nowrap cr-white tc">
@@ -20,46 +16,46 @@
                         </view>
                     </view>
                 </scroll-view>
-            </view>
-            <scroll-view :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event">
-                <view class="padding-horizontal-main padding-top-main">
-                    <!-- 基础信息、倒计时 -->
-                    <view class="oh spacing-mb flex-row jc-sb align-c">
-                        <view>
-                            <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
-                            <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                                <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
-                            </view>
-                        </view>
-                        <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
-                            活动规则
-                            <iconfont name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
+            </template>
+        </component-nav-back>
+        <scroll-view v-if="periods_list.length > 0" :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event">
+            <view class="padding-horizontal-main padding-top-main">
+                <!-- 基础信息、倒计时 -->
+                <view class="oh spacing-mb flex-row jc-sb align-c">
+                    <view>
+                        <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
+                        <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
+                            <component-countdown :propHour="time.hours" :propMinute="time.minutes" :propSecond="time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
                         </view>
                     </view>
-
-                    <!-- 商品 -->
-                    <view v-if="goods.length > 0">
-                        <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="grid_btn_config" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
-                    </view>
-                    <view v-else>
-                        <!-- 提示信息 -->
-                        <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
+                        活动规则
+                        <iconfont name="icon-miaosha-hdgz" size="26rpx" class="margin-left-xs pr top-xs" color="#999"></iconfont>
                     </view>
                 </view>
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-                <!-- 弹窗 -->
-                <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
-                    <view class="rule">
-                        <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
-                        <scroll-view :scroll-y="true" class="item">
-                            <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
-                        </scroll-view>
-                        <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
-                    </view>
-                </component-popup>
-            </scroll-view>
-        </view>
+
+                <!-- 商品 -->
+                <view v-if="goods.length > 0">
+                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="grid_btn_config" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
+                </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                </view>
+            </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <!-- 弹窗 -->
+            <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
+                <view class="rule">
+                    <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
+                    <scroll-view :scroll-y="true" class="item">
+                        <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
+                    </scroll-view>
+                    <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
+                </view>
+            </component-popup>
+        </scroll-view>
         <view v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -68,6 +64,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentCountdown from '../../../../components/countdown/countdown';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
@@ -80,7 +77,7 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;',
+                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;background-size:100% 100%;',
                 seckill_title_url: seckill_static_url + 'seckill-title.png',
                 scroll_top: 0,
                 scroll_top_old: 0,
@@ -116,6 +113,7 @@
             };
         },
         components: {
+            componentNavBack,
             componentCountdown,
             componentNoData,
             componentBottomLine,
@@ -261,17 +259,6 @@
                 this.setData({
                     popup_status: false,
                 });
-            },
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
             },
 
             // 重置滑动位置
