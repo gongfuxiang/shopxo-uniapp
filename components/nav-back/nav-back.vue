@@ -1,9 +1,9 @@
 <template>
     <view>
-        <view class="112233 pa-w" :class="(propFixed ? 'pf z-i left-0 top-0 right-0' : '') + ' ' + propClass" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0) + 'px;background-color:rgba(255,255,255,' + opacity + ');' + propStyle">
+        <view class="pa-w" :class="(propFixed ? 'pf z-i left-0 top-0 right-0' : '') + ' ' + propClass" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0) + 'px;background-color:rgba(255,255,255,' + opacity + ');' + propStyle">
             <!-- 返回 -->
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? '' : 'padding-vertical-main')">
+            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? 'padding-bottom-main' : 'padding-vertical-main')">
                 <view v-if="propName" class="text-size tc pa left-0 right-0 padding-top-xs" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ propName }}</view>
                 <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event" class="pr top-xs z-i" :color="propColor"></iconfont>
                 <slot name="right"></slot>

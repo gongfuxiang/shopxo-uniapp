@@ -89,7 +89,7 @@
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;',
+                seckill_bg: 'background: url(' + seckill_static_url + 'app/header-bg.png) top/100% no-repeat;background-size:100% 100%;',
                 seckill_title_url: seckill_static_url + 'seckill-title.png',
                 scroll_top: 0,
                 scroll_top_old: 0,

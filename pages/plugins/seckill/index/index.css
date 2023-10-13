@@ -56,7 +56,7 @@
  * 内容
  */
 .scroll-y {
-    height: calc(100vh - 234rpx - var(--status-bar-height) - 5px);
+    height: calc(100vh - 258rpx - var(--status-bar-height) - 5px);
     /* #ifdef H5 */
     height: calc(100vh - 234rpx);
     /* #endif */

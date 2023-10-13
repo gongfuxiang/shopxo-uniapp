@@ -1,13 +1,13 @@
 <template>
     <view>
-        <component-nav-back prop-class="bg-white" prop-color="#333">
-            <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
-                <view class="margin-left-main" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+        <component-nav-back :prop-fixed="false" prop-class="bg-white" prop-color="#333">
+            <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="status_bar_height > 0 ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
             <template slot="content">
-                <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c" :class="status_bar_height > 0 ? 'padding-top-main' : ''">
+                <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c">
                     <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
                 </view>
             </template>

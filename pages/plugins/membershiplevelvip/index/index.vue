@@ -4,7 +4,7 @@
         <view v-if="(data_base || null) != null" class="bg-white">
             <view class="pr wh-auto oh">
                 <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="vip-bg"></image>
-                <view class="banner oh pa top-0 pa-w wh-auto">
+                <view class="banner oh pa top-0 pa-w wh-auto head-top">
                     <view class="tc">
                         <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
                         <!-- 标题 -->

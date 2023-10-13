@@ -29,6 +29,13 @@
 /**
 * 等级介绍
 */
+.head-top {
+    padding-top: calc(94rpx + var(--status-bar-height) + 5px);
+    /* #ifdef H5 */
+    padding-top: 94rpx;
+    /* #endif */
+}
+
 .data-list .item {
     width: calc(100% / 3);
     margin-bottom: 20rpx;
