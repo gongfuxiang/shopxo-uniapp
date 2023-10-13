@@ -7,7 +7,7 @@
                     <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                         <view class="flex-row align-c flex-1 wh-auto padding-left-main">
                             <iconfont name="icon-index-search" size="28rpx" color="#ccc"></iconfont>
-                            <input class="text-size-md flex-1 wh-auto padding-left-sm" type="done" placeholder="请输入您搜索的商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
+                            <input class="text-size-md flex-1 wh-auto padding-left-sm" type="done" placeholder="请输入商品关键字" :value="search_keywords_value || ''" placeholder-class="cr-grey-c" @input="search_keywords_event" />
                         </view>
                         <button class="bg-main br-main cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" :data-value="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&'">
                             {{ is_shop_search_all_search_button == 1 ? '搜本店' : '搜索' }}

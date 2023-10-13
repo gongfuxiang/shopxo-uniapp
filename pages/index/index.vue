@@ -341,7 +341,7 @@
                 top_content_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
                 top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 460%)',
                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
-                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 6) + 'px;',
                 // #ifdef H5 || MP-TOUTIAO || APP
                 top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
                 // #endif

@@ -695,7 +695,7 @@ export default {
             top_nav_more_top_value: 50,
             top_nav_right_icon_left_value: win_width <= 800 ? win_width - 40 : win_width - (win_width - 800) / 2 - 40,
             // #endif
-            top_nav_height: 50,
+            top_nav_height: 23,
             top_nav_title_index: 0,
             top_nav_title_scroll: true,
             top_nav_title_timer: null,

@@ -30,7 +30,7 @@
 }
 .top-nav {
     position: absolute;
-    bottom: 24rpx;
+    bottom: 6rpx;
     width: calc(100% - 40rpx);
     /* #ifdef H5 || APP */
     bottom: 6px;
