@@ -30,7 +30,7 @@
 }
 .top-nav {
     position: absolute;
-    bottom: 6rpx;
+    bottom: 4rpx;
     width: calc(100% - 40rpx);
     /* #ifdef H5 || APP */
     bottom: 6px;
@@ -43,7 +43,7 @@
     margin-left: calc(50% - 170rpx);
 }
 .top-nav-content text {
-    font-size: 32rpx;
+    font-size: 30rpx;
     /* #ifdef H5 || APP */
     font-size: 14px;
     /* #endif */
@@ -52,12 +52,11 @@
     margin-right: 30rpx;
 }
 .top-nav-content .nav-active {
-    font-weight: 700;
+    font-weight: 500;
     padding-bottom: 5rpx;
     padding-bottom: 5rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
-    font-size: 34rpx;
     /* #ifdef H5 || APP */
     font-size: 16px;
     /* #endif */
