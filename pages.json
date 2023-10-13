@@ -281,7 +281,7 @@
         {
             "path": "pages/user-answers-detail/user-answers-detail",
             "style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,
@@ -301,7 +301,7 @@
             "pages": [{
                 "path": "index/index",
                 "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                     "navigationStyle": "custom",
                     // #endif
                     "navigationBarTitleText": "限时秒杀"
@@ -313,7 +313,7 @@
             "pages": [{
                     "path": "index/index",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -341,7 +341,7 @@
             "pages": [{
                     "path": "index/index",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -358,7 +358,7 @@
                 {
                     "path": "user/user",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -421,7 +421,7 @@
             "pages": [{
                     "path": "user/user",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -540,7 +540,7 @@
             "pages": [{
                     "path": "user/user",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -550,7 +550,7 @@
                 {
                     "path": "recharge/recharge",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": false,
@@ -699,7 +699,7 @@
                 {
                     "path": "index-detail/index-detail",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
@@ -734,7 +734,7 @@
             "pages": [{
                 "path": "index/index",
                 "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                     "navigationStyle": "custom",
                     // #endif
                     "enablePullDownRefresh": true,
@@ -984,7 +984,7 @@
             "pages": [{
                     "path": "index/index",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
                         "enablePullDownRefresh": true,
