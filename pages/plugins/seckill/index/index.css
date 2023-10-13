@@ -5,6 +5,10 @@
     width: 142rpx;
 }
 
+.seckill-right-title {
+    padding-right: 40rpx;
+}
+
 .nav_seckill .item {
     width: 176rpx;
     padding: 26rpx 0;

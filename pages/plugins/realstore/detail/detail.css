@@ -108,14 +108,14 @@
  * 中间内容
  */
 .content {
-    height: calc(100vh - 358rpx - var(--status-bar-height) - 10rpx);
+    height: calc(100vh - 382rpx - var(--status-bar-height) - 5px);
     /* #ifdef H5 */
     height: calc(100vh - 358rpx);
     /* #endif */
 }
 
 .content.content-tablecode {
-    height: calc(100vh - 402rpx - var(--status-bar-height) - 10rpx);
+    height: calc(100vh - 426rpx - var(--status-bar-height) - 5px);
     /* #ifdef H5 */
     height: calc(100vh - 402rpx);
     /* #endif */
