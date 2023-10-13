@@ -1,50 +1,47 @@
 <template>
     <view>
-        <view class="bg-white padding-horizontal-main padding-top-main" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
-            <view class="flex-row align-c spacing-mb">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back margin-right-main round va-m">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                </view>
-                <!-- #endif -->
-                <view :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+        <component-nav-back prop-class="bg-white" prop-color="#333">
+            <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+                <view class="margin-left-main" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
-            </view>
-            <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c">
-                <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
-            </view>
-        </view>
-        <scroll-view :scroll-y="true" class="scroll-box page-bottom-fixed" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <block v-for="(item, index) in data_list" :key="index">
-                    <navigator :url="'/pages/plugins/answers/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
-                        <view v-if="nav_index === 1">
-                            <view class="answers-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
-                        </view>
-                        <view class="flex-1 flex-width">
-                            <view class="title text-size fw-b">{{ item.title }}</view>
-                            <view class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
-                            <view class="status flex-row align-c spacing-mt text-size-xs">
-                                <view v-if="nav_index !== 1" class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
-                                <view class="num cr-grey-9 flex-row self-c">
-                                    {{ item.add_time_date }}
-                                    <view class="fw-b padding-horizontal-xs">·</view>
-                                    {{ item.access_count || '0' }}浏览
+            </template>
+            <template slot="content">
+                <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c" :class="status_bar_height > 0 ? 'padding-top-main' : ''">
+                    <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
+                </view>
+            </template>
+        </component-nav-back>
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="page-bottom-fixed">
+                <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                    <block v-for="(item, index) in data_list" :key="index">
+                        <navigator :url="'/pages/plugins/answers/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
+                            <view v-if="nav_index === 1">
+                                <view class="answers-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
+                            </view>
+                            <view class="flex-1 flex-width">
+                                <view class="title text-size fw-b">{{ item.title }}</view>
+                                <view class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
+                                <view class="status flex-row align-c spacing-mt text-size-xs">
+                                    <view v-if="nav_index !== 1" class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
+                                    <view class="num cr-grey-9 flex-row self-c">
+                                        {{ item.add_time_date }}
+                                        <view class="fw-b padding-horizontal-xs">·</view>
+                                        {{ item.access_count || '0' }}浏览
+                                    </view>
                                 </view>
                             </view>
-                        </view>
-                    </navigator>
-                </block>
+                        </navigator>
+                    </block>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                </view>
             </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-            </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
         <view class="bottom-fixed answers-btn-content">
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
@@ -66,6 +63,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
@@ -74,8 +72,6 @@
         data() {
             return {
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -93,6 +89,7 @@
         },
 
         components: {
+            componentNavBack,
             componentNoData,
             componentBottomLine,
             componentSearch,
@@ -170,36 +167,28 @@
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
-                                } else {
-                                    var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-
-                                this.setData({
-                                    data_list: temp_data_list,
-                                    data_total: res.data.data.total,
-                                    data_page_total: res.data.data.page_total,
-                                    data_list_loding_status: 3,
-                                    data_page: this.data_page + 1,
-                                    data_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            if (this.data_page <= 1) {
+                                var temp_data_list = res.data.data.data;
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = res.data.data.data;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
                             }
+
+                            this.setData({
+                                data_list: temp_data_list,
+                                data_total: res.data.data.total,
+                                data_page_total: res.data.data.page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -211,6 +200,7 @@
                         }
                     },
                     fail: () => {
+                        console.log(';123');
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
@@ -248,17 +238,6 @@
                 });
             },
 
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
-            },
             nav_change_event(e) {
                 // 索引值
                 var index = e.currentTarget.dataset.index || 0;

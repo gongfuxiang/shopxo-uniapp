@@ -1,63 +1,58 @@
 <template>
-    <view class="bg-white">
-        <view v-if="(data_base || null) != null" class="oh wh-auto">
-            <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="vip-bg"></image>
-            <view class="banner oh pa top-0 pa-w wh-auto" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;'">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                </view>
-                <!-- #endif -->
-                <view class="tc">
-                    <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
-                    <!-- 标题 -->
-                    <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
-                    <!-- 购买按钮 -->
-                    <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
-                        <button class="banner-buy fw-b round margin-top-xxxl" hover-class="none" :style="join_vip_btn">
-                            {{ data_base.banner_middle_name || '加入会员' }}
-                        </button>
-                    </navigator>
-                </view>
-            </view>
-            <!-- 介绍列表 -->
-            <view v-if="(introduce_data || null) != null && introduce_data.length > 0" class="data-list oh flex-row jc-sa align-c">
-                <block v-for="(item, index) in introduce_data" :key="index">
-                    <view class="item tc bg-white">
-                        <image class="dis-block auto" :src="item.images_url" mode="scaleToFill"></image>
-                        <view class="single-text text-size margin-top-main">{{ item.name }}</view>
-                        <view class="multi-text cr-grey-c text-size-xs margin-top-xs">{{ item.desc }}</view>
+    <view>
+        <component-nav-back></component-nav-back>
+        <view v-if="(data_base || null) != null" class="bg-white">
+            <view class="pr wh-auto oh">
+                <image :src="membership_level_vip + 'bg.png'" mode="widthFix" class="vip-bg"></image>
+                <view class="banner oh pa top-0 pa-w wh-auto">
+                    <view class="tc">
+                        <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
+                        <!-- 标题 -->
+                        <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
+                        <!-- 购买按钮 -->
+                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
+                            <button class="banner-buy fw-b round margin-top-xxxl" hover-class="none" :style="join_vip_btn">
+                                {{ data_base.banner_middle_name || '加入会员' }}
+                            </button>
+                        </navigator>
                     </view>
-                </block>
-            </view>
-            <!-- 富文本 -->
-            <view v-if="(data_base.banner_bottom_content || null) != null" class="padding-main spacing-mt">
-                <view class="border-radius-main bg-white oh">
-                    <mp-html :content="data_base.banner_bottom_content" />
+                </view>
+                <!-- 介绍列表 -->
+                <view v-if="(introduce_data || null) != null && introduce_data.length > 0" class="data-list oh flex-row jc-sa align-c">
+                    <block v-for="(item, index) in introduce_data" :key="index">
+                        <view class="item tc bg-white">
+                            <image class="dis-block auto" :src="item.images_url" mode="scaleToFill"></image>
+                            <view class="single-text text-size margin-top-main">{{ item.name }}</view>
+                            <view class="multi-text cr-grey-c text-size-xs margin-top-xs">{{ item.desc }}</view>
+                        </view>
+                    </block>
+                </view>
+                <!-- 富文本 -->
+                <view v-if="(data_base.banner_bottom_content || null) != null" class="padding-main spacing-mt">
+                    <view class="border-radius-main bg-white oh">
+                        <mp-html :content="data_base.banner_bottom_content" />
+                    </view>
                 </view>
             </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     let membership_level_vip = app.globalData.get_static_url('membershiplevelvip', true);
     export default {
         data() {
             return {
                 membership_level_vip: membership_level_vip + 'app/',
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -70,6 +65,7 @@
             };
         },
         components: {
+            componentNavBack,
             componentNoData,
             componentBottomLine,
         },
@@ -87,6 +83,7 @@
                 // 获取数据
                 this.get_data_list();
             },
+
             // 获取数据
             get_data_list() {
                 uni.showLoading({
@@ -157,15 +154,10 @@
                     },
                 });
             },
-            top_nav_left_back_event() {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
+
+            // 页面滚动监听
+            onPageScroll(res) {
+                uni.$emit('onPageScroll', res);
             },
         },
     };

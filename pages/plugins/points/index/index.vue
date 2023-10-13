@@ -1,14 +1,6 @@
 <template>
     <view>
-        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
-            <!-- 返回 -->
-            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m flex-row" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
-                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-                <text class="text-size flex-1 tc">积分</text>
-            </view>
-            <!-- #endif -->
-        </view>
+        <component-nav-back prop-name="积分"></component-nav-back>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 广告图片 -->
@@ -120,6 +112,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
     import componentGoodsList from '../../../../components/goods-list/goods-list';
@@ -130,11 +123,6 @@
         data() {
             return {
                 points_static_url: points_static_url,
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                // 顶部返回导航背景透明度
-                opacity: 0,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -165,6 +153,7 @@
             };
         },
         components: {
+            componentNavBack,
             componentNoData,
             componentBottomLine,
             componentGoodsList,
@@ -376,24 +365,9 @@
                 });
             },
 
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
-            },
-
             // 页面滚动监听
-            onPageScroll(e) {
-                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
-                this.setData({
-                    opacity: top,
-                });
+            onPageScroll(res) {
+                uni.$emit('onPageScroll', res);
             },
         },
     };

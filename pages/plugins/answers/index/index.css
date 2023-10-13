@@ -4,9 +4,11 @@
 }
 
 .scroll-box {
-    height: calc(100vh - 166rpx - var(--status-bar-height) + 20rpx);
+    height: calc(100vh - 166rpx - var(--status-bar-height) + 34rpx);
+    padding-top: calc(166rpx + var(--status-bar-height) + 34rpx);
     /* #ifdef H5 */
     height: calc(100vh - 166rpx);
+    padding-top: 166rpx;
     /* #endif */
 }
 

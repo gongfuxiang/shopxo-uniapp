@@ -1,13 +1,6 @@
 <template>
     <view class="signin-container">
-        <view class="pf z-i left-0 top-0 right-0 pa-w" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;background-color:rgba(255,255,255,' + opacity + ')'">
-            <!-- 返回 -->
-            <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-            <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-vertical-sm round va-m" :class="opacity > 0.3 ? 'cr-black' : 'cr-white'">
-                <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
-            </view>
-            <!-- #endif -->
-        </view>
+        <component-nav-back></component-nav-back>
         <view v-if="(data || null) != null" class="pr signin-bg oh">
             <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
             <view class="signin-opration-group pa right-0 flex-col cr-white">
@@ -136,6 +129,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentSharePopup from '../../../../components/share-popup/share-popup';
     var signin_static_url = app.globalData.get_static_url('signin', true) + 'app/';
@@ -143,11 +137,6 @@
         data() {
             return {
                 signin_static_url: signin_static_url,
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                // 顶部导航返回按钮
-                is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
-                // 顶部返回导航背景透明度
-                opacity: 0,
                 // 首页地址
                 home_page_url: app.globalData.data.tabbar_pages[0],
                 data_bottom_line_status: false,
@@ -180,6 +169,7 @@
             };
         },
         components: {
+            componentNavBack,
             componentNoData,
             componentSharePopup,
         },
@@ -444,24 +434,9 @@
                 }
             },
 
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
-            },
-
             // 页面滚动监听
-            onPageScroll(e) {
-                var top = e.scrollTop > 47 ? 1 : e.scrollTop / 47;
-                this.setData({
-                    opacity: top,
-                });
+            onPageScroll(res) {
+                uni.$emit('onPageScroll', res);
             },
         },
     };

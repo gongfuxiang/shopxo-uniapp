@@ -1,26 +1,34 @@
 <template>
     <view>
         <view v-if="(data_base || null) != null">
-            <view :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 10) + 'px;' + seckill_bg">
-                <!-- 返回 -->
-                <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
-                <view v-if="is_realstore_top_nav_back == 1" class="nav-back padding-horizontal-main padding-top-sm round va-m cr-white flex-row">
-                    <iconfont name="icon-tongyong-fanhui" size="40rpx" @tap="top_nav_left_back_event"></iconfont>
+            <component-nav-back :prop-fixed="false" :prop-style="seckill_bg">
+                <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
                     <view class="flex-1 tc">
                         <image :src="seckill_title_url" mode="widthFix" class="title pr top-sm"></image>
                     </view>
-                </view>
-                <!-- #endif -->
-                <!-- 秒杀时段 -->
-                <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll wh-auto">
-                    <view class="nav_seckill flex-row flex-nowrap cr-white tc">
-                        <view v-for="(item, index) in periods_list" :key="index" class="item text-size-xss" :class="nav_active_index === index ? 'active' : ''" :id="'one-nav-item-' + index" :data-index="index" :data-text="item.time.time_first_text" :data-status="item.time.status" @tap="nav_event">
-                            <view class="time text-size-lg">{{ item.name }}</view>
-                            <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-main' : ''">{{ item.time.msg }}</view>
+                </template>
+                <template slot="content">
+                    <!-- 秒杀时段 -->
+                    <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="top-nav-scroll wh-auto">
+                        <view class="nav_seckill flex-row flex-nowrap cr-white tc">
+                            <view
+                                v-for="(item, index) in periods_list"
+                                :key="index"
+                                class="item text-size-xss"
+                                :class="nav_active_index === index ? 'active' : ''"
+                                :id="'one-nav-item-' + index"
+                                :data-index="index"
+                                :data-text="item.time.time_first_text"
+                                :data-status="item.time.status"
+                                @tap="nav_event"
+                            >
+                                <view class="time text-size-lg">{{ item.name }}</view>
+                                <view class="state text-size-xs round" :class="nav_active_index === index ? 'cr-main' : ''">{{ item.time.msg }}</view>
+                            </view>
                         </view>
-                    </view>
-                </scroll-view>
-            </view>
+                    </scroll-view>
+                </template>
+            </component-nav-back>
             <scroll-view :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event">
                 <view class="padding-horizontal-main padding-top-main">
                     <!-- 基础信息、倒计时 -->
@@ -68,6 +76,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentNavBack from '@/components/nav-back/nav-back';
     import componentCountdown from '../../../../components/countdown/countdown';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
@@ -116,6 +125,7 @@
             };
         },
         components: {
+            componentNavBack,
             componentCountdown,
             componentNoData,
             componentBottomLine,
@@ -261,17 +271,6 @@
                 this.setData({
                     popup_status: false,
                 });
-            },
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
             },
 
             // 重置滑动位置

@@ -159,13 +159,7 @@
             search_event() {
                 // 是否回调事件
                 if (this.propIsIconOnEvent) {
-                    this.$emit('onsearch', this.input_value);
-                } else {
-                    console.log('this.input_value', this.input_value);
-                    // 进入搜索页面
-                    uni.navigateTo({
-                        url: this.propUrl + '?' + this.propFormName + '=' + this.input_value,
-                    });
+                    this.$emit('onicon', {});
                 }
             },
         },
