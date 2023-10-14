@@ -5,16 +5,14 @@
                 <view class="padding-main oh">
                     <view class="form-gorup bg-white form-container-upload oh">
                         <view class="form-gorup-title">图标<text class="form-group-tips">建议100*100px</text></view>
-                        <view class="oh">
-                            <view class="form-upload-data fl">
-                                <block v-if="(recommend_data.icon || null) != null">
-                                    <view class="item fl">
-                                        <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                        <image :src="recommend_data.icon" @tap="upload_show_event" mode="aspectFill"></image>
-                                    </view>
-                                </block>
-                            </view>
-                            <image class="upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                        <view class="form-upload-data oh">
+                            <block v-if="(recommend_data.icon || null) != null">
+                                <view class="item fl">
+                                    <text class="delete-icon" @tap="upload_delete_event">x</text>
+                                    <image :src="recommend_data.icon" @tap="upload_show_event" mode="aspectFill"></image>
+                                </view>
+                            </block>
+                            <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                         </view>
                     </view>
 
@@ -210,7 +208,7 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 如果存在分类则在最前面增加全部分类额度选项
+                            // 如果存在分类则在最前面增加全部分类选项
                             var goods_category_list = data.goods_category_list || [];
                             if (goods_category_list.length > 0) {
                                 goods_category_list.unshift({ id: null, name: '全部分类' });

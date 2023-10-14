@@ -646,10 +646,7 @@ button:before {
     color: #333 !important;
 }
 
-.cr-grey {
-    color: #666 !important;
-}
-
+.cr-grey,
 .cr-grey-9 {
     color: #999 !important;
 }
@@ -862,19 +859,10 @@ button[disabled].bg-grey {
 }
 
 .form-container-upload .form-upload-data image {
-    width: 150rpx;
-    height: 150rpx;
+    width: 140rpx;
+    height: 140rpx;
     padding: 5rpx;
     border: 1px solid #eee;
-    display: block;
-    border-radius: 10rpx;
-}
-
-.form-container-upload .upload-icon {
-    margin-top: 10rpx;
-    width: 160rpx;
-    height: 160rpx;
-    border: 1px dashed #e9e9e9;
     display: block;
     border-radius: 10rpx;
 }

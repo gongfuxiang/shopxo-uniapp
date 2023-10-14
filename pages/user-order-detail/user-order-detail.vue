@@ -83,9 +83,9 @@
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main flex-row jc-sb align-c">
-                            <view class="title padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content br-l padding-left-main flex-1 flex-width">{{ item.value }}</view>
+                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
+                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -94,7 +94,7 @@
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">扩展数据</view>
                     <view class="panel-content oh">
-                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b oh padding-vertical-main">
+                        <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
                             <view class="content fl br-l padding-left-main">{{ item.tips }}</view>
                         </view>

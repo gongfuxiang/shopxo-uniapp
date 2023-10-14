@@ -17,16 +17,16 @@
                         </view>
                         <view class="margin-top-main br-t">
                             <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" placeholder="宝贝满足你的期待吗？说说它的优点和美中不足的地方吧" maxlength="230"></textarea>
-                            <view class="form-container-upload oh">
-                                <view class="form-upload-data fl">
+                            <view class="form-container-upload">
+                                <view class="form-upload-data oh">
                                     <block v-if="(form_images_list[index] || null) != null && form_images_list[index].length > 0">
                                         <view v-for="(iv, ix) in form_images_list[index]" :key="ix" class="item fl">
                                             <text class="delete-icon" @tap="upload_delete_event" :data-index="index" :data-ix="ix">x</text>
                                             <image :src="iv" @tap="upload_show_event" :data-index="index" :data-ix="ix" mode="aspectFill" class="padding-xs dis-block"></image>
                                         </view>
                                     </block>
+                                    <image v-if="(form_images_list[index] || null) == null || form_images_list[index].length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event" :data-index="index"></image>
                                 </view>
-                                <image v-if="(form_images_list[index] || null) == null || form_images_list[index].length < 3" class="upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event" :data-index="index"></image>
                             </view>
                         </view>
                     </view>

@@ -170,16 +170,14 @@
 
                     <view class="form-gorup form-container-upload oh">
                         <view class="form-gorup-title">上传凭证<text class="form-group-tips">最多上传3张图片</text></view>
-                        <view class="oh">
-                            <view class="form-upload-data fl">
-                                <block v-if="form_images_list.length > 0">
-                                    <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
-                                        <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
-                                        <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
-                                    </view>
-                                </block>
-                            </view>
-                            <image v-if="(form_images_list[index] || null) == null || form_images_list.length < 3" class="upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                        <view class="form-upload-data oh">
+                            <block v-if="form_images_list.length > 0">
+                                <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
+                                    <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
+                                    <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
+                                </view>
+                            </block>
+                            <image v-if="(form_images_list || null) == null || form_images_list.length < 3" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">

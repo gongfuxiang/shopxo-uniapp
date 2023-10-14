@@ -48,7 +48,7 @@
 }
 
 .panel-item .panel-content .item .content {
-    width: calc(75% - 44rpx);
+    width: calc(75% - 52rpx);
     min-height: 46rpx;
     word-wrap: break-word;
     word-break: normal;

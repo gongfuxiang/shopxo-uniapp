@@ -75,7 +75,7 @@
                             <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">开始配送</button>
                             <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">再次配送</button>
                             <block v-if="item.status == 2">
-                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="success_delivery_event">完成配送</button>
+                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">完成配送</button>
                                 <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">异常</button>
                             </block>
                         </view>
@@ -131,8 +131,44 @@
                 <component-no-data propStatus="0"></component-no-data>
             </block>
         </view>
+        
+        <!-- 订单完成弹窗 -->
+        <component-popup :propShow="popup_success_content_status" propPosition="bottom" @onclose="popup_success_content_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="close oh">
+                    <view class="fr" @tap.stop="popup_success_content_close_event">
+                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                    </view>
+                </view>
+                <form @submit="form_delivery_success_submit_event" class="form-container">
+                    <view class="form-container">
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">描述</view>
+                            <view class="br padding-main radius margin-top">
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" placeholder="描述最多200个字符" maxlength="200" :auto-height="true" :value="form_delivery_success_msg_value" @input="form_delivery_success_msg_event"></textarea>
+                            </view>
+                        </view>
+                        <view class="form-gorup form-container-upload oh">
+                            <view class="form-gorup-title">上传照片<text class="form-group-tips-must">*</text><text class="form-group-tips">最多上传{{form_delivery_success_images_max_count}}张</text></view>
+                            <view class="form-upload-data oh">
+                                <block v-if="form_delivery_success_images_list.length > 0">
+                                    <view v-for="(item, index) in form_delivery_success_images_list" :key="index" class="item fl">
+                                        <text class="delete-icon" @tap="upload_delete_event" :data-index="index">x</text>
+                                        <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill"></image>
+                                    </view>
+                                </block>
+                                <image v-if="(form_delivery_success_images_list || null) == null || form_delivery_success_images_list.length < form_delivery_success_images_max_count" class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                            </view>
+                        </view>
+                        <view class="form-gorup form-gorup-submit bottom-line-exclude">
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">提交完成</button>
+                        </view>
+                    </view>
+                </form>
+            </view>
+        </component-popup>
 
-        <!-- 异常订单原因填写 -->
+        <!-- 订单异常弹窗 -->
         <component-popup :propShow="popup_abnormal_content_status" propPosition="bottom" @onclose="popup_abnormal_content_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
@@ -140,16 +176,16 @@
                         <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
                     </view>
                 </view>
-                <form @submit="form_delivery_submit_event" class="form-container">
+                <form @submit="form_delivery_abnormal_submit_event" class="form-container">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">异常原因</view>
+                            <view class="form-gorup-title">异常原因<text class="form-group-tips-must">*</text></view>
                             <view class="br padding-main radius margin-top">
-                                <textarea name="msg" placeholder-class="cr-grey" class="cr-base margin-0" placeholder="异常原因最多200个字符" maxlength="200" :auto-height="true"></textarea>
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" placeholder="异常原因最多200个字符" maxlength="200" :auto-height="true" :value="form_delivery_abnormal_msg_value" @input="form_delivery_abnormal_msg_event"></textarea>
                             </view>
                         </view>
-                        <view class="form-gorup form-gorup-submit">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">提交</button>
+                        <view class="form-gorup form-gorup-submit bottom-line-exclude">
+                            <button class="bg-red br-red cr-white round text-size" type="default" form-type="submit" hover-class="none">提交异常</button>
                         </view>
                     </view>
                 </form>
@@ -164,10 +200,13 @@
     import componentBadge from "../../../../components/badge/badge";
     import componentPopup from "../../../../components/popup/popup";
 
+    var common_static_url = app.globalData.get_static_url("common");
     var plugins_static_url = app.globalData.get_static_url('delivery', true);
     export default {
         data() {
             return {
+                common_static_url: common_static_url,
+                plugins_static_url: plugins_static_url,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -183,6 +222,13 @@
                 search_input_keywords_value: "",
                 popup_abnormal_content_status: false,
                 popup_abnormal_data_index: null,
+                form_delivery_abnormal_msg_value: "",
+                popup_success_content_status: false,
+                popup_success_data_index: null,
+                form_delivery_success_msg_value: "",
+                form_delivery_success_images_list: [],
+                form_delivery_success_images_max_count: 30,
+                editor_path_type: "",
                 show_type: 0,
                 scale: 10,
                 markers: [],
@@ -353,12 +399,13 @@
                                             height: 30,
                                             latitude: item.address_data.lat,
                                             longitude: item.address_data.lng,
-                                            iconPath: plugins_static_url+'order.png'
+                                            iconPath: this.plugins_static_url+'order.png'
                                         });
                                     }
                                 });
                             }
                             this.setData({
+                                editor_path_type: data.editor_path_type || "",
                                 nav_type_list: data.nav_type_list || [],
                                 markers: temp_markers,
                                 data_list: temp_data_list,
@@ -454,19 +501,138 @@
                 var name = ads.alias || ads.name || "";
                 app.globalData.open_location(ads.lng, ads.lat, name, ads.address_info);
             },
+            
+            // 订单完成开启弹层
+            popup_success_content_event(e) {
+                this.setData({
+                    popup_success_content_status: true,
+                    popup_success_data_index: e.currentTarget.dataset.index,
+                    form_delivery_success_msg_value: "",
+                    form_delivery_success_images_list: []
+                });
+            },
+            
+            // 订单完成弹层关闭
+            popup_success_content_close_event(e) {
+                this.setData({
+                    popup_success_content_status: false,
+                });
+            },
 
-            // 异常订单开启弹层
+            // 订单完成说明输入事件
+            form_delivery_success_msg_event(e) {
+                this.setData({
+                    form_delivery_success_msg_value: e.detail.value
+                });
+            },
+
+            // 上传图片预览
+            upload_show_event(e) {
+                uni.previewImage({
+                    current: this.form_delivery_success_images_list[e.currentTarget.dataset.index],
+                    urls: this.form_delivery_success_images_list,
+                });
+            },
+            
+            // 图片删除
+            upload_delete_event(e) {
+                var self = this;
+                uni.showModal({
+                    title: "温馨提示",
+                    content: "删除后不可恢复、继续吗？",
+                    success(res) {
+                        if (res.confirm) {
+                            var list = self.form_delivery_success_images_list;
+                            list.splice(e.currentTarget.dataset.index, 1);
+                            self.setData({
+                                form_delivery_success_images_list: list,
+                            });
+                        }
+                    },
+                });
+            },
+            
+            // 文件上传
+            file_upload_event(e) {
+                var self = this;
+                uni.chooseImage({
+                    count: this.form_delivery_success_images_max_count,
+                    success(res) {
+                        var success = 0;
+                        var fail = 0;
+                        var length = res.tempFilePaths.length;
+                        var count = 0;
+                        self.upload_one_by_one(res.tempFilePaths, success, fail, count, length);
+                    },
+                });
+            },
+            
+            // 采用递归的方式上传多张
+            upload_one_by_one(img_paths, success, fail, count, length) {
+                var self = this;
+                if (self.form_delivery_success_images_list.length < this.form_delivery_success_images_max_count) {
+                    uni.uploadFile({
+                        url: app.globalData.get_request_url("index", "ueditor"),
+                        filePath: img_paths[count],
+                        name: "upfile",
+                        formData: {
+                            action: "uploadimage",
+                            path_type: self.editor_path_type,
+                        },
+                        success: function (res) {
+                            success++;
+                            if (res.statusCode == 200) {
+                                var data = typeof res.data == "object" ? res.data : JSON.parse(res.data);
+                                if (data.code == 0 && (data.data.url || null) != null) {
+                                    var list = self.form_delivery_success_images_list;
+                                    list.push(data.data.url);
+                                    self.setData({
+                                        form_delivery_success_images_list: list,
+                                    });
+                                } else {
+                                    app.globalData.showToast(data.msg);
+                                }
+                            }
+                        },
+                        fail: function (e) {
+                            fail++;
+                        },
+                        complete: function (e) {
+                            count++;
+            
+                            // 下一张
+                            if (count >= length) {
+                                // 上传完毕，作一下提示
+                                //app.showToast('上传成功' + success +'张', 'success');
+                            } else {
+                                // 递归调用，上传下一张
+                                self.upload_one_by_one(img_paths, success, fail, count, length);
+                            }
+                        },
+                    });
+                }
+            },
+
+            // 订单异常开启弹层
             popup_abnormal_content_event(e) {
                 this.setData({
                     popup_abnormal_content_status: true,
                     popup_abnormal_data_index: e.currentTarget.dataset.index,
+                    form_delivery_abnormal_msg_value: ""
                 });
             },
 
-            // 异常订单弹层关闭
+            // 订单异常弹层关闭
             popup_abnormal_content_close_event(e) {
                 this.setData({
                     popup_abnormal_content_status: false,
+                });
+            },
+            
+            // 订单异常原因输入事件
+            form_delivery_abnormal_msg_event(e) {
+                this.setData({
+                    form_delivery_abnormal_msg_value: e.detail.value
                 });
             },
 
@@ -490,29 +656,25 @@
                 });
             },
 
-            // 完成配送
-            success_delivery_event(e) {
-                uni.showModal({
-                    title: "温馨提示",
-                    content: "确定订单已配送到客户地址？",
-                    confirmText: "确认",
-                    cancelText: "没有",
-                    success: (result) => {
-                        if (result.confirm) {
-                            this.order_status_handle({
-                                index: e.currentTarget.dataset.index,
-                                new_status: 3,
-                                status_name: "已配送",
-                                action: "successdelivery",
-                            });
-                        }
-                    },
+            // 完成配送表单提交
+            form_delivery_success_submit_event(e) {
+                if(this.form_delivery_success_images_list.length == 0) {
+                    app.globalData.showToast('请上传照片');
+                    return false;
+                }
+                this.order_status_handle({
+                    index: this.popup_success_data_index,
+                    new_status: 3,
+                    status_name: "已配送",
+                    action: "successdelivery",
+                    msg: this.form_delivery_success_msg_value || '',
+                    images: this.form_delivery_success_images_list
                 });
             },
 
-            // 异常
-            form_delivery_submit_event(e) {
-                var msg = e.detail.value.msg || null;
+            // 异常表单提交
+            form_delivery_abnormal_submit_event(e) {
+                var msg = this.form_delivery_abnormal_msg_value || null;
                 if (msg == null) {
                     app.globalData.showToast("请填写原因");
                 } else {
@@ -538,6 +700,7 @@
                     data: {
                         id: temp_data[params.index]["id"],
                         msg: params.msg || "",
+                        images: params.images || ""
                     },
                     dataType: "json",
                     success: (res) => {
@@ -557,7 +720,8 @@
                             this.setData({
                                 data_list: temp_data,
                                 nav_type_list: temp_nav,
-                                popup_abnormal_content_status: false,
+                                popup_success_content_status: false,
+                                popup_abnormal_content_status: false
                             });
                             app.globalData.showToast(res.data.msg, "success");
                         } else {
@@ -588,9 +752,9 @@
                 var temp_markers = this.markers;
                 for(var i in temp_markers) {
                     if(temp_markers[i]['id'] == index) {
-                        temp_markers[i]['iconPath'] = plugins_static_url+'order-active.png';
+                        temp_markers[i]['iconPath'] = this.plugins_static_url+'order-active.png';
                     } else {
-                        temp_markers[i]['iconPath'] = plugins_static_url+'order.png';
+                        temp_markers[i]['iconPath'] = this.plugins_static_url+'order.png';
                     }
                 }
                 // 订单数据、先匹配实际点击的订单

@@ -4,16 +4,14 @@
             <view class="padding-main oh">
                 <view class="form-gorup bg-white form-container-upload oh">
                     <view class="form-gorup-title">logo图片<text class="form-group-tips">选传，建议300x300px</text></view>
-                    <view class="oh">
-                        <view class="form-upload-data fl">
-                            <block v-if="(extraction_data.logo || null) != null">
-                                <view class="item fl">
-                                    <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                    <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
-                                </view>
-                            </block>
-                        </view>
-                        <image class="upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                    <view class="form-upload-data oh">
+                        <block v-if="(extraction_data.logo || null) != null">
+                            <view class="item fl">
+                                <text class="delete-icon" @tap="upload_delete_event">x</text>
+                                <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
+                            </view>
+                        </block>
+                        <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                     </view>
                 </view>
 
