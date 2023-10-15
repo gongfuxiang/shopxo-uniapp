@@ -43,7 +43,7 @@
  * 地图
  */
 .map-container {
-    height: calc(100vh - 180rpx);
+    height: calc(100vh - 160rpx);
 }
 .map-container .map-markers-active-data {
     background-color: rgb(255 255 255 / 0.85);
