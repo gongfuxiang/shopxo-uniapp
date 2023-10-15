@@ -1074,7 +1074,7 @@
                         	latitude: lat
                         });
                         uni.navigateTo({
-                        	url: 'plugin://routePlan/route-plan?key=' + key + '&referer=' + this.get_application_title() + '&endPoint=' + end_point+'&navigation=1'
+                        	url: 'plugin://routePlan/route-plan?key=' + key + '&referer=' + this.get_application_title() + '&endPoint=' + end_point+'&themeColor=' + this.get_theme_color() + '&navigation=1'
                         });
                         return false;
                     }
