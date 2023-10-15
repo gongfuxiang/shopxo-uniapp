@@ -2,7 +2,7 @@
 * 头部
 */
 .header {
-    height: 180rpx;
+    height: 160rpx;
 }
 .nav-base .item {
     width: 20%;
@@ -15,9 +15,6 @@
 .nav-search .search-keywords {
     margin-right: 80rpx;
 }
-.nav-search .search-keywords input {
-    width: calc(100% - 180rpx);
-}
 .nav-search .map-submit {
     top: 0;
     right: 20rpx;
@@ -27,7 +24,7 @@
  * 数据列表
  */
 .scroll-box {
-    height: calc(100vh - 180rpx);
+    height: calc(100vh - 160rpx);
 }
 .data-list .address-info {
     width: calc(100% - 158rpx);

@@ -64,14 +64,16 @@
                 // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
                 is_weixin_privacy_setting: 1,
                 weixin_privacy_setting_timer: null,
+                // 微信小程序打开地图使用（0否, 1是）【腾讯位置服务路线规划】插件、（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
+                is_weixin_open_location_use_plugins: 0,
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
                 // 请求地址
-                // request_url: 'https://new.shopxo.vip/',
-                 request_url: 'http://shopxo.com/',
+                 request_url: 'https://new.shopxo.vip/',
+                // request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                // static_url: 'https://new.shopxo.vip/',
-                 static_url: 'http://shopxo.com/',
+                 static_url: 'https://new.shopxo.vip/',
+                // static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1051,17 +1053,40 @@
                 this.showToast('请复制地址到网页地图中查看！');
                 return false;
                 // #endif
+                
+                // 参数判断
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
                     this.showToast('坐标有误');
                     return false;
                 }
+                lat = parseFloat(lat);
+                lng = parseFloat(lng);
+
+                // #ifdef MP-WEIXIN
+                // 微信小程序使用【腾讯位置服务路线规划】插件
+                if(this.data.is_weixin_open_location_use_plugins == 1) {
+                    var key = this.get_config('config.common_tencent_map_ak') || null;
+                    if(key != null) {
+                        var plugin = requirePlugin('routePlan');
+                        var end_point = JSON.stringify({
+                        	name: name || '地理位置',
+                            longitude: lng,
+                        	latitude: lat
+                        });
+                        uni.navigateTo({
+                        	url: 'plugin://routePlan/route-plan?key=' + key + '&referer=' + this.get_application_title() + '&endPoint=' + end_point+'&navigation=1'
+                        });
+                        return false;
+                    }
+                }
+                // #endif
                 // 转换坐标打开位置
                 uni.openLocation({
                     name: name || '地理位置',
                     address: address || '',
                     scale: scale || 18,
-                    longitude: parseFloat(lng),
-                    latitude: parseFloat(lat),
+                    longitude: lng,
+                    latitude: lat
                 });
             },
             // uuid生成

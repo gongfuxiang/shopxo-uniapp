@@ -1,13 +1,13 @@
 <template>
     <view>
         <view class="search-content pr">
-            <view class="search-icon dis-inline-block pa" @tap="search_event">
+            <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="20rpx"></iconfont>
             </view>
             <input
                 type="text"
                 confirm-type="search"
-                class="round wh-auto dis-block"
+                :class="'round wh-auto dis-block '+propClass"
                 :placeholder="propPlaceholder"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
@@ -17,7 +17,7 @@
                 @blur="search_input_blur_event"
                 :style="'color:' + propTextColor + ';background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')"
             />
-            <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_event">搜索</button>
+            <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">搜索</button>
         </view>
     </view>
 </template>
@@ -50,6 +50,10 @@
             propPlaceholderClass: {
                 type: String,
                 default: 'cr-grey-c',
+            },
+            propClass: {
+                type: String,
+                default: '',
             },
             propTextColor: {
                 type: String,
@@ -100,6 +104,21 @@
                 default: false,
             },
         },
+        // 属性值改变监听
+        watch: {
+            // 默认值
+            propDefaultValue(value, old_value) {
+                this.setData({
+                    input_value: value,
+                });
+            }
+        },
+        // 页面被展示
+        created: function () {
+            this.setData({
+                input_value: this.propDefaultValue
+            });
+        },
         methods: {
             // 搜索输入事件
             search_input_value_event(e) {
@@ -137,26 +156,24 @@
             // 搜索确认事件
             search_submit_confirm_event(e) {
                 // 是否验证必须要传值
-                if (this.propIsRequired && e.detail.value == '') {
+                if (this.propIsRequired && this.input_value === '') {
                     app.globalData.showToast('请输入搜索关键字');
                     return false;
                 }
-                this.setData({
-                    input_value: e.detail.value,
-                });
+
                 // 是否回调事件
                 if (this.propIsOnEvent) {
-                    this.$emit('onsearch', e.detail.value);
+                    this.$emit('onsearch', this.input_value);
                 } else {
                     // 进入搜索页面
                     uni.navigateTo({
-                        url: this.propUrl + '?' + this.propFormName + '=' + e.detail.value,
+                        url: this.propUrl + '?' + this.propFormName + '=' + this.input_value,
                     });
                 }
             },
 
             // icon事件
-            search_event() {
+            search_icon_event() {
                 // 是否回调事件
                 if (this.propIsIconOnEvent) {
                     this.$emit('onicon', {});
@@ -192,6 +209,6 @@
         right: 6rpx;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 1;
+        z-index: 2;
     }
 </style>

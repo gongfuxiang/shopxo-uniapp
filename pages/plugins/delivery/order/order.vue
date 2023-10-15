@@ -14,12 +14,25 @@
             </view>
             <!-- 关键字搜索 -->
             <view class="padding-horizontal-main padding-bottom-main margin-top-xs pr nav-search">
-                <view class="search-keywords padding-left-main round br-main oh">
-                    <input class="text-size-sm padding-left-sm padding-top-sm padding-bottom-xs dis-inline-block va-m" placeholder-class="cr-grey" placeholder="输入订单号/收件人/收件电话" @input="search_input_keywords_event" />
-                    <button type="default" size="mini" class="br-main cr-white bg-main fr radius-0" @tap="search_submit_event">搜索</button>
-                </view>
-                <view class="map-submit pa" data-event="copy" @tap="map_show_type_event">
-                    <uni-icons :type="(show_type == 0) ? 'map' : 'list'" size="58rpx" color="#999"></uni-icons>
+                <view class="search-keywords">
+                    <component-search
+                        @onsearch="search_submit_event"
+                        :propIsOnEvent="true"
+                        :propIsRequired="false"
+                        propPlaceholder="输入订单号/收件人/收件电话"
+                        propClass="br"
+                        :propIsBtn="true"
+                        :propDefaultValue="search_input_keywords_value"
+                        <!-- #ifdef MP || APP -->
+                        propIcon="icon-mendian-sousuosm"
+                        propIconColor="#333"
+                        @onicon="search_icon_event"
+                        :propIsIconOnEvent="true"
+                        <!-- #endif -->
+                    ></component-search>
+                    <view class="map-submit pa" data-event="copy" @tap="map_show_type_event">
+                        <uni-icons :type="(show_type == 0) ? 'map' : 'list'" size="56rpx" color="#999"></uni-icons>
+                    </view>
                 </view>
             </view>
         </view>
@@ -199,6 +212,7 @@
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
     import componentBadge from "../../../../components/badge/badge";
     import componentPopup from "../../../../components/popup/popup";
+    import componentSearch from '../../../../components/search/search';
 
     var common_static_url = app.globalData.get_static_url("common");
     var plugins_static_url = app.globalData.get_static_url('delivery', true);
@@ -241,6 +255,7 @@
             componentBottomLine,
             componentBadge,
             componentPopup,
+            componentSearch
         },
         props: {},
 
@@ -475,9 +490,24 @@
             // 搜索确认事件
             search_submit_event(e) {
                 this.setData({
+                    search_input_keywords_value: e,
                     data_page: 1,
                 });
                 this.get_data_list(1);
+            },
+
+            // icon事件
+            search_icon_event(e) {
+                var self = this;
+                uni.scanCode({
+                    success: function (res) {
+                        self.setData({
+                            search_input_keywords_value: res.result,
+                            data_page: 1
+                        });
+                        self.get_data_list(1);
+                    },
+                });
             },
 
             // 地图查看
