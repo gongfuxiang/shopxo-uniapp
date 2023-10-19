@@ -50,7 +50,7 @@
 }
 
 .form-container .custom-price {
-    background: #F5F7F9;
+    background: #F5F7F9 !important;
 }
 
 .form-container input {

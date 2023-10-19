@@ -203,7 +203,6 @@
             },
             // 选择支付方式
             checked_payment(e) {
-                let payment_id = e.currentTarget.dataset.value;
                 this.setData({
                     payment_id: e.currentTarget.dataset.value,
                     submit_disabled_status: false,
@@ -218,7 +217,7 @@
                 this.setData({
                     is_show_payment_popup: false,
                 });
-                this.pay_handle(this.propTempPayValue, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
+                this.pay_handle(this.propTempPayValue, this.payment_id);
                 this.$emit('close-payment-poupon', false);
             },
             // 支付方法

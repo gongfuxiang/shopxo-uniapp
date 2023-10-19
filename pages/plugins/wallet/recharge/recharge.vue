@@ -59,7 +59,6 @@
             :prop-temp-pay-value="temp_pay_value"
             :prop-pay-price="pay_price"
             :prop-payment-id="payment_id"
-            :prop-default-payment-id="default_payment_id"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
             :prop-is-show-payment="is_show_payment_popup"
@@ -97,7 +96,6 @@
                 is_show_payment_popup: false,
                 pay_price: 0,
                 payment_id: 0,
-                default_payment_id: 0,
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/wallet/user/user',
             };
@@ -162,7 +160,6 @@
                             this.setData({
                                 data: data.preset_data || [],
                                 payment_id: data.default_payment_id || 0,
-                                default_payment_id: data.default_payment_id || 0,
                                 recharge_desc: data.recharge_desc || '',
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
@@ -261,18 +258,6 @@
                 this.setData({
                     is_show_payment_popup: false,
                 });
-            },
-
-            // 顶部返回操作
-            top_nav_left_back_event(e) {
-                var pages = getCurrentPages();
-                if (pages.length <= 1) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
-                }
             },
 
             // 页面滚动监听
