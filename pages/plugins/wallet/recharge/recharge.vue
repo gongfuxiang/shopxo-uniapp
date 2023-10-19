@@ -83,7 +83,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 recharge_money_value: '',
-                sub_recharge_money_value: '',
+                // recharge_money_value: '',
                 form_submit_disabled_status: false,
                 data: [],
                 recharge_desc: '',
@@ -159,7 +159,6 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            console.log(data);
                             this.setData({
                                 data: data.preset_data || [],
                                 payment_id: data.default_payment_id || 0,
@@ -193,16 +192,15 @@
             change_price_event(e) {
                 this.setData({
                     select_index: e.currentTarget.dataset.index,
-                    sub_recharge_money_value: e.currentTarget.dataset.value,
-                    recharge_money_value: '',
+                    recharge_money_value: e.currentTarget.dataset.value,
+                    // recharge_money_value: '',
                 });
-                console.log(this.recharge_money_value);
             },
 
             // 充值金额输入事件
             recharge_money_value_input_event(e) {
                 this.setData({
-                    sub_recharge_money_value: e.detail.value || '',
+                    recharge_money_value: e.detail.value || '',
                     select_index: null,
                 });
             },
@@ -210,7 +208,7 @@
             // 数据提交
             form_submit_event(e) {
                 // 参数
-                if ((this.sub_recharge_money_value || null) == null) {
+                if ((this.recharge_money_value || null) == null) {
                     app.globalData.showToast('请输入充值金额');
                     return false;
                 }
@@ -225,7 +223,7 @@
                     url: app.globalData.get_request_url('create', 'recharge', 'wallet'),
                     method: 'POST',
                     data: {
-                        money: this.sub_recharge_money_value,
+                        money: this.recharge_money_value,
                     },
                     dataType: 'json',
                     success: (res) => {
