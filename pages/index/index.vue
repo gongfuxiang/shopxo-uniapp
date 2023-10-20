@@ -243,9 +243,9 @@
                 </view>
 
                 <!-- 留言 -->
-                <view v-if="load_status == 1 && common_app_is_enable_answer == 1" class="bg-white border-radius-main oh spacing-mt">
-                    <navigator url="/pages/answer-form/answer-form" hover-class="none">
-                        <image mode="widthFix" :src="static_url + 'answer-form.jpg'" class="wh-auto border-radius-main"> </image>
+                <view v-if="load_status == 1 && common_app_is_enable_ask == 1" class="bg-white border-radius-main oh spacing-mt">
+                    <navigator url="/pages/form/form" hover-class="none">
+                        <image mode="widthFix" :src="static_url + 'ask-form.jpg'" class="wh-auto border-radius-main"> </image>
                     </navigator>
                 </view>
             </view>
@@ -330,7 +330,7 @@
                 common_shop_notice: null,
                 home_index_floor_data_type: 0,
                 common_app_is_enable_search: 0,
-                common_app_is_enable_answer: 0,
+                common_app_is_enable_ask: 0,
                 common_app_is_header_nav_fixed: 0,
                 common_app_is_online_service: 0,
                 // 名称
@@ -431,7 +431,7 @@
                         common_shop_notice: app.globalData.get_config('config.common_shop_notice'),
                         home_index_floor_data_type: app.globalData.get_config('config.home_index_floor_data_type'),
                         common_app_is_enable_search: app.globalData.get_config('config.common_app_is_enable_search'),
-                        common_app_is_enable_answer: app.globalData.get_config('config.common_app_is_enable_answer'),
+                        common_app_is_enable_ask: app.globalData.get_config('config.common_app_is_enable_ask'),
                         common_app_is_header_nav_fixed: app.globalData.get_config('config.common_app_is_header_nav_fixed'),
                         common_app_is_online_service: app.globalData.get_config('config.common_app_is_online_service'),
                         application_title: app.globalData.get_application_title(),

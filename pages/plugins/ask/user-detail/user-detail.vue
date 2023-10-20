@@ -4,7 +4,7 @@
         <view v-if="Object.keys(detail_data.length !== 0)" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <view class="pa top-0 left-0 right-0 nav-top pa-w">
-                    <image mode="widthFix" :src="answers_static_url + 'nav-top.png'" class="wh-auto"></image>
+                    <image mode="widthFix" :src="ask_static_url + 'nav-top.png'" class="wh-auto"></image>
                 </view>
                 <view class="padding-main pr margin-top-xxxl">
                     <view class="bg-white border-radius-main padding-main text-size">
@@ -55,7 +55,7 @@
     export default {
         data() {
             return {
-                answers_static_url: app.globalData.get_static_url('answers', true),
+                ask_static_url: app.globalData.get_static_url('ask', true),
                 detail_data: {},
                 data_list_loding_status: 1,
                 params: '',
@@ -116,7 +116,7 @@
             get_data() {
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('detail', 'answer'),
+                    url: app.globalData.get_request_url('detail', 'ask', 'ask'),
                     method: 'POST',
                     data: {
                         id: this.params,

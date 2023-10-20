@@ -10,15 +10,15 @@
     /* #endif */
 }
 
-.status .answers-status {
+.status .ask-status {
     padding: 4rpx 10rpx;
 }
 
-.answers-bg-green {
+.ask-bg-green {
     background-color: #5FB95E;
 }
 
-.answers-bg-yellow {
+.ask-bg-yellow {
     background-color: #FAAD14;
 }
 
@@ -26,7 +26,7 @@
     margin-left: 16rpx;
 }
 
-.answers-hot {
+.ask-hot {
     width: 32rpx;
     height: 32rpx;
     line-height: 32rpx;
@@ -45,7 +45,7 @@
     background: linear-gradient(150deg, #FFCE90 0%, #FFAA4E 100%);
 }
 
-.answers-btn-content {
+.ask-btn-content {
     padding-top: 54rpx;
     padding-bottom: 54rpx;
 }

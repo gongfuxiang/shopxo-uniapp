@@ -1,8 +1,10 @@
 .form-container .form-gorup .textarea-height {
-    height: 400rpx !important;
+    min-height: 200rpx !important;
 }
-
-.form-btn button {
+.sub-btn {
+    padding: 40rpx 66rpx;
+}
+.sub-btn button {
     height: 88rpx;
     line-height: 88rpx;
     padding: 0;

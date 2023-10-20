@@ -2,10 +2,10 @@
     <view class="page-bottom-fixed">
         <view v-if="data_list.length > 0" class="padding-main">
             <view v-for="(item, index) in data_list" :key="index">
-                <navigator :url="'/pages/user-answers-detail/user-answers-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                <navigator :url="'/pages/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
                     <view class="margin-bottom-xs flex-row jc-sb align-c">
                         <text class="fw-b text-size">{{ item.name }}</text>
-                        <text class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
+                        <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
                     </view>
                     <view class="cr-grey-9">{{ item.add_time_time }}</view>
                     <view class="spacing-mt">
@@ -34,7 +34,7 @@
 
         <view class="bottom-fixed question-btn bg-white">
             <view class="bottom-line-exclude">
-                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none">
+                <navigator url="/pages/plugins/ask/user-form/user-form" hover-class="none">
                     <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
                 </navigator>
             </view>
@@ -120,7 +120,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'answer'),
+                    url: app.globalData.get_request_url('index', 'ask', 'ask'),
                     method: 'POST',
                     data: {
                         page: this.data_page,

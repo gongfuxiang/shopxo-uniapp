@@ -7,7 +7,7 @@
                 </view>
             </template>
             <template slot="content">
-                <view v-if="nav_list.length > 0" class="answers-type flex-row jc-sa align-c">
+                <view v-if="nav_list.length > 0" class="ask-type flex-row jc-sa align-c">
                     <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
                 </view>
             </template>
@@ -16,15 +16,15 @@
             <view class="page-bottom-fixed">
                 <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <navigator :url="'/pages/plugins/answers/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
+                        <navigator :url="'/pages/plugins/ask/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
                             <view v-if="nav_index === 1">
-                                <view class="answers-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
+                                <view class="ask-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
                             </view>
                             <view class="flex-1 flex-width">
                                 <view class="title text-size fw-b">{{ item.title }}</view>
                                 <view class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
                                 <view class="status flex-row align-c spacing-mt text-size-xs">
-                                    <view v-if="nav_index !== 1" class="answers-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'answers-bg-green' : 'answers-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
+                                    <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
                                     <view class="num cr-grey-9 flex-row self-c">
                                         {{ item.add_time_date }}
                                         <view class="fw-b padding-horizontal-xs">·</view>
@@ -43,15 +43,15 @@
                 </view>
             </view>
         </scroll-view>
-        <view class="bottom-fixed answers-btn-content">
+        <view class="bottom-fixed ask-btn-content">
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                <navigator url="/pages/user-answers-form/user-answers-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                <navigator url="/pages/plugins/ask/user-form/user-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="divider-r-d wh-auto">
                         <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
                         我要提问
                     </view>
                 </navigator>
-                <navigator url="/pages/user-answers-question/user-answers-question" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="wh-auto">
                         <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
                         我的提问
@@ -117,7 +117,7 @@
             get_nav_list() {
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'index', 'answers'),
+                    url: app.globalData.get_request_url('index', 'index', 'ask'),
                     method: 'POST',
                     dataType: 'json',
                     success: (res) => {
@@ -156,7 +156,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('datalist', 'index', 'answers'),
+                    url: app.globalData.get_request_url('datalist', 'index', 'ask'),
                     method: 'POST',
                     data: {
                         page: this.data_page,

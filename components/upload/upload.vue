@@ -9,7 +9,7 @@
             </view>
         </block>
         <view v-if="(form_images_list || null) == null || form_images_list.length < 3" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
-            <iconfont name="icon-bjdz-guanbi" size="52rpx" color="#999"></iconfont>
+            <iconfont name="icon-wytw-sctp" size="52rpx" color="#999"></iconfont>
             <text class="text-size-xs cr-grey-9">上传图片</text>
         </view>
     </view>
