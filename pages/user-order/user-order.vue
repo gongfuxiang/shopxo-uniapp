@@ -153,11 +153,6 @@
                 order_select_ids: [],
                 mult_pay_price: [],
                 nav_status_index: 0,
-                // 支付信息
-                popup_view_pay_html_is_show: false,
-                popup_view_pay_qrcode_is_show: false,
-                popup_view_pay_data: null,
-                popup_view_pay_timer: null,
                 // 基础配置
                 home_is_enable_order_bulk_pay: 0,
                 // 页面从其他页面跳转过来携带的参数
@@ -694,27 +689,7 @@
                         url: "/pages/buy/buy?data=" + encodeURIComponent(base64.encode(JSON.stringify(data))),
                     });
                 }
-            },
-
-            // 支付二维码展示窗口事件
-            popup_view_pay_qrcode_event_close(e) {
-                this.setData({
-                    popup_view_pay_qrcode_is_show: false,
-                });
-                clearInterval(this.popup_view_pay_timer);
-            },
-
-            // 支付html展示窗口事件
-            popup_view_pay_html_event_close(e) {
-                this.setData({
-                    popup_view_pay_html_is_show: false,
-                });
-            },
-
-            // 页面卸载
-            onUnload(e) {
-                clearInterval(this.popup_view_pay_timer);
-            },
+            }
         },
     };
 </script>
