@@ -64,29 +64,26 @@
                                     item.operate_data.is_delete +
                                     (item.plugins_is_order_allot_button || 0) +
                                     (item.plugins_is_order_batch_button || 0) +
-                                    (item.plugins_is_order_frequencycard_button || 0) >
-                                    0 ||
+                                    (item.plugins_is_order_frequencycard_button || 0) > 0 ||
                                 (item.status == 2 && item.order_model != 2) ||
                                 ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
-                                (item.plugins_delivery_data || 0) == 1
+                                (item.plugins_delivery_data || 0) == 1 ||
+                                ((item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0)
                             "
                             class="item-operation tr br-t padding-vertical-main"
                         >
                             <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
                             <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" hover-class="none">支付</button>
                             <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
-                            <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">
-                                物流
-                            </button>
+                            <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
                             <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
                             <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
                             <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
                             <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
                             <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
                             <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
-                            <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">
-                                次卡
-                            </button>
+                            <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">次卡</button>
+                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">再次购买</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -156,11 +153,6 @@
                 order_select_ids: [],
                 mult_pay_price: [],
                 nav_status_index: 0,
-                // 支付信息
-                popup_view_pay_html_is_show: false,
-                popup_view_pay_qrcode_is_show: false,
-                popup_view_pay_data: null,
-                popup_view_pay_timer: null,
                 // 基础配置
                 home_is_enable_order_bulk_pay: 0,
                 // 页面从其他页面跳转过来携带的参数
@@ -678,26 +670,26 @@
             url_event(e) {
                 app.globalData.url_event(e);
             },
-
-            // 支付二维码展示窗口事件
-            popup_view_pay_qrcode_event_close(e) {
-                this.setData({
-                    popup_view_pay_qrcode_is_show: false,
-                });
-                clearInterval(this.popup_view_pay_timer);
-            },
-
-            // 支付html展示窗口事件
-            popup_view_pay_html_event_close(e) {
-                this.setData({
-                    popup_view_pay_html_is_show: false,
-                });
-            },
-
-            // 页面卸载
-            onUnload(e) {
-                clearInterval(this.popup_view_pay_timer);
-            },
+            
+            // 再次购买事件
+            continue_buy_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var data = this.data_list[index];
+                if((data.plugins_intellectstools_data || null) != null && (data.plugins_intellectstools_data.continue_buy_data || null) != null && data.plugins_intellectstools_data.continue_buy_data.length > 0) {
+                    // 进入订单确认页面
+                    var data = {
+                        buy_type: "goods",
+                        goods_data: encodeURIComponent(
+                            base64.encode(
+                                JSON.stringify(data.plugins_intellectstools_data.continue_buy_data)
+                            )
+                        ),
+                    };
+                    uni.navigateTo({
+                        url: "/pages/buy/buy?data=" + encodeURIComponent(base64.encode(JSON.stringify(data))),
+                    });
+                }
+            }
         },
     };
 </script>
