@@ -123,7 +123,7 @@
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
                                     uni.redirectTo({
-                                        url: '/pages/plugins/ask/index/index',
+                                        url: '/pages/plugins/ask/user-list/user-list',
                                     });
                                 }, 2000);
                             } else {
