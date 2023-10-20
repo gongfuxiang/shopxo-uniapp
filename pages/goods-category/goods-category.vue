@@ -407,6 +407,7 @@
                 data_list_loding_msg: '',
                 data_is_loading: 0,
                 user: null,
+                params: null,
                 tabbar_params: null,
                 common_site_type: 0,
                 category_list: [],
@@ -461,6 +462,12 @@
             componentNavMore,
         },
         props: {},
+        
+        onLoad(params) {
+            this.setData({
+                params: params
+            });
+        },
 
         onShow() {
             // 基础参数
@@ -532,17 +539,16 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            var index = this.nav_active_index;
+                            var active_index = this.nav_active_index;
                             var temp_category = data.category || [];
                             // 全部分类子集数量
                             var category_one_subset_count = 0;
                             // 是否指定分类
-                            var tabbar_params = this.tabbar_params;
                             if (temp_category.length > 0) {
                                 for (var i in temp_category) {
-                                    // 是否指定分类
-                                    if ((tabbar_params || null) != null && (tabbar_params.id || null) != null && temp_category[i]['id'] == tabbar_params.id) {
-                                        index = i;
+                                    // tab切换参数、访问请求参数
+                                    if (((this.tabbar_params || null) != null && (this.tabbar_params.id || null) != null && temp_category[i]['id'] == this.tabbar_params.id) || ((this.params || null) != null && (this.params.id || null) != null && temp_category[i]['id'] == this.params.id)) {
+                                        active_index = i;
                                         break;
                                     }
                                     // 是否全部数据都无二级
@@ -554,13 +560,13 @@
                             // 设置分类及右侧数据和及基础数据
                             var upd_data = {
                                 category_list: temp_category,
-                                data_content: temp_category[index] || null,
-                                nav_active_index: index,
+                                data_content: temp_category[active_index] || null,
+                                nav_active_index: active_index,
                                 category_one_subset_count: category_one_subset_count,
                                 plugins_label_data: (data.plugins_label_data || null) == null || (data.plugins_label_data.base || null) == null || (data.plugins_label_data.data || null) == null || data.plugins_label_data.data.length <= 0 ? null : data.plugins_label_data,
                             };
                             // 指定分类则重新读取列表数据
-                            if (tabbar_params != null && this.nav_active_index != index) {
+                            if (this.nav_active_index != active_index) {
                                 upd_data['is_first'] = 1;
                                 upd_data['data_page'] = 1;
                                 upd_data['data_list'] = [];
