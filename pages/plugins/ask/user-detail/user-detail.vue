@@ -169,5 +169,5 @@
     };
 </script>
 <style>
-    @import './user-answers-detail.css';
+    @import './user-detail.css';
 </style>

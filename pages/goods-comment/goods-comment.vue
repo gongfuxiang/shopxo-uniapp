@@ -2,51 +2,27 @@
     <view>
         <!-- 评分 -->
         <view v-if="goods_score != null" class="score-container oh padding-main">
-            <view class="score fl tc">
-                <view class="cr-base">综合评分</view>
-                <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
-            </view>
-            <view class="progress fr tc border-radius-main">
-                <block v-if="goods_score.avg > 0">
-                    <block v-for="(item, index) in goods_score.rating" :key="index">
-                        <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
+            <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
+                <view class="score tc">
+                    <view class="cr-base">综合评分</view>
+                    <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
+                </view>
+                <view class="progress tc border-radius-main flex-1 flex-width">
+                    <block v-if="goods_score.avg > 0">
+                        <block v-for="(item, index) in goods_score.rating" :key="index">
+                            <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
+                        </block>
                     </block>
-                </block>
-                <text v-else class="cr-grey">暂无评分</text>
+                    <text v-else class="cr-grey">暂无评分</text>
+                </view>
             </view>
         </view>
 
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="padding-horizontal-main goods-comment">
-                <view v-for="(item, index) in data_list" :key="index" class="goods-comment-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="oh nav br-b padding-bottom-sm">
-                        <image class="avatar dis-block fl" :src="item.user.avatar || static_url + 'default-user.png'" mode="aspectFit"></image>
-                        <view class="base-nav fr">
-                            <text class="va-m">{{ item.user.user_name_view }}</text>
-                            <view class="dis-inline-block va-m margin-left-sm">
-                                <uni-rate :value="item.rating" :readonly="true" :is-fill="false" :size="14" />
-                            </view>
-                            <view class="fr">
-                                <text class="cr-grey">{{ item.add_time_date }}</text>
-                            </view>
-                        </view>
-                    </view>
-                    <view class="base-content oh padding-sm">
-                        <view class="content cr-base text-size-sm">{{ item.content }}</view>
-                        <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
-                            <block v-for="(iv, ix) in item.images" :key="ix">
-                                <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
-                            </block>
-                        </view>
-                        <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{ item.msg }}</view>
-                        <view v-if="item.is_reply == 1 && (item.reply || null) != null" class="reply br-t-dashed margin-top-lg padding-top-lg text-size-sm">
-                            <text class="cr-base">管理员回复：</text>
-                            <text class="reply-desc cr-main-pair">{{ item.reply }}</text>
-                        </view>
-                    </view>
-                </view>
-
+                <!-- 评价 -->
+                <component-goods-comment :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comment>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
 
@@ -60,6 +36,7 @@
 const app = getApp();
 import componentNoData from "../../components/no-data/no-data";
 import componentBottomLine from "../../components/bottom-line/bottom-line";
+import componentGoodsComment from "../../components/goods-comment/goods-comment";
 
 var static_url = app.globalData.get_static_url("home");
 export default {
@@ -80,6 +57,7 @@ export default {
     components: {
         componentNoData,
         componentBottomLine,
+        componentGoodsComment,
     },
     props: {},
 

@@ -108,29 +108,7 @@
     height: 100rpx;
     z-index: 2;
 }
-.goods-buy-nav .bus-items {
-    width: 45%;
-}
-.goods-buy-nav .bus-items .item  {
-    position: relative;
-}
-.goods-buy-nav .bus-items-1 .item {
-    width: 100%;
-}
-.goods-buy-nav .bus-items-2 .item {
-    width: 50%;
-}
-.goods-buy-nav .bus-items-3 .item {
-    width: 33.33%;
-}
-.goods-buy-nav .bus-items-4 .item {
-    width: 25%;
-}
-.goods-buy-nav .bus-items-5 .item {
-    width: 20%;
-}
 .goods-buy-nav .btn-items {
-    width: calc(55% - 10rpx);
     padding: 15rpx 0;
 }
 .goods-buy-nav .bus-items,
@@ -202,15 +180,14 @@
     font-size: 36rpx;
     line-height: 52rpx;
     font-weight: bold;
-    width: calc(100% - 100rpx);
+    width: calc(100% - 200rpx);
 }
-.goods-base-content .goods-share {
-    top: calc(50% - 40rpx);
-    right: 20rpx;
+.goods-base-content image {
+    width: 40rpx;
+    height: 40rpx;
 }
-.goods-base-content .goods-share image {
-    width: 50rpx;
-    height: 50rpx;
+.goods-base-content .collect {
+    width: 76rpx;
 }
 .goods-base-content .base-grid view {
     width: calc(33.33% - 1px);
@@ -247,11 +224,25 @@
     height: 145rpx;
     overflow: hidden;
 }
+.price-content {
+    width: 60%;
+    float: left;
+}
+.countdown-content {
+    width: 40%;
+}
 .price-content,
 .countdown-content {
     box-sizing: border-box;
     position: relative;
     height: 100%;
+}
+.countdown-content image {
+    width: 40rpx;
+    height: 40rpx;
+}
+.countdown-content .collect {
+    width: 76rpx;
 }
 .price-content .price-icon {
     margin-right: 5rpx;
@@ -279,8 +270,6 @@
     background: #f9534e;
     background-repeat: no-repeat;
     background-size: 100% 100%;
-    width: 60%;
-    float: left;
 }
 .goods-base-price-countdown .price-icon { 
     margin-right: 0;
@@ -300,7 +289,6 @@
 }
 .goods-base-price-countdown .countdown-content {
     background: #e84742;
-    width: 40%;
 }
 .countdown-content .time-title {
     font-size: 38rpx;
@@ -447,6 +435,9 @@
 /*
 * 优惠劵 - 插件
 */
+.plugins-coupon-container-view .item-title {
+    min-width: 100rpx;
+}
 .plugins-coupon-container-view .item {
     padding: 5rpx 15rpx;
     display: inline-table;
@@ -478,6 +469,9 @@
 /**
  * 批发 - 插件
  */
+.plugins-wholesale-container-view .item-title {
+    min-width: 100rpx;
+}
 .plugins-wholesale-container-view .item {
     padding: 5rpx 15rpx;
     color: #ff6633;

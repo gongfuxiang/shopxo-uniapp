@@ -148,5 +148,5 @@
     };
 </script>
 <style scoped>
-    @import './user-answers-form.css';
+    @import './form.css';
 </style>

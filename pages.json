@@ -270,30 +270,6 @@
                 "enablePullDownRefresh": false,
                 "navigationBarTitleText": "账号注销"
             }
-        },
-        {
-            "path": "pages/user-answers-form/user-answers-form",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": "我要提问"
-            }
-        },
-        {
-            "path": "pages/user-answers-detail/user-answers-detail",
-            "style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
-                "navigationStyle": "custom",
-                // #endif
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": "提问详情"
-            }
-        },
-        {
-            "path": "pages/user-answers-question/user-answers-question",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": "我的提问"
-            }
         }
     ],
     "subPackages": [{
@@ -980,7 +956,7 @@
             ]
         },
         {
-            "root": "pages/plugins/answers",
+            "root": "pages/plugins/ask",
             "pages": [{
                     "path": "index/index",
                     "style": {
@@ -996,6 +972,48 @@
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "问答详情"
+                    }
+                },
+                {
+                    "path": "form/form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "我要提问"
+                    }
+                },
+                {
+                    "path": "user-detail/user-detail",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "提问详情"
+                    }
+                },
+                {
+                    "path": "user-list/user-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "我的提问"
+                    }
+                },
+                {
+                    "path": "goods-list/goods-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "问答列表"
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/intellectstools",
+            "pages": [{
+                    "path": "goods-comments/goods-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "商品评价"
                     }
                 }
             ]

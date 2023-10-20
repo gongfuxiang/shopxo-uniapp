@@ -112,15 +112,27 @@
                         propDsColor="#fff"
                     ></component-countdown>
                 </view>
+                <view v-else class="flex-row jc-e align-c countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs">
+                    <!-- 分享 -->
+                    <view class="goods-share tc cp margin-right-lg" @tap="popup_share_event">
+                        <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                        <view class="cr-grey text-size-xs">分享</view>
+                    </view>
+                    <!-- 收藏 -->
+                    <view class="collect tc cp margin-horizontal-main" @tap="goods_favor_event">
+                        <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                        <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
+                    </view>
+                </view>
             </view>
 
             <view class="padding-horizontal-main">
                 <!-- 基础信息 -->
                 <view class="goods-base-content border-radius-main bg-white spacing-mb">
                     <view class="padding-main">
-                        <view class="goods-title-content oh">
+                        <view class="goods-title-content oh flex-row jc-sb align-c">
                             <!-- 标题 -->
-                            <view class="goods-title fl" :style="'color:' + goods.title_color">
+                            <view class="goods-title flex-1 flex-width" :style="'color:' + goods.title_color">
                                 <text class="va-m">{{ goods.title }}</text>
                                 <!-- icon -->
                                 <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container dis-inline-block va-m">
@@ -136,13 +148,19 @@
                                     </block>
                                 </view>
                             </view>
-                            <!-- 分享 -->
-                            <view class="goods-share tc cp pa" @tap="popup_share_event">
-                                <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                                <view class="cr-grey text-size-xs">分享</view>
+                            <view v-if="(plugins_seckill_data || null) !== null" class="flex-row align-c padding-left-main">
+                                <!-- 分享 -->
+                                <view class="goods-share tc cp" @tap="popup_share_event">
+                                    <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                                    <view class="cr-grey text-size-xs">分享</view>
+                                </view>
+                                <!-- 收藏 -->
+                                <view class="collect tc cp margin-left-xxxl" @tap="goods_favor_event">
+                                    <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill"  class="dis-block auto"></image>
+                                    <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
+                                </view>
                             </view>
                         </view>
-
                         <!-- 简述 -->
                         <view v-if="(goods.simple_desc || null) != null" class="cr-red text-size-xs margin-top-lg">{{ goods.simple_desc }}</view>
                     </view>
@@ -185,30 +203,34 @@
                 </view>
 
                 <!-- 批发 -->
-                <view v-if="(plugins_wholesale_data || null) != null" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
-                    <view class="fl item-title margin-top-sm">{{ plugins_wholesale_data.title }}</view>
-                    <view class="fr column-right-view border-radius-main single-text" @tap="popup_wholesale_event">
-                        <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                            <view class="item round dis-inline-block">{{ item.msg }}</view>
-                        </block>
+                <view v-if="(plugins_wholesale_data || null) != null" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
+                    <view class="flex-row align-c">
+                        <view class="item-title padding-right-main">{{ plugins_wholesale_data.title }}</view>
+                        <view class="column-right-view border-radius-main single-text flex-1 flex-width" @tap="popup_wholesale_event">
+                            <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
+                                <view class="item round dis-inline-block">{{ item.msg }}</view>
+                            </block>
+                        </view>
                     </view>
+                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 优惠券 -->
-                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
-                    <view class="fl item-title margin-top-sm">优惠券</view>
-                    <view class="fr column-right-view border-radius-main single-text cp" @tap="popup_coupon_event">
-                        <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                            <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{ item.desc || item.name }}</view>
-                        </block>
+                <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
+                    <view class="flex-row align-c">
+                        <view class="item-title padding-right-main">优惠券</view>
+                        <view class="column-right-view border-radius-main single-text cp flex-1 flex-width" @tap="popup_coupon_event">
+                            <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
+                                <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{ item.desc || item.name }}</view>
+                            </block>
+                        </view>
                     </view>
+                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 规格选择 -->
-                <view
-                    v-if="goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0"
-                    class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb"
-                >
+                <view v-if="goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0"
+                    class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title">规格</view>
                     <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'show'">{{ goods_spec_selected_text }}</view>
                 </view>
@@ -216,12 +238,10 @@
 
             <view class="padding-horizontal-main">
                 <!-- 商品基础参数 -->
-                <view
-                    v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0"
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0"
                     class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb"
                     @tap="popup_params_event"
-                    data-value="base"
-                >
+                    data-value="base">
                     <block v-for="(item, index) in goods.parameters.base" :key="index">
                         <text v-if="index > 0">，</text>
                         <text>{{ item.value }}</text>
@@ -250,7 +270,7 @@
                     <view class="spacing-nav-title">
                         <text class="line"></text>
                         <text class="text-wrapper">相关门店</text>
-                        <text class="arrow-right padding-right-xxxl cr-grey fr" data-value="/pages/plugins/realstore/index/index" @tap="url_event">更多</text>
+                        <text class="arrow-right padding-right-xl margin-top-xs cr-grey fr" data-value="/pages/plugins/realstore/index/index" @tap="url_event">更多</text>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
                 </view>
@@ -266,49 +286,44 @@
                         <text class="line"></text>
                         <text class="text-wrapper">商品评价</text>
                         <text class="margin-left-xs">({{ goods.comments_count }})</text>
-                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xxxl cr-grey fr">好评率 {{ goods.comments_score.rate }}%</navigator>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xl margin-top-xs cr-grey fr">好评率 {{ goods.comments_score.rate }}%</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
-                        <block v-if="(goods.comments_data || null) != null && goods.comments_data.length > 0">
-                            <view v-for="(item, index) in goods.comments_data" :key="index" class="goods-comment-item spacing-mb">
-                                <view class="oh nav br-b padding-bottom-sm">
-                                    <image class="avatar dis-block fl" :src="item.user.avatar || common_static_url + 'default-user.png'" mode="aspectFit"></image>
-                                    <view class="base-nav fr">
-                                        <text class="va-m">{{ item.user.user_name_view }}</text>
-                                        <view class="dis-inline-block va-m margin-left-sm">
-                                            <uni-rate :value="item.rating" :readonly="true" :is-fill="false" :size="14" />
-                                        </view>
-                                        <view class="fr">
-                                            <text class="cr-grey text-size-xs">{{ item.add_time_date }}</text>
-                                        </view>
-                                    </view>
-                                </view>
-                                <view class="base-content oh padding-sm">
-                                    <view class="content cr-base text-size-sm">{{ item.content }}</view>
-                                    <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
-                                        <block v-for="(iv, ix) in item.images" :key="ix">
-                                            <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
-                                        </block>
-                                    </view>
-                                    <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{ item.msg }}</view>
-                                </view>
+                        <component-goods-comment :prop-data="goods.comments_data"></component-goods-comment>
+                        <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
+                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
+                                我要评价
+                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="margin-left-sm"></iconfont>
                             </view>
-                            <view class="tc">
-                                <text class="cr-grey" :data-value="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" @tap="url_event">查看更多评价 >></text>
+                        </navigator>
+                    </view>
+                </view>
+
+
+                <!-- 问答 -->
+                <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
+                    <view class="spacing-nav-title">
+                        <text class="line"></text>
+                        <text class="text-wrapper">问答</text>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xl margin-top-xs cr-grey fr">查看全部回答</navigator>
+                    </view>
+                    <view class="border-radius-main padding-main bg-white">
+                        <component-ask-comment :prop-data="goods.comments_data"></component-ask-comment>
+                        <navigator url="/pages/plugins/ask/form/form" hover-class="none">
+                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
+                                我要提问
+                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="pr top-sm margin-left-sm"></iconfont>
                             </view>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-sm padding-bottom-sm">暂无评价数据</view>
-                        </block>
+                        </navigator>
                     </view>
                 </view>
 
                 <!-- 智能工具-详情顶部提示信息 -->
-                <view
-                    v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.content_top || null) != null && (plugins_intellectstools_data.content_top.msg || null) != null && plugins_intellectstools_data.content_top.msg.length > 0"
-                    class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main text-size-xs spacing-mb"
-                >
-                    <view v-if="(plugins_intellectstools_data.content_top.title || null) != null" class="panel-title padding-bottom-main fw-b text-size margin-bottom-main">{{ plugins_intellectstools_data.content_top.title }}</view>
+                <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.content_top || null) != null && (plugins_intellectstools_data.content_top.msg || null) != null && plugins_intellectstools_data.content_top.msg.length > 0"
+                    class="plugins-intellectstools-content-top-container panel-item panel-item-only padding-main border-radius-main text-size-xs spacing-mb">
+                    <view v-if="(plugins_intellectstools_data.content_top.title || null) != null" class="panel-title padding-bottom-main fw-b text-size margin-bottom-main">
+                        {{ plugins_intellectstools_data.content_top.title }}
+                    </view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in plugins_intellectstools_data.content_top.msg" :key="index" class="item padding-top-sm padding-bottom-sm">
                             <view class="content">{{ item }}</view>
@@ -378,20 +393,20 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作 -->
-            <view class="goods-buy-nav oh wh-auto bg-white br-t bottom-line-exclude">
+            <view class="goods-buy-nav oh wh-auto bg-white br-t bottom-line-exclude flex-row jc-sb align-c">
                 <!-- 左侧集合操作 -->
-                <view :class="'bus-items fl tc bus-items-' + bottom_nav_bus_number">
+                <view class="bus-items tc flex-row jc-sa align-c flex-width-half padding-right-sm">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
                     <block v-if="is_opt_back == 1 && is_goods_bottom_opt_back == 1">
                         <!-- 返回操作 -->
-                        <view class="item fl cp" @tap="bottom_nav_back_event">
+                        <view class="item cp" @tap="bottom_nav_back_event">
                             <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-grey">返回</text>
                         </view>
                     </block>
                     <block v-else>
                         <!-- 首页 -->
-                        <view class="item fl cp" @tap="shop_event">
+                        <view class="item cp" @tap="shop_event">
                             <image :src="nav_home_button_info.icon" mode="scaleToFill"></image>
                             <text class="dis-block text-size-xs cr-grey">{{ nav_home_button_info.text }}</text>
                         </view>
@@ -408,21 +423,16 @@
                         :propChatUrl="plugins_chat_data == null ? '' : plugins_chat_data.chat_url"
                     ></component-online-service>
                     <!-- 购物车 -->
-                    <view v-if="is_opt_cart == 1" class="item fl cp" data-value="/pages/cart-page/cart-page" @tap="url_event">
+                    <view v-if="is_opt_cart == 1" class="item cp" data-value="/pages/cart-page/cart-page" @tap="url_event">
                         <view class="badge-icon">
                             <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                         </view>
                         <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
                         <text class="dis-block text-size-xs cr-grey">购物车</text>
                     </view>
-                    <!-- 收藏 -->
-                    <view class="item fl cp" @tap="goods_favor_event">
-                        <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill"></image>
-                        <text :class="'dis-block text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</text>
-                    </view>
                 </view>
                 <!-- 右侧主操作 -->
-                <view :class="'btn-items fr goods-buy-nav-btn-number-' + buy_button.count || 0">
+                <view :class="'btn-items flex-row jc-sa align-c flex-width-half goods-buy-nav-btn-number-' + buy_button.count || 0">
                     <block v-if="(buy_button.data || null) != null && buy_button.data.length > 0">
                         <block v-for="(item, index) in buy_button.data" :key="index">
                             <block v-if="(item.name || null) != null && (item.type || null) != null">
@@ -615,8 +625,11 @@ import componentRealstoreList from "../../components/realstore-list/realstore-li
 import componentShopList from "../../components/shop-list/shop-list";
 import componentBindingDetailList from "../../components/binding-detail-list/binding-detail-list";
 import componentSharePopup from "../../components/share-popup/share-popup";
+import componentGoodsComment from "../../components/goods-comment/goods-comment";
+import componentAskComment from "../../components/ask-comment/ask-comment";
 
 var common_static_url = app.globalData.get_static_url("common");
+var ask_static_url = app.globalData.get_static_url("ask",true) + 'app/';
 var system_info = app.globalData.get_system_info() || {};
 var bar_height = parseInt(system_info.statusBarHeight || 0);
 var win_width = parseInt(system_info.windowWidth || system_info.screenWidth || 0);
@@ -625,6 +638,7 @@ export default {
         return {
             status_bar_height: bar_height,
             common_static_url: common_static_url,
+            ask_static_url:ask_static_url,
             indicator_dots: false,
             indicator_color: "rgba(0, 0, 0, .2)",
             indicator_active_color: "#666",
@@ -755,6 +769,8 @@ export default {
         componentShopList,
         componentBindingDetailList,
         componentSharePopup,
+        componentGoodsComment,
+        componentAskComment,
     },
 
     onLoad(params) {

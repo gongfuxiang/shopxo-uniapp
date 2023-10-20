@@ -189,5 +189,5 @@
     };
 </script>
 <style scoped>
-    @import './user-answers-question.css';
+    @import './user-list.css';
 </style>
