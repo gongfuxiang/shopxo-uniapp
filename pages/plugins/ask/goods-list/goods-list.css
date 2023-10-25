@@ -1,0 +1,23 @@
+
+
+.question .title{
+    width: 40rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    background: #fd9525;
+    border-radius: 4rpx;
+}
+.question .avatar,
+.ask .avatar {
+    width: 80rpx;
+    height: 80rpx;
+    border-radius: 4rpx;
+    background: #F5F5F5;
+}
+.ask .title{
+    width: 40rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    background: #99BB12;
+    border-radius: 4rpx;
+}

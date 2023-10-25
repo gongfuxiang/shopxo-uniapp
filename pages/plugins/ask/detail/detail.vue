@@ -22,6 +22,13 @@
                     </view>
                     <view class="text-size-md padding-top-main">{{ detail_data.reply }}</view>
                 </view>
+                <view class="padding-main spacing-mt br-t-dashed">
+                    <view class="fw-b">共3个回答</view>
+                    <view class="spacing-mt">
+                        <!-- 评论内容 -->
+                        <component-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-comments>
+                    </view>
+                </view>
             </view>
             <!-- 猜你喜欢 -->
             <view v-if="goods_list.length > 0" class="padding-horizontal-main padding-top-sm">
@@ -34,13 +41,13 @@
             </view>
             <view class="bottom-fixed ask-btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/user-form/user-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <navigator url="/pages/plugins/ask/user-form/user-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                         <view class="divider-r-d wh-auto">
                             <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
                             我要提问
                         </view>
                     </navigator>
-                    <navigator url="/pages/user-question/user-question" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                         <view class="wh-auto">
                             <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
                             我的提问
@@ -59,6 +66,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentComments from '@/components/blog-comments/blog-comments';
 
     export default {
         data() {
@@ -87,6 +95,7 @@
             componentNoData,
             componentBottomLine,
             componentGoodsList,
+            componentComments,
         },
         props: {},
 

@@ -3,7 +3,7 @@
         <view v-if="(data || null) != null && (data_base || null) != null" class="padding-bottom-main">
             <view>
                 <!-- 点赞、评论、分享 -->
-                <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container spacing-mt cr-grey">
+                <view v-if="propType == 'detail'" class="tr ask-comments-bottom-container spacing-mt cr-grey padding-horizontal-main">
                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
                         <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">评论({{ data.comments_count }})</text>
@@ -18,10 +18,10 @@
                     </view>
                 </view>
                 <!-- 评论回复表单 -->
-                <view v-if="(data_base.is_blog_comments_add || 0) == 1 && !input_comments_modal_status" class="padding-top-xxxl padding-bottom-xxl blog-comments-reply-container flex-row jc-sb spacing-mb">
+                <view v-if="(data_base.is_blog_comments_add || 0) == 1 && !input_comments_modal_status" class="padding-top-xxxl padding-bottom-xxl padding-horizontal-main blog-comments-reply-container flex-row jc-sb spacing-mb">
                     <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                     <view class="right-base flex-1 flex-width">
-                        <view class="comments border-radius-main padding-main">
+                        <view class="bg-white border-radius-main padding-main">
                             <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                             <view class="oh flex-row jc-sb align-e">
                                 <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
@@ -536,7 +536,7 @@
     /**
      * 聚合点赞、评论、分享
      */
-    .blog-comments-bottom-container .item:not(:last-child) {
+    .ask-comments-bottom-container .item:not(:last-child) {
         margin-right: 64rpx;
     }
     .blog-comments-reply-container .emoji-icon,
@@ -551,9 +551,6 @@
     }
     .blog-comments-reply-container .right-base {
         padding-left: 16rpx;
-    }
-    .blog-comments-reply-container .right-base .comments {
-        background-color: #f8f8f8;
     }
     .blog-comments-reply-container .right-base textarea {
         height: 120rpx;

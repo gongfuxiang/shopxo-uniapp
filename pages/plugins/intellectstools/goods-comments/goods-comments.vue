@@ -57,6 +57,7 @@
         },
 
         components: {
+            componentNoData,
             componentUpload,
         },
 

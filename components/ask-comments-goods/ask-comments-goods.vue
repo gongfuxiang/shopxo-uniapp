@@ -13,7 +13,7 @@
                         </view>
                         <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
                             <block v-for="(iv, ix) in item.images" :key="ix">
-                                <image class="br radius" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                                <image class="br radius margin-right-sm" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
                             </block>
                         </view>
                     </view>
@@ -48,7 +48,17 @@
 
         created: function () {},
 
-        methods: {},
+        methods: {
+            // 评价图片预览
+            comment_images_show_event(e) {
+                var index = e.currentTarget.dataset.index;
+                var ix = e.currentTarget.dataset.ix;
+                uni.previewImage({
+                    current: this.propData[index]["images"][ix],
+                    urls: this.propData[index]["images"],
+                });
+            },
+        },
     };
 </script>
 <style scoped>

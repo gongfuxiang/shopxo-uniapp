@@ -1002,7 +1002,7 @@
                     "path": "goods-list/goods-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "问答列表"
+                        "navigationBarTitleText": "问答专区"
                     }
                 }
             ]

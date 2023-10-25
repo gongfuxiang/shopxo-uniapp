@@ -3,28 +3,29 @@
         <view v-if="(data || null) != null" class="padding-top-main">
             <view class="padding-horizontal-main">
                 <view class="padding-main border-radius-main bg-white spacing-mb">
-                    <view class="fw-b text-size-xl">{{ data.title }}</view>
-                    <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
-                        <view class="fl">
-                            <text>时间：</text>
-                            <text>{{ data.add_time }}</text>
-                        </view>
-                        <view class="fr">
-                            <text class="margin-left-xxxl">浏览：</text>
-                            <text>{{ data.access_count }}</text>
+                    <view class="spacing-mb">
+                        <view class="fw-b text-size-xl">{{ data.title }}</view>
+                        <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
+                            <view class="fl">
+                                <text>时间：</text>
+                                <text>{{ data.add_time }}</text>
+                            </view>
+                            <view class="fr">
+                                <text class="margin-left-xxxl">浏览：</text>
+                                <text>{{ data.access_count }}</text>
+                            </view>
                         </view>
                     </view>
-                </view>
-                <view class="padding-main border-radius-main bg-white oh web-html-content spacing-mb">
-                    <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
-                        <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                    <view class="oh web-html-content spacing-mb">
+                        <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
+                            <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                        </view>
+                        <mp-html :content="data.content" />
                     </view>
-                    <mp-html :content="data.content" />
+                    <!-- 评论内容 -->
+                    <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
                 </view>
             </view>
-
-            <!-- 评论内容 -->
-            <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
 
             <view class="padding-horizontal-main">
                 <!-- 上一篇、下一篇 -->
