@@ -22,7 +22,7 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="padding-horizontal-main goods-comment">
                 <!-- 评价 -->
-                <component-goods-comment :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comment>
+                <component-goods-comments :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comments>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
 
@@ -36,7 +36,7 @@
 const app = getApp();
 import componentNoData from "../../components/no-data/no-data";
 import componentBottomLine from "../../components/bottom-line/bottom-line";
-import componentGoodsComment from "../../components/goods-comment/goods-comment";
+import componentGoodsComments from "../../components/goods-comments/goods-comments";
 
 var static_url = app.globalData.get_static_url("home");
 export default {
@@ -57,7 +57,7 @@ export default {
     components: {
         componentNoData,
         componentBottomLine,
-        componentGoodsComment,
+        componentGoodsComments,
     },
     props: {},
 

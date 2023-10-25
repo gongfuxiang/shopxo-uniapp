@@ -585,6 +585,7 @@
         height: 56rpx;
         line-height: 56rpx;
         padding: 0 24rpx;
+        background: #d8dadc;
     }
 
     /**
