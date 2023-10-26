@@ -34,7 +34,7 @@
 
         <view class="bottom-fixed question-btn bg-white">
             <view class="bottom-line-exclude">
-                <navigator url="/pages/plugins/ask/user-form/user-form" hover-class="none">
+                <navigator url="/pages/plugins/ask/form/form" hover-class="none">
                     <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
                 </navigator>
             </view>

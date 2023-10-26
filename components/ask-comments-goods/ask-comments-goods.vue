@@ -1,23 +1,23 @@
 <template>
     <view>
         <block v-if="(propData || null) != null && propData.length > 0">
-            <view v-for="(item, index) in propData" :key="index" class="ask-comment-item flex-row">
-                <view class="title cr-white tc">问</view>
-                <view class="base-nav flex-1 flex-width margin-left-sm">
-                    <view class="oh nav padding-bottom-sm">
-                        <view class="flex-row jc-sb align-c">
-                            <text class="va-m single-text">{{ item.user.user_name_view }}</text>
-                            <view class="fr">
-                                <text class="cr-grey text-size-xs">共有12条回答</text>
+            <view v-for="(item, index) in propData" :key="index" class="ask-comment-item">
+                <navigator :url="item.url" hover-class="none" class="flex-row">
+                    <view class="title cr-white tc">问</view>
+                    <view class="base-nav flex-1 flex-width margin-left-sm">
+                        <view class="oh nav padding-bottom-sm">
+                            <view class="flex-row jc-sb align-c">
+                                <text class="va-m single-text flex-1 flex-width">{{ item.title }}</text>
+                                <text class="cr-grey text-size-xs">共有{{ item.comments_count }}条回答</text>
+                            </view>
+                            <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
+                                <block v-for="(iv, ix) in item.images" :key="ix">
+                                    <image class="br radius margin-right-sm" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                                </block>
                             </view>
                         </view>
-                        <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
-                            <block v-for="(iv, ix) in item.images" :key="ix">
-                                <image class="br radius margin-right-sm" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
-                            </block>
-                        </view>
                     </view>
-                </view>
+                </navigator>
             </view>
         </block>
         <block v-else>

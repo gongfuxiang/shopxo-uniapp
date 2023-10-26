@@ -27,7 +27,7 @@
                                 <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                                 <view class="flex-row align-e">
                                     <text class="text-size-xs cr-grey-d margin-right-sm">剩余{{ input_comments_length_value }}字</text>
-                                    <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'br-grey-d bg-grey-d'" @tap="comments_event">评论</button>
+                                    <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
                                 </view>
                             </view>
                         </view>
@@ -585,7 +585,10 @@
         height: 56rpx;
         line-height: 56rpx;
         padding: 0 24rpx;
-        background: #d8dadc;
+    }
+    .comment-btn-default {
+        border: 2rpx solid #D8DADC;
+        background-color: #D8DADC;
     }
 
     /**

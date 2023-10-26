@@ -1,44 +1,63 @@
 <template>
     <view class="padding-main">
         <block v-if="data_list.length > 0">
-            <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-b':''">
+            <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
                 <view class="title flex-row jc-sb align-c wh-auto">
                     <view class="name flex-1 flex-width cr-base">{{ item.name }}的提问</view>
                     <view class="date cr-grey-9">{{ item.add_time_date }}</view>
                 </view>
-                <view class="question flex-row spacing-mt">
-                    <view class="title cr-white tc margin-right-sm">问</view>
-                    <view class="flex-1 flex-width">
-                        <view class="fw-b">{{ item.content }}</view>
-                        <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                            <image class="wh-auto" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
+                <view class="question spacing-mt">
+                    <navigator :url="item.url" hover-class="none" class="flex-row">
+                        <view class="title cr-white tc margin-right-sm">问</view>
+                        <view class="flex-1 flex-width">
+                            <view class="fw-b">{{ item.content }}</view>
+                            <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
+                                <image v-for="(img, i) in item.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+                            </view>
                         </view>
-                    </view>
+                    </navigator>
                 </view>
-                <block v-if="item.is_reply == 1 || item.comments_count > 0 ">
+                <block v-if="item.is_reply == 1 || item.comments_count > 0">
                     <view class="ask flex-row spacing-mt">
                         <view class="title cr-white tc margin-right-sm">答</view>
                         <view class="flex-1 flex-width">
-                            <view class="cr-base">
-                                <block v-if="item.reply">
-                                    {{ item.reply }}
+                            <block v-for="(it, ix) in item.comments_list" :key="ix">
+                                <block v-if="item.bool_more">
+                                    <view class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
+                                        <block v-if="item.reply">
+                                            {{ item.reply }}
+                                        </block>
+                                        <block v-else>
+                                            {{ it.content }}
+                                        </block>
+                                    </view>
                                 </block>
-                                <block v-if="(item.comments_list || null ) !== null && item.comments_list.length > 0 ">
-                                    {{ item.comments_list[0].content }}
+                                <block v-else>
+                                    <view v-if="ix < 1" class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
+                                        <block v-if="item.reply">
+                                            {{ item.reply }}
+                                        </block>
+                                        <block v-else>
+                                            {{ it.content }}
+                                        </block>
+                                    </view>
                                 </block>
-                            </view>
-                            <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                                <image class="wh-auto" @tap="comment_images_show_event" :data-index="index" :data-ix="ix" :src="iv" mode="aspectFit"></image>
-                            </view>
+                                <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
+                                    <image v-for="(img, i) in it.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+                                </view>
+                            </block>
                         </view>
                     </view>
                     <view class="more flex-row jc-e align-c spacing-mt">
-                        <navigator :url="item.url" hover-class="none">
-                            <view class="cr-red text-size-xs">
-                                查看全部{{ item.comments_count }}个回答
-                                <iconfont name="icon-qiandao-jiantou2" size="24rpx" class="pr top-xs"></iconfont>
-                            </view>
-                        </navigator>
+                        <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
+                            <block v-if="!item.hide_comments_list_num"> 查看全部{{ item.comments_count }}个回答 </block>
+                            <block v-else>查看更多</block>
+                            <iconfont :name="item.bool_more ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="24rpx" class="pr top-xs"></iconfont>
+                        </view>
+                        <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
+                            收起回答
+                            <iconfont name="icon-fenlei-top" size="24rpx" class="pr top-xs"></iconfont>
+                        </view>
                     </view>
                 </block>
             </view>
@@ -68,6 +87,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 goods_id: null,
+                comments_list: [],
             };
         },
 
@@ -87,6 +107,14 @@
 
         onShow() {
             this.init();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
         },
 
         methods: {
@@ -210,6 +238,93 @@
                 uni.previewImage({
                     current: this.data_list[index]['images'][ix],
                     urls: this.data_list[index]['images'],
+                });
+            },
+            // 查看更多
+            open_more(id, i) {
+                var new_data_list = this.data_list;
+                new_data_list[i].bool_more = true;
+                if (new_data_list[i].bool_api === undefined || new_data_list[i].bool_api === true) {
+                    // 加载loding
+                    uni.showLoading({
+                        title: '加载中...',
+                    });
+                    // 获取数据
+                    uni.request({
+                        url: app.globalData.get_request_url('commentsreplylist', 'index', 'ask'),
+                        method: 'POST',
+                        data: {
+                            ask_id: id,
+                            ask_comments_id: 0,
+                            page: new_data_list[i].page || 1,
+                            is_comments: 1,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            uni.stopPullDownRefresh();
+                            if (res.data.code == 0) {
+                                if (res.data.data.data.length > 0) {
+                                    if ((new_data_list[i].page || 1) <= 1) {
+                                        new_data_list[i].comments_list = res.data.data.data;
+                                    } else {
+                                        new_data_list[i].comments_list = new_data_list[i].comments_list.concat(res.data.data.data);
+                                    }
+                                    new_data_list[i].hide_comments_list_num = true;
+                                    // 判断当前页数是否小于总页数，如果是则继续显示更多按钮，且当前页+1，如果不是则隐藏更多按钮
+                                    if (res.data.data.page < res.data.data.page_total) {
+                                        new_data_list[i].hide_more = false;
+                                        new_data_list[i].page = (new_data_list[i].page || 1) + 1;
+                                    } else {
+                                        new_data_list[i].hide_more = true;
+                                    }
+                                    new_data_list[i].page_total = res.data.data.page_total;
+                                    new_data_list[i].bool_api = true;
+                                    this.setData({
+                                        data_list: new_data_list,
+                                    });
+                                }
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast('服务器请求出错');
+                        },
+                    });
+                } else {
+                    // 查看更多是否调用接口
+                    new_data_list[i].bool_api = true;
+                    // 是否隐藏更多查看按钮
+                    new_data_list[i].hide_more = false;
+                    if (new_data_list[i].page < new_data_list[i].page_total) {
+                        // 是否隐藏更多查看按钮
+                        new_data_list[i].hide_more = false;
+                    } else {
+                        // 是否隐藏更多查看按钮
+                        new_data_list[i].hide_more = true;
+                    }
+                    this.setData({
+                        data_list: new_data_list,
+                    });
+                }
+            },
+            // 收起更多
+            close_more(i) {
+                var new_data_list = this.data_list;
+                // 查看更多是否调用接口
+                new_data_list[i].bool_api = false;
+                // 是否隐藏更多查看按钮
+                new_data_list[i].hide_more = false;
+                // 是否展示更多内容
+                new_data_list[i].bool_more = false;
+                // 显示查看更多的数量
+                new_data_list[i].hide_comments_list_num = false;
+                this.setData({
+                    data_list: new_data_list,
                 });
             },
         },
