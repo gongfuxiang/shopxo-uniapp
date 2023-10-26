@@ -2,7 +2,7 @@
     <view>
         <view v-if="(data || null) != null" class="padding-main bg-white">
             <!-- 评论内容 -->
-            <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list" propType="comments"></component-blog-comments>
+            <component-ask-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list" propType="comments"></component-ask-comments>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
@@ -16,7 +16,7 @@
     const app = getApp();
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentBlogComments from '../../../../components/blog-comments/blog-comments';
+    import componentAskComments from '../../../../components/ask-comments/ask-comments';
     export default {
         data() {
             return {
@@ -35,7 +35,7 @@
         components: {
             componentNoData,
             componentBottomLine,
-            componentBlogComments,
+            componentAskComments,
         },
         props: {},
 
@@ -55,7 +55,7 @@
                     title: '加载中...',
                 });
                 uni.request({
-                    url: app.globalData.get_request_url('commentsinfo', 'index', 'blog'),
+                    url: app.globalData.get_request_url('commentsinfo', 'index', 'ask'),
                     method: 'POST',
                     data: {
                         id: this.params.id || 0,
@@ -65,12 +65,12 @@
                         uni.hideLoading();
                         var data = res.data.data;
                         if (res.data.code == 0 && (data.data || null) != null) {
-                            var blog = data.data;
+                            var ask = data.data;
                             this.setData({
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
                                 data_base: data.base || null,
-                                data: blog,
+                                data: ask,
                                 emoji_list: data.emoji_list || [],
                             });
 
@@ -79,7 +79,7 @@
                                 share_info: {
                                     title: this.data.seo_title || this.data.title,
                                     desc: this.data.seo_desc || this.data.describe,
-                                    path: '/pages/plugins/blog/detail/detail',
+                                    path: '/pages/plugins/ask/detail/detail',
                                     query: 'id=' + this.data.id,
                                     img: this.data.cover,
                                 },

@@ -1,45 +1,42 @@
 <template>
     <view>
-        <view v-if="(data || null) != null" class="padding-top-main">
-            <view class="padding-horizontal-main">
-                <view class="padding-main border-radius-main bg-white spacing-mb">
-                    <view class="spacing-mb">
-                        <view class="fw-b text-size-xl">{{ data.title }}</view>
-                        <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
-                            <view class="fl">
-                                <text>时间：</text>
-                                <text>{{ data.add_time }}</text>
-                            </view>
-                            <view class="fr">
-                                <text class="margin-left-xxxl">浏览：</text>
-                                <text>{{ data.access_count }}</text>
-                            </view>
+        <view v-if="(data || null) != null">
+            <view class="padding-main bg-white spacing-mb">
+                <view class="spacing-mb">
+                    <view class="fw-b text-size-xl">{{ data.title }}</view>
+                    <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
+                        <view class="fl">
+                            <text>时间：</text>
+                            <text>{{ data.add_time }}</text>
+                        </view>
+                        <view class="fr">
+                            <text class="margin-left-xxxl">浏览：</text>
+                            <text>{{ data.access_count }}</text>
                         </view>
                     </view>
-                    <view class="oh web-html-content spacing-mb">
-                        <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
-                            <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
-                        </view>
-                        <mp-html :content="data.content" />
-                    </view>
-                    <!-- 评论内容 -->
-                    <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
                 </view>
+                <view class="oh web-html-content spacing-mb">
+                    <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
+                        <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                    </view>
+                    <mp-html :content="data.content" />
+                </view>
+                <!-- 评论内容 -->
+                <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
             </view>
 
             <view class="padding-horizontal-main">
                 <!-- 上一篇、下一篇 -->
-                <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
-                    <view v-if="(last_next.last || null) != null" class="flex-row cr-base">
+                <view v-if="(last_next || null) != null" class="last-next-data spacing-mt margin-bottom-xxxl cr-grey-9">
+                    <view v-if="(last_next.last || null) != null" class="flex-row">
                         <text>上一篇：</text>
-                        <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width">{{ last_next.last.title }}</navigator>
+                        <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.last.title }}</navigator>
                     </view>
-                    <view v-if="(last_next.next || null) != null" class="margin-top-sm flex-row cr-main">
+                    <view v-if="(last_next.next || null) != null" class="margin-top flex-row cr-main">
                         <text>下一篇：</text>
-                        <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width">{{ last_next.next.title }}</navigator>
+                        <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.next.title }}</navigator>
                     </view>
                 </view>
-
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">

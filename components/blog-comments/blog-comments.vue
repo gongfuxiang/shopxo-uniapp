@@ -1,9 +1,10 @@
 <template>
     <view>
-        <view v-if="(data || null) != null && (data_base || null) != null" class="padding-bottom-main">
-            <view>
+        <view v-if="(data || null) != null && (data_base || null) != null">
+            <view class="flex-row jc-sb align-c">
+                <view class="fw-b">评论 {{ data.comments_count || '' }}</view>
                 <!-- 点赞、评论、分享 -->
-                <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container spacing-mt cr-grey">
+                <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container cr-grey">
                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
                         <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">评论({{ data.comments_count }})</text>
@@ -17,121 +18,95 @@
                         <text class="text-size-xs">分享</text>
                     </view>
                 </view>
-                <!-- 评论回复表单 -->
-                <view v-if="(data_base.is_blog_comments_add || 0) == 1 && !input_comments_modal_status" class="padding-top-xxxl padding-bottom-xxl blog-comments-reply-container flex-row jc-sb spacing-mb">
-                    <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
-                    <view class="right-base flex-1 flex-width">
-                        <view class="comments border-radius-main padding-main">
-                            <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
-                            <view class="oh flex-row jc-sb align-e">
-                                <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
-                                <view class="flex-row align-e">
-                                    <text class="text-size-xs cr-grey-d margin-right-sm">剩余{{ input_comments_length_value }}字</text>
-                                    <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
-                                </view>
+            </view>
+            <!-- 评论回复表单 -->
+            <view v-if="(data_base.is_blog_comments_add || 0) == 1 && !input_comments_modal_status" class="padding-top-xxxl padding-bottom-xxl blog-comments-reply-container flex-row jc-sb spacing-mb">
+                <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
+                <view class="right-base flex-1 flex-width">
+                    <view class="comments border-radius-main padding-main">
+                        <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <view class="oh flex-row jc-sb align-e">
+                            <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
+                            <view class="flex-row align-e">
+                                <text class="text-size-xs cr-grey-d margin-right-sm">剩余{{ input_comments_length_value }}字</text>
+                                <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
                             </view>
                         </view>
                     </view>
                 </view>
-                <!-- 评论回复内容 -->
-                <view v-if="(data_base.is_blog_comments_show || 0) == 1 && (data.comments_list || null) != null && data.comments_list.length > 0" class="blog-comments-list margin-bottom-xxxl padding-left-main">
-                    <block v-for="(item, index) in data.comments_list" :key="index">
-                        <view class="item oh flex-row jc-sb">
-                            <image :src="item.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
-                            <view class="right-content padding-bottom-main margin-bottom-main br-b-e flex-1 flex-width">
-                                <view class="comments-base oh">
-                                    <span class="username fw-b">{{ item.user.user_name_view }}</span>
-                                    <span class="cr-grey-9 margin-left-main">{{ item.add_time }}</span>
+            </view>
+            <!-- 评论回复内容 -->
+            <view v-if="(data_base.is_blog_comments_show || 0) == 1 && (data.comments_list || null) != null && data.comments_list.length > 0" class="blog-comments-list">
+                <block v-for="(item, index) in data.comments_list" :key="index">
+                    <view class="item oh flex-row jc-sb">
+                        <image :src="item.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
+                        <view class="right-content flex-1 flex-width" :class="data.comments_list.length > index + 1 ? 'br-b-e padding-bottom-main margin-bottom-main' : ''">
+                            <view class="comments-base oh">
+                                <span class="username fw-b">{{ item.user.user_name_view }}</span>
+                                <span class="cr-grey-9 margin-left-main">{{ item.add_time }}</span>
+                            </view>
+                            <view class="margin-top-sm comments-content">{{ item.content }}</view>
+                            <view class="blog-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
+                                <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-blogcommentsid="item.id" @tap="modal_open_event">
+                                    <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                    <text class="va-m">回复({{ item.comments_count }})</text>
                                 </view>
-                                <view class="margin-top-sm comments-content">{{ item.content }}</view>
-                                <view class="blog-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
-                                    <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-blogcommentsid="item.id" @tap="modal_open_event">
-                                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
-                                        <text class="va-m">回复({{ item.comments_count }})</text>
-                                    </view>
-                                    <view
-                                        v-if="(data_base.is_blog_give_thumbs || 0) == 1"
-                                        :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')"
-                                        data-type="1"
-                                        :data-index="index"
-                                        :data-blogid="item.blog_id"
-                                        :data-blogcommentsid="item.id"
-                                        @tap="give_thumbs_event"
-                                    >
-                                        <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
-                                        <text class="va-m">点赞({{ item.give_thumbs_count }})</text>
-                                    </view>
+                                <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="1" :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="give_thumbs_event">
+                                    <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                    <text class="va-m">点赞({{ item.give_thumbs_count }})</text>
                                 </view>
-                                <view v-if="(item.reply_comments_list || null) != null && item.reply_comments_list.length > 0" class="reply-blog-comments-list">
-                                    <block v-for="(comments, index2) in item.reply_comments_list" :key="index2">
-                                        <view class="bg-grey-e">
-                                            <view class="item padding-main oh flex-row jc-sb">
-                                                <image :src="comments.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
-                                                <view class="right-content flex-1 flex-width">
-                                                    <view class="comments-reply-base oh">
-                                                        <span class="username fw-b">{{ comments.user.user_name_view }}</span>
-                                                        <span class="cr-grey-9 margin-left-main">{{ comments.add_time }}</span>
+                            </view>
+                            <view v-if="(item.reply_comments_list || null) != null && item.reply_comments_list.length > 0" class="reply-blog-comments-list">
+                                <block v-for="(comments, index2) in item.reply_comments_list" :key="index2">
+                                    <view class="bg-grey-e">
+                                        <view class="item padding-main oh flex-row jc-sb">
+                                            <image :src="comments.user.avatar" mode="aspectFill" class="user-avatar circle fl"></image>
+                                            <view class="right-content flex-1 flex-width">
+                                                <view class="comments-reply-base oh">
+                                                    <span class="username fw-b">{{ comments.user.user_name_view }}</span>
+                                                    <span class="cr-grey-9 margin-left-main">{{ comments.add_time }}</span>
+                                                </view>
+                                                <view v-if="(comments.reply_comments_text || null) != null" class="margin-top-sm reply-content">{{ comments.reply_comments_text }}</view>
+                                                <view class="margin-top-sm">{{ comments.content }}</view>
+                                                <view class="blog-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
+                                                    <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="comments.user.user_name_view" :data-blogcommentsid="comments.blog_comments_id" :data-replycommentsid="comments.id" @tap="modal_open_event">
+                                                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                                        <text class="va-m">回复({{ comments.comments_count }})</text>
                                                     </view>
-                                                    <view v-if="(comments.reply_comments_text || null) != null" class="margin-top-sm reply-content">{{ comments.reply_comments_text }}</view>
-                                                    <view class="margin-top-sm">{{ comments.content }}</view>
-                                                    <view class="blog-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
-                                                        <view
-                                                            v-if="(data_base.is_blog_comments_show || 0) == 1"
-                                                            class="item dis-inline-block"
-                                                            :data-index="index"
-                                                            :data-username="comments.user.user_name_view"
-                                                            :data-blogcommentsid="comments.blog_comments_id"
-                                                            :data-replycommentsid="comments.id"
-                                                            @tap="modal_open_event"
-                                                        >
-                                                            <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
-                                                            <text class="va-m">回复({{ comments.comments_count }})</text>
-                                                        </view>
-                                                        <view
-                                                            v-if="(data_base.is_blog_give_thumbs || 0) == 1"
-                                                            :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')"
-                                                            data-type="2"
-                                                            :data-index="index"
-                                                            :data-indexs="index2"
-                                                            :data-blogid="comments.blog_id"
-                                                            :data-blogcommentsid="comments.id"
-                                                            :data-replycommentsid="comments.blog_comments_id"
-                                                            @tap="give_thumbs_event"
-                                                        >
-                                                            <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
-                                                            <text class="va-m">点赞({{ comments.give_thumbs_count }})</text>
-                                                        </view>
+                                                    <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="2" :data-index="index" :data-indexs="index2" :data-blogid="comments.blog_id" :data-blogcommentsid="comments.id" :data-replycommentsid="comments.blog_comments_id" @tap="give_thumbs_event">
+                                                        <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                                        <text class="va-m">点赞({{ comments.give_thumbs_count }})</text>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </block>
-                                </view>
-                                <view v-if="(item.comments_count || 0) > 0 && (item.is_comments_list_submit == undefined || item.is_comments_list_submit == 1)" class="margin-top-lg text-size-xs">
-                                    <text :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="comments_list_reply_event">
-                                        <text v-if="item.is_comments_list_submit == undefined" class="cr-grey">查看全部{{ item.comments_count }}条回复</text>
-                                        <text v-else class="cr-grey">查看更多回复</text>
-                                        <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
-                                    </text>
-                                </view>
+                                    </view>
+                                </block>
+                            </view>
+                            <view v-if="(item.comments_count || 0) > 0 && (item.is_comments_list_submit == undefined || item.is_comments_list_submit == 1)" class="margin-top-lg text-size-xs">
+                                <text :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="comments_list_reply_event">
+                                    <text v-if="item.is_comments_list_submit == undefined" class="cr-grey">查看全部{{ item.comments_count }}条回复</text>
+                                    <text v-else class="cr-grey">查看更多回复</text>
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                                </text>
                             </view>
                         </view>
-                    </block>
-                    <block v-if="((data_base.blog_detail_comments_more_page_number || 0) == 0 && (data.comments_count || 0) > 20) || ((data_base.blog_detail_comments_more_page_number || 0) > 0 && data.comments_count > data_base.blog_detail_comments_more_page_number)">
-                        <view v-if="propType == 'detail'" class="margin-top-xxl tc padding-bottom-xxl">
-                            <text :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
-                                <text class="cr-grey">查看全部{{ data.comments_count }}条评论</text>
-                                <iconfont name="icon-qiandao-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
-                            </text>
-                        </view>
-                        <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxl tc padding-bottom-xxl">
-                            <text :data-blogid="data.id" @tap="comments_list_reply_event">
-                                <text class="cr-grey">查看更多评论</text>
-                                <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
-                            </text>
-                        </view>
-                    </block>
-                </view>
+                    </view>
+                </block>
+                <block v-if="((data_base.blog_detail_comments_more_page_number || 0) == 0 && (data.comments_count || 0) > 20) || ((data_base.blog_detail_comments_more_page_number || 0) > 0 && data.comments_count > data_base.blog_detail_comments_more_page_number)">
+                    <view v-if="propType == 'detail'" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
+                        <text :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
+                            <text class="cr-grey">查看全部{{ data.comments_count }}条评论</text>
+                            <iconfont name="icon-qiandao-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                        </text>
+                    </view>
+                    <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
+                        <text :data-blogid="data.id" @tap="comments_list_reply_event">
+                            <text class="cr-grey">查看更多评论</text>
+                            <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                        </text>
+                    </view>
+                </block>
             </view>
             <!-- 回复弹窗 -->
             <view v-if="input_comments_modal_status" class="blog-comments-modal pf">
@@ -149,7 +124,7 @@
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
                             <text class="va-m text-size-xs cr-grey margin-right-lg">剩余{{ input_comments_length_value }}字</text>
-                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'br-grey-d bg-grey-d'" @tap="comments_event">评论</button>
+                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
                         </view>
                     </view>
                 </view>
@@ -445,6 +420,10 @@
                                         input_comments_value: '',
                                         input_comments_length_value: this.input_comments_length_max,
                                         input_comments_modal_status: false,
+                                        input_comments_modal_index: 0,
+                                        input_comments_modal_username: '',
+                                        input_comments_modal_blog_comments_id: 0,
+                                        input_comments_modal_reply_comments_id: 0,
                                     });
                                 } else {
                                     app.globalData.showToast(res.data.msg);
@@ -587,25 +566,21 @@
         padding: 0 24rpx;
     }
     .comment-btn-default {
-        border: 2rpx solid #D8DADC;
-        background-color: #D8DADC;
+        border: 2rpx solid #d8dadc;
+        background-color: #d8dadc;
     }
 
     /**
      * 评论列表
      */
     .blog-comments-list > .item .user-avatar {
-        width: 50rpx;
-        height: 50rpx;
+        width: 72rpx;
+        height: 72rpx;
         border: 1px solid #eee;
     }
     .blog-comments-list .comments-base,
     .blog-comments-list .comments-content {
         padding-left: 16rpx;
-        padding-right: 20rpx;
-    }
-    .blog-comments-right-content-operate,
-    .reply-blog-comments-list {
         padding-right: 20rpx;
     }
     .reply-blog-comments-list {

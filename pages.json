@@ -1004,6 +1004,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "问答专区"
                     }
+                },
+                {
+                    "path": "comments/comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "全部问答"
+                    }
                 }
             ]
         },

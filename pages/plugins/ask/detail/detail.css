@@ -3,6 +3,19 @@
     height: 68rpx !important;
 }
 
+/**
+ * 商品链接
+ */
+.goods-link .img {
+    width: 80rpx;
+    height: 80rpx;
+}
+
+.goods-link .title {
+    min-height: 40rpx;
+    line-height: 40rpx;
+}
+
 
 /**
  * 猜你喜欢

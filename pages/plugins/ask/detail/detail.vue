@@ -1,33 +1,51 @@
 <template>
     <view>
-        <view v-if="Object.keys(detail_data).length !== 0" class="page-bottom-fixed">
-            <!-- true为空对象 false为非空对象 Object.keys(detail_data).length == 0 -->
+        <view v-if="(data || null) !== null" class="page-bottom-fixed">
+            <!-- true为空对象 false为非空对象 Object.keys(data).length == 0 -->
             <view class="ask-container bg-white spacing-mb">
                 <view class="padding-main">
-                    <view class="fw-b text-size-xl spacing-mb">{{ detail_data.title }}</view>
+                    <view class="fw-b text-size-xl spacing-mb">{{ data.title }}</view>
                     <view class="cr-grey-9 text-size-xs margin-bottom-sm flex-row">
-                        留言时间: {{ detail_data.add_time_date }}
+                        留言时间: {{ data.add_time_date }}
                         <view class="fw-b padding-horizontal-xs">·</view>
-                        {{ detail_data.access_count || '0' }}浏览
+                        {{ data.access_count || '0' }}浏览
                     </view>
-                    <view class="text-size-md">{{ detail_data.content }}</view>
+                    <view class="text-size-md">{{ data.content }}</view>
+                    <block v-if="(data.goods_data || null) !== null">
+                        <navigator :url="data.goods_data.goods_url" hover-class="none">
+                            <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
+                                <view class="flex-row jc-sb">
+                                    <view class="img border-radius-sm oh margin-right-main">
+                                        <image :src="data.goods_data.images" mode="widthFix" class="wh-auto"></image>
+                                    </view>
+                                    <view class="flex-1 flex-width flex-row jc-sb align-c">
+                                        <view class="flex-1 flex-width padding-right-sm">
+                                            <view class="title multi-text">{{ data.goods_data.title }}</view>
+                                            <view class="flex-row align-c margin-top-xs">
+                                                <text class="cr-red fw-b margin-right-main">{{ currency_symbol }}{{ data.goods_data.price }}</text>
+                                                <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ data.goods_data.original_price }}</text>
+                                            </view>
+                                        </view>
+                                        <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                    </view>
+                                </view>
+                            </view>
+                        </navigator>
+                    </block>
                 </view>
-                <view v-if="detail_data.is_reply && detail_data.is_reply === '1'" class="padding-main br-t-dashed">
+                <view v-if="data.is_reply && data.is_reply === '1'" class="padding-main br-t-dashed">
                     <view class="flex-row jc-sb align-c">
                         <view class="flex-row align-c">
                             <image :src="ask_static_url + 'admin.png'" mode="widthFix" class="admin-img margin-right-sm"></image>
                             <text>管理员</text>
                         </view>
-                        <view class="cr-grey-9 text-size-xs">回复时间: {{ detail_data.reply_time_date }}</view>
+                        <view class="cr-grey-9 text-size-xs">回复时间: {{ data.reply_time_date }}</view>
                     </view>
-                    <view class="text-size-md padding-top-main">{{ detail_data.reply }}</view>
+                    <view class="text-size-md padding-top-main">{{ data.reply }}</view>
                 </view>
-                <view class="padding-main spacing-mt br-t-dashed">
-                    <view class="fw-b">共3个回答</view>
-                    <view class="spacing-mt">
-                        <!-- 评论内容 -->
-                        <component-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-comments>
-                    </view>
+                <view class="padding-main br-t-dashed">
+                    <!-- 评论内容 -->
+                    <component-ask-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-ask-comments>
                 </view>
             </view>
             <!-- 猜你喜欢 -->
@@ -66,7 +84,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentComments from '@/components/blog-comments/blog-comments';
+    import componentAskComments from '@/components/ask-comments/ask-comments';
 
     export default {
         data() {
@@ -74,7 +92,9 @@
                 ask_static_url: app.globalData.get_static_url('ask', true),
                 data_list_loding_status: 1,
                 data_bottom_line_status: true,
-                detail_data: {},
+                data: null,
+                data_base: null,
+                emoji_list: [],
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 猜你喜欢 参数
@@ -95,7 +115,7 @@
             componentNoData,
             componentBottomLine,
             componentGoodsList,
-            componentComments,
+            componentAskComments,
         },
         props: {},
 
@@ -147,7 +167,9 @@
                         if (res.data.code == 0) {
                             let data = res.data.data;
                             this.setData({
-                                detail_data: data.data,
+                                data: data.data || null,
+                                data_base: data.base || null,
+                                emoji_list: data.emoji_list || [],
                                 goods_list: data.goods,
                                 data_list_loding_status: 3,
                                 goods_is_loading: 0,
