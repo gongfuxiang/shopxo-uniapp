@@ -27,10 +27,10 @@
                                                         <text>{{ user_vip.permanent_value }}{{ user_vip.permanent_unit }}</text>
                                                     </block>
                                                     <block v-else>
-                                                        <view v-if="(user_vip.surplus_time_number || 0) !== 0">
+                                                        <block v-if="(user_vip.surplus_time_number || 0) !== 0">
                                                             <text class="padding-horizontal-xs">|</text>
                                                             <text>{{ user_vip.surplus_time_number }}{{ user_vip.surplus_time_unit }}</text>
-                                                        </view>
+                                                        </block>
                                                     </block>
                                                 </view>
                                             </block>

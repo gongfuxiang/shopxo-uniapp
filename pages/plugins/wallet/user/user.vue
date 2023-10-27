@@ -25,8 +25,10 @@
                                                     <view>有效(元)</view>
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                                 </view>
-                                                <view class="is-price-show">
-                                                    <iconfont name="icon-wdhy-erweima" size="44rpx" class="margin-right-xxxl" :data-value="payment_page_url" @tap="url_event"></iconfont>
+                                                <view class="flex-row">
+                                                    <view class="margin-right-xxxl" :data-value="payment_page_url" @tap="url_event">
+                                                        <iconfont name="icon-wdhy-erweima" size="44rpx"></iconfont>
+                                                    </view>
                                                     <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
                                                 </view>
                                             </view>
@@ -42,7 +44,7 @@
                                                     </view>
                                                 </view>
                                                 <view class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
-                                                    <iconfont name="icon-transfer" size="28rpx"></iconfont>
+                                                    <iconfont name="icon-transfer" size="28rpx" class="transfer-icon"></iconfont>
                                                     <text class="margin-left-xs">转账</text>
                                                 </view>
                                             </view>

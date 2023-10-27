@@ -569,6 +569,13 @@
                     }
                 },
                 {
+                    "path": "user-transfer-detail/user-transfer-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "转账详情"
+                    }
+                },
+                {
                     "path": "payment-code/payment-code",
                     "style": {
                         "enablePullDownRefresh": false,
