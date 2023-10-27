@@ -20,16 +20,16 @@
                                             <view class="pa content-padding-1 oh filter-blur-child">
                                                 <image :src="wallet_static_url + 'wallet-bg.png'" mode="widthFix" class="wh-auto wallet-child-bg" />
                                             </view>
-                                            <view class="pr z-i flex-row jc-c">
+                                            <view class="pr z-i flex-row jc-c align-s">
                                                 <view class="flex-1 flex-width">
                                                     <view>有效(元)</view>
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                                 </view>
                                                 <view class="flex-row">
-                                                    <view class="margin-right-xxxl" :data-value="payment_page_url" @tap="url_event">
+                                                    <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
+                                                    <view class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
                                                         <iconfont name="icon-wdhy-erweima" size="44rpx"></iconfont>
                                                     </view>
-                                                    <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
                                                 </view>
                                             </view>
                                             <view class="pr z-i flex-row jc-c align-c">
@@ -173,9 +173,6 @@
         onShow() {
             // 分享菜单处理
             app.globalData.page_share_handle();
-
-            // 初始化配置
-            this.init_config();
         },
 
         // 下拉刷新
@@ -186,21 +183,6 @@
             });
         },
         methods: {
-            // 初始化配置
-            init_config(status) {
-                if ((status || false) == true) {
-                    // 付款码入口
-                    var payment_page_url = null;
-                    if (app.globalData.get_config('plugins_base.wallet', null) != null) {
-                        payment_page_url = '/pages/plugins/wallet/payment-code/payment-code';
-                    }
-                    this.setData({
-                        payment_page_url: payment_page_url,
-                    });
-                } else {
-                    app.globalData.is_config(this, 'init_config');
-                }
-            },
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
