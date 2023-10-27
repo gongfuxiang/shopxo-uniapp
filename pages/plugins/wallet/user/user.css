@@ -12,6 +12,13 @@
     padding: 24rpx;
 }
 
+.transfer-accounts {
+    border: 2rpx solid #fff;
+    height: 48rpx;
+    line-height: 48rpx;
+    padding: 0 28rpx;
+}
+
 .content-padding-1 {
     padding: 2rpx;
     left: -4rpx;

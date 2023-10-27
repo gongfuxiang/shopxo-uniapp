@@ -17,8 +17,8 @@
                 <view class="content margin-top">
                     <navigator :url="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" hover-class="none">
                         <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-sm">
-                                <text class="cr-grey-9 margin-right-main">{{ fv.name }}</text>
+                            <view class="single-text margin-top-sm cash">
+                                <text class="name cr-grey-9 margin-right-main">{{ fv.name }}:</text>
                                 <text class="fw-b">{{ item[fv.field] }}</text>
                                 <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
                             </view>
@@ -236,5 +236,8 @@
         line-height: 60rpx;
         padding: 0 30rpx;
         min-width: 84rpx;
+    }
+    .cash-item .name {
+        min-width: 112rpx;
     }
 </style>

@@ -24,19 +24,26 @@
                                                 <view class="flex-1 flex-width">
                                                     <view>有效(元)</view>
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
-                                                    <view class="flex-row jc-sb align-c margin-top-main">
-                                                        <view class="flex-1">
-                                                            <view class="tetx-size-xs">冻结(元)</view>
-                                                            <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
-                                                        </view>
-                                                        <view class="flex-1">
-                                                            <view class="tetx-size-xs">赠送(元)</view>
-                                                            <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
-                                                        </view>
-                                                    </view>
                                                 </view>
                                                 <view class="is-price-show">
+                                                    <iconfont name="icon-wdhy-erweima" size="44rpx" class="margin-right-xxxl" :data-value="payment_page_url" @tap="url_event"></iconfont>
                                                     <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
+                                                </view>
+                                            </view>
+                                            <view class="pr z-i flex-row jc-c align-c">
+                                                <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
+                                                    <view class="flex-1">
+                                                        <view class="tetx-size-xs">冻结(元)</view>
+                                                        <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
+                                                    </view>
+                                                    <view class="flex-1">
+                                                        <view class="tetx-size-xs">赠送(元)</view>
+                                                        <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
+                                                    </view>
+                                                </view>
+                                                <view class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
+                                                    <iconfont name="icon-transfer" size="28rpx"></iconfont>
+                                                    <text class="margin-left-xs">转账</text>
                                                 </view>
                                             </view>
                                         </view>
@@ -66,6 +73,9 @@
                                         </view>
                                         <view v-if="current === 2">
                                             <component-user-cash :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-cash>
+                                        </view>
+                                        <view v-if="current === 3">
+                                            <component-transfer :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-transfer>
                                         </view>
                                     </view>
                                 </view>
@@ -99,6 +109,7 @@
     import componentWalletLog from '@/components/wallet/wallet-log/wallet-log';
     import componentUserRecharge from '@/components/wallet/user-recharge/user-recharge';
     import componentUserCash from '@/components/wallet/user-cash/user-cash';
+    import componentTransfer from '@/components/wallet/transfer/transfer';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
 
     export default {
@@ -119,6 +130,7 @@
                 current: 0,
                 propPullDownRefresh: false,
                 scroll_lower_bool: false,
+                payment_page_url: null,
             };
         },
 
@@ -129,6 +141,7 @@
             componentWalletLog,
             componentUserRecharge,
             componentUserCash,
+            componentTransfer,
         },
         props: {},
 
@@ -158,6 +171,9 @@
         onShow() {
             // 分享菜单处理
             app.globalData.page_share_handle();
+
+            // 初始化配置
+            this.init_config();
         },
 
         // 下拉刷新
@@ -168,6 +184,21 @@
             });
         },
         methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    // 付款码入口
+                    var payment_page_url = null;
+                    if (app.globalData.get_config('plugins_base.wallet', null) != null) {
+                        payment_page_url = '/pages/plugins/wallet/payment-code/payment-code';
+                    }
+                    this.setData({
+                        payment_page_url: payment_page_url,
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
@@ -262,6 +293,11 @@
             // 页面滚动监听
             scroll_event(e) {
                 uni.$emit('onPageScroll', e.detail);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };

@@ -574,6 +574,13 @@
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": "钱包付款码"
                     }
+                },
+                {
+                    "path": "transfer/transfer",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "转账"
+                    }
                 }
             ]
         },

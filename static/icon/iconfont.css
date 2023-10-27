@@ -7,11 +7,31 @@
 }
 
 .iconfont {
-    font-family: "iconfont" !important;
-    font-size: 16px;
-    font-style: normal;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-transfer:before {
+  content: "\e6e4";
+}
+
+.icon-wytw-sctp:before {
+  content: "\e6e3";
+}
+
+.icon-xzzx-shij:before {
+  content: "\e6e2";
+}
+
+.icon-xzzx-rhaz:before {
+  content: "\e6e0";
+}
+
+.icon-xzzx-kfwd:before {
+  content: "\e6e1";
 }
 
 .icon-wenda-wytw:before {
