@@ -22,7 +22,17 @@
                         </view>
                         <!-- #endif -->
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
-                            <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)"></component-search>
+                            <component-search
+                                propPlaceholder="输入商品名称搜索"
+                                propPlaceholderClass="cr-white"
+                                propIconColor="#fff"
+                                propBgColor="rgb(255 255 255 / 0.5)"
+                                <!-- #ifndef H5 -->
+                                @onicon="search_icon_event"
+                                propIcon="icon-mendian-sousuosm"
+                                :propIsIconOnEvent="true"
+                                <!-- #endif -->
+                            ></component-search>
                         </view>
                         <!-- #ifdef H5 || MP-TOUTIAO || APP -->
                         <!-- 右上角icon列表 -->
@@ -140,9 +150,9 @@
                             <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
                         </block>
 
-                        <!-- 热门推荐 -->
-                        <block v-if="pv.plugins == 'seckill'">
-                            <component-recommed-hot></component-recommed-hot>
+                        <!-- 魔方 - 插件 -->
+                        <block v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
+                            <component-magic-list :propData="plugins_magic_data"></component-magic-list>
                         </block>
                     </block>
                 </block>
@@ -295,7 +305,7 @@
     import componentGoodsList from '../../components/goods-list/goods-list';
     import componentUserBase from '../../components/user-base/user-base';
     import componentBindingList from '../../components/binding-list/binding-list';
-    import componentRecommedHot from '@/components/recommend-hot/recommend-hot';
+    import componentMagicList from '../../components/magic-list/magic-list';
 
     var common_static_url = app.globalData.get_static_url('common');
     var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
@@ -378,6 +388,8 @@
                 plugins_shop_data: null,
                 // 组合搭配插件
                 plugins_binding_data: null,
+                // 魔方插件
+                plugins_magic_data: null,
             };
         },
 
@@ -400,7 +412,7 @@
             componentGoodsList,
             componentUserBase,
             componentBindingList,
-            componentRecommedHot,
+            componentMagicList,
         },
         props: {},
 
@@ -488,6 +500,7 @@
                                 plugins_realstore_data: data.plugins_realstore_data || null,
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
+                                plugins_magic_data: data.plugins_magic_data || null,
                             });
 
                             // 轮播数据处理
@@ -619,7 +632,17 @@
                     this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
                 }
             },
-        },
+
+            // 搜索icon扫码事件
+            search_icon_event(e) {
+                console.log(1)
+                uni.scanCode({
+                    success: function (res) {
+                        console.log(res.result)
+                    },
+                });
+            }
+        }
     };
 </script>
 <style>
