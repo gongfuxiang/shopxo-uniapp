@@ -3,21 +3,21 @@
         <view v-for="(items, indexs) in hotData" :key="indexs" class="bg-white border-radius-main spacing-mb">
             <view class="padding-vertical-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
                 <view class="hot-list flex-row flex-warp">
-                    <view v-for="(item, index) in items.data" :key="index" class="flex-width-half">
+                    <view v-for="(item, index) in items.data" :key="index" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'wh-auto' : 'flex-width-half'">
                         <view class="padding-horizontal-main">
                             <view class="flex-row align-c margin-bottom-xs">
                                 <text class="text-size fw-b single-text">{{ item.title }}</text>
-                                <view class="hot-go border-radius-main margin-left-sm pr single-text">
-                                    <text class="cr-white padding-right-xs text-size-xs">{{ item.icon }}</text>
-                                    <iconfont class="icon-index-xptj-jiantou cr-white" size="16rpx"></iconfont>
+                                <view class="hot-go border-radius-main margin-left-sm pr">
+                                    <text class="cr-white padding-right-xs text-size-xs single-text dis-inline-block more-width">{{ item.icon }}</text>
+                                    <iconfont name="icon-index-xptj-jiantou" class="cr-white pa top-0" size="20rpx"></iconfont>
                                 </view>
                             </view>
                             <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ item.describe }}</view>
-                            <swiper class="swiper" circular :autoplay="false" :vertical="propVertical" :interval="propInterval" :duration="propDuration">
+                            <swiper class="swiper" circular :autoplay="propAutoplay" :vertical="propVertical" :interval="propInterval" :duration="propDuration">
                                 <swiper-item v-for="(swiperItem, swiperIndex) in item.data" :key="swiperIndex">
                                     <view class="swiper-item">
                                         <view class="flex-row">
-                                            <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" class="flex-1" :class="swiperItem.length > 2 ? '' : 'flex-width-half'">
+                                            <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
                                                 <view class="padding-main" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
                                                     <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="widthFix" class="wh-auto border-radius-sm"> </image>
                                                     <view class="price">
@@ -26,15 +26,6 @@
                                                     </view>
                                                 </view>
                                             </view>
-                                            <!-- <view class="flex-1 flex-width-half" @tap="banner_event">
-                                                <view class="padding-main">
-                                                    <image src="@/static/images/common/user.png" mode="widthFix" class="wh-auto"> </image>
-                                                    <view class="price">
-                                                        <text class="sales-price va-m text-size-xss va-b">¥</text>
-                                                        <text class="sales-price va-m">8970.99</text>
-                                                    </view>
-                                                </view>
-                                            </view> -->
                                         </view>
                                     </view>
                                 </swiper-item>
@@ -122,10 +113,10 @@
     .hot-list > .flex-width-half {
         margin-bottom: 12rpx;
     }
-    .hot-list > .flex-width-half:last-of-type {
+    /* .hot-list > .flex-width-half:last-of-type {
         width: 100%;
         margin-bottom: 0;
-    }
+    } */
 
     .hot-list .swiper {
         height: 214rpx;
@@ -139,8 +130,10 @@
         line-height: 34rpx;
     }
 
-    .hot-go .iconfont {
-        position: absolute;
-        top: 0;
+    .flex-width-half-2 {
+        width: 25%;
+    }
+    .more-width {
+        max-width: 70rpx;
     }
 </style>
