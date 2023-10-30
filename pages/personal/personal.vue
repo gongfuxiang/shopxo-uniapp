@@ -20,7 +20,6 @@
                                 <view class="form-gorup-title">昵称<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" placeholder="昵称1~16个字符" />
-                                    <iconfont name="icon-qiandao-jiantou2" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 
@@ -38,7 +37,6 @@
                                 <view class="form-gorup-title">详细地址</view>
                                 <view class="flex-row align-c flex-1 flex-width">
                                     <input type="text" name="address" :value="user_data.address || ''" maxlength="30" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" placeholder="详细地址最多30个字符" />
-                                    <iconfont name="icon-qiandao-jiantou2" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 

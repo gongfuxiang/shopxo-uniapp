@@ -6,9 +6,8 @@
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right oh" data-value="/pages/personal/personal" @tap="url_event">
                         <image :src="user.avatar || default_avatar" mode="widthFix" class="circle br fl user-avatar"></image>
-                        <view class="fl margin-left">
+                        <view class="fl margin-left margin-top">
                             <view>{{ user.user_name_view || '用户名' }}</view>
-                            <view v-if="(user || null) != null" class="br-main cr-main round tc padding-left-lg padding-right-lg margin-top-xs dis-inline-block">ID {{ user.id }}</view>
                         </view>
                     </view>
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event">
