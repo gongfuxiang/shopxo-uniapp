@@ -7,13 +7,14 @@
                         <view class="padding-horizontal-main">
                             <view class="flex-row align-c margin-bottom-xs">
                                 <text class="text-size fw-b single-text">{{ item.title }}</text>
-                                <view class="hot-go border-radius-main margin-left-sm pr">
-                                    <text class="cr-white padding-right-xs text-size-xs single-text dis-inline-block more-width">{{ item.icon }}</text>
-                                    <iconfont name="icon-index-xptj-jiantou" class="cr-white pa top-0" size="20rpx"></iconfont>
+                                <view class="hot-go margin-left-sm">
+                                    <block v-if="(item.icon || null) !== null">
+                                        <image :src="item.icon" mode="heightFix" class="ht-auto"> </image>
+                                    </block>
                                 </view>
                             </view>
                             <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ item.describe }}</view>
-                            <swiper class="swiper" circular :autoplay="propAutoplay" :vertical="propVertical" :interval="propInterval" :duration="propDuration">
+                            <swiper class="swiper" circular :autoplay="(item.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                 <swiper-item v-for="(swiperItem, swiperIndex) in item.data" :key="swiperIndex">
                                     <view class="swiper-item">
                                         <view class="flex-row">
@@ -50,14 +51,6 @@
                 },
             },
             propVertical: {
-                type: Boolean,
-                default: true,
-            },
-            propInterval: {
-                type: Number,
-                default: 6000,
-            },
-            propAutoplay: {
                 type: Boolean,
                 default: true,
             },
@@ -123,17 +116,11 @@
     }
 
     .hot-go {
-        background: linear-gradient(90deg, #ff8f42 0%, #fe541e 100%);
-        padding-left: 12rpx;
-        padding-right: 34rpx;
         height: 34rpx;
         line-height: 34rpx;
     }
 
     .flex-width-half-2 {
         width: 25%;
-    }
-    .more-width {
-        max-width: 70rpx;
     }
 </style>
