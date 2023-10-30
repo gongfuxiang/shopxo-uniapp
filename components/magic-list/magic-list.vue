@@ -1,6 +1,6 @@
 <template>
-    <view class="">
-        <view v-for="(items, indexs) in hotData" :key="indexs" class="bg-white border-radius-main spacing-mb">
+    <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
+        <view v-for="(items, indexs) in data_goods_list" :key="indexs" class="bg-white border-radius-main spacing-mb">
             <view class="padding-vertical-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
                 <view class="hot-list flex-row flex-warp">
                     <view v-for="(item, index) in items.data" :key="index" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'wh-auto' : 'flex-width-half'">
@@ -61,7 +61,7 @@
         },
         data() {
             return {
-                hotData: [],
+                data_goods_list: [],
                 currency_symbol: app.globalData.data.currency_symbol,
             };
         },
@@ -94,9 +94,8 @@
                     });
                 });
                 this.setData({
-                    hotData: goods,
+                    data_goods_list: goods,
                 });
-                console.log(goods);
             },
         },
     };
