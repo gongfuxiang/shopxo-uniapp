@@ -186,7 +186,7 @@
     .search-content .search-icon {
         z-index: 1;
         left: 20rpx;
-        top: calc(50% - 14rpx);
+        top: calc(50% - 12rpx);
         line-height: 26rpx;
     }
 
