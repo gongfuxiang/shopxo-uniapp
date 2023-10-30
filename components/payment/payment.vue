@@ -177,7 +177,6 @@
                         is_show_payment_popup: newVal,
                         submit_disabled_status: bool,
                     });
-                    console.log('payment_id:' + this.payment_id);
                 }
             },
         },

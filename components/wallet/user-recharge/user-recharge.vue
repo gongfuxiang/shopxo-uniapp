@@ -282,7 +282,6 @@
                     pay_price: e.currentTarget.dataset.price,
                     payment_id: e.currentTarget.dataset.payment || 0,
                 });
-                console.log(this.payment_id);
             },
 
             // 支付弹窗关闭
