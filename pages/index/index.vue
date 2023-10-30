@@ -639,6 +639,7 @@
                 uni.scanCode({
                     success: function (res) {
                         console.log(res.result)
+                        app.globalData.open_web_view(res.result);
                     },
                 });
             }
