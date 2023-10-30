@@ -22,17 +22,28 @@
                         </view>
                         <!-- #endif -->
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
-                            <component-search
-                                propPlaceholder="输入商品名称搜索"
-                                propPlaceholderClass="cr-white"
-                                propIconColor="#fff"
-                                propBgColor="rgb(255 255 255 / 0.5)"
-                                <!-- #ifndef H5 -->
-                                @onicon="search_icon_event"
-                                propIcon="icon-mendian-sousuosm"
-                                :propIsIconOnEvent="true"
-                                <!-- #endif -->
-                            ></component-search>
+                            <!-- 是否开启搜索框前面icon扫一扫 -->
+                            <block v-if="is_home_search_scan == 1">
+                                <component-search
+                                    propPlaceholder="输入商品名称搜索"
+                                    propPlaceholderClass="cr-white"
+                                    propIconColor="#fff"
+                                    propBgColor="rgb(255 255 255 / 0.5)"
+                                    <!-- #ifndef H5 -->
+                                    @onicon="search_icon_event"
+                                    propIcon="icon-mendian-sousuosm"
+                                    :propIsIconOnEvent="true"
+                                    <!-- #endif -->
+                                ></component-search>
+                            </block>
+                            <block v-else>
+                                <component-search
+                                    propPlaceholder="输入商品名称搜索"
+                                    propPlaceholderClass="cr-white"
+                                    propIconColor="#fff"
+                                    propBgColor="rgb(255 255 255 / 0.5)"
+                                ></component-search>
+                            </block>
                         </view>
                         <!-- #ifdef H5 || MP-TOUTIAO || APP -->
                         <!-- 右上角icon列表 -->
@@ -329,6 +340,7 @@
                 data_bottom_line_status: false,
                 load_status: 0,
                 currency_symbol: app.globalData.data.currency_symbol,
+                is_home_search_scan: app.globalData.data.is_home_search_scan,
                 data_list: [],
                 banner_list: [],
                 navigation: [],
@@ -635,13 +647,7 @@
 
             // 搜索icon扫码事件
             search_icon_event(e) {
-                console.log(1)
-                uni.scanCode({
-                    success: function (res) {
-                        console.log(res.result)
-                        app.globalData.open_web_view(res.result);
-                    },
-                });
+                app.globalData.scan_handle();
             }
         }
     };

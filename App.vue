@@ -66,14 +66,16 @@
                 weixin_privacy_setting_timer: null,
                 // 微信小程序打开地图使用（0否, 1是）【腾讯位置服务路线规划】插件、（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
                 is_weixin_open_location_use_plugins: 0,
+                // 首页搜索框开启扫一扫自动（0否, 1是）仅【小程序、APP】支持
+                is_home_search_scan: 1,
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
                 // 请求地址
-                //  request_url: 'https://new.shopxo.vip/',
-                request_url: 'http://shopxo.com/',
+                  request_url: 'https://new.shopxo.vip/',
+                // request_url: 'http://shopxo.com/',
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                //  static_url: 'https://new.shopxo.vip/',
-                static_url: 'http://shopxo.com/',
+                  static_url: 'https://new.shopxo.vip/',
+                // static_url: 'http://shopxo.com/',
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
                 // 基础信息
@@ -1119,12 +1121,21 @@
                 var is_redirect = parseInt(e.currentTarget.dataset.redirect || 0) == 1;
                 this.url_open(value, is_redirect);
             },
+            // 是否为url地址
+            is_url(value) {
+                var arr = ['http:/', 'https:'];
+                return arr.indexOf(value.substr(0, 6)) != -1;
+            },
+            // 是否为page页面地址
+            is_page(value) {
+                var arr = ['/pages', 'pages/'];
+                return arr.indexOf(value.substr(0, 6)) != -1;
+            },
             // url打开
             url_open(value, is_redirect = false) {
                 if ((value || null) != null) {
                     // web地址
-                    var http_arr = ['http:/', 'https:'];
-                    if (http_arr.indexOf(value.substr(0, 6)) != -1) {
+                    if (this.is_url(value)) {
                         this.open_web_view(value);
                         // 打开外部小程序协议
                     } else if (value.substr(0, 8) == 'appid://') {
@@ -1144,26 +1155,30 @@
                         this.call_tel(value.substr(6));
                         // 默认切换或跳转页面
                     } else {
-                        if (this.is_tabbar_pages(value)) {
-                            var temp = value.split('?');
-                            if (temp.length > 1 && (temp[1] || null) != null) {
-                                value = temp[0];
-                                var query = this.url_params_to_json(temp[1]);
-                                uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
-                            }
-                            uni.switchTab({
-                                url: value,
-                            });
-                        } else {
-                            if (is_redirect) {
-                                uni.redirectTo({
+                        if(this.is_page(value)) {
+                            if (this.is_tabbar_pages(value)) {
+                                var temp = value.split('?');
+                                if (temp.length > 1 && (temp[1] || null) != null) {
+                                    value = temp[0];
+                                    var query = this.url_params_to_json(temp[1]);
+                                    uni.setStorageSync(this.data.cache_page_tabbar_switch_params, query);
+                                }
+                                uni.switchTab({
                                     url: value,
                                 });
                             } else {
-                                uni.navigateTo({
-                                    url: value,
-                                });
+                                if (is_redirect) {
+                                    uni.redirectTo({
+                                        url: value,
+                                    });
+                                } else {
+                                    uni.navigateTo({
+                                        url: value,
+                                    });
+                                }
                             }
+                        } else {
+                            this.showToast('未知数据（'+value+'）');
                         }
                     }
                 }
@@ -1937,6 +1952,63 @@
                 }
                 return width;
             },
+
+            // weburl地址id值匹配
+            web_url_value_mate(url, rules) {
+                var value = null;
+                for(var i in rules) {
+                    if(url.indexOf(rules[i]) != -1) {
+                        var temp = url.split(rules[i]);
+                        if(temp.length > 1) {
+                            temp = temp[1].split('.');
+                            if(temp.length > 0 && (temp[0] || null) != null) {
+                                value = temp[0];
+                                break;
+                            }
+                        }
+                    }
+                }
+                return value;
+            },
+
+            // 扫码解析处理
+            scan_handle() {
+                var self = this;
+                uni.scanCode({
+                    success: function (res) {
+                        if(res.result !== '') {
+                            var value = res.result;
+                            // 是否为url地址
+                            if(self.is_url(value)) {
+                                // 是否为商品地址
+                                var goods_arr = ['/goods-', '/goods/index/id/', '=goods/index/id/'];
+                                var goods_id = self.web_url_value_mate(value, goods_arr);
+                                if(goods_id != null) {
+                                    uni.navigateTo({
+                                        url: '/pages/goods-detail/goods-detail?id='+goods_id,
+                                    });
+                                    return;
+                                }
+
+                                // 是否为多商户店铺详情地址
+                                var shop_arr = ['/shop-index-detail-', '/plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/', '=plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/'];
+                                var shop_id = self.web_url_value_mate(value, shop_arr);
+                                if(shop_id != null) {
+                                    uni.navigateTo({
+                                        url: '/pages/plugins/shop/detail/detail?id='+shop_id,
+                                    });
+                                    return;
+                                }
+
+                                // 默认打开url
+                                self.open_web_view(value);
+                            } else {
+                                self.url_open(value);
+                            }
+                        }
+                    },
+                });
+            }
         },
         // 初始化完成时触发（全局只触发一次）
         onLaunch(params) {},

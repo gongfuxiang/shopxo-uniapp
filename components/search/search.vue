@@ -187,7 +187,7 @@
         z-index: 1;
         left: 20rpx;
         top: calc(50% - 14rpx);
-        line-height: 22rpx;
+        line-height: 26rpx;
     }
 
     .search-content input {
