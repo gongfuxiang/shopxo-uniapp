@@ -61,6 +61,7 @@
             :prop-payment-id="payment_id"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
+            :prop-to-appoint-page="to_appoint_page"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
         ></component-payment>
@@ -98,6 +99,7 @@
                 payment_id: 0,
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/wallet/user/user',
+                to_appoint_page:'/pages/plugins/wallet/user/user?type=3'
             };
         },
 

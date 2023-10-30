@@ -49,6 +49,7 @@
             :prop-temp-pay-index="temp_pay_index"
             :prop-pay-price="pay_price"
             :prop-payment-id="payment_id"
+            :prop-to-appoint-page="to_appoint_page"
             :prop-default-payment-id="default_payment_id"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
@@ -111,6 +112,7 @@
                 default_payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
+                to_appoint_page:'/pages/plugins/wallet/user/user?type=1'
             };
         },
 
