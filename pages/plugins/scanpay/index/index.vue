@@ -19,7 +19,6 @@
                                 <text class="unit">{{ currency_symbol }}</text>
                                 <text class="price fw-b text-size-xl"> {{ form.price || '0.00' }} </text>
                             </view>
-                            <input type="text" class="dis-none" :value="form.price" name="price" placeholder="这是一个输入框" />
                         </view>
                     </view>
                 </view>
@@ -52,7 +51,6 @@
                             <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">修改</view>
                         </view>
                     </block>
-                    <input type="text" name="note" :value="form.note" class="dis-none" maxlength="200" />
                     <!-- 输入框示例 -->
                     <uni-popup ref="inputDialog" type="dialog">
                         <uni-popup-dialog ref="inputClose" mode="input" title="添加备注" placeholder=" " @confirm="input_dialog"></uni-popup-dialog>
