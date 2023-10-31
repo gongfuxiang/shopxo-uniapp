@@ -549,7 +549,6 @@
                                     // tab切换参数、访问请求参数
                                     if (((this.tabbar_params || null) != null && (this.tabbar_params.id || null) != null && temp_category[i]['id'] == this.tabbar_params.id) || ((this.params || null) != null && (this.params.id || null) != null && temp_category[i]['id'] == this.params.id)) {
                                         active_index = i;
-                                        break;
                                     }
                                     // 是否全部数据都无二级
                                     if ((temp_category[i]['items'] || null) != null && temp_category[i]['items'].length > 0) {

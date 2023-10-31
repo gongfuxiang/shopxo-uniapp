@@ -1,35 +1,39 @@
 <template>
     <view>
-        <!-- 评分 -->
-        <view v-if="goods_score != null" class="score-container oh padding-main">
-            <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
-                <view class="score tc">
-                    <view class="cr-base">综合评分</view>
-                    <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
-                </view>
-                <view class="progress tc border-radius-main flex-1 flex-width">
-                    <block v-if="goods_score.avg > 0">
-                        <block v-for="(item, index) in goods_score.rating" :key="index">
-                            <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
+        <!-- 提示信息 -->
+        <block v-if="data_list_loding_status == 1">
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </block>
+        <block v-else>
+            <!-- 评分 -->
+            <view v-if="goods_score != null" class="score-container oh padding-main">
+                <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
+                    <view class="score tc">
+                        <view class="cr-base">综合评分</view>
+                        <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
+                    </view>
+                    <view class="progress tc border-radius-main flex-1 flex-width">
+                        <block v-if="goods_score.avg > 0">
+                            <block v-for="(item, index) in goods_score.rating" :key="index">
+                                <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
+                            </block>
                         </block>
-                    </block>
-                    <text v-else class="cr-grey">暂无评分</text>
+                        <text v-else class="cr-grey">暂无评分</text>
+                    </view>
                 </view>
             </view>
-        </view>
 
-        <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="padding-horizontal-main goods-comment">
-                <!-- 评价 -->
-                <component-goods-comments :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comments>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            <!-- 列表 -->
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view class="padding-horizontal-main goods-comment">
+                    <!-- 评价 -->
+                    <component-goods-comments :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comments>
 
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </view>
-        </scroll-view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                </view>
+            </scroll-view>
+        </block>
     </view>
 </template>
 <script>
@@ -145,10 +149,6 @@ export default {
                     data_list_loding_status: 1,
                 });
 
-                // 加载loding
-                uni.showLoading({
-                    title: "加载中...",
-                });
                 uni.request({
                     url: app.globalData.get_request_url("comments", "goods"),
                     method: "POST",
@@ -158,9 +158,7 @@ export default {
                     },
                     dataType: "json",
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
-
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
                                 if (this.data_page <= 1) {
@@ -208,7 +206,6 @@ export default {
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
