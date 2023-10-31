@@ -89,7 +89,7 @@
         methods: {
             // 返回
             back_event(e) {
-                uni.navigateBack();
+                app.globalData.page_back_prev_event();
             },
             // url事件
             url_event(e) {
