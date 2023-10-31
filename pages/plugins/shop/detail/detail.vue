@@ -332,7 +332,7 @@
             shop_favor_event(e) {
                 var user = app.globalData.get_user_info(this, 'shop_favor_event');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=shop_favor_event',

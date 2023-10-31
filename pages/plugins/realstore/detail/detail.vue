@@ -640,7 +640,7 @@
                 }
                 var user = app.globalData.get_user_info(this, 'favor_event');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=favor_event',
@@ -686,7 +686,7 @@
                 }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=buy_number_event',
@@ -802,7 +802,7 @@
                 }
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=cart_buy_number_event',
@@ -1099,7 +1099,7 @@
             search_icon_event(e) {
                 var user = app.globalData.get_user_info(this);
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=cart_buy_number_event',

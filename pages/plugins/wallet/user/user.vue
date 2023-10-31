@@ -186,21 +186,10 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定用户则转到登录页面
+                    // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
-                        uni.showModal({
-                            title: '温馨提示',
-                            content: '绑定手机号码',
-                            confirmText: '确认',
-                            cancelText: '暂不',
-                            success: (result) => {
-                                uni.stopPullDownRefresh();
-                                if (result.confirm) {
-                                    uni.navigateTo({
-                                        url: '/pages/login/login?event_callback=init',
-                                    });
-                                }
-                            },
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=init',
                         });
                     } else {
                         this.get_data();

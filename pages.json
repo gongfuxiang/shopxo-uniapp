@@ -1038,6 +1038,17 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/scanpay",
+            "pages": [{
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "扫码付款"
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {
