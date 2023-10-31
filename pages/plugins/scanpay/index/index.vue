@@ -34,7 +34,7 @@
                             <iconfont :name="checked === index ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="40rpx" :color="checked === index ? '#E83B11' : '#ddd'"></iconfont>
                         </view>
                     </view>
-                    <view class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">
+                    <view v-if="data.payment_list.length > 2" class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">
                         <text>更多</text>
                         <iconfont class="icon-mendian-jiantou2" size="24rpx"></iconfont>
                         <iconfont class="icon-fenlei-top" size="24rpx"></iconfont>
