@@ -143,9 +143,6 @@
 				this.dialogType = this.type
 			}
 		},
-		mounted() {
-			this.focus = true
-		},
 		methods: {
 			/**
 			 * 点击确认按钮
