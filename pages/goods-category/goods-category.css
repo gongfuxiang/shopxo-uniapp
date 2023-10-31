@@ -97,10 +97,6 @@
     font-weight: 600;
 }
 
-.content-item .desc {
-    margin-bottom: 56rpx;
-}
-
 .content-item .icon {
     width: 92rpx;
     height: 92rpx;
@@ -117,6 +113,13 @@
 
 .model-one .content-item:nth-child(3n) {
     border-right: 0;
+}
+.model-one .content .desc {
+    min-height: 52rpx;
+    line-height: 26rpx;
+}
+.model-one .content {
+    height: 240rpx;
 }
 
 .one-content image {

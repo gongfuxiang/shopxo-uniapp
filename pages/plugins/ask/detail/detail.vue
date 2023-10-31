@@ -36,10 +36,10 @@
                 <view v-if="data.is_reply && data.is_reply === '1'" class="padding-main br-t-dashed">
                     <view class="flex-row jc-sb align-c">
                         <view class="flex-row align-c">
-                            <image :src="ask_static_url + 'admin.png'" mode="widthFix" class="admin-img margin-right-sm"></image>
-                            <text>管理员</text>
+                            <image v-if="(logo_square || null) != null" :src="logo_square" mode="widthFix" class="admin-img circle br-f5 margin-right-sm"></image>
+                            <text>管理员回复</text>
                         </view>
-                        <view class="cr-grey-9 text-size-xs">回复时间: {{ data.reply_time_date }}</view>
+                        <view v-if="(data.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">回复时间: {{ data.reply_time_date }}</view>
                     </view>
                     <view class="text-size-md padding-top-main">{{ data.reply }}</view>
                 </view>
@@ -59,7 +59,7 @@
             </view>
             <view class="bottom-fixed ask-btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/plugins/ask/user-form/user-form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                         <view class="divider-r-d wh-auto">
                             <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
                             我要提问
@@ -89,7 +89,7 @@
     export default {
         data() {
             return {
-                ask_static_url: app.globalData.get_static_url('ask', true),
+                logo_square: app.globalData.get_application_logo_square(),
                 data_list_loding_status: 1,
                 data_bottom_line_status: true,
                 data: null,
