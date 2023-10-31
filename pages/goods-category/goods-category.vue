@@ -29,9 +29,9 @@
                                     <view class="content-item cp" :data-value="item.id" @tap="category_event">
                                         <view class="padding-sm">
                                             <view class="content bg-white border-radius-main">
-                                                <image v-if="(item.icon || null) != null" :src="item.icon" mode="aspectFit" class="icon circle"></image>
+                                                <image v-if="(item[category_goods_model_icon_field] || null) != null" :src="item[category_goods_model_icon_field]" mode="aspectFit" class="icon circle"></image>
                                                 <view class="text single-text margin-top-sm" :class="'text-random-' + (Math.floor(Math.random() * 9) + 1)">{{ item.name }}</view>
-                                                <view class="desc single-text nargin-top-xs padding-top-xss cr-grey-9 text-size-xss">{{ item.describe }}</view>
+                                                <view class="desc multi-text margin-top-xs padding-top-xss cr-grey-9 text-size-xss">{{ item.describe }}</view>
                                             </view>
                                         </view>
                                     </view>
@@ -227,7 +227,7 @@
                                                         <block v-for="(v, index) in data_content.items" :key="index">
                                                             <view class="content-item tc cp two-img" :data-value="v.id" @tap="category_event">
                                                                 <view class="content">
-                                                                    <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon radius padding-bottom-main"></image>
+                                                                    <image v-if="(v.icon || null) != null" :src="v.icon" mode="aspectFit" class="icon radius margin-bottom-main"></image>
                                                                     <view class="single-text text-size-sm cr-grey">{{ v.name }}</view>
                                                                 </view>
                                                             </view>
@@ -248,7 +248,7 @@
                                                             <block v-for="(vs, index2) in v.items" :key="index2">
                                                                 <view class="content-item two-img tc cp" :data-value="vs.id" @tap="category_event">
                                                                     <view class="content">
-                                                                        <image v-if="(vs.icon || null) != null" :src="vs.icon" mode="aspectFit" class="icon radius padding-bottom-main"></image>
+                                                                        <image v-if="(vs.icon || null) != null" :src="vs.icon" mode="aspectFit" class="icon radius margin-bottom-main"></image>
                                                                         <view class="single-text text-size-sm cr-grey">{{ vs.name }}</view>
                                                                     </view>
                                                                 </view>
