@@ -4,7 +4,7 @@
             <view class="padding-main">
                 <block v-if="(data.scanpay_info || null) !== null">
                     <view class="flex-row align-c margin-top-main margin-bottom-xl">
-                        <image v-if="data.scanpay_info.log" :src="data.scanpay_info.logo" mode="widthFix" class="circle img-user margin-right-main" />
+                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="circle img-user margin-right-main" />
                         <div class="flex-1 flex-width flex-row align-c">
                             <text class="text-size fw-b single-text">{{ data.scanpay_info.name }}</text>
                             <text v-if="(data.scanpay_info.alias || null) !== null" class="cr-white badge tc margin-left-sm">{{ data.scanpay_info.alias }}</text>
@@ -29,7 +29,7 @@
                         <view v-for="(item, index) in is_more ? data.payment_list : data.payment_list.slice(0, 2)" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="change_event(index, item.id)">
                             <div class="flex-1 flex-width flex-row align-c">
                                 <image v-if="item.logo" :src="item.logo" mode="widthFix" class="circle img-pay margin-right-main" />
-                                <view>{{ item.name }}}</view>
+                                <view>{{ item.name }}</view>
                             </div>
                             <iconfont :name="checked === index ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="40rpx" :color="checked === index ? '#E83B11' : '#ddd'"></iconfont>
                         </view>
@@ -49,7 +49,7 @@
                     <block v-else>
                         <view class="flex-row align-c jc-c padding-horizontal-main">
                             <text class="cr-grey-9 single-text tc">{{ form.note }}</text>
-                            <view class="cr-blue margin-left-sm edit-width">修改</view>
+                            <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">修改</view>
                         </view>
                     </block>
                     <input type="text" name="note" :value="form.note" class="dis-none" maxlength="200" />
