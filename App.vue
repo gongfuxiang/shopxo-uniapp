@@ -1955,6 +1955,9 @@
 
             // weburl地址id值匹配
             web_url_value_mate(url, rules) {
+                // 匹配成功
+                var status = 0;
+                // 存在数据值
                 var value = null;
                 for(var i in rules) {
                     if(url.indexOf(rules[i]) != -1) {
@@ -1963,12 +1966,13 @@
                             temp = temp[1].split('.');
                             if(temp.length > 0 && (temp[0] || null) != null) {
                                 value = temp[0];
-                                break;
                             }
                         }
+                        status = 1;
+                        break;
                     }
                 }
-                return value;
+                return {status: status, value: value};
             },
 
             // 扫码解析处理
@@ -1982,20 +1986,45 @@
                             if(self.is_url(value)) {
                                 // 是否为商品地址
                                 var goods_arr = ['/goods-', '/goods/index/id/', '=goods/index/id/'];
-                                var goods_id = self.web_url_value_mate(value, goods_arr);
-                                if(goods_id != null) {
+                                var goods_ret = self.web_url_value_mate(value, goods_arr);
+                                if(goods_ret.status == 1 && goods_ret.value != null) {
                                     uni.navigateTo({
-                                        url: '/pages/goods-detail/goods-detail?id='+goods_id,
+                                        url: '/pages/goods-detail/goods-detail?id='+goods_ret.value,
                                     });
                                     return;
                                 }
 
                                 // 是否为多商户店铺详情地址
                                 var shop_arr = ['/shop-index-detail-', '/plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/', '=plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/'];
-                                var shop_id = self.web_url_value_mate(value, shop_arr);
-                                if(shop_id != null) {
+                                var shop_ret = self.web_url_value_mate(value, shop_arr);
+                                if(shop_ret.status == 1 && shop_ret.value != null) {
                                     uni.navigateTo({
-                                        url: '/pages/plugins/shop/detail/detail?id='+shop_id,
+                                        url: '/pages/plugins/shop/detail/detail?id='+shop_ret.value,
+                                    });
+                                    return;
+                                }
+
+                                // 是否为扫码收款
+                                var scanpay_arr = ['/scanpay-index-index', 'plugins/index/pluginsname/scanpay/pluginscontrol/index/pluginsaction/index', 'plugins/index/pluginsname/scanpay', '/scanpay'];
+                                var scanpay_ret = self.web_url_value_mate(value, scanpay_arr);
+                                if(scanpay_ret.status == 1) {
+                                    var url = '/pages/plugins/scanpay/index/index';
+                                    if(scanpay_ret.value != null) {
+                                        var first = scanpay_ret.value.substr(0, 1);
+                                        if(first == '-') {
+                                            var temp = scanpay_ret.value.substr(1).split('/');
+                                            if(temp.length == 3) {
+                                                url += '?id='+temp[0]+'&type='+temp[2];
+                                            }
+                                        } else if(first == '/') {
+                                            var temp = scanpay_ret.value.substr(1).split('/');
+                                            if(temp.length == 4) {
+                                                url += '?id='+temp[1]+'&type='+temp[3];
+                                            }
+                                        }
+                                    }
+                                    uni.navigateTo({
+                                        url: url,
                                     });
                                     return;
                                 }
