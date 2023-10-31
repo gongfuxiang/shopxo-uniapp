@@ -9,10 +9,8 @@
             <view>
                 <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">返回</button>
             </view>
-            <view v-if="(params.page || null) != null && (params.title || null) != null" class="margin-top-lg">
-                <navigator class="dis-inline-block" :url="'/pages/' + params.page" open-type="redirect">
-                    <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini">{{ params.title }}</button>
-                </navigator>
+            <view class="margin-top-lg">
+                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" :data-value="default_to_url" @tap="url_event">{{ params.title || '回到首页' }}</button>
             </view>
         </view>
     </view>
@@ -27,6 +25,7 @@
                 params: {},
                 default_round_success_icon: app.globalData.data.default_round_success_icon,
                 default_round_error_icon: app.globalData.data.default_round_error_icon,
+                default_to_url: '',
             };
         },
 
@@ -77,6 +76,7 @@
                 url_params['msg'] = msg;
                 this.setData({
                     params: url_params,
+                    default_to_url: url_params.page || app.globalData.data.tabbar_pages[0],
                 });
             }
         },
@@ -90,6 +90,10 @@
             // 返回
             back_event(e) {
                 uni.navigateBack();
+            },
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };

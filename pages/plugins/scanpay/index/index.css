@@ -1,0 +1,97 @@
+.img-user {
+    width: 92rpx;
+    height: 92rpx !important;
+}
+
+.badge {
+    min-width: 50rpx;
+    height: 32rpx;
+    line-height: 32rpx;
+    background: #D5D5D5;
+    border-radius: 4rpx;
+    padding: 0 12rpx;
+    font-size: 22rpx;
+}
+
+.unit {
+    font-size: 42rpx;
+}
+
+.img-pay {
+    width: 40rpx;
+}
+
+.pay-scroll {
+    max-height: calc(100vh - 55rem);
+    overflow-y: auto;
+}
+
+.sub-key {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+.title-padding {
+    padding: 16rpx;
+}
+
+/**
+ * 页面底部浮动、增加底部边距
+ */
+.page-pay-fixed {
+    height: calc(100vh - 536rpx - env(safe-area-inset-bottom) + 40rpx);
+    /* #ifdef H5 */
+    height: calc(100vh - 536rpx) !important;
+    /* #endif */
+}
+
+.edit-width {
+    min-width: 50rpx;
+}
+
+.key-1 {
+    padding: 26rpx 0;
+}
+
+.repair {
+    margin-left: -2rpx;
+}
+
+.fw-n {
+    font-weight: 400;
+}
+
+/* 弹框 */
+::v-deep .uni-popup__info {
+    color: #333;
+    font-weight: 400;
+}
+
+::v-deep .uni-dialog-button-group {
+    border-top: 0;
+    padding-bottom: 24rpx;
+}
+
+::v-deep .uni-dialog-button {
+    height: 60rpx;
+}
+
+::v-deep .uni-dialog-button-text {
+    color: #999;
+}
+
+::v-deep .uni-button-color {
+    color: #333;
+}
+
+::v-deep .uni-dialog-input,
+::v-deep .uni-dialog-input:focus,
+::v-deep .uni-dialog-input:active,
+::v-deep .uni-dialog-input:hover,
+::v-deep .uni-dialog-input:focus-visible,
+::v-deep .uni-dialog-input:visited {
+    border: 0;
+    box-shadow: none;
+    outline: none;
+    background: #F1F1F1;
+}

@@ -563,16 +563,23 @@
                     code: '9000',
                 };
                 url_data = Object.assign({}, url_data, this.propToPage);
-                if (this.propIsRedirectTo) {
+                if (this.propToAppointPage) {
                     // 跳转支付页面
                     uni.redirectTo({
-                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        url: this.propToAppointPage,
                     });
                 } else {
-                    // 跳转支付页面
-                    uni.navigateTo({
-                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                    });
+                    if (this.propIsRedirectTo) {
+                        // 跳转支付页面
+                        uni.redirectTo({
+                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        });
+                    } else {
+                        // 跳转支付页面
+                        uni.navigateTo({
+                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        });
+                    }
                 }
             },
             // 失败跳转
