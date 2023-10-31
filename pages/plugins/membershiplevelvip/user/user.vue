@@ -222,25 +222,13 @@
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
-                        uni.showModal({
-                            title: '温馨提示',
-                            content: '绑定手机号码',
-                            confirmText: '确认',
-                            cancelText: '暂不',
-                            success: (result) => {
-                                uni.stopPullDownRefresh();
-                                if (result.confirm) {
-                                    uni.navigateTo({
-                                        url: '/pages/login/login?event_callback=init',
-                                    });
-                                }
-                                this.set_user_base(user);
-                            },
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=init',
                         });
                     } else {
-                        this.set_user_base(user);
                         this.get_data();
                     }
+                    this.set_user_base(user);
                 }
             },
             // 设置用户基础信息

@@ -323,7 +323,7 @@
                 // 前往页面携带的参数
                 to_page: {
                     title: '进入我的订单',
-                    page: 'user-order/user-order',
+                    page: '/pages/user-order/user-order',
                 },
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/user-order/user-order',

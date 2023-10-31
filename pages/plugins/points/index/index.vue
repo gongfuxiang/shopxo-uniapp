@@ -77,15 +77,7 @@
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                            <component-goods-list
-                                :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }"
-                                prop-more-url-key="url"
-                                :propCurrencySymbol="currency_symbol"
-                                :prop-grid-btn-config="gridBtnConfig"
-                                :prop-is-open-grid-btn-set="isOpenGridBtnSet"
-                                propPriceField="price"
-                                propIntegral
-                            ></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" prop-more-url-key="url" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
                         </view>
                     </view>
 
@@ -256,19 +248,9 @@
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
-                        uni.showModal({
-                            title: '温馨提示',
-                            content: '绑定手机号码',
-                            confirmText: '确认',
-                            cancelText: '暂不',
-                            success: (result) => {
-                                uni.stopPullDownRefresh();
-                                if (result.confirm) {
-                                    uni.navigateTo({
-                                        url: '/pages/login/login?event_callback=init',
-                                    });
-                                }
-                            },
+                        uni.stopPullDownRefresh();
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=init',
                         });
                     }
                 }

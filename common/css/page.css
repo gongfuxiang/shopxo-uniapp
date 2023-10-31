@@ -1259,6 +1259,12 @@ button[disabled].bg-grey {
 .flex-1 {
     flex: 1;
 }
+.flex-2 {
+    flex: 2;
+}
+.flex-3 {
+    flex: 3;
+}
 
 .self-c {
     align-self: center;
