@@ -89,7 +89,7 @@
             <!-- 价格信息 -->
             <view :class="'goods-base-price bg-white oh spacing-mb ' + ((plugins_seckill_data || null) != null ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg" :style="(plugins_seckill_data || null) != null ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                <view class="price-content padding-lg  bs-bb fl" :style="(plugins_seckill_data || null) != null ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
                         <text class="sales-price va-m">{{ currency_symbol }}{{ goods_spec_base_price }}</text>
@@ -112,14 +112,14 @@
                         propDsColor="#fff"
                     ></component-countdown>
                 </view>
-                <view v-else class="flex-row jc-e align-c countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs">
+                <view v-else class="flex-row jc-e align-c goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr">
                     <!-- 分享 -->
                     <view class="goods-share tc cp margin-right-lg" @tap="popup_share_event">
                         <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                         <view class="cr-grey text-size-xs">分享</view>
                     </view>
                     <!-- 收藏 -->
-                    <view class="collect tc cp margin-horizontal-main" @tap="goods_favor_event">
+                    <view class="collect tc cp margin-left-main" @tap="goods_favor_event">
                         <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                         <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
                     </view>

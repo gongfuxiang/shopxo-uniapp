@@ -24,15 +24,13 @@
                     </view>
                     <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
                         <!-- 地址 -->
-                        <view class="oh cp padding-top-xs">
-                            <view class="dis-inline-block va-m cr-grey-9 pr top-sm">
+                        <view class="padding-top-xs address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
+                            <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
                                 <iconfont name="icon-mendian-dingwei"></iconfont>
                             </view>
-                            <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs va-m" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
-                                {{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}
-                            </view>
+                            <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>
-                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c padding-top-xs">距您{{ item.distance }}</view>
+                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">距您{{ item.distance }}</view>
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">

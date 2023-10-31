@@ -225,23 +225,22 @@
     overflow: hidden;
 }
 .price-content {
-    width: 60%;
-    float: left;
+    width: calc(100% - 220rpx);
 }
-.countdown-content {
-    width: 40%;
+.goods-base-right-opt {
+    width: 206rpx;
 }
 .price-content,
-.countdown-content {
+.goods-base-right-opt {
     box-sizing: border-box;
     position: relative;
     height: 100%;
 }
-.countdown-content image {
+.goods-base-right-opt image {
     width: 40rpx;
     height: 40rpx;
 }
-.countdown-content .collect {
+.goods-base-right-opt .collect {
     width: 76rpx;
 }
 .price-content .price-icon {
@@ -266,10 +265,14 @@
 /**
  * 价格信息与秒杀结合
  */
+.goods-base-price-countdown {
+    background: #e84742 !important;
+}
 .goods-base-price-countdown .price-content {
     background: #f9534e;
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    width: 60%;
 }
 .goods-base-price-countdown .price-icon { 
     margin-right: 0;
@@ -286,9 +289,6 @@
 }
 .goods-base-price-countdown .original-price {
     color: #ffcece;
-}
-.goods-base-price-countdown .countdown-content {
-    background: #e84742;
 }
 .countdown-content .time-title {
     font-size: 38rpx;

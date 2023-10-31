@@ -225,14 +225,18 @@
 
 .plugins-blog-grid-list .item .blog-img {
     width: 100%;
-    /* height: 230rpx !important; */
 }
 
 /**
 * 门店 - 数据列表
 */
 .plugins-realstore-data-list .item .address-content {
-    width: calc(100% - 60rpx);
+    width: calc(100% - 150rpx);
+}
+
+.plugins-realstore-data-list .item .address-distance {
+    right: 20rpx;
+    bottom: 42rpx;
 }
 
 .plugins-realstore-data-list .item .icon-list {

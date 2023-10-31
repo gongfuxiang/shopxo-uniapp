@@ -53,7 +53,7 @@
                                 </view>
                                 <view class="margin-top-xs text-size-xs cr-grey">
                                     <view v-if="(info.status_info.time || null) != null">营业时间：{{ info.status_info.time }}</view>
-                                    <view v-if="(info.distance || null) != null">距离您{{ info.distance }}</view>
+                                    <view v-if="(info.distance || null) != null">距您{{ info.distance }}</view>
                                 </view>
                             </view>
                         </view>
