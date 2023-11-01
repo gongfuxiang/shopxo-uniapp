@@ -122,11 +122,21 @@
                 default: 0,
             },
             // 支付跳转页面------跳转成功页面---后返回的页面
-            propToPage: {
+            propToPageBack: {
                 type: Object,
                 default: () => {
                     return {};
                 },
+            },
+            // 指定所有页面跳转到指定页面------除现金支付外
+            propToPage: {
+                type: String,
+                default: '',
+            },
+            // 现金支付-指定跳转页面----不进入充值成功页面：不配置则表示不跳转
+            propToAppointPage: {
+                type: String,
+                default: '',
             },
             // 支付失败跳转页面------不传则停留在当前页面
             propToFailPage: {
@@ -137,11 +147,6 @@
             propIsRedirectTo: {
                 type: Boolean,
                 default: false,
-            },
-            // 现金支付-指定跳转页面----不进入充值成功页面：不配置则表示不跳转
-            propToAppointPage: {
-                type: String,
-                default: '',
             },
         },
         components: {
@@ -577,20 +582,27 @@
             },
             // 成功跳转
             to_success_page_event() {
-                let url_data = {
-                    code: '9000',
-                };
-                url_data = Object.assign({}, url_data, this.propToPage);
-                if (this.propIsRedirectTo) {
+                if (this.propToPage) {
                     // 跳转支付页面
                     uni.redirectTo({
-                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        url: this.propToPage,
                     });
                 } else {
-                    // 跳转支付页面
-                    uni.navigateTo({
-                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                    });
+                    let url_data = {
+                        code: '9000',
+                    };
+                    url_data = Object.assign({}, url_data, this.propToPageBack);
+                    if (this.propIsRedirectTo) {
+                        // 跳转支付页面
+                        uni.redirectTo({
+                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        });
+                    } else {
+                        // 跳转支付页面
+                        uni.navigateTo({
+                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                        });
+                    }
                 }
             },
             // 失败跳转

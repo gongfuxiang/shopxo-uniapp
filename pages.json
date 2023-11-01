@@ -1047,6 +1047,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "扫码付款"
                     }
+                },
+                {
+                    "path": "tips/tips",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "支付结果"
+                    }
                 }
             ]
         }

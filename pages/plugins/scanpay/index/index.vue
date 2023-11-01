@@ -112,6 +112,8 @@
                 :prop-pay-price="pay_price"
                 :prop-payment-id="payment_id"
                 :propIsRedirectTo="true"
+                :propToPage="to_page"
+                :propToFailPage="to_fail_page"
                 :prop-to-appoint-page="to_appoint_page"
                 :prop-is-show-payment="is_show_payment_popup"
                 @close-payment-poupon="payment_popup_event_close"
@@ -153,9 +155,13 @@
                 is_show_payment_popup: false,
                 pay_price: 0,
                 payment_id: 0,
-                // 支付失败跳转的页面
-                // /pages/plugins/wallet/user/user?type=3
+                // 指定所有页面跳转到指定页面------除现金支付外
+                to_page: '',
+                // 现金支付跳转的页面
                 to_appoint_page: '',
+                // 失败跳转
+                to_fail_page: '',
+
                 input_value: '',
             };
         },
@@ -200,12 +206,17 @@
             },
             // 获取数据
             get_data() {
+                // 加载loding
+                uni.showLoading({
+                    title: '加载中...',
+                });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'scanpay'),
                     method: 'POST',
                     data: this.params,
                     dataType: 'json',
                     success: (res) => {
+                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var new_form = this.form;
@@ -227,6 +238,7 @@
                         }
                     },
                     fail: () => {
+                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
@@ -323,14 +335,24 @@
                 };
                 var validation = [{ fields: 'price', msg: '请输入消费金额' }];
                 if (app.globalData.fields_check(new_data, validation)) {
+                    // 加载loding
+                    uni.showLoading({
+                        title: '加载中...',
+                    });
                     uni.request({
                         url: app.globalData.get_request_url('created', 'index', 'scanpay'),
                         method: 'POST',
                         data: new_data,
                         dataType: 'json',
                         success: (res) => {
+                            uni.hideLoading();
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
+                                this.setData({
+                                    to_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
+                                    to_appoint_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
+                                    to_fail_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
+                                });
                                 this.$refs.payment.pay_handle(res.data.data.id, this.form.payment_id);
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'get_data')) {
@@ -339,6 +361,7 @@
                             }
                         },
                         fail: () => {
+                            uni.hideLoading();
                             uni.stopPullDownRefresh();
                             app.globalData.showToast('服务器请求出错');
                         },
