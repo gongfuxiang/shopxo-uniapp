@@ -284,6 +284,7 @@
                 this.$refs.inputDialog.close();
             },
 
+            // 打开备注框
             input_dialog_open() {
                 var new_data = this.form;
                 new_data.note = this.input_value;
@@ -295,37 +296,41 @@
             },
 
             // 键盘点击事件
-            key_up_event(num) {
+            key_up_event(v) {
                 var price = this.form.price;
-                if (num === 'del') {
+                if (v === 'del') {
                     this.concat_string(price.slice(0, -1));
-                } else if (num === '.') {
+                } else if (v === '.') {
                     // 判断输入框是否有值，如果没值则不允许输入
                     if (price.length > 0) {
                         // 判断是否已经存在‘。’如果存在则不允许输入
-                        if (price.indexOf(num) == -1) {
-                            this.concat_string(price + num);
+                        if (price.indexOf(v) == -1) {
+                            this.concat_string(price + v);
                         }
                     } else {
-                        this.concat_string('0' + num);
+                        this.concat_string('0' + v);
                     }
-                } else if (num === '0') {
+                } else if (v === '0') {
                     if (price.length > 0) {
-                        this.control_price(price, num);
+                        this.control_price(price, v);
                     } else {
-                        this.concat_string(price + num);
+                        this.concat_string(price + v);
                     }
-                } else if (num === 'sub') {
+                } else if (v === 'sub') {
                     this.form_submit();
                 } else {
                     if (price.length > 0) {
-                        this.control_price(price, num);
+                        this.control_price(price, v);
                     } else {
-                        this.concat_string(price + num);
+                        this.concat_string(price + v);
                     }
                 }
+                
+                // 触感振动
+                uni.vibrateShort();
             },
 
+            // 提交订单
             form_submit() {
                 var new_data = {
                     ...this.params,
@@ -353,7 +358,7 @@
                                 });
                                 this.$refs.payment.pay_handle(res.data.data.id, this.form.payment_id);
                             } else {
-                                if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
                                     app.globalData.showToast(res.data.msg);
                                 }
                             }
@@ -375,6 +380,7 @@
                     form: new_data,
                 });
             },
+
             // 数字键盘业务处理
             control_price(price, num) {
                 // 判断输入框第一个字符是否是0
@@ -400,6 +406,7 @@
                 }
             },
 
+            // 支付弹窗关闭
             payment_popup_event_close() {
                 this.setData({
                     is_show_payment_popup: false,
