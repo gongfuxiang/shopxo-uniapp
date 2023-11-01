@@ -24,7 +24,7 @@
                 </view>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
                     <view class="text-size fw-b spacing-mb">支付方式</view>
-                    <view class="flex-col jc-sa" :class="is_more ? 'pay-scroll' : ''">
+                    <view class="flex-col" :class="is_more ? 'pay-scroll' : ''">
                         <view v-for="(item, index) in is_more ? data.payment_list : data.payment_list.slice(0, 2)" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="change_event(index, item.id)">
                             <div class="flex-1 flex-width flex-row align-c">
                                 <image v-if="item.logo" :src="item.logo" mode="widthFix" class="circle img-pay margin-right-main" />

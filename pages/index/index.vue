@@ -24,25 +24,14 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search
-                                    propPlaceholder="输入商品名称搜索"
-                                    propPlaceholderClass="cr-white"
-                                    propIconColor="#fff"
-                                    propBgColor="rgb(255 255 255 / 0.5)"
-                                    <!-- #ifndef H5 -->
-                                    @onicon="search_icon_event"
-                                    propIcon="icon-mendian-sousuosm"
-                                    :propIsIconOnEvent="true"
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)" <!-- #ifndef H5 -->
+                                    @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                     <!-- #endif -->
-                                ></component-search>
+                                    ></component-search
+                                >
                             </block>
                             <block v-else>
-                                <component-search
-                                    propPlaceholder="输入商品名称搜索"
-                                    propPlaceholderClass="cr-white"
-                                    propIconColor="#fff"
-                                    propBgColor="rgb(255 255 255 / 0.5)"
-                                ></component-search>
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)"></component-search>
                             </block>
                         </view>
                         <!-- #ifdef H5 || MP-TOUTIAO || APP -->
@@ -82,7 +71,7 @@
                     <uni-notice-bar show-icon scrollable :text="common_shop_notice" background-color="transparent" color="#666" />
                 </view>
                 <!-- 推荐文章 -->
-                <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
+                <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : 'spacing-mt'">
                     <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>最新</text><text class="cr-red">资讯</text> </view>
                     <view class="right-content fr va-m">
                         <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
@@ -648,8 +637,8 @@
             // 搜索icon扫码事件
             search_icon_event(e) {
                 app.globalData.scan_handle();
-            }
-        }
+            },
+        },
     };
 </script>
 <style>
