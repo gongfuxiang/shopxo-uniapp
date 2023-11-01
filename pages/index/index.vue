@@ -24,11 +24,9 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)" <!-- #ifndef H5 -->
-                                    @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
-                                    <!-- #endif -->
-                                    ></component-search
-                                >
+                                <!-- #ifndef H5 -->
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)" @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"></component-search>
+                                <!-- #endif -->
                             </block>
                             <block v-else>
                                 <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)"></component-search>

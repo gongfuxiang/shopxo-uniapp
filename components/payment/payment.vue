@@ -148,6 +148,11 @@
                 type: Boolean,
                 default: false,
             },
+            // 判断错误时是否需要弹窗提示
+            propIsFailAlert: {
+                type: Boolean,
+                default: true,
+            },
         },
         components: {
             componentPopup,
@@ -609,19 +614,26 @@
             to_fail_page_event(msg) {
                 let to_fail_page = this.propToFailPage;
                 if (to_fail_page) {
-                    // 现金支付
-                    uni.showModal({
-                        content: msg,
-                        showCancel: false,
-                        success(res) {
-                            if (res.confirm) {
-                                // 跳转支付页面
-                                uni.redirectTo({
-                                    url: to_fail_page,
-                                });
-                            }
-                        },
-                    });
+                    if (this.propIsFailAlert) {
+                        // 现金支付
+                        uni.showModal({
+                            content: msg,
+                            showCancel: false,
+                            success(res) {
+                                if (res.confirm) {
+                                    // 跳转支付页面
+                                    uni.redirectTo({
+                                        url: to_fail_page,
+                                    });
+                                }
+                            },
+                        });
+                    } else {
+                        // 跳转支付页面
+                        uni.redirectTo({
+                            url: to_fail_page,
+                        });
+                    }
                 } else {
                     if (msg) {
                         app.globalData.showToast(msg);
