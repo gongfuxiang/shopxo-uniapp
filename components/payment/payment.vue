@@ -128,7 +128,7 @@
                     return {};
                 },
             },
-            // 支付失败跳转页面
+            // 支付失败跳转页面------不传则停留在当前页面
             propToFailPage: {
                 type: String,
                 default: '',
@@ -138,12 +138,7 @@
                 type: Boolean,
                 default: false,
             },
-            // 是否需要停留在当前页面
-            propIsKeepThisPage: {
-                type: Boolean,
-                default: false,
-            },
-            // 指定跳转页面----不进入充值成功页面
+            // 现金支付-指定跳转页面----不进入充值成功页面：不配置则表示不跳转
             propToAppointPage: {
                 type: String,
                 default: '',
@@ -586,49 +581,35 @@
                     code: '9000',
                 };
                 url_data = Object.assign({}, url_data, this.propToPage);
-                if (this.propToAppointPage) {
+                if (this.propIsRedirectTo) {
                     // 跳转支付页面
                     uni.redirectTo({
-                        url: this.propToAppointPage,
+                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
                     });
                 } else {
-                    if (this.propIsRedirectTo) {
-                        // 跳转支付页面
-                        uni.redirectTo({
-                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                        });
-                    } else {
-                        // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                        });
-                    }
+                    // 跳转支付页面
+                    uni.navigateTo({
+                        url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
+                    });
                 }
             },
             // 失败跳转
             to_fail_page_event(msg) {
                 let to_fail_page = this.propToFailPage;
                 if (to_fail_page) {
-                    if (msg) {
-                        // 现金支付
-                        uni.showModal({
-                            content: msg,
-                            showCancel: false,
-                            success(res) {
-                                if (res.confirm) {
-                                    // 跳转支付页面
-                                    uni.redirectTo({
-                                        url: to_fail_page,
-                                    });
-                                }
-                            },
-                        });
-                    } else {
-                        // 跳转支付页面
-                        uni.redirectTo({
-                            url: to_fail_page,
-                        });
-                    }
+                    // 现金支付
+                    uni.showModal({
+                        content: msg,
+                        showCancel: false,
+                        success(res) {
+                            if (res.confirm) {
+                                // 跳转支付页面
+                                uni.redirectTo({
+                                    url: to_fail_page,
+                                });
+                            }
+                        },
+                    });
                 } else {
                     if (msg) {
                         app.globalData.showToast(msg);
@@ -636,18 +617,11 @@
                 }
             },
             to_other(order_id) {
-                if (!this.propIsKeepThisPage) {
-                    if (this.propToAppointPage) {
-                        // 跳转订单列表页
-                        uni.redirectTo({
-                            url: this.propToAppointPage,
-                        });
-                    } else {
-                        // 跳转订单列表页
-                        uni.redirectTo({
-                            url: '/pages/user-order/user-order?data=' + order_id,
-                        });
-                    }
+                if (this.propToAppointPage) {
+                    // 跳转订单列表页
+                    uni.redirectTo({
+                        url: this.propToAppointPage,
+                    });
                 }
             },
             // 页面卸载

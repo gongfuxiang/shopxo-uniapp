@@ -41,13 +41,16 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
         <component-payment
+            :prop-pay-url="pay_url"
+            :prop-qrcode-url="qrcode_url"
+            prop-pay-data-key="id"
             :prop-payment-list="payment_list"
             :prop-temp-pay-value="temp_pay_value"
             :prop-temp-pay-index="temp_pay_index"
             :prop-payment-id="payment_id"
             :prop-default-payment-id="default_payment_id"
-            :prop-is-show-payment="is_show_payment_popup"
             :prop-pay-price="pay_price"
+            :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
             :prop-nav-status-index="nav_status_index"
@@ -71,13 +74,16 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 params: null,
-                is_show_payment_popup: false,
-                pay_price: 0,
+                // 支付弹窗参数
+                pay_url: '',
+                qrcode_url: '',
                 payment_list: [],
-                temp_pay_value: 0,
+                temp_pay_value: '',
                 temp_pay_index: 0,
                 payment_id: 0,
                 default_payment_id: 0,
+                is_show_payment_popup: false,
+                pay_price: 0,
                 nav_status_list: [
                     {
                         name: '全部',
@@ -169,6 +175,10 @@
                         });
                         return false;
                     } else {
+                        this.setData({
+                            pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
+                            qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
+                        });
                         // 获取数据
                         this.get_data_list();
                     }

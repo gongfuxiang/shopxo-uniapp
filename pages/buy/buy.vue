@@ -258,7 +258,7 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page="to_page" :prop-to-fail-page="to_fail_page"></component-payment>
+            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" :prop-to-appoint-page="to_appoint_page" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page="to_page" :prop-to-fail-page="to_fail_page"></component-payment>
         </block>
     </view>
 </template>
@@ -318,8 +318,8 @@
                 popup_plugins_realstore_card_index: 0,
 
                 // 支付弹窗参数
-                pay_url: app.globalData.get_request_url('pay', 'order'),
-                qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+                pay_url: '',
+                qrcode_url: '',
                 // 前往页面携带的参数
                 to_page: {
                     title: '进入我的订单',
@@ -327,6 +327,8 @@
                 },
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/user-order/user-order',
+                // 现金--跳转指定页面
+                to_appoint_page: '',
             };
         },
 
@@ -348,6 +350,8 @@
                 this.setData({
                     params: JSON.parse(base64.decode(decodeURIComponent(params.data))),
                     plugins_points_status: app.globalData.get_config('plugins_base.points.data.is_default_use_points', null) == 1,
+                    pay_url: app.globalData.get_request_url('pay', 'order'),
+                    qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                 });
 
                 // 删除地址缓存
@@ -665,6 +669,9 @@
 
             // 订单提交响应处理
             buy_submit_response_handle(data) {
+                this.setData({
+                    to_appoint_page: '/pages/user-order/user-order?order_ids=' + data.order_ids.join(','),
+                });
                 this.$refs.payment.pay_handle(data.order_ids.join(','), data.payment_id);
             },
 

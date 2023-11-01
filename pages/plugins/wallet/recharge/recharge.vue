@@ -90,8 +90,8 @@
                 select_index: null,
 
                 // 支付弹窗参数
-                pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
-                qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
+                pay_url: '',
+                qrcode_url: '',
                 payment_list: [],
                 temp_pay_value: '',
                 is_show_payment_popup: false,
@@ -99,7 +99,7 @@
                 payment_id: 0,
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/plugins/wallet/user/user',
-                to_appoint_page:'/pages/plugins/wallet/user/user?type=3'
+                to_appoint_page: '/pages/plugins/wallet/user/user?type=3',
             };
         },
 
@@ -140,6 +140,10 @@
                         });
                         return false;
                     } else {
+                        this.setData({
+                            pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
+                            qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
+                        });
                         this.get_data();
                     }
                 } else {

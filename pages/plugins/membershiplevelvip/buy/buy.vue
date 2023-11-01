@@ -76,6 +76,7 @@
             :prop-pay-price="pay_price"
             :propIsRedirectTo="true"
             :prop-to-fail-page="to_fail_page"
+            :prop-to-appoint-page="to_appoint_page"
             :prop-is-show-payment="is_show_payment_popup"
             @close-payment-poupon="payment_popup_event_close"
         ></component-payment>
@@ -99,8 +100,8 @@
                 submit_disabled_status: false,
                 currency_symbol: app.globalData.data.currency_symbol,
                 // 支付弹窗参数
-                pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
-                qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
+                pay_url: '',
+                qrcode_url: '',
                 payment_list: [],
                 temp_pay_value: '',
                 temp_pay_index: 0,
@@ -109,7 +110,9 @@
                 is_show_payment_popup: false,
                 pay_price: 0,
                 // 支付失败跳转的页面
-                to_fail_page: 'pages/plugins/membershiplevelvip/order/order',
+                to_fail_page: '/pages/plugins/membershiplevelvip/order/order',
+                // 现金--跳转指定页面
+                to_appoint_page: '/pages/plugins/membershiplevelvip/order/order',
             };
         },
         components: {
@@ -130,8 +133,28 @@
         },
         methods: {
             init() {
-                // 获取数据
-                this.get_data_list();
+                var user = app.globalData.get_user_info(this, 'init');
+                if (user != false) {
+                    // 用户未绑定手机则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.redirectTo({
+                            url: '/pages/login/login?event_callback=init',
+                        });
+                        return false;
+                    } else {
+                        this.setData({
+                            pay_url: app.globalData.get_request_url('pay', 'buy', 'membershiplevelvip'),
+                            qrcode_url: app.globalData.get_request_url('paycheck', 'buy', 'membershiplevelvip'),
+                        });
+                        // 获取数据
+                        this.get_data_list();
+                    }
+                } else {
+                    this.setData({
+                        data_list_loding_status: 0,
+                        data_bottom_line_status: false,
+                    });
+                }
             },
             // 获取数据
             get_data_list() {

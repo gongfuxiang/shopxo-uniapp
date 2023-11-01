@@ -103,7 +103,19 @@
                 </view>
             </view>
             <!-- 支付弹窗 -->
-            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" :prop-payment-list="data.payment_list" :prop-temp-pay-value="temp_pay_value" :prop-pay-price="pay_price" :prop-payment-id="payment_id" :propIsRedirectTo="true" :prop-to-appoint-page="to_appoint_page" :prop-is-show-payment="is_show_payment_popup" @close-payment-poupon="payment_popup_event_close"></component-payment>
+            <component-payment
+                ref="payment"
+                :prop-pay-url="pay_url"
+                :prop-qrcode-url="qrcode_url"
+                :prop-payment-list="data.payment_list"
+                :prop-temp-pay-value="temp_pay_value"
+                :prop-pay-price="pay_price"
+                :prop-payment-id="payment_id"
+                :propIsRedirectTo="true"
+                :prop-to-appoint-page="to_appoint_page"
+                :prop-is-show-payment="is_show_payment_popup"
+                @close-payment-poupon="payment_popup_event_close"
+            ></component-payment>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -134,8 +146,8 @@
                 params: {},
 
                 // 支付弹窗参数
-                pay_url: app.globalData.get_request_url('pay', 'index', 'scanpay'),
-                qrcode_url: app.globalData.get_request_url('paycheck', 'index', 'scanpay'),
+                pay_url: '',
+                qrcode_url: '',
                 // payment_list: [],
                 temp_pay_value: '',
                 is_show_payment_popup: false,
@@ -178,6 +190,10 @@
                             url: '/pages/login/login?event_callback=init',
                         });
                     } else {
+                        this.setData({
+                            pay_url: app.globalData.get_request_url('pay', 'index', 'scanpay'),
+                            qrcode_url: app.globalData.get_request_url('paycheck', 'index', 'scanpay'),
+                        });
                         this.get_data();
                     }
                 }
@@ -242,7 +258,7 @@
             add_desc_event() {
                 this.$refs.inputDialog.open();
             },
-            
+
             input_change(e) {
                 this.setData({
                     input_value: e.detail.value,
