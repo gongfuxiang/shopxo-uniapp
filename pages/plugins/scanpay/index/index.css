@@ -23,7 +23,7 @@
 
 .pay-scroll {
     max-height: calc(100vh - 1102rpx);
-    min-height: calc(140rpx);
+    min-height: 140rpx;
     overflow-y: auto;
 }
 
