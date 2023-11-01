@@ -225,10 +225,10 @@
     overflow: hidden;
 }
 .price-content {
-    width: calc(100% - 220rpx);
+    width: calc(100% - 230rpx);
 }
 .goods-base-right-opt {
-    width: 206rpx;
+    width: 210rpx;
 }
 .price-content,
 .goods-base-right-opt {
