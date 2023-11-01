@@ -72,7 +72,7 @@
                         <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('2')">2</text>
                         <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('3')">3</text>
                         <text class="flex-1 key-1 br-b-f5" @tap="key_up_event('del')">
-                            <iconfont name="icon-jianpan-guanbi" size="68rpx" class="fw-n"></iconfont>
+                            <iconfont name="icon-keyboard-backspace" size="68rpx" class="fw-n"></iconfont>
                         </text>
                     </view>
                     <view class="flex-row">
