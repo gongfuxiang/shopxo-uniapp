@@ -1,12 +1,12 @@
 <template>
     <view>
-        <view v-if="(data || null) !== null">
+        <view v-if="(data || null) !== null" class="page-bottom-fixed">
             <view class="bg-white padding-main">
                 <view v-if="(data.scanpay_info || null) !== null" class="tc margin-bottom-lg">
-                    <view class="user-title-img auto margin-top-sm">
+                    <view class="user-title-img auto circle br oh">
                         <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="wh-auto" />
                     </view>
-                    <view class="text-size">{{ data.scanpay_info.name }}</view>
+                    <view class="text-size margin-top-sm">{{ data.scanpay_info.name }}</view>
                 </view>
                 <block v-if="(data.order_info || null) !== null">
                     <view class="flex-row jc-sb align-c spacing-mb">
@@ -23,9 +23,14 @@
                     </view>
                 </block>
             </view>
+            <view v-if="(data.ad_code || null) !== null" class="padding-main">
+                <view class="bg-white border-radius-main padding-main">
+                    <mp-html :content="data.ad_code" />
+                </view>
+            </view>
             <view class="bottom-fixed br-0 bg-grey-f5">
                 <view class="bottom-line-exclude">
-                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none">关闭页面</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="exit_event">关闭页面</button>
                 </view>
             </view>
         </view>
@@ -73,6 +78,7 @@
             init() {
                 this.get_data();
             },
+
             // 获取数据
             get_data() {
                 // 加载loding
@@ -112,6 +118,11 @@
                         app.globalData.showToast('服务器请求出错');
                     },
                 });
+            },
+
+            // 退出小程序
+            exit_event(e) {
+                uni.exitMiniProgram();
             },
         },
     };
