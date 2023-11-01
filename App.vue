@@ -1292,6 +1292,9 @@
                 // #ifdef H5
                 value = 'h5';
                 // #endif
+                // #ifdef APP
+                value = this.set_system_info.platform;
+                // #endif
                 return value;
             },
             // 授权验证

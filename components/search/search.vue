@@ -2,7 +2,7 @@
     <view>
         <view class="search-content pr">
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
-                <iconfont :name="propIcon" :color="propIconColor" size="28rpx"></iconfont>
+                <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
             <input
                 type="text"
@@ -194,7 +194,7 @@
 
     .search-content input {
         font-size: 24rpx;
-        padding: 0 32rpx 0 68rpx;
+        padding: 0 32rpx 0 64rpx;
         box-sizing: border-box;
         height: 56rpx;
         line-height: 56rpx;
