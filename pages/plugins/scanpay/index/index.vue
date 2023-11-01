@@ -24,7 +24,7 @@
                 </view>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
                     <view class="text-size fw-b spacing-mb">支付方式</view>
-                    <view class="flex-col jc-sa" :class="data.payment_list.length>2">
+                    <view class="flex-col jc-sa" :class="is_more ? 'pay-scroll' : ''">
                         <view v-for="(item, index) in is_more ? data.payment_list : data.payment_list.slice(0, 2)" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="change_event(index, item.id)">
                             <div class="flex-1 flex-width flex-row align-c">
                                 <image v-if="item.logo" :src="item.logo" mode="widthFix" class="circle img-pay margin-right-main" />
@@ -53,40 +53,52 @@
                     </block>
                     <!-- 输入框示例 -->
                     <uni-popup ref="inputDialog" type="dialog">
-                        <uni-popup-dialog ref="inputClose" mode="input" title="添加备注" placeholder=" " @confirm="input_dialog"></uni-popup-dialog>
+                        <view class="dialog-container">
+                            <view class="dialog-title">
+                                <text>备注</text>
+                            </view>
+                            <view class="dialog-content">
+                                <input type="text" :value="form.note" class="dialog-input" maxlength="200" @input="input_change" />
+                            </view>
+                            <view class="dialog-btn-group">
+                                <view class="dialog-btn cr-grey-9" @tap="input_dialog_colse">取消</view>
+                                <view class="dialog-btn br-l-f5" @tap="input_dialog_open">确定</view>
+                            </view>
+                        </view>
+                        <!-- <uni-popup-dialog ref="inputClose" mode="input" title="添加备注" placeholder=" " @confirm="input_dialog"></uni-popup-dialog> -->
                     </uni-popup>
                 </view>
                 <view class="bg-white tc text-size-xl fw-b sub-key-content">
                     <view class="flex-row">
-                        <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('1')">1</view>
-                        <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('2')">2</view>
-                        <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('3')">3</view>
-                        <view class="flex-1 key-1 br-b-f5" @tap="key_up_event('del')">
+                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('1')">1</text>
+                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('2')">2</text>
+                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('3')">3</text>
+                        <text class="flex-1 key-1 br-b-f5" @tap="key_up_event('del')">
                             <iconfont name="icon-jianpan-guanbi" size="68rpx" class="fw-n"></iconfont>
-                        </view>
+                        </text>
                     </view>
                     <view class="flex-row">
                         <view class="flex-3">
                             <view class="flex-row">
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('4')">4</view>
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('5')">5</view>
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('6')">6</view>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('4')">4</text>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('5')">5</text>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('6')">6</text>
                             </view>
                             <view class="flex-row">
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('7')">7</view>
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('8')">8</view>
-                                <view class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('9')">9</view>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('7')">7</text>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('8')">8</text>
+                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('9')">9</text>
                             </view>
                             <view class="flex-row">
-                                <view class="flex-2 key-1 br-r-f5" @tap="key_up_event('0')">0</view>
-                                <view class="flex-1 key-1 repair br-r-f5" @tap="key_up_event('.')">.</view>
+                                <text class="flex-2 key-1 br-r-f5" @tap="key_up_event('0')">0</text>
+                                <text class="flex-1 key-1 repair br-r-f5" @tap="key_up_event('.')">.</text>
                             </view>
                         </view>
-                        <view class="flex-1 bg-red cr-white" @tap="key_up_event('sub')">
-                            <view class="flex-col jc-c ht-auto">
-                                <view class="fw-n">支付</view>
-                            </view>
-                        </view>
+                        <text class="flex-1 bg-red cr-white" @tap="key_up_event('sub')">
+                            <text class="flex-col jc-c ht-auto">
+                                <text class="fw-n">支付</text>
+                            </text>
+                        </text>
                     </view>
                 </view>
             </view>
@@ -132,6 +144,7 @@
                 // 支付失败跳转的页面
                 // /pages/plugins/wallet/user/user?type=3
                 to_appoint_page: '',
+                input_value: '',
             };
         },
 
@@ -229,10 +242,25 @@
             add_desc_event() {
                 this.$refs.inputDialog.open();
             },
+            
+            input_change(e) {
+                this.setData({
+                    input_value: e.detail.value,
+                });
+            },
+
             // 提交备注
-            input_dialog(val) {
+            input_dialog_colse(val) {
+                this.setData({
+                    input_value: this.form.note,
+                });
+                // 关闭窗口后，恢复默认内容
+                this.$refs.inputDialog.close();
+            },
+
+            input_dialog_open() {
                 var new_data = this.form;
-                new_data.note = val;
+                new_data.note = this.input_value;
                 this.setData({
                     form: new_data,
                 });

@@ -230,8 +230,31 @@
                 this.pay_handle(this.propTempPayValue, this.payment_id);
                 this.$emit('close-payment-poupon', false);
             },
+
             // 支付方法
             pay_handle(order_id, payment_id) {
+                var self = this;
+                this.propPaymentList.forEach((item) => {
+                    if (item.id == payment_id) {
+                        if (item.payment === 'WalletPay') {
+                            uni.showModal({
+                                title: '温馨提示',
+                                content: '操作后将立即扣除支付费用、确认继续吗？',
+                                confirmText: '确认',
+                                cancelText: '暂不',
+                                success(res) {
+                                    if (res.confirm) {
+                                        self.pay_handle_event(order_id, payment_id);
+                                    }
+                                },
+                            });
+                        } else {
+                            this.pay_handle_event(order_id, payment_id);
+                        }
+                    }
+                });
+            },
+            pay_handle_event(order_id, payment_id) {
                 // #ifdef H5
                 // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
                 if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id)) {

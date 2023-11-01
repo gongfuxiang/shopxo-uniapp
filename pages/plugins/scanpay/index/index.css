@@ -22,8 +22,14 @@
 }
 
 .pay-scroll {
-    max-height: calc(100vh - 55rem);
+    max-height: calc(100vh - 1102rpx);
+    min-height: calc(140rpx);
     overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    ;
 }
 
 .sub-key {
@@ -31,6 +37,7 @@
     box-shadow: none !important;
     padding: 0;
 }
+
 .title-padding {
     padding: 16rpx;
 }
@@ -39,9 +46,9 @@
  * 页面底部浮动、增加底部边距
  */
 .page-pay-fixed {
-    height: calc(100vh - 536rpx - env(safe-area-inset-bottom) + 40rpx);
+    padding-bottom: calc(536rpx + env(safe-area-inset-bottom) - 40rpx);
     /* #ifdef H5 */
-    height: calc(100vh - 536rpx) !important;
+    padding-bottom: 536rpx !important;
     /* #endif */
 }
 
@@ -61,37 +68,60 @@
     font-weight: 400;
 }
 
+.sub-key-content text {
+    transition: all 0.15s ease-in-out;
+}
+
+.sub-key-content text:active {
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
 /* 弹框 */
-::v-deep .uni-popup__info {
-    color: #333;
-    font-weight: 400;
+.dialog-container {
+    width: 600rpx;
+    border-radius: 22rpx;
+    background-color: #fff;
 }
 
-::v-deep .uni-dialog-button-group {
-    border-top: 0;
-    padding-bottom: 24rpx;
+.dialog-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 30rpx;
+    font-size: 32rpx;
+    text-align: center;
 }
 
-::v-deep .uni-dialog-button {
-    height: 60rpx;
+.dialog-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 40rpx;
 }
 
-::v-deep .uni-dialog-button-text {
-    color: #999;
-}
-
-::v-deep .uni-button-color {
-    color: #333;
-}
-
-::v-deep .uni-dialog-input,
-::v-deep .uni-dialog-input:focus,
-::v-deep .uni-dialog-input:active,
-::v-deep .uni-dialog-input:hover,
-::v-deep .uni-dialog-input:focus-visible,
-::v-deep .uni-dialog-input:visited {
-    border: 0;
-    box-shadow: none;
-    outline: none;
+.dialog-input {
+    flex: 1;
+    font-size: 28rpx;
+    border: 2rpx #eee solid;
+    height: 80rpx;
+    padding: 0 20rpx;
+    border-radius: 10rpx;
+    color: #555;
     background: #F1F1F1;
+}
+
+.dialog-btn-group {
+    display: flex;
+    flex-direction: row;
+}
+
+.dialog-btn {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 90rpx;
+    font-size: 32rpx;
 }
