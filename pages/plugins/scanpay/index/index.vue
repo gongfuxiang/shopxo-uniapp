@@ -68,35 +68,35 @@
                 </view>
                 <view class="bg-white tc text-size-xl fw-b sub-key-content">
                     <view class="flex-row">
-                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('1')">1</text>
-                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('2')">2</text>
-                        <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('3')">3</text>
-                        <text class="flex-1 key-1 br-b-f5" @tap="key_up_event('del')">
-                            <iconfont name="icon-keyboard-backspace" size="68rpx" class="fw-n"></iconfont>
-                        </text>
+                        <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('1')">1</view>
+                        <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('2')">2</view>
+                        <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('3')">3</view>
+                        <view class="flex-1 key-1 br-b-f5 key-num" @tap="key_up_event('del')">
+                            <iconfont name="icon-keyboard-backspace" color="#333" size="68rpx" class="fw-n"></iconfont>
+                        </view>
                     </view>
                     <view class="flex-row">
                         <view class="flex-3">
                             <view class="flex-row">
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('4')">4</text>
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('5')">5</text>
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('6')">6</text>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('4')">4</view>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('5')">5</view>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('6')">6</view>
                             </view>
                             <view class="flex-row">
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('7')">7</text>
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('8')">8</text>
-                                <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('9')">9</text>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('7')">7</view>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('8')">8</view>
+                                <view class="flex-1 key-1 br-r-f5 br-b-f5 key-num" @tap="key_up_event('9')">9</view>
                             </view>
                             <view class="flex-row">
-                                <text class="flex-2 key-1 br-r-f5" @tap="key_up_event('0')">0</text>
-                                <text class="flex-1 key-1 repair br-r-f5" @tap="key_up_event('.')">.</text>
+                                <view class="flex-2 key-1 br-r-f5 key-num" @tap="key_up_event('0')">0</view>
+                                <view class="flex-1 key-1 repair br-r-f5 key-num" @tap="key_up_event('.')">.</view>
                             </view>
                         </view>
-                        <text class="flex-1 bg-red cr-white" @tap="key_up_event('sub')">
-                            <text class="flex-col jc-c ht-auto">
-                                <text class="fw-n">支付</text>
-                            </text>
-                        </text>
+                        <view class="flex-1 bg-red cr-white key-num sub" @tap="key_up_event('sub')">
+                            <view class="flex-col jc-c ht-auto">
+                                <view class="fw-n">支付</view>
+                            </view>
+                        </view>
                     </view>
                 </view>
             </view>
@@ -110,6 +110,7 @@
                 :prop-pay-price="pay_price"
                 :prop-payment-id="payment_id"
                 :propIsRedirectTo="true"
+                :propIsFailAlert="false"
                 :propToPage="to_page"
                 :propToFailPage="to_fail_page"
                 :prop-to-appoint-page="to_appoint_page"
@@ -219,7 +220,7 @@
                         if (res.data.code == 0) {
                             var new_form = this.form;
                             var data = res.data.data || null;
-                            if(data != null) {
+                            if (data != null) {
                                 new_form.payment_id = data.payment_list[0].id;
                             }
                             this.setData({
@@ -230,9 +231,9 @@
                             });
 
                             // 标题
-                            if(data != null && (data.scanpay_info || null) != null) {
+                            if (data != null && (data.scanpay_info || null) != null) {
                                 uni.setNavigationBarTitle({
-                                	title: data.scanpay_info.name+'收款'
+                                    title: data.scanpay_info.name + '收款',
                                 });
                             }
                         } else {
@@ -335,7 +336,7 @@
                         this.concat_string(price + v);
                     }
                 }
-                
+
                 // 触感振动
                 uni.vibrateShort();
             },

@@ -68,12 +68,16 @@
     font-weight: 400;
 }
 
-.sub-key-content text {
+.sub-key-content .key-num {
     transition: all 0.15s ease-in-out;
 }
 
-.sub-key-content text:active {
-    background-color: rgba(0, 0, 0, 0.15);
+.sub-key-content .key-num:active {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.sub-key-content .key-num.sub:active {
+    background-color: rgba(230, 67, 64, 0.85) !important;
 }
 
 /* 弹框 */
