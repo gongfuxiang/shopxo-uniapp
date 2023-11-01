@@ -4,7 +4,7 @@
             <view class="padding-main">
                 <block v-if="(data.scanpay_info || null) !== null">
                     <view class="flex-row align-c margin-top-main margin-bottom-xl">
-                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="circle img-user margin-right-main" />
+                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="circle img-user br margin-right-main" />
                         <div class="flex-1 flex-width flex-row align-c">
                             <text class="text-size fw-b single-text">{{ data.scanpay_info.name }}</text>
                             <text v-if="(data.scanpay_info.alias || null) !== null" class="cr-white badge tc margin-left-sm">{{ data.scanpay_info.alias }}</text>
@@ -72,7 +72,7 @@
                         <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('2')">2</text>
                         <text class="flex-1 key-1 br-r-f5 br-b-f5" @tap="key_up_event('3')">3</text>
                         <text class="flex-1 key-1 br-b-f5" @tap="key_up_event('del')">
-                            <iconfont name="icon-jianpan-guanbi" size="68rpx" class="fw-n"></iconfont>
+                            <iconfont name="icon-keyboard-backspace" size="68rpx" class="fw-n"></iconfont>
                         </text>
                     </view>
                     <view class="flex-row">
@@ -218,13 +218,23 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var new_form = this.form;
-                            new_form.payment_id = res.data.data.payment_list[0].id;
+                            var data = res.data.data || null;
+                            if(data != null) {
+                                new_form.payment_id = data.payment_list[0].id;
+                            }
                             this.setData({
-                                data: res.data.data || null,
+                                data: res.data.data,
                                 form: new_form,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
+
+                            // 标题
+                            if(data != null && (data.scanpay_info || null) != null) {
+                                uni.setNavigationBarTitle({
+                                	title: data.scanpay_info.name+'收款'
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
