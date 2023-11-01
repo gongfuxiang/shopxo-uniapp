@@ -103,7 +103,7 @@
                         user.avatar = '';
                     }
                     // 状态
-                    var status = user == null ? false : (user.avatar || null) == null || (user.nickname || null) == null ? true : false;
+                    var status = user == null ? false : ((user.avatar || null) == null || (user.nickname || null) == null ? true : false);
                     // 间隔时间
                     var cache_time = parseInt(uni.getStorageSync(this.cache_key) || 0);
                     var current_time = Date.parse(new Date()) / 1000;
@@ -162,13 +162,8 @@
                             if (data.code == 0) {
                                 self.setData({
                                     user_avatar: data.data,
+                                    form_submit_disabled_status: ((self.user.nickname || null) == null && (self.nickname || null) == null)
                                 });
-                                console.log('nickname2', self.nickname);
-                                if (self.nickname) {
-                                    self.setData({
-                                        form_submit_disabled_status: false,
-                                    });
-                                }
                             } else {
                                 app.globalData.showToast(data.msg);
                             }
@@ -191,12 +186,16 @@
                         fields: 'avatar',
                         msg: '请上传头像',
                     });
+                } else {
+                    delete form_data['avatar'];
                 }
                 if ((this.user.nickname || null) == null) {
                     validation.push({
                         fields: 'nickname',
                         msg: '请填写昵称',
                     });
+                } else {
+                    delete form_data['nickname'];
                 }
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     // 数据保存
@@ -233,21 +232,16 @@
             },
             // 输入框值监听
             on_input_name(event) {
-                if (event.detail.value) {
+                if (event.detail.value != '') {
                     this.setData({
                         nickname: event.detail.value,
+                        form_submit_disabled_status: ((this.user.avatar || null) == null && (this.user_avatar || null) == null)
                     });
-                    console.log('nickname', this.nickname);
-                    if (this.user_avatar) {
-                        this.setData({
-                            form_submit_disabled_status: false,
-                        });
-                        return;
-                    }
+                } else {
+                    this.setData({
+                        form_submit_disabled_status: true,
+                    });
                 }
-                this.setData({
-                    form_submit_disabled_status: true,
-                });
             },
         },
     };
