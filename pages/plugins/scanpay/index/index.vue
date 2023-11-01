@@ -35,8 +35,7 @@
                     </view>
                     <view v-if="data.payment_list.length > 2" class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">
                         <text>更多</text>
-                        <iconfont class="icon-mendian-jiantou2" size="24rpx"></iconfont>
-                        <iconfont class="icon-fenlei-top" size="24rpx"></iconfont>
+                        <iconfont :name="is_more ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="24rpx"></iconfont>
                     </view>
                 </view>
             </view>
@@ -52,20 +51,19 @@
                         </view>
                     </block>
                     <!-- 输入框示例 -->
-                    <uni-popup ref="inputDialog" type="dialog">
+                    <uni-popup ref="inputDialog" type="dialog" :animation="false">
                         <view class="dialog-container">
                             <view class="dialog-title">
                                 <text>备注</text>
                             </view>
                             <view class="dialog-content">
-                                <input type="text" :value="form.note" class="dialog-input" maxlength="200" @input="input_change" />
+                                <input type="text" class="dialog-input" maxlength="200" @input="input_change" />
                             </view>
                             <view class="dialog-btn-group">
                                 <view class="dialog-btn cr-grey-9" @tap="input_dialog_colse">取消</view>
-                                <view class="dialog-btn br-l-f5" @tap="input_dialog_open">确定</view>
+                                <view class="dialog-btn divider-l" @tap="input_dialog_open">确定</view>
                             </view>
                         </view>
-                        <!-- <uni-popup-dialog ref="inputClose" mode="input" title="添加备注" placeholder=" " @confirm="input_dialog"></uni-popup-dialog> -->
                     </uni-popup>
                 </view>
                 <view class="bg-white tc text-size-xl fw-b sub-key-content">

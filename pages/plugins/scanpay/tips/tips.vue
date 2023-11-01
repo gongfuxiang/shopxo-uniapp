@@ -2,13 +2,13 @@
     <view>
         <view v-if="(data || null) !== null" class="page-bottom-fixed">
             <view class="bg-white padding-main">
-                <view v-if="(data.scanpay_info || null) !== null" class="tc margin-bottom-lg">
-                    <view class="user-title-img auto circle br oh">
-                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="wh-auto" />
+                <block v-if="(data.order_info.status || null) !== null && data.order_info.status == 1">
+                    <view class="tc margin-bottom-lg">
+                        <view class="user-title-img auto circle br oh">
+                            <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="wh-auto" />
+                        </view>
+                        <view class="text-size margin-top-sm">{{ data.scanpay_info.name }}</view>
                     </view>
-                    <view class="text-size margin-top-sm">{{ data.scanpay_info.name }}</view>
-                </view>
-                <block v-if="(data.order_info || null) !== null">
                     <view class="flex-row jc-sb align-c spacing-mb">
                         <view class="cr-base">订单状态</view>
                         <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? '支付成功' : '支付失败' }}</view>
@@ -22,15 +22,23 @@
                         <view class="flex-1 flex-width tr fw-b cr-red">{{ currency_symbol }}{{ data.order_info.pay_price }}</view>
                     </view>
                 </block>
+                <block v-else>
+                    <view class="padding-top-xxxl padding-bottom-main tc">
+                        <view class="cr-grey-c">
+                            <iconfont name="icon-payment-fail" size="120rpx"></iconfont>
+                        </view>
+                        <view class="margin-top-lg">支付失败</view>
+                    </view>
+                </block>
             </view>
             <view v-if="(data.ad_code || null) !== null" class="padding-main">
-                <view class="bg-white border-radius-main padding-main">
+                <view class="border-radius-main">
                     <mp-html :content="data.ad_code" />
                 </view>
             </view>
             <view class="bottom-fixed br-0 bg-grey-f5">
                 <view class="bottom-line-exclude">
-                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="exit_event">关闭页面</button>
+                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">关闭页面</button>
                 </view>
             </view>
         </view>
@@ -92,6 +100,7 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             this.setData({
                                 data: res.data.data || null,

@@ -105,10 +105,13 @@
     font-size: 28rpx;
     border: 2rpx #eee solid;
     height: 80rpx;
+    line-height: 80rpx;
+    min-height: 80rpx;
     padding: 0 20rpx;
     border-radius: 10rpx;
     color: #555;
     background: #F1F1F1;
+    box-sizing: unset !important;
 }
 
 .dialog-btn-group {

@@ -14,7 +14,11 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-jianpan-guanbi:before {
+.icon-payment-fail:before {
+  content: "\e6e6";
+}
+
+.icon-keyboard-backspace:before {
   content: "\e6e5";
 }
 
