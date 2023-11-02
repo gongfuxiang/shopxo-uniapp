@@ -169,18 +169,28 @@
                         success: (res) => {
                             uni.hideLoading();
                             if (res.data.code == 0) {
-                                app.globalData.showToast(res.data.msg, 'success');
-                                var is_temp = (this.params || null) != null && (this.params.is_team || 0) == 1;
-                                setTimeout(function () {
-                                    // 是否签到也组队
-                                    if (is_temp) {
-                                        uni.redirectTo({
-                                            url: '/pages/plugins/signin/index-detail/index-detail?id=' + res.data.data,
-                                        });
-                                    } else {
-                                        uni.navigateBack();
-                                    }
-                                }, 2000);
+                                var self = this;
+                                var data = res.data;
+                                // 现金支付
+                                uni.showModal({
+                                    content: res.data.msg,
+                                    showCancel: false,
+                                    success(res) {
+                                        if (res.confirm) {
+                                            var is_temp = (self.params || null) != null && (self.params.is_team || 0) == 1;
+                                            setTimeout(function () {
+                                                // 是否签到也组队
+                                                if (is_temp) {
+                                                    uni.redirectTo({
+                                                        url: '/pages/plugins/signin/index-detail/index-detail?id=' + data.data,
+                                                    });
+                                                } else {
+                                                    uni.navigateBack();
+                                                }
+                                            }, 2000);
+                                        }
+                                    },
+                                });
                             } else {
                                 this.setData({
                                     form_submit_loading: false,

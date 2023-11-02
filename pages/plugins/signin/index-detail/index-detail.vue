@@ -385,14 +385,25 @@
                                 switch (res.data.data.status) {
                                     // 组队成功
                                     case 0:
-                                        // 设置签到码id
-                                        var temp_params = this.params;
-                                        temp_params['id'] = res.data.data.qrcode_id;
-                                        this.setData({
-                                            params: temp_params,
+                                        var self = this;
+                                        var data = res.data;
+                                        // 现金支付
+                                        uni.showModal({
+                                            content: res.data.msg,
+                                            showCancel: false,
+                                            success(res) {
+                                                if (res.confirm) {
+                                                    // 设置签到码id
+                                                    var temp_params = self.params;
+                                                    temp_params['id'] = data.data.qrcode_id;
+                                                    self.setData({
+                                                        params: temp_params,
+                                                    });
+                                                    // 重新拉取数据
+                                                    self.get_data();
+                                                }
+                                            },
                                         });
-                                        // 重新拉取数据
-                                        this.get_data();
                                         break;
                                     // 需要填写联系人信息
                                     case 1:
