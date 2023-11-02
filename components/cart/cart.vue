@@ -80,8 +80,7 @@
                 <view class="tc spacing-mb">
                     <view class="guess-like fw-b text-size-md">猜你喜欢</view>
                 </view>
-                <component-goods-list class="spacing-mt" :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event">
-                </component-goods-list>
+                <component-goods-list class="spacing-mt" :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event"> </component-goods-list>
             </view>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
@@ -579,6 +578,7 @@
                                 data_list: temp_list,
                                 data_list_loding_status: temp_list.length == 0 ? 0 : this.data_list_loding_status,
                                 goods_list: new_goods_list,
+                                random_value: Math.random(),
                             });
                             app.globalData.showToast(type == 'delete' ? '删除成功' : '收藏成功', 'success');
 
@@ -815,6 +815,7 @@
                 let new_goods_list = this.goods_list;
                 for (let i = 0; i < new_goods_list.length; i++) {
                     let bool = app.globalData.some_arry(cart_list, new_goods_list[i].id, 'goods_id');
+                    console.log(bool);
                     if (bool) {
                         // 将购物车中相同商品不同规格的商品数量累加
                         let new_goods_item = this.cart_item_num(cart_list);

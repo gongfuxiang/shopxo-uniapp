@@ -20,7 +20,7 @@
             <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }})秒后自动刷新付款码</view>
 
             <!-- 导航 -->
-            <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main">
+            <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main br-0">
                 <view class="bottom-line-exclude oh">
                     <view class="bg-grey round oh">
                         <button type="default" class="bg-grey br-grey cr-base round text-size fl" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>

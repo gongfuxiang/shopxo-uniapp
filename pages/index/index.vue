@@ -4,7 +4,9 @@
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color + top_content_style">
                 <!-- 顶部背景图片 -->
-                <image class="pa top-0 bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
+                <view class="pa top-0 left-0 right-0">
+                    <image class="bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
+                </view>
 
                 <!-- 搜索 -->
                 <view v-if="common_app_is_header_nav_fixed == 1" class="search-fixed-seat"></view>
@@ -24,9 +26,11 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)" 
                                 <!-- #ifndef H5 -->
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)" @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"></component-search>
+                                @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                 <!-- #endif -->
+                                ></component-search>
                             </block>
                             <block v-else>
                                 <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-white" propIconColor="#fff" propBgColor="rgb(255 255 255 / 0.5)"></component-search>
@@ -208,14 +212,7 @@
                                 </view>
                             </view>
                             <view class="oh">
-                                <swiper
-                                    :vertical="true"
-                                    :autoplay="true"
-                                    :circular="true"
-                                    :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6"
-                                    interval="3000"
-                                    :style="plugins_salerecords_data.data.length < 6 ? 'height:' + plugins_salerecords_data.data.length * 84.33 + 'rpx;' : ''"
-                                >
+                                <swiper :vertical="true" :autoplay="true" :circular="true" :display-multiple-items="plugins_salerecords_data.data.length < 6 ? plugins_salerecords_data.data.length : 6" interval="3000" :style="plugins_salerecords_data.data.length < 6 ? 'height:' + plugins_salerecords_data.data.length * 84.33 + 'rpx;' : ''">
                                     <block v-for="(item, index) in plugins_salerecords_data.data" :key="index">
                                         <swiper-item>
                                             <view class="item oh padding-vertical-main">

@@ -948,12 +948,10 @@ button[disabled].bg-grey {
  * 关键字标签展示
  */
 .word-list .word-icon {
-    height: 36rpx;
-    line-height: 36rpx;
     border-radius: 4rpx;
     border: 2rpx solid #FFCAC0;
     color: #FFCAC0;
-    padding: 0 16rpx;
+    padding: 0 12rpx;
 }
 
 .word-list .word-icon:not(:last-child) {

@@ -18,10 +18,12 @@
 
                 <!-- 推荐商品 -->
                 <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
-                    <view class="spacing-nav-title">
-                        <text class="text-wrapper">活动商品</text>
-                        <text class="cr-grey text-size-xs margin-left-lg">{{ data.vice_title }}</text>
-                        <navigator url="/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right-xxxl cr-grey fr">更多活动</navigator>
+                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                        <view class="title-left">
+                            <text class="text-wrapper title-left-border">活动商品</text>
+                            <text class="vice-name margin-left-lg cr-grey">{{ data.vice_title }}</text>
+                        </view>
+                        <navigator url="'/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多活动</navigator>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
@@ -41,131 +43,131 @@
     </view>
 </template>
 <script>
-const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentGoodsList from "../../../../components/goods-list/goods-list";
+    const app = getApp();
+    import componentNoData from '../../../../components/no-data/no-data';
+    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentGoodsList from '../../../../components/goods-list/goods-list';
 
-export default {
-    data() {
-        return {
-            data_bottom_line_status: false,
-            data_list_loding_status: 1,
-            data_list_loding_msg: "",
-            currency_symbol: app.globalData.data.currency_symbol,
-            params: null,
-            user: null,
-            data_base: null,
-            data: null,
-            // 自定义分享信息
-            share_info: {},
-        };
-    },
-
-    components: {
-        componentNoData,
-        componentBottomLine,
-        componentGoodsList,
-    },
-    props: {},
-
-    onLoad(params) {
-        //params['id'] = 1;
-        this.setData({
-            params: params,
-        });
-    },
-
-    onShow() {
-        // 初始化配置
-        this.init_config();
-
-        // 获取数据
-        this.get_data();
-    },
-
-    // 下拉刷新
-    onPullDownRefresh() {
-        this.get_data();
-    },
-
-    methods: {
-        // 初始化配置
-        init_config(status) {
-            if ((status || false) == true) {
-                this.setData({
-                    currency_symbol: app.globalData.get_config("currency_symbol"),
-                });
-            } else {
-                app.globalData.is_config(this, "init_config");
-            }
+    export default {
+        data() {
+            return {
+                data_bottom_line_status: false,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                currency_symbol: app.globalData.data.currency_symbol,
+                params: null,
+                user: null,
+                data_base: null,
+                data: null,
+                // 自定义分享信息
+                share_info: {},
+            };
         },
 
-        // 获取数据
-        get_data() {
-            uni.request({
-                url: app.globalData.get_request_url("detail", "index", "activity"),
-                method: "POST",
-                data: {
-                    id: this.params.id || 0,
-                },
-                dataType: "json",
-                success: (res) => {
-                    uni.stopPullDownRefresh();
-                    if (res.data.code == 0) {
-                        var data = res.data.data;
-                        this.setData({
-                            data_base: data.base || null,
-                            data: data.data || null,
-                            data_list_loding_msg: "",
-                            data_list_loding_status: 0,
-                            data_bottom_line_status: (data.data || null) != null && (data.data.goods_list || null) != null && data.data.goods_list.length > 0,
-                        });
+        components: {
+            componentNoData,
+            componentBottomLine,
+            componentGoodsList,
+        },
+        props: {},
 
-                        if ((this.data || null) != null) {
-                            // 基础自定义分享
+        onLoad(params) {
+            //params['id'] = 1;
+            this.setData({
+                params: params,
+            });
+        },
+
+        onShow() {
+            // 初始化配置
+            this.init_config();
+
+            // 获取数据
+            this.get_data();
+        },
+
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.get_data();
+        },
+
+        methods: {
+            // 初始化配置
+            init_config(status) {
+                if ((status || false) == true) {
+                    this.setData({
+                        currency_symbol: app.globalData.get_config('currency_symbol'),
+                    });
+                } else {
+                    app.globalData.is_config(this, 'init_config');
+                }
+            },
+
+            // 获取数据
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'index', 'activity'),
+                    method: 'POST',
+                    data: {
+                        id: this.params.id || 0,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
                             this.setData({
-                                share_info: {
-                                    title: this.data.seo_title || this.data.title,
-                                    desc: this.data.seo_desc || this.data.describe,
-                                    path: "/pages/plugins/activity/detail/detail",
-                                    query: "id=" + this.data.id,
-                                    img: this.data.cover,
-                                },
+                                data_base: data.base || null,
+                                data: data.data || null,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: (data.data || null) != null && (data.data.goods_list || null) != null && data.data.goods_list.length > 0,
                             });
 
-                            // 标题
-                            if ((this.data.title || null) != null) {
-                                uni.setNavigationBarTitle({
-                                    title: this.data.title,
+                            if ((this.data || null) != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.data.seo_title || this.data.title,
+                                        desc: this.data.seo_desc || this.data.describe,
+                                        path: '/pages/plugins/activity/detail/detail',
+                                        query: 'id=' + this.data.id,
+                                        img: this.data.cover,
+                                    },
                                 });
+
+                                // 标题
+                                if ((this.data.title || null) != null) {
+                                    uni.setNavigationBarTitle({
+                                        title: this.data.title,
+                                    });
+                                }
                             }
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
                         }
-                    } else {
+
+                        // 分享菜单处理
+                        app.globalData.page_share_handle(this.share_info);
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: res.data.msg,
+                            data_list_loding_msg: '服务器请求出错',
                         });
-                    }
-
-                    // 分享菜单处理
-                    app.globalData.page_share_handle(this.share_info);
-                },
-                fail: () => {
-                    uni.stopPullDownRefresh();
-                    this.setData({
-                        data_bottom_line_status: false,
-                        data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
-                    });
-                    app.globalData.showToast("服务器请求出错");
-                },
-            });
+                        app.globalData.showToast('服务器请求出错');
+                    },
+                });
+            },
         },
-    },
-};
+    };
 </script>
 <style>
-@import "./detail.css";
+    @import './detail.css';
 </style>

@@ -4,7 +4,7 @@
 			<!-- 搜索关键字 -->
 			<view class="padding-horizontal-main padding-top-main padding-bottom-sm pr">
 				<view class="top-search-input">
-					<component-search :propDefaultValue="post_data.wd || ''" @onsearch="search_input_confirm_event" :propIsOnEvent="true" @oninput="search_input_value_event" :propIsOnInputEvent="true"
+					<component-search :propDefaultValue="post_data.wd || ''" propBrColor="#ddd" @onsearch="search_input_confirm_event" :propIsOnEvent="true" @oninput="search_input_value_event" :propIsOnInputEvent="true"
 						@onfocus="search_input_focus_event" :propIsOnFocusEvent="true" @onblur="search_input_blur_event" :propIsOnBlurEvent="true" :propIsRequired="false"
 						propPlaceholder="输入商品名称搜索"></component-search>
 				</view>

@@ -30,6 +30,7 @@
                 "transparentTitle": "always",
                 "titlePenetrate": "YES",
                 "navigationBarTitleText": "",
+                "scrollIndicator": "none", // 该页不显示滚动条
                 // #endif
                 "enablePullDownRefresh": false,
                 // 禁止页面下拉

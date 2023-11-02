@@ -1252,6 +1252,6 @@
         },
     };
 </script>
-<style>
+<style scoped>
     @import './goods-category.css';
 </style>

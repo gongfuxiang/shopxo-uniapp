@@ -114,10 +114,12 @@
 .model-one .content-item:nth-child(3n) {
     border-right: 0;
 }
+
 .model-one .content .desc {
     min-height: 52rpx;
     line-height: 26rpx;
 }
+
 .model-one .content {
     height: 240rpx;
 }
@@ -381,11 +383,24 @@
     padding-right: 0;
     padding-left: 24rpx;
 }
+
 .cart-content .cart-list .goods-base-content {
     min-height: 60rpx;
 }
 
-/*  */
+/**
+ * 无数据
+ */
 .no-data {
     z-index: 101;
+}
+
+/* 
+ * 隐藏滚动条
+ */
+scroll-view ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+    color: transparent;
 }

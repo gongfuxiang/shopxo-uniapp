@@ -17,7 +17,7 @@
             <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
 
             <!-- 导航 -->
-            <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main">
+            <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main br-0">
                 <view class="bottom-line-exclude oh">
                     <view class="bg-grey round oh">
                         <button type="default" class="bg-main br-main cr-white round text-size fl" size="mini">会员码</button>

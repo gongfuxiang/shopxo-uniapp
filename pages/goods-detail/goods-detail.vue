@@ -68,18 +68,12 @@
                     </block>
                 </swiper>
                 <!-- 标签插件 -->
-                <view
-                    v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0"
-                    :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')"
-                >
+                <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')">
                     <block v-for="(lv, li) in plugins_label_data.data" :key="li">
                         <view class="lv dis-inline-block va-m" :data-value="(plugins_label_data.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                            <view
-                                v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0"
-                                class="round cr-white bg-main text-size-xs fl"
-                                :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')"
-                                >{{ lv.name }}</view
-                            >
+                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">{{
+                                lv.name
+                            }}</view>
                             <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                         </view>
                     </block>
@@ -89,7 +83,7 @@
             <!-- 价格信息 -->
             <view :class="'goods-base-price bg-white oh spacing-mb ' + ((plugins_seckill_data || null) != null ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg  bs-bb fl" :style="(plugins_seckill_data || null) != null ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                <view class="price-content padding-lg bs-bb fl" :style="(plugins_seckill_data || null) != null ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
                         <text class="sales-price va-m">{{ currency_symbol }}{{ goods_spec_base_price }}</text>
@@ -204,11 +198,11 @@
 
                 <!-- 批发 -->
                 <view v-if="(plugins_wholesale_data || null) != null" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="flex-row align-c">
-                        <view class="item-title padding-right-main">{{ plugins_wholesale_data.title }}</view>
-                        <view class="column-right-view border-radius-main single-text flex-1 flex-width" @tap="popup_wholesale_event">
+                    <view class="flex-row wh-auto">
+                        <view class="item-title padding-right-main self-c">{{ plugins_wholesale_data.title }}</view>
+                        <view class="column-right-view border-radius-main single-text flex-1 flex-width flex-row flex-warp" @tap="popup_wholesale_event">
                             <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                                <view class="item round dis-inline-block">{{ item.msg }}</view>
+                                <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
                             </block>
                         </view>
                     </view>
@@ -217,11 +211,11 @@
 
                 <!-- 优惠券 -->
                 <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="flex-row align-c">
-                        <view class="item-title padding-right-main">优惠券</view>
-                        <view class="column-right-view border-radius-main single-text cp flex-1 flex-width" @tap="popup_coupon_event">
+                    <view class="flex-row wh-auto">
+                        <view class="item-title padding-right-main self-c">优惠券</view>
+                        <view class="column-right-view border-radius-main single-text cp flex-1 flex-width flex-row flex-warp" @tap="popup_coupon_event">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view class="item round cr-white dis-inline-block" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{ item.desc || item.name }}</view>
+                                <view class="item round cr-white dis-inline-block margin-vertical-xs" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{ item.desc || item.name }}</view>
                             </block>
                         </view>
                     </view>
@@ -229,10 +223,7 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view
-                    v-if="goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0"
-                    class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb"
-                >
+                <view v-if="goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title">规格</view>
                     <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'show'">{{ goods_spec_selected_text }}</view>
                 </view>
@@ -240,12 +231,7 @@
 
             <view class="padding-horizontal-main">
                 <!-- 商品基础参数 -->
-                <view
-                    v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0"
-                    class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb"
-                    @tap="popup_params_event"
-                    data-value="base"
-                >
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_params_event" data-value="base">
                     <block v-for="(item, index) in goods.parameters.base" :key="index">
                         <text v-if="index > 0">，</text>
                         <text>{{ item.value }}</text>
@@ -271,10 +257,9 @@
 
                 <!-- 门店 -->
                 <view v-if="plugins_realstore_data != null && plugins_realstore_data.length > 0" class="plugins-realstore-container">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">相关门店</text>
-                        <text class="arrow-right padding-right-xl margin-top-xs cr-grey fr" data-value="/pages/plugins/realstore/index/index" @tap="url_event">更多</text>
+                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                        <text class="text-wrapper title-left-border">相关门店</text>
+                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
                 </view>
@@ -286,11 +271,12 @@
 
                 <!-- 商品评价 -->
                 <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">商品评价</text>
-                        <text class="margin-left-xs">({{ goods.comments_count }})</text>
-                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xl margin-top-xs cr-grey fr">好评率 {{ goods.comments_score.rate }}%</navigator>
+                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                        <view class="title-left">
+                            <text class="text-wrapper title-left-border">商品评价</text>
+                            <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
+                        </view>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">好评率 {{ goods.comments_score.rate }}%</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-goods-comments :prop-data="goods.comments_data"></component-goods-comments>
@@ -304,10 +290,12 @@
                 </view>
                 <!-- 问答 -->
                 <view v-if="(plugins_ask_data || null) !== null && plugins_ask_data.is_ask_add == 1" class="goods-comment spacing-mb">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">问答</text>
-                        <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right-xl margin-top-xs cr-grey fr">查看全部回答</navigator>
+                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                        <view class="title-left">
+                            <text class="text-wrapper title-left-border">问答</text>
+                            <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
+                        </view>
+                        <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">查看全部回答</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-ask-comments-goods :prop-data="plugins_ask_data.ask_data"></component-ask-comments-goods>
@@ -360,9 +348,8 @@
 
                 <!-- 商品详情 -->
                 <view class="goods-detail">
-                    <view class="spacing-nav-title">
-                        <text class="line"></text>
-                        <text class="text-wrapper">商品详情</text>
+                    <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                        <text class="text-wrapper title-left-border">商品详情</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
                         <block v-if="(common_is_goods_detail_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
