@@ -12,7 +12,7 @@
                             <view class="va-m dis-inline-block margin-left-lg">
                                 <view class="flex-col align-b" data-value="/pages/personal/personal" @tap="url_event">
                                     <text class="va-m fw-b text-size">{{ nickname }}</text>
-                                    <view v-if="(user_id || null) != null" class="head-id border-radius-sm padding-vertical-xsss padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
+                                    <view v-if="(user_id || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
                                         <text class="text-size-xs">ID </text>
                                         <text class="text-size-xss padding-left-xs">{{ user_id }}</text>
                                     </view>

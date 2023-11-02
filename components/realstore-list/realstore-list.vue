@@ -2,7 +2,7 @@
     <view>
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item bg-white padding-vertical-xl padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url" @tap="url_event">
+                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url" @tap="url_event">
                     <view class="base oh flex-row">
                         <!-- 基础内容 -->
                         <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
@@ -24,9 +24,9 @@
                     </view>
                     <view class="flex-row jc-sb align-c br-t-dashed margin-top-main padding-top-sm">
                         <!-- 地址 -->
-                        <view class="padding-top-xs address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
+                        <view class="address-content single-text cr-base margin-left-xs dis-inline-block text-size-xs oh cp" :data-value="item.province_name + item.city_name + item.county_name + item.address" @tap.stop="text_copy_event">
                             <view class="dis-inline-block va-m cr-grey-9 margin-top-sm">
-                                <iconfont name="icon-mendian-dingwei"></iconfont>
+                                <iconfont name="icon-index-zxmd-dress"></iconfont>
                             </view>
                             <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>

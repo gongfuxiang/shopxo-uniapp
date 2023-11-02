@@ -14,12 +14,19 @@
                                 </view>
                             </view>
                             <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ item.describe }}</view>
-                            <swiper class="swiper" circular :autoplay="(item.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'" :duration="propDuration">
+                            <swiper
+                                :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === index + 1 ? 'swiper-1' : 'swiper-2'"
+                                circular
+                                :autoplay="(item.rolling_time || null) !== null ? true : false"
+                                :vertical="propVertical"
+                                :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'"
+                                :duration="propDuration"
+                            >
                                 <swiper-item v-for="(swiperItem, swiperIndex) in item.data" :key="swiperIndex">
                                     <view class="swiper-item">
                                         <view class="flex-row">
                                             <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
-                                                <view class="padding-main" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
+                                                <view class="padding-horizontal-main" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
                                                     <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="widthFix" class="wh-auto border-radius-sm"> </image>
                                                     <view class="price">
                                                         <text class="sales-price va-m text-size-xss va-b">{{ currency_symbol }}</text>
@@ -103,11 +110,34 @@
 
 <style scoped>
     .hot-list > .flex-width-half {
-        margin-bottom: 12rpx;
+        margin-bottom: 24rpx;
+    }
+    .hot-list > .flex-width-half:nth-last-of-type(1),
+    .hot-list > .flex-width-half:nth-last-of-type(2) {
+        margin-bottom: 0;
+    }
+    .hot-list > .flex-width-half:nth-child(even) {
+        position: relative;
     }
 
-    .hot-list .swiper {
-        height: 214rpx;
+    .hot-list > .flex-width-half:nth-child(even)::before {
+        content: '';
+        height: 80%;
+        width: 2rpx;
+        border-left: 2rpx dashed #eeeeee;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+
+    .hot-list .swiper-2 {
+        height: 158rpx;
+    }
+
+    .hot-list .swiper-1 {
+        height: 169rpx;
     }
 
     .hot-go {

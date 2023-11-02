@@ -31,10 +31,10 @@
                             <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}购买</button>
                         </view>
                     </view>
-                    <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 146 + 36 : '0') + 'rpx'">
-                        <view class="padding-horizontal-main padding-top-lg padding-bottom-sm oh">
+                    <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 134 + 12 : '0') + 'rpx'">
+                        <view class="padding-horizontal-main padding-top-main padding-bottom-main oh">
                             <block v-for="(gv, gi) in item.goods" :key="gi">
-                                <view class="goods-item oh margin-top-sm margin-bottom-lg" :data-value="gv.goods_url" @tap="url_event">
+                                <view class="goods-item oh margin-bottom-lg" :data-value="gv.goods_url" @tap="url_event">
                                     <image :src="gv.images" mode="aspectFit" class="goods-images fl dis-block radius"></image>
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>

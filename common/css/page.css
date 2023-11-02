@@ -594,6 +594,9 @@ button:before {
 .br-grey-9 {
     border: solid 1px #999999 !important;
 }
+.br-grey-c {
+    border: solid 1px #cccccc !important;
+}
 
 .br-blue {
     border: solid 1px #2196F3 !important;
