@@ -33,7 +33,7 @@
             </view>
 
             <!-- 分类 -->
-            <view class="spacing-nav-title padding-horizontal-main spacing-nav-title flex-row align-c jc-sb text-size-xs">
+            <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                     <text class="text-wrapper title-left-border">所有{{ blog_main_name }}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>

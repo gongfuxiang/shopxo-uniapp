@@ -1,7 +1,7 @@
 <template>
     <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
         <view v-for="(items, indexs) in data_goods_list" :key="indexs" class="bg-white border-radius-main spacing-mb">
-            <view class="padding-vertical-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
+            <view class="padding-top-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
                 <view class="hot-list flex-row flex-warp">
                     <view v-for="(item, index) in items.data" :key="index" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'wh-auto' : 'flex-width-half'">
                         <view class="padding-horizontal-main">
@@ -110,7 +110,7 @@
 
 <style scoped>
     .hot-list > .flex-width-half {
-        margin-bottom: 24rpx;
+        margin-bottom: 0;
     }
     .hot-list > .flex-width-half:nth-last-of-type(1),
     .hot-list > .flex-width-half:nth-last-of-type(2) {
@@ -133,11 +133,11 @@
 
 
     .hot-list .swiper-2 {
-        height: 158rpx;
+        height: 176rpx;
     }
 
     .hot-list .swiper-1 {
-        height: 169rpx;
+        height: 187rpx;
     }
 
     .hot-go {
