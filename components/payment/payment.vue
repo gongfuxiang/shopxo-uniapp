@@ -35,6 +35,7 @@
                             <view class="flex-1">
                                 <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                                 <text class="va-m">{{ item.name }}</text>
+                                <text v-if="(item.tips || null) !== null" class="va-m cr-red">（{{ item.tips }}元）</text>
                             </view>
                             <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="44rpx" :color="payment_id == item.id ? '#E22C08' : '#ccc'"></iconfont>
                             <!-- <iconfont v-else name="icon-qiandao-tancguanbi" size="44rpx" color="#ccc"></iconfont> -->
@@ -669,20 +670,16 @@
     .payment-price {
         font-size: 80rpx;
     }
-
     .payment-list .scroll-y {
         max-height: 430rpx;
     }
-
     .payment-list .item {
         padding: 28rpx 28rpx 28rpx 32rpx;
     }
-
     .payment-list .item-content image {
         width: 50rpx;
         height: 50rpx !important;
     }
-
     .payment-sub {
         padding: 86rpx 90rpx 24rpx 90rpx;
     }

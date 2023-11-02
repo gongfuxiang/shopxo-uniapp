@@ -71,13 +71,7 @@
                         </view>
                         <!-- 优惠劵 -->
                         <view
-                            v-if="
-                                (plugins_coupon_data || null) != null &&
-                                (plugins_coupon_data[index] || null) != null &&
-                                (plugins_coupon_data[index].coupon_data || null) != null &&
-                                (plugins_coupon_data[index].coupon_data.coupon_list || null) != null &&
-                                plugins_coupon_data[index].coupon_data.coupon_list.length > 0
-                            "
+                            v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0"
                             class="buy-data-item buy-data-item-group arrow-right"
                             :data-index="index"
                             @tap="plugins_coupon_open_event"
@@ -163,10 +157,11 @@
 
                     <!-- 支付方式 -->
                     <view v-if="total_price > 0 && payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
-                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-main">
-                            <view :class="'item-content radius br ' + (payment_id == item.id ? 'cr-main br-main' : '')" :data-value="item.id" @tap="payment_event">
+                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-xl">
+                            <view :class="'item-content pr radius br ' + (payment_id == item.id ? 'cr-main br-main' : '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{ item.name }}</text>
+                                <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}元</text>
                             </view>
                         </view>
                     </view>

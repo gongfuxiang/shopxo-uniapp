@@ -105,6 +105,20 @@
     height: 50rpx !important;
 }
 
+.pay-tips {
+    height: 32rpx;
+    line-height: 32rpx;
+    display: inline-block;
+    position: absolute;
+    top: -20rpx;
+    right: 0;
+    color: #fff;
+    padding: 0 12rpx;
+    border-radius: 16rpx 0 16rpx 0;
+    font-size: 20rpx;
+    background: #D8D8D8 linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
+}
+
 /**
 * 扩展数据
 */

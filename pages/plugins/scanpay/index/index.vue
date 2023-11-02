@@ -29,6 +29,7 @@
                             <div class="flex-1 flex-width flex-row align-c">
                                 <image v-if="item.logo" :src="item.logo" mode="widthFix" class="circle img-pay margin-right-main" />
                                 <view>{{ item.name }}</view>
+                                <view v-if="(item.tips || null) !== null" class="va-m cr-red text-size-xs">（{{ item.tips }}元）</view>
                             </div>
                             <iconfont :name="checked === index ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="40rpx" :color="checked === index ? '#E83B11' : '#ddd'"></iconfont>
                         </view>
