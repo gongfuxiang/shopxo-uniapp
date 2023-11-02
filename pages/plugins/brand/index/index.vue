@@ -4,22 +4,22 @@
             <view class="pr">
                 <!-- 分类 -->
                 <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
-                    <!-- <view class="flex-row flex-nowrap align-c"> -->
-                    <block v-for="(item, index) in brand_category_list" :key="index">
-                        <view class="item flex-col align-c text-size-xss dis-inline-block" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event" :data-value="item.id">
-                            <image :src="item.icon" mode="aspectFit"></image>
-                            <view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
-                                {{ item.name }}
+                    <view class="flex-row flex-nowrap align-c">
+                        <block v-for="(item, index) in brand_category_list" :key="index">
+                            <view class="item flex-col align-c text-size-xss" :id="'one-nav-item-' + index" :data-index="index" @tap="nav_event" :data-value="item.id">
+                                <image :src="item.icon" mode="aspectFit"></image>
+                                <view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
+                                    {{ item.name }}
+                                </view>
                             </view>
-                        </view>
-                    </block>
-                    <!-- </view> -->
+                        </block>
+                    </view>
                 </scroll-view>
                 <component-nav-more prop-class="bg-white" :prop-status="popupStatus" @open-popup="open_popup_event">
                     <view class="nav-list-more">
                         <view class="flex-row flex-warp align-c">
                             <block v-for="(item, index) in brand_category_list" :key="index">
-                                <view class="item flex-col align-c text-size-xss" @tap="nav_event" :data-value="item.id">
+                                <view class="item flex-col align-c text-size-xss" @tap="nav_event" :id="'one-nav-item-' + index" :data-index="index" :data-value="item.id">
                                     <image :src="item.icon" mode="aspectFit"></image>
                                     <view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
                                         {{ item.name }}

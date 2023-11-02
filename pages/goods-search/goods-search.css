@@ -98,9 +98,6 @@
 .map-content .item {
     margin-bottom: 20rpx;
 }
-.map-content .item:not(:last-child) {
-    margin-right: 20rpx;
-}
 .map-text-item .item,
 .map-images-text-item .item {
     padding: 0 15rpx;
