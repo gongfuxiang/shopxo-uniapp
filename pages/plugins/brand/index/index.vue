@@ -3,17 +3,17 @@
         <view v-if="(data_base || null) != null">
             <view class="pr">
                 <!-- 分类 -->
-                <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
-                    <view class="flex-row flex-nowrap align-c">
-                        <block v-for="(item, index) in brand_category_list" :key="index">
-                            <view class="item flex-col align-c text-size-xss" @tap="nav_event" :data-value="item.id">
-                                <image :src="item.icon" mode="aspectFit"></image>
-                                <view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
-                                    {{ item.name }}
-                                </view>
+                <scroll-view v-if="(brand_category_list || null) != null && brand_category_list.length > 0" :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_active_index" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
+                    <!-- <view class="flex-row flex-nowrap align-c"> -->
+                    <block v-for="(item, index) in brand_category_list" :key="index">
+                        <view class="item flex-col align-c text-size-xss dis-inline-block" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event" :data-value="item.id">
+                            <image :src="item.icon" mode="aspectFit"></image>
+                            <view class="padding-left-sm padding-right-sm round" :class="nav_active_value == item.id ? 'bg-main cr-white' : ''">
+                                {{ item.name }}
                             </view>
-                        </block>
-                    </view>
+                        </view>
+                    </block>
+                    <!-- </view> -->
                 </scroll-view>
                 <component-nav-more prop-class="bg-white" :prop-status="popupStatus" @open-popup="open_popup_event">
                     <view class="nav-list-more">
@@ -73,6 +73,7 @@
                 // 自定义分享信息
                 share_info: {},
                 popupStatus: false,
+                nav_active_index: 0,
             };
         },
 
@@ -159,6 +160,7 @@
                 this.setData({
                     nav_active_value: e.currentTarget.dataset.value || 0,
                     popupStatus: false,
+                    nav_active_index: e.currentTarget.dataset.index,
                 });
                 this.nav_active_handle();
             },

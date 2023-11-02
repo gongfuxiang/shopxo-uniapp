@@ -5,15 +5,15 @@
                 <view class="fw-b">评论 {{ data.comments_count || '' }}</view>
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container cr-grey">
-                    <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
+                    <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
                         <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">评论({{ data.comments_count }})</text>
                     </view>
-                    <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'grey')" :data-blogid="data.id" @tap="give_thumbs_event">
+                    <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'base')" :data-blogid="data.id" @tap="give_thumbs_event">
                         <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
                         <text class="va-m text-size-xs">点赞({{ data.give_thumbs_count }})</text>
                     </view>
-                    <view class="item dis-inline-block" @tap="popup_share_event">
+                    <view class="item dis-inline-block cr-base" @tap="popup_share_event">
                         <iconfont name="icon-bowenxiangqing-fenxiang" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">分享</text>
                     </view>
