@@ -261,11 +261,11 @@
 }
 
 .price-content {
-    width: calc(100% - 280rpx);
+    width: calc(100% - 200rpx);
 }
 
 .goods-base-right-opt {
-    width: 280rpx;
+    width: 200rpx;
 }
 
 .price-content,

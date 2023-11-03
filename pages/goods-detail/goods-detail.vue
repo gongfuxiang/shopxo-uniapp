@@ -106,16 +106,16 @@
                         propDsColor="#fff"
                     ></component-countdown>
                 </view>
-                <view v-else class="flex-row jc-e align-c goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr">
-                    <!-- 分享 -->
-                    <view class="goods-share tc cp margin-right-lg" @tap="popup_share_event">
-                        <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                        <view class="cr-grey text-size-xs">分享</view>
-                    </view>
+                <view v-else class="goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-main fr oh">
                     <!-- 收藏 -->
-                    <view class="collect tc cp margin-left-main margin-right-xl" @tap="goods_favor_event">
+                    <view class="collect tc cp fr margin-left-xl" @tap="goods_favor_event">
                         <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                         <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
+                    </view>
+                    <!-- 分享 -->
+                    <view class="goods-share tc cp fr" @tap="popup_share_event">
+                        <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                        <view class="cr-grey text-size-xs">分享</view>
                     </view>
                 </view>
             </view>
@@ -205,7 +205,7 @@
                                 <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
                             </block>
                         </view>
-                        <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
+                        <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
                     </view>
                 </view>
 
@@ -226,8 +226,8 @@
                             </block>
                         </view>
                         <view @tap="popup_coupon_event">
-                            <text v-if="plugins_coupon_data.data.length > 0" class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
-                            <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
+                            <text v-if="plugins_coupon_data.data.length > 0" class="text-size-xs cr-grey-9 va-m">共{{ plugins_coupon_data.data.length }}张</text>
+                            <iconfont name="icon-qiandao-jiantou2" color="#999" class="va-m"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -248,7 +248,7 @@
                             <text>{{ item.value }}</text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
+                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
                 </view>
 
                 <!-- 商品服务 -->
@@ -261,7 +261,7 @@
                             </text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
+                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
                 </view>
 
                 <!-- 组合搭配 -->
