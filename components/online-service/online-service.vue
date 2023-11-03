@@ -149,12 +149,12 @@
             var height = app.globalData.window_height_handle(system);
             
             // 页面是否定义导航
-            var top_h = this.propIsNav ? 330 : 0;
+            var top_h = this.propIsNav ? 130 : 0;
             this.setData({
                 is_first: 0,
                 system: system,
                 // 位置坐标
-                x: width - 43,
+                x: width - 65,
                 y: height - 380,
                 // 展示位置处理
                 top: top_h,
@@ -257,8 +257,6 @@
     .online-service-event-submit button {
         border: 0;
         padding: 0;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        background: rgba(0, 0, 0, 0.6);
     }
     .online-service-event-submit .icon {
         width: 50px !important;

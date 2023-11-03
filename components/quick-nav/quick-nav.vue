@@ -3,7 +3,7 @@
         <!-- 开启事件 -->
         <movable-area v-if="quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit" @tap="quick_open_event">
-                <image :src="common_static_url + 'quick-icons.png'" mode="widthFix"></image>
+                <image :src="common_static_url + 'quick-icons2.png'" mode="widthFix"></image>
             </movable-view>
         </movable-area>
 
@@ -84,11 +84,11 @@
             this.init_config();
 
             // 页面是否定义导航
-            var value = this.propIsNav ? 260 : 0;
+            var value = this.propIsNav ? 80 : 0;
             this.top = value;
             this.height_dec = value;
             // #ifdef H5 || APP
-			this.top = 180;
+            this.top = 180;
             this.height_dec = this.propIsBar ? 280 : 180;
             // #endif
 
@@ -104,8 +104,8 @@
             this.setData({
                 is_first: 0,
                 system: system,
-                x: width - 43,
-				y: height - 280,
+                x: width - 65,
+                y: height - 280,
                 // 是否灰度
                 common_ent: this.propIsGrayscale ? 'grayscale' : '',
             });
@@ -173,6 +173,9 @@
         display: block;
         position: relative;
         z-index: 10;
+        border-radius: 100%;
+        box-shadow: 0 0 6rpx 10rpx rgba(89, 181, 255, 15%);
+        background: #59b5ff;
     }
 
     /**
