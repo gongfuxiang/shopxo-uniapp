@@ -113,7 +113,7 @@
                         <view class="cr-grey text-size-xs">分享</view>
                     </view>
                     <!-- 收藏 -->
-                    <view class="collect tc cp margin-left-main" @tap="goods_favor_event">
+                    <view class="collect tc cp margin-left-main margin-right-xl" @tap="goods_favor_event">
                         <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                         <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
                     </view>
@@ -198,28 +198,38 @@
 
                 <!-- 批发 -->
                 <view v-if="(plugins_wholesale_data || null) != null" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="flex-row wh-auto">
-                        <view class="item-title padding-right-main self-c">{{ plugins_wholesale_data.title }}</view>
-                        <view class="column-right-view border-radius-main single-text flex-1 flex-width flex-row flex-warp" @tap="popup_wholesale_event">
+                    <view class="item-title padding-right-main self-c">{{ plugins_wholesale_data.title }}</view>
+                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_wholesale_event">
+                        <view class="padding-right-main border-radius-main single-text flex-1 flex-width">
                             <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
                                 <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
                             </block>
                         </view>
+                        <iconfont name="icon-qiandao-jiantou2"></iconfont>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 优惠券 -->
                 <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="flex-row wh-auto">
-                        <view class="item-title padding-right-main self-c">优惠券</view>
-                        <view class="column-right-view border-radius-main single-text cp flex-1 flex-width flex-row flex-warp" @tap="popup_coupon_event">
+                    <view class="item-title padding-right-main self-c">优惠券</view>
+                    <view class="flex-row align-c flex-1 flex-width">
+                        <view class="margin-right-main cp flex-1 flex-width flex-row coupon-srcoll">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view class="item round cr-white dis-inline-block margin-vertical-xs" :style="'background:' + item.bg_color_value + ';border:1px solid ' + item.bg_color_value + ';'">{{ item.desc || item.name }}</view>
+                                <view class="coupon-padding margin-right-xs">
+                                    <view class="oh">
+                                        <view class="item margin-vertical-xs mini-coupon" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
+                                            <text @tap="popup_coupon_event">{{ item.desc || item.name }}</text>
+                                            <text class="dis-inline-block margin-left-sm padding-left-sm divider-l" @tap="coupon_receive_event(index, item.id)">{{ item.status_operable_name }}</text>
+                                        </view>
+                                    </view>
+                                </view>
                             </block>
                         </view>
+                        <view @tap="popup_coupon_event">
+                            <text v-if="plugins_coupon_data.data.length > 0" class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
+                            <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                        </view>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 规格选择 -->
@@ -231,23 +241,27 @@
 
             <view class="padding-horizontal-main">
                 <!-- 商品基础参数 -->
-                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white arrow-right single-text text-size-xs spacing-mb" @tap="popup_params_event" data-value="base">
-                    <block v-for="(item, index) in goods.parameters.base" :key="index">
-                        <text v-if="index > 0">，</text>
-                        <text>{{ item.value }}</text>
-                    </block>
+                <view v-if="(goods.parameters || null) != null && (goods.parameters.base || null) != null && goods.parameters.base.length > 0" class="goods-parameters parameters-base border-radius-main padding-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c" @tap="popup_params_event" data-value="base">
+                    <view class="single-text padding-right-main flex-1 flex-width">
+                        <block v-for="(item, index) in goods.parameters.base" :key="index">
+                            <text v-if="index > 0">，</text>
+                            <text>{{ item.value }}</text>
+                        </block>
+                    </view>
+                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 商品服务 -->
-                <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white arrow-right text-size-xs spacing-mb" @tap="popup_goodsservice_event">
-                    <view class="content single-text oh border-radius-right-main">
+                <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c" @tap="popup_goodsservice_event">
+                    <view class="padding-right-main single-text border-radius-right-main flex-1 flex-width">
                         <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
-                            <view :class="'item dis-inline-block ' + (index > 0 ? 'margin-left-xxl' : '')">
+                            <text :class="'item ' + (index > 0 ? 'margin-left-xxl' : '')">
                                 <image class="va-m" :src="item.images" mode="widthFix"></image>
                                 <text class="cr-base va-m margin-left-sm">{{ item.name }}</text>
-                            </view>
+                            </text>
                         </block>
                     </view>
+                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -442,7 +456,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_params_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup-params-container">
@@ -463,21 +477,23 @@
 
             <!-- 批发弹层 -->
             <component-popup :propShow="popup_wholesale_status" propPosition="bottom" @onclose="popup_wholesale_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-base">
+                <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_wholesale_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-wholesale-container">
                         <block v-if="(plugins_wholesale_data || null) != null">
                             <text v-if="(plugins_wholesale_data.spec_tips || null) != null" class="spec-tips pa round">{{ plugins_wholesale_data.spec_tips }}</text>
-                            <view class="oh">
+                            <view class="oh flex-row flex-warp">
                                 <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                                    <view class="item padding-main bg-white border-radius-main oh dis-inline-block tc">
-                                        <text class="cr-base">{{ item.arr.msg }}</text>
-                                        <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.arr.val }}</text>
-                                        <text class="cr-grey margin-left-xs">{{ item.arr.unit }}</text>
+                                    <view class="item flex-width-half margin-bottom-sm">
+                                        <view class="padding-main bg-base border-radius-main oh tc">
+                                            <text class="cr-base">{{ item.arr.msg }}</text>
+                                            <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.arr.val }}</text>
+                                            <text class="cr-grey margin-left-xs">{{ item.arr.unit }}</text>
+                                        </view>
                                     </view>
                                 </block>
                             </view>
@@ -491,30 +507,16 @@
 
             <!-- 优惠券弹层 -->
             <component-popup :propShow="popup_coupon_status" propPosition="bottom" @onclose="popup_coupon_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-base">
+                <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-coupon-container padding-bottom-main">
                         <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <view :class="'item bg-white border-radius-main ' + (item.is_operable == 0 ? 'item-disabled' : '')">
-                                    <view class="v-left fl">
-                                        <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
-                                            <text v-if="item.type == 0" class="symbol">{{ currency_symbol }}</text>
-                                            <text class="price">{{ item.discount_value }}</text>
-                                            <text class="unit">{{ item.type_unit }}</text>
-                                        </view>
-                                        <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{ item.use_limit_type_name }}</view>
-                                        <view v-if="(item.desc || null) != null" class="desc margin-top-xs cr-grey single-text text-size-xs">{{ item.desc }}</view>
-                                    </view>
-                                    <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
-                                        <text class="circle"></text>
-                                        <text>{{ item.is_operable_name }}</text>
-                                    </view>
-                                </view>
+                                <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
                             </block>
                         </block>
                         <block v-else>
@@ -526,10 +528,10 @@
 
             <!-- 门店弹层 -->
             <component-popup :propShow="popup_realstore_status" propPosition="bottom" @onclose="popup_realstore_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-base">
+                <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_realstore_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-popup">
@@ -548,7 +550,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_goodsservice_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-goodsservice-container">
@@ -618,6 +620,7 @@
     import componentSharePopup from '../../components/share-popup/share-popup';
     import componentGoodsComments from '../../components/goods-comments/goods-comments';
     import componentAskCommentsGoods from '../../components/ask-comments-goods/ask-comments-goods';
+    import componentCouponCard from '../../components/coupon-card/coupon-card';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
@@ -764,6 +767,7 @@
             componentSharePopup,
             componentGoodsComments,
             componentAskCommentsGoods,
+            componentCouponCard,
         },
 
         onLoad(params) {
@@ -1244,23 +1248,16 @@
             },
 
             // 优惠劵领取事件
-            coupon_receive_event(e) {
+            coupon_receive_event(index, value) {
                 // 参数处理
-                if ((e || null) == null) {
+                if ((index || null) == null && (value || null) == null) {
                     var index = this.temp_coupon_receive_index;
                     var value = this.temp_coupon_receive_value;
                 } else {
-                    var index = e.currentTarget.dataset.index;
-                    var value = e.currentTarget.dataset.value;
                     this.setData({
                         temp_coupon_receive_index: index,
                         temp_coupon_receive_value: value,
                     });
-                }
-                // 是否可以领取
-                var temp_list = this.plugins_coupon_data.data;
-                if (temp_list[index]['is_operable'] != 1) {
-                    return false;
                 }
 
                 // 登录校验
@@ -1273,6 +1270,7 @@
                         });
                         return false;
                     } else {
+                        var temp_list = this.plugins_coupon_data.data;
                         uni.showLoading({
                             title: '处理中...',
                         });
@@ -1287,13 +1285,23 @@
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
                                     app.globalData.showToast(res.data.msg, 'success');
-                                    if (this.plugins_coupon_data.base != null && this.plugins_coupon_data.base.is_repeat_receive != 1) {
-                                        temp_list[index]['is_operable'] = 0;
-                                        temp_list[index]['is_operable_name'] = '已领取';
-                                        this.setData({
-                                            'plugins_coupon_data.data': temp_list,
-                                        });
-                                    }
+                                    temp_list[index] = res.data.data.coupon;
+                                    this.setData({
+                                        'plugins_coupon_data.data': temp_list,
+                                    });
+                                    // if ((res.data.data.is_repeat_receive = 1)) {
+                                    //     temp_list[index]['is_repeat_receive'] = 1;
+                                    //     temp_list[index]['already_receive_text'] = '已领取';
+                                    //     temp_list[index]['already_receive_text'] = '已领取';
+                                    //     if (temp_list[index].process_data.type !== 0) {
+                                    //         temp_list[index]['already_send_count'] = Number(temp_list[index]['already_send_count']) + 1;
+                                    //         temp_list[index]['process_data'].value = Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100);
+                                    //         temp_list[index]['process_data'].msg = '已领' + Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100) + '%';
+                                    //     }
+                                    //     this.setData({
+                                    //         'plugins_coupon_data.data': temp_list,
+                                    //     });
+                                    // }
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
                                         app.globalData.showToast(res.data.msg);

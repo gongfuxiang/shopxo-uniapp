@@ -198,14 +198,10 @@
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
                                         app.globalData.showToast(res.data.msg, 'success');
-                                        if (this.data_base != null && this.data_base.is_repeat_receive != 1) {
-                                            temp_list[index]['is_operable'] = 0;
-                                            temp_list[index]['is_operable_name'] = '已领取';
-                                            this.setData({
-                                                data_list: temp_list,
-                                            });
-                                        }
-                                        this.get_data_list();
+                                        temp_list[index] = res.data.data.coupon;
+                                        this.setData({
+                                            data_list: temp_list,
+                                        });
                                     } else {
                                         if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
                                             app.globalData.showToast(res.data.msg);

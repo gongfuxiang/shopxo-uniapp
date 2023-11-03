@@ -26,7 +26,7 @@
                                             <text class="sales-price va-m">{{ item[propPriceField] }}</text>
                                         </view>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
-                                            <view v-if="propOpenCart" class="bg-white right-cart-icon 123" :data-index="index" @tap.stop="goods_cart_event">
+                                            <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                 <iconfont name="icon-cart-inc" size="40rpx" :color="themeColor"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -40,11 +40,7 @@
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv, li) in propLabel.data" :key="li">
                                     <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                        <view
-                                            v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0"
-                                            class="round cr-white bg-main text-size-xs fl"
-                                            :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')"
-                                        >
+                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
                                             {{ lv.name }}
                                         </view>
                                         <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
@@ -81,11 +77,7 @@
                                             </block>
                                         </view>
                                         <block v-if="propIsOpenGridBtnSet">
-                                            <view
-                                                :disabled="grid_btn_config.disabled"
-                                                @tap="url_event"
-                                                :style="[{ color: grid_btn_config.color }, { 'background-color': grid_btn_config.bg_color }, { padding: grid_btn_config.padding }, { 'border-radius': grid_btn_config.border_radius }, { 'font-size': grid_btn_config.font_size }]"
-                                            >
+                                            <view :disabled="grid_btn_config.disabled" @tap="url_event" :style="[{ color: grid_btn_config.color }, { 'background-color': grid_btn_config.bg_color }, { padding: grid_btn_config.padding }, { 'border-radius': grid_btn_config.border_radius }, { 'font-size': grid_btn_config.font_size }]">
                                                 {{ grid_btn_config.name }}
                                             </view>
                                         </block>
@@ -106,11 +98,7 @@
                             <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                 <block v-for="(lv, li) in propLabel.data" :key="li">
                                     <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                        <view
-                                            v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0"
-                                            class="round cr-white bg-main text-size-xs fl"
-                                            :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')"
-                                        >
+                                        <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
                                             {{ lv.name }}
                                         </view>
                                         <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
@@ -123,14 +111,7 @@
                 <!-- 滚动 -->
                 <view v-else-if="data.style_type == 2" class="rolling-horizontal border-radius-main oh">
                     <view class="goods-data-rolling-list scroll-view-horizontal">
-                        <swiper
-                            class="swiper"
-                            :vertical="false"
-                            :autoplay="propIsAutoPlay"
-                            :circular="false"
-                            :display-multiple-items="(data.multiple_items || null) == null ? (data.goods_list.length < 3 ? data.goods_list.length : 3) : data.goods_list.length < data.multiple_items ? data.goods_list.length : data.multiple_items"
-                            interval="30000000"
-                        >
+                        <swiper class="swiper" :vertical="false" :autoplay="propIsAutoPlay" :circular="false" :display-multiple-items="(data.multiple_items || null) == null ? (data.goods_list.length < 3 ? data.goods_list.length : 3) : data.goods_list.length < data.multiple_items ? data.goods_list.length : data.multiple_items" interval="3000">
                             <block v-for="(item, index) in data.goods_list" :key="index">
                                 <swiper-item>
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
@@ -139,36 +120,28 @@
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
-                                                <view class="margin-top-xs">
-                                                    <view class="fl">
-                                                        <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                        <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
-                                                        <text class="sales-price va-m">{{ item[propPriceField] }}</text>
-                                                    </view>
-
+                                                <view class="margin-top-xs flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
-                                                        <view v-if="propOpenCart" class="pa bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                            <iconfont name="icon-cart-inc" size="40rpx" :color="themeColor"></iconfont>
+                                                        <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="themeColor" class="pr top-xs margin-right-xs"></iconfont>
                                                             <view class="cart-badge-icon pa">
                                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                             </view>
                                                         </view>
                                                     </block>
+                                                    <view class="flex-1 flex-width">
+                                                        <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
+                                                        <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
+                                                        <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
                                         <!-- 标签插件 -->
-                                        <view
-                                            v-if="(propLabel || null) != null && propLabel.data.length > 0"
-                                            :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')"
-                                        >
+                                        <view v-if="(propLabel || null) != null && propLabel.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((propLabel.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (propLabel.base.user_goods_show_style || 'top-left')">
                                             <block v-for="(lv, li) in propLabel.data" :key="li">
                                                 <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(propLabel.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                                    <view
-                                                        v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0"
-                                                        class="round cr-white bg-main text-size-xs fl"
-                                                        :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')"
-                                                    >
+                                                    <view v-if="(propLabel.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
                                                         {{ lv.name }}
                                                     </view>
                                                     <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
