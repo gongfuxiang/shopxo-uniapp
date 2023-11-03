@@ -226,7 +226,7 @@
                             </block>
                         </view>
                         <view @tap="popup_coupon_event">
-                            <text v-if="plugins_coupon_data.data.length > 0" class="text-size-xs cr-grey-9 va-m">共{{ plugins_coupon_data.data.length }}张</text>
+                            <text class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
                             <iconfont name="icon-qiandao-jiantou2" color="#999" class="va-m"></iconfont>
                         </view>
                     </view>
