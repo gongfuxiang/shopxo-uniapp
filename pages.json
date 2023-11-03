@@ -1057,6 +1057,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/thirdpartylogin",
+            "pages": [{
+                    "path": "index/index",
+                    "style": {
+                        "disableScroll": true,
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "授权登录"
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {

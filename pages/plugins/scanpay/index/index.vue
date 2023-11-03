@@ -4,7 +4,7 @@
             <view class="padding-main">
                 <block v-if="(data.scanpay_info || null) !== null">
                     <view class="flex-row align-c margin-top-main margin-bottom-xl">
-                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="circle img-user br margin-right-main" />
+                        <image v-if="data.scanpay_info.logo" :src="data.scanpay_info.logo" mode="widthFix" class="circle scanpay-logo br margin-right-main" />
                         <div class="flex-1 flex-width flex-row align-c">
                             <text class="text-size fw-b single-text">{{ data.scanpay_info.name }}</text>
                             <text v-if="(data.scanpay_info.alias || null) !== null" class="cr-white badge tc margin-left-sm">{{ data.scanpay_info.alias }}</text>
@@ -175,14 +175,15 @@
             this.setData({
                 params: params || {},
             });
+        },
+
+        onShow() {
             this.init();
         },
 
-        onShow() {},
-
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data();
+            this.init();;
         },
 
         methods: {
