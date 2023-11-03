@@ -205,7 +205,7 @@
                                 <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
                             </block>
                         </view>
-                        <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                        <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
                     </view>
                 </view>
 
@@ -227,7 +227,7 @@
                         </view>
                         <view @tap="popup_coupon_event">
                             <text v-if="plugins_coupon_data.data.length > 0" class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
-                            <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                            <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -248,7 +248,7 @@
                             <text>{{ item.value }}</text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                    <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
                 </view>
 
                 <!-- 商品服务 -->
@@ -261,7 +261,7 @@
                             </text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                    <iconfont name="icon-qiandao-jiantou2" color="#666"></iconfont>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -297,7 +297,7 @@
                         <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                 我要评价
-                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="margin-left-sm"></iconfont>
+                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="margin-left-sm pr top-xs"></iconfont>
                             </view>
                         </navigator>
                     </view>
