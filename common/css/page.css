@@ -1161,11 +1161,6 @@ button[disabled].bg-grey {
     margin-left: 12rpx;
 }
 
-.goods-data-grid-list .item .error-msg,
-.goods-data-grid-list .item .goods-img {
-    /* height: 341rpx !important; */
-}
-
 .goods-data-grid-list .item .error-msg {
     line-height: 341rpx;
 }
