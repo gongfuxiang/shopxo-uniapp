@@ -29,7 +29,7 @@
         <view v-else>
             <block v-if="is_online_service_fixed == 1">
                 <movable-area class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
-                    <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit">
+                    <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit breathe">
                         <block v-if="is_chat == 1">
                             <button type="default" :class="common_ent" @tap="chat_event">
                                 <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
@@ -153,12 +153,12 @@
                 system: system,
                 // 位置坐标
                 x: width - 43,
-                y: height - 380,
+                y: height - 240,
                 // 展示位置处理
                 top: top_h,
                 height_dec: top_h,
                 // #ifdef H5 || APP
-                top: 90,
+                top: 10,
                 height_dec: this.propIsBar ? 190 : 90,
                 // #endif
                 // 是否使用客服系统
@@ -248,19 +248,19 @@
     }
     .online-service-event-submit,
     .online-service-event-submit button {
-        width: 31px;
-        height: 31px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
     }
     .online-service-event-submit button {
         border: 0;
-        padding: 5px;
+        padding: 0;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         background: rgba(0, 0, 0, 0.6);
     }
     .online-service-event-submit .icon {
-        width: 21px !important;
-        height: 21px !important;
+        width: 50px !important;
+        height: 50px !important;
     }
     .goods-chat-container button {
         padding: 0;
@@ -289,4 +289,34 @@
         display: block;
     }
     /* #endif */
+    
+    /**
+     * 呼吸灯
+     */
+     .breathe {
+        background-color: rgb(238 73 70);
+        border-radius: 100%;
+        width: 50px;
+        height: 50px;
+        position: relative;
+    }
+
+    .breathe::before,
+    .breathe::after {
+        background-color: rgba(238, 73, 70, 0.3);
+    }
+
+    .breathe::before {
+        width: 50px;
+        height: 50px;
+        top: 0;
+        left: 0;
+    }
+
+    .breathe::after {
+        width: 55px;
+        height: 55px;
+        top: -2.5px;
+        left: -2.5px;
+    }
 </style>
