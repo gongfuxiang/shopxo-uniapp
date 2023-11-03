@@ -51,7 +51,6 @@
         },
 
         onLoad(params) {
-            params['id'] = 200;
             this.setData({
                 params: params || {},
             });
