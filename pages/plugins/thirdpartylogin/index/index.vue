@@ -62,14 +62,14 @@
 
         methods: {
             init() {
-                // 记录状态
-                this.status_record(0);
-
                 // 用户信息
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
+                        // 记录状态
+                        this.status_record(0);
+                        // 进入登录页面
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=init',
                         });
