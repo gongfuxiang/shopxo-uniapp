@@ -28,9 +28,9 @@
                                             <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
                                                 <view class="padding-horizontal-main" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
                                                     <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="widthFix" class="wh-auto border-radius-sm"> </image>
-                                                    <view class="price">
+                                                    <view class="price tc single-text">
                                                         <text class="sales-price va-m text-size-xss va-b">{{ currency_symbol }}</text>
-                                                        <text class="sales-price va-m">{{ listItem.min_price }}</text>
+                                                        <text class="sales-price va-m text-size-xs">{{ listItem.min_price }}</text>
                                                     </view>
                                                 </view>
                                             </view>
@@ -130,7 +130,6 @@
         top: 50%;
         transform: translateY(-50%);
     }
-
 
     .hot-list .swiper-2 {
         height: 176rpx;
