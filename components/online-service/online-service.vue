@@ -29,26 +29,28 @@
         <view v-else>
             <block v-if="is_online_service_fixed == 1">
                 <movable-area class="online-service-movable-container" :style="'height: calc(100% - '+height_dec+'rpx);top:'+top+'rpx;'">
-                    <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit breathe">
+                    <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit spread">
+                        <view class="ring"></view>
+	                    <view class="ring"></view>
                         <block v-if="is_chat == 1">
                             <button type="default" :class="common_ent" @tap="chat_event">
-                                <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
+                                <image class="icon dis-block" :src="common_static_url+'online-service-icons.png'"></image>
                             </button>
                         </block>
                         <block v-else>
                             <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
                             <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
-                                <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
+                                <image class="icon dis-block" :src="common_static_url+'online-service-icons.png'"></image>
                             </button>
                             <!-- #endif -->
                             <!-- #ifdef MP-ALIPAY -->
                             <button open-type="contact" :class="'alipay-contact '+common_ent">
-                                <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="40rpx*40rpx" />
+                                <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icons.png'" size="40rpx*40rpx" />
                             </button>
                             <!-- #endif -->
                             <!-- #ifdef H5 || APP -->
                             <button type="default" :class="common_ent" @tap="call_event">
-                                <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
+                                <image class="icon dis-block" :src="common_static_url+'online-service-icons.png'"></image>
                             </button>
                             <!-- #endif -->
                         </block>
@@ -153,12 +155,12 @@
                 system: system,
                 // 位置坐标
                 x: width - 43,
-                y: height - 240,
+                y: height - 380,
                 // 展示位置处理
                 top: top_h,
                 height_dec: top_h,
                 // #ifdef H5 || APP
-                top: 10,
+                top: 250,
                 height_dec: this.propIsBar ? 190 : 90,
                 // #endif
                 // 是否使用客服系统
@@ -293,30 +295,33 @@
     /**
      * 呼吸灯
      */
-     .breathe {
-        background-color: rgb(238 73 70);
+     .spread {
+        background-color: rgba(238, 73, 70,0.4);
         border-radius: 100%;
         width: 50px;
         height: 50px;
         position: relative;
+        z-index: 1;
+    }
+    .spread .ring {
+        /* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
+        animation: pulsing 1.5s ease-out infinite;
+    }
+    /* 速度为1*层数 */
+    .spread .ring:nth-of-type(1) {
+        -webkit-animation-delay: -1.5s;
+        animation-delay: -1.5s;
     }
 
-    .breathe::before,
-    .breathe::after {
-        background-color: rgba(238, 73, 70, 0.3);
+    /* 速度为1*层数 */
+    .spread .ring:nth-of-type(2) {
+        -webkit-animation-delay: -2s;
+        animation-delay: -2s;
     }
-
-    .breathe::before {
-        width: 50px;
-        height: 50px;
-        top: 0;
-        left: 0;
-    }
-
-    .breathe::after {
-        width: 55px;
-        height: 55px;
-        top: -2.5px;
-        left: -2.5px;
+    @keyframes pulsing {
+        100% {
+            transform: scale(1.35);
+            opacity: 0
+        }
     }
 </style>

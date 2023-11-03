@@ -2,8 +2,8 @@
     <view>
         <!-- 开启事件 -->
         <movable-area v-if="quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
-            <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit breathe" @tap="quick_open_event">
-                <image :src="common_static_url + 'quick-icon.png'" mode="widthFix"></image>
+            <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit" @tap="quick_open_event">
+                <image :src="common_static_url + 'quick-icons.png'" mode="widthFix"></image>
             </movable-view>
         </movable-area>
 
@@ -88,7 +88,7 @@
             this.top = value;
             this.height_dec = value;
             // #ifdef H5 || APP
-            this.top = 20;
+			this.top = 250;
             this.height_dec = this.propIsBar ? 190 : 90;
             // #endif
 
@@ -105,7 +105,7 @@
                 is_first: 0,
                 system: system,
                 x: width - 43,
-                y: height - 120,
+				y: height - 280,
                 // 是否灰度
                 common_ent: this.propIsGrayscale ? 'grayscale' : '',
             });
@@ -251,35 +251,5 @@
         overflow: hidden;
         white-space: nowrap;
         max-width: 100%;
-    }
-
-    /**
-     * 呼吸灯
-     */
-    .breathe {
-        background-color: rgb(89 181 255);
-        border-radius: 100%;
-        width: 50px;
-        height: 50px;
-        position: relative;
-    }
-
-    .breathe::before,
-    .breathe::after {
-        background-color: rgba(89, 181, 255, 0.3);
-    }
-
-    .breathe::before {
-        width: 50px;
-        height: 50px;
-        top: 0;
-        left: 0;
-    }
-
-    .breathe::after {
-        width: 55px;
-        height: 55px;
-        top: -2.5px;
-        left: -2.5px;
     }
 </style>
