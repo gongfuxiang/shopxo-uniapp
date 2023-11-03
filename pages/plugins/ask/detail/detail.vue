@@ -10,7 +10,7 @@
                         <view class="fw-b padding-horizontal-xs">·</view>
                         {{ data.access_count || '0' }}浏览
                     </view>
-                    <view class="text-size-md">{{ data.content }}</view>
+                    <view v-if="data.title != data.content" class="text-size-md">{{ data.content }}</view>
                     <block v-if="(data.goods_data || null) !== null">
                         <navigator :url="data.goods_data.goods_url" hover-class="none">
                             <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
@@ -131,7 +131,9 @@
         onShow() {},
 
         // 下拉刷新
-        onPullDownRefresh() {},
+        onPullDownRefresh() {
+            this.get_data();
+        },
 
         methods: {
             get_data(is_mandatory) {

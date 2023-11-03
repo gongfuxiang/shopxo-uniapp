@@ -22,7 +22,7 @@
                             </view>
                             <view class="flex-1 flex-width">
                                 <view class="title text-size fw-b">{{ item.title }}</view>
-                                <view class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
+                                <view v-if="item.title != item.content" class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
                                 <view class="status flex-row align-c spacing-mt text-size-xs">
                                     <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
                                     <view class="num cr-grey-9 flex-row self-c">

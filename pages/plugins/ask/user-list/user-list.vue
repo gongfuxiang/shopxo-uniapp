@@ -2,24 +2,17 @@
     <view class="page-bottom-fixed">
         <view v-if="data_list.length > 0" class="padding-main">
             <view v-for="(item, index) in data_list" :key="index">
-                <navigator :url="'/pages/plugins/ask/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                <navigator :url="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
                     <view class="margin-bottom-xs flex-row jc-sb align-c">
-                        <text class="fw-b text-size">{{ item.name }}</text>
+                        <text class="cr-base text-size">{{ item.add_time_time }}</text>
                         <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
                     </view>
-                    <view class="cr-grey-9">{{ item.add_time_time }}</view>
                     <view class="spacing-mt">
-                        <view class="margin-bottom-sm flex-row jc-sb align-c">
-                            <view class="padding-right-sm">标题:</view>
-                            <view class="cr-grey flex-1 flex-width single-text">
-                                {{ item.title }}
-                            </view>
+                        <view class="text-size single-text">
+                            {{ item.title }}
                         </view>
-                        <view class="margin-bottom-sm flex-row jc-sb align-c">
-                            <view class="padding-right-sm">内容:</view>
-                            <view class="cr-grey flex-1 flex-width single-text">
-                                {{ item.content }}
-                            </view>
+                        <view v-if="item.title != item.content" class="margin-top-sm cr-grey multi-text">
+                            {{ item.content }}
                         </view>
                     </view>
                 </navigator>
