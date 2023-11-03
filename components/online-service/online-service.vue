@@ -149,7 +149,7 @@
             var height = app.globalData.window_height_handle(system);
             
             // 页面是否定义导航
-            var top_h = this.propIsNav ? 170 : 0;
+            var top_h = this.propIsNav ? 330 : 0;
             this.setData({
                 is_first: 0,
                 system: system,
@@ -161,7 +161,7 @@
                 height_dec: top_h,
                 // #ifdef H5 || APP
                 top: 250,
-                height_dec: this.propIsBar ? 190 : 90,
+                height_dec: this.propIsBar ? 350 : 250,
                 // #endif
                 // 是否使用客服系统
                 is_chat: this.propIsChat || this.is_chat,

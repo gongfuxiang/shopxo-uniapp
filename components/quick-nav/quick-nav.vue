@@ -84,12 +84,12 @@
             this.init_config();
 
             // 页面是否定义导航
-            var value = this.propIsNav ? 170 : 0;
+            var value = this.propIsNav ? 260 : 0;
             this.top = value;
             this.height_dec = value;
             // #ifdef H5 || APP
-			this.top = 250;
-            this.height_dec = this.propIsBar ? 190 : 90;
+			this.top = 180;
+            this.height_dec = this.propIsBar ? 280 : 180;
             // #endif
 
             // 非首次进入则重新初始化配置接口
