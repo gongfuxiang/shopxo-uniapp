@@ -1,8 +1,8 @@
 /*
 * 导航
 */
-.scroll-box-ece-nav {
-    height: calc(100vh - 140rpx);
+.scroll-box-ece-nav.top-notice {
+    height: calc(100vh - 154rpx);
 }
 
 /*

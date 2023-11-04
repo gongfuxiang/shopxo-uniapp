@@ -1,8 +1,8 @@
 <template>
     <view>
         <!-- 公告 -->
-        <view v-if="data_base.length > 0 && data_base" class="padding-horizontal-main padding-vertical-sm bg-white">
-            <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.join('')" background-color="transparent" color="#666" />
+        <view v-if="(data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0" class="padding-horizontal-main padding-vertical-sm bg-white">
+            <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.invoice_desc.join('')" background-color="transparent" color="#666" />
         </view>
         <!-- 导航 -->
         <view class="nav-base bg-white flex-row jc-sa align-c">
@@ -11,7 +11,7 @@
             </block>
         </view>
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" class="scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0 ? 'top-notice' : '') " @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="page-bottom-fixed">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -62,7 +62,7 @@
     export default {
         data() {
             return {
-                data_base: [],
+                data_base: null,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -150,7 +150,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base.invoice_desc || [],
+                                data_base: data.base || null,
                                 nav_status_list: data.nav || [],
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
