@@ -464,7 +464,7 @@
                             <block v-for="(item, index) in goods.parameters[popup_params_type_field]" :key="index">
                                 <view class="item padding-vertical-main br-b oh">
                                     <view class="name fl br-r single-text">{{ item.name }}</view>
-                                    <view class="value fr padding-left single-text">{{ item.value }}</view>
+                                    <view class="value fr single-text">{{ item.value }}</view>
                                 </view>
                             </block>
                         </block>

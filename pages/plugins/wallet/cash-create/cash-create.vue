@@ -7,22 +7,26 @@
                     <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="'提现金额，最低' + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + '元，最高' + can_cash_max_money + '元'" />
                     <view class="notice-content-blue">
                         <view v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-bottom-sm">赠送金额不可提现</view>
-                        <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0"
-                            >提现最低金额<text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text
-                            >元起</view
-                        >
-                        <view
-                            >可提现金额<text class="cr-main fw-b margin-left-sm margin-right-sm">{{ can_cash_max_money }}</text
-                            >元</view
-                        >
-                        <view
-                            >可用金额<text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text
-                            >元</view
-                        >
-                        <view
-                            >赠送总额<text class="cr-base fw-b margin-left-sm margin-right-sm">{{ user_wallet.give_money }}</text
-                            >元</view
-                        >
+                        <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0">
+                            <text>提现最低金额</text>
+                            <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
+                            <text class="cr-grey">元起</text>
+                        </view>
+                        <view>
+                            <text>可提现金额</text>
+                            <text class="cr-main fw-b margin-left-sm margin-right-sm">{{ can_cash_max_money }}</text>
+                            <text class="cr-grey">元</text>
+                        </view>
+                        <view>
+                            <text>可用金额</text>
+                            <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
+                            <text class="cr-grey">元</text>
+                        </view>
+                        <view>
+                            <text>赠送总额</text>
+                            <text class="cr-base fw-b margin-left-sm margin-right-sm">{{ user_wallet.give_money }}</text>
+                            <text class="cr-grey">元</text>
+                        </view>
                     </view>
                 </view>
 

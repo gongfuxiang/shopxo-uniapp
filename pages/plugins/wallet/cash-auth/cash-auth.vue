@@ -4,7 +4,7 @@
             <view v-if="is_can_cash == 1">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
                     <view class="form-gorup">
-                        <view class="form-gorup-title">选择身份认证方式<text class="form-group-tips-must">必选</text></view>
+                        <view class="form-gorup-title">选择身份认证方式<text class="form-group-tips-must">*</text></view>
                         <view class="section">
                             <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
                                 <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
@@ -28,8 +28,8 @@
                     </view>
                 </form>
 
-                <view class="notice-content-blue">
-                    <view>操作提示</view>
+                <view class="margin-top-lg cr-base">
+                    <view class="fw-b text-size">操作提示</view>
                     <view>1. 请选择 "<text class="cr-red">绑定邮箱</text>" 或 "<text class="cr-red">绑定手机</text>" 方式其一作为安全校验码的获取方式并正确输入。</view>
                     <view>2. 如果您未绑定手机或者邮箱已失效，可以绑定手机后通过接收手机短信完成验证。</view>
                     <view>3. 如果您未绑定邮箱或者已失效，可以绑定邮箱后通过接收邮件完成验证。</view>
@@ -45,15 +45,17 @@
                 </view>
             </view>
             <view v-else>
-                <view class="notice-content-blue">
-                    <view
-                        >当前有效金额<text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text
-                        >元</view
-                    >
-                    <view class="margin-top-sm"
-                        >提现最低金额<text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text
-                        >元起</view
-                    >
+                <view class="margin-top-lg">
+                    <view>
+                        <text>当前有效金额</text>
+                        <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
+                        <text class="cr-grey">元</text>
+                    </view>
+                    <view class="margin-top-sm">
+                        <text>提现最低金额</text>
+                        <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
+                        <text class="cr-grey">元起</text>
+                    </view>
                 </view>
             </view>
         </view>
