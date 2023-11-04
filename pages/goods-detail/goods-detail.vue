@@ -488,7 +488,7 @@
                             <text v-if="(plugins_wholesale_data.spec_tips || null) != null" class="spec-tips pa round">{{ plugins_wholesale_data.spec_tips }}</text>
                             <view class="oh flex-row flex-warp">
                                 <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                                    <view class="item flex-width-half margin-bottom-sm">
+                                    <view class="item flex-width-half margin-bottom">
                                         <view class="padding-main bg-base border-radius-main oh tc">
                                             <text class="cr-base">{{ item.arr.msg }}</text>
                                             <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.arr.val }}</text>
