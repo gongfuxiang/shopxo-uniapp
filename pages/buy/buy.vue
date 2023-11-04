@@ -188,7 +188,7 @@
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
@@ -205,7 +205,7 @@
                                         <text v-if="(item.coupon.desc || null) != null" class="desc cr-grey">{{ item.coupon.desc }}</text>
                                     </view>
                                     <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{ item.coupon.use_limit_type_name }}</view>
-                                    <view class="base-time cr-grey single-text">{{ item.time_start }} 至 {{ item.time_end }}</view>
+                                    <view class="base-time cr-grey single-text">{{ item.time_start_show_text }}-{{ item.time_end_show_text }}</view>
                                 </view>
                                 <view :class="'v-right fr ' + ((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
                                     <text class="circle"></text>
@@ -222,7 +222,7 @@
                 <view class="bg-base padding-top-lg">
                     <view class="close oh margin-right-lg padding-bottom-sm">
                         <view class="fr" @tap.stop="plugins_realstore_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">
