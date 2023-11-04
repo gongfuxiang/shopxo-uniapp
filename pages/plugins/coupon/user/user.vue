@@ -12,21 +12,21 @@
                 <!-- 未使用 -->
                 <block v-if="(data_list.not_use || null) != null && data_list.not_use.length > 0 && nav_tabs_value == 'not_use'">
                     <block v-for="(item, index) in data_list.not_use" :key="index">
-                        <component-poupon-card :prop-data="item.coupon" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-poupon-card>
+                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start" :prop-end-time="item.time_end" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
 
                 <!-- 已使用 -->
                 <block v-if="(data_list.already_use || null) != null && data_list.already_use.length > 0 && nav_tabs_value == 'already_use'">
                     <block v-for="(item, index) in data_list.already_use" :key="index">
-                        <component-poupon-card :prop-data="item.coupon" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-poupon-card>
+                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start" :prop-end-time="item.time_end" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
 
                 <!-- 已过期 -->
                 <block v-if="(data_list.already_expire || null) != null && data_list.already_expire.length > 0 && nav_tabs_value == 'already_expire'">
                     <block v-for="(item, index) in data_list.already_expire" :key="index">
-                        <component-poupon-card :prop-data="item.coupon" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-poupon-card>
+                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start" :prop-end-time="item.time_end" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
             </view>
@@ -43,7 +43,7 @@
     const app = getApp();
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentPouponCard from '@/components/coupon-card/coupon-card.vue';
+    import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
     const coupon_static_url = app.globalData.get_static_url('coupon', true);
 
     export default {
@@ -79,7 +79,7 @@
         components: {
             componentNoData,
             componentBottomLine,
-            componentPouponCard,
+            componentCouponCard,
         },
         props: {},
 

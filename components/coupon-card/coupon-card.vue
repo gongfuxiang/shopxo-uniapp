@@ -11,8 +11,8 @@
             </view>
             <view class="card-right flex-1 flex-width flex-row jc-sb align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : ''">
                 <view class="card-info flex-1 flex-width padding-right-main" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-black'">
-                    <view class="title text-size-lg single-text">{{ propData.use_limit_type_name }}</view>
-                    <view v-if="propData.time_start && propData.time_end" class="date text-size-md cr-grey-9 single-text padding-top-sm">{{ propData.time_start }}-{{ propData.time_end }}</view>
+                    <view class="title text-size-lg single-text" :class="propData.time_start">{{ propData.use_limit_type_name }}</view>
+                    <view v-if="propStartTime && propEndTime" class="date text-size-xs cr-grey-9 single-text padding-top-sm">{{ propStartTime }}-{{ propEndTime }}</view>
                     <view v-if="propIsProgress && propData.process_data" class="progress padding-top-sm flex-row align-c">
                         <block v-if="propData.process_data.type == 0">
                             <text class="text-size-xs cr-grey-9"> {{ propData.process_data.msg }} </text>
@@ -116,6 +116,15 @@
                 type: String,
                 default: '去使用',
             },
+            // 优惠券有效期
+            propStartTime:{
+                type: String,
+                default: '',
+            },
+            propEndTime:{
+                type: String,
+                default: '',
+            }
         },
         data() {
             return {
