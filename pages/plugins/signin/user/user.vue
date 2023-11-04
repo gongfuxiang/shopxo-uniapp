@@ -20,10 +20,10 @@
             <!-- 明细 -->
             <view class="nav-detail margin-bottom-lg">
                 <view v-if="current === 0">
-                    <component-user-signin :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-signin>
+                    <component-user-signin :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-signin>
                 </view>
                 <view v-if="current === 1">
-                    <component-user-qrcode :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-qrcode>
+                    <component-user-qrcode :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-qrcode>
                 </view>
             </view>
         </view>

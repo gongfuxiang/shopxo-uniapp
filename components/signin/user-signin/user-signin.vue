@@ -1,6 +1,6 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.signin_desc || null) != null && data_base.signin_desc.length > 0 ? 'top-notice' : '')" lower-threshold="60">
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -38,7 +38,7 @@
             propScrollLower: {
                 type: Boolean,
                 default: false,
-            },
+            }
         },
         data() {
             return {
@@ -49,6 +49,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                data_base: null,
                 content_list: [
                     { name: '奖励积分', field: 'integral' },
                     { name: '签到时间', field: 'add_time' },
@@ -152,6 +153,7 @@
                                     }
                                 }
                                 this.setData({
+                                    data_base: res.data.data.base || null,
                                     data_list: temp_data_list,
                                     data_total: res.data.data.total,
                                     data_page_total: res.data.data.page_total,
@@ -197,7 +199,7 @@
     };
 </script>
 <style scoped>
-    .scroll-box {
-        height: calc(100vh - 144rpx);
+    .scroll-box-ece-nav.top-notice {
+        height: calc(100vh - 154rpx);
     }
 </style>

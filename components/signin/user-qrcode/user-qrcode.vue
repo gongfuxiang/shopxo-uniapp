@@ -1,6 +1,6 @@
 <template>
     <view>
-        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.signin_desc || null) != null && data_base.signin_desc.length > 0 ? 'top-notice' : '')" lower-threshold="60">
             <view class="data-list" :class="(data_base || null) != null && (data_base.is_team || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -13,8 +13,8 @@
                                 <block v-for="(fv, fi) in content_list" :key="fi">
                                     <view class="single-text margin-top-xs">
                                         <text class="cr-grey-9 margin-right-xl">{{ fv.name }}:</text>
-                                        <text class="fw-b">{{ item[fv.field] }}</text>
-                                        <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
+                                        <text class="cr-base">{{ item[fv.field] }}</text>
+                                        <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
                                     </view>
                                 </block>
                             </navigator>
@@ -248,8 +248,8 @@
     };
 </script>
 <style scoped>
-    .scroll-box {
-        height: calc(100vh - 144rpx);
+    .scroll-box-ece-nav.top-notice {
+        height: calc(100vh - 154rpx);
     }
     .user-team-container button {
         height: 88rpx;

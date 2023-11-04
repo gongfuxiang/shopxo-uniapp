@@ -115,6 +115,7 @@ export default {
                                 { name: "联系人姓名", value: data.data.name || "" },
                                 { name: "联系人电话", value: data.data.tel || "" },
                                 { name: "联系人地址", value: data.data.address || "" },
+                                { name: "备注", value: data.data.note || "" },
                                 { name: "创建时间", value: data.data.add_time || "" },
                                 { name: "更新时间", value: data.data.upd_time || "" },
                             ],

@@ -5,13 +5,13 @@
             <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="data_base.invoice_desc.join('')" background-color="transparent" color="#666" />
         </view>
         <!-- 导航 -->
-        <view class="nav-base bg-white flex-row jc-sa align-c">
+        <view v-if="nav_status_list.length > 0" class="nav-base bg-white flex-row jc-sa align-c">
             <block v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
         <!-- 列表 -->
-        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0 ? 'top-notice' : '') " @scrolltolower="scroll_lower" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.invoice_desc || null) != null && data_base.invoice_desc.length > 0 ? 'top-notice' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="page-bottom-fixed">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
