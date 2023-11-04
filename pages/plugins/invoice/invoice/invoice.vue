@@ -24,8 +24,8 @@
                                 <block v-for="(fv, fi) in content_list" :key="fi">
                                     <view class="single-text margin-top-xs">
                                         <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                        <text class="cr-black fw-b">{{ item[fv.field] }}</text>
-                                        <text v-if="(fv.unit || null) != null" class="cr-grey fw-b">{{ fv.unit }}</text>
+                                        <text class="cr-black">{{ item[fv.field] }}</text>
+                                        <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
                                     </view>
                                 </block>
                             </navigator>

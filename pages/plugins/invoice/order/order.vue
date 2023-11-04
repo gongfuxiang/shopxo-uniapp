@@ -5,15 +5,14 @@
                 <view class="padding-horizontal-main padding-top-main" :class="select_ids.length > 0 ? 'page-bottom-fixed' : ''">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                         <view class="base oh br-b-dashed padding-bottom-main">
-                            <iconfont
-                                class="margin-right-sm pr top-md"
-                                :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
-                                size="34rpx"
-                                :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
-                                data-type="node"
-                                :data-value="item.id"
-                                @tap="selected_event"
-                            ></iconfont>
+                            <view class="dis-inline-block va-m" data-type="node":data-value="item.id" @tap="selected_event">
+                                <iconfont
+                                    class="margin-right-sm pr top-md"
+                                    :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
+                                    size="34rpx"
+                                    :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
+                                ></iconfont>
+                            </view>
                             <text class="cr-grey-9 va-m">{{ item.add_time }}</text>
                         </view>
                         <view class="content margin-top">

@@ -26,7 +26,9 @@
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                                 </view>
                                                 <view class="flex-row">
-                                                    <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx" @tap="price_change"></iconfont>
+                                                    <view @tap="price_change">
+                                                        <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
+                                                    </view>
                                                     <view class="margin-left-xxxl" data-value="/pages/plugins/wallet/payment-code/payment-code" @tap="url_event">
                                                         <iconfont name="icon-wdhy-erweima" size="44rpx"></iconfont>
                                                     </view>
@@ -43,7 +45,7 @@
                                                         <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
                                                     </view>
                                                 </view>
-                                                <view class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
+                                                <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
                                                     <iconfont name="icon-transfer" size="28rpx" class="transfer-icon"></iconfont>
                                                     <text class="margin-left-xs">转账</text>
                                                 </view>
