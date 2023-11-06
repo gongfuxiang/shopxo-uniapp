@@ -303,24 +303,19 @@
     import componentBindingList from '../../components/binding-list/binding-list';
     import componentMagicList from '../../components/magic-list/magic-list';
 
-    var common_static_url = app.globalData.get_static_url('common');
-    var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
-    var static_url = app.globalData.get_static_url('home');
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO
     bar_height = 0;
     // #endif
-    let theme_color = app.globalData.get_theme_color();
-
     export default {
         data() {
             return {
-                theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
-                seckill_static_url: seckill_static_url,
-                static_url: static_url,
-                theme_color: theme_color,
+                theme_view: '',
+                theme_color: '',
+                common_static_url: '',
+                seckill_static_url: '',
+                static_url: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -346,9 +341,9 @@
                 application_logo: app.globalData.data.application_logo,
                 is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
                 // 顶部+搜索样式配置
-                top_content_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%)',
-                top_content_search_bg_color: 'background:linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 460%)',
-                top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
+                top_content_bg_color: '',
+                top_content_search_bg_color: '',
+                top_content_search_content_style: '',
                 top_content_style: 'padding-top:' + (bar_height + 6) + 'px;',
                 // #ifdef H5 || MP-TOUTIAO || APP
                 top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
@@ -476,7 +471,18 @@
 
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var theme_view = app.globalData.get_theme_value_view();
+                            var theme_color = app.globalData.get_theme_color();
+                            var common_static_url = app.globalData.get_static_url('common');
+                            var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
+                            var static_url = app.globalData.get_static_url('home');
                             this.setData({
+                                theme_view: theme_view,
+                                theme_color: theme_color,
+                                common_static_url: common_static_url,
+                                seckill_static_url: seckill_static_url,
+                                static_url: static_url,
+                                top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
                                 navigation: data.navigation || [],
