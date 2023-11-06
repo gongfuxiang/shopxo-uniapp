@@ -4,7 +4,7 @@
         globalData: {
             data: {
                 // 数据接口请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 static_url: 'https://new.shopxo.vip/',
