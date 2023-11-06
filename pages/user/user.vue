@@ -152,20 +152,21 @@
                     <view v-if="(common_user_center_notice || null) != null" class="padding-horizontal-main">
                         <uni-notice-bar class="padding-0 margin-0" show-icon scrollable :text="common_user_center_notice" background-color="transparent" color="#666" />
                     </view>
-                    <!-- 在线客服 -->
-                    <component-online-service :propIsNav="true" :propIsBar="true"></component-online-service>
-
-                    <!-- 快捷导航 -->
-                    <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
-
-                    <!-- 用户基础 -->
-                    <component-user-base ref="user_base"></component-user-base>
 
                     <!-- 版权信息 -->
                     <component-copyright></component-copyright>
                 </view>
             </view>
         </view>
+
+        <!-- 在线客服 -->
+        <component-online-service :propIsNav="true" :propIsBar="true"></component-online-service>
+    
+        <!-- 快捷导航 -->
+        <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
+    
+        <!-- 用户基础 -->
+        <component-user-base ref="user_base"></component-user-base>
     </view>
 </template>
 <script>

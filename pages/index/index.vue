@@ -101,8 +101,7 @@
                         <view
                             v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
                             class="plugins-seckill-data border-radius-main spacing-mb bg-white"
-                            :style="'background-image: url(' + seckill_static_url + 'seckill-bg.png);'"
-                        >
+                            :style="'background-image: url(' + seckill_static_url + 'seckill-bg.png);'">
                             <view class="flex-row jc-sb align-c padding-top-main padding-horizontal-main">
                                 <view class="flex-1">
                                     <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
@@ -269,14 +268,16 @@
             </view>
         </view>
 
-        <!-- 在线客服 -->
-        <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
+        <block v-if="load_status == 1">
+            <!-- 在线客服 -->
+            <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
 
-        <!-- 快捷导航 -->
-        <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+            <!-- 快捷导航 -->
+            <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
 
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+        </block>
     </view>
 </template>
 

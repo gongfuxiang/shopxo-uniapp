@@ -360,17 +360,16 @@
                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" class="no-data bg-base pr"></component-no-data>
                 </view>
 
-                <!-- 购物车抛物线 -->
-                <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
+                <block v-if="data_list_loding_status != 1">
+                    <!-- 购物车抛物线 -->
+                    <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
 
-                <!-- 商品购买 -->
-                <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                    <!-- 商品购买 -->
+                    <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
-                <!-- 快捷导航 -->
-                <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
-
-                <!-- 用户基础 -->
-                <component-user-base ref="user_base"></component-user-base>
+                    <!-- 用户基础 -->
+                    <component-user-base ref="user_base"></component-user-base>
+                </block>
             </view>
         </view>
     </view>
@@ -381,7 +380,6 @@
     import base64 from '../../common/js/lib/base64.js';
     import componentGoodsBuy from '../../components/goods-buy/goods-buy';
     import componentSearch from '../../components/search/search';
-    import componentQuickNav from '../../components/quick-nav/quick-nav';
     import componentNoData from '../../components/no-data/no-data';
     import componentPopup from '../../components/popup/popup';
     import componentBadge from '../../components/badge/badge';
@@ -456,7 +454,6 @@
         components: {
             componentGoodsBuy,
             componentSearch,
-            componentQuickNav,
             componentNoData,
             componentPopup,
             componentBadge,

@@ -124,8 +124,11 @@
                 </view>
             </view>
         </block>
-        <!-- 用户基础 -->
-        <component-user-base ref="user_base"></component-user-base>
+
+        <block v-if="data_list_loding_status != 1">
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base"></component-user-base>
+        </block>
     </view>
 </template>
 <script>

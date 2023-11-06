@@ -599,7 +599,9 @@
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
 
         <!-- 快捷导航 -->
-        <component-quick-nav :propIsNav="true"></component-quick-nav>
+        <block v-if="data_list_loding_status != 1">
+            <component-quick-nav :propIsNav="true"></component-quick-nav>
+        </block>
     </view>
 </template>
 <script>

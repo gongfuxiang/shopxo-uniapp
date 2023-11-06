@@ -2,14 +2,10 @@
     <view :class="theme_view">
         <!-- 购物车 -->
         <component-cart ref="cart"></component-cart>
-
-        <!-- 快捷导航 -->
-        <component-quick-nav :propIsBar="true"></component-quick-nav>
     </view>
 </template>
 <script>
 const app = getApp();
-import componentQuickNav from "../../components/quick-nav/quick-nav";
 import componentCart from "../../components/cart/cart";
 export default {
     data() {
@@ -18,7 +14,6 @@ export default {
         };
     },
     components: {
-        componentQuickNav,
         componentCart,
     },
 
