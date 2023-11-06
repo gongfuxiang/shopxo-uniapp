@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="content tc">
             <image class="pay-icon dis-block" v-if="params.code == '9000'" mode="widthFix" :src="default_round_success_icon"></image>
             <image class="pay-icon dis-block" v-else mode="widthFix" :src="default_round_error_icon"></image>
@@ -22,6 +22,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 params: {},
                 default_round_success_icon: app.globalData.data.default_round_success_icon,
                 default_round_error_icon: app.globalData.data.default_round_error_icon,

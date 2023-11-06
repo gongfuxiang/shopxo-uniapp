@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) !== null" class="page-pay-fixed">
             <view class="padding-main">
                 <block v-if="(data.scanpay_info || null) !== null">
@@ -133,6 +133,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 data: null,

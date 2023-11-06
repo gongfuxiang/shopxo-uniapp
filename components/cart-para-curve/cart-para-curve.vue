@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="cart_icon_data != null && (cart_icon_data.status || 0) == 1" class="cart-para-curve-container pf round" :style="cart_icon_data.style">
             <image v-if="(cart_icon_data.icon || null) != null" class="cart-para-curve-icon round br" :src="cart_icon_data.icon"></image>
             <view v-else class="cart-para-curve-icon bg-red padding dis-inline-block round br"></view>
@@ -11,6 +11,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 cart_icon_data: null
             };
         },

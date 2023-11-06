@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <web-view :src="web_url"></web-view>
     </view>
 </template>
@@ -9,6 +9,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 web_url: null
             };
         },

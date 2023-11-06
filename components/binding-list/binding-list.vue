@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-binding-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item border-radius-main bg-white padding-main oh pr spacing-mb">
@@ -61,6 +61,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 config: {},
                 data_list: [],
             };

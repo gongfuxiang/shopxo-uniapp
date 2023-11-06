@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null" class="padding-main bg-white">
             <!-- 评论内容 -->
             <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list" propType="comments"></component-blog-comments>
@@ -20,6 +20,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,

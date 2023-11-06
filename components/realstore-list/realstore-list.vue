@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url" @tap="url_event">
@@ -53,6 +53,7 @@ const app = getApp();
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list: [],
             favor_user: [],
         };

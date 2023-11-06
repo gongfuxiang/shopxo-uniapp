@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="detail != null" class="page-bottom-fixed">
             <!-- 封面图片 -->
             <image v-if="(detail || null) != null && (detail.share_img || null) != null" class="banner wh-auto dis-block" :src="detail.share_img" mode="widthFix" @tap="detail_images_view_event" :data-value="detail.share_img"></image>
@@ -63,6 +63,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 static_url: static_url + 'app/',
                 params: null,
                 data_list_loding_status: 1,

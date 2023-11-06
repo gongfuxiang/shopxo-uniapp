@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
@@ -29,6 +29,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

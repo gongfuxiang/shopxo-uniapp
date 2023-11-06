@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="content">
             <block v-if="(is_exist_base_data || 0) == 1">
                 <!-- 表单验证码 -->
@@ -322,6 +322,7 @@ import componentPopup from "../../components/popup/popup";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             params: null,
             user: null,
             prev_page: null,

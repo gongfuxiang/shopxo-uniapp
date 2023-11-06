@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back prop-name="充值"></component-nav-back>
         <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
@@ -119,6 +119,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 theme_color: app.globalData.get_theme_color(),
                 data_list_loding_status: 1,

@@ -1,121 +1,123 @@
 <template>
-    <view class="page-bottom-fixed">
-        <block v-if="data_list_loding_status == 3">
-            <form @submit="form_submit" class="form-container">
-                <view class="padding-main oh">
-                    <view class="form-gorup bg-white form-container-upload oh">
-                        <view class="form-gorup-title">图标<text class="form-group-tips">建议100*100px</text></view>
-                        <view class="form-upload-data oh">
-                            <block v-if="(recommend_data.icon || null) != null">
-                                <view class="item fl">
-                                    <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                    <image :src="recommend_data.icon" @tap="upload_show_event" mode="aspectFill"></image>
-                                </view>
-                            </block>
-                            <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
-                        </view>
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">标题<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" placeholder="标题格式1~60个字符" />
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">描述</view>
-                        <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" placeholder="描述格式最多200个字符" />
-                    </view>
-
-                    <view class="form-gorup anonymous">
-                        <view class="form-gorup-title">是否启用</view>
-                        <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
-                    </view>
-
-                    <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">关联商品<text class="form-group-tips-must">*</text></view>
-                        <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
-                            <block v-for="(item, index) in recommend_data.detail_list" :key="index">
-                                <view :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
-                                    <navigator :url="item.goods.goods_url" hover-class="none" class="br dis-block fl radius oh">
-                                        <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
-                                    </navigator>
-                                    <view class="base fr">
-                                        <view class="cr-base single-text">{{ item.goods.title }}</view>
-                                        <view class="margin-top-xs">
-                                            <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
-                                            <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
-                                        </view>
-                                        <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
-                                        <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">移除</text>
+    <view :class="theme_view">
+        <view class="page-bottom-fixed">
+            <block v-if="data_list_loding_status == 3">
+                <form @submit="form_submit" class="form-container">
+                    <view class="padding-main oh">
+                        <view class="form-gorup bg-white form-container-upload oh">
+                            <view class="form-gorup-title">图标<text class="form-group-tips">建议100*100px</text></view>
+                            <view class="form-upload-data oh">
+                                <block v-if="(recommend_data.icon || null) != null">
+                                    <view class="item fl">
+                                        <text class="delete-icon" @tap="upload_delete_event">x</text>
+                                        <image :src="recommend_data.icon" @tap="upload_show_event" mode="aspectFill"></image>
                                     </view>
-                                </view>
-                            </block>
-                        </view>
-                        <view class="margin-top-sm padding-vertical-main">
-                            <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">+ 选择商品</text>
-                        </view>
-                    </view>
-
-                    <view class="bottom-fixed">
-                        <view class="bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
-                        </view>
-                    </view>
-                </view>
-            </form>
-
-            <!-- 商品选择弹窗 -->
-            <component-popup :propShow="popup_goods_choice_status" propPosition="bottom" @onclose="popup_goods_choice_close_event">
-                <view class="padding-top-main bg-white">
-                    <view class="padding-horizontal-main">
-                        <view class="close oh">
-                            <view class="fr" @tap.stop="popup_goods_choice_close_event">
-                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                </block>
+                                <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
                             </view>
                         </view>
-                    </view>
-                    <view class="popup-goods-choice-container">
-                        <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
-                            <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
-                                <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
-                                    {{ popup_goods_cetagory_index == 0 ? '商品分类' : goods_category_list[popup_goods_cetagory_index]['name'] }}
-                                </view>
-                            </picker>
-                            <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" placeholder="请输入商品名称" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
-                            <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">搜索</button>
+
+                        <view class="form-gorup bg-white">
+                            <view class="form-gorup-title">标题<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" placeholder="标题格式1~60个字符" />
                         </view>
-                        <view class="view-goods-list padding-horizontal-main">
-                            <block v-if="popup_search_goods_list.length > 0">
-                                <block v-for="(item, index) in popup_search_goods_list" :key="index">
-                                    <view :class="'item oh pr margin-top-lg ' + (index > 0 ? 'br-t-dashed padding-top-lg' : '')">
-                                        <navigator :url="item.goods_url" hover-class="none" class="br dis-block fl radius oh">
-                                            <image :src="item.images" mode="aspectFill" class="dis-block"></image>
+
+                        <view class="form-gorup bg-white">
+                            <view class="form-gorup-title">描述</view>
+                            <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" placeholder="描述格式最多200个字符" />
+                        </view>
+
+                        <view class="form-gorup anonymous">
+                            <view class="form-gorup-title">是否启用</view>
+                            <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
+                        </view>
+
+                        <view class="form-gorup bg-white">
+                            <view class="form-gorup-title">关联商品<text class="form-group-tips-must">*</text></view>
+                            <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
+                                <block v-for="(item, index) in recommend_data.detail_list" :key="index">
+                                    <view :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
+                                        <navigator :url="item.goods.goods_url" hover-class="none" class="br dis-block fl radius oh">
+                                            <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
                                         </navigator>
                                         <view class="base fr">
-                                            <view class="cr-base single-text">{{ item.title }}</view>
-                                            <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
-                                            <view class="cr-grey margin-top-xs text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</view>
-                                            <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">选择</text>
+                                            <view class="cr-base single-text">{{ item.goods.title }}</view>
+                                            <view class="margin-top-xs">
+                                                <text class="sales-price">{{ currency_symbol }}{{ item.goods.price }}</text>
+                                                <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
+                                            </view>
+                                            <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
+                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">移除</text>
                                         </view>
                                     </view>
                                 </block>
-                                <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">当前展示{{ popup_search_goods_list.length }}条数据</view>
-                            </block>
-                            <block v-else>
-                                <component-no-data :propStatus="search_data_list_loding_status" :propMsg="search_data_list_loding_msg"></component-no-data>
-                            </block>
+                            </view>
+                            <view class="margin-top-sm padding-vertical-main">
+                                <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">+ 选择商品</text>
+                            </view>
+                        </view>
+
+                        <view class="bottom-fixed">
+                            <view class="bottom-line-exclude">
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
+                            </view>
                         </view>
                     </view>
-                </view>
-            </component-popup>
+                </form>
 
-            <!-- 规格选择 -->
-            <component-goods-spec-choice ref="goods_spec_choice" v-on:specConfirmEvent="spec_confirm_event" propIndex="101"></component-goods-spec-choice>
-        </block>
-        <block v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </block>
+                <!-- 商品选择弹窗 -->
+                <component-popup :propShow="popup_goods_choice_status" propPosition="bottom" @onclose="popup_goods_choice_close_event">
+                    <view class="padding-top-main bg-white">
+                        <view class="padding-horizontal-main">
+                            <view class="close oh">
+                                <view class="fr" @tap.stop="popup_goods_choice_close_event">
+                                    <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="popup-goods-choice-container">
+                            <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
+                                <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
+                                    <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
+                                        {{ popup_goods_cetagory_index == 0 ? '商品分类' : goods_category_list[popup_goods_cetagory_index]['name'] }}
+                                    </view>
+                                </picker>
+                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" placeholder="请输入商品名称" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
+                                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">搜索</button>
+                            </view>
+                            <view class="view-goods-list padding-horizontal-main">
+                                <block v-if="popup_search_goods_list.length > 0">
+                                    <block v-for="(item, index) in popup_search_goods_list" :key="index">
+                                        <view :class="'item oh pr margin-top-lg ' + (index > 0 ? 'br-t-dashed padding-top-lg' : '')">
+                                            <navigator :url="item.goods_url" hover-class="none" class="br dis-block fl radius oh">
+                                                <image :src="item.images" mode="aspectFill" class="dis-block"></image>
+                                            </navigator>
+                                            <view class="base fr">
+                                                <view class="cr-base single-text">{{ item.title }}</view>
+                                                <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
+                                                <view class="cr-grey margin-top-xs text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</view>
+                                                <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">选择</text>
+                                            </view>
+                                        </view>
+                                    </block>
+                                    <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">当前展示{{ popup_search_goods_list.length }}条数据</view>
+                                </block>
+                                <block v-else>
+                                    <component-no-data :propStatus="search_data_list_loding_status" :propMsg="search_data_list_loding_msg"></component-no-data>
+                                </block>
+                            </view>
+                        </view>
+                    </view>
+                </component-popup>
+
+                <!-- 规格选择 -->
+                <component-goods-spec-choice ref="goods_spec_choice" v-on:specConfirmEvent="spec_confirm_event" propIndex="101"></component-goods-spec-choice>
+            </block>
+            <block v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </block>
+        </view>
     </view>
 </template>
 <script>
@@ -128,6 +130,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,

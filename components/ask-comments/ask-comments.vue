@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null && (data_base || null) != null">
             <view class="flex-row jc-sb align-c">
                 <view class="fw-b">共{{ data.comments_count || 0 }}个回答</view>
@@ -147,6 +147,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 user: null,

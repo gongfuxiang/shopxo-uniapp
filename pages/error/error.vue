@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="content padding-horizontal-main tc">
             <view class="margin-top-xxxl">
                 <icon type="warn" size="16" color="#f00" class="va-m" />
@@ -21,6 +21,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 params: null
             };
         },

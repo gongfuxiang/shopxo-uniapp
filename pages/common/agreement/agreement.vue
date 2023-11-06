@@ -1,27 +1,29 @@
 <template>
-    <view class="agreement-page bs-bb">
-        <view class="agreement-content border-radius-main bg-white" v-if="is_show_privacy">
-            <view class="tc">
-                <image class="logo circle auto dis-block margin-bottom-lg br" :src="logo" mode="widthFix"></image>
-                <view class="cr-base fw-b text-size-lg">{{ title }}温馨提示</view>
-            </view>
-            <view class="margin-top-lg text-size-sm cr-base content-desc">
-                <block v-if="(content || null) == null">
-                    尊敬的用户、为了向您提供更优质的服务，在您使用{{ title }}小程序前，您需要通过点击【同意】并阅读以下协议内容以表示您充分知悉、理解并同意本温馨提示的相关协议的各项规则，包括我们会在您开启的位置信息提供更契合您需求的页面展示、产品或服务，比如首页向您推荐商品或相关门店及排行榜信息。
-                </block>
-                <block v-else>{{ content }}</block>
-            </view>
-            <view class="cr-blue margin-top-lg">
-                <view>
-                    <text @tap="agreement_event" data-value="userregister">《{{ title }}服务用户协议》</text>
+    <view :class="theme_view">
+        <view class="agreement-page bs-bb">
+            <view class="agreement-content border-radius-main bg-white" v-if="is_show_privacy">
+                <view class="tc">
+                    <image class="logo circle auto dis-block margin-bottom-lg br" :src="logo" mode="widthFix"></image>
+                    <view class="cr-base fw-b text-size-lg">{{ title }}温馨提示</view>
                 </view>
-                <view class="margin-top-sm">
-                    <text @tap="agreement_event" data-value="userprivacy">《{{ title }}隐私权政策》</text>
+                <view class="margin-top-lg text-size-sm cr-base content-desc">
+                    <block v-if="(content || null) == null">
+                        尊敬的用户、为了向您提供更优质的服务，在您使用{{ title }}小程序前，您需要通过点击【同意】并阅读以下协议内容以表示您充分知悉、理解并同意本温馨提示的相关协议的各项规则，包括我们会在您开启的位置信息提供更契合您需求的页面展示、产品或服务，比如首页向您推荐商品或相关门店及排行榜信息。
+                    </block>
+                    <block v-else>{{ content }}</block>
                 </view>
-            </view>
-            <view class="buttom tc margin-top-xxxl padding-top-lg">
-                <button type="default" size="mini" class="br-grey cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">不同意</button>
-                <button type="default" size="mini" class="br-main cr-white bg-main text-size-sm round margin-left-xxxl" open-type="agreePrivacyAuthorization" @agreeprivacyauthorization="agree_privacy_auth_event">同意</button>
+                <view class="cr-blue margin-top-lg">
+                    <view>
+                        <text @tap="agreement_event" data-value="userregister">《{{ title }}服务用户协议》</text>
+                    </view>
+                    <view class="margin-top-sm">
+                        <text @tap="agreement_event" data-value="userprivacy">《{{ title }}隐私权政策》</text>
+                    </view>
+                </view>
+                <view class="buttom tc margin-top-xxxl padding-top-lg">
+                    <button type="default" size="mini" class="br-grey cr-base bg-white text-size-sm round margin-right-xxxl" @tap="exit_event">不同意</button>
+                    <button type="default" size="mini" class="br-main cr-white bg-main text-size-sm round margin-left-xxxl" open-type="agreePrivacyAuthorization" @agreeprivacyauthorization="agree_privacy_auth_event">同意</button>
+                </view>
             </view>
         </view>
     </view>
@@ -31,6 +33,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 logo: app.globalData.get_application_logo_square(),
                 title: app.globalData.get_application_title(),
                 is_show_privacy: false,

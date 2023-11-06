@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <scroll-view :scroll-y="true" class="scroll-box" :class="data_list.length > 0 ? 'active' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="cart-page">
                 <!-- 数据列表 -->
@@ -140,6 +140,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

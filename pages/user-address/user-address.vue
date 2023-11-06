@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="page-bottom-fixed padding-main">
             <view v-if="data_list.length > 0">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-xl bg-white spacing-mb flex-row jc-sb align-c">
@@ -63,6 +63,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
                 theme_color_light: theme_color_light,
                 btn_bg_color: 'background:linear-gradient(107deg, ' + theme_color_light + ' 0%, ' + theme_color + ' 100%)',

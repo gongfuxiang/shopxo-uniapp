@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
@@ -30,6 +30,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

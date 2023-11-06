@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" :class="propClass" @tap="open_popup">
             <text>更多</text>
             <iconfont name="icon-fenlei-more"></iconfont>
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+    const app = getApp();
     import componentPopup from '../popup/popup';
     export default {
         name: 'more',
@@ -59,6 +60,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 popup_status: false,
                 propIsBar: false,
             };

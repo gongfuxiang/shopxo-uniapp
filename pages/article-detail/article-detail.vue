@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null" class="padding-main">
             <view class="padding-main border-radius-main bg-white spacing-mb">
                 <view class="fw-b text-size-xl">{{ data.title }}</view>
@@ -44,6 +44,7 @@ import componentBottomLine from "../../components/bottom-line/bottom-line";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
             data_list_loding_msg: "",
             data_bottom_line_status: false,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="(propData || null) != null && propData.length > 0">
             <view v-for="(item, index) in propData" :key="index" class="goods-comment-item flex-row" :class="propClass">
                 <image class="avatar dis-block margin-right-xs" :src="item.user.avatar || common_static_url + 'default-user.png'" mode="aspectFit"></image>
@@ -65,6 +65,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
             };
         },

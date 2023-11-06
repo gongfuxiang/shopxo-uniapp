@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="propNumber != 0" class="am-badge">
             <view :class="'am-badge-text ' + ((propNumber > 99) ? 'am-badge-text-max' : '')">
                 <text>{{(propNumber > 99) ? '99+' : propNumber}}</text>
@@ -8,9 +8,12 @@
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {},
         props: {

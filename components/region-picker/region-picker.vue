@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="propShow" propPosition="bottom" @onclose="popup_close_event">
             <view class="flex-row jc-sb align-c padding-main">
                 <text class="cr-grey" @tap="popup_close_event">取消</text>
@@ -33,6 +33,7 @@ import componentPopup from "@/components/popup/popup";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             columns: [[0], [0], [0]],
             // 下标
             columns_index: [[0], [0], [0]],

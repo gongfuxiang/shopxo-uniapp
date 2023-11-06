@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_tabs_list" :key="index">
@@ -49,6 +49,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 coupon_static_url: coupon_static_url + 'app/',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

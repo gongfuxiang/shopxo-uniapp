@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) !== null" class="page-bottom-fixed">
             <view class="bg-white padding-main">
                 <block v-if="(data.order_info.status || null) !== null && data.order_info.status == 1">
@@ -55,6 +55,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 基础配置
                 currency_symbol: app.globalData.data.currency_symbol,
                 data: null,

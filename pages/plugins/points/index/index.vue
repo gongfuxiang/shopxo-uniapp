@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back prop-name="积分"></component-nav-back>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
@@ -114,6 +114,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 points_static_url: points_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

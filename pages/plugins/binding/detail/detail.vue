@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null" class="page-bottom-fixed">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息 -->
@@ -123,6 +123,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 binding_static_url: binding_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back :prop-fixed="false" prop-class="bg-white" prop-color="#333">
             <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="status_bar_height > 0 ? '' : 'flex-1 flex-width'">
@@ -71,6 +71,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 data_list: [],
                 data_total: 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="data_list_loding_status === 3">
             <form @submit="form_submit" class="form-container">
                 <view class="padding-main oh">
@@ -167,6 +167,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 theme_color: app.globalData.get_theme_color(),
                 params: null,

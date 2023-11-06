@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back prop-name="充值"></component-nav-back>
         <view v-if="data.length > 0" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
@@ -77,6 +77,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 currency_symbol: app.globalData.data.currency_symbol,
                 params: null,

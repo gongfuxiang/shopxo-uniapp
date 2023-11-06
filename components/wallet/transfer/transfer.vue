@@ -1,6 +1,6 @@
 <!-- 转账 -->
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 列表 -->
         <view v-if="data_list.length > 0" class="data-list">
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -48,6 +48,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

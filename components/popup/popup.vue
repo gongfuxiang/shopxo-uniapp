@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
             <view :class="'popup-content bottom-line-exclude popup-' + (propPosition || 'bottom') + ' ' + (propIsBar ? 'popup-bar' : '')" :style="position_style">
@@ -9,9 +9,11 @@
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 popup_content_left_value: 'auto',
             };
         },

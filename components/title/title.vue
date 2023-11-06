@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
             <view class="title-left">
                 <text class="text-wrapper" :class="propTitleLeftBorder ? 'title-left-border' : ''" :style="'color:' + propTitleColor + ';'">{{propTitle}}</text>
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+    const app = getApp();
     export default {
         props: {
             propTitle: {
@@ -43,7 +44,9 @@
             },
         },
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         }
     }
 </script>

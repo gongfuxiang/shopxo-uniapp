@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(propConfig || null) != null && (propData || null) != null && propData.length > 0">
             <block v-for="(floor, index) in propData" :key="index">
                 <block v-if="floor.blog_list.length > 0 && floor.home_data_location == propLocation">
@@ -68,9 +68,12 @@
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {},
         props: {

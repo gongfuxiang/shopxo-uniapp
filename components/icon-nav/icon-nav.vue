@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="propData.length > 0" class="icon-nav-list" :class="propData.length > 5 ? 'swiper-height-max' : 'swiper-height-min'">
             <uni-swiper-dot class="uni-swiper-dot-box" mode="default" :dots-styles="dotsStyles" @clickItem="click_item" :info="swiperData" :current="current">
                 <swiper class="swiper-box" :autoplay="autoplay" :duration="duration" @change="swiper_change" :current="swiperDotIndex">
@@ -23,6 +23,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 swiperData: [],
                 autoplay: false,
                 duration: 500,

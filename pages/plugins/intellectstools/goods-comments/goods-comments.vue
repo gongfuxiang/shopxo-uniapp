@@ -1,36 +1,38 @@
 <template>
-    <view class="padding-main">
-        <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
-            <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
-                <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
-                <view class="flex-1 flex-width">
-                    <view class="margin-right-sm">商品评分</view>
-                    <uni-rate :value="rate_value" @change="rate_change_event" />
+    <view :class="theme_view">
+        <view class="padding-main">
+            <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
+                <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
+                    <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
+                    <view class="flex-1 flex-width">
+                        <view class="margin-right-sm">商品评分</view>
+                        <uni-rate :value="rate_value" @change="rate_change_event" />
+                    </view>
                 </view>
-            </view>
-            <view class="bg-white border-radius-main padding-main">
-                <textarea name="content" @input="text_input_event" maxlength="230" auto-height placeholder="请输入您的评价" placeholder-class="cr-grey-9" class="wh-auto input-height" />
-                <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
-                <view class="spacing-mt">
-                    <view class="margin-bottom-main">添加图片(0/3)</view>
-                    <component-upload :propData="image_list" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
+                <view class="bg-white border-radius-main padding-main">
+                    <textarea name="content" @input="text_input_event" maxlength="230" auto-height placeholder="请输入您的评价" placeholder-class="cr-grey-9" class="wh-auto input-height" />
+                    <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
+                    <view class="spacing-mt">
+                        <view class="margin-bottom-main">添加图片(0/3)</view>
+                        <component-upload :propData="image_list" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
+                    </view>
+                    <view class="tr">
+                        <checkbox-group @change="is_anonymous_change_event">
+                            <label class="cr-grey-9 text-size-xs">
+                                <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.5)" />
+                                <text class="pr top-xs">匿名发布</text>
+                            </label>
+                        </checkbox-group>
+                    </view>
                 </view>
-                <view class="tr">
-                    <checkbox-group @change="is_anonymous_change_event">
-                        <label class="cr-grey-9 text-size-xs">
-                            <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.5)" />
-                            <text class="pr top-xs">匿名发布</text>
-                        </label>
-                    </checkbox-group>
+                <view class="sub-btn">
+                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
                 </view>
+            </form>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
-            <view class="sub-btn">
-                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
-            </view>
-        </form>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
         </view>
     </view>
 </template>
@@ -42,6 +44,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
                 data: {},
                 rate_value: 0,

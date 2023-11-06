@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="page-bottom-fixed">
             <!-- 主体内容 -->
             <block v-if="data_list_loding_status == 3">
@@ -72,6 +72,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 application_client_type: app.globalData.application_client_type(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

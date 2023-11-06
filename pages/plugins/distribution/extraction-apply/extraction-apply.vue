@@ -1,79 +1,81 @@
 <template>
-    <view class="page-bottom-fixed">
-        <form @submit="form_submit" class="form-container">
-            <view class="padding-main oh">
-                <view class="form-gorup bg-white form-container-upload oh">
-                    <view class="form-gorup-title">logo图片<text class="form-group-tips">选传，建议300x300px</text></view>
-                    <view class="form-upload-data oh">
-                        <block v-if="(extraction_data.logo || null) != null">
-                            <view class="item fl">
-                                <text class="delete-icon" @tap="upload_delete_event">x</text>
-                                <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
+    <view :class="theme_view">
+        <view class="page-bottom-fixed">
+            <form @submit="form_submit" class="form-container">
+                <view class="padding-main oh">
+                    <view class="form-gorup bg-white form-container-upload oh">
+                        <view class="form-gorup-title">logo图片<text class="form-group-tips">选传，建议300x300px</text></view>
+                        <view class="form-upload-data oh">
+                            <block v-if="(extraction_data.logo || null) != null">
+                                <view class="item fl">
+                                    <text class="delete-icon" @tap="upload_delete_event">x</text>
+                                    <image :src="extraction_data.logo" @tap="upload_show_event" mode="aspectFill"></image>
+                                </view>
+                            </block>
+                            <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                        </view>
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">别名</view>
+                        <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机" />
+                    </view>
+
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
+                        <view class="select-address oh">
+                            <view class="section fl">
+                                <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
+                                    <view :class="'name ' + (province_value == null ? 'cr-grey' : 'cr-base')">{{ (province_list[province_value] || null) == null ? default_province : province_list[province_value]['name'] }}</view>
+                                </picker>
                             </view>
-                        </block>
-                        <image class="item fl upload-icon" :src="common_static_url + 'upload-icon.png'" mode="aspectFill" @tap="file_upload_event"></image>
+                            <view class="section fl">
+                                <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
+                                    <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
+                                </picker>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择省份">请先选择省份</text>
+                            </view>
+                            <view class="section fl">
+                                <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
+                                    <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
+                                </picker>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择城市">请先选择城市</text>
+                            </view>
+                        </view>
                     </view>
-                </view>
 
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">别名</view>
-                    <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符" />
-                </view>
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间" />
+                    </view>
 
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间" />
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机" />
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
-                    <view class="select-address oh">
-                        <view class="section fl">
-                            <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
-                                <view :class="'name ' + (province_value == null ? 'cr-grey' : 'cr-base')">{{ (province_list[province_value] || null) == null ? default_province : province_list[province_value]['name'] }}</view>
-                            </picker>
+                    <view class="form-gorup bg-white">
+                        <view class="form-gorup-title">地理位置<text class="form-group-tips-must">必选</text></view>
+                        <view @tap="choose_location_event" class="form-gorup-text">
+                            <view v-if="(user_location || null) == null" class="cr-grey">请选择地理位置</view>
+                            <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
                         </view>
-                        <view class="section fl">
-                            <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
-                                <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
-                            </picker>
-                            <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择省份">请先选择省份</text>
-                        </view>
-                        <view class="section fl">
-                            <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
-                                <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
-                            </picker>
-                            <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择城市">请先选择城市</text>
+                    </view>
+
+                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="notice-content-blue spacing-mb"> 注意：编辑信息将重新审核后方可生效 </view>
+                    <view class="bottom-fixed">
+                        <view class="bottom-line-exclude">
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
                         </view>
                     </view>
                 </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
-                    <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间" />
-                </view>
-
-                <view class="form-gorup bg-white">
-                    <view class="form-gorup-title">地理位置<text class="form-group-tips-must">必选</text></view>
-                    <view @tap="choose_location_event" class="form-gorup-text">
-                        <view v-if="(user_location || null) == null" class="cr-grey">请选择地理位置</view>
-                        <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
-                    </view>
-                </view>
-
-                <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="notice-content-blue spacing-mb"> 注意：编辑信息将重新审核后方可生效 </view>
-                <view class="bottom-fixed">
-                    <view class="bottom-line-exclude">
-                        <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
-                    </view>
-                </view>
-            </view>
-        </form>
+            </form>
+        </view>
     </view>
 </template>
 <script>
@@ -83,6 +85,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,

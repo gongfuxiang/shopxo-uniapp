@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="(propData || null) != null && propData.length > 0">
             <view v-for="(item, index) in propData" :key="index" class="ask-comment-item">
                 <navigator :url="item.url" hover-class="none" class="flex-row">
@@ -34,6 +34,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 ask_static_url:ask_static_url,
             };
         },

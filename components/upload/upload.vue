@@ -1,16 +1,18 @@
 <template>
-    <view class="flex-row flex-warp">
-        <block v-if="form_images_list.length > 0">
-            <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
-                <text class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
-                    <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
-                </text>
-                <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
+    <view :class="theme_view">
+        <view class="flex-row flex-warp">
+            <block v-if="form_images_list.length > 0">
+                <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
+                    <text class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
+                        <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
+                    </text>
+                    <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
+                </view>
+            </block>
+            <view v-if="(form_images_list || null) == null || form_images_list.length < 3" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
+                <iconfont name="icon-wytw-sctp" size="52rpx" color="#999"></iconfont>
+                <text class="text-size-xs cr-grey-9">上传图片</text>
             </view>
-        </block>
-        <view v-if="(form_images_list || null) == null || form_images_list.length < 3" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
-            <iconfont name="icon-wytw-sctp" size="52rpx" color="#999"></iconfont>
-            <text class="text-size-xs cr-grey-9">上传图片</text>
         </view>
     </view>
 </template>
@@ -39,6 +41,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 form_images_list: this.propData,
             };

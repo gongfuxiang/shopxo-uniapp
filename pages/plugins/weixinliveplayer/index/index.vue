@@ -1,5 +1,5 @@
 <template>
-	<view>
+    <view :class="theme_view">
 		<!-- 轮播 -->
 		<view v-if="banner_list.length > 0">
 			<component-banner :propData="banner_list" prop-mode="round" prop-right propRadius=""></component-banner>
@@ -81,6 +81,7 @@
 	export default {
 		data() {
 			return {
+				theme_view: app.globalData.get_theme_value_view(),
 				weixinliveplayer_static_url: weixinliveplayer_static_url,
 				data_list_loding_status: 1,
 				data_bottom_line_status: false,

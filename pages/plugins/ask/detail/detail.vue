@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) !== null" class="page-bottom-fixed">
             <!-- true为空对象 false为非空对象 Object.keys(data).length == 0 -->
             <view class="ask-container bg-white spacing-mb">
@@ -89,6 +89,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 logo_square: app.globalData.get_application_logo_square(),
                 data_list_loding_status: 1,
                 data_bottom_line_status: true,

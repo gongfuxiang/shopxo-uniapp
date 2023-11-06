@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 支付二维码展示 -->
         <component-popup :propShow="popup_view_pay_qrcode_is_show" propPosition="bottom" @onclose="popup_view_pay_qrcode_event_close">
             <view class="padding-top-xxxl padding-bottom-xxxl padding-left-xxxl padding-right-xxxl tc">
@@ -188,6 +188,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 弹窗开关
                 is_show_payment_popup: false,
                 popup_view_pay_qrcode_is_show: false,

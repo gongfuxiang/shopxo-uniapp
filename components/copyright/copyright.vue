@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="copyright">
             <view class="text">Powered by ShopXO {{version}}</view>
         </view>
@@ -10,6 +10,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 version: app.globalData.data.version
             };
         },

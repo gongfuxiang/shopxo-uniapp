@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(propStatus || false)" class="data-bottom-line">
             <view class="left"></view>
             <view class="msg">{{propMsg || '我是有底线的'}}</view>
@@ -8,9 +8,12 @@
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {},
         props: {

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="data_list_loding_status != 1 && Object.keys(detail_data.length !== 0)">
             <component-nav-back></component-nav-back>
             <view class="weixin-nav-padding-top">
@@ -57,6 +57,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 ask_static_url: app.globalData.get_static_url('ask', true),
                 detail_data: {},
                 data_list_loding_status: 1,

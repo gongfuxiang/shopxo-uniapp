@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 搜索条件 -->
         <view class="form-container nav-search bg-white br-b oh padding-horizontal-main padding-bottom-main text-size-xs cr-base pr">
             <view class="margin-top oh">
@@ -88,6 +88,7 @@ import componentBottomLine from "../../../../components/bottom-line/bottom-line"
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list: [],
             data_total: 0,
             data_page_total: 0,

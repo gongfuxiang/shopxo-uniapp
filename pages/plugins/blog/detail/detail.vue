@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null">
             <view class="padding-main bg-white spacing-mb">
                 <view class="spacing-mb">
@@ -85,6 +85,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

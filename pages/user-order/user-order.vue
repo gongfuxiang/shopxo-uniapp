@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -146,6 +146,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list: [],
                 data_total: 0,

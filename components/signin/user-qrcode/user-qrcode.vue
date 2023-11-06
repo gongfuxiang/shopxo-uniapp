@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.signin_desc || null) != null && data_base.signin_desc.length > 0 ? 'top-notice' : '')" lower-threshold="60">
             <view class="data-list" :class="(data_base || null) != null && (data_base.is_team || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
@@ -60,6 +60,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,

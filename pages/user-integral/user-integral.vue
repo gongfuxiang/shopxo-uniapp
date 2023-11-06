@@ -1,32 +1,34 @@
 <template>
-    <view class="padding-main">
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="padding-horizontal-main points-integral bg-white border-radius-main">
-                <view v-for="(item,index) in data_list" class="list" :key="index">
-                    <view class="flex-row jc-sb align-c">
-                        <view class="cr-grey-9">
-                            原始
-                            <text class="cr-black fw-b padding-left-sm">{{item.original_integral}}</text>
-                            <text class="padding-horizontal-sm">/</text>
-                            最新
-                            <text class="cr-black fw-b padding-left-sm">{{item.new_integral}}</text>
+    <view :class="theme_view">
+        <view class="padding-main">
+            <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
+                <view v-if="data_list.length > 0" class="padding-horizontal-main points-integral bg-white border-radius-main">
+                    <view v-for="(item,index) in data_list" class="list" :key="index">
+                        <view class="flex-row jc-sb align-c">
+                            <view class="cr-grey-9">
+                                原始
+                                <text class="cr-black fw-b padding-left-sm">{{item.original_integral}}</text>
+                                <text class="padding-horizontal-sm">/</text>
+                                最新
+                                <text class="cr-black fw-b padding-left-sm">{{item.new_integral}}</text>
+                            </view>
+                            <view class="cr-grey-9">{{item.add_time_time}}</view>
                         </view>
-                        <view class="cr-grey-9">{{item.add_time_time}}</view>
-                    </view>
-                    <view class="flex-row jc-sb align-c margin-top-main">
-                        <view>{{item.msg}}</view>
-                        <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</view>
+                        <view class="flex-row jc-sb align-c margin-top-main">
+                            <view>{{item.msg}}</view>
+                            <view class="cr-main text-size fw-b" :class="item.type == 1 ? 'cr-green' : 'cr-red'">{{item.type == 1 ? '+' : '-'}} {{item.operation_integral}}</view>
+                        </view>
                     </view>
                 </view>
-            </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-            </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                </view>
 
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </scroll-view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            </scroll-view>
+        </view>
     </view>
 </template>
 <script>
@@ -36,6 +38,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -71,6 +71,7 @@ import componentBottomLine from "../../components/bottom-line/bottom-line";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             params: null,
             data_list_loding_status: 1,
             data_list_loding_msg: "",

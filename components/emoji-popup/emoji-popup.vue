@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view class="emoji-popup bg-white">
                 <view class="close fr oh">
@@ -25,6 +25,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 popup_status: false,
                 emoji_list: []

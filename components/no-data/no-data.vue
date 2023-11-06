@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 1 加载中 -->
         <view v-if="propStatus == 1" class="no-data-box no-data-loading loading-animation">
             <text>{{ title }}</text>
@@ -23,6 +23,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 static_dir: '/static/images/common/',
                 title: app.globalData.get_application_title(),
             };

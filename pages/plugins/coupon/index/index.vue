@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back :prop-name="data_base.application_name || '领券中心'"></component-nav-back>
         <view class="pr" v-if="(data_base || null) != null">
             <view class="pa top-0 bg-img wh-auto">
@@ -42,6 +42,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 coupon_static_url: coupon_static_url + 'app/',
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

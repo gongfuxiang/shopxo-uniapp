@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_base || null) != null">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="page-bottom-fixed">
                 <!-- 导航 -->
@@ -89,6 +89,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

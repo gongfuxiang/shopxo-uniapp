@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="((propData || null) != null)" class="plugins-binding-container">
             <!-- 组合搭配 -->
             <block v-if="((propData.binding_list || null) != null)">
@@ -36,7 +36,9 @@
     import componentGoodsList from "../goods-list/goods-list";
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {
             componentGoodsList

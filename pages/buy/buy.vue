@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="common_site_type == 1">
             <component-no-data propStatus="2" propMsg="展示型不允许提交订单"></component-no-data>
         </block>
@@ -269,6 +269,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 buy_submit_disabled_status: false,

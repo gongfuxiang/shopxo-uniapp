@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="data_base != null">
             <view class="padding-main">
                 <!-- 未申请 -->
@@ -117,6 +117,7 @@ import componentBottomLine from "../../../../components/bottom-line/bottom-line"
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_bottom_line_status: false,
             data_list_loding_status: 1,
             data_list_loding_msg: "",

@@ -1,9 +1,9 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 开启事件 -->
         <movable-area v-if="quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit" @tap="quick_open_event">
-                <image :src="common_static_url + 'quick-icons2.png'" mode="widthFix"></image>
+                <image :src="common_static_url + 'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
         </movable-area>
 
@@ -41,6 +41,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 popup_status: false,
                 quick_status: 0,

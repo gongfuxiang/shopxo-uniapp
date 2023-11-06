@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 货币列表 -->
         <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
@@ -27,6 +27,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

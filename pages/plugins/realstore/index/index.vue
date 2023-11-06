@@ -1,69 +1,71 @@
 <template>
-    <view class="realstore">
-        <view v-if="(data_base || null) != null" class="realstore-nav-bg">
-            <!-- 背景图片 -->
-            <image :src="realstore_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
-            <!-- 顶部 -->
-            <view class="spacing-mb pr z-i cr-white">
-                <!-- 位置 -->
-                <view class="nav-location single-text flex-row align-c" @tap="choose_location_event">
-                    <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" class="pr top-xs"></iconfont>
+    <view :class="theme_view">
+        <view class="realstore">
+            <view v-if="(data_base || null) != null" class="realstore-nav-bg">
+                <!-- 背景图片 -->
+                <image :src="realstore_static_url + 'title-bg'+(screen_width > 960 ? '-pc' : '')+'.png'" mode="widthFix" class="wh-auto pa bg-img" />
+                <!-- 顶部 -->
+                <view class="spacing-mb pr z-i cr-white">
+                    <!-- 位置 -->
+                    <view class="nav-location single-text flex-row align-c" @tap="choose_location_event">
+                        <view class="dis-inline-block va-m">
+                            <iconfont name="icon-mendian-dingwei" size="28rpx" class="pr top-xs"></iconfont>
+                        </view>
+                        <text class="va-m margin-left-xs">
+                            <block v-if="(user_location || null) != null">{{ user_location.name || user_location.address || '' }}</block>
+                            <block v-else>未选择位置</block>
+                        </text>
                     </view>
-                    <text class="va-m margin-left-xs">
-                        <block v-if="(user_location || null) != null">{{ user_location.name || user_location.address || '' }}</block>
-                        <block v-else>未选择位置</block>
-                    </text>
+                </view>
+                <!-- 搜索 -->
+                <view class="nav-search padding-main">
+                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入门店名称" propPlaceholderClass="cr-grey-c"></component-search>
                 </view>
             </view>
-            <!-- 搜索 -->
-            <view class="nav-search padding-main">
-                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入门店名称" propPlaceholderClass="cr-grey-c"></component-search>
+
+            <!-- 轮播 -->
+            <view v-if="slider_list.length > 0" class="padding-horizontal-main">
+                <component-banner :propData="slider_list"></component-banner>
             </view>
-        </view>
 
-        <!-- 轮播 -->
-        <view v-if="slider_list.length > 0" class="padding-horizontal-main">
-            <component-banner :propData="slider_list"></component-banner>
-        </view>
-
-        <!-- 图标 -->
-        <view v-if="icon_list.length > 0" class="padding-horizontal-main spacing-mb">
-            <view class="bg-white border-radius-main">
-                <component-icon-nav :propData="icon_list"></component-icon-nav>
+            <!-- 图标 -->
+            <view v-if="icon_list.length > 0" class="padding-horizontal-main spacing-mb">
+                <view class="bg-white border-radius-main">
+                    <component-icon-nav :propData="icon_list"></component-icon-nav>
+                </view>
             </view>
-        </view>
 
-        <!-- 列表 -->
-        <view v-if="data_list.length > 0">
-            <view class="padding-horizontal-main">
-                <!-- 导航 -->
-                <component-title :prop-title="data_base.home_data_list_title || '最新门店'" prop-more-url="/pages/plugins/realstore/search/search"></component-title>
-                <!-- 数据列表 -->
-                <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
-            </view>
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <!-- 列表 -->
+            <view v-if="data_list.length > 0">
+                <view class="padding-horizontal-main">
+                    <!-- 导航 -->
+                    <component-title :prop-title="data_base.home_data_list_title || '最新门店'" prop-more-url="/pages/plugins/realstore/search/search"></component-title>
+                    <!-- 数据列表 -->
+                    <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
+                </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-            <!-- 位置选择提示 -->
-            <view v-if="location_tips_close_status && (data_base.is_home_choice_location || 0) == 1 && ((data_base.home_choice_location_images || null) != null || (data_base.home_choice_location_msg || null) != null)" class="choice-location-tips pf wh-auto ht-auto tc bs-bb">
-                <view class="content bg-white auto padding-xxxl pr radius">
-                    <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
-                        <view @tap="location_tips_close_event">
-                            <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                <!-- 位置选择提示 -->
+                <view v-if="location_tips_close_status && (data_base.is_home_choice_location || 0) == 1 && ((data_base.home_choice_location_images || null) != null || (data_base.home_choice_location_msg || null) != null)" class="choice-location-tips pf wh-auto ht-auto tc bs-bb">
+                    <view class="content bg-white auto padding-xxxl pr radius">
+                        <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
+                            <view @tap="location_tips_close_event">
+                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                            </view>
+                        </view>
+                        <view class="padding-lg">
+                            <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w margin-top-sm" :src="data_base.home_choice_location_images" mode="widthFix"></image>
+                            <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{ data_base.home_choice_location_msg }}</view>
+                            <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_location_event">选择位置</button>
                         </view>
                     </view>
-                    <view class="padding-lg">
-                        <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w margin-top-sm" :src="data_base.home_choice_location_images" mode="widthFix"></image>
-                        <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{ data_base.home_choice_location_msg }}</view>
-                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_location_event">选择位置</button>
-                    </view>
                 </view>
             </view>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </view>
         </view>
     </view>
 </template>
@@ -82,6 +84,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 realstore_static_url: realstore_static_url,
                 // #ifdef H5
                 screen_width: window.innerWidth,

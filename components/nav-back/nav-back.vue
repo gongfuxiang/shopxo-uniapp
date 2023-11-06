@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="pa-w" :class="(propFixed ? 'pf z-i left-0 top-0 right-0' : '') + ' ' + propClass" :style="'padding-top:' + (status_bar_height > 0 ? status_bar_height + 5 : 0) + 'px;background-color:rgba(255,255,255,' + opacity + ');' + propStyle">
             <!-- 返回 -->
             <!-- #ifdef MP-WEIXIN || MP-QQ || MP-KUAISHOU || H5 || APP -->
@@ -52,6 +52,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,

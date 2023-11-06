@@ -1,12 +1,14 @@
 <template>
-    <view v-if="propData.length > 0" class="spacing-mb" :class="(propLeft ? 'swiper-left ' : '') + (propRight ? 'swiper-right ' : '')">
-        <uni-swiper-dot class="uni-swiper-dot-box" :mode="propMode" :dots-styles="dotsStyles" @clickItem="click_item" :info="propData" :current="current">
-            <swiper class="banner oh" :class="' banner-' + (propSize || 'default') + ' ' + propRadius" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
-                <swiper-item v-for="(item, i) in propData" :key="i">
-                    <image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
-                </swiper-item>
-            </swiper>
-        </uni-swiper-dot>
+    <view :class="theme_view">
+        <view v-if="propData.length > 0" class="spacing-mb" :class="(propLeft ? 'swiper-left ' : '') + (propRight ? 'swiper-right ' : '')">
+            <uni-swiper-dot class="uni-swiper-dot-box" :mode="propMode" :dots-styles="dotsStyles" @clickItem="click_item" :info="propData" :current="current">
+                <swiper class="banner oh" :class="' banner-' + (propSize || 'default') + ' ' + propRadius" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
+                    <swiper-item v-for="(item, i) in propData" :key="i">
+                        <image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
+                    </swiper-item>
+                </swiper>
+            </uni-swiper-dot>
+        </view>
     </view>
 </template>
 <script>
@@ -14,6 +16,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 circular: true,
                 duration: 500,
                 styleIndex: -1,

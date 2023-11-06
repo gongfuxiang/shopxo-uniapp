@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view :class="'user-base-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view class="close fr oh">

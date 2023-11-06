@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="data_list.length > 0" class="data-list">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="padding-horizontal-main padding-top-main" :class="select_ids.length > 0 ? 'page-bottom-fixed' : ''">
@@ -55,6 +55,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_base: null,
                 data_list: [],
                 data_total: 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="page">
             <view v-if="data_list.length > 0" class="padding-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main spacing-mb">
@@ -49,6 +49,7 @@ var common_static_url = app.globalData.get_static_url("common");
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             common_static_url: common_static_url,
             data_list_loding_status: 1,
             data_bottom_line_status: false,

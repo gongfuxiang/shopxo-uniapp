@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="data_base != null" class="padding-main">
             <view v-if="is_can_cash == 1">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
@@ -72,6 +72,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

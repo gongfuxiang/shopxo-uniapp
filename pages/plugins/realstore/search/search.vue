@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_base || null) != null">
             <!-- 顶部 -->
             <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
@@ -53,6 +53,7 @@ import componentRealstoreList from "../../../../components/realstore-list/realst
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
             data_list_loding_msg: "",
             data_bottom_line_status: false,

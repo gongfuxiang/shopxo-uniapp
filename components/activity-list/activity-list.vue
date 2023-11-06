@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(propConfig || null) != null && (propData || null) != null && propData.length > 0">
             <block v-for="(floor, index) in propData" :key="index">
                 <block v-if="floor.goods_list.length > 0 && floor.home_data_location == propLocation">
@@ -23,7 +23,9 @@
     import componentGoodsList from '../goods-list/goods-list';
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {
             componentGoodsList,

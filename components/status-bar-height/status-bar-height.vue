@@ -1,12 +1,14 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view :style="{ height: statusBarHeight }" class="status-bar-height"></view>
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 statusBarHeight: 20
             };
         },

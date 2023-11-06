@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 排序 -->
         <view class="nav-sort bg-white oh pr">
             <view class="nav-sort-content">
@@ -75,6 +75,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,

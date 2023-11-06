@@ -1,42 +1,44 @@
 <template>
-    <view class="page-bottom-fixed">
-        <!-- 优惠劵列表 -->
-        <view v-if="data_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-top-main">
-            <block v-for="(item, index) in data_list" :key="index">
-                <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
-                    <view class="v-left fl">
-                        <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
-                            <text v-if="item.type == 0" class="symbol">{{ currency_symbol }}</text>
-                            <text class="price">{{ item.discount_value }}</text>
-                            <text class="unit">{{ item.type_unit }}</text>
-                            <text v-if="(item.desc || null) != null" class="desc cr-grey">{{ item.desc }}</text>
+    <view :class="theme_view">
+        <view class="page-bottom-fixed">
+            <!-- 优惠劵列表 -->
+            <view v-if="data_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-top-main">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
+                        <view class="v-left fl">
+                            <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
+                                <text v-if="item.type == 0" class="symbol">{{ currency_symbol }}</text>
+                                <text class="price">{{ item.discount_value }}</text>
+                                <text class="unit">{{ item.type_unit }}</text>
+                                <text v-if="(item.desc || null) != null" class="desc cr-grey">{{ item.desc }}</text>
+                            </view>
+                            <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{ item.use_limit_type_name }}</view>
                         </view>
-                        <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{ item.use_limit_type_name }}</view>
+                        <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
+                            <text class="circle"></text>
+                            <text>{{ item.is_operable_name }}</text>
+                        </view>
                     </view>
-                    <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
-                        <text class="circle"></text>
-                        <text>{{ item.is_operable_name }}</text>
-                    </view>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </view>
+
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <!-- 回到店铺 -->
+            <view v-if="(shop || null) != null" class="bottom-fixed">
+                <view class="bottom-line-exclude">
+                    <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
+                        <view class="dis-inline-block va-m">
+                            <uni-icons type="shop" size="16" color="#fff"></uni-icons>
+                        </view>
+                        <text class="va-m margin-left-sm">回到店铺</text>
+                    </button>
                 </view>
-            </block>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
-
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
-        <!-- 回到店铺 -->
-        <view v-if="(shop || null) != null" class="bottom-fixed">
-            <view class="bottom-line-exclude">
-                <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
-                    <view class="dis-inline-block va-m">
-                        <uni-icons type="shop" size="16" color="#fff"></uni-icons>
-                    </view>
-                    <text class="va-m margin-left-sm">回到店铺</text>
-                </button>
             </view>
         </view>
     </view>
@@ -49,6 +51,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

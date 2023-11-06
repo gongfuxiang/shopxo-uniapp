@@ -1,50 +1,52 @@
 <template>
-    <view class="padding-bottom padding-horizontal-main">
-        <view class="coupon-card oh pr flex-row">
-            <view class="card-left flex-col jc-sa align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-white'">
-                <view class="price">
-                    <text v-if="propData.type == '0'" class="symbol text-size">{{ currency_symbol }}</text>
-                    <text class="num text-size-xxl">{{ propData.discount_value }}</text>
-                    <text v-if="propData.type !== '0'" class="unit text-size-md">{{ propData.type_unit }}</text>
-                </view>
-                <text v-if="(propData.desc || null) != null" class="desc text-size-xs single-text">{{ propData.desc }}</text>
-            </view>
-            <view class="card-right flex-1 flex-width flex-row jc-sb align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : ''">
-                <view class="card-info flex-1 flex-width padding-right-main" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-black'">
-                    <view class="title text-size-lg single-text" :class="propData.time_start">{{ propData.use_limit_type_name }}</view>
-                    <view v-if="propStartTime && propEndTime" class="date text-size-xs cr-grey-9 single-text padding-top-sm">{{ propStartTime }}-{{ propEndTime }}</view>
-                    <view v-if="propIsProgress && propData.process_data" class="progress padding-top-sm flex-row align-c">
-                        <block v-if="propData.process_data.type == 0">
-                            <text class="text-size-xs cr-grey-9"> {{ propData.process_data.msg }} </text>
-                        </block>
-                        <block v-else>
-                            <progress class="flex-1" :percent="propData.process_data.value" stroke-width="6" activeColor="#FF7004" backgroundColor="#fff" border-radius="3" />
-                            <view class="percent text-size-xss cr-grey-9 padding-left-main"> {{ propData.process_data.msg }} </view>
-                        </block>
+    <view :class="theme_view">
+        <view class="padding-bottom padding-horizontal-main">
+            <view class="coupon-card oh pr flex-row">
+                <view class="card-left flex-col jc-sa align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-white'">
+                    <view class="price">
+                        <text v-if="propData.type == '0'" class="symbol text-size">{{ currency_symbol }}</text>
+                        <text class="num text-size-xxl">{{ propData.discount_value }}</text>
+                        <text v-if="propData.type !== '0'" class="unit text-size-md">{{ propData.type_unit }}</text>
                     </view>
-                    <view v-if="propData.expire_tips" class="padding-top-sm text-size-xs cr-red">{{ propData.expire_tips }}</view>
+                    <text v-if="(propData.desc || null) != null" class="desc text-size-xs single-text">{{ propData.desc }}</text>
                 </view>
-                <view class="card-type">
-                    <!-- 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期 -->
-                    <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName }}</view>
-                    <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName }}</view>
-                    <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName }}</view>
-                    <navigator v-else-if="propStatusType == 3" :url="home_page_url" open-type="switchTab" hover-class="none">
-                        <view class="card-btn dis-inline-block cr-white">
-                            {{ propStatusOperableName }}
+                <view class="card-right flex-1 flex-width flex-row jc-sb align-c" :class="propStatusType > 3 ? 'failure cr-grey-9' : ''">
+                    <view class="card-info flex-1 flex-width padding-right-main" :class="propStatusType > 3 ? 'failure cr-grey-9' : 'cr-black'">
+                        <view class="title text-size-lg single-text" :class="propData.time_start">{{ propData.use_limit_type_name }}</view>
+                        <view v-if="propStartTime && propEndTime" class="date text-size-xs cr-grey-9 single-text padding-top-sm">{{ propStartTime }}-{{ propEndTime }}</view>
+                        <view v-if="propIsProgress && propData.process_data" class="progress padding-top-sm flex-row align-c">
+                            <block v-if="propData.process_data.type == 0">
+                                <text class="text-size-xs cr-grey-9"> {{ propData.process_data.msg }} </text>
+                            </block>
+                            <block v-else>
+                                <progress class="flex-1" :percent="propData.process_data.value" stroke-width="6" activeColor="#FF7004" backgroundColor="#fff" border-radius="3" />
+                                <view class="percent text-size-xss cr-grey-9 padding-left-main"> {{ propData.process_data.msg }} </view>
+                            </block>
                         </view>
-                    </navigator>
-                    <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
-                        <image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
+                        <view v-if="propData.expire_tips" class="padding-top-sm text-size-xs cr-red">{{ propData.expire_tips }}</view>
                     </view>
-                    <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
-                        <image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
+                    <view class="card-type">
+                        <!-- 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期 -->
+                        <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName }}</view>
+                        <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName }}</view>
+                        <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName }}</view>
+                        <navigator v-else-if="propStatusType == 3" :url="home_page_url" open-type="switchTab" hover-class="none">
+                            <view class="card-btn dis-inline-block cr-white">
+                                {{ propStatusOperableName }}
+                            </view>
+                        </navigator>
+                        <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
+                            <image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
+                        </view>
+                        <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
+                            <image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
+                        </view>
+                        <view v-else @tap="receive">暂无type参数</view>
                     </view>
-                    <view v-else @tap="receive">暂无type参数</view>
                 </view>
+                <view class="card-circle-top" :style="{ background: `${propBg}` }"></view>
+                <view class="card-circle-bottom" :style="{ background: `${propBg}` }"></view>
             </view>
-            <view class="card-circle-top" :style="{ background: `${propBg}` }"></view>
-            <view class="card-circle-bottom" :style="{ background: `${propBg}` }"></view>
         </view>
     </view>
 </template>
@@ -128,6 +130,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 coupon_static_url: coupon_static_url + 'app/',
                 // 符号
                 currency_symbol: app.globalData.data.currency_symbol,

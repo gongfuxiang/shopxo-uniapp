@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-child flex-row align-c margin-bottom-lg">
             <block v-for="(item, index) in nav_status_list" :key="index">
@@ -54,6 +54,7 @@
         },
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

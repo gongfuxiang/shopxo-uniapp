@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 分类 -->
         <scroll-view v-if="(category_list || null) != null && category_list.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
             <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
@@ -41,6 +41,7 @@ import componentBottomLine from "../../components/bottom-line/bottom-line";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
             data_list_loding_msg: "",
             data_bottom_line_status: false,

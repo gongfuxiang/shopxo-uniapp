@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="plugins-goods" :class="data.style_type == 2 ? 'bg-white border-radius-main padding-main spacing-mb' : ''" v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
             <view v-if="(data.title || null) != null || (data.vice_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                 <view class="title-left">
@@ -172,6 +172,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data: null,
                 is_show_cart: false,
                 themeColor: app.globalData.get_theme_color(),

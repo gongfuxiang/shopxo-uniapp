@@ -1,5 +1,5 @@
 <template>
-	<view>
+    <view :class="theme_view">
 		<view class="bg-white">
 			<!-- 搜索关键字 -->
 			<view class="padding-horizontal-main padding-top-main padding-bottom-sm pr">
@@ -178,6 +178,7 @@
 	export default {
 		data() {
 			return {
+				theme_view: app.globalData.get_theme_value_view(),
 				common_static_url: common_static_url,
 				data_list_loding_status: 1,
 				data_bottom_line_status: false,

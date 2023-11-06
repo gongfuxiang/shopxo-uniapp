@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(shop || null) != null" class="pr">
             <!-- 搜索 -->
             <view class="flex-row jc-sb align-c padding-main bg-white pr oh" :class="is_shop_search_all_search_button == 1 ? '' : 'header-shop-whole-search'">
@@ -193,6 +193,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,

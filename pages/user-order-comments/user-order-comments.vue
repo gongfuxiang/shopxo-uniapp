@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="padding-main">
             <view v-if="detail != null">
                 <form @submit="formSubmit" class="form-container">
@@ -58,6 +58,7 @@ var common_static_url = app.globalData.get_static_url("common");
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             common_static_url: common_static_url,
             data_list_loding_status: 1,
             data_list_loding_msg: "",

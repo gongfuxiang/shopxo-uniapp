@@ -11,6 +11,7 @@
 	export default {
 		data() {
 			return {
+                theme_view: app.globalData.get_theme_value_view(),
 				statusbar_height: 0,
                 nav_style: ''
 			}

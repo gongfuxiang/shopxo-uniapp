@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="data_list_loding_status == 3">
             <view class="map-container pr">
                 <map class="wh-auto ht-auto"
@@ -52,6 +52,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_msg: '',
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,

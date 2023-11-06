@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 购物车 -->
         <component-cart ref="cart"></component-cart>
 
@@ -13,7 +13,9 @@
     import componentCart from "../../components/cart/cart";
     export default {
         data() {
-            return {};
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
         },
         components: {
             componentQuickNav,

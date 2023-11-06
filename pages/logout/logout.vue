@@ -1,20 +1,22 @@
 <template>
-    <view class="scroll-box bg-white">
-        <view class="page-bottom-fixed">
-            <block v-if="data_list_loding_status == 3">
-                <view class="padding-main">
-                    <view class="">
-                        <mp-html :content="agreement_data.value" />
+    <view :class="theme_view">
+        <view class="scroll-box bg-white">
+            <view class="page-bottom-fixed">
+                <block v-if="data_list_loding_status == 3">
+                    <view class="padding-main">
+                        <view class="">
+                            <mp-html :content="agreement_data.value" />
+                        </view>
+                        <view class="bottom-fixed oh">
+                            <button class="bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">确认注销</button>
+                            <button class="bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">取消</button>
+                        </view>
                     </view>
-                    <view class="bottom-fixed oh">
-                        <button class="bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">确认注销</button>
-                        <button class="bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">取消</button>
-                    </view>
-                </view>
-            </block>
+                </block>
 
-            <!-- 错误提示 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                <!-- 错误提示 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </view>
         </view>
     </view>
 </template>
@@ -25,6 +27,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 agreement_data: {},

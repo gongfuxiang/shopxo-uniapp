@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="(label || null) != null">
             <!-- 基础 -->
             <view class="label-info bg-white padding-horizontal-main padding-top-main padding-bottom-sm">
@@ -57,6 +57,7 @@ var common_static_url = app.globalData.get_static_url("common");
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             common_static_url: common_static_url,
             data_list_loding_status: 1,
             data_list_loding_msg: "",

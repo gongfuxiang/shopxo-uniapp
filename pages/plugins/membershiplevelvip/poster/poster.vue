@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="user_share_qrode != null || user_share_url != null" class="padding-main">
             <!-- 二维码 -->
             <view v-if="user_share_qrode != null" class="share qrcode padding-main border-radius-main bg-white spacing-mb">
@@ -40,6 +40,7 @@ import componentBottomLine from "../../../../components/bottom-line/bottom-line"
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
             data_list_loding_msg: "加载中...",
             data_bottom_line_status: false,

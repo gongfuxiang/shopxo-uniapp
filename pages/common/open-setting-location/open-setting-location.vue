@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="is_show_open_setting" class="open-setting-view">
             <view class="content bg-white">
                 <view class="msg cr-grey">开启相应的权限服务</view>
@@ -26,6 +26,7 @@ var common_static_url = app.globalData.get_static_url("common");
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             common_static_url: common_static_url,
             params: null,
             is_show_open_setting: false,

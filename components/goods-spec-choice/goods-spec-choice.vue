@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">
@@ -35,6 +35,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 popup_status: false,
                 goods_id: 0,
                 spec: [],

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-nav-back :prop-fixed="false" :prop-style="seckill_bg">
             <template slot="right" class="flex-1 flex-width seckill-right-title">
                 <view class="flex-1 seckill-right-title tc">
@@ -76,6 +76,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
             <view class="bg-white">
                 <view class="close oh padding-horizontal-main padding-top-main">
@@ -103,6 +103,7 @@ import componentBadge from "../../components/badge/badge";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             currency_symbol: app.globalData.get_config("currency_symbol", app.globalData.data.currency_symbol),
             popup_status: false,
             nav_active_index: 0,

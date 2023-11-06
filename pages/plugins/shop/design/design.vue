@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) != null" class="pr">
             <!-- 头部 -->
             <block v-if="(data.is_header || 0) == 1">
@@ -140,6 +140,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 is_shop_search_all_search_button: 0,
                 data_bottom_line_status: false,

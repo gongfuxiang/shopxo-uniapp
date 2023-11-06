@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="nav_type_list.length > 0" class="header bg-white">
             <!-- 导航 -->
             <view class="nav-base">
@@ -219,6 +219,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 plugins_static_url: plugins_static_url,
                 data_list: [],

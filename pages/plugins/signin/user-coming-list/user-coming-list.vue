@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view class="data-list">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
@@ -38,6 +38,7 @@ import componentBottomLine from "../../../../components/bottom-line/bottom-line"
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
             data_bottom_line_status: false,
             data_is_loading: 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="time-select-content" @tap="_dataOpen">
             <slot></slot>
         </view>
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+const app = getApp();
 export default {
     props: {
         propTitle: {
@@ -104,6 +105,7 @@ export default {
     },
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             timeList: [],
             selectDateStr: '',
             select_dateStr: '',

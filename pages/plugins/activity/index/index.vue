@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_base || null) != null">
             <!-- 轮播 -->
             <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
@@ -45,6 +45,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,

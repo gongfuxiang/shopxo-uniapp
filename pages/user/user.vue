@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 顶部内容 -->
         <view class="top-content">
             <!-- 内容 -->
@@ -182,6 +182,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,

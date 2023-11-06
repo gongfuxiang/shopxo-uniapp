@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 顶部导航 -->
         <view v-if="goods != null" :class="'page ' + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 单页模式不展示导航栏 -->
@@ -630,6 +630,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: bar_height,
                 common_static_url: common_static_url,
                 ask_static_url: ask_static_url,

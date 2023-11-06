@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 提示信息 -->
         <block v-if="data_list_loding_status == 1">
             <component-no-data :propStatus="data_list_loding_status"></component-no-data>
@@ -46,6 +46,7 @@ var static_url = app.globalData.get_static_url("home");
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             static_url: static_url,
             data_list_loding_status: 1,
             data_bottom_line_status: false,

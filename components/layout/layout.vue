@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="(propData || null) != null && propData.length > 0">
             <block v-for="(v, index) in propData" :key="index">
                 <view v-if="(v.value || null) != null && (v.children || null) != null && v.children.length > 0 && (v.value_arr || null) != null && v.value_arr.length > 0 && v.children.length == v.value_arr.length && (v.status || 0) == 1"
@@ -593,10 +593,10 @@
 </template>
 <script>
     const app = getApp();
-
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 基础配置
                 is_first: 1,
                 currency_symbol: app.globalData.data.currency_symbol,

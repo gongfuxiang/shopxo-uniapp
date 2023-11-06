@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup border-radius-main">
@@ -38,6 +38,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '处理错误',

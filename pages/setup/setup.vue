@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="page padding-main">
             <!-- 主体内容 -->
             <block v-if="data_list_loding_status == 3">
@@ -61,6 +61,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 default_avatar: app.globalData.data.default_user_head_src,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data_base || null) != null">
             <!-- 分类 -->
             <scroll-view v-if="(shop_category || null) != null && shop_category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
@@ -72,6 +72,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
             <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color + top_content_style">
@@ -315,6 +315,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 seckill_static_url: seckill_static_url,
                 static_url: static_url,

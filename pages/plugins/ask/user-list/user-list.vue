@@ -1,35 +1,37 @@
 <template>
-    <view class="page-bottom-fixed">
-        <view v-if="data_list.length > 0" class="padding-main">
-            <view v-for="(item, index) in data_list" :key="index">
-                <navigator :url="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
-                    <view class="margin-bottom-xs flex-row jc-sb align-c">
-                        <text class="cr-base text-size">{{ item.add_time_time }}</text>
-                        <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
-                    </view>
-                    <view class="spacing-mt">
-                        <view class="text-size single-text">
-                            {{ item.title }}
+    <view :class="theme_view">
+        <view class="page-bottom-fixed">
+            <view v-if="data_list.length > 0" class="padding-main">
+                <view v-for="(item, index) in data_list" :key="index">
+                    <navigator :url="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                        <view class="margin-bottom-xs flex-row jc-sb align-c">
+                            <text class="cr-base text-size">{{ item.add_time_time }}</text>
+                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
                         </view>
-                        <view v-if="item.title != item.content" class="margin-top-sm cr-grey multi-text">
-                            {{ item.content }}
+                        <view class="spacing-mt">
+                            <view class="text-size single-text">
+                                {{ item.title }}
+                            </view>
+                            <view v-if="item.title != item.content" class="margin-top-sm cr-grey multi-text">
+                                {{ item.content }}
+                            </view>
                         </view>
-                    </view>
-                </navigator>
+                    </navigator>
+                </view>
             </view>
-        </view>
-        <view v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-        </view>
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
-        <view class="bottom-fixed question-btn bg-white">
-            <view class="bottom-line-exclude">
-                <navigator url="/pages/plugins/ask/form/form" hover-class="none">
-                    <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
-                </navigator>
+            <view class="bottom-fixed question-btn bg-white">
+                <view class="bottom-line-exclude">
+                    <navigator url="/pages/plugins/ask/form/form" hover-class="none">
+                        <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
+                    </navigator>
+                </view>
             </view>
         </view>
     </view>
@@ -42,6 +44,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

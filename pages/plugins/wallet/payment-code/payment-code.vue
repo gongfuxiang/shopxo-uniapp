@@ -1,39 +1,41 @@
 <template>
-    <view class="scroll-box bg-white">
-        <!-- 主体内容 -->
-        <block v-if="data_list_loding_status == 3">
-            <!-- 条码 -->
-            <view class="brcode auto">
-                <w-barcode :options="barcode"></w-barcode>
-                <view class="fw-b tc margin-top text-size-lg">{{ payment_code }}</view>
-            </view>
+    <view :class="theme_view">
+        <view class="scroll-box bg-white">
+            <!-- 主体内容 -->
+            <block v-if="data_list_loding_status == 3">
+                <!-- 条码 -->
+                <view class="brcode auto">
+                    <w-barcode :options="barcode"></w-barcode>
+                    <view class="fw-b tc margin-top text-size-lg">{{ payment_code }}</view>
+                </view>
 
-            <!-- 二维码 -->
-            <view class="qrcode auto br radius">
-                <w-qrcode :options="qrcode"></w-qrcode>
-            </view>
+                <!-- 二维码 -->
+                <view class="qrcode auto br radius">
+                    <w-qrcode :options="qrcode"></w-qrcode>
+                </view>
 
-            <!-- 提示信息 -->
-            <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
+                <!-- 提示信息 -->
+                <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
 
-            <!-- 倒计时 -->
-            <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }})秒后自动刷新付款码</view>
+                <!-- 倒计时 -->
+                <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }})秒后自动刷新付款码</view>
 
-            <!-- 导航 -->
-            <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main br-0">
-                <view class="bottom-line-exclude oh">
-                    <view class="bg-white br-grey-d round oh">
-                        <button type="default" class="bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>
-                        <button type="default" class="bg-main cr-white round text-size fr br-0" size="mini">钱包付款码</button>
+                <!-- 导航 -->
+                <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main br-0">
+                    <view class="bottom-line-exclude oh">
+                        <view class="bg-white br-grey-d round oh">
+                            <button type="default" class="bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>
+                            <button type="default" class="bg-main cr-white round text-size fr br-0" size="mini">钱包付款码</button>
+                        </view>
                     </view>
                 </view>
-            </view>
-        </block>
+            </block>
 
-        <!-- 错误提示 -->
-        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        <view v-if="is_to_login == 1" class="margin-top-lg tc">
-            <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">去登录</button>
+            <!-- 错误提示 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            <view v-if="is_to_login == 1" class="margin-top-lg tc">
+                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">去登录</button>
+            </view>
         </view>
     </view>
 </template>
@@ -44,6 +46,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 is_to_login: 0,

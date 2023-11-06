@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
@@ -54,6 +54,7 @@ import componentSharePopup from "../../../../components/share-popup/share-popup"
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             data_list: [],
             data_total: 0,
             data_page_total: 0,

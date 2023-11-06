@@ -1,73 +1,75 @@
 <template>
-    <view class="padding-main">
-        <block v-if="data_list.length > 0">
-            <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
-                <view class="title flex-row jc-sb align-c wh-auto">
-                    <view class="name flex-1 flex-width cr-base">{{ item.name }}的提问</view>
-                    <view class="date cr-grey-9">{{ item.add_time_date }}</view>
-                </view>
-                <view class="question spacing-mt">
-                    <navigator :url="item.url" hover-class="none" class="flex-row">
-                        <view class="title cr-white tc margin-right-sm">问</view>
-                        <view class="flex-1 flex-width">
-                            <view class="fw-b">{{ item.content }}</view>
-                            <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                                <image v-for="(img, i) in item.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+    <view :class="theme_view">
+        <view class="padding-main">
+            <block v-if="data_list.length > 0">
+                <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
+                    <view class="title flex-row jc-sb align-c wh-auto">
+                        <view class="name flex-1 flex-width cr-base">{{ item.name }}的提问</view>
+                        <view class="date cr-grey-9">{{ item.add_time_date }}</view>
+                    </view>
+                    <view class="question spacing-mt">
+                        <navigator :url="item.url" hover-class="none" class="flex-row">
+                            <view class="title cr-white tc margin-right-sm">问</view>
+                            <view class="flex-1 flex-width">
+                                <view class="fw-b">{{ item.content }}</view>
+                                <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
+                                    <image v-for="(img, i) in item.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+                                </view>
+                            </view>
+                        </navigator>
+                    </view>
+                    <block v-if="item.is_reply == 1 || item.comments_count > 0">
+                        <view class="ask flex-row spacing-mt">
+                            <view class="title cr-white tc margin-right-sm">答</view>
+                            <view class="flex-1 flex-width">
+                                <block v-for="(it, ix) in item.comments_list" :key="ix">
+                                    <block v-if="item.bool_more">
+                                        <view class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
+                                            <block v-if="item.reply">
+                                                {{ item.reply }}
+                                            </block>
+                                            <block v-else>
+                                                {{ it.content }}
+                                            </block>
+                                        </view>
+                                    </block>
+                                    <block v-else>
+                                        <view v-if="ix < 1" class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
+                                            <block v-if="item.reply">
+                                                {{ item.reply }}
+                                            </block>
+                                            <block v-else>
+                                                {{ it.content }}
+                                            </block>
+                                        </view>
+                                    </block>
+                                    <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
+                                        <image v-for="(img, i) in it.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+                                    </view>
+                                </block>
                             </view>
                         </view>
-                    </navigator>
+                        <view class="more flex-row jc-e align-c spacing-mt">
+                            <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
+                                <block v-if="!item.hide_comments_list_num"> 查看全部{{ item.comments_count }}个回答 </block>
+                                <block v-else>查看更多</block>
+                                <iconfont :name="item.bool_more ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="24rpx" class="pr top-xs"></iconfont>
+                            </view>
+                            <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
+                                收起回答
+                                <iconfont name="icon-fenlei-top" size="24rpx" class="pr top-xs"></iconfont>
+                            </view>
+                        </view>
+                    </block>
                 </view>
-                <block v-if="item.is_reply == 1 || item.comments_count > 0">
-                    <view class="ask flex-row spacing-mt">
-                        <view class="title cr-white tc margin-right-sm">答</view>
-                        <view class="flex-1 flex-width">
-                            <block v-for="(it, ix) in item.comments_list" :key="ix">
-                                <block v-if="item.bool_more">
-                                    <view class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
-                                        <block v-if="item.reply">
-                                            {{ item.reply }}
-                                        </block>
-                                        <block v-else>
-                                            {{ it.content }}
-                                        </block>
-                                    </view>
-                                </block>
-                                <block v-else>
-                                    <view v-if="ix < 1" class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
-                                        <block v-if="item.reply">
-                                            {{ item.reply }}
-                                        </block>
-                                        <block v-else>
-                                            {{ it.content }}
-                                        </block>
-                                    </view>
-                                </block>
-                                <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                                    <image v-for="(img, i) in it.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
-                                </view>
-                            </block>
-                        </view>
-                    </view>
-                    <view class="more flex-row jc-e align-c spacing-mt">
-                        <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
-                            <block v-if="!item.hide_comments_list_num"> 查看全部{{ item.comments_count }}个回答 </block>
-                            <block v-else>查看更多</block>
-                            <iconfont :name="item.bool_more ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="24rpx" class="pr top-xs"></iconfont>
-                        </view>
-                        <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
-                            收起回答
-                            <iconfont name="icon-fenlei-top" size="24rpx" class="pr top-xs"></iconfont>
-                        </view>
-                    </view>
-                </block>
-            </view>
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </block>
-        <block v-else>
-            <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-        </block>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+            </block>
+            <block v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+            </block>
+        </view>
     </view>
 </template>
 
@@ -79,6 +81,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view class="countdown" v-if="is_show && !is_end">
             <block v-if="propMsecShow">
                 <view class="time" :style="time_style">{{ msec }}</view>
@@ -15,9 +15,11 @@
     </view>
 </template>
 <script>
+    const app = getApp();
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 hour: '00',
                 minute: '00',
                 second: '00',

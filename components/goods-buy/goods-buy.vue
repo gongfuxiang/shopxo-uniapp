@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">
@@ -74,6 +74,7 @@ import componentPopup from "../../components/popup/popup";
 export default {
     data() {
         return {
+            theme_view: app.globalData.get_theme_value_view(),
             currency_symbol: app.globalData.get_config("currency_symbol", app.globalData.data.currency_symbol),
             params: {},
             back_data: {},

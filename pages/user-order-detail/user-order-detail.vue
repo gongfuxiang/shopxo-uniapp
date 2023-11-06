@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <block v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 地址 -->
@@ -120,6 +120,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 params: null,
                 data_list_loding_status: 1,

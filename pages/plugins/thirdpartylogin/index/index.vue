@@ -1,5 +1,5 @@
 <template>
-    <view>
+    <view :class="theme_view">
         <view v-if="(data || null) !== null && (user || null) !== null" class="tc padding-main padding-top-xxxl">
             <image :src="user.avatar" mode="widthFix" class="circle br user-avatar" />
             <view class="margin-top-xs">{{user.user_name_view}}</view>
@@ -36,6 +36,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 // 基础配置
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
