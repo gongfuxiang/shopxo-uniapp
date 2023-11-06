@@ -51,7 +51,7 @@
                     <view class="content bg-white auto padding-xxxl pr radius">
                         <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
                             <view @tap="location_tips_close_event">
-                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                         <view class="padding-lg">
@@ -215,7 +215,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

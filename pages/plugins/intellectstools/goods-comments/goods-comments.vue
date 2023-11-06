@@ -113,7 +113,7 @@
                         },
                         fail: () => {
                             uni.stopPullDownRefresh();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 } else {
@@ -179,7 +179,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }

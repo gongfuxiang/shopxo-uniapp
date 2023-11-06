@@ -503,7 +503,7 @@
                             form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

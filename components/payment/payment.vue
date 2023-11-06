@@ -371,7 +371,7 @@
                         },
                         fail: (res) => {
                             uni.hideLoading();
-                            this.order_item_pay_fail_handle(res.data.data, order_id, '服务器请求出错');
+                            this.order_item_pay_fail_handle(res.data.data, order_id, '网络开小差了哦~');
                         },
                     });
                 } else {
@@ -537,7 +537,7 @@
                                     },
                                     fail: () => {
                                         clearInterval(self.popup_view_pay_timer);
-                                        self.order_item_pay_fail_handle(data, order_id, '服务器请求出错');
+                                        self.order_item_pay_fail_handle(data, order_id, '网络开小差了哦~');
                                     },
                                 });
                             }, 3000);

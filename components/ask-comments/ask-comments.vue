@@ -115,7 +115,7 @@
                         <text>回复 @{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
-                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                     </view>
@@ -356,7 +356,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -432,7 +432,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }
@@ -498,7 +498,7 @@
                                 }
                             },
                             fail: () => {
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }

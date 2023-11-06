@@ -201,7 +201,7 @@
             <view class="delivery-popup bg-base padding-horizontal-main padding-top-main">
                 <view class="fr oh">
                     <view class="fr" @tap.stop="popup_delivery_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="margin-top-xxxl padding-top-xxl">
@@ -428,9 +428,9 @@ export default {
                     self.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "服务器请求出错",
+                        data_list_loding_msg: "网络开小差了哦~",
                     });
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },
@@ -654,7 +654,7 @@ export default {
                         self.setData({
                             form_button_disabled: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }
@@ -734,7 +734,7 @@ export default {
                         self.setData({
                             form_button_disabled: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }

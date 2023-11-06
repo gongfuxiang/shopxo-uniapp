@@ -4,7 +4,7 @@
             <view class="bg-white">
                 <view class="close oh padding-horizontal-main padding-top-main">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="plugins-batchbuy-container oh">
@@ -317,7 +317,7 @@ export default {
                     }
                 },
                 fail: () => {
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },
@@ -421,7 +421,7 @@ export default {
                 },
                 fail: () => {
                     uni.hideLoading();
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },

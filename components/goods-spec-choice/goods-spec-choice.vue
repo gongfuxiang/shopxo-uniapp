@@ -4,7 +4,7 @@
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="goods-spec-choice-content">
@@ -189,7 +189,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     }
                 });
             },
@@ -222,7 +222,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     }
                 });
             },

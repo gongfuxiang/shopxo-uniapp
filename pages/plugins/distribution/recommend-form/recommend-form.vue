@@ -71,7 +71,7 @@
                         <view class="padding-horizontal-main">
                             <view class="close oh">
                                 <view class="fr" @tap.stop="popup_goods_choice_close_event">
-                                    <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                    <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -304,7 +304,7 @@
                                 form_submit_disabled_status: false,
                             });
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -478,7 +478,7 @@
                         uni.hideLoading();
                         this.setData({
                             search_data_list_loding_status: 2,
-                            search_data_list_loding_msg: '服务器请求出错',
+                            search_data_list_loding_msg: '网络开小差了哦~',
                         });
                     },
                 });

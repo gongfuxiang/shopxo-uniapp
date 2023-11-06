@@ -168,7 +168,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     }
                 });
             },
@@ -228,7 +228,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('服务器请求出错');
+                                    app.globalData.showToast('网络开小差了哦~');
                                 }
                             });
                         }

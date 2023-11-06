@@ -197,7 +197,7 @@
                         <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
                             <view class="content pr">
                                 <view class="close pa cp" @tap.stop="plugins_popupscreen_close_event">
-                                    <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                    <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                                 </view>
                                 <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
                             </view>
@@ -551,11 +551,11 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
+                            data_list_loding_msg: '网络开小差了哦~',
                             data_bottom_line_status: true,
                             load_status: 1,
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

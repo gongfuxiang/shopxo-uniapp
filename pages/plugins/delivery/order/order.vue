@@ -150,7 +150,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_success_content_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_delivery_success_submit_event" class="form-container">
@@ -186,7 +186,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_abnormal_content_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_delivery_abnormal_submit_event" class="form-container">
@@ -452,7 +452,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             },
@@ -763,7 +763,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             },

@@ -290,7 +290,7 @@
                     <view class="bg-white padding-horizontal-main padding-top-main">
                         <view class="fr oh">
                             <view class="fr" @tap.stop="popup_image_verify_close_event">
-                                <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                         <view class="form-content margin-top-xxxl padding-top-xxl">
@@ -791,7 +791,7 @@ export default {
                         form_input_image_verify_value: "",
                     });
                     this.image_verify_event(image_verify_type);
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },
@@ -838,7 +838,7 @@ export default {
                         this.setData({
                             form_submit_loading: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }
@@ -880,7 +880,7 @@ export default {
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             } else {
@@ -956,7 +956,7 @@ export default {
                         this.setData({
                             form_submit_loading: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }
@@ -1032,7 +1032,7 @@ export default {
                         this.setData({
                             form_submit_loading: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }
@@ -1090,7 +1090,7 @@ export default {
                         this.setData({
                             form_submit_loading: false,
                         });
-                        app.globalData.showToast("服务器请求出错");
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             }
@@ -1128,7 +1128,7 @@ export default {
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast("服务器请求出错");
+                            app.globalData.showToast("网络开小差了哦~");
                         },
                     });
                 } else {

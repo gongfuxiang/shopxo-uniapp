@@ -560,7 +560,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -654,7 +654,7 @@
                                 form_submit_disabled_status: false,
                             });
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -712,7 +712,7 @@
                         this.setData({
                             form_submit_disabled_status: false,
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -817,7 +817,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('服务器请求出错');
+                                    app.globalData.showToast('网络开小差了哦~');
                                 },
                             });
                         }

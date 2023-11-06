@@ -142,9 +142,9 @@ export default {
                     uni.stopPullDownRefresh();
                     self.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "服务器请求出错",
+                        data_list_loding_msg: "网络开小差了哦~",
                     });
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },
@@ -394,7 +394,7 @@ export default {
                     self.setData({
                         form_button_disabled: false,
                     });
-                    app.globalData.showToast("服务器请求出错");
+                    app.globalData.showToast("网络开小差了哦~");
                 },
             });
         },

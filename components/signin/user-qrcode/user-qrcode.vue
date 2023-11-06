@@ -211,7 +211,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -219,7 +219,7 @@
             show_event(e) {
                 var value = e.currentTarget.dataset.value;
                 uni.navigateTo({
-                    url: '/pages/plugins/signin/index-detail/index-detail?id=' + value,
+                    url: '/pages/plugins/signin/detail/detail?id=' + value,
                 });
             },
 

@@ -152,7 +152,7 @@
                             <view class="padding-horizontal-main padding-top-main bg-white">
                                 <view class="close oh">
                                     <view class="tr" @tap.stop="popup_time_close_event">
-                                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                                     </view>
                                 </view>
                                 <view class="popup-time-container page-bottom-fixed">
@@ -338,9 +338,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -456,7 +456,7 @@
                             form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

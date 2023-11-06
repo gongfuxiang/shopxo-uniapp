@@ -4,7 +4,7 @@
             <view class="share-popup bg-white">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <uni-icons type="clear" size="46rpx" color="#999"></uni-icons>
+                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="share-popup-content">
@@ -144,7 +144,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }

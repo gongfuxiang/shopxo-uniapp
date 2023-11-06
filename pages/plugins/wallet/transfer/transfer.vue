@@ -107,9 +107,9 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -148,9 +148,9 @@
                             this.setData({
                                 receive_user: null,
                                 is_error_msg: true,
-                                error_msg: '服务器请求出错',
+                                error_msg: '网络开小差了哦~',
                             });
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -190,7 +190,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }

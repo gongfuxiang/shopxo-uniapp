@@ -428,7 +428,7 @@
                         :propChatUrl="plugins_chat_data == null ? '' : plugins_chat_data.chat_url"
                     ></component-online-service>
                     <!-- 购物车 -->
-                    <view v-if="is_opt_cart == 1" class="item cp" data-value="/pages/cart-page/cart-page" @tap="url_event">
+                    <view v-if="is_opt_cart == 1" class="item cp pr" data-value="/pages/cart-page/cart-page" @tap="url_event">
                         <view class="badge-icon">
                             <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                         </view>
@@ -964,9 +964,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -1179,7 +1179,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }
@@ -1311,7 +1311,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('服务器请求出错');
+                                app.globalData.showToast('网络开小差了哦~');
                             },
                         });
                     }

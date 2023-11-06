@@ -3,6 +3,40 @@
     export default {
         globalData: {
             data: {
+                // 数据接口请求地址
+                request_url: 'http://shopxo.com/',
+
+                // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
+                static_url: 'https://new.shopxo.vip/',
+
+                // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
+                system_type: 'default',
+
+                // 基础信息
+                application_title: 'ShopXO',
+                application_describe: '企业级B2C开源电商系统！',
+
+                // 默认logo、如 /static/images/common/logo.png
+                application_logo: '',
+
+                // 版本号
+                version: 'v4.0',
+
+                // 货币价格符号
+                currency_symbol: '￥',
+
+                // 默认主题        主题颜色
+                // 黄色 yellow    #f6c133
+                // 红色 red       #ff0036
+                // 黑色 black     #333333
+                // 绿色 green     #20a53a
+                // 橙色 orange    #fe6f04
+                // 蓝色 blue      #1677ff
+                // 棕色 brown     #8B4513
+                // 紫色 purple    #623cec
+                default_theme: 'red',
+
+                // 数据缓存key
                 // 场景值
                 cache_scene_key: 'cache_scene_key',
 
@@ -107,38 +141,6 @@
                     '/pages/cart/cart',
                     '/pages/user/user'
                 ],
-
-                // 请求地址
-                request_url: 'https://new.shopxo.vip/',
-
-                // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://new.shopxo.vip/',
-
-                // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
-                system_type: 'default',
-
-                // 基础信息
-                application_title: 'ShopXO',
-                application_describe: '企业级B2C开源电商系统！',
-
-                // 默认logo、如 /static/images/common/logo.png
-                application_logo: '',
-
-                // 版本号
-                version: 'v4.0',
-
-                // 货币价格符号
-                currency_symbol: '￥',
-                // 主题类型        主题颜色
-                // 黄色 yellow    #f6c133
-                // 红色 red       #ff0036
-                // 黑色 black     #333333
-                // 绿色 green     #20a53a
-                // 橙色 orange    #fe6f04
-                // 蓝色 blue      #1677ff
-                // 棕色 brown     #8B4513
-                // 紫色 purple    #623cec
-                default_theme: 'red',
             },
 
             /**
@@ -1046,13 +1048,16 @@
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
-                            uni.setStorage({
-                                key: this.data.cache_config_info_key,
-                                data: res.data.data,
-                                fail: () => {
-                                    this.showToast('配置信息缓存失败');
-                                },
-                            });
+                            // 配置存储
+                            var data = res.data.data;
+                            uni.setStorageSync(this.data.cache_config_info_key, data);
+
+                            // 主题设置
+                            this.set_theme_value(data.plugins_themestyle_data);
+
+                            // 设置底部菜单
+                            this.set_tabbar();
+
                             // 用户自动登录处理
                             this.user_auto_login_handle();
                         } else {
@@ -1970,7 +1975,7 @@
             // 切换主题
             set_theme_value(value) {
                 // 设置主题缓存
-                uni.setStorageSync('theme', value);
+                uni.setStorageSync('theme', value || this.data.default_theme);
             },
 
             // 底部菜单设置
@@ -2190,9 +2195,6 @@
 
             // 场景值
             this.globalData.set_scene_data(params);
-
-            // 设置底部菜单
-            this.globalData.set_tabbar();
 
             // #ifdef MP-WEIXIN
             // 协议验证处理

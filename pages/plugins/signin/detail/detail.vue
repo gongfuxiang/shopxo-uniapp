@@ -283,7 +283,7 @@
                                     share_info: {
                                         title: this.data.seo_title || '签到',
                                         desc: this.data.seo_desc,
-                                        path: '/pages/plugins/signin/index-detail/index-detail',
+                                        path: '/pages/plugins/signin/detail/detail',
                                         query: 'id=' + this.data.id,
                                         img: this.data.bg_images || this.data.logo || '',
                                     },
@@ -304,9 +304,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '服务器请求出错',
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('服务器请求出错');
+                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -360,7 +360,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -423,7 +423,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('服务器请求出错');
+                            app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -447,5 +447,5 @@
     };
 </script>
 <style>
-    @import './index-detail.css';
+    @import './detail.css';
 </style>
