@@ -23,7 +23,9 @@
                                     <text class="fr">{{ address.tel }}</text>
                                 </view>
                                 <view class="address-detail oh margin-top-lg">
-                                    <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
+                                    <view class="dis-inline-block va-m">
+                                        <iconfont name="icon-index-zxmd-dress" size="34rpx" color="#999"></iconfont>
+                                    </view>
                                     <view class="text fr"> {{ address.province_name || '' }}{{ address.city_name || '' }}{{ address.county_name || '' }}{{ address.address || '' }} </view>
                                 </view>
                             </view>
@@ -114,7 +116,7 @@
                                 <text v-else>使用积分{{ plugins_points_data.use_integral }}个</text>
                                 <text class="sales-price">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
                                 <view @tap="points_event" class="fr cp">
-                                    <image class="icon" :src="common_static_url + 'select' + (plugins_points_status ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                                    <iconfont :name="'icon-zhifu-'+(plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                 </view>
                             </view>
                             <view class="desc">
@@ -270,6 +272,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 buy_submit_disabled_status: false,

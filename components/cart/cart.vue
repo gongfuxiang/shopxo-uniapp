@@ -10,7 +10,7 @@
                                 <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                     <!-- 选择 -->
                                     <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
-                                        <image class="icon" :src="common_static_url + 'select' + (item.selected || false ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                                        <iconfont :name="'icon-zhifu-'+((item.selected || false) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(item.selected || false) ? theme_color : '#999'"></iconfont>
                                     </view>
                                     <view class="items oh padding-left-main flex-1 flex-row">
                                         <view>
@@ -103,7 +103,7 @@
                 <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                     <view class="cart-selected flex-row align-c">
                         <view @tap="selected_event" data-type="all">
-                            <image class="icon va-m" :src="common_static_url + 'select' + (is_selected_all ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                            <iconfont :name="'icon-zhifu-'+(is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                         </view>
                         <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
                         <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
@@ -141,6 +141,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -983,11 +984,6 @@
 
     .cart-nav-submit button {
         border-radius: 0;
-    }
-
-    .cart-selected .icon {
-        width: 35rpx;
-        height: 35rpx !important;
     }
 
     .cart-buy-nav .price {

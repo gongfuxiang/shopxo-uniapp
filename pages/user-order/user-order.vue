@@ -15,17 +15,15 @@
                     <view v-for="(item, index) in data_list" :key="index" class="list-item padding-horizontal-main padding-top-main border-radius-main bg-white oh spacing-mb">
                         <view class="item-base oh br-b padding-bottom-main">
                             <!-- 选择 -->
-                            <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="fl selected" @tap="selected_event">
-                                <image class="icon va-m" :src="common_static_url + 'select' + (order_select_ids.indexOf(item.id) != -1 ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                            <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="dis-inline-block va-m margin-right-lg" @tap="selected_event">
+                                <iconfont :name="'icon-zhifu-'+((order_select_ids.indexOf(item.id) != -1) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(order_select_ids.indexOf(item.id) != -1) ? theme_color : '#999'"></iconfont>
                             </view>
                             <!-- 基础信息 -->
-                            <view class="fl cp" @tap="url_event" :data-value="item.warehouse_url || ''">
+                            <view class="dis-inline-block va-m cp" @tap="url_event" :data-value="item.warehouse_url || ''">
                                 <image v-if="(item.warehouse_icon || null) != null" class="warehouse-group-icon va-m margin-right-sm" :src="item.warehouse_icon" mode="aspectFit"></image>
                                 <text class="cr-base va-m">{{ item.warehouse_name }}</text>
                             </view>
-                            <text class="fr cr-red"
-                                >{{ item.status_name }}<text v-if="(item.is_under_line_text || null) != null">（{{ item.is_under_line_text }}）</text></text
-                            >
+                            <text class="fr cr-red">{{ item.status_name }}<text v-if="(item.is_under_line_text || null) != null">（{{ item.is_under_line_text }}）</text></text>
                         </view>
                         <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
                             <view :data-value="'/pages/user-order-detail/user-order-detail?id=' + item.id" @tap="url_event">
@@ -147,6 +145,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
                 data_list: [],
                 data_total: 0,

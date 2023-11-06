@@ -4,7 +4,9 @@
         <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item padding-main border-radius-main bg-white oh spacing-mb" @tap="selected_event" :data-index="index">
-                    <image v-if="common_site_type != 1" class="icon fl margin-right-sm" :src="common_static_url+'select' + (item.id == data_default.id ? '-active' : '') + '-icon.png'" mode="widthFix"></image>
+                    <view v-if="common_site_type != 1" class="dis-inline-block icon fl margin-right-sm">
+                        <iconfont :name="'icon-zhifu-'+((item.id == data_default.id) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(item.id == data_default.id) ? theme_color : '#999'"></iconfont>
+                    </view>
                     <view :class="'value fl single-text ' + (item.id == data_default.id ? 'cr-main' : 'cr-base')">{{item.name}} / {{item.symbol}}</view>
                 </view>
             </block>
@@ -22,13 +24,11 @@
     const app = getApp();
     import componentNoData from "../../../../components/no-data/no-data";
     import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-
-    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
+                theme_color: app.globalData.get_theme_color(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

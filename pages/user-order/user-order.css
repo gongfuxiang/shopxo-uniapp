@@ -50,15 +50,6 @@
 }
 
 /**
-* 选择
-*/
-.selected .icon {
-    width: 35rpx;
-    height: 35rpx !important;
-    margin: 0 20rpx 0 10rpx;
-}
-
-/**
 * 合并支付按钮
 */
 .pay-merge-submit {

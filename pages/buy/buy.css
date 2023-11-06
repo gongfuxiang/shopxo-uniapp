@@ -7,11 +7,6 @@
     ;
 }
 
-.address-detail .icon {
-    width: 30rpx;
-    height: 35rpx !important;
-}
-
 .address-detail .text {
     width: calc(100% - 40rpx);
 }
@@ -212,12 +207,6 @@
 */
 .plugins-points-buy-container {
     padding: 20rpx;
-}
-
-.plugins-points-buy-container .select .icon {
-    width: 35rpx;
-    height: 35rpx !important;
-    vertical-align: middle;
 }
 
 .plugins-points-buy-container .select .sales-price {
