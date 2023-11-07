@@ -11,6 +11,7 @@
 
 .signin-opration-group {
     top: calc(156rpx + var(--status-bar-height) + 5px);
+    right: -2rpx;
 }
 
 .share,
