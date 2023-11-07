@@ -3,11 +3,14 @@
         <view :class="popup_status ? 'fixed-top' : ''">
             <view class="pr" :class="is_single_page == 1 ? 'margin-top-xxxl single-page-top' : ''">
                 <view v-if="category_list.length > 0" class="goods-top-bg pa top-0 left-0 right-0 wh-auto oh">
-                    <image :src="theme_static_url + 'top-bg.png'" mode="scaleToFill" class="wh-auto"></image>
+                    <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
                 </view>
                 <!-- 搜索框 -->
                 <block v-if="is_single_page == 0">
                     <view class="nav-search padding-horizontal-main pr" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
+                        <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto oh">
+                            <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
+                        </view>
                         <block v-if="is_goods_category_search_alone == 1">
                             <component-search propPlaceholder="输入商品名称搜索"></component-search>
                         </block>

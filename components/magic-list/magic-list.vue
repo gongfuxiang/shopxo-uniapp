@@ -6,7 +6,7 @@
                     <view class="hot-list flex-row flex-warp">
                         <view v-for="(item, index) in items.data" :key="index" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'wh-auto' : 'flex-width-half'">
                             <view class="padding-horizontal-main">
-                                <view class="flex-row align-c margin-bottom-xs">
+                                <view class="flex-row align-c margin-bottom-xs" :data-value="item.url" @tap="url_event">
                                     <text class="text-size fw-b single-text">{{ item.title }}</text>
                                     <view class="hot-go margin-left-sm">
                                         <block v-if="(item.icon || null) !== null">

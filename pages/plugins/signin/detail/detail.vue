@@ -4,7 +4,7 @@
             <component-nav-back></component-nav-back>
             <view v-if="(data || null) != null" class="pr signin-bg oh">
                 <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
-                <view class="signin-opration-group pa right-0 flex-col cr-white">
+                <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
                         <button type="default" class="content" @tap="share_event">
                             <iconfont name="icon-qiandao-fenxiang" class="pr top-sm" size="32rpx"></iconfont>

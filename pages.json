@@ -1069,6 +1069,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/magic",
+            "pages": [{
+                    "path": "detail/detail",
+                    "style": {
+                        "disableScroll": true,
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": "魔方"
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {
