@@ -110,6 +110,8 @@
     }
     .agreement-content .content-desc {
         line-height: 46rpx;
+        max-height: calc(30vh);
+        overflow-y: auto;
     }
     .agreement-content .buttom button {
         min-width: 200rpx;
