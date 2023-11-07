@@ -8,7 +8,7 @@
                         <view class="title fw-b text-size margin-right-main">收款账号</view>
                         <view class="flex-1 flex-width padding-right-main">
                             <view class="flex-row jc-sb align-c">
-                                <input name="keywords" :value="inputClearValue" class="text-size-md pr top-sm flex-1 flex-width" placeholder="请输入用户ID/会员码/用户名/手机/邮箱" placeholder-class="cr-grey-c" @input="input_account_event" />
+                                <input name="keywords" :value="inputClearValue" class="text-size-md pr top-sm flex-1 flex-width" placeholder="请输入用户ID/名/码/手机/邮箱" placeholder-class="cr-grey-c" @input="input_account_event" />
                                 <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">确认</text>
                             </view>
                             <view v-if="(receive_user || null) != null && inputClearValue" class="br-t-e padding-top-main margin-top-main flex-row align-c">
@@ -113,14 +113,14 @@
                     },
                 });
             },
+            // 账户输入事件
             input_account_event(e) {
-                console.log(e);
                 this.setData({
                     inputClearValue: e.detail.value,
                 });
             },
+            // 用户查询
             search_account_event() {
-                console.log(this.inputClearValue);
                 if (this.is_user_login) {
                     uni.request({
                         url: app.globalData.get_request_url('userquery', 'transfer', 'wallet'),
@@ -130,7 +130,6 @@
                         },
                         dataType: 'json',
                         success: (res) => {
-                            console.log(res.data.data);
                             if (res.data.code == 0) {
                                 this.setData({
                                     receive_user: res.data.data || null,
@@ -155,6 +154,7 @@
                     });
                 }
             },
+            // 转账表单提交
             form_submit(e) {
                 if (this.is_user_login) {
                     var new_data = {
@@ -178,7 +178,6 @@
                             success: (res) => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    console.log(res.data.data);
                                     uni.redirectTo({
                                         url: '/pages/plugins/wallet/user/user?type=3',
                                     });

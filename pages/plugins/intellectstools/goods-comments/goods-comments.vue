@@ -127,7 +127,6 @@
 
             // 表单提交
             formSubmit(e) {
-                console.log(e.detail.value);
                 // 数据验证
                 var validation = [
                     { fields: 'rating', msg: '请选择评分' },

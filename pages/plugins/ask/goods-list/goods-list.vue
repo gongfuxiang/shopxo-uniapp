@@ -196,7 +196,6 @@
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,
                                 });
-                                console.log(this.data_list);
 
                                 // 是否还有数据
                                 this.setData({

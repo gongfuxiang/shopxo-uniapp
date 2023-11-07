@@ -30,10 +30,9 @@
 
         // 页面加载初始化
         onLoad(params) {
-            console.log(params);
             if((params.msg || null) != null) {
                 params['msg'] = base64.decode(decodeURIComponent(params.msg));
-            }console.log(params);
+            }
             this.setData({
                 params: params
             });

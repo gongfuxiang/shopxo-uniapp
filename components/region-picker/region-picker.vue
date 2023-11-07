@@ -84,7 +84,6 @@ export default {
         },
         // picker 滚动change事件
         changeHandler(e) {
-            console.log(this.columns);
             const { dataset, value } = e.target;
             if (dataset.column == 0) {
                 if (this.columns[0][value[0]].id) {

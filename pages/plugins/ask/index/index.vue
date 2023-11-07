@@ -201,7 +201,6 @@
                         }
                     },
                     fail: () => {
-                        console.log(';123');
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

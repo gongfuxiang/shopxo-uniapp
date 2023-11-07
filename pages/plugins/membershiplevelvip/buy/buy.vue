@@ -226,7 +226,6 @@
                     selected_tabs_value: e.currentTarget.dataset.value || '',
                     temp_pay_index: e.currentTarget.dataset.index,
                 });
-                console.log(e.currentTarget.dataset);
             },
             // 确认支付事件
             submit_event(e) {

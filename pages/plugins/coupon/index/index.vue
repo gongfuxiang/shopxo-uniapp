@@ -111,7 +111,6 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var status = (data.data || []).length > 0;
-                            console.log(data.data);
                             this.setData({
                                 data_base: data.base || null,
                                 data_list: data.data || [],

@@ -539,7 +539,6 @@
             swipe_opt_event(e) {
                 var index = e.index || 0;
                 var temp_data_list = this.data_list;
-                console.log('this.swipe_item_index', this.swipe_item_index);
                 if (this.swipe_item_index === null) {
                     app.globalData.showToast('请先滑动要操作的数据');
                     return false;
@@ -737,20 +736,14 @@
                 });
 
                 // 获取数据
-                uni.showLoading({
-                    title: '加载中...',
-                    mask: true,
-                });
-                var goods_data = {
-                    page: this.goods_page,
-                };
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'search'),
                     method: 'POST',
-                    data: goods_data,
+                    data: {
+                        page: this.goods_page,
+                    },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -797,7 +790,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             goods_is_loading: 0,
@@ -820,7 +812,6 @@
                 let new_goods_list = this.goods_list;
                 for (let i = 0; i < new_goods_list.length; i++) {
                     let bool = app.globalData.some_arry(cart_list, new_goods_list[i].id, 'goods_id');
-                    console.log(bool);
                     if (bool) {
                         // 将购物车中相同商品不同规格的商品数量累加
                         let new_goods_item = this.cart_item_num(cart_list);
