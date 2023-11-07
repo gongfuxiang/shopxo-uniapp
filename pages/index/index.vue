@@ -464,11 +464,6 @@
                             this.init_config(true);
                         }
 
-                        // 设置首次加载状态
-                        this.setData({
-                            load_status: 1,
-                        });
-
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var theme_view = app.globalData.get_theme_value_view();
@@ -476,7 +471,7 @@
                             var common_static_url = app.globalData.get_static_url('common');
                             var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
                             var static_url = app.globalData.get_static_url('home');
-                            this.setData({
+                            var upd_data = {
                                 theme_view: theme_view,
                                 theme_color: theme_color,
                                 common_static_url: common_static_url,
@@ -505,16 +500,16 @@
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_magic_data: data.plugins_magic_data || null,
-                            });
+                            };
 
                             // 轮播数据处理
-                            if (data.banner_list && data.banner_list.length > 0) {
+                            if (this.load_status == 0 && data.banner_list && data.banner_list.length > 0) {
                                 if ((data.banner_list[0]['bg_color'] || null) != null) {
-                                    this.top_content_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 460%);';
+                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
+                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 460%);';
                                 } else {
-                                    this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
+                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
+                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
                                 }
                             }
 
@@ -527,9 +522,9 @@
                             // #ifdef MP
                             width += 220;
                             // #endif
-                            this.setData({
-                                top_content_search_style: 'width: calc(100% - ' + width + 'rpx);',
-                            });
+                            upd_data['top_content_search_style'] = 'width: calc(100% - ' + width + 'rpx);';
+                            // 设置数据
+                            this.setData(upd_data);
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
@@ -548,6 +543,11 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
+
+                        // 设置首次加载状态
+                        this.setData({
+                            load_status: 1,
+                        });
 
                         // 分享菜单处理、延时执行，确保基础数据已加载完成
                         setTimeout(function () {

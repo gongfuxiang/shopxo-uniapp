@@ -1,105 +1,3 @@
-/******************** 黄色 ********************/
-/**
- * 边线 搭配色、次主色、主色
- */
-.theme-yellow .border-color-main-pair {
-    border-color: #795548 !important;
-}
-.theme-yellow .border-color-main-light {
-    border-color: #ffebd2 !important;
-}
-.theme-yellow .border-color-main {
-    border-color: #f6c133 !important;
-}
-
-/**
- * 边框 搭配色、次主色、主色
- */
-.theme-yellow .br-main-pair {
-    border: 1px solid #795548 !important;
-}
-.theme-yellow .br-main-light {
-    border: solid 1px #ffebd2 !important;
-}
-.theme-yellow .br-main {
-    border: 1px solid #f6c133 !important;
-}
-
-/**
- * 虚线边框 搭配色、次主色、主色
- */
-.theme-yellow .br-dashed-main-pair {
-    border: dashed 1px #795548 !important;
-}
-.theme-yellow .br-dashed-main-light {
-    border: dashed 1px #ffebd2 !important;
-}
-.theme-yellow .br-dashed-main {
-    border: dashed 1px #f6c133 !important;
-}
-
-/**
- * 文本颜色 搭配色、次主色、主色
- */
-.theme-yellow .cr-main-pair {
-    color: #795548 !important;
-}
-.theme-yellow .cr-main-light {
-    color: #ffebd2 !important;
-}
-.theme-yellow .cr-main {
-    color: #f6c133 !important;
-}
-
-/**
- * 导航伪类背景色
- */
-.theme-yellow .nav-active-line::before {
-    background: #f6c133;
-}
-
-/**
- * 背景色 搭配色、次主色、主色
- */
-.theme-yellow .bg-main-pair {
-    background-color: #795548 !important;
-}
-.theme-yellow .bg-main-light {
-    background-color: #ffebd2 !important;
-}
-.theme-yellow .bg-main {
-    background-color: #f6c133 !important;
-}
-.theme-yellow button[disabled].bg-main-pair {
-    background-color: #b5a29c !important;
-    color: #8c766f !important;
-}
-.theme-yellow button[disabled].bg-main-light {
-    background-color: #fbebd6 !important;
-    color: #ffcc40 !important;
-}
-.theme-yellow button[disabled].bg-main {
-    background-color: #fdd178 !important;
-    color: #fff7e7 !important;
-}
-
-/**
- * 标题左侧边线
-*/
-.theme-yellow .title-left-border::before {
-    background: linear-gradient(180deg, #f6c133 0%, #ffebd2 100%);
-}
-
-/**
- * 导航菜单左侧边线
- */
-.theme-yellow .nav-left-border::before {
-    background: #f6c133;
-}
-
-
-
-
 /******************** 红色 ********************/
 /**
  * 边线 搭配色、次主色、主色
@@ -197,6 +95,108 @@
  */
 .theme-red .nav-left-border::before {
 	background: #ff0036;
+}
+
+
+
+
+/******************** 黄色 ********************/
+/**
+ * 边线 搭配色、次主色、主色
+ */
+.theme-yellow .border-color-main-pair {
+    border-color: #795548 !important;
+}
+.theme-yellow .border-color-main-light {
+    border-color: #ffebd2 !important;
+}
+.theme-yellow .border-color-main {
+    border-color: #f6c133 !important;
+}
+
+/**
+ * 边框 搭配色、次主色、主色
+ */
+.theme-yellow .br-main-pair {
+    border: 1px solid #795548 !important;
+}
+.theme-yellow .br-main-light {
+    border: solid 1px #ffebd2 !important;
+}
+.theme-yellow .br-main {
+    border: 1px solid #f6c133 !important;
+}
+
+/**
+ * 虚线边框 搭配色、次主色、主色
+ */
+.theme-yellow .br-dashed-main-pair {
+    border: dashed 1px #795548 !important;
+}
+.theme-yellow .br-dashed-main-light {
+    border: dashed 1px #ffebd2 !important;
+}
+.theme-yellow .br-dashed-main {
+    border: dashed 1px #f6c133 !important;
+}
+
+/**
+ * 文本颜色 搭配色、次主色、主色
+ */
+.theme-yellow .cr-main-pair {
+    color: #795548 !important;
+}
+.theme-yellow .cr-main-light {
+    color: #ffebd2 !important;
+}
+.theme-yellow .cr-main {
+    color: #f6c133 !important;
+}
+
+/**
+ * 导航伪类背景色
+ */
+.theme-yellow .nav-active-line::before {
+    background: #f6c133;
+}
+
+/**
+ * 背景色 搭配色、次主色、主色
+ */
+.theme-yellow .bg-main-pair {
+    background-color: #795548 !important;
+}
+.theme-yellow .bg-main-light {
+    background-color: #ffebd2 !important;
+}
+.theme-yellow .bg-main {
+    background-color: #f6c133 !important;
+}
+.theme-yellow button[disabled].bg-main-pair {
+    background-color: #b5a29c !important;
+    color: #8c766f !important;
+}
+.theme-yellow button[disabled].bg-main-light {
+    background-color: #fbebd6 !important;
+    color: #ffcc40 !important;
+}
+.theme-yellow button[disabled].bg-main {
+    background-color: #fdd178 !important;
+    color: #fff7e7 !important;
+}
+
+/**
+ * 标题左侧边线
+*/
+.theme-yellow .title-left-border::before {
+    background: linear-gradient(180deg, #f6c133 0%, #ffebd2 100%);
+}
+
+/**
+ * 导航菜单左侧边线
+ */
+.theme-yellow .nav-left-border::before {
+    background: #f6c133;
 }
 
 
