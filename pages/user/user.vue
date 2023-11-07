@@ -14,7 +14,7 @@
                                     <text class="va-m fw-b text-size">{{ nickname }}</text>
                                     <view v-if="(user_id || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
                                         <text class="text-size-xs">ID </text>
-                                        <text class="text-size-xss padding-left-xs va-t">{{ user_id }}</text>
+                                        <text class="text-size-xss padding-left-xs pr bottom-xs">{{ user_id }}</text>
                                     </view>
                                 </view>
                             </view>
