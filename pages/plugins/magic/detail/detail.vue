@@ -58,7 +58,6 @@
         props: {},
 
         onLoad(params) {
-            //params['id'] = 1;
             this.setData({
                 params: params,
             });
@@ -150,5 +149,4 @@
     };
 </script>
 <style>
-    @import './detail.css';
 </style>

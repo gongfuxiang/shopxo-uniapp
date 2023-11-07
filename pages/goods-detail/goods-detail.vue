@@ -597,18 +597,12 @@
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
-
-        <!-- 快捷导航 -->
-        <block v-if="data_list_loding_status != 1">
-            <component-quick-nav :propIsNav="true"></component-quick-nav>
-        </block>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentGoodsBuy from '../../components/goods-buy/goods-buy';
     import componentGoodsBatchBuy from '../../components/goods-batch-buy/goods-batch-buy';
-    import componentQuickNav from '../../components/quick-nav/quick-nav';
     import componentPopup from '../../components/popup/popup';
     import componentBadge from '../../components/badge/badge';
     import componentTrnNav from '../../components/trn-nav/trn-nav';
@@ -756,7 +750,6 @@
         components: {
             componentGoodsBuy,
             componentGoodsBatchBuy,
-            componentQuickNav,
             componentPopup,
             componentBadge,
             componentCountdown,

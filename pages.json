@@ -1075,8 +1075,7 @@
             "pages": [{
                     "path": "detail/detail",
                     "style": {
-                        "disableScroll": true,
-                        "enablePullDownRefresh": false,
+                        "enablePullDownRefresh": true,
                         "navigationBarTitleText": "详情"
                     }
                 }
