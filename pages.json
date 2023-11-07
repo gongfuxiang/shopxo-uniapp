@@ -1075,9 +1075,8 @@
             "pages": [{
                     "path": "detail/detail",
                     "style": {
-                        "disableScroll": true,
-                        "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "魔方"
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "详情"
                     }
                 }
             ]
