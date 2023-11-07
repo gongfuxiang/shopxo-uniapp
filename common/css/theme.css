@@ -3,7 +3,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-red .border-color-main-pair {
-	border-color: #3F51B5 !important;
+	border-color: #F6C133 !important;
 }
 .theme-red .border-color-main-light {
 	border-color: #ffdbe2 !important;
@@ -16,7 +16,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-red .br-main-pair {
-	border: 1px solid #3F51B5 !important;
+	border: 1px solid #F6C133 !important;
 }
 .theme-red .br-main-light {
 	border: solid 1px #ffdbe2 !important;
@@ -29,7 +29,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-red .br-dashed-main-pair {
-	border: dashed 1px #3F51B5 !important;
+	border: dashed 1px #F6C133 !important;
 }
 .theme-red .br-dashed-main-light {
 	border: dashed 1px #ffdbe2 !important;
@@ -42,7 +42,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-red .cr-main-pair {
-	color: #3F51B5 !important;
+	color: #F6C133 !important;
 }
 .theme-red .cr-main-light {
 	color: #ffdbe2 !important;
@@ -55,7 +55,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-red .bg-main-pair {
-	background-color: #3F51B5 !important;
+	background-color: #F6C133 !important;
 }
 .theme-red .bg-main-light {
 	background-color: #ffdbe2 !important;
@@ -105,7 +105,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-yellow .border-color-main-pair {
-    border-color: #795548 !important;
+    border-color: #FF0036 !important;
 }
 .theme-yellow .border-color-main-light {
     border-color: #ffebd2 !important;
@@ -118,7 +118,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-yellow .br-main-pair {
-    border: 1px solid #795548 !important;
+    border: 1px solid #FF0036 !important;
 }
 .theme-yellow .br-main-light {
     border: solid 1px #ffebd2 !important;
@@ -131,7 +131,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-yellow .br-dashed-main-pair {
-    border: dashed 1px #795548 !important;
+    border: dashed 1px #FF0036 !important;
 }
 .theme-yellow .br-dashed-main-light {
     border: dashed 1px #ffebd2 !important;
@@ -144,7 +144,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-yellow .cr-main-pair {
-    color: #795548 !important;
+    color: #FF0036 !important;
 }
 .theme-yellow .cr-main-light {
     color: #ffebd2 !important;
@@ -164,7 +164,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-yellow .bg-main-pair {
-    background-color: #795548 !important;
+    background-color: #FF0036 !important;
 }
 .theme-yellow .bg-main-light {
     background-color: #ffebd2 !important;
@@ -208,7 +208,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-black .border-color-main-pair {
-	border-color: #009688 !important;
+	border-color: #D3B881 !important;
 }
 .theme-black .border-color-main-light {
 	border-color: #dcdcdc !important;
@@ -221,7 +221,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-black .br-main-pair {
-	border: 1px solid #009688 !important;
+	border: 1px solid #D3B881 !important;
 }
 .theme-black .br-main-light {
 	border: solid 1px #dcdcdc !important;
@@ -234,7 +234,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-black .br-dashed-main-pair {
-	border: dashed 1px #009688 !important;
+	border: dashed 1px #D3B881 !important;
 }
 .theme-black .br-dashed-main-light {
 	border: dashed 1px #dcdcdc !important;
@@ -247,7 +247,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-black .cr-main-pair {
-	color: #009688 !important;
+	color: #D3B881 !important;
 }
 .theme-black .cr-main-light {
 	color: #dcdcdc !important;
@@ -260,7 +260,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-black .bg-main-pair {
-	background-color: #009688 !important;
+	background-color: #D3B881 !important;
 }
 .theme-black .bg-main-light {
 	background-color: #dcdcdc !important;
@@ -311,7 +311,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-green .border-color-main-pair {
-	border-color: #9933CC !important;
+	border-color: #20A5A2 !important;
 }
 .theme-green .border-color-main-light {
 	border-color: #cce8d2 !important;
@@ -324,7 +324,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-green .br-main-pair {
-	border: 1px solid #9933CC !important;
+	border: 1px solid #20A5A2 !important;
 }
 .theme-green .br-main-light {
 	border: solid 1px #cce8d2 !important;
@@ -337,7 +337,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-green .br-dashed-main-pair {
-	border: dashed 1px #9933CC !important;
+	border: dashed 1px #20A5A2 !important;
 }
 .theme-green .br-dashed-main-light {
 	border: dashed 1px #cce8d2 !important;
@@ -350,7 +350,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-green .cr-main-pair {
-	color: #9933CC !important;
+	color: #20A5A2 !important;
 }
 .theme-green .cr-main-light {
 	color: #cce8d2 !important;
@@ -363,7 +363,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-green .bg-main-pair {
-	background-color: #9933CC !important;
+	background-color: #20A5A2 !important;
 }
 .theme-green .bg-main-light {
 	background-color: #cce8d2 !important;
@@ -413,7 +413,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-orange .border-color-main-pair {
-	border-color: #795548 !important;
+	border-color: #F6C133 !important;
 }
 .theme-orange .border-color-main-light {
 	border-color: #fde4d1 !important;
@@ -426,7 +426,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-orange .br-main-pair {
-	border: 1px solid #795548 !important;
+	border: 1px solid #F6C133 !important;
 }
 .theme-orange .br-main-light {
 	border: solid 1px #fde4d1 !important;
@@ -439,7 +439,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-orange .br-dashed-main-pair {
-	border: dashed 1px #795548 !important;
+	border: dashed 1px #F6C133 !important;
 }
 .theme-orange .br-dashed-main-light {
 	border: dashed 1px #fde4d1 !important;
@@ -452,7 +452,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-orange .cr-main-pair {
-	color: #795548 !important;
+	color: #F6C133 !important;
 }
 .theme-orange .cr-main-light {
 	color: #fde4d1 !important;
@@ -465,7 +465,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-orange .bg-main-pair {
-	background-color: #795548 !important;
+	background-color: #F6C133 !important;
 }
 .theme-orange .bg-main-light {
 	background-color: #fde4d1 !important;
@@ -515,7 +515,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-blue .border-color-main-pair {
-	border-color: #d300f7 !important;
+	border-color: #16CEFF !important;
 }
 .theme-blue .border-color-main-light {
 	border-color: #d1e4ff !important;
@@ -528,7 +528,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-blue .br-main-pair {
-	border: 1px solid #d300f7 !important;
+	border: 1px solid #16CEFF !important;
 }
 .theme-blue .br-main-light {
 	border: solid 1px #d1e4ff !important;
@@ -541,7 +541,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-blue .br-dashed-main-pair {
-	border: dashed 1px #d300f7 !important;
+	border: dashed 1px #16CEFF !important;
 }
 .theme-blue .br-dashed-main-light {
 	border: dashed 1px #d1e4ff !important;
@@ -554,7 +554,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-blue .cr-main-pair {
-	color: #d300f7 !important;
+	color: #16CEFF !important;
 }
 .theme-blue .cr-main-light {
 	color: #d1e4ff !important;
@@ -567,7 +567,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-blue .bg-main-pair {
-	background-color: #d300f7 !important;
+	background-color: #16CEFF !important;
 }
 .theme-blue .bg-main-light {
 	background-color: #d1e4ff !important;
@@ -617,7 +617,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-brown .border-color-main-pair {
-	border-color: #08b7a7 !important;
+	border-color: #8B1313 !important;
 }
 .theme-brown .border-color-main-light {
 	border-color: #eadcd2 !important;
@@ -630,7 +630,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-brown .br-main-pair {
-	border: 1px solid #08b7a7 !important;
+	border: 1px solid #8B1313 !important;
 }
 .theme-brown .br-main-light {
 	border: solid 1px #eadcd2 !important;
@@ -643,7 +643,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-brown .br-dashed-main-pair {
-	border: dashed 1px #08b7a7 !important;
+	border: dashed 1px #8B1313 !important;
 }
 .theme-brown .br-dashed-main-light {
 	border: dashed 1px #eadcd2 !important;
@@ -656,7 +656,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-brown .cr-main-pair {
-	color: #08b7a7 !important;
+	color: #8B1313 !important;
 }
 .theme-brown .cr-main-light {
 	color: #eadcd2 !important;
@@ -669,7 +669,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-brown .bg-main-pair {
-	background-color: #08b7a7 !important;
+	background-color: #8B1313 !important;
 }
 .theme-brown .bg-main-light {
 	background-color: #eadcd2 !important;
@@ -719,7 +719,7 @@
  * 边线 搭配色、次主色、主色
  */
 .theme-purple .border-color-main-pair {
-	border-color: #993399 !important;
+	border-color: #3C8CEC !important;
 }
 .theme-purple .border-color-main-light {
 	border-color: #d6cbfb !important;
@@ -732,7 +732,7 @@
  * 边框 搭配色、次主色、主色
  */
 .theme-purple .br-main-pair {
-	border: 1px solid #993399 !important;
+	border: 1px solid #3C8CEC !important;
 }
 .theme-purple .br-main-light {
 	border: solid 1px #d6cbfb !important;
@@ -745,7 +745,7 @@
  * 虚线边框 搭配色、次主色、主色
  */
 .theme-purple .br-dashed-main-pair {
-	border: dashed 1px #993399 !important;
+	border: dashed 1px #3C8CEC !important;
 }
 .theme-purple .br-dashed-main-light {
 	border: dashed 1px #d6cbfb !important;
@@ -758,7 +758,7 @@
  * 文本颜色 搭配色、次主色、主色
  */
 .theme-purple .cr-main-pair {
-	color: #993399 !important;
+	color: #3C8CEC !important;
 }
 .theme-purple .cr-main-light {
 	color: #d6cbfb !important;
@@ -771,7 +771,7 @@
  * 背景色 搭配色、次主色、主色
  */
 .theme-purple .bg-main-pair {
-	background-color: #993399 !important;
+	background-color: #3C8CEC !important;
 }
 .theme-purple .bg-main-light {
 	background-color: #d6cbfb !important;
