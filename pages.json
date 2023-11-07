@@ -1077,7 +1077,7 @@
                     "style": {
                         "disableScroll": true,
                         "enablePullDownRefresh": false,
-                        "navigationBarTitleText": "魔方"
+                        "navigationBarTitleText": "详情"
                     }
                 }
             ]
