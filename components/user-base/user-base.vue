@@ -40,6 +40,7 @@
     export default {
         data() {
             return {
+                theme_view: app.globalData.get_theme_value_view(),
                 application_client_type: app.globalData.application_client_type(),
                 default_avatar: app.globalData.data.default_user_head_src,
                 cache_key: app.globalData.data.cache_user_base_personal_interval_time_key,
