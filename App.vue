@@ -462,7 +462,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    self.showToast('服务器请求出错');
+                                    self.showToast('网络开小差了哦~');
                                 },
                             });
                         }
@@ -531,7 +531,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        self.showToast('服务器请求出错');
+                        self.showToast('网络开小差了哦~');
                     },
                 });
             },
@@ -969,7 +969,7 @@
                             }
                         },
                         fail: () => {
-                            this.showToast('服务器请求出错');
+                            this.showToast('网络开小差了哦~');
                         },
                     });
                 }
@@ -1038,7 +1038,7 @@
             },
 
             // 初始化 配置信息
-            init_config() {
+            init_config(status = 0) {
                 uni.request({
                     url: this.get_request_url('common', 'base'),
                     method: 'POST',
@@ -1062,10 +1062,18 @@
                             this.user_auto_login_handle();
                         } else {
                             this.showToast(res.data.msg);
+                            // 首次则再次初始化配置
+                            if(status == 0) {
+                                this.init_config(1);
+                            }
                         }
                     },
                     fail: () => {
-                        this.showToast('服务器请求出错');
+                        this.showToast('网络开小差了哦~');
+                        // 首次则再次初始化配置
+                        if(status == 0) {
+                            this.init_config(1);
+                        }
                     },
                 });
             },
@@ -1513,7 +1521,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    this.showToast('服务器请求出错');
+                                    this.showToast('网络开小差了哦~');
                                 },
                             });
                             return true;
