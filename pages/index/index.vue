@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- 顶部内容 -->
-            <view v-if="load_status == 1" class="home-top-nav-content" :style="top_content_bg_color + top_content_style">
+            <view v-if="load_status == 1" class="home-top-nav-content pr" :style="top_content_bg_color + top_content_style">
                 <!-- 顶部背景图片 -->
                 <view class="pa top-0 left-0 right-0">
                     <image class="bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
