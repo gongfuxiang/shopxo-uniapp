@@ -59,7 +59,7 @@
                                     </block>
                                     <block v-else>
                                         <!-- 判断bool是否存在数组signinHistory中    【 true则表示存在于数组中】 -->
-                                        <block v-if="user_signin_data && user_signin_data.history_day.some((item) => Number(item) === col.num)">
+                                        <block v-if="user_signin_data && user_signin_data.history_day.some((item) => Number(item) === col.num) && col.current_month">
                                             <iconfont name="icon-qiandao-yixuan" size="48rpx" color="#ccc"></iconfont>
                                         </block>
                                         <block v-else>
@@ -221,6 +221,7 @@
                         num: defore_days - i,
                         class: 'cr-grey-c',
                         today: false,
+                        current_month: false,
                     });
                 }
                 // 本月计数
@@ -231,6 +232,7 @@
                         num: i,
                         class: 'cr-black',
                         today: i === today ? true : false,
+                        current_month: true,
                     });
                     if (day.length === 7) {
                         days.push(day);
@@ -239,11 +241,13 @@
                 }
                 // 本月计数
                 if (day.length > 0) {
+                    var num = 1;
                     for (let i = day.length; i < 7; i++) {
                         day.push({
-                            num: i,
+                            num: num++,
                             class: 'cr-grey-c',
                             today: false,
+                            current_month: false,
                         });
                     }
                     days.push(day);

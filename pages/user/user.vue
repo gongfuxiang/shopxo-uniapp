@@ -14,7 +14,7 @@
                                     <text class="va-m fw-b text-size">{{ nickname }}</text>
                                     <view v-if="(user_id || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
                                         <text class="text-size-xs">ID </text>
-                                        <text class="text-size-xss padding-left-xs">{{ user_id }}</text>
+                                        <text class="text-size-xss padding-left-xs va-t">{{ user_id }}</text>
                                     </view>
                                 </view>
                             </view>
@@ -46,13 +46,13 @@
                     <!-- 会员码 付款码 -->
                     <view v-if="(payment_page_url || null) !== null || (membership_page_url || null) !== null" class="qrcode padding-horizontal-main pr">
                         <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
-                            <view class="tc flex-width-half" v-if="(membership_page_url || null) != null" :data-value="membership_page_url" @tap="url_event">
+                            <view v-if="(membership_page_url || null) != null" class="padding-horizontal-lg" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="membership_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image>
                                 </view>
                                 会员码
                             </view>
-                            <view class="tc flex-width-half" v-if="(payment_page_url || null) != null" :data-value="payment_page_url" @tap="url_event">
+                            <view v-if="(payment_page_url || null) != null"  class="padding-horizontal-lg" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
@@ -100,7 +100,7 @@
                             <block v-for="(item, index) in navigation" :key="index">
                                 <!-- 这里不展示订单导航 -->
                                 <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :class="'nav-item cp padding-main '+(index > 0 ? 'br-t-e' : '')">
+                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :class="'nav-item cp padding-main ' + (index > 0 ? 'br-t-e' : '')">
                                         <view class="arrow-right">
                                             <image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
                                             <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ item.name }}</text>
@@ -161,10 +161,10 @@
 
         <!-- 在线客服 -->
         <component-online-service :propIsNav="true" :propIsBar="true"></component-online-service>
-    
+
         <!-- 快捷导航 -->
         <component-quick-nav :propIsNav="true" :propIsBar="true"></component-quick-nav>
-    
+
         <!-- 用户基础 -->
         <component-user-base ref="user_base"></component-user-base>
     </view>
@@ -484,7 +484,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
         },
     };
 </script>
