@@ -11,7 +11,7 @@
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
             <view :class="'nav-popup-container ' + common_ent">
                 <view class="close oh">
-                    <view class="icon-right" @tap.stop="quick_close_event">
+                    <view class="fr" @tap.stop="quick_close_event">
                         <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
@@ -37,12 +37,11 @@
     const app = getApp();
     import componentPopup from '../popup/popup';
     import componentNoData from '../no-data/no-data';
-    var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                common_static_url: common_static_url,
+                common_static_url: app.globalData.get_static_url('common'),
                 popup_status: false,
                 quick_status: 0,
                 data_list: [],
@@ -115,9 +114,10 @@
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
+                    var data_list = app.globalData.get_config('quick_nav') || [];
                     this.setData({
-                        data_list: app.globalData.get_config('quick_nav') || [],
-                        quick_status: app.globalData.get_config('config.home_navigation_main_quick_status') || 0,
+                        data_list: data_list,
+                        quick_status: (data_list.length > 0) ? (app.globalData.get_config('config.home_navigation_main_quick_status') || 0) : 0,
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -188,11 +188,10 @@
     }
 
     .nav-popup-container .close {
-        overflow: hidden;
-    }
-
-    .nav-popup-container .close .icon-right {
-        float: right;
+        position: absolute;
+        top: 20rpx;
+        right: 20rpx;
+        z-index: 2;
     }
 
     .nav-popup-content {
