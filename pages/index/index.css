@@ -79,7 +79,7 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: top;
-    padding-bottom: 6px;
+    padding-bottom: 24rpx;
     /* #ifdef H5 || APP */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;

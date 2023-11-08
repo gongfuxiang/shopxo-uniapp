@@ -588,9 +588,13 @@
                             // 计算更多分类弹窗的高度、由于页面元素渲染异步问题，这里加延时执行
                             if(this.is_first == 1) {
                                 var self = this;
-                                setTimeout(function() {
-                                    self.search_height_computer();
-                                }, 100);
+                                var timer = setInterval(function() {
+                                    if(self.search_height == 0) {
+                                        self.search_height_computer();
+                                    } else {
+                                        clearInterval(timer);
+                                    }
+                                }, 500);
                             }
 
                             // 是否首次记录
