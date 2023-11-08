@@ -585,14 +585,18 @@
                                 }
                             }
 
+                            // 计算更多分类弹窗的高度、由于页面元素渲染异步问题，这里加延时执行
+                            if(this.is_first == 1) {
+                                var self = this;
+                                setTimeout(function() {
+                                    self.search_height_computer();
+                                }, 100);
+                            }
+
                             // 是否首次记录
                             this.setData({
                                 is_first: 0,
                             });
-
-                            // 计算更多分类弹窗的高度
-                            this.search_height_computer();
-                            
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
