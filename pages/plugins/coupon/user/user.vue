@@ -178,21 +178,22 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
 
             // 数据处理
             data_view_handle() {
-                var status = 0;
-                if (this.data_list != null && (this.data_list[this.nav_tabs_value] || null) != null && this.data_list[this.nav_tabs_value].length > 0) {
-                    status = 3;
+                if(this.data_list_loding_status != 2) {
+                    var status = 0;
+                    if (this.data_list != null && (this.data_list[this.nav_tabs_value] || null) != null && this.data_list[this.nav_tabs_value].length > 0) {
+                        status = 3;
+                    }
+                    this.setData({
+                        data_list_loding_status: status,
+                        data_bottom_line_status: status == 3,
+                    });
                 }
-                this.setData({
-                    data_list_loding_status: status,
-                    data_bottom_line_status: status == 3,
-                });
             },
 
             // 导航事件

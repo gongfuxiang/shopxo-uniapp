@@ -1,35 +1,41 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :prop-name="data_base.application_name || '领券中心'"></component-nav-back>
-        <view class="pr" v-if="(data_base || null) != null">
-            <view class="pa top-0 bg-img wh-auto">
-                <image v-if="(data_base || null) != null" class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
-            </view>
-            <view class="plugins-coupon-container">
-                <view class="coupon-content bg-white pr page-bottom-fixed">
-                    <!-- 优惠劵列表 -->
-                    <view v-if="data_list.length > 0" class="flex-col">
-                        <block v-for="(item, index) in data_list" :key="index">
-                            <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
-                        </block>
-                    </view>
-                    <view v-else>
-                        <!-- 提示信息 -->
-                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                    </view>
+        <block v-if="(data_base || null) != null">
+            <component-nav-back :prop-name="data_base.application_name || '领券中心'"></component-nav-back>
+            <view class="pr">
+                <view class="pa top-0 bg-img wh-auto">
+                    <image class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
+                </view>
+                <view class="plugins-coupon-container">
+                    <view class="coupon-content bg-white pr page-bottom-fixed">
+                        <!-- 优惠劵列表 -->
+                        <view v-if="data_list.length > 0" class="flex-col">
+                            <block v-for="(item, index) in data_list" :key="index">
+                                <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                            </block>
+                        </view>
+                        <view v-else>
+                            <!-- 提示信息 -->
+                            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                        </view>
 
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    </view>
                 </view>
-            </view>
-            <view class="popup-bottom bottom-fixed bg-white">
-                <view class="bottom-line-exclude">
-                    <view class="popup-btn tc">
-                        <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+                <view class="popup-bottom bottom-fixed bg-white">
+                    <view class="bottom-line-exclude">
+                        <view class="popup-btn tc">
+                            <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+                        </view>
                     </view>
                 </view>
             </view>
-        </view>
+        </block>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
     </view>
 </template>
 <script>
@@ -91,12 +97,11 @@
             },
             // 获取数据
             get_data_list() {
-                var self = this;
                 uni.showLoading({
                     title: '加载中...',
                 });
-                if (self.data_list.length <= 0) {
-                    self.setData({
+                if (this.data_list.length <= 0) {
+                    this.setData({
                         data_list_loding_status: 1,
                     });
                 }
@@ -135,12 +140,11 @@
                                 }
                             }
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
@@ -148,12 +152,11 @@
                     fail: () => {
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

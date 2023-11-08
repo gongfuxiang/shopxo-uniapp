@@ -141,7 +141,6 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

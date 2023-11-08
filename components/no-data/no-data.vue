@@ -9,6 +9,9 @@
         <view v-else-if="propStatus == 2" class="no-data-box">
             <image :src="static_dir + 'error.png'" mode="widthFix"></image>
             <view class="no-data-tips">{{ propMsg || '处理错误' }}</view>
+            <view class="margin-top-xxxl tc">
+                <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">返回</button>
+            </view>
         </view>
 
         <!-- 0 默认没有数据 -->
@@ -43,7 +46,12 @@
                 default: '',
             },
         },
-        methods: {},
+        methods: {
+            // 返回事件
+            back_event(e) {
+                app.globalData.page_back_prev_event();
+            }
+        },
     };
 </script>
 <style>

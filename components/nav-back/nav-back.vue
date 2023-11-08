@@ -53,7 +53,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0, true)),
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
                 // 顶部返回导航背景透明度

@@ -136,9 +136,6 @@
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
                         }
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
@@ -151,7 +148,6 @@
                             data_list_loding_status: 2,
                             data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

@@ -167,7 +167,6 @@
 								data_list_loding_status: 2,
 								data_list_loding_msg: res.data.msg
 							});
-							app.globalData.showToast(res.data.msg);
 						}
 
 						// 分享菜单处理

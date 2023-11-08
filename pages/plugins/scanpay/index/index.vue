@@ -93,10 +93,8 @@
                                 <view class="flex-1 key-1 repair br-r-f5 key-num" @tap="key_up_event('.')">.</view>
                             </view>
                         </view>
-                        <view class="flex-1 bg-red cr-white key-num sub" @tap="key_up_event('sub')">
-                            <view class="flex-col jc-c ht-auto">
-                                <view class="fw-n">支付</view>
-                            </view>
+                        <view class="flex-1 key-num sub" @tap="key_up_event('sub')">
+                            <button type="default" class="flex-col jc-c ht-auto wh-auto radius-0 bg-red cr-white" :disabled="form_submit_loading">支付</button>
                         </view>
                     </view>
                 </view>
@@ -117,6 +115,8 @@
                 :prop-to-appoint-page="to_appoint_page"
                 :prop-is-show-payment="is_show_payment_popup"
                 @close-payment-poupon="payment_popup_event_close"
+                @pay-success="pay_back_event"
+                @pay-fail="pay_back_event"
             ></component-payment>
         </view>
         <view v-else>
@@ -139,6 +139,7 @@
                 data: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                form_submit_loading: false,
                 checked: 0,
                 is_more: false,
                 form: {
@@ -210,7 +211,7 @@
             get_data() {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: '加载中...'
                 });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'scanpay'),
@@ -355,6 +356,10 @@
                     // 加载loding
                     uni.showLoading({
                         title: '加载中...',
+                        mask: true
+                    });
+                    this.setData({
+                        form_submit_loading: true
                     });
                     uni.request({
                         url: app.globalData.get_request_url('created', 'index', 'scanpay'),
@@ -374,16 +379,30 @@
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
                                     app.globalData.showToast(res.data.msg);
+                                } else {
+                                    this.setData({
+                                        form_submit_loading: false
+                                    });
                                 }
                             }
                         },
                         fail: () => {
+                            this.setData({
+                                form_submit_loading: false
+                            });
                             uni.hideLoading();
                             uni.stopPullDownRefresh();
                             app.globalData.showToast('网络开小差了哦~');
                         },
                     });
                 }
+            },
+
+            // 支付成功失败回调
+            pay_back_event() {
+                this.setData({
+                    form_submit_loading: false
+                });
             },
 
             // 消费金额更新

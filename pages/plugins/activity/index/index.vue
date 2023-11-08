@@ -1,39 +1,37 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_base || null) != null">
-            <!-- 轮播 -->
-            <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
-                <component-banner :propData="slider_list" propSize="mini"></component-banner>
+        <!-- 轮播 -->
+        <view v-if="slider_list.length > 0" class="padding-horizontal-main padding-top-main">
+            <component-banner :propData="slider_list" propSize="mini"></component-banner>
+        </view>
+
+        <!-- 分类 -->
+        <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="scroll-view-horizontal bg-white oh" scroll-x="true">
+            <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == 0 ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" data-value="0">全部 </view>
+            <block v-for="(item, index) in activity_category" :key="index">
+                <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == item.id ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
+            </block>
+        </scroll-view>
+
+        <!-- 列表 -->
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
+            <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <view class="item oh spacing-mb">
+                        <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
+                            <image :src="item.cover" mode="widthFix" class="wh-auto border-radius-main"></image>
+                        </navigator>
+                    </view>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
 
-            <!-- 分类 -->
-            <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == 0 ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" data-value="0">全部 </view>
-                <block v-for="(item, index) in activity_category" :key="index">
-                    <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == item.id ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
-                </block>
-            </scroll-view>
-
-            <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view class="item oh spacing-mb">
-                            <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.cover" mode="widthFix" class="wh-auto border-radius-main"></image>
-                            </navigator>
-                        </view>
-                    </block>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                </view>
-
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </scroll-view>
-        </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
     </view>
 </template>
 <script>
@@ -132,10 +130,9 @@
                             this.get_data_list(1);
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
 
                         // 分享菜单处理
@@ -146,8 +143,8 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },

@@ -252,6 +252,8 @@
                                 success(res) {
                                     if (res.confirm) {
                                         self.pay_handle_event(order_id, payment_id);
+                                    } else {
+                                        self.order_item_pay_fail_handle(null, order_id, '用户取消支付');
                                     }
                                 },
                             });
@@ -336,14 +338,16 @@
                                             break;
                                         // 线下支付
                                         case 1:
-                                            let $self = this;
+                                            let self = this;
                                             // 现金支付
                                             uni.showModal({
                                                 content: res.data.msg,
                                                 showCancel: false,
                                                 success(res) {
                                                     if (res.confirm) {
-                                                        $self.to_other(order_id);
+                                                        self.to_other(order_id);
+                                                    } else {
+                                                        self.order_item_pay_fail_handle(data, order_id, '用户取消支付');
                                                     }
                                                 },
                                             });

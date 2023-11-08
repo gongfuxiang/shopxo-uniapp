@@ -1,68 +1,66 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_base || null) != null">
-            <!-- 分类 -->
-            <scroll-view v-if="(shop_category || null) != null && shop_category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
-                <block v-for="(item, index) in shop_category" :key="index">
-                    <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main nav-active-line fw-b' : '')" @tap="nav_event" :data-value="item.id">
-                        {{ item.name }}
-                    </view>
-                </block>
-            </scroll-view>
+        <!-- 分类 -->
+        <scroll-view v-if="(shop_category || null) != null && shop_category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
+            <block v-for="(item, index) in shop_category" :key="index">
+                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main nav-active-line fw-b' : '')" @tap="nav_event" :data-value="item.id">
+                    {{ item.name }}
+                </view>
+            </block>
+        </scroll-view>
 
-            <!-- 列表 -->
-            <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-shop-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
-                <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view class="item border-radius-main bg-white oh spacing-mb">
-                            <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
-                                <image :src="item.logo_long" class="logo" mode="aspectFit"></image>
-                                <view class="tc">
-                                    <view class="single-text padding-horizontal-main padding-top-main">
-                                        <!-- 标题 -->
-                                        <text class="fw-b text-size-md va-m">{{ item.name }}</text>
-                                        <!-- 认证信息 -->
-                                        <view v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon dis-inline-block margin-left-sm">
-                                            <!-- 实名认证 -->
-                                            <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
-                                                <block v-if="item.auth_type == 0">
-                                                    <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
-                                                </block>
-                                                <block v-if="item.auth_type == 1">
-                                                    <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
-                                                </block>
+        <!-- 列表 -->
+        <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-shop-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
+                <block v-for="(item, index) in data_list" :key="index">
+                    <view class="item border-radius-main bg-white oh spacing-mb">
+                        <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
+                            <image :src="item.logo_long" class="logo" mode="aspectFit"></image>
+                            <view class="tc">
+                                <view class="single-text padding-horizontal-main padding-top-main">
+                                    <!-- 标题 -->
+                                    <text class="fw-b text-size-md va-m">{{ item.name }}</text>
+                                    <!-- 认证信息 -->
+                                    <view v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon dis-inline-block margin-left-sm">
+                                        <!-- 实名认证 -->
+                                        <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
+                                            <block v-if="item.auth_type == 0">
+                                                <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
                                             </block>
-                                            <!-- 保证金认证 -->
-                                            <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
-                                                <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                            <block v-if="item.auth_type == 1">
+                                                <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
                                             </block>
-                                        </view>
-                                    </view>
-                                    <view class="cr-grey padding-main">
-                                        <text class="multi-text">{{ item.describe }}</text>
-                                    </view>
-                                    <view class="oh br-t-dashed padding-main">
-                                        <view class="fl cr-grey-9 single-text"
-                                            >商品 <text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
-                                        >
-                                        <view class="fr cr-grey-9 single-text"
-                                            >销量 <text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
-                                        >
+                                        </block>
+                                        <!-- 保证金认证 -->
+                                        <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
+                                            <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                        </block>
                                     </view>
                                 </view>
-                            </navigator>
-                        </view>
-                    </block>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                </view>
+                                <view class="cr-grey padding-main">
+                                    <text class="multi-text">{{ item.describe }}</text>
+                                </view>
+                                <view class="oh br-t-dashed padding-main">
+                                    <view class="fl cr-grey-9 single-text"
+                                        >商品 <text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
+                                    >
+                                    <view class="fr cr-grey-9 single-text"
+                                        >销量 <text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
+                                    >
+                                </view>
+                            </view>
+                        </navigator>
+                    </view>
+                </block>
+            </view>
+            <view v-else>
+                <!-- 提示信息 -->
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            </view>
 
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </scroll-view>
-        </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        </scroll-view>
     </view>
 </template>
 <script>
@@ -148,10 +146,9 @@
                             this.get_data_list(1);
                         } else {
                             this.setData({
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                         // 分享菜单处理
                         app.globalData.page_share_handle(this.share_info);
@@ -161,8 +158,8 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: '网络开小差了哦~',
                         });
-                        app.globalData.showToast('网络开小差了哦~');
                     },
                 });
             },
