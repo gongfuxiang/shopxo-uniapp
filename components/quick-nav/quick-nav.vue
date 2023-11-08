@@ -84,7 +84,7 @@
             this.init_config();
 
             // 页面是否定义导航
-            var value = this.propIsNav ? 80 : 0;
+            var value = this.propIsNav ? 100 : 0;
             this.top = value;
             this.height_dec = value;
             // #ifdef H5 || APP

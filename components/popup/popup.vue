@@ -91,12 +91,14 @@
             },
             // 左边距位置处理
             left_handle() {
+                var left = 0;
+                // #ifdef H5
                 // 处理内容左边距、避免父级设置内边距影响
                 var width = uni.getSystemInfoSync().windowWidth;
-                var left = 0;
                 if (width > 800) {
                     left = (width - 800) / 2;
                 }
+                // #endif
                 this.popup_content_left_value = left + 'px';
             },
         },

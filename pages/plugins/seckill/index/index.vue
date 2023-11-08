@@ -180,7 +180,7 @@
                             var current = data.current || null;
                             var time = current == null ? null : current.time || null;
                             var goods = current == null ? [] : current.goods || [];
-                            var is_valid = time == null ? 0 : time.status == 1 ? 1 : 0;
+                            var is_valid = time == null ? 0 : time.status <= 1 ? 1 : 0;
                             if (goods.length > 0) {
                                 for (var i in goods) {
                                     goods[i]['price_icon'] = is_valid == 1 ? current.goods_detail_icon || '秒杀价' : '';

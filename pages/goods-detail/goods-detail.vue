@@ -81,9 +81,9 @@
             </view>
 
             <!-- 价格信息 -->
-            <view :class="'goods-base-price bg-white oh spacing-mb ' + ((plugins_seckill_data || null) != null ? 'goods-base-price-countdown' : '')">
+            <view :class="'goods-base-price bg-white oh spacing-mb ' + ((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : '')">
                 <!-- 价格 -->
-                <view class="price-content padding-lg bs-bb fl" :style="(plugins_seckill_data || null) != null ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                <view class="price-content padding-lg bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
                     <view class="single-text">
                         <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
                         <text class="sales-price va-m">{{ currency_symbol }}{{ goods_spec_base_price }}</text>
@@ -91,7 +91,7 @@
                     <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm single-text">{{ currency_symbol }}{{ goods_spec_base_original_price }}</view>
                 </view>
                 <!-- 秒杀 -->
-                <view v-if="(plugins_seckill_data || null) != null" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
+                <view v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
                     <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || '限时秒杀' }}</view>
                     <component-countdown
                         :propHour="plugins_seckill_data.time.hours"
