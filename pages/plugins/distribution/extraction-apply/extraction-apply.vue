@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed">
             <form @submit="form_submit" class="form-container">
-                <view class="padding-main oh">
+                <view class="padding-main oh border-radius-main">
                     <view class="form-gorup bg-white form-container-upload oh">
-                        <view class="form-gorup-title">logo图片<text class="form-group-tips">选传，建议300x300px</text></view>
+                        <view class="form-gorup-title">logo图片<text class="form-group-tips">建议300x300px</text></view>
                         <view class="form-upload-data oh">
                             <block v-if="(extraction_data.logo || null) != null">
                                 <view class="item fl">
@@ -32,7 +32,7 @@
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">省市区<text class="form-group-tips-must">必选</text></view>
+                        <view class="form-gorup-title">省市区<text class="form-group-tips-must">*</text></view>
                         <view class="select-address oh">
                             <view class="section fl">
                                 <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
@@ -60,14 +60,14 @@
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">地理位置<text class="form-group-tips-must">必选</text></view>
+                        <view class="form-gorup-title">地理位置<text class="form-group-tips-must">*</text></view>
                         <view @tap="choose_location_event" class="form-gorup-text">
                             <view v-if="(user_location || null) == null" class="cr-grey">请选择地理位置</view>
                             <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
                         </view>
                     </view>
 
-                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="notice-content-blue spacing-mb"> 注意：编辑信息将重新审核后方可生效 </view>
+                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb"> 注意：编辑信息将重新审核后方可生效 </view>
                     <view class="bottom-fixed">
                         <view class="bottom-line-exclude">
                             <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
