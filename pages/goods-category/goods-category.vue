@@ -464,10 +464,10 @@
             componentNavMore,
         },
         props: {},
-        
+
         onLoad(params) {
             this.setData({
-                params: params
+                params: params,
             });
         },
 
@@ -496,17 +496,6 @@
             // #ifdef H5 || APP
             this.popup_top = '98rpx';
             // #endif
-        },
-        mounted() {
-            const query = uni.createSelectorQuery();
-            query.select('.nav-search').boundingClientRect((res) => {
-                if((res || null) != null) {
-                    // 获取搜索框高度
-                    this.setData({
-                        search_height: res.height,
-                    });
-                }
-            }).exec();
         },
 
         methods: {
@@ -595,10 +584,15 @@
                                     this.get_cart_data();
                                 }
                             }
+
                             // 是否首次记录
                             this.setData({
                                 is_first: 0,
                             });
+
+                            // 计算更多分类弹窗的高度
+                            this.search_height_computer();
+                            
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
@@ -1249,6 +1243,19 @@
                 uni.navigateTo({
                     url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
                 });
+            },
+
+            // 计算搜索框的高度
+            search_height_computer() {
+                const query = uni.createSelectorQuery();
+                query.select('.nav-search').boundingClientRect((res) => {
+                    if ((res || null) != null) {
+                        // 获取搜索框高度
+                        this.setData({
+                            search_height: res.height,
+                        });
+                    }
+                }).exec();
             },
         },
     };

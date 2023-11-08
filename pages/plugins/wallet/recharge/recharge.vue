@@ -10,7 +10,7 @@
                         <view class="text-size-lg fw-b">账号余额</view>
                         <view class="margin-top-sm">
                             <text class="unit">{{ currency_symbol }}</text>
-                            <text class="price fw-b">380</text>
+                            <text class="price fw-b">{{ user_wallet.normal_money }}</text>
                         </view>
                     </view>
                     <view class="recharge-content bg-white spacing-mt">
@@ -88,6 +88,7 @@
                 form_submit_disabled_status: false,
                 data: [],
                 recharge_desc: '',
+                user_wallet: null,
                 select_index: null,
 
                 // 支付弹窗参数
@@ -168,6 +169,7 @@
                                 data: data.preset_data || [],
                                 payment_id: data.default_payment_id || 0,
                                 recharge_desc: data.recharge_desc || '',
+                                user_wallet: data.user_wallet || null,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });

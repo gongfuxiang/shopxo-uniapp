@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
-        <view class="signin-container">
-            <component-nav-back></component-nav-back>
-            <view v-if="(data || null) != null" class="pr signin-bg oh">
+        <component-nav-back></component-nav-back>
+        <view v-if="(data || null) != null" class="signin-container">
+            <view class="pr oh">
                 <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
                 <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
@@ -122,10 +122,10 @@
                 </view>
                 <component-share-popup ref="share"></component-share-popup>
             </view>
-            <view v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
