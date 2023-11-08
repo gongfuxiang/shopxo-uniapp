@@ -32,13 +32,6 @@
     z-index: 5;
 }
 
-.category-content {
-    height: calc(100vh - 142rpx);
-    /* #ifdef H5 || APP */
-    height: calc(100vh - 210rpx) !important;
-    /* #endif */
-}
-
 .nav-more-top {
     /* #ifdef H5 || APP */
     top: 135rpx !important;
