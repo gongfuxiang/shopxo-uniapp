@@ -40,7 +40,8 @@
         {
             "path": "pages/cart/cart",
             "style": {
-                "enablePullDownRefresh": true,
+                "enablePullDownRefresh": false,
+                "disableScroll": true,
                 "navigationBarTitleText": "购物车"
             }
         },
@@ -64,7 +65,8 @@
         {
             "path": "pages/cart-page/cart-page",
             "style": {
-                "enablePullDownRefresh": true,
+                "enablePullDownRefresh": false,
+                "disableScroll": true,
                 "navigationBarTitleText": "购物车"
             }
         },

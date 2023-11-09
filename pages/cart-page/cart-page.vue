@@ -29,11 +29,6 @@
             }
         },
 
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.$refs.cart.init();
-        },
-
         methods: {}
     };
 </script>

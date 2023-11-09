@@ -27,7 +27,7 @@
                                         </view>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                             <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                <iconfont name="icon-cart-inc" size="40rpx" :color="themeColor"></iconfont>
+                                                <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                 </view>
@@ -84,7 +84,7 @@
                                         <block v-else>
                                             <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                 <view v-if="propOpenCart" class="bg-white pr" :data-index="index" @tap.stop="goods_cart_event">
-                                                    <iconfont name="icon-cart-inc" size="40rpx" :color="themeColor"></iconfont>
+                                                    <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
                                                     <view class="cart-badge-icon pa">
                                                         <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                     </view>
@@ -123,7 +123,7 @@
                                                 <view class="margin-top-xs flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                         <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="themeColor" prop-class="pr top-xs margin-right-xs"></iconfont>
+                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color" prop-class="pr top-xs margin-right-xs"></iconfont>
                                                             <view class="cart-badge-icon pa">
                                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                             </view>
@@ -175,7 +175,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 data: null,
                 is_show_cart: false,
-                themeColor: app.globalData.get_theme_color(),
+                theme_color: app.globalData.get_theme_color(),
                 grid_btn_config: {
                     bg_color: '#D8D8D8',
                     color: '#fff',

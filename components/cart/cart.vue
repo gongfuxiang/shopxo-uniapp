@@ -1,131 +1,134 @@
 <template>
     <view :class="theme_view">
-        <scroll-view :scroll-y="true" class="scroll-box" :class="data_list.length > 0 ? 'active' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="cart-page">
-                <!-- 数据列表 -->
-                <view class="padding-horizontal-main padding-top-main" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
-                    <uni-swipe-action>
-                        <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
-                            <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
-                                <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
-                                    <!-- 选择 -->
-                                    <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
-                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
-                                    </view>
-                                    <view class="items oh padding-left-main flex-1 flex-row">
-                                        <view>
-                                            <navigator :url="item.goods_url" hover-class="none">
-                                                <!-- 图片 -->
-                                                <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                                <!-- 错误 -->
-                                                <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
-                                                    <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
-                                                </view>
-                                            </navigator>
+        <scroll-view :scroll-y="true" class="scroll-box" :class="data_list.length > 0 ? 'cart' : ''" @scrolltolower="scroll_lower" lower-threshold="60">
+            <view class="content">
+                <view v-if="data_list.length > 0" class="cart-page">
+                    <!-- 数据列表 -->
+                    <view class="padding-horizontal-main padding-top-main" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
+                        <uni-swipe-action>
+                            <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
+                                <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
+                                    <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
+                                        <!-- 选择 -->
+                                        <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
+                                            <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                         </view>
-
-                                        <!-- 基础 -->
-                                        <view class="cart-goods-base padding-left-main flex-1">
-                                            <!-- 标题、规格 -->
-                                            <navigator :url="item.goods_url" hover-class="none">
-                                                <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
-                                            </navigator>
-                                            <view v-if="item.spec != null" class="margin-bottom-sm">
-                                                <block v-for="(sv, si) in item.spec" :key="si">
-                                                    <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                                    <text class="cr-grey">{{ sv.value }}</text>
-                                                </block>
+                                        <view class="items oh padding-left-main flex-1 flex-row">
+                                            <view>
+                                                <navigator :url="item.goods_url" hover-class="none">
+                                                    <!-- 图片 -->
+                                                    <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                    <!-- 错误 -->
+                                                    <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                        <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
+                                                    </view>
+                                                </navigator>
                                             </view>
 
-                                            <!-- 底部内容 -->
-                                            <view class="goods-bottom pr margin-top-sm flex-row jc-sb align-c">
-                                                <!-- 价格 -->
-                                                <view class="sales-price fw-b">
-                                                    <text class="text-size-sm">{{ currency_symbol }}</text>
-                                                    <text class="text-size-lg">{{ item.price }}</text>
+                                            <!-- 基础 -->
+                                            <view class="cart-goods-base padding-left-main flex-1">
+                                                <!-- 标题、规格 -->
+                                                <navigator :url="item.goods_url" hover-class="none">
+                                                    <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
+                                                </navigator>
+                                                <view v-if="item.spec != null" class="margin-bottom-sm">
+                                                    <block v-for="(sv, si) in item.spec" :key="si">
+                                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                                        <text class="cr-grey">{{ sv.value }}</text>
+                                                    </block>
                                                 </view>
 
-                                                <!-- 数量 -->
-                                                <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="cart-number-content pa tc oh round br">
-                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="0">-</view>
-                                                    <input @blur="goods_buy_number_blur" class="tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
-                                                    <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="1">+</view>
+                                                <!-- 底部内容 -->
+                                                <view class="goods-bottom pr margin-top-sm flex-row jc-sb align-c">
+                                                    <!-- 价格 -->
+                                                    <view class="sales-price fw-b">
+                                                        <text class="text-size-sm">{{ currency_symbol }}</text>
+                                                        <text class="text-size-lg">{{ item.price }}</text>
+                                                    </view>
+
+                                                    <!-- 数量 -->
+                                                    <view v-if="(item.is_error || 0) != 1 && common_site_type != 1" class="cart-number-content pa tc oh round br">
+                                                        <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="0">-</view>
+                                                        <input @blur="goods_buy_number_blur" class="tc cr-grey fl va-m bg-white radius-0" type="number" :value="item.stock" :data-index="index" />
+                                                        <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" :data-index="index" data-type="1">+</view>
+                                                    </view>
                                                 </view>
                                             </view>
                                         </view>
                                     </view>
-                                </view>
-                            </uni-swipe-action-item>
-                        </view>
-                    </uni-swipe-action>
+                                </uni-swipe-action-item>
+                            </view>
+                        </uni-swipe-action>
+                    </view>
                 </view>
+
+                <!-- 空购物车 -->
+                <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
+                    <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
+                    <view class="cr-grey text-size-sm">{{ data_list_loding_msg || '购物车空空如也' }}</view>
+                    <navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
+                        <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
+                    </navigator>
+                </view>
+
+                <!-- 提示信息 -->
+                <block v-if="data_list.length == 0 && data_list_loding_status != 0">
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                </block>
+
+                <!-- 猜你喜欢 -->
+                <view v-if="goods_list.length > 0" class="padding-horizontal-main">
+                    <view class="tc spacing-mb">
+                        <view class="guess-like fw-b text-size-md">猜你喜欢</view>
+                    </view>
+                    <div class="spacing-mt">
+                        <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
+                    </div>
+                </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
             </view>
 
-            <!-- 空购物车 -->
-            <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
-                <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
-                <view class="cr-grey text-size-sm">{{ data_list_loding_msg || '购物车空空如也' }}</view>
-                <navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
-                    <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
-                </navigator>
-            </view>
-
-            <!-- 提示信息 -->
-            <block v-if="data_list.length == 0 && data_list_loding_status != 0">
-                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            <!-- 操作导航 -->
+            <!-- 展示型 -->
+            <block v-if="data_list.length > 0">
+                <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                    <view class="cart-exhibition-mode padding-horizontal-main">
+                        <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                            <view class="dis-inline-block va-m margin-right-xl">
+                                <uni-icons type="phone" size="14" color="#fff" />
+                            </view>
+                            <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
+                        </button>
+                    </view>
+                </view>
+                <!-- 销售,自提,虚拟销售 -->
+                <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-t bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
+                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
+                        <view class="cart-selected flex-row align-c">
+                            <view @tap="selected_event" data-type="all">
+                                <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
+                            </view>
+                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
+                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
+                        </view>
+                        <view class="price flex-row jc-e flex-nowrap align-c">
+                            <view>合计：</view>
+                            <view class="sales-price single-text fw-b">
+                                <text class="text-size-sm">{{ currency_symbol }}</text>
+                                <text class="text-size-lg">{{ total_price }}</text>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="cart-nav-submit">
+                        <button class="bg-main cr-white round" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                            去结算
+                            <text v-if="total_num > 0">({{ total_num }})</text>
+                        </button>
+                    </view>
+                </view>
             </block>
-
-            <!-- 猜你喜欢 -->
-            <view v-if="goods_list.length > 0" class="padding-horizontal-main">
-                <view class="tc spacing-mb">
-                    <view class="guess-like fw-b text-size-md">猜你喜欢</view>
-                </view>
-                <div class="spacing-mt">
-                    <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event"> </component-goods-list>
-                </div>
-            </view>
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
         </scroll-view>
-        <!-- 操作导航 -->
-        <!-- 展示型 -->
-        <block v-if="data_list.length > 0">
-            <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
-                <view class="cart-exhibition-mode padding-horizontal-main">
-                    <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
-                        <view class="dis-inline-block va-m margin-right-xl">
-                            <uni-icons type="phone" size="14" color="#fff" />
-                        </view>
-                        <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
-                    </button>
-                </view>
-            </view>
-            <!-- 销售,自提,虚拟销售 -->
-            <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-t bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
-                <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
-                    <view class="cart-selected flex-row align-c">
-                        <view @tap="selected_event" data-type="all">
-                            <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
-                        </view>
-                        <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
-                        <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
-                    </view>
-                    <view class="price flex-row jc-e flex-nowrap align-c">
-                        <view>合计：</view>
-                        <view class="sales-price single-text fw-b">
-                            <text class="text-size-sm">{{ currency_symbol }}</text>
-                            <text class="text-size-lg">{{ total_price }}</text>
-                        </view>
-                    </view>
-                </view>
-                <view class="cart-nav-submit">
-                    <button class="bg-main cr-white round" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                        去结算
-                        <text v-if="total_num > 0">({{ total_num }})</text>
-                    </button>
-                </view>
-            </view>
-        </block>
 
         <block v-if="data_list_loding_status != 1">
             <!-- 用户基础 -->
@@ -212,11 +215,6 @@
             this.get_data_list(1);
         },
 
-        // 下拉刷新
-        onPullDownRefresh() {
-            this.init();
-        },
-
         methods: {
             // 初始化配置
             init_config(status) {
@@ -241,7 +239,6 @@
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
-                        uni.stopPullDownRefresh();
                         uni.showModal({
                             title: '温馨提示',
                             content: '绑定手机号码',
@@ -276,7 +273,6 @@
                         }
                     }
                 } else {
-                    uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 0,
                         data_list_loding_msg: '请先授权用户信息',
@@ -295,7 +291,6 @@
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var data_list = data.data || [];
@@ -351,7 +346,6 @@
                         }, 3000);
                     },
                     fail: () => {
-                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                             data_list_loding_msg: '网络开小差了哦~',
@@ -724,7 +718,6 @@
                 // 分页是否还有数据
                 if ((is_mandatory || 0) == 0) {
                     if (this.goods_bottom_line_status == true) {
-                        uni.stopPullDownRefresh();
                         return false;
                     }
                 }
@@ -746,7 +739,6 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             if (data.data.length > 0) {
@@ -792,7 +784,6 @@
                         }
                     },
                     fail: () => {
-                        uni.stopPullDownRefresh();
                         this.setData({
                             goods_is_loading: 0,
                         });
@@ -860,17 +851,11 @@
     .cart-page {
         margin-bottom: 40rpx;
     }
-    .scroll-box.active {
-        height: calc(100vh - 125rpx);
-        /* 125rpx */
-        /* #ifdef H5 */
-        height: calc(100vh - 224rpx);
-        /* #endif */
-    }
     .scroll-box {
-        /* #ifdef H5 */
-        height: calc(100vh - 100rpx);
-        /* #endif */
+        height: 100vh;
+    }
+    .scroll-box.cart .content {
+        padding-bottom: 125rpx;
     }
 
     .cart-goods-title {
@@ -956,7 +941,7 @@
     */
     .cart-buy-nav {
         position: fixed;
-        z-index: 2;
+        z-index: 1;
         left: 0;
         bottom: 0rpx;
         /* #ifdef H5 || APP */
