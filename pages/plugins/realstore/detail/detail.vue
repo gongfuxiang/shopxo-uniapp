@@ -49,7 +49,7 @@
                                         </view>
                                     </view>
                                     <view :class="'title fw-b text-size single-text ' + ((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
-                                        <text v-if="(info.alias || null) != null" class="va-m title-icon round br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
+                                        <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
                                         <text class="va-m">{{ info.name }}</text>
                                     </view>
                                     <view class="margin-top-xs text-size-xs cr-grey">
@@ -67,7 +67,7 @@
                                             {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                         </view>
                                         <!-- #ifndef MP-KUAISHOU -->
-                                        <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event"> 导航 </view>
+                                        <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event"> 导航 </view>
                                         <!-- #endif -->
                                     </view>
                                     <!-- 右侧操作 -->

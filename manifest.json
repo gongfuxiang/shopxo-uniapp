@@ -49,14 +49,21 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "requiredPrivateInfos" : [ "chooseLocation", "getLocation", "chooseAddress", "onLocationChange", "startLocationUpdate", "startLocationUpdateBackground" ],
+        "requiredPrivateInfos" : [
+            "chooseLocation",
+            "getLocation",
+            "chooseAddress",
+            "onLocationChange",
+            "startLocationUpdate",
+            "startLocationUpdateBackground"
+        ],
         "appid" : "wxda7779770f53e901",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
             "minified" : true,
-            "ignoreDevUnusedFiles": false,
-            "ignoreUploadUnusedFiles": false
+            "ignoreDevUnusedFiles" : false,
+            "ignoreUploadUnusedFiles" : false
         },
         "usingComponents" : true,
         "permission" : {
@@ -64,7 +71,7 @@
                 "desc" : "你的位置将用于小程序中相应业务位置服务使用"
             }
         },
-        "__usePrivacyCheck__": true,
+        "__usePrivacyCheck__" : true,
         "plugins" : {
             // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
             // "live-player-plugin" : {
@@ -72,9 +79,9 @@
             //     "provider" : "wx2b03c6e691cd7370"
             // },
             // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
-            // "routePlan": {
-            // 	"version": "1.0.19",
-            // 	"provider": "wx50b5593e81dd937a"
+            // "routePlan" : {
+            //     "version" : "1.0.19",
+            //     "provider" : "wx50b5593e81dd937a"
             // }
         }
     },

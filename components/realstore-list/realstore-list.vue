@@ -8,7 +8,7 @@
                         <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
                         <view class="base-right flex-1 flex-width">
                             <view class="title fw-b text-size single-text">
-                                <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-xs br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
+                                <text v-if="(item.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-horizontal-xs margin-right-xs">{{ item.alias }}</text>
                                 <text class="va-m">{{ item.name }}</text>
                             </view>
                             <view class="margin-top-sm padding-top-xs text-size-xs cr-grey">
