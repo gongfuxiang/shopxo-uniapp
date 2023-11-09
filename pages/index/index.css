@@ -201,13 +201,18 @@
     left: 0;
     top: 0;
     z-index: 20;
-    background-color: rgb(0 0 0 / 0.7);
+    background-color: rgb(0 0 0 / 0.3);
 }
 
 .plugins-popupscreen .close {
     right: 10%;
     top: 0;
     z-index: 1;
+    width: 46rpx;
+    height: 46rpx;
+    line-height: 46rpx;
+    background-color: rgb(4 4 4 / 0.3);
+    border: solid 1px #a9a9a9;
 }
 
 .plugins-popupscreen .content {

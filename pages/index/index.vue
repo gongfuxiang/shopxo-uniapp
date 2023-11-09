@@ -192,16 +192,6 @@
                             <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :prop-open-cart="false"></component-activity-list>
                         </block>
 
-                        <!-- 弹屏广告 - 插件 -->
-                        <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
-                            <view class="content pr">
-                                <view class="close pa cp" @tap.stop="plugins_popupscreen_close_event">
-                                    <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
-                                </view>
-                                <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
-                            </view>
-                        </view>
-
                         <!--- 底部购买记录 - 插件 -->
                         <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
                             <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
@@ -241,7 +231,9 @@
                 <!-- 弹屏广告 - 插件 -->
                 <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
                     <view class="content pr">
-                        <icon type="clear" size="46rpx" class="close pa cp" @tap.stop="plugins_popupscreen_close_event"> </icon>
+                        <view class="close pa cp round padding-sm tc" @tap.stop="plugins_popupscreen_close_event">
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#cacaca"></iconfont>
+                        </view>
                         <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
                     </view>
                 </view>
