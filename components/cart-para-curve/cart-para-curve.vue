@@ -70,8 +70,14 @@
                         var cart_left = temp.left;
                         var cart_top = temp.top;
                     }
+                    /* #ifndef MP-ALIPAY */
                     var left = pos.changedTouches[0].clientX + btn_width/2 - btn_size/2;
                     var top = pos.changedTouches[0].clientY - btn_size;
+                    /* #endif */
+                    /* #ifdef MP-ALIPAY */
+                    var left = pos.detail.clientX + btn_width/2 - btn_size/2;
+                    var top = pos.detail.clientY - btn_size;
+                    /* #endif */
                     var x = cart_left + cart_width/2 - btn_size/2 - left;
                     var y = cart_top - btn_size - top;
                      if(self.cart_icon_data == null || (self.cart_icon_data.status || 0) == 0) {

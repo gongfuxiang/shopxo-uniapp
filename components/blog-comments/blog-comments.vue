@@ -6,15 +6,15 @@
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr blog-comments-bottom-container cr-grey">
                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
-                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" prop-class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">评论({{ data.comments_count }})</text>
                     </view>
                     <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'base')" :data-blogid="data.id" @tap="give_thumbs_event">
-                        <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" prop-class="pr top-sm margin-right-xs"></iconfont>
                         <text class="va-m text-size-xs">点赞({{ data.give_thumbs_count }})</text>
                     </view>
                     <view class="item dis-inline-block cr-base" @tap="popup_share_event">
-                        <iconfont name="icon-bowenxiangqing-fenxiang" size="28rpx" class="pr top-sm margin-right-xs"></iconfont>
+                        <iconfont name="icon-bowenxiangqing-fenxiang" size="28rpx" prop-class="pr top-sm margin-right-xs"></iconfont>
                         <text class="text-size-xs">分享</text>
                     </view>
                 </view>
@@ -24,11 +24,13 @@
                 <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                 <view class="right-base flex-1 flex-width">
                     <view class="comments border-radius-main padding-main">
-                        <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <textarea placeholder="期待您的发言..." placeholder-class="cr-grey" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                         <view class="oh flex-row jc-sb align-e">
                             <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                             <view class="flex-row align-e">
+                                <!-- #ifndef MP-ALIPAY -->
                                 <text class="text-size-xs cr-grey-d margin-right-sm">剩余{{ input_comments_length_value }}字</text>
+                                <!-- #endif  -->
                                 <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
                             </view>
                         </view>
@@ -48,11 +50,11 @@
                             <view class="margin-top-sm comments-content">{{ item.content }}</view>
                             <view class="blog-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
                                 <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-blogcommentsid="item.id" @tap="modal_open_event">
-                                    <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                    <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" prop-class="pr top-md margin-right-xs"></iconfont>
                                     <text class="va-m">回复({{ item.comments_count }})</text>
                                 </view>
                                 <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="1" :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="give_thumbs_event">
-                                    <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                    <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" prop-class="pr top-md margin-right-xs"></iconfont>
                                     <text class="va-m">点赞({{ item.give_thumbs_count }})</text>
                                 </view>
                             </view>
@@ -70,11 +72,21 @@
                                                 <view class="margin-top-sm">{{ comments.content }}</view>
                                                 <view class="blog-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
                                                     <view v-if="(data_base.is_blog_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="comments.user.user_name_view" :data-blogcommentsid="comments.blog_comments_id" :data-replycommentsid="comments.id" @tap="modal_open_event">
-                                                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                                        <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" prop-class="pr top-md margin-right-xs"></iconfont>
                                                         <text class="va-m">回复({{ comments.comments_count }})</text>
                                                     </view>
-                                                    <view v-if="(data_base.is_blog_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="2" :data-index="index" :data-indexs="index2" :data-blogid="comments.blog_id" :data-blogcommentsid="comments.id" :data-replycommentsid="comments.blog_comments_id" @tap="give_thumbs_event">
-                                                        <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" class="pr top-md margin-right-xs"></iconfont>
+                                                    <view
+                                                        v-if="(data_base.is_blog_give_thumbs || 0) == 1"
+                                                        :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')"
+                                                        data-type="2"
+                                                        :data-index="index"
+                                                        :data-indexs="index2"
+                                                        :data-blogid="comments.blog_id"
+                                                        :data-blogcommentsid="comments.id"
+                                                        :data-replycommentsid="comments.blog_comments_id"
+                                                        @tap="give_thumbs_event"
+                                                    >
+                                                        <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" prop-class="pr top-md margin-right-xs"></iconfont>
                                                         <text class="va-m">点赞({{ comments.give_thumbs_count }})</text>
                                                     </view>
                                                 </view>
@@ -87,7 +99,7 @@
                                 <text :data-index="index" :data-blogid="item.blog_id" :data-blogcommentsid="item.id" @tap="comments_list_reply_event">
                                     <text v-if="item.is_comments_list_submit == undefined" class="cr-grey">查看全部{{ item.comments_count }}条回复</text>
                                     <text v-else class="cr-grey">查看更多回复</text>
-                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                                 </text>
                             </view>
                         </view>
@@ -97,13 +109,13 @@
                     <view v-if="propType == 'detail'" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-value="'/pages/plugins/blog/comments/comments?id=' + data.id" @tap="url_event">
                             <text class="cr-grey">查看全部{{ data.comments_count }}条评论</text>
-                            <iconfont name="icon-qiandao-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                            <iconfont name="icon-qiandao-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                     <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-blogid="data.id" @tap="comments_list_reply_event">
                             <text class="cr-grey">查看更多评论</text>
-                            <iconfont name="icon-mendian-jiantou2" size="24rpx" class="margin-left-xs pr top-xs"></iconfont>
+                            <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                 </block>

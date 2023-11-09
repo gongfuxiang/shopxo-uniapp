@@ -1622,7 +1622,7 @@ button[disabled].bg-grey {
  * 小程序端距离顶部位置的控制
  */
 .weixin-nav-padding-top {
-    /* #ifdef MP-WEIXIN */
+    /* #ifndef H5  */
     padding-top: calc(var(--status-bar-height) + 5px);
     /* #endif */
 }

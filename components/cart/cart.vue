@@ -10,7 +10,7 @@
                                 <view class="flex-row align-c" :class="'cart-goods-item padding-main pr ' + (common_site_type == 1 ? 'cart-exhibition-mode-data' : '')">
                                     <!-- 选择 -->
                                     <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pr z-i ht-auto">
-                                        <iconfont :name="'icon-zhifu-'+((item.selected || false) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(item.selected || false) ? theme_color : '#999'"></iconfont>
+                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                     </view>
                                     <view class="items oh padding-left-main flex-1 flex-row">
                                         <view>
@@ -80,7 +80,9 @@
                 <view class="tc spacing-mb">
                     <view class="guess-like fw-b text-size-md">猜你喜欢</view>
                 </view>
-                <component-goods-list class="spacing-mt" :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event"> </component-goods-list>
+                <div class="spacing-mt">
+                    <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" @CartSuccessEvent="cart_success_event"> </component-goods-list>
+                </div>
             </view>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
@@ -103,7 +105,7 @@
                 <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                     <view class="cart-selected flex-row align-c">
                         <view @tap="selected_event" data-type="all">
-                            <iconfont :name="'icon-zhifu-'+(is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
+                            <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                         </view>
                         <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
                         <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>

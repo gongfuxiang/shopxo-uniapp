@@ -9,4 +9,6 @@
 }
 .bottom-fixed button {
     width: 50%;
+    height: 64rpx;
+    line-height: 64rpx;
 }

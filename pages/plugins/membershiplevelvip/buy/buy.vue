@@ -51,7 +51,7 @@
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-kaitonghuiy-dingdan" class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
+                    <view> <iconfont name="icon-kaitonghuiy-dingdan" prop-class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
                     <iconfont name="icon-index-morejiantou" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>

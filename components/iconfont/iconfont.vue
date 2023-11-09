@@ -1,5 +1,7 @@
 <template>
-    <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
+    <div class="dis-inline-block" :class="propClass">
+        <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
+    </div>
 </template>
 
 <script>
@@ -16,6 +18,10 @@
             size: {
                 type: String,
                 default: '28rpx',
+            },
+            propClass: {
+                type: String,
+                default: '',
             },
         },
     };

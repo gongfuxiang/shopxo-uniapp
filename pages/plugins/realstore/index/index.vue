@@ -8,7 +8,7 @@
                 <!-- 位置 -->
                 <view class="nav-location single-text flex-row align-c" @tap="choose_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" class="pr top-xs"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr top-xs"></iconfont>
                     </view>
                     <text class="va-m margin-left-xs">
                         <block v-if="(user_location || null) != null">{{ user_location.name || user_location.address || '' }}</block>

@@ -281,6 +281,10 @@
                     // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                     "navigationStyle": "custom",
                     // #endif
+                    // #ifdef MP-ALIPAY
+                    "transparentTitle": "auto",
+                    "titlePenetrate":"YES",
+                    // #endif
                     "enablePullDownRefresh": true,
                     "navigationBarTitleText": "限时秒杀"
                 }
@@ -293,6 +297,10 @@
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "领券中心"
@@ -322,6 +330,10 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "会员VIP"
                     }
@@ -338,6 +350,10 @@
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的会员"
@@ -401,6 +417,10 @@
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的分销"
@@ -521,6 +541,10 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "我的钱包"
                     }
@@ -530,6 +554,10 @@
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": "充值"
@@ -694,6 +722,10 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "签到"
                     }
@@ -728,6 +760,10 @@
                 "style": {
                     // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                     "navigationStyle": "custom",
+                    // #endif
+                    // #ifdef MP-ALIPAY
+                    "transparentTitle": "auto",
+                    "titlePenetrate":"YES",
                     // #endif
                     "enablePullDownRefresh": true,
                     "navigationBarTitleText": "积分商城"
@@ -880,6 +916,10 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                         "navigationStyle": "custom",
                         // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "门店详情"
                     }
@@ -979,6 +1019,10 @@
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
                         // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "问答"
                     }
@@ -1002,6 +1046,10 @@
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "提问详情"

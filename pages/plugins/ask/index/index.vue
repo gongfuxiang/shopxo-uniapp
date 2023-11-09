@@ -47,13 +47,13 @@
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
                 <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="divider-r-d wh-auto">
-                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" class="margin-right-sm"></iconfont>
+                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" prop-class="margin-right-sm"></iconfont>
                         我要提问
                     </view>
                 </navigator>
                 <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="wh-auto">
-                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" class="margin-right-sm pr top-xs"></iconfont>
+                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" prop-class="margin-right-sm pr top-xs"></iconfont>
                         我的提问
                     </view>
                 </navigator>

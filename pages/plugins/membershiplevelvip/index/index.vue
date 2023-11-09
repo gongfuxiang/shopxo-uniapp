@@ -11,7 +11,7 @@
                         <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
                         <!-- 购买按钮 -->
                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
-                            <button class="banner-buy fw-b round margin-top-xxxl" hover-class="none" :style="join_vip_btn">
+                            <button class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
                                 {{ data_base.banner_middle_name || '加入会员' }}
                             </button>
                         </navigator>

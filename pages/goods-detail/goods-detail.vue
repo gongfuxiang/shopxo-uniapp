@@ -227,7 +227,7 @@
                         </view>
                         <view @tap="popup_coupon_event">
                             <text class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
-                            <iconfont name="icon-qiandao-jiantou2" color="#999" class="va-m"></iconfont>
+                            <iconfont name="icon-qiandao-jiantou2" color="#999" prop-class="va-m"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -297,7 +297,7 @@
                         <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                 我要评价
-                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="margin-left-sm pr top-xs"></iconfont>
+                                <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
                             </view>
                         </navigator>
                     </view>
@@ -316,7 +316,7 @@
                         <navigator url="/pages/plugins/ask/form/form" hover-class="none">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                 我要提问
-                                <iconfont name="icon-qiandao-jiantou2" color="#666" class="pr top-sm margin-left-sm"></iconfont>
+                                <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </navigator>
                     </view>

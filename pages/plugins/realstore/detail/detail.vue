@@ -62,7 +62,7 @@
                                 <view class="flex-row jc-sb align-c">
                                     <!-- 地址 -->
                                     <view class="flex-row align-c">
-                                        <iconfont name="icon-index-zxmd-dress" size="28rpx" class="pr top-xs"></iconfont>
+                                        <iconfont name="icon-index-zxmd-dress" size="28rpx" prop-class="pr top-xs"></iconfont>
                                         <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                             {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                         </view>

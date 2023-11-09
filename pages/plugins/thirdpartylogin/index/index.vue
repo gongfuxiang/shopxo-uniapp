@@ -15,7 +15,7 @@
             </block>
             <block v-else>
                 <view class="margin-top-xxl">
-                    <iconfont name="icon-qiandao-dqxz" size="28rpx" class="cr-green circle"></iconfont>
+                    <iconfont name="icon-qiandao-dqxz" size="28rpx" prop-class="cr-green circle"></iconfont>
                     <text class="margin-left-xs">已登录成功</text>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">

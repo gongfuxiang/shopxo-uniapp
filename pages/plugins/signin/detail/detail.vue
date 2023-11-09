@@ -7,13 +7,13 @@
                 <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
                         <button type="default" class="content" @tap="share_event">
-                            <iconfont name="icon-qiandao-fenxiang" class="pr top-sm" size="32rpx"></iconfont>
+                            <iconfont name="icon-qiandao-fenxiang" prop-class="pr top-sm" size="32rpx"></iconfont>
                             分享
                         </button>
                     </view>
                     <view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
                         <view class="content">
-                            <iconfont name="icon-qiandao-zudui" class="pr top-xs" size="34rpx"></iconfont>
+                            <iconfont name="icon-qiandao-zudui" prop-class="pr top-xs" size="34rpx"></iconfont>
                             组队
                         </view>
                     </view>
@@ -23,7 +23,7 @@
                         <block v-if="is_already_coming == 1"> 已签到 </block>
                         <block v-else>
                             立即签到
-                            <iconfont name="icon-qiandao-jiantou" color="#fff" size="32rpx" class="margin-left-sm"></iconfont>
+                            <iconfont name="icon-qiandao-jiantou" color="#fff" size="32rpx" prop-class="margin-left-sm"></iconfont>
                         </block>
                     </view>
                 </view>
@@ -36,7 +36,7 @@
                             </view>
                             <view class="title-right text-size-md">
                                 <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
-                                    <iconfont name="icon-qiandao-wdqd margin-right-sm pr top-sm" size="32rpx"></iconfont>
+                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" prop-class="margin-right-sm pr top-sm"></iconfont>
                                     我的签到
                                 </navigator>
                             </view>

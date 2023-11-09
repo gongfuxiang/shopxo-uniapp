@@ -7,7 +7,7 @@
                         <view class="base oh br-b-dashed padding-bottom-main">
                             <view class="dis-inline-block va-m" data-type="node":data-value="item.id" @tap="selected_event">
                                 <iconfont
-                                    class="margin-right-sm pr top-md"
+                                    prop-class="margin-right-sm pr top-md"
                                     :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
                                     size="34rpx"
                                     :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"

@@ -22,7 +22,7 @@
         <component-popup :propShow="is_show_payment_popup" propPosition="bottom" @onclose="payment_popup_event_close">
             <view class="poupon-title padding-main tc text-size-md pr">
                 付款详情
-                <iconfont name="icon-huiyuan-guanbi" class="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
+                <iconfont name="icon-huiyuan-guanbi" prop-class="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
             </view>
             <view class="payment-price tc padding-top-sm padding-bottom-sm br-b">
                 <text class="text-size-md">{{ currency_symbol }}</text>

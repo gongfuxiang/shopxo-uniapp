@@ -24,13 +24,13 @@
                             <view>
                                 <view class="single-text text-size-md fw-b">{{ item.name }}</view>
                                 <view class="margin-top-sm oh flex-row flex-nowrap align-c">
-                                    <iconfont name="icon-zhibo-time" color="#ccc" size="28rpx" class="margin-right-sm"></iconfont>
+                                    <iconfont name="icon-zhibo-time" color="#ccc" size="28rpx" prop-class="margin-right-sm"></iconfont>
                                     <view class="flex-row flex-nowrap align-c flex-1 flex-width cr-grey-9 single-text"> {{ item.start_time }} - {{ item.end_time }} </view>
                                 </view>
                             </view>
                             <view class="self-e text-size-xs cr-grey-9 flex-row align-c" :class="'status-' + item.status"
                                 ><!-- 未开始 -->
-                                <iconfont v-if="item.status === '0'" name="icon-zhibo-time margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-if="item.status === '0'" name="icon-zhibo-time" prop-class="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 直播中 -->
                                 <div v-else-if="item.status === '1'" class="spread margin-right-sm">
                                     <div class="ring"></div>
@@ -38,11 +38,11 @@
                                     <div class="ring"></div>
                                 </div>
                                 <!-- 暂停中 -->
-                                <iconfont v-else-if="item.status === '2'" name="icon-zhibo-zt margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-else-if="item.status === '2'" name="icon-zhibo-zt" prop-class="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 已结束 -->
-                                <iconfont v-else-if="item.status === '3'" name="icon-zhibo-jies margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-else-if="item.status === '3'" name="icon-zhibo-jies" prop-class="margin-right-xs pr top-xs"></iconfont>
                                 <!-- 其他 -->
-                                <iconfont v-else name="icon-zhibo-shixiao margin-right-xs pr top-xs"></iconfont>
+                                <iconfont v-else name="icon-zhibo-shixiao" prop-class="margin-right-xs pr top-xs"></iconfont>
                                 {{ item.status_name }}
                             </view>
                         </view>

@@ -27,7 +27,7 @@
                                         <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
                                             <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
                                                 {{ (extraction || null) == null ? '申请' : '' }}取货点
-                                                <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" class="pa"></iconfont>
+                                                <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" prop-class="pa"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>

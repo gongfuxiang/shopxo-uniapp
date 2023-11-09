@@ -46,7 +46,7 @@
                                                     </view>
                                                 </view>
                                                 <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
-                                                    <iconfont name="icon-transfer" size="28rpx" class="transfer-icon"></iconfont>
+                                                    <iconfont name="icon-transfer" size="28rpx" prop-class="transfer-icon"></iconfont>
                                                     <text class="margin-left-xs">转账</text>
                                                 </view>
                                             </view>
