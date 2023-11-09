@@ -255,7 +255,7 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment ref="payment" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" :prop-to-appoint-page="to_appoint_page" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page-back="to_page_back" :prop-to-fail-page="to_fail_page"></component-payment>
+            <component-payment ref="payment" :propIsRedirectTo="true" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" :prop-to-appoint-page="to_appoint_page" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page-back="to_page_back" :prop-to-fail-page="to_fail_page"></component-payment>
         </block>
     </view>
 </template>
