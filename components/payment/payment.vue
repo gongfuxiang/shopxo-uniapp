@@ -663,7 +663,7 @@
                 this.setData({
                     popup_view_pay_html_is_show: false,
                 });
-                this.to_fail_page_event();
+                this.to_other();
             },
         },
     };
