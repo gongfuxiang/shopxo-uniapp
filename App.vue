@@ -3,6 +3,7 @@
     export default {
         globalData: {
             data: {
+                // 基础配置
                 // 数据接口请求地址
                 request_url: 'https://d1.shopxo.vip/',
 
@@ -36,58 +37,8 @@
                 // 紫色 purple    #623cec
                 default_theme: 'red',
 
-                // 数据缓存key
-                // 场景值
-                cache_scene_key: 'cache_scene_key',
 
-                // uuid缓存key
-                cache_user_uuid_key: 'cache_user_uuid_key',
-
-                // 配置信息缓存key
-                cache_config_info_key: 'cache_config_info_key',
-
-                // 用户登录缓存key
-                cache_user_login_key: 'cache_user_login_key',
-
-                // 用户信息缓存key
-                cache_user_info_key: 'cache_shop_user_info_key',
-
-                // 设备信息缓存key
-                cache_system_info_key: 'cache_shop_system_info_key',
-
-                // 用户地址选择缓存key
-                cache_buy_user_address_select_key: 'cache_buy_user_address_select_key',
-
-                // 启动参数缓存key
-                cache_launch_info_key: 'cache_shop_launch_info_key',
-
-                // 获取位置选择缓存key
-                cache_userlocation_key: 'cache_userlocation_key',
-
-                // 页面支付临时缓存key
-                cache_page_pay_key: 'cache_page_pay_key',
-
-                // 上一页地址缓存key
-                cache_prev_page_key: 'cache_prev_page_key',
-
-                // tab页面切换参数
-                cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
-
-                // 用户基础资料提示间隔key
-                cache_user_base_personal_interval_time_key: 'cache_user_base_personal_interval_time_key',
-
-                // 用户购物车选择记录key
-                cache_user_cart_not_use_data_key: 'cache_user_cart_not_use_data_key',
-
-                // 默认用户头像
-                default_user_head_src: '/static/images/common/user.png',
-
-                // 成功圆形提示图片
-                default_round_success_icon: '/static/images/common/round-success-icon.png',
-
-                // 错误圆形提示图片
-                default_round_error_icon: '/static/images/common/round-error-icon.png',
-
+                // 公共配置
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
                 is_share_use_image: 1,
 
@@ -141,6 +92,59 @@
                     '/pages/cart/cart',
                     '/pages/user/user'
                 ],
+
+
+                // 数据缓存key
+                // 场景值
+                cache_scene_key: 'cache_scene_key',
+                
+                // uuid缓存key
+                cache_user_uuid_key: 'cache_user_uuid_key',
+
+                // 配置信息缓存key
+                cache_config_info_key: 'cache_config_info_key',
+
+                // 用户登录缓存key
+                cache_user_login_key: 'cache_user_login_key',
+
+                // 用户信息缓存key
+                cache_user_info_key: 'cache_shop_user_info_key',
+
+                // 设备信息缓存key
+                cache_system_info_key: 'cache_shop_system_info_key',
+
+                // 用户地址选择缓存key
+                cache_buy_user_address_select_key: 'cache_buy_user_address_select_key',
+
+                // 启动参数缓存key
+                cache_launch_info_key: 'cache_shop_launch_info_key',
+
+                // 获取位置选择缓存key
+                cache_userlocation_key: 'cache_userlocation_key',
+
+                // 页面支付临时缓存key
+                cache_page_pay_key: 'cache_page_pay_key',
+
+                // 上一页地址缓存key
+                cache_prev_page_key: 'cache_prev_page_key',
+
+                // tab页面切换参数
+                cache_page_tabbar_switch_params: 'cache_page_tabbar_switch_params_key',
+
+                // 用户基础资料提示间隔key
+                cache_user_base_personal_interval_time_key: 'cache_user_base_personal_interval_time_key',
+
+                // 用户购物车选择记录key
+                cache_user_cart_not_use_data_key: 'cache_user_cart_not_use_data_key',
+
+                // 默认用户头像
+                default_user_head_src: '/static/images/common/user.png',
+
+                // 成功圆形提示图片
+                default_round_success_icon: '/static/images/common/round-success-icon.png',
+
+                // 错误圆形提示图片
+                default_round_error_icon: '/static/images/common/round-error-icon.png',
             },
 
             /**
