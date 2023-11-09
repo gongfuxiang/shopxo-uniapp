@@ -2,8 +2,8 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed padding-main">
             <view v-if="data_list.length > 0">
-                <view v-for="(item, index) in data_list" :key="index" class="item padding-xl bg-white spacing-mb flex-row jc-sb align-c">
-                    <view class="flex-1 flex-width padding-right-main" @tap="address_conent_event" :data-index="index">
+                <view v-for="(item, index) in data_list" :key="index" class="item padding-vertical-xl padding-left-xl bg-white spacing-mb flex-row jc-sb align-c border-radius-main">
+                    <view class="flex-1 flex-width" @tap="address_conent_event" :data-index="index" data-event="copy" :data-value="item">
                         <view class="flex-row align-c">
                             <text v-if="is_default == item.id" class="default-address margin-right-sm text-size-xss border-radius-sm">默认</text>
                             <text v-if="(item.alias || null) != null" class="address-alias br-main cr-main margin-right-sm text-size-xss border-radius-sm">{{ item.alias }}</text>
@@ -21,7 +21,7 @@
                             <text class="cr-grey-9">{{ item.tel }}</text>
                         </view>
                     </view>
-                    <view class="padding-vertical-main" @tap="address_edit_event" :data-index="index">
+                    <view class="padding-vertical-main padding-left-main padding-right-xl" @tap="address_edit_event" :data-index="index">
                         <iconfont name="icon-wddz-bianji" size="24rpx"></iconfont>
                     </view>
                 </view>
@@ -204,6 +204,7 @@
 
             // 地址内容事件
             address_conent_event(e) {
+                // 地址选择存储缓存并返回
                 var index = e.currentTarget.dataset.index || 0;
                 var is_back = this.params.is_back || 0;
                 if (is_back == 1) {
@@ -212,6 +213,11 @@
                         data: this.data_list[index],
                     });
                     uni.navigateBack();
+                } else {
+                    // 点击复制地址
+                    var new_data = e.currentTarget.dataset.value;
+                    var copy_val = '收货人：' + new_data.name + '\n' + '联系电话：' + new_data.tel + '\n' + '收获地址：' + new_data.province_name + new_data.city_name + new_data.county_name + new_data.address;
+                    app.globalData.text_copy_event(copy_val);
                 }
             },
 
