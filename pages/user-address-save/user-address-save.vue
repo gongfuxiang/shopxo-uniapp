@@ -85,7 +85,7 @@
                                     </view>
                                     <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
-                                            <input type="text" name="alias" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="请输入标签名称" />
+                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="请输入标签名称" />
                                             <button type="default" size="mini" class="round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">确定</button>
                                         </view>
                                         <view v-else>
@@ -99,6 +99,7 @@
                                                 <iconfont name="icon-xzdz-tianjiabiaoq" size="28rpx"></iconfont>
                                             </view>
                                         </view>
+                                        <input type="hidden" name="alias" :value="address_data.alias" class="dis-none"  />
                                     </view>
                                 </view>
                             </view>
@@ -297,7 +298,6 @@
                                 address_data: ads_data || {},
                                 idcard_images_data: idcard_images,
                                 editor_path_type: data.editor_path_type || '',
-                                alias_eidt_text: alias || '',
                             });
                             if (this.alias_list.indexOf(alias) === -1) {
                                 this.setData({
