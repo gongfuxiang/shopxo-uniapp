@@ -117,7 +117,7 @@
                         <text>回复 @{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
-                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" prop-class="#999"></iconfont>
+                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                     </view>

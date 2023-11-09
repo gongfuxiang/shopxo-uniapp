@@ -278,6 +278,6 @@
         },
     };
 </script>
-<style scoped>
+<style>
     @import './user.css';
 </style>
