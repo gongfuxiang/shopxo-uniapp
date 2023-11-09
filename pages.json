@@ -281,6 +281,7 @@
                     // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                     "navigationStyle": "custom",
                     // #endif
+                    "enablePullDownRefresh": true,
                     "navigationBarTitleText": "限时秒杀"
                 }
             }]
