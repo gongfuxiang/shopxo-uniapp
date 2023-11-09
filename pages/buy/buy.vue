@@ -327,7 +327,7 @@
                 // 支付失败跳转的页面
                 to_fail_page: '/pages/user-order/user-order',
                 // 现金--跳转指定页面
-                to_appoint_page: '',
+                to_appoint_page: '/pages/user-order/user-order',
             };
         },
 
