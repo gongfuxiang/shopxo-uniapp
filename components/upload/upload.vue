@@ -125,7 +125,7 @@
                             self.setData({
                                 form_images_list: list,
                             });
-                            self.$emit('call-back', this.form_images_list);
+                            self.$emit('call-back', self.form_images_list);
                         }
                     },
                 });

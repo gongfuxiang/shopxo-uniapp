@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="padding-main">
+        <view v-if="goods_id" class="padding-main">
             <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
                 <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
                     <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
@@ -13,7 +13,7 @@
                     <textarea name="content" @input="text_input_event" maxlength="230" auto-height placeholder="请输入您的评价" placeholder-class="cr-grey-9" class="wh-auto input-height" />
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
                     <view class="spacing-mt">
-                        <view class="margin-bottom-main">添加图片(0/3)</view>
+                        <view class="margin-bottom-main">添加图片({{ image_list.length }}/3)</view>
                         <component-upload :propData="image_list" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr">
@@ -33,6 +33,10 @@
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status"></component-no-data>
             </view>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data propStatus="0"></component-no-data>
         </view>
     </view>
 </template>
@@ -96,10 +100,6 @@
                         });
                         return false;
                     }
-                    // 开启表单
-                    this.setData({
-                        data_list_loding_status: 0,
-                    });
                     uni.request({
                         url: app.globalData.get_request_url('index', 'goodscomments', 'intellectstools'),
                         method: 'POST',
@@ -107,7 +107,9 @@
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
                                 this.setData({
+                                    data: res.data.data.data || {},
                                     editor_path_type: res.data.data.editor_path_type || '',
+                                    data_list_loding_status: 0,
                                 });
                             }
                         },
