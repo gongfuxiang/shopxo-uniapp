@@ -61,7 +61,7 @@
                             <view class="margin-top-main cp br-t-dashed padding-top-sm">
                                 <view class="flex-row jc-sb align-c">
                                     <!-- 地址 -->
-                                    <view class="flex-row align-c">
+                                    <view class="flex-row align-c flex-1 flex-width">
                                         <iconfont name="icon-index-zxmd-dress" size="28rpx" prop-class="pr top-xs"></iconfont>
                                         <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                             {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
@@ -71,7 +71,7 @@
                                         <!-- #endif -->
                                     </view>
                                     <!-- 右侧操作 -->
-                                    <view class="icon-list">
+                                    <view class="icon-list margin-left-main">
                                         <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="header_service_event">
                                             <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
                                         </view>
