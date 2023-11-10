@@ -73,6 +73,9 @@
 
 .search-content-input {
     width: calc(100% - 320rpx);
+    /* #ifdef MP-ALIPAY */
+    padding-left: 60rpx;
+    /* #endif */
 }
 
 .search-content-fixed-content {

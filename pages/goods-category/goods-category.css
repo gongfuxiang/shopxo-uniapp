@@ -20,6 +20,7 @@
     padding-right: 250rpx;
     /* #ifdef MP-ALIPAY */
     padding-right: 255rpx;
+    padding-left: 80rpx;
     /* #endif */
     /* #ifdef H5 || MP-TOUTIAO || APP */
     padding-right: 20rpx;
