@@ -511,7 +511,7 @@
                             width += 220;
                             // #endif
                             // #ifdef MP-ALIPAY
-                            width += 50;
+                            width += 90;
                             // #endif
                             upd_data['top_content_search_style'] = 'width: calc(100% - ' + width + 'rpx);';
                             // 设置数据
