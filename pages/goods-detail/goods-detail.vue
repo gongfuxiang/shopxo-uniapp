@@ -293,17 +293,21 @@
                         <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">好评率 {{ goods.comments_score.rate }}%</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
+                        <!-- 商品数据 -->
                         <component-goods-comments :prop-data="goods.comments_data"></component-goods-comments>
-                        <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
-                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
-                                我要评价
-                                <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
-                            </view>
-                        </navigator>
+                        <!-- 是否开启评论入口 -->
+                        <view v-if="(plugins_intellectstools_data || null) !== null && (plugins_intellectstools_data.is_comments_add || 0) == 1">
+                            <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
+                                <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
+                                    我要评价
+                                    <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
+                                </view>
+                            </navigator>
+                        </view>
                     </view>
                 </view>
                 <!-- 问答 -->
-                <view v-if="(plugins_ask_data || null) !== null && plugins_ask_data.is_ask_add == 1" class="goods-comment spacing-mb">
+                <view v-if="(plugins_ask_data || null) !== null && (plugins_ask_data.is_ask_add || 0) == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
                             <text class="text-wrapper title-left-border">问答</text>

@@ -192,6 +192,11 @@
                             <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :prop-open-cart="false"></component-activity-list>
                         </block>
 
+                        <!-- 博客-楼层底部 - 插件 -->
+                        <block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
+                            <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
+                        </block>
+
                         <!--- 底部购买记录 - 插件 -->
                         <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
                             <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
