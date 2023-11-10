@@ -6,7 +6,7 @@
                     <textarea class="cr-base textarea-height" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="请详细描述问题，我们将尽快为您解答！" @input="text_input_event"></textarea>
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/500</view>
                     <view class="spacing-mt dis-none">
-                        <view class="margin-bottom-main">添加图片(0/3)</view>
+                        <view class="margin-bottom-main">添加图片({{ image_list.length }}/3)</view>
                         <component-upload :propData="image_list" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr margin-top-sm">
