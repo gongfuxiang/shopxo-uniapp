@@ -4,7 +4,7 @@
             <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
                 <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
                     <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
-                    <view class="flex-1 flex-width">
+                    <view class="flex-1 flex-width flex-row align-c">
                         <view class="margin-right-sm">商品评分</view>
                         <uni-rate :value="rate_value" @change="rate_change_event" />
                     </view>
