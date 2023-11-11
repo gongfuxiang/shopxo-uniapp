@@ -459,6 +459,7 @@
                             var common_static_url = app.globalData.get_static_url('common');
                             var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
                             var static_url = app.globalData.get_static_url('home');
+                            var right_icon_list = data.right_icon_list || [];
                             var upd_data = {
                                 theme_view: theme_view,
                                 theme_color: theme_color,
@@ -473,7 +474,7 @@
                                 data_list: data.data_list,
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
-                                right_icon_list: data.right_icon_list || [],
+                                right_icon_list: right_icon_list,
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
@@ -504,7 +505,7 @@
                             // 搜索框宽度处理
                             var width = this.is_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : (this.application_logo || null) == null ? 0 : 112;
                             // #ifdef H5 || MP-TOUTIAO || APP
-                            var len = (this.right_icon_list || []).length;
+                            var len = right_icon_list.length;
                             width += len <= 0 ? 0 : 70 * len;
                             // #endif
                             // #ifdef MP
