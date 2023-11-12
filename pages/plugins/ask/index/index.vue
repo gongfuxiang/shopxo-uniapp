@@ -73,6 +73,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                data_base: data_base,
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,
@@ -87,6 +88,8 @@
                 nav_type: '',
                 // 搜索框关键字
                 search_bwg: '',
+                // 自定义分享信息
+                share_info: {},
             };
         },
 
@@ -101,7 +104,7 @@
         onLoad() {},
 
         onShow() {
-            this.get_nav_list();
+            this.get_data();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -116,7 +119,7 @@
         },
 
         methods: {
-            get_nav_list() {
+            get_data() {
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'ask'),
@@ -126,9 +129,18 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.search_tab_list.length > 0) {
+                                var data_base = res.data.data.base || {};
                                 this.setData({
+                                    data_base: data_base,
                                     nav_list: res.data.data.search_tab_list || [],
+                                    // 基础自定义分享
+                                    share_info: {
+                                        title: data_base.seo_title || data_base.application_name || '问答',
+                                        desc: data_base.seo_desc || '',
+                                        path: '/pages/plugins/ask/index/index',
+                                    },
                                 });
+
                                 // 拉取列表数据
                                 this.get_data_list();
                             } else {

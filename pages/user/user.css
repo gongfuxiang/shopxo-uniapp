@@ -68,9 +68,8 @@
 }
 
 .qrcode .iconfont {
-    top: 50%;
+    top: calc(50% - 10rpx);
     right: 48rpx;
-    transform: translateY(-50%);
 }
 
 /**

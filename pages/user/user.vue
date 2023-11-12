@@ -59,7 +59,7 @@
                                 <text>付款码</text>
                             </view>
                         </view>
-                        <iconfont v-if="(payment_page_url || null) == null || (membership_page_url || null) == null" name="icon-index-morejiantou" prop-class="pa" color="#FEF6CF"></iconfont>
+                        <iconfont v-if="(payment_page_url || null) == null || (membership_page_url || null) == null" name="icon-index-morejiantou" prop-class="iconfont pa" color="#FEF6CF"></iconfont>
                     </view>
                 </view>
 

@@ -1,29 +1,29 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) !== null" class="page-bottom-fixed">
-            <!-- true为空对象 false为非空对象 Object.keys(data).length == 0 -->
+        <view v-if="(info || null) !== null" class="page-bottom-fixed">
+            <!-- true为空对象 false为非空对象 Object.keys(info).length == 0 -->
             <view class="ask-container bg-white spacing-mb">
                 <view class="padding-main">
-                    <view class="fw-b text-size-xl spacing-mb">{{ data.title }}</view>
+                    <view class="fw-b text-size-xl spacing-mb">{{ info.title }}</view>
                     <view class="cr-grey-9 text-size-xs margin-bottom-sm flex-row">
-                        留言时间: {{ data.add_time_date }}
+                        留言时间: {{ info.add_time_date }}
                         <view class="fw-b padding-horizontal-xs">·</view>
-                        {{ data.access_count || '0' }}浏览
+                        {{ info.access_count || '0' }}浏览
                     </view>
-                    <view v-if="data.title != data.content" class="text-size-md">{{ data.content }}</view>
-                    <block v-if="(data.goods_data || null) !== null">
-                        <navigator :url="data.goods_data.goods_url" hover-class="none">
+                    <view v-if="info.title != info.content" class="text-size-md">{{ info.content }}</view>
+                    <block v-if="(info.goods_data || null) !== null">
+                        <navigator :url="info.goods_data.goods_url" hover-class="none">
                             <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
                                 <view class="flex-row jc-sb">
                                     <view class="img border-radius-sm oh margin-right-main">
-                                        <image :src="data.goods_data.images" mode="widthFix" class="wh-auto"></image>
+                                        <image :src="info.goods_data.images" mode="widthFix" class="wh-auto"></image>
                                     </view>
                                     <view class="flex-1 flex-width flex-row jc-sb align-c">
                                         <view class="flex-1 flex-width padding-right-sm">
-                                            <view class="title multi-text">{{ data.goods_data.title }}</view>
+                                            <view class="title multi-text">{{ info.goods_data.title }}</view>
                                             <view class="flex-row align-c margin-top-xs">
-                                                <text class="cr-red fw-b margin-right-main">{{ currency_symbol }}{{ data.goods_data.price }}</text>
-                                                <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ data.goods_data.original_price }}</text>
+                                                <text class="cr-red fw-b margin-right-main">{{ currency_symbol }}{{ info.goods_data.price }}</text>
+                                                <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ info.goods_data.original_price }}</text>
                                             </view>
                                         </view>
                                         <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
@@ -33,19 +33,19 @@
                         </navigator>
                     </block>
                 </view>
-                <view v-if="data.is_reply && data.is_reply === '1'" class="padding-main br-t-dashed">
+                <view v-if="info.is_reply && info.is_reply === '1'" class="padding-main br-t-dashed">
                     <view class="flex-row jc-sb align-c">
                         <view class="flex-row align-c">
                             <image v-if="(logo_square || null) != null" :src="logo_square" mode="widthFix" class="admin-img circle br-f5 margin-right-sm"></image>
                             <text>管理员回复</text>
                         </view>
-                        <view v-if="(data.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">回复时间: {{ data.reply_time_date }}</view>
+                        <view v-if="(info.reply_time_date || null) != null" class="cr-grey-9 text-size-xs">回复时间: {{ info.reply_time_date }}</view>
                     </view>
-                    <view class="text-size-md padding-top-main">{{ data.reply }}</view>
+                    <view class="text-size-md padding-top-main">{{ info.reply }}</view>
                 </view>
                 <view class="padding-main br-t-dashed">
                     <!-- 评论内容 -->
-                    <component-ask-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-ask-comments>
+                    <component-ask-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list"></component-ask-comments>
                 </view>
             </view>
             <!-- 猜你喜欢 -->
@@ -109,6 +109,8 @@
                 // 增加随机数，避免无法监听数据列表内部数据更新
                 random_value: 0,
                 params: '',
+                // 自定义分享信息
+                share_info: {},
             };
         },
 
@@ -169,14 +171,27 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             let data = res.data.data;
+                            var info = data.data || null;
                             this.setData({
-                                data: data.data || null,
+                                info: info,
                                 data_base: data.base || null,
                                 emoji_list: data.emoji_list || [],
                                 goods_list: data.goods,
                                 data_list_loding_status: 3,
                                 goods_is_loading: 0,
                             });
+
+                            // 基础自定义分享
+                            if(info != null) {
+                                this.setData({
+                                    share_info: {
+                                        title: info.title,
+                                        desc: info.content,
+                                        path: '/pages/plugins/ask/detail/detail',
+                                        query: 'id=' + info.id
+                                    }
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,

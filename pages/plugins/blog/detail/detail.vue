@@ -178,7 +178,7 @@
                                     path: '/pages/plugins/blog/detail/detail',
                                     query: 'id=' + this.data.id,
                                     img: this.data.cover,
-                                },
+                                }
                             });
 
                             // 标题
