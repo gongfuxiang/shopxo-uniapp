@@ -216,7 +216,7 @@
                 } else {
                     // 点击复制地址
                     var new_data = e.currentTarget.dataset.value;
-                    var copy_val = '收货人：' + new_data.name + '\n' + '联系电话：' + new_data.tel + '\n' + '收获地址：' + new_data.province_name + new_data.city_name + new_data.county_name + new_data.address;
+                    var copy_val = '收货人：' + new_data.name + '\n' + '联系电话：' + new_data.tel + '\n' + '收货地址：' + new_data.province_name + new_data.city_name + new_data.county_name + new_data.address;
                     app.globalData.text_copy_event(copy_val);
                 }
             },
