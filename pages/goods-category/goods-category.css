@@ -193,6 +193,12 @@
 /**
  * 商品列表模式
  */
+.category-content {
+    height: calc(100vh - 134rpx - var(--window-bottom));
+    /* #ifdef H5 */
+    height: calc(100vh - 104rpx - var(--window-bottom));
+    /* #endif */
+}
 .category-content.goods-model {
     padding-top: 182rpx;
 }

@@ -1260,7 +1260,7 @@
                     if ((res || null) != null) {
                         // 获取搜索框高度
                         this.setData({
-                            search_height: res.height,
+                            search_height: res.height + uni.getWindowInfo().windowBottom,
                         });
                     }
                 }).exec();
