@@ -1,0 +1,14 @@
+/*
+* 导航
+*/
+.nav-base .item {
+    width: 33.33%;
+}
+
+/*
+* 列表
+*/
+.data-list .item .base .avatar {
+    width: 40rpx;
+    height: 40rpx !important;
+}

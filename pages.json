@@ -539,6 +539,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "推广用户"
                     }
+                },
+                {
+                    "path": "promotion-order/promotion-order",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "推广订单"
+                    }
                 }
             ]
         },
