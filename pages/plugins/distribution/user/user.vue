@@ -67,7 +67,7 @@
                                 <view v-if="stats_user_promotion_data_list.length > 0" class="margin-top-main oh tc flex-row jc-sa align-c">
                                     <block v-for="(item, index) in stats_user_promotion_data_list" :key="index">
                                         <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
-                                            <view class="single-text margin-top-sm" :data-value="'/pages/plugins/distribution/promotion-user/promotion-user?type='+item.to_value" @tap="url_event">
+                                            <view class="single-text margin-top-sm" :data-value="item.to_page" @tap="url_event">
                                                 <text class="fw-b promotion-size">{{ item.value }}</text>
                                                 <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
                                             </view>
@@ -78,18 +78,23 @@
                                 <!-- 基础统计 -->
                                 <view v-if="stats_base_data_list.length > 0" class="margin-top oh tc">
                                     <block v-for="(item, index) in stats_base_data_list_children" :key="index">
-                                        <view class="flex-row jc-sa align-c bg-grey-f5 border-radius-main" :class="stats_base_data_list_children.length - 1 > index ? 'spacing-mb' : ''">
+                                        <view class="flex-row jc-sa bg-grey-f5 border-radius-main" :class="stats_base_data_list_children.length - 1 > index ? 'spacing-mb' : ''">
                                             <block v-for="(child, i) in item" :key="i">
-                                                <view class="flex-width-half">
-                                                    <view class="padding-vertical-main padding-horizontal-xxxl flex-row jc-c align-c">
+                                                <view class="flex-width-half pr">
+                                                    <view class="padding-vertical-xxxl padding-left-xxxl padding-right-main flex-row jc-c align-c">
                                                         <image :src="child.icon" mode="widthFix" class="count-img" />
                                                         <view class="tl flex-1 flex-width padding-left-main">
                                                             <view class="text-size-xs single-text">{{ child.name }}</view>
-                                                            <view class="single-text margin-top-sm" :data-value="'/pages/plugins/distribution/promotion-user/promotion-user?type='+item.to_value" @tap="url_event">
+                                                            <view class="single-text margin-top-sm" :data-value="item.to_page" @tap="url_event">
                                                                 <text v-if="(child.first || null) != null" class="text-size-xs">{{ child.first }}</text>
                                                                 <text class="text-size-lg fw-b">{{ child.value }}</text>
                                                                 <text v-if="(child.unit || null) != null" class="cr-grey-9 text-size-xs">{{ child.unit }}</text>
                                                             </view>
+                                                        </view>
+                                                    </view>
+                                                    <view v-if="child.data" class="flex-row jc-c align-c padding-horizontal-xs padding-bottom-sm pa bottom-0 left-0 right-0">
+                                                        <view v-for="(cdata, ci) in child.data" :key="ci" class="padding-horizontal-sm">
+                                                            <view class="cr-grey-9 text-size-xss" :data-value="cdata.to_page" @tap="url_event">{{ cdata.name }}</view>
                                                         </view>
                                                     </view>
                                                 </view>
@@ -469,7 +474,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            }
+            },
         },
     };
 </script>
