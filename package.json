@@ -1,5 +1,10 @@
 {
-  "dependencies": {
-    "jweixin-module": "^1.6.0"
-  }
+    "id": "yyc-easy-editor",
+    "name": "超简洁 图文视频编辑器 文章发布",
+    "version": "1.01",
+    "description": "适合手机端，小程序的编辑器，支持文字，图片，视频，没有太多复杂臃肿的功能，容易操作。安装更简单，为你省去时间。",
+    "keywords": [
+        "编辑器",
+        "图文视频编辑"
+    ]
 }

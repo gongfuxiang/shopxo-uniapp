@@ -897,6 +897,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "评论列表"
                     }
+                },
+                {
+                    "path": "form/form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "添加/编辑博文"
+                    }
                 }
             ]
         },

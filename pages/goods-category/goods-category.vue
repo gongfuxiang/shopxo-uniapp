@@ -99,24 +99,9 @@
                                                 <!-- 三级导航 -->
                                                 <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
                                                     <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
-                                                        <view
-                                                            :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
-                                                            :data-index="nav_active_index"
-                                                            :data-itemtwoindex="nav_active_item_two_index"
-                                                            :data-itemthreeindex="-1"
-                                                            @tap="nav_event"
-                                                            >全部</view
-                                                        >
+                                                        <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
                                                         <block v-for="(item, index) in data_three_content.items" :key="index">
-                                                            <view
-                                                                :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
-                                                                :id="'three-nav-item-' + index"
-                                                                :data-index="nav_active_index"
-                                                                :data-itemtwoindex="nav_active_item_two_index"
-                                                                :data-itemthreeindex="index"
-                                                                @tap="nav_event"
-                                                                >{{ item.name }}</view
-                                                            >
+                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
                                                         </block>
                                                     </scroll-view>
                                                 </view>
@@ -158,17 +143,10 @@
                                                             </view>
                                                         </view>
                                                         <!-- 标签插件 -->
-                                                        <view
-                                                            v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0"
-                                                            :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')"
-                                                        >
+                                                        <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')">
                                                             <block v-for="(lv, li) in plugins_label_data.data" :key="li">
                                                                 <view v-if="(lv.goods_ids || null) != null && lv.goods_ids.indexOf(item.id) != -1" class="lv dis-inline-block va-m" :data-value="(plugins_label_data.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                                                                    <view
-                                                                        v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0"
-                                                                        class="round cr-white bg-main text-size-xs fl"
-                                                                        :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')"
-                                                                    >
+                                                                    <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
                                                                         {{ lv.name }}
                                                                     </view>
                                                                     <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
@@ -588,10 +566,10 @@
                             }
 
                             // 计算更多分类弹窗的高度、由于页面元素渲染异步问题，这里加延时执行
-                            if(this.is_first == 1) {
+                            if (this.is_first == 1) {
                                 var self = this;
-                                var timer = setInterval(function() {
-                                    if(self.search_height == 0) {
+                                var timer = setInterval(function () {
+                                    if (self.search_height == 0) {
                                         self.search_height_computer();
                                     } else {
                                         clearInterval(timer);
@@ -1258,14 +1236,17 @@
             // 计算搜索框的高度
             search_height_computer() {
                 const query = uni.createSelectorQuery();
-                query.select('.nav-search').boundingClientRect((res) => {
-                    if ((res || null) != null) {
-                        // 获取搜索框高度
-                        this.setData({
-                            search_height: res.height,
-                        });
-                    }
-                }).exec();
+                query
+                    .select('.nav-search')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            // 获取搜索框高度
+                            this.setData({
+                                search_height: res.height,
+                            });
+                        }
+                    })
+                    .exec();
             },
         },
     };

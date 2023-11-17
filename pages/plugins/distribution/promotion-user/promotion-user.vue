@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-base bg-white scroll-view-horizontal padding-horizontal-main">
-            <scroll-view :scroll-x="true">
+            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + nav_type_index" class="top-nav-scroll">
                 <block v-for="(item, index) in nav_type_list" :key="index">
-                    <view :class="'item dis-inline-block margin-right-lg ' + (nav_type_index == index ? 'cr-main' : 'cr-grey')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                    <view :class="'item dis-inline-block margin-right-lg ' + (nav_type_index == index ? 'cr-main nav-active-line' : 'cr-grey')" :id="'one-nav-item-' + index" :data-index="index" @tap="nav_event">{{ item.name }}</view>
                 </block>
             </scroll-view>
         </view>
@@ -69,6 +69,7 @@ export default {
                 { name: "新增客户(有效)", value: 4 },
                 { name: "新增客户(需复购)", value: 5 },
             ],
+            // 导航下标
             nav_type_index: 0,
             content_list: [
                 { name: "消费订单", field: "order_count", unit: "", default: 0 },

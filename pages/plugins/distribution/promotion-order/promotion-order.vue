@@ -3,7 +3,7 @@
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_type_list" :key="index">
-                <view :class="'item fl tc ' + (nav_type_index == index ? 'cr-main' : 'cr-grey')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                <view :class="'item fl tc ' + (nav_type_index == index ? 'cr-main nav-active-line' : 'cr-grey')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
 
