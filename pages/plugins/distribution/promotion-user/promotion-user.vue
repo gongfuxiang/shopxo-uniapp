@@ -1,30 +1,36 @@
 <template>
     <view :class="theme_view">
         <!-- 导航 -->
-        <view class="nav-base bg-white">
-            <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item fl tc cr-grey ' + (nav_status_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
+        <view class="nav-base bg-white scroll-view-horizontal padding-horizontal-main">
+            <scroll-view :scroll-x="true">
+                <block v-for="(item, index) in nav_type_list" :key="index">
+                    <view :class="'item dis-inline-block margin-right-lg ' + (nav_type_index == index ? 'cr-main' : 'cr-grey')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                </block>
+            </scroll-view>
         </view>
 
-        <!-- 列表 -->
+        <!-- 数据列表 -->
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
-                        <text class="cr-base">{{ item.add_time }}</text>
-                        <text class="fr cr-main">{{ item.status_name }}</text>
+                        <image class="avatar dis-block fl circle" :src="item.avatar" mode="widthFix" @tap="avatar_event" :data-value="item.avatar"></image>
+                        <text class="cr-base margin-left-sm">{{ item.user_name_view || "" }}</text>
+                        <text class="cr-base fr">{{ item.add_time }}</text>
                     </view>
                     <view class="content margin-top">
-                        <navigator :url="'/pages/plugins/distribution/profit-detail/profit-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
-                                    <text class="cr-base">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                </view>
-                            </block>
-                        </navigator>
+                        <block v-for="(fv, fi) in content_list" :key="fi">
+                            <view class="single-text margin-top-xs">
+                                <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
+                                <text class="cr-base" :data-event="fv.event" :data-value="item[fv.field]" @tap="text_event">{{ item[fv.field] || fv.default }}</text>
+                                <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
+                            </view>
+                        </block>
+                    </view>
+                    <view class="item-operation tr br-t padding-top-main margin-top-main">
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">邮箱</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">电话</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">用户订单</button>
                     </view>
                 </view>
             </view>
@@ -55,20 +61,38 @@ export default {
             data_bottom_line_status: false,
             data_is_loading: 0,
             params: null,
-            nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待生效", value: "0" },
-                { name: "待结算", value: "1" },
-                { name: "已结算", value: "2" },
-                { name: "已失效", value: "3" },
+            nav_type_list: [
+                { name: "推广用户", value: 0 },
+                { name: "已消费用户", value: 1 },
+                { name: "未消费用户", value: 2 },
+                { name: "新增客户", value: 3 },
+                { name: "新增客户(有效)", value: 4 },
+                { name: "新增客户(需复购)", value: 5 },
             ],
-            nav_status_index: 0,
+            nav_type_index: 0,
             content_list: [
-                { name: "订单金额", field: "total_price", unit: "元" },
-                { name: "退款金额", field: "refund_price", unit: "元" },
-                { name: "收益金额", field: "profit_price", unit: "元" },
-                { name: "当前级别", field: "level_name" },
+                { name: "消费订单", field: "order_count", unit: "", default: 0 },
+                { name: "消费金额", field: "order_total", unit: "", default: 0 },
+                { name: "最后下单时间", field: "order_last_time", default: "" },
+                { name: "下级订单", field: "find_order_count", unit: "", default: 0 },
+                { name: "下级消费", field: "find_order_total", unit: "", default: 0 },
+                { name: "下级最后下单时间", field: "find_order_last_time", default: "" },
+                { name: "下级用户", field: "referrer_count", unit: "", default: 0 },
             ],
+            nav_search_buy_type_list: [
+                { value: -1, name: "全部" },
+                { value: 0, name: "未下单" },
+                { value: 1, name: "已下单" },
+            ],
+            nav_search_value: {
+                team_search_user_time_start: "",
+                team_search_user_time_end: "",
+                team_search_user_time_reverse: [],
+                team_search_order_time_start: "",
+                team_search_order_time_end: "",
+                team_search_order_time_reverse: [],
+                team_search_buy_type: [],
+            },
         };
     },
 
@@ -80,18 +104,18 @@ export default {
 
     onLoad(params) {
         // 是否指定状态
-        var nav_status_index = 0;
-        if ((params.status || null) != null) {
-            for (var i in this.nav_status_list) {
-                if (this.nav_status_list[i]["value"] == params.status) {
-                    nav_status_index = i;
+        var nav_type_index = 0;
+        if (params.type != undefined) {
+            for (var i in this.nav_type_list) {
+                if (this.nav_type_list[i]["value"] == params.type) {
+                    nav_type_index = i;
                     break;
                 }
             }
         }
         this.setData({
             params: params,
-            nav_status_index: nav_status_index,
+            nav_type_index: nav_type_index,
         });
         this.init();
     },
@@ -155,16 +179,18 @@ export default {
                 title: "加载中...",
             });
 
+            // 请求参数
+            var type = (this.nav_type_list[this.nav_type_index] || null) == null ? 0 : this.nav_type_list[this.nav_type_index]["value"];
+            var data = {
+                page: this.data_page,
+                type: type,
+            };
+
             // 获取数据
-            var status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]["value"];
             uni.request({
-                url: app.globalData.get_request_url("index", "profit", "distribution"),
+                url: app.globalData.get_request_url("index", "promotionuser", "distribution"),
                 method: "POST",
-                data: {
-                    page: this.data_page,
-                    status: status,
-                    is_more: 1,
-                },
+                data: data,
                 dataType: "json",
                 success: (res) => {
                     uni.hideLoading();
@@ -180,6 +206,7 @@ export default {
                                     temp_data_list.push(temp_data[i]);
                                 }
                             }
+
                             this.setData({
                                 data_list: temp_data_list,
                                 data_total: res.data.data.total,
@@ -228,10 +255,31 @@ export default {
             this.get_data_list();
         },
 
+        // 头像查看
+        avatar_event(e) {
+            var value = e.currentTarget.dataset.value || null;
+            if (value != null) {
+                uni.previewImage({
+                    current: value,
+                    urls: [value],
+                });
+            } else {
+                app.globalData.showToast("头像地址有误");
+            }
+        },
+
+        // 用户订单事件
+        user_order_event(e) {
+            var value = e.currentTarget.dataset.value;
+            uni.navigateTo({
+                url: "/pages/plugins/distribution/order/order?uid=" + value,
+            });
+        },
+
         // 导航事件
         nav_event(e) {
             this.setData({
-                nav_status_index: e.currentTarget.dataset.index || 0,
+                nav_type_index: e.currentTarget.dataset.index || 0,
                 data_page: 1,
             });
             this.get_data_list(1);
@@ -240,5 +288,5 @@ export default {
 };
 </script>
 <style>
-@import "./profit.css";
+@import "./promotion-user.css";
 </style>

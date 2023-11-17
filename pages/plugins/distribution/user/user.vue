@@ -67,7 +67,7 @@
                                 <view v-if="stats_user_promotion_data_list.length > 0" class="margin-top-main oh tc flex-row jc-sa align-c">
                                     <block v-for="(item, index) in stats_user_promotion_data_list" :key="index">
                                         <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''">
-                                            <view class="single-text margin-top-sm">
+                                            <view class="single-text margin-top-sm" :data-value="'/pages/plugins/distribution/promotion-user/promotion-user?type='+item.to_value" @tap="url_event">
                                                 <text class="fw-b promotion-size">{{ item.value }}</text>
                                                 <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
                                             </view>
@@ -85,7 +85,7 @@
                                                         <image :src="child.icon" mode="widthFix" class="count-img" />
                                                         <view class="tl flex-1 flex-width padding-left-main">
                                                             <view class="text-size-xs single-text">{{ child.name }}</view>
-                                                            <view class="single-text margin-top-sm">
+                                                            <view class="single-text margin-top-sm" :data-value="'/pages/plugins/distribution/promotion-user/promotion-user?type='+item.to_value" @tap="url_event">
                                                                 <text v-if="(child.first || null) != null" class="text-size-xs">{{ child.first }}</text>
                                                                 <text class="text-size-lg fw-b">{{ child.value }}</text>
                                                                 <text v-if="(child.unit || null) != null" class="cr-grey-9 text-size-xs">{{ child.unit }}</text>
@@ -465,6 +465,11 @@
             onPageScroll(res) {
                 uni.$emit('onPageScroll', res);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

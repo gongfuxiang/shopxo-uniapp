@@ -532,6 +532,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "等级介绍"
                     }
+                },
+                {
+                    "path": "promotion-user/promotion-user",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "推广用户"
+                    }
                 }
             ]
         },
