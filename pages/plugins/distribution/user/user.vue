@@ -249,11 +249,11 @@
         },
         props: {},
 
-        onLoad(params) {},
+        onLoad(params) {
+            this.init();
+        },
 
         onShow() {
-            this.init();
-
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

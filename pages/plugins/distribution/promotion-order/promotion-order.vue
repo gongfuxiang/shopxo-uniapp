@@ -81,9 +81,9 @@ export default {
     onLoad(params) {
         // 是否指定状态
         var nav_type_index = 0;
-        if ((params.status || null) != null) {
+        if (params.type != undefined) {
             for (var i in this.nav_type_list) {
-                if (this.nav_type_list[i]["value"] == params.status) {
+                if (this.nav_type_list[i]["value"] == params.type) {
                     nav_type_index = i;
                     break;
                 }
@@ -155,16 +155,17 @@ export default {
                 title: "加载中...",
             });
 
-            // 参数
+            // 请求参数
             var type = (this.nav_type_list[this.nav_type_index] || null) == null ? -1 : this.nav_type_list[this.nav_type_index]["value"];
+            var data = this.params;
+            data['page'] = this.data_page;
+            data['type'] = type;
+
             // 获取数据
             uni.request({
                 url: app.globalData.get_request_url("index", "promotionorder", "distribution"),
                 method: "POST",
-                data: {
-                    page: this.data_page,
-                    type: type,
-                },
+                data: data,
                 dataType: "json",
                 success: (res) => {
                     uni.hideLoading();
