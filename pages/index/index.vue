@@ -26,11 +26,11 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff" 
-                                <!-- #ifndef H5 -->
-                                @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
-                                <!-- #endif -->
-                                ></component-search>
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff" <!-- #ifndef H5 -->
+                                    @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
+                                    <!-- #endif -->
+                                    ></component-search
+                                >
                             </block>
                             <block v-else>
                                 <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
@@ -57,7 +57,7 @@
                     <component-banner :propData="banner_list" @changeBanner="change_banner"></component-banner>
                 </view>
                 <!-- 导航 -->
-                <view v-if="navigation.length > 0" class="spacing-mt">
+                <view v-if="navigation.length > 0" class="spacing-mt" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : ' spacing-mb'">
                     <view class="padding-horizontal-main">
                         <view class="bg-white border-radius-main">
                             <component-icon-nav :propData="navigation"></component-icon-nav>
@@ -67,13 +67,13 @@
             </view>
 
             <!-- 内容 -->
-            <view class="content padding-horizontal-main">
+            <view class="content padding-horizontal-main pr">
                 <!-- 商城公告 -->
                 <view v-if="load_status == 1 && (common_shop_notice || null) != null" class="notice">
                     <uni-notice-bar show-icon scrollable :text="common_shop_notice" background-color="transparent" color="#666" />
                 </view>
                 <!-- 推荐文章 -->
-                <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : 'spacing-mt'">
+                <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
                     <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>最新</text><text class="cr-red">资讯</text> </view>
                     <view class="right-content fr va-m">
                         <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
@@ -98,10 +98,7 @@
                         </view>
 
                         <!-- 限时秒杀 - 插件 -->
-                        <view
-                            v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0"
-                            class="plugins-seckill-data border-radius-main spacing-mb bg-white"
-                            :style="'background-image: url(' + seckill_static_url + 'seckill-bg.png);'">
+                        <view v-if="pv.plugins == 'seckill' && (plugins_seckill_data || null) != null && (plugins_seckill_data.data || null) != null && (plugins_seckill_data.data.goods || null) != null && plugins_seckill_data.data.goods.length > 0" class="plugins-seckill-data border-radius-main spacing-mb bg-white" :style="'background-image: url(' + seckill_static_url + 'seckill-bg.png);'">
                             <view class="flex-row jc-sb align-c padding-top-main padding-horizontal-main">
                                 <view class="flex-1">
                                     <image class="dis-inline-block va-m icon" :src="plugins_seckill_data.data.home_title_icon" mode="widthFix"></image>
