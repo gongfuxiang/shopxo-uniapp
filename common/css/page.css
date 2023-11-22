@@ -594,6 +594,7 @@ button:before {
 .br-grey-9 {
     border: solid 1px #999999 !important;
 }
+
 .br-grey-c {
     border: solid 1px #cccccc !important;
 }
@@ -1255,9 +1256,11 @@ button[disabled].bg-grey {
 .flex-1 {
     flex: 1;
 }
+
 .flex-2 {
     flex: 2;
 }
+
 .flex-3 {
     flex: 3;
 }

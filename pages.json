@@ -899,10 +899,20 @@
                     }
                 },
                 {
+                    "path": "user-list/user-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "我的帖子"
+                    }
+                },
+                {
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "添加/编辑博文"
+                        "navigationBarTitleText": "发布博文",
+                        "enablePullDownRefresh": false,
+                        // 禁止页面下拉
+                        "disableScroll": true
                     }
                 }
             ]

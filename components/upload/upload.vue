@@ -36,7 +36,7 @@
             // 路径类型 默认common
             propPathType:{
                 type:String,
-                default:'',
+                default:'common',
             }
         },
         data() {
