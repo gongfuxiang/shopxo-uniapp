@@ -102,7 +102,7 @@
             // 注销提交
             logout_submit_event(e) {
                 // 是否再次确认
-                if (e != 0 && e != 1) {
+                if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
                         msg: '账号注销后不可恢复、确定继续吗？',
                         is_show_cancel: 1,
@@ -113,7 +113,7 @@
                 }
 
                 // 注销提交
-                if (e == 1) {
+                if (e.alert_status == 1) {
                     uni.showLoading({
                         title: '处理中...',
                     });

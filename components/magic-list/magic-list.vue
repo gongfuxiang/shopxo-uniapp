@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
             <view v-for="(items, indexs) in data_goods_list" :key="indexs" class="bg-white border-radius-main spacing-mb">
-                <view class="padding-top-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
+                <view class="padding-vertical-main" :style="(items.bg_images || null) !== null ? 'background-image: url(' + items.bg_images + ');background-size: auto 100%;' : ''">
                     <view class="hot-list flex-row flex-warp">
                         <view v-for="(item, index) in items.data" :key="index" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'wh-auto' : 'flex-width-half'">
                             <view class="padding-horizontal-main">
@@ -15,20 +15,13 @@
                                     </view>
                                 </view>
                                 <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ item.describe }}</view>
-                                <swiper
-                                    :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === index + 1 ? 'swiper-1' : 'swiper-2'"
-                                    circular
-                                    :autoplay="(item.rolling_time || null) !== null ? true : false"
-                                    :vertical="propVertical"
-                                    :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'"
-                                    :duration="propDuration"
-                                >
+                                <swiper :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === index + 1 ? 'swiper-1' : 'swiper-2'" circular :autoplay="(item.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                     <swiper-item v-for="(swiperItem, swiperIndex) in item.data" :key="swiperIndex">
                                         <view class="swiper-item">
                                             <view class="flex-row">
                                                 <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
-                                                    <view class="padding-horizontal-main" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
-                                                        <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="widthFix" class="wh-auto border-radius-sm"> </image>
+                                                    <view class="padding-horizontal-main tc" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
+                                                        <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
                                                         <view class="price tc single-text">
                                                             <text class="sales-price va-m text-size-xss va-b">{{ currency_symbol }}</text>
                                                             <text class="sales-price va-m text-size-xs">{{ listItem.min_price }}</text>
@@ -137,9 +130,15 @@
     .hot-list .swiper-2 {
         height: 176rpx;
     }
+    .hot-list .swiper-2 .swiper-img {
+        height: 124rpx;
+    }
 
     .hot-list .swiper-1 {
         height: 187rpx;
+    }
+    .hot-list .swiper-1 .swiper-img {
+        height: 135rpx;
     }
 
     .hot-go {

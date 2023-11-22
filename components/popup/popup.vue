@@ -1,8 +1,8 @@
 <template>
-    <view :class="theme_view">
+    <view :class="theme_view + ' ' + propMostClass">
         <view :class="'popup ' + (propClassname || '') + ' ' + (propShow ? 'popup-show' : 'popup-hide') + ' ' + (propAnimation ? 'animation' : '')" :disable-scroll="propDisablescroll">
             <view class="popup-mask" :style="'z-index: ' + propIndex + ';'" v-if="propMask" @tap="on_mask_tap"></view>
-            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="position_style">
+            <view :class="'popup-content popup-' + (propPosition || 'bottom') + ' ' + (propIsRadius ? '' : 'popup-radius-0') + ' ' + (propIsBar ? 'popup-bar' : '') + ' ' + (propPosition === 'bottom' ? 'bottom-line-exclude' : '')" :style="position_style">
                 <slot></slot>
             </view>
         </view>
@@ -19,6 +19,10 @@
         },
         components: {},
         props: {
+            propMostClass: {
+                type: String,
+                default: '',
+            },
             propClassname: {
                 type: String,
                 default: '',
@@ -47,6 +51,11 @@
                 type: Boolean,
                 default: false,
             },
+            // 弹窗是否需要圆角 默认需要
+            propIsRadius: {
+                type: Boolean,
+                default: true,
+            },
             propIndex: {
                 type: Number,
                 default: 100,
@@ -60,6 +69,10 @@
                 type: String,
                 default: '',
             },
+            propStyle: {
+                type: String,
+                default: '',
+            },
         },
         // 属性值改变监听
         watch: {
@@ -70,7 +83,7 @@
         },
         computed: {
             position_style() {
-                let style = 'left:' + this.popup_content_left_value + ';' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '');
+                let style = 'left:' + this.popup_content_left_value + ';' + (this.propTop ? 'top:' + this.propTop : '') + ';' + (this.propBottom ? 'bottom:' + this.propBottom : '') + ';' + this.propStyle;
                 return style;
             },
         },
@@ -179,6 +192,9 @@
     .popup-right {
         border-top-left-radius: 20rpx;
         border-bottom-left-radius: 20rpx;
+    }
+    .popup-radius-0 {
+        border-radius: 0 !important;
     }
     .popup-bar {
         /* #ifdef H5 || APP */

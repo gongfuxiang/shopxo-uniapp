@@ -73,7 +73,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
-                data_base: data_base,
+                data_base: {},
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

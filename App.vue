@@ -5,9 +5,11 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
+                // request_url: 'https://new.shopxo.vip/',
                 request_url: 'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
+                // static_url: 'https://new.shopxo.vip/',
                 static_url: 'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -754,6 +756,7 @@
              * confirm_color      [string]    确认按钮的文字颜色，必须是 16 进制格式的颜色字符串（默认 #000000）
              * object             [boject]    回调操作对象，点击确认回调参数1，取消回调0
              * method             [string]    回调操作对象的函数
+             * params             [obj]       携带的参数
              */
             alert(e) {
                 var msg = e.msg || null;
@@ -764,6 +767,7 @@
                     var confirm_text = e.confirm_text || '确认';
                     var cancel_color = e.cancel_color || '#000000';
                     var confirm_color = e.confirm_color || '#576B95';
+                    var params = e.params || {};
                     uni.showModal({
                         title: title,
                         content: msg,
@@ -774,7 +778,8 @@
                         confirmColor: confirm_color,
                         success(res) {
                             if ((e.object || null) != null && typeof e.object === 'object' && (e.method || null) != null) {
-                                e.object[e.method](res.confirm ? 1 : 0);
+                                params['alert_status'] = res.confirm ? 1 : 0;
+                                e.object[e.method](params);
                             }
                         },
                     });

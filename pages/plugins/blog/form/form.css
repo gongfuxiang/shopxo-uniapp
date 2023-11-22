@@ -1,0 +1,11 @@
+.sp-editor {
+    height: 500rpx;
+}
+
+.more {
+    transition: all 0.3s ease-in-out;
+}
+.p-content {
+    max-height: 50vh;
+    overflow-y: auto;
+}
