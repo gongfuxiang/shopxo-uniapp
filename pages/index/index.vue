@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
-            <!-- 顶部内容 -->
-            <view v-if="load_status == 1" class="home-top-nav-content pr" :style="top_content_bg_color + top_content_style">
+            <!-- 顶部内容、如果没有轮播则使用矮的浮动导航背景样式，则使用高的背景样式 -->
+            <view v-if="load_status == 1" class="home-top-nav-content pr" :style="(banner_list.length > 0 ? top_content_bg_color : top_content_search_bg_color) + top_content_style">
                 <!-- 顶部背景图片 -->
                 <view class="pa top-0 left-0 right-0">
                     <image class="bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
@@ -26,11 +26,11 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff" <!-- #ifndef H5 -->
+                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                    <!-- #ifndef H5 -->
                                     @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                     <!-- #endif -->
-                                    ></component-search
-                                >
+                                ></component-search>
                             </block>
                             <block v-else>
                                 <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
@@ -489,13 +489,13 @@
                             };
 
                             // 轮播数据处理
-                            if (this.load_status == 0 && data.banner_list && data.banner_list.length > 0) {
-                                if ((data.banner_list[0]['bg_color'] || null) != null) {
+                            if (this.load_status == 0) {
+                                if (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) {
                                     upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
                                     upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 460%);';
                                 } else {
-                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
+                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%);';
+                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 460%);';
                                 }
                             }
 
