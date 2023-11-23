@@ -1416,7 +1416,7 @@
                 value = 'h5';
                 // #endif
                 // #ifdef APP
-                value = this.set_system_info.platform;
+                value = this.get_system_info('platform', null, true);
                 // #endif
                 return value;
             },

@@ -544,9 +544,6 @@
                                 temp_ads['lat'] = '';
                                 // 清除位置缓存信息
                                 this.user_location_remove();
-                            } else {
-                                // 地理位置则把名称加入别名
-                                temp_ads['alias'] = this.user_location.name;
                             }
                             upd_data['address_data'] = temp_ads;
                             this.setData(upd_data);

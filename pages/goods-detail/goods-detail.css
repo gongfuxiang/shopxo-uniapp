@@ -64,9 +64,6 @@
     padding-bottom: 2rpx;
     border-style: solid;
     border-width: 0 0 2px 0;
-    /* #ifdef H5 || APP */
-    font-size: 16px;
-    /* #endif */
 }
 
 /**

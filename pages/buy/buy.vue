@@ -341,10 +341,10 @@
 
         onLoad(params) {
             // params.data 参数 urlencode(base64_encode(json字符串))
-            //  buy_type 下单类型（goods 立即购买、cart 购物车）
-            //  goods_data 下单商品urlencode(base64_encode(json字符串[{goods_id,stock,spec}]))
-            //  params['data'] = '{"buy_type":"goods","goods_data":"W3siZ29vZHNfaWQiOiI5Iiwic3RvY2siOjEsInNwZWMiOlt7InR5cGUiOiLpopzoibIiLCJ2YWx1ZSI6IueyieiJsiJ9LHsidHlwZSI6IuWwuueggSIsInZhbHVlIjoiTCJ9XX1"}';
-            //  ids 购物车主键ids
+            // buy_type 下单类型（goods 立即购买、cart 购物车）
+            // goods_data 下单商品urlencode(base64_encode(json字符串[{goods_id,stock,spec}]))
+            // params['data'] = '{"buy_type":"goods","goods_data":"W3siZ29vZHNfaWQiOiI5Iiwic3RvY2siOjEsInNwZWMiOlt7InR5cGUiOiLpopzoibIiLCJ2YWx1ZSI6IueyieiJsiJ9LHsidHlwZSI6IuWwuueggSIsInZhbHVlIjoiTCJ9XX1"}';
+            // ids 购物车主键ids
             if ((params.data || null) != null) {
                 this.setData({
                     params: JSON.parse(base64.decode(decodeURIComponent(params.data))),

@@ -108,7 +108,7 @@
         {
             "path": "pages/goods-detail/goods-detail",
             "style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
                 "navigationStyle": "custom",
                 // #endif
                 "enablePullDownRefresh": true,

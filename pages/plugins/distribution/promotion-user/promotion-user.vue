@@ -182,10 +182,9 @@ export default {
 
             // 请求参数
             var type = (this.nav_type_list[this.nav_type_index] || null) == null ? 0 : this.nav_type_list[this.nav_type_index]["value"];
-            var data = {
-                page: this.data_page,
-                type: type,
-            };
+            var data = this.params;
+            data['page'] = this.data_page;
+            data['type'] = type;
 
             // 获取数据
             uni.request({
@@ -285,6 +284,11 @@ export default {
             });
             this.get_data_list(1);
         },
+
+        // 文本事件
+        text_event(e) {
+            app.globalData.text_event_handle(e);
+        }
     },
 };
 </script>

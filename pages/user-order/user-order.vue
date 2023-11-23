@@ -234,8 +234,6 @@
                 if ((status || false) == true) {
                     this.setData({
                         home_is_enable_order_bulk_pay: app.globalData.get_config('config.home_is_enable_order_bulk_pay'),
-                        pay_url: app.globalData.get_request_url('pay', 'order'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -253,6 +251,11 @@
                         });
                         return false;
                     } else {
+                        this.setData({
+                            pay_url: app.globalData.get_request_url('pay', 'order'),
+                            qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+                        });
+
                         // 获取数据
                         this.get_data_list();
                     }
