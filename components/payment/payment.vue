@@ -681,7 +681,7 @@
     .payment-list .item {
         padding: 28rpx 28rpx 28rpx 32rpx;
     }
-    .payment-list .item-content image {
+    .payment-list .icon {
         width: 50rpx;
         height: 50rpx !important;
     }
