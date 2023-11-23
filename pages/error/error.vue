@@ -5,11 +5,11 @@
                 <icon type="warn" size="16" color="#f00" class="va-m" />
                 <view class="cr-red va-m dis-inline-block margin-left-sm">
                     <block v-if="(params || null) != null && (params.msg || null) != null">{{params.msg}}</block>
-                    <block v-else>异常错误</block>
+                    <block v-else>{{$t('error.error.6xw5o2')}}</block>
                 </view>
             </view>
             <view class="margin-top-xxl">
-                <button type="default" size="mini" class="bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="back_event">返回</button>
+                <button type="default" size="mini" class="bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="back_event">{{$t('error.error.h7138l')}}</button>
             </view>
         </view>
     </view>
