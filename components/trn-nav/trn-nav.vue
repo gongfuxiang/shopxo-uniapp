@@ -57,7 +57,7 @@
                 // #ifdef MP
                 this.nav_style += 'height:'+(this.propHeight+this.statusbar_height)+'px;';
                 // #endif
-                // #ifdef H5
+                // #ifdef H5 || APP
                 this.nav_style += 'height:44px;';
                 // #endif
 			}

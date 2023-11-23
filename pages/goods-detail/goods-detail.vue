@@ -694,11 +694,11 @@
                 // 滚动监听值
                 scroll_value: 0,
                 // 顶部导航信息
-                // #ifdef MP
+                // #ifdef MP || APP
                 top_nav_icon_top_value: bar_height + 8,
                 top_nav_more_top_value: bar_height + 48,
                 // #endif
-                // #ifdef H5 || APP
+                // #ifdef H5
                 top_nav_icon_top_value: 6,
                 top_nav_more_top_value: 50,
                 top_nav_right_icon_left_value: win_width <= 800 ? win_width - 40 : win_width - (win_width - 800) / 2 - 40,
