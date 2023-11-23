@@ -6,7 +6,7 @@ import base from './common/js/common/base';
 import share from './common/js/common/share';
 
 // 多语言引入并初始化
-import messages from './locales/index'
+import messages from './lang/index'
 import VueI18n from 'vue-i18n';
 let i18nConfig = {
     locale: uni.getLocale() || 'zh',
