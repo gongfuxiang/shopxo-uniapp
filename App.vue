@@ -39,6 +39,11 @@
                 // 紫色 purple    #623cec
                 default_theme: 'red',
 
+                // 多语言列表
+                // 增加或者减少语言时
+                // 1.新增一个对象，按照当前格式新增
+                // 2.去lang里面各个文件去新增语言翻译
+                default_language: 'zh-Hans',
 
                 // 公共配置
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
@@ -88,18 +93,12 @@
                 is_home_search_scan: 1,
 
                 // tabbar页面
-                tabbar_pages: [
-                    '/pages/index/index',
-                    '/pages/goods-category/goods-category',
-                    '/pages/cart/cart',
-                    '/pages/user/user'
-                ],
-
+                tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
 
                 // 数据缓存key
                 // 场景值
                 cache_scene_key: 'cache_scene_key',
-                
+
                 // uuid缓存key
                 cache_user_uuid_key: 'cache_user_uuid_key',
 
@@ -1072,7 +1071,7 @@
                         } else {
                             this.showToast(res.data.msg);
                             // 首次则再次初始化配置
-                            if(status == 0) {
+                            if (status == 0) {
                                 this.init_config(1);
                             }
                         }
@@ -1080,7 +1079,7 @@
                     fail: () => {
                         this.showToast('网络开小差了哦~');
                         // 首次则再次初始化配置
-                        if(status == 0) {
+                        if (status == 0) {
                             this.init_config(1);
                         }
                     },
@@ -1164,7 +1163,7 @@
                 this.showToast('请复制地址到网页地图中查看！');
                 return false;
                 // #endif
-                
+
                 // 参数判断
                 if (lng == undefined || lat == undefined || lng == '' || lat == '') {
                     this.showToast('坐标有误');
@@ -1175,17 +1174,17 @@
 
                 // #ifdef MP-WEIXIN
                 // 微信小程序使用【腾讯位置服务路线规划】插件
-                if(this.data.is_weixin_open_location_use_plugins == 1) {
+                if (this.data.is_weixin_open_location_use_plugins == 1) {
                     var key = this.get_config('config.common_tencent_map_ak') || null;
-                    if(key != null) {
+                    if (key != null) {
                         var plugin = requirePlugin('routePlan');
                         var end_point = JSON.stringify({
-                        	name: name || '地理位置',
+                            name: name || '地理位置',
                             longitude: lng,
-                        	latitude: lat
+                            latitude: lat,
                         });
                         uni.navigateTo({
-                        	url: 'plugin://routePlan/route-plan?key=' + key + '&referer=' + this.get_application_title() + '&endPoint=' + end_point+'&themeColor=' + this.get_theme_color() + '&navigation=1'
+                            url: 'plugin://routePlan/route-plan?key=' + key + '&referer=' + this.get_application_title() + '&endPoint=' + end_point + '&themeColor=' + this.get_theme_color() + '&navigation=1',
                         });
                         return false;
                     }
@@ -1197,7 +1196,7 @@
                     address: address || '',
                     scale: scale || 18,
                     longitude: lng,
-                    latitude: lat
+                    latitude: lat,
                 });
             },
 
@@ -1270,7 +1269,7 @@
                         this.call_tel(value.substr(6));
                         // 默认切换或跳转页面
                     } else {
-                        if(this.is_page(value)) {
+                        if (this.is_page(value)) {
                             if (this.is_tabbar_pages(value)) {
                                 var temp = value.split('?');
                                 if (temp.length > 1 && (temp[1] || null) != null) {
@@ -1293,7 +1292,7 @@
                                 }
                             }
                         } else {
-                            this.showToast('未知数据（'+value+'）');
+                            this.showToast('未知数据（' + value + '）');
                         }
                     }
                 }
@@ -1969,10 +1968,10 @@
                 }
                 return color_obj[theme];
             },
-            
+
             // 获取主题页面标识
             get_theme_value_view() {
-                return 'theme-'+this.get_theme_value();
+                return 'theme-' + this.get_theme_value();
             },
 
             // 获取主题
@@ -2105,12 +2104,12 @@
                 var status = 0;
                 // 存在数据值
                 var value = null;
-                for(var i in rules) {
-                    if(url.indexOf(rules[i]) != -1) {
+                for (var i in rules) {
+                    if (url.indexOf(rules[i]) != -1) {
                         var temp = url.split(rules[i]);
-                        if(temp.length > 1) {
+                        if (temp.length > 1) {
                             temp = temp[1].split('.');
-                            if(temp.length > 0 && (temp[0] || null) != null) {
+                            if (temp.length > 0 && (temp[0] || null) != null) {
                                 value = temp[0];
                             }
                         }
@@ -2118,7 +2117,7 @@
                         break;
                     }
                 }
-                return {status: status, value: value};
+                return { status: status, value: value };
             },
 
             // 扫码解析处理
@@ -2126,16 +2125,16 @@
                 var self = this;
                 uni.scanCode({
                     success: function (res) {
-                        if(res.result !== '') {
+                        if (res.result !== '') {
                             var value = res.result;
                             // 是否为url地址
-                            if(self.is_url(value)) {
+                            if (self.is_url(value)) {
                                 // 是否为商品地址
                                 var goods_arr = ['/goods-', '/goods/index/id/', '=goods/index/id/'];
                                 var goods_ret = self.web_url_value_mate(value, goods_arr);
-                                if(goods_ret.status == 1 && goods_ret.value != null) {
+                                if (goods_ret.status == 1 && goods_ret.value != null) {
                                     uni.navigateTo({
-                                        url: '/pages/goods-detail/goods-detail?id='+goods_ret.value,
+                                        url: '/pages/goods-detail/goods-detail?id=' + goods_ret.value,
                                     });
                                     return;
                                 }
@@ -2143,9 +2142,9 @@
                                 // 是否为多商户店铺详情地址
                                 var shop_arr = ['/shop-index-detail-', '/plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/', '=plugins/index/pluginsname/shop/pluginscontrol/index/pluginsaction/detail/id/'];
                                 var shop_ret = self.web_url_value_mate(value, shop_arr);
-                                if(shop_ret.status == 1 && shop_ret.value != null) {
+                                if (shop_ret.status == 1 && shop_ret.value != null) {
                                     uni.navigateTo({
-                                        url: '/pages/plugins/shop/detail/detail?id='+shop_ret.value,
+                                        url: '/pages/plugins/shop/detail/detail?id=' + shop_ret.value,
                                     });
                                     return;
                                 }
@@ -2153,19 +2152,19 @@
                                 // 是否为扫码收款
                                 var scanpay_arr = ['/scanpay-index-index', 'plugins/index/pluginsname/scanpay/pluginscontrol/index/pluginsaction/index', 'plugins/index/pluginsname/scanpay', '/scanpay'];
                                 var scanpay_ret = self.web_url_value_mate(value, scanpay_arr);
-                                if(scanpay_ret.status == 1) {
+                                if (scanpay_ret.status == 1) {
                                     var url = '/pages/plugins/scanpay/index/index';
-                                    if(scanpay_ret.value != null) {
+                                    if (scanpay_ret.value != null) {
                                         var first = scanpay_ret.value.substr(0, 1);
-                                        if(first == '-') {
+                                        if (first == '-') {
                                             var temp = scanpay_ret.value.substr(1).split('/');
-                                            if(temp.length == 3) {
-                                                url += '?id='+temp[0]+'&type='+temp[2];
+                                            if (temp.length == 3) {
+                                                url += '?id=' + temp[0] + '&type=' + temp[2];
                                             }
-                                        } else if(first == '/') {
+                                        } else if (first == '/') {
                                             var temp = scanpay_ret.value.substr(1).split('/');
-                                            if(temp.length == 4) {
-                                                url += '?id='+temp[1]+'&type='+temp[3];
+                                            if (temp.length == 4) {
+                                                url += '?id=' + temp[1] + '&type=' + temp[3];
                                             }
                                         }
                                     }
@@ -2174,13 +2173,13 @@
                                     });
                                     return;
                                 }
-                                
+
                                 // 是否为扫码登录
                                 var thirdpartylogin_arr = ['/thirdpartylogin-scan-index-', 'plugins/index/pluginsname/thirdpartylogin/pluginscontrol/scan/pluginsaction/index'];
                                 var thirdpartylogin_ret = self.web_url_value_mate(value, thirdpartylogin_arr);
-                                if(thirdpartylogin_ret.status == 1 && thirdpartylogin_ret.value != null) {
+                                if (thirdpartylogin_ret.status == 1 && thirdpartylogin_ret.value != null) {
                                     uni.navigateTo({
-                                        url: '/pages/plugins/thirdpartylogin/index/index?id='+thirdpartylogin_ret.value,
+                                        url: '/pages/plugins/thirdpartylogin/index/index?id=' + thirdpartylogin_ret.value,
                                     });
                                     return;
                                 }
@@ -2193,7 +2192,12 @@
                         }
                     },
                 });
-            }
+            },
+
+            // 获取当前语言
+            get_language_value() {
+                return uni.getLocale() || this.data.default_language;
+            },
         },
 
         // 初始化完成时触发（全局只触发一次）

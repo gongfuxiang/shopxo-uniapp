@@ -9,7 +9,8 @@ import share from './common/js/common/share';
 import messages from './lang/index'
 import VueI18n from 'vue-i18n';
 let i18nConfig = {
-    locale: uni.getLocale() || 'zh',
+    locale: uni.getLocale(),
+    silentTranslationWarn: true,
     messages
 }
 Vue.use(VueI18n)
