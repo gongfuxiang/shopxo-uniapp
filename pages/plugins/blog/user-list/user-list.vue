@@ -14,14 +14,14 @@
                                 <view class="badge" :class="item.status == '0' ? 'info' : item.status === '1' ? 'success' : 'error'">{{ item.status_name }}</view>
                             </view>
                         </view>
-                        <view class="br-t-f5 padding-vertical-main flex-row jc-sa align-c text-size tc">
-                            <view class="cr-base flex-1 divider-r-f5" :data-value="'/pages/plugins/blog/form/form?id=' + item.id" @tap="url_event">
+                        <view class="br-t-f5 flex-row jc-sa align-c text-size tc">
+                            <view class="cr-base flex-1 divider-r-f5 padding-vertical-main" :data-value="'/pages/plugins/blog/form/form?id=' + item.id" @tap="url_event">
                                 <view class="pr top-xs margin-right-xs dis-inline-block">
                                     <iconfont name="icon-wenda-wytw" size="32rpx"></iconfont>
                                 </view>
                                 编辑
                             </view>
-                            <view class="cr-main flex-1" :data-id="item.id" @tap="del_event">
+                            <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
                                 <view class="pr top-xs margin-right-xs dis-inline-block">
                                     <iconfont name="icon-blog-del" size="32rpx"></iconfont>
                                 </view>
