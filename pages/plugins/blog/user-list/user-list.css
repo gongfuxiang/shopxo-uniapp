@@ -7,14 +7,31 @@
     display: inline-block;
     height: 32rpx;
     line-height: 32rpx;
-    background: rgb(82 196 26 / 10%);
     border-radius: 18rpx;
     font-size: 10px;
-    color: #52C41A;
     padding: 0 16rpx;
 }
+
+.badge.success {
+    color: #52C41A;
+    background: rgb(82 196 26 / 10%);
+}
+
+.badge.info {
+    color: #999;
+    background: #f4f4f4;
+}
+
+.badge.error {
+    color: #E22C08;
+    background: rgba(226, 45, 8, 0.1);
+}
+
 .add-icon {
     height: 80rpx;
     line-height: 76rpx;
     margin-right: 6rpx;
+}
+.multi-text {
+    min-height: auto;
 }

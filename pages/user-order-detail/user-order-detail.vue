@@ -164,7 +164,7 @@
             init() {
                 var self = this;
                 uni.showLoading({
-                    title: this.$t('login.login.05h35f'),
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -229,9 +229,9 @@
                         self.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: this.$t('login.login.6gojnd'),
+                            data_list_loding_msg: this.$t('common.internet_error'),
                         });
-                        app.globalData.showToast(this.$t('login.login.6gojnd'));
+                        app.globalData.showToast(this.$t('common.internet_error'));
                     },
                 });
             },

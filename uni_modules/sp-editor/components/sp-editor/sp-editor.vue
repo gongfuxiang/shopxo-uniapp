@@ -85,6 +85,13 @@
             });
             // #endif
         },
+        watch: {
+            templates: function (new_val, old_val) {
+                if (new_val !== old_val) {
+                    this.onEditorReady();
+                }
+            },
+        },
         methods: {
             onEditorReady() {
                 // #ifdef MP-BAIDU
@@ -257,9 +264,9 @@
         height: calc(100% - 80rpx);
     }
 
-.editor-wrapper.two-row {
-    height: calc(100% - 160rpx);
-}
+    .editor-wrapper.two-row {
+        height: calc(100% - 160rpx);
+    }
 
     .ql-container {
         padding: 8rpx 16rpx;

@@ -7,7 +7,29 @@
 	},
 	"common": {
 		"confirm": "confirm",
-		"cancel": "cancel"
+		"cancel": "cancel",
+		"not_yet": "Not yet",
+		"save": "preserve",
+		"more": "more",
+		"search": "search",
+		"num": "quantity",
+		"price_unit": "element",
+		"order": "order form",
+		"service": "service",
+		"please_input": "Please enter",
+		"settlement": "balance",
+		"clear": "empty",
+		"all": "whole",
+		"share": "share",
+		"return": "return",
+		"processing_in_text": "Processing",
+		"loading_in_text": "Loading",
+		"upload_in_text": "Uploading",
+		"warm_tips": "Kind reminder",
+		"no_relevant_data_tips": "No relevant data available",
+		"internet_error_tips": "The internet has wandered off~",
+		"sub_error_retry_tips": "Submission failed, please try again!",
+		"not_more_list_data_tips": "No more list data available"
 	},
 	"login": {
 		"login": {
@@ -129,6 +151,27 @@
 			"8o2of3": "Closing time",
 			"5k6k56": "Parameter error",
 			"i876o3": "Incorrect address"
+		}
+	},
+	"setup": {
+		"setup": {
+			"x81v6d": "Replace phone",
+			"j6skqh": "Click to replace",
+			"r7jz13": "update language",
+			"42mba7": "Address Management",
+			"5eltza": "Click to manage",
+			"t60222": "control over invoices",
+			"izg78g": "Click to go",
+			"377uwg": "Permission settings",
+			"5493ui": "Clear cache",
+			"f53166": "Click to clear",
+			"656fv1": "customer service telephone numbers",
+			"f25wcx": "Click to call",
+			"11k15d": "Account cancellation",
+			"48r261": "Unable to recover after logging out",
+			"07o10b": "Please bind your phone first",
+			"nwt4o1": "Please log in first",
+			"utnr7g": "The customer service phone number is incorrect"
 		}
 	}
 }

@@ -19,12 +19,10 @@
     padding: 0 28rpx;
 }
 
-/* #ifdef MP-WEIXIN */
 .transfer-icon {
     position: relative;
     top: 6rpx;
 }
-/* #endif */
 
 .content-padding-1 {
     padding: 2rpx;
