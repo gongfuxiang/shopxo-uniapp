@@ -4,10 +4,6 @@
 .home-top-nav-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
-    min-height: calc(var(--status-bar-height) + 130rpx);
-    /* #ifdef H5 */
-    min-height: calc(var(--status-bar-height) + 160rpx);
-    /* #endif */
     padding-top: calc(var(--status-bar-height) + 5px);
 }
 
@@ -34,7 +30,7 @@
  */
 /* #ifdef H5 || MP-TOUTIAO || APP */
 .nav-top-right-icon {
-    top: -34px;
+    top: calc(var(--status-bar-height) + 10px);
     right: 28rpx;
     z-index: 12;
     line-height: 28px;
@@ -83,13 +79,13 @@
     background-size: 100% auto;
     background-position: top;
     padding-bottom: 24rpx;
-    /* #ifdef H5 || APP */
+    /* #ifdef H5 */
     padding-top: 15rpx !important;
     padding-bottom: 15rpx !important;
     /* #endif */
 }
 
-/* #ifdef H5 || MP-TOUTIAO || APP */
+/* #ifdef H5 || MP-TOUTIAO */
 .search-content-fixed .nav-top-right-icon {
     top: 11px !important;
 }
