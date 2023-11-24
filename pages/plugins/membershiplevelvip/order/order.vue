@@ -51,7 +51,7 @@
             :prop-default-payment-id="default_payment_id"
             :prop-pay-price="pay_price"
             :prop-is-show-payment="is_show_payment_popup"
-            @close-payment-poupon="payment_popup_event_close"
+            @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
             :prop-nav-status-index="nav_status_index"
             @reset-event="reset_event"
