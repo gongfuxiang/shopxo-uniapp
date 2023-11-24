@@ -1,7 +1,7 @@
 {
 	"language": {
 		"zh-Hans": "Simplified Chinese",
-		"cht": "Traditional Chinese",
+		"zh-Hant": "Traditional Chinese",
 		"en": "United States",
 		"spa": "Spanish"
 	},
@@ -23,7 +23,7 @@
 			"1i4o86": "user",
 			"su75o5": "cancel",
 			"n2pv70": "Account",
-			"1p7843": "mobile phone",
+			"1p7843": "phone",
 			"p54kf1": "mailbox",
 			"3i05ly": "Temporarily closed login",
 			"nddg2x": "Read and agree",

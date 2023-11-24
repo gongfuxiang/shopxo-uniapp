@@ -139,7 +139,7 @@
                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                             <!-- 注册 -->
                             <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0">
-                                <text class="cr-grey-9 padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.login.t75ee8') }}</text>
+                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.t75ee8') }}</text>
                             </view>
                             <text class="cr-grey-9" data-value="forget" @tap="opt_form_event">{{ $t('login.login.9d8gqi') }}</text>
                         </view>
@@ -227,7 +227,7 @@
                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                             <!-- 登录 -->
                             <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                <text class="cr-grey-9 padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
+                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
                             </view>
                         </view>
                         <view class="bottom-fixed padding-horizontal-main padding-bottom-main br-0">
@@ -255,11 +255,11 @@
                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
                             <!-- 登录 -->
                             <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
-                                <text class="cr-grey-9 padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
+                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
                             </view>
                             <!-- 注册 -->
                             <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="tc">
-                                <text class="cr-grey-9 padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.login.b347k4') }}</text>
+                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.b347k4') }}</text>
                             </view>
                         </view>
                         <view class="bottom-fixed padding-horizontal-main padding-bottom-main br-0">
@@ -442,8 +442,6 @@
                 language_key: '',
                 // 实际提交的语言字段
                 language: '',
-                // 暂存的语言字段
-                language_name: '',
 
                 // 登陆方式
                 popup_login_status: false,
@@ -469,12 +467,10 @@
             this.setData({
                 params: params,
                 language_list: language_list,
+                language_key: language_key,
                 language: language_list[language_key],
             });
-            console.log(language_key);
-            console.log(this.language);
-            console.log(this.language_list);
-            console.log(language_list[language_key]);
+            console.log(uni.getLocale());
 
             // 上一个页面记录
             var page = app.globalData.prev_page();
@@ -1449,7 +1445,6 @@
             // 选择语言
             checked_language_event(e) {
                 this.setData({
-                    language_name: e.currentTarget.dataset.value,
                     language_key: e.currentTarget.dataset.key,
                 });
             },
@@ -1457,8 +1452,10 @@
             // 提交语言选择
             popup_sub_language_event() {
                 this.language_change(this.language_key);
+                var language_list = this.$t('language');
                 this.setData({
-                    language: this.language_name,
+                    language_list: language_list,
+                    language: language_list[this.language_key],
                     popup_language_status: false,
                 });
             },
@@ -1477,6 +1474,8 @@
                 } else {
                     uni.setLocale(key);
                     this.$i18n.locale = key;
+
+                    console.log(uni.getLocale());
                 }
             },
 
