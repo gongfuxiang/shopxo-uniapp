@@ -490,13 +490,8 @@
 
                             // 轮播数据处理
                             if (this.load_status == 0) {
-                                if (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) {
-                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 80%);';
-                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + data.banner_list[0].bg_color + ' 0%, #f5f5f5 460%);';
-                                } else {
-                                    upd_data['top_content_bg_color'] = 'background: linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 80%);';
-                                    upd_data['top_content_search_bg_color'] = 'background: linear-gradient(180deg, ' + theme_color + ' 0%, #f5f5f5 460%);';
-                                }
+                                var color = (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) ? data.banner_list[0].bg_color : theme_color;
+                                this.change_banner(color);
                             }
 
                             // 搜索框宽度处理
@@ -617,13 +612,13 @@
 
             // 轮播改变、背景色处理
             change_banner(color) {
-                if ((color || null) != null) {
-                    this.top_content_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 460%);';
-                } else {
-                    this.top_content_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 80%);';
-                    this.top_content_search_bg_color = 'background: linear-gradient(180deg, ' + this.theme_color + ' 0%, #f5f5f5 460%);';
+                if ((color || null) == null) {
+                    color = this.theme_color;
                 }
+                this.setData({
+                    top_content_bg_color: 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 80%);',
+                    top_content_search_bg_color: 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 460%);',
+                });
             },
 
             // 搜索icon扫码事件
