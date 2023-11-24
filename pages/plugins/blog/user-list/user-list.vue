@@ -62,15 +62,7 @@
                 theme_color: app.globalData.get_theme_color(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
-                data: [
-                    // {
-                    //     id: '1',
-                    //     images: 'http://shopxo.com/static/upload/images/plugins_homemiddleadv/2023/08/18/1692328288709779.png',
-                    //     title: '歌手2024惊艳登场，陈出生、两进入领衔，人气爆棚啦！！！！！',
-                    //     date: '2023-09-04 10:12:50',
-                    //     reviewed: 1,
-                    // },
-                ],
+                data: [],
                 data_is_loading: 0,
                 data_total: 0,
                 data_page_total: 0,
