@@ -1,8 +1,8 @@
 <template>
     <view :class="theme_view">
         <component-nav-back :prop-fixed="false" prop-class="bg-white" prop-color="#333">
-            <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : ''">
-                <view class="margin-left-main" :class="status_bar_height > 0 ? '' : 'flex-1 flex-width'">
+            <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
+                <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
@@ -72,7 +72,10 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0)),
+                is_mp_env: false,
+                // #ifdef MP
+                is_mp_env: true,
+                // #endif
                 data_base: {},
                 data_list: [],
                 data_total: 0,

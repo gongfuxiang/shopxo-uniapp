@@ -6,7 +6,7 @@
             <!-- 头部 -->
             <view class="header pr z-i">
                 <component-nav-back :prop-fixed="false" prop-color="#333">
-                    <template slot="right" :class="status_bar_height > 0 ? 'top-search-width' : 'flex-1 flex-width'">
+                    <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
                         <view :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
                             <!-- #ifndef H5 -->
                             <component-search
@@ -308,15 +308,19 @@
     import componentCartParaCurve from '../../../../components/cart-para-curve/cart-para-curve';
 
     var common_static_url = app.globalData.get_static_url('common');
-    var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
                 status_bar_height: status_bar_height,
-                content_style: '',
                 common_static_url: common_static_url,
+                is_mp_env: false,
+                // #ifdef MP
+                is_mp_env: true,
+                // #endif
+                content_style: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
@@ -454,7 +458,7 @@
                                 goods_category: data.goods_category || [],
                                 favor_user: data.favor_user || [],
                                 tablecode: tablecode,
-                                content_style: 'height: calc(100vh - '+content_other_height+' - '+status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+');',
+                                content_style: 'height: calc(100vh - '+content_other_height+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+');',
                             });
 
                             // 下单类型是否存在索引
