@@ -5,10 +5,10 @@
                 <view class="page-bottom-fixed padding-top-main">
                     <view v-for="(item, index) in data" class="bg-white spacing-mb" :key="index">
                         <view class="padding-main flex-row">
-                            <view>
+                            <view v-if="item.cover" class="padding-right-main">
                                 <image class="blog-img radius" :src="item.cover" mode="aspectFit"></image>
                             </view>
-                            <view class="flex-1 flex-width padding-left-main">
+                            <view class="flex-1 flex-width">
                                 <view class="multi-text text-size fw-b margin-bottom-xs">{{ item.title }}</view>
                                 <view class="text-size-sm cr-grey-9 margin-bottom-sm">{{ item.date }}</view>
                                 <view class="badge" :class="item.status == '0' ? 'info' : item.status === '1' ? 'success' : 'error'">{{ item.status_name }}</view>
@@ -16,13 +16,13 @@
                         </view>
                         <view class="br-t-f5 flex-row jc-sa align-c text-size tc">
                             <view class="cr-base flex-1 divider-r-f5 padding-vertical-main" :data-value="'/pages/plugins/blog/form/form?id=' + item.id" @tap="url_event">
-                                <view class="pr top-xs margin-right-xs dis-inline-block">
+                                <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-wenda-wytw" size="32rpx"></iconfont>
                                 </view>
                                 编辑
                             </view>
                             <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
-                                <view class="pr top-xs margin-right-xs dis-inline-block">
+                                <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-blog-del" size="32rpx"></iconfont>
                                 </view>
                                 删除
