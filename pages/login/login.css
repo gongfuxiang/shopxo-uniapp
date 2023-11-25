@@ -10,6 +10,10 @@ page {
     height: 160rpx !important;
 }
 
+.dom-content {
+    min-height: 100vh;
+}
+
 .top-nav {
     padding: 34rpx;
 }
@@ -91,10 +95,6 @@ page {
 
 .opt-type-list text:not(:last-child) {
     margin-right: 50rpx;
-}
-
-.dom-top {
-    min-height: calc(100vh - 400rpx);
 }
 
 /**

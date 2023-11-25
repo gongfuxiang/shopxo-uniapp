@@ -2,330 +2,307 @@
     <view :class="theme_view">
         <view class="content">
             <block v-if="(is_exist_base_data || 0) == 1">
-                <view class="flex-row align-c jc-e top-nav margin-bottom-xxxl">
-                    <view class="cr-base text-size" @tap="open_language_event">
-                        <view class="pr top-sm margin-right-sm dis-inline-block">
-                            <iconfont name="icon-login-language" size="32rpx"></iconfont>
-                        </view>
-                        {{ language }}
-                        <view class="margin-left-sm dis-inline-block">
-                            <iconfont name="icon-login-down-arrow" size="16rpx"></iconfont>
-                        </view>
-                    </view>
-                </view>
-                <!-- 绑定手机 -->
-                <view v-if="current_opt_form == 'bind_verify'" class="form-content">
-                    <form @submit="formBind">
-                        <view class="tc">
-                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                            <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
-                        </view>
-                        <view class="margin-top-xxxl padding-top-xxxl">
-                            <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
-                            <view class="code pr margin-vertical-main">
-                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
-                                <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
-                            </view>
-                            <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.tfl656') }}</button>
-                        </view>
-                        <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
-                            <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
-                        </view>
-                    </form>
-                </view>
-
-                <!-- 存在用户信息 -->
-                <block v-if="user != null">
-                    <!-- 确认绑定方式 -->
-                    <view v-if="current_opt_form == 'bind' || current_opt_form == 'success'" class="form-content">
-                        <view class="tc">
-                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                            <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
-                        </view>
-                        <block v-if="current_opt_form == 'bind'">
-                            <view class="margin-top-xxxl padding-top-xxxl">
-                                <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.login.31r6p2') }}</button>
-                                <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ $t('login.login.p3kxy2') }}</button>
-                            </view>
-                            <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
-                            <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
-                                <!-- 登录 -->
-                                <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                    <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.login.54l805') }}</text>
+                <view class="flex-col jc-sb dom-content">
+                    <view>
+                        <view class="flex-row align-c jc-e top-nav margin-bottom-xxxl">
+                            <view class="cr-base text-size" @tap="open_language_event">
+                                <view class="pr top-sm margin-right-sm dis-inline-block">
+                                    <iconfont name="icon-login-language" size="32rpx"></iconfont>
                                 </view>
-                                <!-- 注册 -->
-                                <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
-                                    <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.login.q11t73') }}</text>
+                                {{ language }}
+                                <view class="margin-left-sm dis-inline-block">
+                                    <iconfont name="icon-login-down-arrow" size="16rpx"></iconfont>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 绑定手机 -->
+                        <view v-if="current_opt_form == 'bind_verify'" class="form-content">
+                            <form @submit="formBind">
+                                <view class="tc">
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                </view>
+                                <view class="margin-top-xxxl padding-top-xxxl">
+                                    <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
+                                    <view class="code pr margin-vertical-main">
+                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                        <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                    </view>
+                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.tfl656') }}</button>
+                                </view>
+                                <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
+                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
+                                </view>
+                            </form>
+                        </view>
+
+                        <!-- 存在用户信息 -->
+                        <block v-if="user != null">
+                            <!-- 确认绑定方式 -->
+                            <view v-if="current_opt_form == 'bind' || current_opt_form == 'success'" class="form-content">
+                                <view class="tc">
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                </view>
+                                <block v-if="current_opt_form == 'bind'">
+                                    <view class="margin-top-xxxl padding-top-xxxl">
+                                        <button class="bg-main-pair br-main-pair cr-white round text-size" type="warn" hover-class="none" data-value="bind_verify" @tap="opt_form_event">{{ $t('login.login.31r6p2') }}</button>
+                                        <button v-if="common_user_onekey_bind_mobile_list.length > 0 && common_user_onekey_bind_mobile_list.indexOf(client_value) != -1" class="margin-top-xxl bg-main br-main cr-white round text-size" type="default" hover-class="none" open-type="getPhoneNumber" @getphonenumber="confirm_phone_number_event">{{ $t('login.login.p3kxy2') }}</button>
+                                    </view>
+                                    <!-- 当前还没有账号的情况下才可以操作登录和注册绑定 -->
+                                    <view v-if="(user || null) == null || (user.id || null) == null" class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-main">
+                                        <!-- 登录 -->
+                                        <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
+                                            <text class="cr-main round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="login" @tap="opt_form_event">{{ $t('login.login.54l805') }}</text>
+                                        </view>
+                                        <!-- 注册 -->
+                                        <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="margin-bottom-xl tc">
+                                            <text class="cr-main-pair round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="reg" @tap="opt_form_event">{{ $t('login.login.q11t73') }}</text>
+                                        </view>
+                                    </view>
+                                </block>
+                                <view v-if="current_opt_form == 'success'" class="tc margin-top-xxxl">
+                                    <view class="cr-green">{{ $t('login.login.s51ed9') }}</view>
+                                    <button type="default" size="mini" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="success_event">{{ $t('login.login.483nho') }}</button>
                                 </view>
                             </view>
                         </block>
-                        <view v-if="current_opt_form == 'success'" class="tc margin-top-xxxl">
-                            <view class="cr-green">{{ $t('login.login.s51ed9') }}</view>
-                            <button type="default" size="mini" class="dis-inline-block auto bg-main br-main cr-white round text-size-sm padding-left-xxxl padding-right-xxxl padding-top-xs padding-bottom-xs margin-top-xl" @tap="success_event">{{ $t('login.login.483nho') }}</button>
-                        </view>
-                    </view>
-                </block>
 
-                <!-- 站点logo -->
-                <image v-if="current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                        <!-- 站点logo -->
+                        <image v-if="current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
 
-                <!-- 非登录成功则需要展示的数据 -->
-                <block v-if="current_opt_form != 'success'">
-                    <!-- 错误提示信息 -->
-                    <view v-if="(error_msg || null) != null" class="margin-top-xxxl margin-bottom-lg tc padding-horizontal-main">
-                        <icon type="warn" size="16" color="#f00" class="va-m" />
-                        <text class="cr-red va-m margin-left-sm">{{ error_msg }}</text>
-                    </view>
-
-                    <!-- 绑定账号提示 -->
-                    <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xxxl">
-                        <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
-                        <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
-                        <text class="va-m margin-left-lg cr-grey">{{ $t('login.login.e77788') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('login.login.1i4o86') }}</text>
-                        <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
-                    </view>
-                </block>
-
-                <!-- 登录 -->
-                <view v-if="current_opt_form == 'login'" class="form-content">
-                    <form @submit="formLogin">
-                        <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb dom-top">
-                            <view class="margin-bottom-xxxl">
-                                <!-- 登录方式选择 -->
-                                <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="opt-type-list margin-vertical-xxxl">
-                                    <text v-if="home_user_login_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_username' ? 'cr-main nav-active-line' : ''" data-value="login_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
-                                    <text v-if="home_user_login_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_sms' ? 'cr-main nav-active-line' : ''" data-value="login_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
-                                    <text v-if="home_user_login_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_email' ? 'cr-main nav-active-line' : ''" data-value="login_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
-                                </view>
-                                <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.3i05ly') }}</view>
-                                <!-- 账号密码 -->
-                                <block v-if="current_opt_type == 'login_username'">
-                                    <input type="text" :placeholder="$t('login.login.qe8a37')" maxlength="60" name="accounts" key="login_username_1" class="form-item margin-vertical-xl wh-auto" />
-                                    <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="login_username_2" class="form-item margin-vertical-xl wh-auto" />
-                                    <view v-if="home_user_login_img_verify_state == 1" class="verify pr margin-vertical-xl">
-                                        <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="login_username_3" @input="form_input_image_verify_event" />
-                                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_login" @tap="image_verify_event"></image>
-                                    </view>
-                                </block>
-                                <!-- 手机 -->
-                                <block v-if="current_opt_type == 'login_sms'">
-                                    <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" @input="form_input_mobile_event" key="login_sms_1" class="form-item margin-vertical-xl wh-auto" />
-                                    <view class="code pr margin-vertical-xl">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_sms_2" />
-                                        <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
-                                    </view>
-                                </block>
-                                <!-- 邮箱 -->
-                                <block v-if="current_opt_type == 'login_email'">
-                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
-                                    <view class="code pr margin-vertical-xl">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_email_1" />
-                                        <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
-                                    </view>
-                                </block>
-                                <!-- 协议 -->
-                                <view class="margin-top-xl cr-grey">
-                                    <view class="dis-inline-block va-m" @tap="agreement_change">
-                                        <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
-                                            <label>
-                                                <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                                            </label>
-                                        </radio-group>
-                                    </view>
-                                    <view class="dis-inline-block va-m text-size-xs"
-                                        >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                                        >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
-                                    >
-                                </view>
-                                <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.i1deai') }}</button>
-                                <view class="margin-top-xxl oh flex-row jc-sb align-c">
-                                    <!-- 注册 -->
-                                    <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0">
-                                        <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.t75ee8') }}</text>
-                                    </view>
-                                    <text class="cr-grey-9" data-value="forget" @tap="opt_form_event">{{ $t('login.login.9d8gqi') }}</text>
-                                </view>
+                        <!-- 非登录成功则需要展示的数据 -->
+                        <block v-if="current_opt_form != 'success'">
+                            <!-- 错误提示信息 -->
+                            <view v-if="(error_msg || null) != null" class="margin-top-xxxl margin-bottom-lg tc padding-horizontal-main">
+                                <icon type="warn" size="16" color="#f00" class="va-m" />
+                                <text class="cr-red va-m margin-left-sm">{{ error_msg }}</text>
                             </view>
-                            <view class="padding-main">
-                                <view class="bottom-line-exclude">
-                                    <!-- #ifdef MP -->
-                                    <!-- 小程序授权登录 -->
-                                    <view class="margin-bottom-xxxl tc">
-                                        <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">{{ $t('login.login.tvl242') }}</text>
-                                        <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
+
+                            <!-- 绑定账号提示 -->
+                            <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xxxl">
+                                <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
+                                <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
+                                <text class="va-m margin-left-lg cr-grey">{{ $t('login.login.e77788') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('login.login.1i4o86') }}</text>
+                                <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
+                            </view>
+                        </block>
+
+                        <!-- 登录 -->
+                        <view v-if="current_opt_form == 'login'" class="form-content">
+                            <form @submit="formLogin">
+                                <!-- form表单距离去除顶部沾满整个空间的高度 -->
+                                <view class="flex-col jc-sb">
+                                    <view>
+                                        <!-- 登录方式选择 -->
+                                        <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="opt-type-list margin-vertical-xxxl">
+                                            <text v-if="home_user_login_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_username' ? 'cr-main nav-active-line' : ''" data-value="login_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
+                                            <text v-if="home_user_login_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_sms' ? 'cr-main nav-active-line' : ''" data-value="login_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
+                                            <text v-if="home_user_login_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'login_email' ? 'cr-main nav-active-line' : ''" data-value="login_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
+                                        </view>
+                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.3i05ly') }}</view>
+                                        <!-- 账号密码 -->
+                                        <block v-if="current_opt_type == 'login_username'">
+                                            <input type="text" :placeholder="$t('login.login.qe8a37')" maxlength="60" name="accounts" key="login_username_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="login_username_2" class="form-item margin-vertical-xl wh-auto" />
+                                            <view v-if="home_user_login_img_verify_state == 1" class="verify pr margin-vertical-xl">
+                                                <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="login_username_3" @input="form_input_image_verify_event" />
+                                                <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_login" @tap="image_verify_event"></image>
+                                            </view>
+                                        </block>
+                                        <!-- 手机 -->
+                                        <block v-if="current_opt_type == 'login_sms'">
+                                            <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" @input="form_input_mobile_event" key="login_sms_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <view class="code pr margin-vertical-xl">
+                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_sms_2" />
+                                                <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                            </view>
+                                        </block>
+                                        <!-- 邮箱 -->
+                                        <block v-if="current_opt_type == 'login_email'">
+                                            <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <view class="code pr margin-vertical-xl">
+                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="login_email_1" />
+                                                <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                            </view>
+                                        </block>
+                                        <!-- 协议 -->
+                                        <view class="margin-top-xl cr-grey">
+                                            <view class="dis-inline-block va-m" @tap="agreement_change">
+                                                <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
+                                                    <label>
+                                                        <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                                    </label>
+                                                </radio-group>
+                                            </view>
+                                            <view class="dis-inline-block va-m text-size-xs"
+                                                >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
+                                                >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
+                                            >
+                                        </view>
+                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.i1deai') }}</button>
+                                        <view class="margin-top-xxl oh flex-row jc-sb align-c">
+                                            <!-- 注册 -->
+                                            <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0">
+                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.t75ee8') }}</text>
+                                            </view>
+                                            <text class="cr-grey-9" data-value="forget" @tap="opt_form_event">{{ $t('login.login.9d8gqi') }}</text>
+                                        </view>
                                     </view>
-                                    <!-- #endif -->
-                                    <!-- #ifdef H5 || APP -->
-                                    <view v-if="(plugins_thirdpartylogin_data || null) != null && (plugins_thirdpartylogin_config || null) != null" class="plugins-thirdpartylogin tc">
-                                        <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('login.login.9q27d8') }}</view>
-                                        <view class="flex-row align-c jc-c">
-                                            <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index < 3">
-                                                <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
-                                                    <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
-                                                </view>
-                                            </block>
-                                            <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round" @tap="popup_login_open_event">
-                                                <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
+                                </view>
+                            </form>
+                        </view>
+
+                        <!-- 注册 -->
+                        <view v-else-if="current_opt_form == 'reg'" class="form-content">
+                            <form @submit="formReg">
+                                <!-- form表单距离去除顶部沾满整个空间的高度 -->
+                                <view class="flex-col jc-sb">
+                                    <view>
+                                        <!-- 注册方式选择 -->
+                                        <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="opt-type-list margin-vertical-xxxl">
+                                            <text v-if="home_user_reg_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_username' ? 'cr-main nav-active-line' : ''" data-value="reg_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
+                                            <text v-if="home_user_reg_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_sms' ? 'cr-main nav-active-line' : ''" data-value="reg_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
+                                            <text v-if="home_user_reg_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_email' ? 'cr-main nav-active-line' : ''" data-value="reg_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
+                                        </view>
+                                        <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.t59dho') }}</view>
+                                        <!-- 账号密码 -->
+                                        <block v-if="current_opt_type == 'reg_username'">
+                                            <input type="text" :placeholder="$t('login.login.6yfr9g')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
+                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_username_2" class="form-item margin-vertical-xl wh-auto" />
+                                            <view v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-xl">
+                                                <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="reg_username_3" @input="form_input_image_verify_event" />
+                                                <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_reg" @tap="image_verify_event"></image>
+                                            </view>
+                                        </block>
+                                        <!-- 手机 -->
+                                        <block v-if="current_opt_type == 'reg_sms'">
+                                            <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" key="reg_sms_1" @input="form_input_mobile_event" class="form-item margin-vertical-xl wh-auto" />
+                                            <view class="code pr margin-vertical-xl">
+                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_sms_2" />
+                                                <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                            </view>
+                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_sms_3" class="form-item margin-vertical-xl wh-auto" />
+                                        </block>
+                                        <!-- 邮箱 -->
+                                        <block v-if="current_opt_type == 'reg_email'">
+                                            <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" key="reg_email_1" @input="form_input_email_event" class="form-item margin-vertical-xl wh-auto" />
+                                            <view class="code pr margin-vertical-xl">
+                                                <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_email_2" />
+                                                <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                            </view>
+                                            <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_email_3" class="form-item margin-vertical-xl wh-auto" />
+                                        </block>
+                                        <!-- 协议 -->
+                                        <view class="margin-top-xxxl cr-grey">
+                                            <view class="dis-inline-block va-m" @tap="agreement_change">
+                                                <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
+                                                    <label>
+                                                        <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                                    </label>
+                                                </radio-group>
+                                            </view>
+                                            <view class="dis-inline-block va-m text-size-xs"
+                                                >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
+                                                >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                            </view>
+                                        </view>
+                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.hvunf8') }}</button>
+                                        <view class="margin-top-xxl oh flex-row jc-sb align-c">
+                                            <!-- 登录 -->
+                                            <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
+                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
                                             </view>
                                         </view>
                                     </view>
-                                    <!-- #endif -->
                                 </view>
-                            </view>
+                            </form>
                         </view>
-                    </form>
-                </view>
 
-                <!-- 注册 -->
-                <view v-else-if="current_opt_form == 'reg'" class="form-content">
-                    <form @submit="formReg">
-                        <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb dom-top">
-                            <view class="margin-bottom-xxxl">
-                                <!-- 注册方式选择 -->
-                                <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="opt-type-list margin-vertical-xxxl">
-                                    <text v-if="home_user_reg_type.indexOf('username') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_username' ? 'cr-main nav-active-line' : ''" data-value="reg_username" @tap="opt_type_event">{{ $t('login.login.n2pv70') }}</text>
-                                    <text v-if="home_user_reg_type.indexOf('sms') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_sms' ? 'cr-main nav-active-line' : ''" data-value="reg_sms" @tap="opt_type_event">{{ $t('login.login.1p7843') }}</text>
-                                    <text v-if="home_user_reg_type.indexOf('email') != -1" class="padding-vertical-sm" :class="current_opt_type === 'reg_email' ? 'cr-main nav-active-line' : ''" data-value="reg_email" @tap="opt_type_event">{{ $t('login.login.p54kf1') }}</text>
-                                </view>
-                                <view v-else class="tc cr-grey padding-vertical-main">{{ $t('login.login.t59dho') }}</view>
-                                <!-- 账号密码 -->
-                                <block v-if="current_opt_type == 'reg_username'">
-                                    <input type="text" :placeholder="$t('login.login.6yfr9g')" maxlength="60" name="accounts" key="reg_username_1" class="form-item margin-vertical-xl wh-auto" />
-                                    <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_username_2" class="form-item margin-vertical-xl wh-auto" />
-                                    <view v-if="home_user_register_img_verify_state == 1" class="verify pr margin-vertical-xl">
-                                        <input type="text" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" :value="form_input_image_verify_value" key="reg_username_3" @input="form_input_image_verify_event" />
-                                        <image v-if="(verify_image_url || null) != null" :src="verify_image_url" class="verify-image pa" mode="aspectFit" data-type="user_reg" @tap="image_verify_event"></image>
-                                    </view>
-                                </block>
-                                <!-- 手机 -->
-                                <block v-if="current_opt_type == 'reg_sms'">
-                                    <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="accounts" key="reg_sms_1" @input="form_input_mobile_event" class="form-item margin-vertical-xl wh-auto" />
-                                    <view class="code pr margin-vertical-xl">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_sms_2" />
-                                        <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
-                                    </view>
-                                    <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_sms_3" class="form-item margin-vertical-xl wh-auto" />
-                                </block>
-                                <!-- 邮箱 -->
-                                <block v-if="current_opt_type == 'reg_email'">
-                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" key="reg_email_1" @input="form_input_email_event" class="form-item margin-vertical-xl wh-auto" />
-                                    <view class="code pr margin-vertical-xl">
-                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" key="reg_email_2" />
-                                        <button :class="'verify-submit pa round br text-size-sm cr-grey-9 ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
-                                    </view>
-                                    <input type="text" :placeholder="$t('login.login.08fchn')" minlength="6" maxlength="18" name="pwd" password="true" key="reg_email_3" class="form-item margin-vertical-xl wh-auto" />
-                                </block>
-                                <!-- 协议 -->
-                                <view class="margin-top-xxxl cr-grey">
-                                    <view class="dis-inline-block va-m" @tap="agreement_change">
-                                        <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
-                                            <label>
-                                                <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                                            </label>
-                                        </radio-group>
-                                    </view>
-                                    <view class="dis-inline-block va-m text-size-xs"
-                                        >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                                        >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                        <!-- 找回密码 -->
+                        <view v-else-if="current_opt_form == 'forget'" class="form-content">
+                            <form @submit="formForget">
+                                <!-- form表单距离去除顶部沾满整个空间的高度 -->
+                                <view class="flex-col jc-sb">
+                                    <view class="margin-bottom-xxxl">
+                                        <input type="text" :placeholder="$t('login.login.d178m0')" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-xl wh-auto" />
+                                        <view class="code pr margin-vertical-xl">
+                                            <input type="number" autocomplete="off" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                            <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                        </view>
+                                        <input type="text" autocomplete="off" :placeholder="$t('login.login.9wx3ch')" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-xl wh-auto" />
+                                        <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.confirm_sub') }}</button>
+                                        <view class="margin-top-xxl oh flex-row jc-sb align-c">
+                                            <!-- 登录 -->
+                                            <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
+                                                <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
+                                            </view>
+                                            <!-- 注册 -->
+                                            <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="tc">
+                                                <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.b347k4') }}</text>
+                                            </view>
+                                        </view>
                                     </view>
                                 </view>
-                                <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.hvunf8') }}</button>
-                                <view class="margin-top-xxl oh flex-row jc-sb align-c">
-                                    <!-- 登录 -->
-                                    <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="margin-bottom-xxxl tc">
-                                        <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
-                                    </view>
-                                </view>
-                            </view>
-                            <view class="padding-main">
-                                <view class="bottom-line-exclude">
-                                    <!-- #ifdef MP -->
-                                    <!-- 小程序授权登录 -->
-                                    <view class="margin-bottom-xxxl tc">
-                                        <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">{{ $t('login.login.tvl242') }}</text>
-                                        <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
-                                    </view>
-                                    <!-- #endif -->
-                                </view>
-                            </view>
+                            </form>
                         </view>
-                    </form>
-                </view>
 
-                <!-- 找回密码 -->
-                <view v-else-if="current_opt_form == 'forget'" class="form-content">
-                    <form @submit="formForget">
-                        <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb dom-top">
-                            <view class="margin-bottom-xxxl">
-                                <input type="text" :placeholder="$t('login.login.d178m0')" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-xl wh-auto" />
-                                <view class="code pr margin-vertical-xl">
-                                    <input type="number" autocomplete="off" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
-                                    <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                        <!-- #ifdef MP -->
+                        <!-- 小程序授权 -->
+                        <view v-if="current_opt_form == 'auth' && (user || null) == null" class="margin-top-xxxl tc">
+                            <view class="cr-base">{{ $t('login.login.836o8e') }}</view>
+                            <view class="margin-top-sm cr-grey">
+                                <view class="dis-inline-block va-m" @tap="agreement_change">
+                                    <radio-group style="transform: scale(0.6)">
+                                        <label>
+                                            <radio value="agreement" color="#20a53a" :checked="agreement_status" />
+                                        </label>
+                                    </radio-group>
                                 </view>
-                                <input type="text" autocomplete="off" :placeholder="$t('login.login.9wx3ch')" minlength="6" maxlength="18" name="pwd" password="true" class="form-item margin-vertical-xl wh-auto" />
-                                <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('common.confirm_sub') }}</button>
-                                <view class="margin-top-xxl oh flex-row jc-sb align-c">
-                                    <!-- 登录 -->
-                                    <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="tc">
-                                        <text class="cr-grey-9" data-value="login" @tap="opt_form_event">{{ $t('login.login.zy8tc4') }}</text>
-                                    </view>
-                                    <!-- 注册 -->
-                                    <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="tc">
-                                        <text class="cr-grey-9" data-value="reg" @tap="opt_form_event">{{ $t('login.login.b347k4') }}</text>
-                                    </view>
-                                </view>
+                                <view class="dis-inline-block va-m text-size-xs"
+                                    >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
+                                    >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
+                                >
                             </view>
-                            <view class="padding-main">
-                                <view class="bottom-line-exclude">
-                                    <!-- #ifdef MP -->
-                                    <!-- 小程序授权登录 -->
-                                    <view class="margin-bottom-xxxl tc">
-                                        <text v-if="(user || null) == null" class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="auth" @tap="opt_form_event">{{ $t('login.login.tvl242') }}</text>
-                                        <text v-else class="cr-red round padding-top-xs padding-bottom-xs padding-horizontal-main" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
-                                    </view>
-                                    <!-- #endif -->
-                                </view>
+                            <view class="margin-top-xxl">
+                                <navigator open-type="navigateBack" hover-class="none" class="dis-inline-block margin-right-lg">
+                                    <button class="bg-yellow br-yellow cr-white round" type="default" size="mini" hover-class="none">{{ $t('common.cancel') }}</button>
+                                </navigator>
+                                <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
+                                <!-- #endif -->
+                                <!-- #ifdef MP-QQ || MP-BAIDU || MP-KUAISHOU -->
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
+                                <!-- #endif -->
+                                <!-- #ifdef MP-ALIPAY -->
+                                <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('login.login.tvl242') }}</button>
+                                <!-- #endif -->
                             </view>
                         </view>
-                    </form>
-                </view>
-
-                <!-- #ifdef MP -->
-                <!-- 小程序授权 -->
-                <view v-if="current_opt_form == 'auth' && (user || null) == null" class="margin-top-xxxl tc">
-                    <view class="cr-base">{{ $t('login.login.836o8e') }}</view>
-                    <view class="margin-top-sm cr-grey">
-                        <view class="dis-inline-block va-m" @tap="agreement_change">
-                            <radio-group style="transform: scale(0.6)">
-                                <label>
-                                    <radio value="agreement" color="#20a53a" :checked="agreement_status" />
-                                </label>
-                            </radio-group>
-                        </view>
-                        <view class="dis-inline-block va-m text-size-xs"
-                            >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                            >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
-                        >
-                    </view>
-                    <view class="margin-top-xxl">
-                        <navigator open-type="navigateBack" hover-class="none" class="dis-inline-block margin-right-lg">
-                            <button class="bg-yellow br-yellow cr-white round" type="default" size="mini" hover-class="none">{{ $t('common.cancel') }}</button>
-                        </navigator>
-                        <!-- #ifdef MP-WEIXIN || MP-TOUTIAO -->
-                        <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" @tap="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-QQ || MP-BAIDU || MP-KUAISHOU -->
-                        <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getUserInfo" @getuserinfo="get_user_info_event">{{ $t('login.login.tvl242') }}</button>
-                        <!-- #endif -->
-                        <!-- #ifdef MP-ALIPAY -->
-                        <button class="margin-left-lg bg-green br-green cr-white round" type="default" size="mini" open-type="getAuthorize" @getAuthorize="get_user_info_event" scope="userInfo">{{ $t('login.login.tvl242') }}</button>
                         <!-- #endif -->
                     </view>
+
+                    <!-- 第三方登录 -->
+                    <view v-if="current_opt_form == 'login' || current_opt_form == 'reg'" class="padding-main margin-bottom-xxxl">
+                        <view class="bottom-line-exclude">
+                            <!-- #ifdef H5 || APP -->
+                            <view v-if="(plugins_thirdpartylogin_data || null) != null && (plugins_thirdpartylogin_config || null) != null" class="plugins-thirdpartylogin tc">
+                                <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('login.login.9q27d8') }}</view>
+                                <view class="flex-row align-c jc-c">
+                                    <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index < 3">
+                                        <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
+                                            <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
+                                        </view>
+                                    </block>
+                                    <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round" @tap="popup_login_open_event">
+                                        <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
+                                    </view>
+                                </view>
+                            </view>
+                            <!-- #endif -->
+                        </view>
+                    </view>
                 </view>
-                <!-- #endif -->
 
                 <!-- 图片验证码弹层 -->
                 <component-popup :propShow="popup_image_verify_status" propPosition="bottom" @onclose="popup_image_verify_close_event">
@@ -364,7 +341,7 @@
                         </view>
                     </view>
                 </component-popup>
-                <!-- 选择登陆方式 -->
+                <!-- 选择登录方式 -->
                 <component-popup :propShow="popup_login_status" propMostClass="z-i-deep pr" propPosition="bottom" :propIsRadius="false" propStyle="background-color:transparent;" @onclose="popup_login_close_event">
                     <view class="popup-login padding-sm">
                         <view class="bg-white border-radius-main content">
@@ -462,7 +439,7 @@
                 // 错误提示信息
                 error_msg: null,
 
-                // 登陆方式
+                // 登录方式
                 popup_login_status: false,
             };
         },
@@ -1490,7 +1467,7 @@
                 }
             },
 
-            // 打开登陆方式弹层
+            // 打开登录方式弹层
             popup_login_open_event() {
                 // 是否已同意协议
                 if (!this.agreement_status) {
@@ -1502,7 +1479,7 @@
                 });
             },
 
-            // 关闭登陆方式弹层
+            // 关闭登录方式弹层
             popup_login_close_event() {
                 this.setData({
                     popup_login_status: false,
