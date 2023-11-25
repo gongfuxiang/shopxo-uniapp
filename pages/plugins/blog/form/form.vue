@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="data_list_loding_status !== 0">
+        <view v-if="data_list_loding_status !== 1">
             <form @submit="form_submit" class="form-container">
                 <view class="page-bottom-fixed padding-main">
                     <view class="bg-white border-radius-main pr oh spacing-mb">
@@ -16,7 +16,7 @@
                             <view class="flex-row jc-sb align-c">
                                 <view class="form-gorup-title padding-right-main">分类<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width tr" @tap="popupOpen">
-                                    <text :class="data.type ? 'cr-black' : 'cr-grey-9'">{{ data.type || '请选择' }}</text>
+                                    <text :class="data.blog_category_name ? 'cr-black' : 'cr-grey-9'">{{ data.blog_category_name || '请选择' }}</text>
                                     <view class="pr top-sm margin-left-sm dis-inline-block">
                                         <iconfont name="icon-qiandao-jiantou2" color="#999" size="28rpx"></iconfont>
                                     </view>
@@ -29,7 +29,7 @@
                             <view class="flex-row jc-sb align-c">
                                 <view class="form-gorup-title padding-right-main">是否启用</view>
                                 <view class="flex-1 flex-width tr">
-                                    <switch :color="theme_color" :checked="(data.is_open || 0) == 1 ? true : false" @change="is_open_event" />
+                                    <switch :color="theme_color" :checked="(data.is_enable || 0) == 1 ? true : false" @change="is_enable_event" />
                                 </view>
                             </view>
                         </view>
@@ -38,7 +38,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">封面图片</view>
                             <view class="margin-top-main">
-                                <component-upload :propData="data.image_list" :prop-max-num="1" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
+                                <component-upload :propData="image_list" :prop-max-num="1" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
                             </view>
                         </view>
                     </view>
@@ -46,7 +46,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">内容<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
-                                <sp-editor :templates="data.templates" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+                                <sp-editor :templates="data.content" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                             </view>
                         </view>
                     </view>
@@ -54,7 +54,7 @@
                         <view class="bg-white border-radius-main pr oh spacing-mb spacing-mt">
                             <view class="form-gorup">
                                 <view class="form-gorup-title padding-right-main">描述</view>
-                                <textarea name="desc" placeholder-class="cr-grey-9" class="cr-base" placeholder="请输入" maxlength="200" :value="data.desc"></textarea>
+                                <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" placeholder="请输入" maxlength="200" :value="data.describe"></textarea>
                             </view>
                         </view>
                         <view class="bg-white border-radius-main pr oh spacing-mb">
@@ -69,7 +69,7 @@
                             <view class="form-gorup">
                                 <view class="flex-row jc-sb align-c">
                                     <view class="form-gorup-title padding-right-main">SEO关键字</view>
-                                    <input type="text" name="seo_key" :value="data.seo_key || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
+                                    <input type="text" name="seo_keywords" :value="data.seo_keywords || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
                                 </view>
                             </view>
                         </view>
@@ -105,10 +105,10 @@
                         </view>
                     </view>
                     <view class="p-content padding-main">
-                        <view v-for="(item, index) in type_list" :key="index">
-                            <view class="padding-vertical-main flex-row jc-sb align-c" :class="type_index === index + 1 ? 'cr-main' : ''" :data-value="item" :data-index="index + 1" @tap="get_type_event">
-                                {{ item }}
-                                <iconfont v-if="type_index === index + 1" name="icon-blog-checked" color="#333" size="28rpx"></iconfont>
+                        <view v-for="(item, index) in blog_category_list" :key="index">
+                            <view class="padding-vertical-main flex-row jc-sb align-c" :class="data.blog_category_id == item.id ? 'cr-main' : ''" :data-value="item.name" :data-id="item.id" @tap="get_type_event">
+                                {{ item.name }}
+                                <iconfont v-if="data.blog_category_id === item.id" name="icon-blog-checked" color="#333" size="28rpx"></iconfont>
                             </view>
                         </view>
                     </view>
@@ -138,10 +138,7 @@
 
                 // 分类选择弹窗
                 popup_status: false,
-                type_list: ['国内资讯', '热点博文', '生活八卦', '同城交流'],
-
-                // 分类选中的值
-                type_index: 0,
+                blog_category_list: [],
 
                 // 封面图片
                 image_list: [],
@@ -166,17 +163,16 @@
         },
 
         onLoad(params) {
-            if (params !== null && params.goods_id) {
+            if (params !== null && params.id) {
                 this.setData({
                     blog_id: params.id,
                 });
             }
-        },
-
-        onShow() {
             // 数据加载
             this.init();
         },
+
+        onShow() {},
 
         // 下拉刷新
         onPullDownRefresh() {},
@@ -205,47 +201,56 @@
                 }
             },
             get_data_list() {
-                if (this.blog_id) {
-                    // 加载loding
-                    uni.showLoading({
-                        title: '加载中...',
-                    });
-                    this.setData({
-                        data_list_loding_status: 1,
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url('index', 'goodscomments', 'intellectstools'),
-                        method: 'POST',
-                        data: { id: this.blog_id },
-                        success: (res) => {
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
+                // 加载loding
+                uni.showLoading({
+                    title: '加载中...',
+                });
+                this.setData({
+                    data_list_loding_status: 1,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('saveinfo', 'blog', 'blog'),
+                    method: 'POST',
+                    data: { id: this.blog_id },
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            if (res.data.data.data) {
+                                var img_list = [];
+                                if (res.data.data.data.cover.length > 0) {
+                                    img_list.push(res.data.data.data.cover);
+                                }
                                 this.setData({
                                     data: res.data.data.data || {},
+                                    blog_category_list: res.data.data.blog_category_list,
+                                    image_list: img_list,
+                                    more_height: res.data.data.data.describe || res.data.data.data.seo_title || res.data.data.data.seo_keywords || res.data.data.data.seo_desc ? '708rpx' : '0',
+                                    is_more: res.data.data.data.describe || res.data.data.data.seo_title || res.data.data.data.seo_keywords || res.data.data.data.seo_desc ? 'true' : 'false',
                                     data_list_loding_status: 3,
                                 });
                             } else {
                                 this.setData({
-                                    data_list_loding_status: 0,
+                                    blog_category_list: res.data.data.blog_category_list,
+                                    data_list_loding_status: 3,
                                 });
-                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
                             }
-                        },
-                        fail: () => {
-                            uni.hideLoading();
+                        } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                             });
-                            app.globalData.showToast('网络开小差了哦~');
-                        },
-                    });
-                } else {
-                    this.setData({
-                        data_list_loding_status: 3,
-                    });
-                }
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        this.setData({
+                            data_list_loding_status: 2,
+                        });
+                        app.globalData.showToast('网络开小差了哦~');
+                    },
+                });
             },
             // 弹层打开
             popupOpen() {
@@ -262,9 +267,9 @@
             },
 
             // 是否启用
-            is_open_event(e) {
+            is_enable_event(e) {
                 var new_data = this.data;
-                new_data.is_open = e.detail.value ? 1 : 0;
+                new_data.is_enable = e.detail.value ? 1 : 0;
                 this.setData({
                     data: new_data,
                 });
@@ -273,30 +278,30 @@
             // 获取选中的分类
             get_type_event(e) {
                 var new_data = this.data;
-                new_data.type = e.currentTarget.dataset.value;
+                new_data.blog_category_id = e.currentTarget.dataset.id;
+                new_data.blog_category_name = e.currentTarget.dataset.value;
                 this.setData({
                     data: new_data,
-                    type_index: e.currentTarget.dataset.index,
                     popup_status: false,
                 });
             },
 
             // 上传回调
             retrun_image_event(data) {
-                var newData = this.data;
-                newData.image_list = data;
+                var new_data = this.data;
+                new_data.cover = data[0];
                 this.setData({
-                    data: newData,
+                    data: new_data,
                 });
             },
 
             // 回调富文本内容
             rich_text_event(e) {
                 console.log('==== input :', e);
-                var newData = this.data;
-                newData.templates = e.html;
+                var new_data = this.data;
+                new_data.content = e.html;
                 this.setData({
-                    data: newData,
+                    data: new_data,
                 });
             },
 
@@ -336,7 +341,6 @@
                             }
                         },
                         fail: function (e) {
-                            console.log(e);
                             app.globalData.showToast(e.errMsg);
                             uni.hideLoading();
                         },
@@ -354,17 +358,15 @@
 
             // 表单提交
             form_submit(e) {
-                console.log(e);
-                console.log(this.data);
                 // 数据验证
                 var validation = [
                     { fields: 'title', msg: '请输入标题' },
-                    { fields: 'type', msg: '请选择分类' },
-                    { fields: 'templates', msg: '请输入内容' },
+                    { fields: 'blog_category_id', msg: '请选择分类' },
+                    { fields: 'content', msg: '请输入内容' },
                 ];
                 var validate = {
-                    type: this.data.type,
-                    templates: this.data.templates,
+                    blog_category_id: this.data.blog_category_id,
+                    content: this.data.content,
                     title: e.detail.value.title,
                 };
                 if (app.globalData.fields_check(validate, validation)) {
@@ -374,15 +376,15 @@
                     this.setData({
                         form_submit_loading: true,
                     });
-                    var newData = {
+                    var new_data = {
                         ...e.detail.value,
-                        ...validate,
+                        ...this.data,
                     };
                     // 网络请求
                     uni.request({
-                        url: app.globalData.get_request_url('save', 'goodscomments', 'intellectstools'),
+                        url: app.globalData.get_request_url('save', 'blog', 'blog'),
                         method: 'POST',
-                        data: newData,
+                        data: new_data,
                         dataType: 'json',
                         success: (res) => {
                             uni.hideLoading();

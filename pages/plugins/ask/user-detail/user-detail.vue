@@ -87,12 +87,7 @@
         },
 
         // 下拉刷新
-        onPullDownRefresh() {
-            this.setData({
-                data_page: 1,
-            });
-            this.get_data_list(1);
-        },
+        onPullDownRefresh() {},
 
         methods: {
             init() {

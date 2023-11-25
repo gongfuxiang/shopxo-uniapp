@@ -13,7 +13,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -21,7 +21,7 @@
 
                 <!-- 商品列表 -->
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <navigator :url="item.goods_url" hover-class="none">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -43,16 +43,16 @@
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
                         <text
-                            >共<text class="fw-b">{{ detail.buy_number_count }}</text
-                            >件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text
-                            >元</text
+                            >{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ detail.buy_number_count }}</text
+                            >{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text
+                            >{{$t('user-order-detail.user-order-detail.xcj552')}}</text
                         >
                     </view>
                 </view>
 
                 <!-- 虚拟销售数据 -->
                 <view v-if="(site_fictitious || null) != null" class="site-fictitious panel-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || '密钥信息' }}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{ site_fictitious.title || $t('user-order-detail.user-order-detail.y9woor') }}</view>
                     <view class="panel-content oh padding-top-main">
                         <view v-if="(site_fictitious.tips || null) != null" class="tips-value radius padding-main margin-bottom-main">
                             <mp-html :content="site_fictitious.tips" />
@@ -61,7 +61,7 @@
                             <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="right-value fr">
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
-                                <text v-else class="cr-grey">未配置数据</text>
+                                <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
                             </view>
                         </view>
                     </view>
@@ -69,11 +69,11 @@
 
                 <!-- 自提信息 -->
                 <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">取货信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7dikfm')}}</view>
                     <view class="panel-content oh padding-top-main">
                         <view>
-                            <text>取货码：</text>
-                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || '取货码不存在、请联系管理员' }}</text>
+                            <text>{{$t('user-order-detail.user-order-detail.o38952')}}</text>
+                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || $t('user-order-detail.user-order-detail.hpq62x') }}</text>
                         </view>
                         <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
@@ -81,7 +81,7 @@
 
                 <!-- 订单基础数据 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -92,7 +92,7 @@
 
                 <!-- 扩展数据 -->
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">扩展数据</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in extension_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -164,7 +164,7 @@
             init() {
                 var self = this;
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -184,27 +184,27 @@
                             self.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: '出货服务', value: data.data.warehouse_name || '' },
-                                    { name: '订单模式', value: data.data.order_model_name || '' },
-                                    { name: '订单编号', value: data.data.order_no || '' },
-                                    { name: '订单状态', value: data.data.status_name || '' },
-                                    { name: '支付状态', value: data.data.pay_status_name || '' },
-                                    { name: '订单单价', value: data.data.price || '' },
-                                    { name: '订单总价', value: data.data.total_price || '' },
-                                    { name: '优惠金额', value: data.data.preferential_price || '' },
-                                    { name: '增加金额', value: data.data.increase_price || '' },
-                                    { name: '支付金额', value: data.data.pay_price || '' },
-                                    { name: '支付方式', value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
-                                    { name: '快递公司', value: data.data.express_name || '' },
-                                    { name: '快递单号', value: data.data.express_number || '' },
-                                    { name: '用户留言', value: data.data.user_note || '' },
-                                    { name: '创建时间', value: data.data.add_time || '' },
-                                    { name: '确认时间', value: data.data.confirm_time || '' },
-                                    { name: '支付时间', value: data.data.pay_time || '' },
-                                    { name: '发货时间', value: data.data.delivery_time || '' },
-                                    { name: '收货时间', value: data.data.collect_time || '' },
-                                    { name: '取消时间', value: data.data.cancel_time || '' },
-                                    { name: '关闭时间', value: data.data.close_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.io6p5k'), value: data.data.order_model_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_no || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.pay_status_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.vg4jb1'), value: data.data.price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.6ub2j0'), value: data.data.preferential_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.8b18q8'), value: data.data.increase_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
+                                    { name: this.$t('user-order-detail.user-order-detail.12d445'), value: data.data.express_name || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.2byl8l'), value: data.data.express_number || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.2b5fc8'), value: data.data.user_note || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.9vivhl'), value: data.data.confirm_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.1674dc'), value: data.data.delivery_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.0i938r'), value: data.data.collect_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.8o2of3'), value: data.data.close_time || '' },
                                 ],
                                 extension_data: data.data.extension_data || [],
                                 site_fictitious: data.site_fictitious || null,
@@ -229,9 +229,9 @@
                         self.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error'));
                     },
                 });
             },
@@ -241,7 +241,7 @@
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
                 if (oid == 0 || did == 0) {
-                    app.globalData.showToast('参数有误');
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
                     return false;
                 }
 
@@ -254,7 +254,7 @@
             // 地图查看
             address_map_event(e) {
                 if ((this.detail.address_data || null) == null) {
-                    app.globalData.showToast('地址有误');
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
 

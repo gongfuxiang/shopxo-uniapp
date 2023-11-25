@@ -1,15 +1,15 @@
 <template>
     <view :class="theme_view">
         <view class="flex-row flex-warp">
-            <block v-if="form_images_list.length > 0">
-                <view v-for="(item, index) in form_images_list" :key="index" class="item margin-right-lg pr">
+            <block v-if="propData.length > 0">
+                <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
                     <text class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">
                         <iconfont name="icon-bjdz-guanbi" size="36rpx" color="rgba(87,91,102,0.65)"></iconfont>
                     </text>
                     <image :src="item" @tap="upload_show_event" :data-index="index" mode="aspectFill" class="img border-radius-main oh"></image>
                 </view>
             </block>
-            <view v-if="(form_images_list || null) == null || form_images_list.length < 3" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
+            <view v-if="(propData || null) == null || propData.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
                 <iconfont name="icon-wytw-sctp" size="52rpx" color="#999"></iconfont>
                 <text class="text-size-xs cr-grey-9">上传图片</text>
             </view>
@@ -34,26 +34,30 @@
                 default: 3,
             },
             // 路径类型 默认common
-            propPathType:{
-                type:String,
-                default:'common',
-            }
+            propPathType: {
+                type: String,
+                default: 'common',
+            },
         },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
-                form_images_list: this.propData,
+                form_images_list: [],
             };
         },
-
+        mounted() {
+            this.setData({
+                form_images_list: this.propData,
+            });
+        },
         created: function () {},
 
         methods: {
             // 采用递归的方式上传多张
             upload_one_by_one(img_paths, success, fail, count, length) {
                 var self = this;
-                if (self.form_images_list.length < 3) {
+                if (self.form_images_list.length <= this.propMaxNum) {
                     uni.uploadFile({
                         url: app.globalData.get_request_url('index', 'ueditor'),
                         filePath: img_paths[count],
