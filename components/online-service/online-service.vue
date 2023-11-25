@@ -263,6 +263,7 @@
     .online-service-event-submit .icon {
         width: 50px !important;
         height: 50px !important;
+        position: relative;
     }
     .goods-chat-container button {
         padding: 0;
