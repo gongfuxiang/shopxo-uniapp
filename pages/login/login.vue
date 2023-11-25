@@ -181,7 +181,7 @@
                 <view v-else-if="current_opt_form == 'reg'" class="form-content">
                     <form @submit="formReg">
                         <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 366rpx)">
+                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 390rpx)">
                             <view class="margin-bottom-xxxl">
                                 <!-- 注册方式选择 -->
                                 <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="opt-type-list margin-vertical-xxxl">
