@@ -8,7 +8,7 @@
                             @onsearch="search_submit_event"
                             :propIsOnEvent="true"
                             :propIsRequired="false"
-                            propPlaceholder="输入用户名/昵称/手机/邮箱"
+                            propPlaceholder="输入用户名/昵称/会员码/手机/邮箱"
                             propClass="br"
                             :propIsBtn="true"
                             :propDefaultValue="search_input_keywords_value"
@@ -19,10 +19,22 @@
                             :propIsIconOnEvent="true"
                             <!-- #endif -->
                         ></component-search>
+                        <view class="custom-info margin-top-sm">
+                            <block v-if="(custom_data || null) != null">
+                                <block v-if="(custom_data.data || null) != null">
+                                    <image class="custom-avatar circle br va-m" :src="custom_data.data.avatar" mode="aspectFill"></image>
+                                    <text class="va-m margin-left-sm">{{custom_data.data.user_name_view}}</text>
+                                    <text class="cr-grey fr">{{custom_data.data.add_time_text}}</text>
+                                </block>
+                                <view v-else class="cr-red">{{custom_data.error_msg}}</view>
+                            </block>
+                            <view v-else class="cr-grey">请先输入用户信息搜索！</view>
+                        </view>
                     </view>
+
                     <view class="form-gorup bg-white border-radius-main margin-top-main">
                         <view class="form-gorup-title">拜访内容<text class="form-group-tips-must">*</text></view>
-                        <textarea class="cr-base textarea-height" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="拜访内容,最多230个字符"></textarea>
+                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="拜访内容,最多230个字符"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh border-radius-main margin-top-main">
@@ -71,6 +83,7 @@ export default {
             form_images_max_count: 30,
             editor_path_type: "",
             form_submit_disabled_status: false,
+            custom_data: null,
         };
     },
 
@@ -84,6 +97,8 @@ export default {
         this.setData({
             params: params,
         });
+
+        this.init();
     },
 
     onShow() {
@@ -154,16 +169,21 @@ export default {
         form_submit(e) {
             // 表单数据
             var form_data = e.detail.value;
+            form_data['custom_user_id'] = ((this.custom_data || null) != null && (this.custom_data.data || null) != null) ? this.custom_data.data.id : 0;
             form_data['images'] = this.form_images_list;
 
             // 数据校验
             var validation = [
+                { fields: 'custom_user_id', msg: '请选择客户' },
                 { fields: 'content', msg: '请填写拜访内容' },
                 { fields: 'images', msg: '请上传拜访图片' },
             ];
 
             // 验证提交表单
             if (app.globalData.fields_check(form_data, validation)) {
+                uni.showLoading({
+                    title: '处理中...',
+                });
                 this.setData({
                     form_submit_disabled_status: true,
                 });
@@ -173,9 +193,12 @@ export default {
                     data: form_data,
                     dataType: 'json',
                     success: (res) => {
+                        uni.hideLoading();
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            
+                            app.globalData.showToast(res.data.msg, 'success');
+                            setTimeout(function () {
+                                uni.navigateBack();
+                            }, 1000);
                         } else {
                             this.setData({
                                 form_submit_disabled_status: false,
@@ -188,6 +211,7 @@ export default {
                         }
                     },
                     fail: () => {
+                        uni.hideLoading();
                         this.setData({
                             form_submit_disabled_status: false,
                         });
@@ -227,7 +251,36 @@ export default {
 
         // 搜索用户
         search_user() {
-            console.log(this.search_input_keywords_value)
+            uni.showLoading({
+                title: '搜索中...',
+                mask: true
+            });
+            uni.request({
+                url: app.globalData.get_request_url("userquery", "visit", "distribution"),
+                method: "POST",
+                data: {keywords: this.search_input_keywords_value},
+                dataType: "json",
+                success: (res) => {
+                    uni.hideLoading();
+                    if (res.data.code == 0) {
+                        this.setData({
+                            custom_data: {
+                                data: res.data.data
+                            }
+                        });
+                    } else {
+                        this.setData({
+                            custom_data: {
+                                error_msg: res.data.msg
+                            }
+                        });
+                    }
+                },
+                fail: () => {
+                    uni.hideLoading();
+                    app.globalData.showToast("网络开小差了哦~");
+                },
+            });
         },
 
         // 上传图片预览
