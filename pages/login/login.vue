@@ -4,8 +4,8 @@
             <block v-if="(is_exist_base_data || 0) == 1">
                 <view class="flex-col jc-sb dom-content">
                     <view>
-                        <view class="flex-row align-c jc-e top-nav margin-bottom-xxxl">
-                            <view class="cr-base text-size" @tap="open_language_event">
+                        <view class="flex-row tr top-nav margin-bottom-xxxl">
+                            <view class="flex-1 cr-base text-size" @tap="open_language_event">
                                 <view class="pr top-sm margin-right-sm dis-inline-block">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
                                 </view>

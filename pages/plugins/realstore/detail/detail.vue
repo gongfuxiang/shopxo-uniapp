@@ -317,7 +317,7 @@
                 status_bar_height: status_bar_height,
                 common_static_url: common_static_url,
                 is_mp_env: false,
-                // #ifdef MP
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 is_mp_env: true,
                 // #endif
                 content_style: '',
