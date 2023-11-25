@@ -136,9 +136,10 @@
                 if((data.location_success || false) == true) {
                     // 用户位置初始化
                     this.user_location_init();
-
                     // 重新请求数据
+                    // #ifdef APP
                     this.get_data();
+                    // #endif
                 }
             });
 
