@@ -165,7 +165,7 @@
                                                     <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
                                                 </view>
                                             </block>
-                                            <view class="item dis-inline-block round" @tap="popup_login_open_event">
+                                            <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round" @tap="popup_login_open_event">
                                                 <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
                                             </view>
                                         </view>
@@ -368,7 +368,7 @@
                 <component-popup :propShow="popup_login_status" propMostClass="z-i-deep pr" propPosition="bottom" :propIsRadius="false" propStyle="background-color:transparent;" @onclose="popup_login_close_event">
                     <view class="popup-login padding-sm">
                         <view class="bg-white border-radius-main content">
-                            <block v-for="(item, key) in plugins_thirdpartylogin_data">
+                            <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index > 2">
                                 <view class="item padding-lg flex-col jc-c align-c" :data-type="key" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
                                     <view class="flex-row align-c login-width text-size-lg"> <image :src="item.icon" mode="aspectFit" class="margin-right-main"></image>{{ item.name }} </view>
                                 </view>
