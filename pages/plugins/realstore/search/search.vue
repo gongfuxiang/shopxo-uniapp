@@ -97,6 +97,15 @@ export default {
     onShow() {
         // 用户位置初始化
         this.user_location_init();
+        // 先解绑自定义事件
+        uni.$off('refresh');
+        // 监听自定义事件并进行页面刷新操作
+        uni.$on('refresh', (data) => {
+            // 初始位置数据
+            if((data.location_success || false) == true) {
+                this.user_location_init();
+            }
+        });
     },
 
     // 下拉刷新
