@@ -18,14 +18,14 @@
                 </scroll-view>
             </template>
         </component-nav-back>
-        <scroll-view v-if="periods_list.length > 0" :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event">
+        <scroll-view v-if="periods_list.length > 0" :scroll-top="scroll_top" scroll-y="true" class="scroll-y" @scroll="scroll_event" :style="'height: calc(100vh - 210rpx - ' + (status_bar_height + 5) + 'px);'">
             <view class="padding-horizontal-main padding-top-main">
                 <!-- 基础信息、倒计时 -->
                 <view class="oh spacing-mb flex-row jc-sb align-c">
                     <view>
                         <text :class="'va-m text-size-xs fw-b cr-blak ' + (is_valid == 1 ? 'cr-base' : 'cr-red')">{{ time_first_text }}</text>
                         <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
-                            <view v-for="(item,index) in periods_list" :key="index">
+                            <view v-for="(item, index) in periods_list" :key="index">
                                 <view v-show="nav_active_index === index">
                                     <component-countdown :propHour="item.time.hours" :propMinute="item.time.minutes" :propSecond="item.time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
                                 </view>

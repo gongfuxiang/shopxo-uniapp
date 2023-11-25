@@ -35,7 +35,7 @@
             <!-- 分类 -->
             <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border">所有{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">所有{{ blog_main_name }}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                 </view>
             </view>
@@ -57,7 +57,7 @@
             <!-- 热门博文-滚动 -->
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border">热门{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">热门{{ blog_main_name }}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">
@@ -81,7 +81,7 @@
             <!-- 推荐博文 -->
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border">推荐{{ blog_main_name }}</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐{{ blog_main_name }}</text>
                     <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
@@ -99,7 +99,7 @@
             <!-- 推荐商品 -->
             <view v-if="goods_list.length > 0" class="goods-list oh padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border">推荐商品</text>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐商品</text>
                     <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>

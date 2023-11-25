@@ -119,7 +119,7 @@
                         <!-- 门店 - 插件 -->
                         <block v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
                             <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                                <text class="text-wrapper title-left-border">{{ plugins_realstore_data.base.home_data_list_title }}</text>
+                                <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
@@ -128,7 +128,7 @@
                         <!-- 多商户 - 插件 -->
                         <block v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
                             <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                                <text class="text-wrapper title-left-border">{{ plugins_shop_data.base.home_data_list_title }}</text>
+                                <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
@@ -137,7 +137,7 @@
                         <!-- 组合搭配 - 插件 -->
                         <block v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
                             <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                                <text class="text-wrapper title-left-border">{{ plugins_binding_data.base.home_data_list_title }}</text>
+                                <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>

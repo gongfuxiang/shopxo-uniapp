@@ -53,7 +53,7 @@
                 <view class="tc spacing-mb">
                     <view class="guess-like fw-b text-size-md">猜你喜欢</view>
                 </view>
-                <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="detail" @CartSuccessEvent="cart_success_event"></component-goods-list>
+                <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="detail" @CartSuccessEvent="cart_success_event"></component-goods-list>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>

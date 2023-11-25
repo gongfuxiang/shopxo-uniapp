@@ -40,7 +40,7 @@
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border">推荐{{ blog_main_name }}</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐{{ blog_main_name }}</text>
                         <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
                     <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
@@ -58,7 +58,7 @@
                 <!-- 相关商品 -->
                 <view v-if="(info.goods_list || null) != null && info.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border">相关商品</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">相关商品</text>
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: info.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>

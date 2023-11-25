@@ -1,5 +1,5 @@
 <template>
-    <view :class="theme_view">
+    <view :class="theme_view" class="z-i-deep">
         <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event" :propIndex="propIndex">
             <view class="goods-spec-choice-container padding-main bg-white pr">
                 <view class="close fr oh">

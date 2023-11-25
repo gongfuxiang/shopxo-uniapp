@@ -19,10 +19,12 @@
         },
         components: {},
         props: {
+            // 最外层的class
             propMostClass: {
                 type: String,
                 default: '',
             },
+            // 内层class
             propClassname: {
                 type: String,
                 default: '',

@@ -7,7 +7,7 @@
                     <view class="weixin-nav-padding-top">
                         <view class="padding-top-xxxl">
                             <!-- 头部背景 -->
-                            <image :src="wallet_static_url + 'title-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto wallet-bg" />
+                            <image :src="wallet_static_url + 'title-bg.png'" mode="widthFix" class="pa bg-img wh-auto" :class="status_bar_height > 0 ? 'top-0' : 'wallet-bg'" />
                             <view class="pr padding-top-main">
                                 <!-- 钱包信息 -->
                                 <view class="padding-top-xxxl oh margin-top-main">
@@ -115,6 +115,11 @@
     import componentUserCash from '@/components/wallet/user-cash/user-cash';
     import componentTransfer from '@/components/wallet/transfer/transfer';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
 
     export default {
         data() {
@@ -122,6 +127,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 theme_color: app.globalData.get_theme_color(),
+                status_bar_height: bar_height,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_base: null,

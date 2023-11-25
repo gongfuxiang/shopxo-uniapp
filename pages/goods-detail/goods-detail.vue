@@ -272,7 +272,7 @@
                 <!-- 门店 -->
                 <view v-if="plugins_realstore_data != null && plugins_realstore_data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border">相关门店</text>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">相关门店</text>
                         <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
