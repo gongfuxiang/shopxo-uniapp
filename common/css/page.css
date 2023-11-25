@@ -327,10 +327,7 @@ button:before {
  * 页面底部浮动、增加底部边距
  */
 .page-bottom-fixed {
-    padding-bottom: calc(172rpx + env(safe-area-inset-bottom) - 40rpx) !important;
-    /* #ifdef H5 */
     padding-bottom: 172rpx !important;
-    /* #endif */
 }
 
 /**

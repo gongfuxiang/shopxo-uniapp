@@ -114,7 +114,7 @@
                 :propToFailPage="to_fail_page"
                 :prop-to-appoint-page="to_appoint_page"
                 :prop-is-show-payment="is_show_payment_popup"
-                @close-payment-poupon="payment_popup_event_close"
+                @close-payment-popup="payment_popup_event_close"
                 @pay-success="pay_back_event"
                 @pay-fail="pay_back_event"
             ></component-payment>

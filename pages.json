@@ -546,6 +546,20 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": "推广订单"
                     }
+                },
+                {
+                    "path": "visit-list/visit-list",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "拜访客户"
+                    }
+                },
+                {
+                    "path": "visit-form/visit-form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "新增拜访客户"
+                    }
                 }
             ]
         },

@@ -200,7 +200,6 @@
                 submit_disabled_status: true,
                 order_id: 0,
                 currency_symbol: app.globalData.data.currency_symbol,
-
                 popup_view_pay_html_is_show: false,
             };
         },
@@ -210,7 +209,7 @@
                 this.setData({
                     is_show_payment_popup: false,
                 });
-                this.$emit('close-payment-poupon', false);
+                this.$emit('close-payment-popup', false);
             },
             // 支付二维码展示窗口事件
             popup_view_pay_qrcode_event_close(e) {
@@ -235,7 +234,7 @@
                     is_show_payment_popup: false,
                 });
                 this.pay_handle(this.propTempPayValue, this.payment_id);
-                this.$emit('close-payment-poupon', false);
+                this.$emit('close-payment-popup', false);
             },
 
             // 支付方法
@@ -323,6 +322,9 @@
                                         // 正常线上支付
                                         case 0:
                                             var data = res.data.data;
+                                            // #ifdef APP
+                                            this.app_pay_handle(this, data, order_id);
+                                            // #endif
                                             // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
                                             this.common_pay_handle(this, data, order_id);
                                             // #endif
@@ -381,6 +383,53 @@
                 } else {
                     app.globalData.showToast('支付组件接口不能为空');
                 }
+            },
+            // APP支付
+            app_pay_handle(self, data, order_id) {
+                uni.getProvider({
+                    service: 'payment',
+                    success: function (res) {
+                        switch(data.payment.payment) {
+                            // 支付宝
+                            case 'Alipay' :
+                                if(~res.provider.indexOf('alipay')) {
+                                    uni.requestPayment({
+                                        provider: 'alipay',
+                                        orderInfo: data.data,
+                                        success: function (res) {
+                                            self.order_item_pay_success_handle(data, order_id);
+                                        },
+                                        fail: function (err) {
+                                            self.order_item_pay_fail_handle(data, order_id, '支付失败');
+                                        }
+                                    });
+                                }
+                                break;
+
+                            // 微信
+                            case 'Weixin' :
+                                if(~res.provider.indexOf('wxpay')) {
+                                    uni.requestPayment({
+                                        provider: 'wxpay',
+                                        orderInfo: data.data,
+                                        success: function (res) {
+                                            self.order_item_pay_success_handle(data, order_id);
+                                            var rawdata = JSON.parse(res.rawdata);
+                                            console.log("支付成功");
+                                        },
+                                        fail: function (err) {
+                                            self.order_item_pay_fail_handle(data, order_id, '支付失败');
+                                            console.log('支付失败:' + JSON.stringify(err));
+                                        }
+                                    });
+                                }
+                                break;
+
+                            default :
+                                app.globalData.showToast(data.payment.payment+'支付未定义');
+                        }
+                    }
+                });
             },
             // 快手小程序
             kuaishou_pay_handle(self, data, order_id) {

@@ -85,22 +85,41 @@ export default {
 
         // 打开位置服务
         choose_location() {
+            // app先返回当前页面再调用位置选择组件
+            // #ifdef APP
+            uni.navigateBack();
+            // #endif
+
+            // 调用位置选择组件
             uni.chooseLocation({
                 success: (res) => {
+                    // 位置数据存储缓存中
                     uni.setStorageSync(this.cache_key, res);
+
+                    // 触发自定义事件并传递参数给上一页
+                    uni.$emit('refresh', { location_success: true });
+
+                    // app则不执行返回操作、上面已经返回过了
+                    // #ifndef APP
                     setTimeout(function () {
                         uni.navigateBack();
                     }, 500);
+                    // #endif
                 },
                 fail: (res) => {
                     // 取消则自动返回、则显示错误
-                    if (res.errMsg.indexOf("cancel") != -1) {
+                    // error=11 支付宝取消、msg包含cancel则其他平台
+                    var msg = res.errorMessage || res.chooseLocation || res.errMsg || '位置选择失败';
+                    if(res.error == 11 || msg.indexOf('cancel') != -1) {
+                        // app则不执行返回操作、上面已经返回过了
+                        // #ifndef APP
                         uni.navigateBack();
+                        // #endif
                     } else {
                         this.setData({ error_msg: res.errMsg });
                         app.globalData.showToast(res.errMsg);
                     }
-                },
+                }
             });
         },
     },

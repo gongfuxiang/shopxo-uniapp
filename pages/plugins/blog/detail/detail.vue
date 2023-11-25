@@ -1,28 +1,28 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null">
+        <view v-if="(info || null) != null">
             <view class="padding-main bg-white spacing-mb">
                 <view class="spacing-mb">
-                    <view class="fw-b text-size-xl">{{ data.title }}</view>
+                    <view class="fw-b text-size-xl">{{ info.title }}</view>
                     <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
                             <text>时间：</text>
-                            <text>{{ data.add_time }}</text>
+                            <text>{{ info.add_time }}</text>
                         </view>
                         <view class="fr">
                             <text class="margin-left-xxxl">浏览：</text>
-                            <text>{{ data.access_count }}</text>
+                            <text>{{ info.access_count }}</text>
                         </view>
                     </view>
                 </view>
                 <view class="oh web-html-content spacing-mb">
-                    <view v-if="(data.video_url || null) != null && ((data.is_live_play || 0) == 0 || client_type == 'weixin')">
-                        <video :src="data.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
+                    <view v-if="(info.video_url || null) != null && ((info.is_live_play || 0) == 0 || client_type == 'weixin')">
+                        <video :src="info.video_url" class="wh-auto" :autoplay="false" :controls="true"></video>
                     </view>
-                    <mp-html :content="data.content" />
+                    <mp-html :content="info.content" />
                 </view>
                 <!-- 评论内容 -->
-                <component-blog-comments :propData="data" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
+                <component-blog-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
             </view>
 
             <view class="padding-horizontal-main">
@@ -56,12 +56,12 @@
                 </view>
 
                 <!-- 相关商品 -->
-                <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
+                <view v-if="(info.goods_list || null) != null && info.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border">相关商品</text>
                         <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
-                    <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                    <component-goods-list :propData="{ style_type: 1, goods_list: info.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
             </view>
         </view>
@@ -94,7 +94,7 @@
                 client_type: app.globalData.application_client_type(),
                 params: null,
                 data_base: null,
-                data: null,
+                info: null,
                 right_list: [],
                 last_next: null,
                 emoji_list: [],
@@ -158,31 +158,34 @@
                         uni.stopPullDownRefresh();
                         var data = res.data.data;
                         if (res.data.code == 0 && (data.data || null) != null) {
-                            var blog = data.data;
+                            var info = data.data || null;
+                            var base = data.base || null;
                             this.setData({
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
-                                data_base: data.base || null,
-                                data: blog,
+                                data_base: base,
+                                info: info,
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
                                 emoji_list: data.emoji_list || [],
-                                blog_main_name: (data.base || null) == null ? '博文' : data.base.blog_main_name || '博文',
+                                blog_main_name: (info == null) ? (base == null ? '博文' : (base.blog_main_name || '博文')) : info.title,
                             });
 
-                            // 基础自定义分享
-                            this.setData({
-                                share_info: {
-                                    title: this.data.seo_title || this.data.title,
-                                    desc: this.data.seo_desc || this.data.describe,
-                                    path: '/pages/plugins/blog/detail/detail',
-                                    query: 'id=' + this.data.id,
-                                    img: this.data.cover,
-                                }
-                            });
+                            if(info != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: info.seo_title || info.title,
+                                        desc: info.seo_desc || info.describe,
+                                        path: '/pages/plugins/blog/detail/detail',
+                                        query: 'id=' + info.id,
+                                        img: info.cover,
+                                    }
+                                });
 
-                            // 标题
-                            uni.setNavigationBarTitle({ title: this.data.title });
+                                // 标题
+                                uni.setNavigationBarTitle({ title: info.title });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,

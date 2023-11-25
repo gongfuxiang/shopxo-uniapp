@@ -78,15 +78,12 @@
     import componentTitle from '../../../../components/title/title';
 
     var realstore_static_url = app.globalData.get_static_url('realstore', true);
-
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 realstore_static_url: realstore_static_url,
-                // #ifdef H5
-                screen_width: window.innerWidth,
-                // #endif
+                screen_width: parseInt(app.globalData.get_system_info('windowWidth', 0, true)),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -131,6 +128,15 @@
         onShow() {
             // 用户位置初始化
             this.user_location_init();
+            // 先解绑自定义事件
+            uni.$off('refresh');
+            // 监听自定义事件并进行页面刷新操作
+            uni.$on('refresh', (data) => {
+                // 初始位置数据
+                if((data.location_success || false) == true) {
+                    this.user_location_init();
+                }
+            });
 
             // 数据加载
             this.get_data();
@@ -143,7 +149,9 @@
 
         // 页面销毁时执行
         onUnload: function () {
+            // #ifdef H5
             window.removeEventListener('resize', this.handle_resize);
+            // #endif
         },
 
         methods: {

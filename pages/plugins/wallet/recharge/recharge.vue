@@ -65,7 +65,7 @@
             :prop-to-fail-page="to_fail_page"
             :prop-to-appoint-page="to_appoint_page"
             :prop-is-show-payment="is_show_payment_popup"
-            @close-payment-poupon="payment_popup_event_close"
+            @close-payment-popup="payment_popup_event_close"
         ></component-payment>
     </view>
 </template>

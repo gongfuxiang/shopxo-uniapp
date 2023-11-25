@@ -4,7 +4,7 @@
             <!-- true为空对象 false为非空对象 Object.keys(info).length == 0 -->
             <view class="ask-container bg-white spacing-mb">
                 <view class="padding-main">
-                    <view class="fw-b text-size-xl spacing-mb">{{ info.title }}</view>
+                    <view v-if="(info.title || null) != null" class="fw-b text-size-xl spacing-mb">{{ info.title }}</view>
                     <view class="cr-grey-9 text-size-xs margin-bottom-sm flex-row">
                         留言时间: {{ info.add_time_date }}
                         <view class="fw-b padding-horizontal-xs">·</view>
@@ -93,7 +93,7 @@
                 logo_square: app.globalData.get_application_logo_square(),
                 data_list_loding_status: 1,
                 data_bottom_line_status: true,
-                data: null,
+                info: null,
                 data_base: null,
                 emoji_list: [],
                 // 基础配置
@@ -181,8 +181,8 @@
                                 goods_is_loading: 0,
                             });
 
-                            // 基础自定义分享
                             if(info != null) {
+                                // 基础自定义分享
                                 this.setData({
                                     share_info: {
                                         title: info.title,
@@ -191,6 +191,9 @@
                                         query: 'id=' + info.id
                                     }
                                 });
+
+                                // 标题
+                                uni.setNavigationBarTitle({ title: info.title || info.content });
                             }
                         } else {
                             this.setData({
