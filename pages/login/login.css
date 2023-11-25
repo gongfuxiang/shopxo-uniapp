@@ -93,6 +93,10 @@ page {
     margin-right: 50rpx;
 }
 
+.dom-top {
+    min-height: calc(100vh - 400rpx);
+}
+
 /**
  * 第三方登录 - 插件
  */
