@@ -414,12 +414,9 @@
                                         orderInfo: data.data,
                                         success: function (res) {
                                             self.order_item_pay_success_handle(data, order_id);
-                                            var rawdata = JSON.parse(res.rawdata);
-                                            console.log("支付成功");
                                         },
                                         fail: function (err) {
                                             self.order_item_pay_fail_handle(data, order_id, '支付失败');
-                                            console.log('支付失败:' + JSON.stringify(err));
                                         }
                                     });
                                 }
