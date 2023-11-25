@@ -90,7 +90,7 @@
                 <view v-if="current_opt_form == 'login'" class="form-content">
                     <form @submit="formLogin">
                         <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 366rpx)">
+                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 390rpx)">
                             <view class="margin-bottom-xxxl">
                                 <!-- 登录方式选择 -->
                                 <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0" class="opt-type-list margin-vertical-xxxl">
@@ -181,7 +181,7 @@
                 <view v-else-if="current_opt_form == 'reg'" class="form-content">
                     <form @submit="formReg">
                         <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 366rpx)">
+                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 390rpx)">
                             <view class="margin-bottom-xxxl">
                                 <!-- 注册方式选择 -->
                                 <view v-if="(home_user_reg_type || null) != null && home_user_reg_type.length > 0" class="opt-type-list margin-vertical-xxxl">
@@ -258,7 +258,7 @@
                 <view v-else-if="current_opt_form == 'forget'" class="form-content">
                     <form @submit="formForget">
                         <!-- form表单距离去除顶部沾满整个空间的高度 -->
-                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 366rpx)">
+                        <view class="flex-col jc-sb" style="min-height: calc(100vh - 390rpx)">
                             <view class="margin-bottom-xxxl">
                                 <input type="text" :placeholder="$t('login.login.d178m0')" maxlength="60" name="accounts" @input="form_input_accounts_event" class="form-item margin-vertical-xl wh-auto" />
                                 <view class="code pr margin-vertical-xl">
