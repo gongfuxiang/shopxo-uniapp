@@ -103,7 +103,14 @@ export default {
         uni.$on('refresh', (data) => {
             // 初始位置数据
             if((data.location_success || false) == true) {
+                // 用户位置初始化
                 this.user_location_init();
+
+                // 重新请求数据
+                this.setData({
+                    data_page: 1,
+                });
+                this.get_data_list(1);
             }
         });
     },
