@@ -1228,7 +1228,12 @@
             // 分享开启弹层
             popup_share_event(e) {
                 if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init({ status: true, is_goods_poster: this.plugins_is_goods_detail_poster, goods_id: this.goods.id });
+                    this.$refs.share.init({
+                        status: true,
+                        is_goods_poster: this.plugins_is_goods_detail_poster,
+                        goods_id: this.goods.id,
+                        share_info: this.share_info
+                    });
                 }
             },
 

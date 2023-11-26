@@ -22,7 +22,7 @@
                     <mp-html :content="info.content" />
                 </view>
                 <!-- 评论内容 -->
-                <component-blog-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list"></component-blog-comments>
+                <component-blog-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list" :propShareInfo="share_info"></component-blog-comments>
             </view>
 
             <view class="padding-horizontal-main">

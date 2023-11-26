@@ -184,6 +184,10 @@
                 type: [Array, null],
                 default: [],
             },
+            propShareInfo: {
+                type: [Object, null],
+                default: {},
+            }
         },
         components: {
             componentPopup,
@@ -208,7 +212,9 @@
             // 分享开启弹层
             popup_share_event(e) {
                 if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init();
+                    this.$refs.share.init({
+                        share_info: this.propShareInfo
+                    });
                 }
             },
 

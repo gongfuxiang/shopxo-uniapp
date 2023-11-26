@@ -16,7 +16,14 @@
             "delay" : 0
         },
         "modules" : {
-            "Payment" : {}
+            "Payment" : {},
+            "Barcode" : {},
+            "OAuth" : {},
+            "Maps" : {},
+            "Geolocation" : {},
+            "Share" : {},
+            "VideoPlayer" : {},
+            "Camera" : {}
         },
         "distribute" : {
             "android" : {
@@ -47,14 +54,91 @@
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
                 ]
             },
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             "sdkConfigs" : {
                 "payment" : {
                     "alipay" : {
                         "__platform__" : [ "ios", "android" ]
+                    },
+                    "weixin" : {
+                        "__platform__" : [ "ios", "android" ],
+                        "appid" : "wx6ce676d70c00d5d1",
+                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
                     }
                 },
-                "push" : {}
+                "push" : {},
+                "ad" : {},
+                "oauth" : {
+                    "apple" : {},
+                    "weixin" : {
+                        "appid" : "wx6ce676d70c00d5d1",
+                        "appsecret" : "c549f30ba2404a7b1449323c9e55a614",
+                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                    },
+                    "qq" : {
+                        "appid" : "101944843",
+                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                    }
+                },
+                "maps" : {
+                    "amap" : {
+                        "name" : "amapu9VF72Gg",
+                        "appkey_ios" : "f55e9099897821681f5c74051e4527bd",
+                        "appkey_android" : "ebe9f1d84f8ceb8b3c4ba6ead2bfa78b"
+                    }
+                },
+                "geolocation" : {
+                    "system" : {
+                        "__platform__" : [ "ios", "android" ]
+                    }
+                },
+                "share" : {
+                    "weixin" : {
+                        "appid" : "wx6ce676d70c00d5d1",
+                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                    },
+                    "qq" : {
+                        "appid" : "101944843",
+                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                    }
+                }
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "unpackage/res/icons/72x72.png",
+                    "xhdpi" : "unpackage/res/icons/96x96.png",
+                    "xxhdpi" : "unpackage/res/icons/144x144.png",
+                    "xxxhdpi" : "unpackage/res/icons/192x192.png"
+                },
+                "ios" : {
+                    "appstore" : "unpackage/res/icons/1024x1024.png",
+                    "ipad" : {
+                        "app" : "unpackage/res/icons/76x76.png",
+                        "app@2x" : "unpackage/res/icons/152x152.png",
+                        "notification" : "unpackage/res/icons/20x20.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "proapp@2x" : "unpackage/res/icons/167x167.png",
+                        "settings" : "unpackage/res/icons/29x29.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "spotlight" : "unpackage/res/icons/40x40.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png"
+                    },
+                    "iphone" : {
+                        "app@2x" : "unpackage/res/icons/120x120.png",
+                        "app@3x" : "unpackage/res/icons/180x180.png",
+                        "notification@2x" : "unpackage/res/icons/40x40.png",
+                        "notification@3x" : "unpackage/res/icons/60x60.png",
+                        "settings@2x" : "unpackage/res/icons/58x58.png",
+                        "settings@3x" : "unpackage/res/icons/87x87.png",
+                        "spotlight@2x" : "unpackage/res/icons/80x80.png",
+                        "spotlight@3x" : "unpackage/res/icons/120x120.png"
+                    }
+                }
+            },
+            "splashscreen" : {
+                "useOriginalMsgbox" : false
             }
         }
     },
@@ -83,19 +167,18 @@
             }
         },
         "__usePrivacyCheck__" : true,
-        "plugins" : {
-            // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
-            // "live-player-plugin" : {
-            //     "version" : "1.3.5",
-            //     "provider" : "wx2b03c6e691cd7370"
-            // },
-            // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
-            // "routePlan" : {
-            //     "version" : "1.0.19",
-            //     "provider" : "wx50b5593e81dd937a"
-            // }
-        }
+        "plugins" : {}
     },
+    // 直播（需要到小程序后台设置->第三方设置->插件管理里面添加【小程序直播组件】插件，教程 https://mp.weixin.qq.com/wxopen/pluginbasicprofile?action=intro&appid=wx2b03c6e691cd7370）
+    // "live-player-plugin" : {
+    //     "version" : "1.3.5",
+    //     "provider" : "wx2b03c6e691cd7370"
+    // },
+    // 腾讯地图路线规划插件（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
+    // "routePlan" : {
+    //     "version" : "1.0.19",
+    //     "provider" : "wx50b5593e81dd937a"
+    // }
     "mp-alipay" : {
         "usingComponents" : true,
         "appid" : "2021001173639600"
@@ -143,5 +226,6 @@
         "title" : "ShopXO",
         "template" : "template.h5.html"
     },
-    "vueVersion" : "2"
+    "vueVersion" : "2",
+    "locale" : "auto"
 }

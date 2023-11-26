@@ -234,7 +234,9 @@ export default {
 
             // 调取分享弹窗
             if ((this.$refs.share || null) != null) {
-                this.$refs.share.init();
+                this.$refs.share.init({
+                    share_info: this.share_info
+                });
             }
         },
 

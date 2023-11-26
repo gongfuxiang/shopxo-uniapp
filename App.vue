@@ -1482,8 +1482,9 @@
             // 获取当前页面地址
             // is_whole 完整地址（?后面的参数）
             get_page_url(is_whole = true) {
-                // #ifdef MP || APP
                 var url = this.current_page();
+                // #ifdef APP
+                url = this.page_url_protocol(url);
                 // #endif
                 // #ifdef H5
                 var url = window.location.href;
@@ -1491,6 +1492,17 @@
                 if (is_whole == false) {
                     var temp = url.split('?');
                     url = temp[0];
+                }
+                return url;
+            },
+
+            // url协议地址处理
+            page_url_protocol(url) {
+                if((url || null) != null) {
+                    var http_arr = ['https:', 'http:/'];
+                    if(http_arr.indexOf(url.substr(0, 6)) == -1) {
+                        url = this.get_config('config.common_app_h5_url')+url;
+                    }
                 }
                 return url;
             },
@@ -1609,8 +1621,8 @@
                     img: data.img || share_config.pic || this.get_config('config.home_site_logo_square'),
                 };
                 result['url'] = this.get_page_url();
-                // #ifdef H5
-                result['url'] = result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query;
+                // #ifdef H5 || APP
+                result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
                 // #endif
                 return result;
             },

@@ -45,7 +45,7 @@
                 </view>
                 <view class="padding-main br-t-dashed">
                     <!-- 评论内容 -->
-                    <component-ask-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list"></component-ask-comments>
+                    <component-ask-comments :propData="info" :propDataBase="data_base" :propEmojiList="emoji_list" :propShareInfo="share_info"></component-ask-comments>
                 </view>
             </view>
             <!-- 猜你喜欢 -->

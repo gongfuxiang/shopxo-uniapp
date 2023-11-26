@@ -6,7 +6,6 @@
                 <!-- 广告图片 -->
                 <view class="pa top-0 bg-img wh-auto">
                     <block v-if="(data_base.right_images || null) != null">
-                        <!-- <image class="wh-auto advertisement" :src="data_base.right_images" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image> -->
                         <image class="wh-auto advertisement" :src="points_static_url + 'integral-bg.png'" mode="widthFix" :data-value="data_base.right_images_url || ''" @tap="url_event"></image>
                     </block>
                     <block v-else>
@@ -41,7 +40,7 @@
                                     </block>
                                 </view>
                                 <!-- 分享 -->
-                                <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" open-type="share">分享</button>
+                                <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">分享</button>
                             </view>
                             <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
                                 <component-title prop-title="积分明细" prop-more-url="/pages/user-integral/user-integral"></component-title>
@@ -95,6 +94,8 @@
                     </component-popup>
                 </view>
             </view>
+
+            <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -110,6 +111,7 @@
     import componentGoodsList from '../../../../components/goods-list/goods-list';
     import componentPopup from '../../../../components/popup/popup';
     import componentTitle from '../../../../components/title/title';
+    import componentSharePopup from '../../../../components/share-popup/share-popup';
     var points_static_url = app.globalData.get_static_url('points', true);
     export default {
         data() {
@@ -152,6 +154,7 @@
             componentGoodsList,
             componentPopup,
             componentTitle,
+            componentSharePopup
         },
         props: {},
         onLoad(params) {
@@ -275,6 +278,7 @@
                 }
             },
 
+            // 获取积分数据
             get_integral_data_list(is_mandatory) {
                 // 是否加载中
                 if (this.integral_is_loading == 1) {
@@ -352,6 +356,15 @@
             onPageScroll(res) {
                 uni.$emit('onPageScroll', res);
             },
+
+            // 分享开启弹层
+            share_event(e) {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        share_info: this.share_info
+                    });
+                }
+            }
         },
     };
 </script>

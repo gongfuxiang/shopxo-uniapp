@@ -28,8 +28,30 @@
                         </button>
                     </view>
                     <!-- #endif -->
+                    <!-- #ifdef APP -->
+                    <block v-if="is_app_weixin">
+                        <view class="share-items oh cp" data-scene="WXSceneSession" data-provider="weixin" @tap="share_app_event">
+                            <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-grey text-size-xs single-text">一键分享给微信好友、群聊</text>
+                        </view>
+                        <view class="share-items oh cp" data-scene="WXSceneTimeline" data-provider="weixin" @tap="share_app_event">
+                            <image :src="common_static_url + 'share-friend-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-grey text-size-xs single-text">一键分享给微信朋友圈</text>
+                        </view>
+                        <view class="share-items oh cp" data-scene="WXSceneFavorite" data-provider="weixin" @tap="share_app_event">
+                            <image :src="common_static_url + 'share-favor-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-grey text-size-xs single-text">一键分享到微信收藏夹</text>
+                        </view>
+                    </block>
+                    <block v-if="is_app_qq">
+                        <view class="share-items oh cp" data-provider="qq" @tap="share_app_event">
+                            <image :src="common_static_url + 'share-qq-icon.png'" mode="scaleToFill"></image>
+                            <text class="cr-grey text-size-xs single-text">一键分享到QQ好友、空间</text>
+                        </view>
+                    </block>
+                    <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
-                        <image :src="common_static_url + 'share-friend-icon.png'" mode="scaleToFill"></image>
+                        <image :src="common_static_url + 'share-poster-icon.png'" mode="scaleToFill"></image>
                         <text class="cr-grey text-size-xs single-text">生成海报，分享到朋友圈、好友及群聊</text>
                     </view>
                 </view>
@@ -51,8 +73,16 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
                 popup_status: false,
+                type: null,
                 is_goods_poster: 0,
                 goods_id: 0,
+                url: null,
+                images: null,
+                title: null,
+                summary: null,
+                is_app_weixin: true,
+                is_app_qq: true,
+                share_info: {},
             };
         },
 
@@ -71,14 +101,36 @@
                 }
                 this.setData({
                     popup_status: config.status == undefined ? true : config.status,
+                    type: config.type == undefined ? null : config.type,
                     is_goods_poster: config.is_goods_poster || 0,
                     goods_id: config.goods_id || 0,
+                    goods_id: config.goods_id || 0,
+                    url: config.url || null,
+                    images: config.images || null,
+                    title: config.title || null,
+                    summary: config.summary || null,
+                    share_info: config.share_info || {},
                 });
 
                 // 用户头像和昵称设置提示
                 if ((this.$refs.user_base || null) != null) {
                     this.$refs.user_base.init('share');
                 }
+
+                // #ifdef APP
+                // app分享通道隔离
+                uni.getProvider({
+                    service: 'share',
+                    success: (result) => {
+                        var provider = result.provider || [];
+                        this.setData({
+                            is_app_weixin: provider.indexOf('weixin') != -1,
+                            is_app_qq: provider.indexOf('qq') != -1,
+                        });
+                    },
+                    fail: (error) => {}
+                });
+                // #endif
             },
 
             // 弹层关闭
@@ -150,6 +202,36 @@
                     }
                 }
             },
+
+            // app分享
+            share_app_event(e) {
+                // 分享参数
+                var provider = e.currentTarget.dataset.provider;
+                var scene = e.currentTarget.dataset.scene || null;
+
+                // 分享基础数据
+                var share = app.globalData.share_content_handle(this.share_info || {});
+                var img = this.images || share.img;
+                var type = (this.type === null) ? ((img || null) == null ? 1 : 0) : this.type;
+
+                // 关闭分享弹窗
+                this.setData({
+                    popup_status: false,
+                });
+
+                // 调用分享组件
+                uni.share({
+                	provider: provider,
+                	scene: scene,
+                	type: type,
+                	href: this.url || share.url,
+                	title: this.title || share.title,
+                	summary: this.summary || share.desc,
+                	imageUrl: img,
+                	success: function (res) {},
+                	fail: function (err) {}
+                });
+            }
         },
     };
 </script>
@@ -160,9 +242,10 @@
     }
     .share-popup .close {
         position: absolute;
-        top: 20rpx;
-        right: 20rpx;
+        top: 0;
+        right: 0;
         z-index: 2;
+        padding: 20rpx;
     }
     .share-popup-content {
         padding: 0 20rpx;

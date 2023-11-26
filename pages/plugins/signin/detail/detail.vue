@@ -439,7 +439,9 @@
             // 分享开启弹层
             share_event(e) {
                 if ((this.$refs.share || null) != null) {
-                    this.$refs.share.init();
+                    this.$refs.share.init({
+                        share_info: this.share_info
+                    });
                 }
             },
 

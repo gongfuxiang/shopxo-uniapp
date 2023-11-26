@@ -10,7 +10,7 @@
                 <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">返回</button>
             </view>
             <view class="margin-top-lg">
-                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" :data-value="default_to_url" @tap="url_event">{{ params.title || '回到首页' }}</button>
+                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || '回到首页' }}</button>
             </view>
         </view>
     </view>

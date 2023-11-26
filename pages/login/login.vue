@@ -436,10 +436,12 @@
                 // 第三方登录
                 plugins_thirdpartylogin_data: null,
                 plugins_thirdpartylogin_user: null,
+                // app第三方登录通道
+                app_login_provider_list: [],
                 // 错误提示信息
                 error_msg: null,
 
-                // 登录方式
+                // 登录方式弹窗状态
                 popup_login_status: false,
             };
         },
@@ -450,6 +452,10 @@
 
         // 页面加载初始化
         onLoad(params) {
+            // #ifdef APP
+            this.provider_action()
+            //#endif
+
             // 多语言
             let systemInfo = uni.getSystemInfoSync();
             this.systemLocale = systemInfo.language;
@@ -593,6 +599,22 @@
                         plugins_thirdpartylogin_config: app.globalData.get_config('plugins_base.thirdpartylogin.data'),
                         plugins_thirdpartylogin_data: app.globalData.get_config('plugins_thirdpartylogin_data'),
                     });
+
+                    // #ifdef APP
+                    // app第三方登录通道隔离
+                    var thirdpartylogin = this.plugins_thirdpartylogin_data || {};
+                    if(Object.keys(thirdpartylogin).length) {
+                        var temp_thirdpartylogin = Object.keys(thirdpartylogin).reduce((pre, cur) => {
+                            if(this.app_login_provider_list.includes(cur)) {
+                                pre[cur] = thirdpartylogin[cur];
+                            }
+                            return pre;
+                        }, {});
+                        this.setData({
+                            plugins_thirdpartylogin_data: temp_thirdpartylogin,
+                        });
+                    }
+                    // #endif
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -1394,10 +1416,109 @@
                 this.setData({
                     popup_login_status: false,
                 });
-                // 直接跳转到登录地址、这里还可以根据终端类型进行处理业务逻辑
                 var type = e.currentTarget.dataset.type || null;
-                var url = e.currentTarget.dataset.url || null;
-                window.location.href = url;
+
+                // #ifdef H5
+                // 直接跳转到登录地址、这里还可以根据终端类型进行处理业务逻辑
+                window.location.href = e.currentTarget.dataset.url;
+                // #endif
+
+                // #ifdef APP
+                switch(type) {
+                    // 微信、QQ
+                    case 'weixin' :
+                    case 'qq' :
+                        let $this = this
+                        //console.log("weixin")
+                        uni.login({
+                            provider: type,
+                            success: function (loginRes) {
+                                let {authResult} = loginRes
+                                //console.log("授权信息",authResult)
+                                let post_data = {
+                                    pluginsname:"thirdpartylogin",
+                                    pluginscontrol:"index",
+                                    pluginsaction:"bind",
+                                    platform:type,
+                                    openid:authResult['openid'],
+                                    access_token:authResult['access_token']
+                                }
+                                $this.loginByThirdAction(post_data,authResult)
+                            },
+                            fail: function (error) {
+                                //  {"errMsg":"login:fail 业务参数配置缺失,https://ask.dcloud.net.cn/article/282","errCode":-7,"code":-7}
+                                console.log(JSON.stringify(error));
+                            },
+                        });
+                        break;
+                }
+                // #endif
+            },
+            
+            // apple登录
+            loginByApple(){
+                let $this = this
+                //console.log("weixin")
+                uni.login({
+                    provider: 'apple',
+                    success: function (loginRes) {
+                        let {authResult} = loginRes
+                        console.log("授权信息",authResult)
+                        uni.getUserInfo({  
+                            provider: 'apple',  
+                            success(info) {  
+                                let {userInfo} = info
+                                let {openId,...otherUserInfo} = userInfo
+                                /* console.log("userInfo",userInfo)
+                                console.log("otherUserInfo",otherUserInfo) */
+                                let post_data = {
+                                    pluginsname:"thirdpartylogin",
+                                    pluginscontrol:"index",
+                                    pluginsaction:"bind",
+                                    platform:"iphone",
+                                    ...otherUserInfo,
+                                    openid:openId
+                                }
+                                console.log("请求参数",post_data)
+                                $this.loginByThirdAction(post_data,userInfo)
+                            }  
+                        })  
+                        
+                    },
+                    fail: function (error) {
+                        console.log(JSON.stringify(error));
+                    },
+                });
+            },
+            
+            // 登录回处理
+            async loginByThirdAction(post_data,authResult){
+                console.log(post_data)
+                console.log(authResult)
+                return;
+                try{
+                    let {data} = await  this.loadingFn(apiResquest('plugins/index', "POST", post_data))
+                    let {is_force_bind_user,...other} = data
+                    if(is_force_bind_user && is_force_bind_user==1){
+                        this.$store.dispatch('thirdLoginAction',{...authResult,...other,platform:post_data["platform"]})
+                        setTimeout(function(){
+                            uni.redirectTo({
+                                url:`/pages/login/bind/bind`
+                            })
+                        },500) 
+                    }else{
+                        this.$store.dispatch('loginKeyAction',other.token || other.user_name_view)
+                        this.$store.dispatch('shopUserInfoAction',other)
+                        this.$api.msg("登录成功！",2000,true,'success')
+                        setTimeout(function(){
+                            uni.navigateBack({delta: 1 });
+                        },1500) 
+                    }
+                    
+                }catch(e){
+                    console.log(e)
+                    this.$api.msg(e,2000)
+                }
             },
 
             // 第三方登录绑定账号取消
@@ -1485,6 +1606,19 @@
                     popup_login_status: false,
                 });
             },
+            
+            // 获取app第三方登录通道
+            provider_action() {
+                uni.getProvider({
+                    service: 'oauth',
+                    success: (result) => {
+                        this.setData({
+                            app_login_provider_list: result.provider || [],
+                        });
+                    },
+                    fail: (error) => {}
+                });
+            }
         },
     };
 </script>
