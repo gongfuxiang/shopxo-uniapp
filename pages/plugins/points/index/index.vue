@@ -95,6 +95,7 @@
                 </view>
             </view>
 
+            <!-- 分享 -->
             <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>

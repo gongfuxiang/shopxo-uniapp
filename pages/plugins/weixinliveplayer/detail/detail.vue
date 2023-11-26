@@ -30,7 +30,7 @@
             <!-- 导航 -->
             <view class="nav pf pa-w left-0 right-0 bottom-0 wh-auto">
                 <view class="padding-main flex-row jc-sb">
-                    <button class="share-friend-submit cr-white text-size-sm round" type="default" hover-class="none" open-type="share">
+                    <button class="share-friend-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="share_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-share-friend-icon.png'" mode="widthFix"></image>
                         <text class="va-m">分享</text>
                     </button>
@@ -47,6 +47,9 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <!-- 分享 -->
+            <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -58,6 +61,7 @@
     const app = getApp();
     import componentNoData from '../../../../components/no-data/no-data';
     import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentSharePopup from '../../../../components/share-popup/share-popup';
 
     var static_url = app.globalData.get_static_url('weixinliveplayer', true);
     export default {
@@ -78,6 +82,7 @@
         components: {
             componentNoData,
             componentBottomLine,
+            componentSharePopup
         },
         props: {},
 
@@ -217,6 +222,15 @@
                 });
             },
         },
+
+        // 分享开启弹层
+        share_event(e) {
+            if ((this.$refs.share || null) != null) {
+                this.$refs.share.init({
+                    share_info: this.share_info
+                });
+            }
+        }
     };
 </script>
 <style>
