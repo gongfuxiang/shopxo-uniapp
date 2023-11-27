@@ -38,7 +38,7 @@
 
         <!-- 新增入口 -->
         <navigator url="/pages/plugins/distribution/recommend-form/recommend-form" hover-class="none">
-            <view class="add-submit bg-main cr-white round tc">+</view>
+            <view class="buttom-right-submit bg-main cr-white round tc">+</view>
         </navigator>
 
         <!-- 分享弹窗 -->
@@ -81,9 +81,23 @@ export default {
     },
     props: {},
 
-    onShow() {
-        // 数据加载
+    onLoad(params) {
+        this.setData({
+            params: params,
+        });
+
+        // 初始数据
         this.init();
+    },
+
+    onShow() {        
+        // 先解绑自定义事件
+        uni.$off('refresh');
+        // 监听自定义事件并进行页面刷新操作
+        uni.$on('refresh', (data) => {
+            // 重新请求数据
+            this.init();
+        });
     },
 
     // 下拉刷新
@@ -106,7 +120,10 @@ export default {
                     return false;
                 } else {
                     // 获取数据
-                    this.get_data_list();
+                    this.setData({
+                        data_page: 1,
+                    });
+                    this.get_data_list(1);
                 }
             } else {
                 this.setData({
@@ -135,11 +152,6 @@ export default {
                 data_list_loding_status: 1,
             });
 
-            // 加载loding
-            uni.showLoading({
-                title: "加载中...",
-            });
-
             // 参数
             uni.request({
                 url: app.globalData.get_request_url("index", "recommend", "distribution"),
@@ -150,7 +162,6 @@ export default {
                 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         if (res.data.data.data.length > 0) {
@@ -195,7 +206,6 @@ export default {
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
@@ -289,5 +299,4 @@ export default {
 };
 </script>
 <style>
-@import "./recommend-list.css";
 </style>

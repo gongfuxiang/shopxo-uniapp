@@ -286,6 +286,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
+                                    uni.$emit('refresh');
                                     uni.navigateBack();
                                 }, 1000);
                             } else {

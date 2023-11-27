@@ -105,3 +105,14 @@
     height: 80rpx;
     line-height: 80rpx;
 }
+
+/**
+ * 修改用户上级
+ */
+.user-search .custom-info {
+    height: 58rpx;
+}
+.user-search .custom-info .custom-avatar {
+    width: 50rpx;
+    height: 50rpx;
+}

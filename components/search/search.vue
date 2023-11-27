@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view">
-        <view class="search-content pr">
+        <view :class="'search-content pr '+propSize">
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
             <input
                 type="text"
                 confirm-type="search"
-                :class="'round wh-auto dis-block '+propClass"
+                :class="'input round wh-auto dis-block '+propClass"
                 :placeholder="propPlaceholder"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
@@ -104,6 +104,10 @@
                 type: Boolean,
                 default: false,
             },
+            propSize: {
+                type: String,
+                default: '',
+            },
         },
         // 属性值改变监听
         watch: {
@@ -183,7 +187,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .search-content .search-icon {
         z-index: 1;
         left: 0;
@@ -192,15 +196,13 @@
         line-height: 28rpx;
         height: 42rpx;
     }
-
-    .search-content input {
+    .search-content .input {
+        box-sizing: border-box;
         font-size: 24rpx;
         padding: 0 32rpx 0 64rpx;
-        box-sizing: border-box;
         height: 56rpx;
         line-height: 56rpx;
     }
-
     .search-content .search-btn {
         width: 106rpx;
         height: 46rpx;
@@ -213,5 +215,17 @@
         top: 50%;
         transform: translateY(-50%);
         z-index: 2;
+    }
+
+    .search-content.md .search-icon {
+        padding-top: 20rpx;
+    }
+    .search-content.md .input {
+        height: 66rpx;
+        line-height: 66rpx;
+    }
+    .search-content.md .search-btn {
+        height: 56rpx;
+        line-height: 56rpx;
     }
 </style>

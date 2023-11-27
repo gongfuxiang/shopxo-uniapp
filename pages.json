@@ -551,14 +551,14 @@
                     "path": "visit-list/visit-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "拜访客户"
+                        "navigationBarTitleText": "客户拜访"
                     }
                 },
                 {
                     "path": "visit-form/visit-form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "新增拜访客户"
+                        "navigationBarTitleText": "客户拜访新增/编辑"
                     }
                 }
             ]

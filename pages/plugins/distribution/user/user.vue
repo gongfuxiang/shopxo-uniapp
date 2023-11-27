@@ -43,12 +43,15 @@
                         </view>
 
                         <!-- 上级用户 -->
-                        <view v-if="(superior || null) != null" class="superior">
+                        <view v-if="(data_base.is_show_superior || 0) == 1 && ((superior || null) != null || (data_base.is_modify_superior || 0) == 1)" class="superior">
                             <view class="superior-item flex-row jc-sb align-c oh border-radius-top-main">
-                                <view class="superior-title cr-white fw-b va-m text-size">上级用户</view>
+                                <view class="superior-title cr-white fw-b va-m text-size-sm">上级用户</view>
                                 <view class="superior-content">
-                                    <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
-                                    <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
+                                    <block v-if="(data_base.is_show_superior || 0) == 1 && (superior || null) != null">
+                                        <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
+                                        <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
+                                    </block>
+                                    <text v-if="(data_base.is_modify_superior || 0) == 1" class="cr-white text-size-xs br round padding-horizontal-main padding-top-xs padding-bottom-xs margin-left" @tap="modify_superior_open_event">修改</text>
                                 </view>
                             </view>
                         </view>
@@ -124,7 +127,7 @@
                         </view>
 
                         <!-- 导航 -->
-                        <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'padding-bottom-main' : 'nav-bottom'">
+                        <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'nav-bottom' : 'padding-bottom-main'">
                             <block v-for="(item, index) in nav_list" :key="index">
                                 <view class="flex-width-half">
                                     <view class="item bg-white border-radius-main margin-sm">
@@ -193,6 +196,57 @@
                                 </view>
                             </view>
                         </component-popup>
+
+                        <!-- 修改上级用户弹窗 -->
+                        <component-popup :propShow="modify_superior_popup_status" propPosition="bottom" @onclose="modify_superior_close_event">
+                            <view class="padding-horizontal-main padding-top-main bg-white">
+                                <view class="close oh">
+                                    <view class="tr" @tap.stop="modify_superior_close_event">
+                                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                    </view>
+                                </view>
+                                <view class="popup-time-container page-bottom-fixed">
+                                    <view class="form-container">
+                                        <view class="form-gorup margin-top-xl">
+                                            <view class="user-search">
+                                                <component-search
+                                                    @onsearch="modify_superior_search_submit_event"
+                                                    :propIsOnEvent="true"
+                                                    :propIsRequired="false"
+                                                    propPlaceholder="输入用户ID/名/昵称/会员码/手机/邮箱"
+                                                    propClass="br"
+                                                    propSize="md"
+                                                    :propIsBtn="true"
+                                                    :propDefaultValue="modify_superior_search_input_keywords_value"
+                                                    <!-- #ifdef MP || APP -->
+                                                    propIcon="icon-mendian-sousuosm"
+                                                    propIconColor="#333"
+                                                    @onicon="modify_superior_search_icon_event"
+                                                    :propIsIconOnEvent="true"
+                                                    <!-- #endif -->
+                                                ></component-search>
+                                                <view class="custom-info margin-top-lg">
+                                                    <block v-if="(modify_superior_user_data || null) != null">
+                                                        <block v-if="(modify_superior_user_data.data || null) != null">
+                                                            <image class="custom-avatar circle br va-m" :src="modify_superior_user_data.data.avatar" mode="aspectFill"></image>
+                                                            <text class="va-m margin-left-sm">{{modify_superior_user_data.data.user_name_view}}</text>
+                                                            <text class="cr-grey fr">{{modify_superior_user_data.data.add_time_text}}</text>
+                                                        </block>
+                                                        <view v-else class="cr-red">{{modify_superior_user_data.error_msg}}</view>
+                                                    </block>
+                                                    <view v-else class="cr-grey">请先输入用户信息搜索！</view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                        <view class="bottom-fixed br-0">
+                                            <view class="bottom-line-exclude">
+                                                <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">提交</button>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </component-popup>
                     </view>
                 </view>
             </view>
@@ -208,6 +262,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentPopup from '../../../../components/popup/popup';
+    import componentSearch from '../../../../components/search/search';
     var currency_symbol = app.globalData.currency_symbol();
     var distribution_static_url = app.globalData.get_static_url('distribution', true) + 'app/';
     export default {
@@ -239,6 +294,9 @@
                 form_submit_disabled_status: false,
                 popup_time_value: { name: '自定义', start: '', end: '', index: '' },
                 quit_time_checked_name: '',
+                modify_superior_popup_status: false,
+                modify_superior_search_input_keywords_value: '',
+                modify_superior_user_data: null
             };
         },
 
@@ -246,6 +304,7 @@
             componentNavBack,
             componentNoData,
             componentPopup,
+            componentSearch
         },
         props: {},
 
@@ -462,6 +521,125 @@
                         });
                         uni.hideLoading();
                         app.globalData.showToast('网络开小差了哦~');
+                    },
+                });
+            },
+
+            // 上级用户修改事件 - 打开
+            modify_superior_open_event(e) {
+                this.setData({
+                    modify_superior_popup_status: true
+                });
+            },
+
+            // 上级用户修改事件 - 关闭
+            modify_superior_close_event(e) {
+                this.setData({
+                    modify_superior_popup_status: false
+                });
+            },
+
+            // 上级用户修改 - 搜索关键字事件
+            modify_superior_search_input_keywords_event(e) {
+                this.setData({
+                    modify_superior_search_input_keywords_value: e.detail.value,
+                });
+            },
+
+            // 上级用户修改 - 搜索确认事件
+            modify_superior_search_submit_event(e) {
+                this.setData({
+                    modify_superior_search_input_keywords_value: e
+                });
+                this.modify_superior_search_user();
+            },
+
+            // 上级用户修改 - icon事件
+            modify_superior_search_icon_event(e) {
+                var self = this;
+                uni.scanCode({
+                    success: function (res) {
+                        self.setData({
+                            modify_superior_search_input_keywords_value: res.result
+                        });
+                        self.modify_superior_search_user();
+                    },
+                });
+            },
+
+            // 上级用户修改 - 搜索用户
+            modify_superior_search_user() {
+                uni.showLoading({
+                    title: '搜索中...',
+                    mask: true
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("userquery", "user", "distribution"),
+                    method: "POST",
+                    data: {keywords: this.modify_superior_search_input_keywords_value},
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            this.setData({
+                                modify_superior_user_data: {
+                                    data: res.data.data
+                                }
+                            });
+                        } else {
+                            this.setData({
+                                modify_superior_user_data: {
+                                    error_msg: res.data.msg
+                                }
+                            });
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast("网络开小差了哦~");
+                    },
+                });
+            },
+
+            // 上级用户修改 - 提交
+            modify_superior_submit_event(e) {
+                if((this.modify_superior_user_data || null) == null || (this.modify_superior_user_data.data || null) == null) {
+                    app.globalData.showToast('请先搜索用户');
+                    return false;
+                }
+                this.setData({
+                    form_submit_disabled_status: true
+                });
+                uni.showLoading({
+                    title: '处理中...',
+                    mask: true
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("superiorsave", "user", "distribution"),
+                    method: "POST",
+                    data: {superior_id: this.modify_superior_user_data.data.id},
+                    dataType: "json",
+                    success: (res) => {
+                        this.setData({
+                            form_submit_disabled_status: false
+                        });
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            this.setData({
+                                modify_superior_popup_status: false,
+                                superior: res.data.data,
+                            });
+                            app.globalData.showToast(res.data.msg, 'success');
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            form_submit_disabled_status: false
+                        });
+                        uni.hideLoading();
+                        app.globalData.showToast("网络开小差了哦~");
                     },
                 });
             },

@@ -8,8 +8,9 @@
                             @onsearch="search_submit_event"
                             :propIsOnEvent="true"
                             :propIsRequired="false"
-                            propPlaceholder="输入用户名/昵称/会员码/手机/邮箱"
+                            propPlaceholder="输入用户ID/名/昵称/会员码/手机/邮箱"
                             propClass="br"
+                            propSize="md"
                             :propIsBtn="true"
                             :propDefaultValue="search_input_keywords_value"
                             <!-- #ifdef MP || APP -->
@@ -34,11 +35,11 @@
 
                     <view class="form-gorup bg-white border-radius-main margin-top-main">
                         <view class="form-gorup-title">拜访内容<text class="form-group-tips-must">*</text></view>
-                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="拜访内容,最多230个字符"></textarea>
+                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="拜访内容,最多230个字符" :value="data.content || ''"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh border-radius-main margin-top-main">
-                        <view class="form-gorup-title">上传照片<text class="form-group-tips-must">*</text><text class="form-group-tips">最多上传{{form_images_max_count}}张</text></view>
+                        <view class="form-gorup-title">拜访照片<text class="form-group-tips-must">*</text><text class="form-group-tips">最多上传{{form_images_max_count}}张</text></view>
                         <view class="form-upload-data oh">
                             <block v-if="form_images_list.length > 0">
                                 <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
@@ -78,10 +79,11 @@ export default {
             data_list_loding_status: 1,
             data_list_loding_msg: '',
             params: null,
-            search_input_keywords_value: "",
+            search_input_keywords_value: '',
+            data: {},
             form_images_list: [],
             form_images_max_count: 30,
-            editor_path_type: "",
+            editor_path_type: '',
             form_submit_disabled_status: false,
             custom_data: null,
         };
@@ -138,10 +140,13 @@ export default {
                 success: (res) => {
                     uni.hideLoading();
                     if (res.data.code == 0) {
-                        var data = res.data.data;
+                        var result = res.data.data;
+                        var data = result.data || {};
                         this.setData({
-                            data: data.data,
-                            editor_path_type: data.editor_path_type || "",
+                            data: data,
+                            form_images_list: data.images || [],
+                            custom_data: {data: data.custom_user || null},
+                            editor_path_type: result.editor_path_type || '',
                             data_list_loding_status: 3,
                             data_list_loding_msg: '',
                         });
@@ -171,12 +176,16 @@ export default {
             var form_data = e.detail.value;
             form_data['custom_user_id'] = ((this.custom_data || null) != null && (this.custom_data.data || null) != null) ? this.custom_data.data.id : 0;
             form_data['images'] = this.form_images_list;
+            // 是否编辑
+            if((this.data || null) != null) {
+                form_data['id'] = this.data.id || 0;
+            }
 
             // 数据校验
             var validation = [
                 { fields: 'custom_user_id', msg: '请选择客户' },
                 { fields: 'content', msg: '请填写拜访内容' },
-                { fields: 'images', msg: '请上传拜访图片' },
+                { fields: 'images', msg: '请上传拜访照片' },
             ];
 
             // 验证提交表单
@@ -197,6 +206,7 @@ export default {
                         if (res.data.code == 0) {
                             app.globalData.showToast(res.data.msg, 'success');
                             setTimeout(function () {
+                                uni.$emit('refresh');
                                 uni.navigateBack();
                             }, 1000);
                         } else {
@@ -256,7 +266,7 @@ export default {
                 mask: true
             });
             uni.request({
-                url: app.globalData.get_request_url("userquery", "visit", "distribution"),
+                url: app.globalData.get_request_url("userquery", "user", "distribution"),
                 method: "POST",
                 data: {keywords: this.search_input_keywords_value},
                 dataType: "json",
