@@ -4,7 +4,8 @@
             <block v-if="(is_exist_base_data || 0) == 1">
                 <view class="flex-col jc-sb dom-content">
                     <view>
-                        <view class="flex-row tr top-nav margin-bottom-xxxl">
+                        <!-- 多语言切换 -->
+                        <view class="flex-row tr top-nav margin-bottom-xl">
                             <view class="flex-1 cr-base text-size" @tap="open_language_event">
                                 <view class="pr top-sm margin-right-sm dis-inline-block">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
@@ -80,11 +81,13 @@
                             </view>
 
                             <!-- 绑定账号提示 -->
-                            <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xxxl">
-                                <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
-                                <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
-                                <text class="va-m margin-left-lg cr-grey">{{ $t('login.login.e77788') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('login.login.1i4o86') }}</text>
-                                <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
+                            <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xl">
+                                <view class="margin-bottom-sm">
+                                    <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
+                                    <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
+                                    <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
+                                </view>
+                                <view class="cr-grey text-size-xs">{{ $t('login.login.e77788') }}{{ plugins_thirdpartylogin_user.platform_name }}{{ $t('login.login.1i4o86') }}</view>
                             </view>
                         </block>
 
@@ -519,7 +522,7 @@
                 this.init_config(true);
 
                 // 用户信息
-                var user = app.globalData.get_user_cache_info();
+                var user = app.globalData.get_user_cache_info() || null;
 
                 // 数据处理
                 var type = user == null ? 'auth' : 'bind';
@@ -694,7 +697,7 @@
 
             // 授权返回事件
             user_auth_back_event() {
-                var user = app.globalData.get_user_cache_info();
+                var user = app.globalData.get_user_cache_info() || null;
                 this.setData({
                     user: user,
                 });
@@ -902,17 +905,24 @@
 
             // 绑定手机表单提交
             formBind(e) {
-                // 数据验证
+                // 其他数据
                 var client_type = app.globalData.application_client_type();
+                var user = this.user || this.plugins_thirdpartylogin_user || app.globalData.get_login_cache_info() || {};
+                e.detail.value['nickname'] = user.nickname;
+                e.detail.value['avatar'] = user.avatar;
+                e.detail.value['province'] = user.province;
+                e.detail.value['city'] = user.city;
+                e.detail.value['gender'] = user.gender;
+
+                // 小程序数据
+                // #ifdef MP
                 var field_openid = client_type + '_openid';
                 var field_unionid = client_type + '_unionid';
-                e.detail.value[field_openid] = this.user[field_openid] || '';
-                e.detail.value[field_unionid] = this.user[field_unionid] || '';
-                e.detail.value['nickname'] = this.user.nickname;
-                e.detail.value['avatar'] = this.user.avatar;
-                e.detail.value['province'] = this.user.province;
-                e.detail.value['city'] = this.user.city;
-                e.detail.value['gender'] = this.user.gender;
+                e.detail.value[field_openid] = user[field_openid] || '';
+                e.detail.value[field_unionid] = user[field_unionid] || '';
+                // #endif
+
+                // 数据验证
                 var validation = [
                     { fields: 'mobile', msg: this.$t('login.login.4c5n8o') },
                     { fields: 'verify', msg: this.$t('login.login.01xmab') },
@@ -956,20 +966,21 @@
                 if ((encrypted_data != null && iv != null) || code != null) {
                     // 解密数据并绑定手机
                     var client_type = app.globalData.application_client_type();
+                    var user = this.user || this.plugins_thirdpartylogin_user || app.globalData.get_login_cache_info() || {};
                     var field_openid = client_type + '_openid';
                     var field_unionid = client_type + '_unionid';
                     var data = {
                         encrypted_data: encrypted_data,
                         iv: iv,
                         code: code,
-                        openid: this.user[field_openid] || '',
-                        nickname: this.user.nickname || '',
-                        avatar: this.user.avatar || '',
-                        province: this.user.province || '',
-                        city: this.user.city || '',
-                        gender: this.user.gender || 0,
+                        openid: user[field_openid] || '',
+                        nickname: user.nickname || '',
+                        avatar: user.avatar || '',
+                        province: user.province || '',
+                        city: user.city || '',
+                        gender: user.gender || 0,
                     };
-                    data[field_unionid] = this.user[field_unionid] || '';
+                    data[field_unionid] = user[field_unionid] || '';
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
                     });
@@ -1021,23 +1032,20 @@
                     // 登录方式
                     e.detail.value['type'] = this.current_opt_type.replace('login_', '');
 
+                    // 其他数据
+                    var client_type = app.globalData.application_client_type();
+                    var user = this.user || this.plugins_thirdpartylogin_user || app.globalData.get_login_cache_info() || {};
+                    e.detail.value['nickname'] = user.nickname;
+                    e.detail.value['avatar'] = user.avatar;
+                    e.detail.value['province'] = user.province;
+                    e.detail.value['city'] = user.city;
+                    e.detail.value['gender'] = user.gender;
                     // #ifdef MP
                     // 小程序数据
-                    var client_type = app.globalData.application_client_type();
-                    if ((this.user || null) != null) {
-                        var field_openid = client_type + '_openid';
-                        var field_unionid = client_type + '_unionid';
-                        e.detail.value[field_openid] = this.user[field_openid] || '';
-                        e.detail.value[field_unionid] = this.user[field_unionid] || '';
-                    } else {
-                        var login_data = app.globalData.get_login_cache_info();
-                        if (login_data != null) {
-                            var field_openid = client_type + '_openid';
-                            var field_unionid = client_type + '_unionid';
-                            e.detail.value[field_openid] = login_data['openid'] || '';
-                            e.detail.value[field_unionid] = login_data['unionid'] || '';
-                        }
-                    }
+                    var field_openid = client_type + '_openid';
+                    var field_unionid = client_type + '_unionid';
+                    e.detail.value[field_openid] = user[field_openid] || '';
+                    e.detail.value[field_unionid] = user[field_unionid] || '';
                     // #endif
 
                     // 网络请求
@@ -1092,28 +1100,21 @@
                     // 注册方式
                     e.detail.value['type'] = this.current_opt_type.replace('reg_', '');
 
+                    // 其他数据
+                    var client_type = app.globalData.application_client_type();
+                    var user = this.user || this.plugins_thirdpartylogin_user || app.globalData.get_login_cache_info() || {};
+                    e.detail.value['nickname'] = user.nickname;
+                    e.detail.value['avatar'] = user.avatar;
+                    e.detail.value['province'] = user.province;
+                    e.detail.value['city'] = user.city;
+                    e.detail.value['gender'] = user.gender;
+
                     // #ifdef MP
                     // 小程序数据
-                    var client_type = app.globalData.application_client_type();
-                    if ((this.user || null) != null) {
-                        var field_openid = client_type + '_openid';
-                        var field_unionid = client_type + '_unionid';
-                        e.detail.value[field_openid] = this.user[field_openid] || '';
-                        e.detail.value[field_unionid] = this.user[field_unionid] || '';
-                        e.detail.value['nickname'] = this.user.nickname;
-                        e.detail.value['avatar'] = this.user.avatar;
-                        e.detail.value['province'] = this.user.province;
-                        e.detail.value['city'] = this.user.city;
-                        e.detail.value['gender'] = this.user.gender;
-                    } else {
-                        var login_data = app.globalData.get_login_cache_info();
-                        if (login_data != null) {
-                            var field_openid = client_type + '_openid';
-                            var field_unionid = client_type + '_unionid';
-                            e.detail.value[field_openid] = login_data['openid'] || '';
-                            e.detail.value[field_unionid] = login_data['unionid'] || '';
-                        }
-                    }
+                    var field_openid = client_type + '_openid';
+                    var field_unionid = client_type + '_unionid';
+                    e.detail.value[field_openid] = user[field_openid] || '';
+                    e.detail.value[field_unionid] = user[field_unionid] || '';
                     // #endif
 
                     // 网络请求
@@ -1424,30 +1425,23 @@
                 // #endif
 
                 // #ifdef APP
+                let $this = this;
                 switch(type) {
                     // 微信、QQ
                     case 'weixin' :
                     case 'qq' :
-                        let $this = this
-                        //console.log("weixin")
                         uni.login({
                             provider: type,
-                            success: function (loginRes) {
-                                let {authResult} = loginRes
-                                //console.log("授权信息",authResult)
-                                let post_data = {
-                                    pluginsname:"thirdpartylogin",
-                                    pluginscontrol:"index",
-                                    pluginsaction:"bind",
-                                    platform:type,
-                                    openid:authResult['openid'],
-                                    access_token:authResult['access_token']
-                                }
-                                $this.loginByThirdAction(post_data,authResult)
+                            success: function(res) {
+                                let auth_result = res.authResult;
+                                $this.app_login_bind_handle({
+                                    platform: type,
+                                    openid: auth_result['openid'],
+                                    access_token: auth_result['access_token']
+                                }, auth_result);
                             },
                             fail: function (error) {
-                                //  {"errMsg":"login:fail 业务参数配置缺失,https://ask.dcloud.net.cn/article/282","errCode":-7,"code":-7}
-                                console.log(JSON.stringify(error));
+                                app.globalData.showToast(error.errMsg || '调用登录SDK失败');
                             },
                         });
                         break;
@@ -1480,7 +1474,7 @@
                                     openid:openId
                                 }
                                 console.log("请求参数",post_data)
-                                $this.loginByThirdAction(post_data,userInfo)
+                                $this.app_login_bind_handle(post_data,userInfo)
                             }  
                         })  
                         
@@ -1492,33 +1486,48 @@
             },
             
             // 登录回处理
-            async loginByThirdAction(post_data,authResult){
-                console.log(post_data)
-                console.log(authResult)
-                return;
-                try{
-                    let {data} = await  this.loadingFn(apiResquest('plugins/index', "POST", post_data))
-                    let {is_force_bind_user,...other} = data
-                    if(is_force_bind_user && is_force_bind_user==1){
-                        this.$store.dispatch('thirdLoginAction',{...authResult,...other,platform:post_data["platform"]})
-                        setTimeout(function(){
-                            uni.redirectTo({
-                                url:`/pages/login/bind/bind`
-                            })
-                        },500) 
-                    }else{
-                        this.$store.dispatch('loginKeyAction',other.token || other.user_name_view)
-                        this.$store.dispatch('shopUserInfoAction',other)
-                        this.$api.msg("登录成功！",2000,true,'success')
-                        setTimeout(function(){
-                            uni.navigateBack({delta: 1 });
-                        },1500) 
-                    }
-                    
-                }catch(e){
-                    console.log(e)
-                    this.$api.msg(e,2000)
-                }
+            app_login_bind_handle(post_data, auth_result) {
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('bind', 'index', 'thirdpartylogin'),
+                    method: 'POST',
+                    data: post_data,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var user = {...res.data.data, ...auth_result};
+                            // 设置当前第三方登录用户数据
+                            this.setData({
+                                plugins_thirdpartylogin_user: user
+                            });
+
+                            // 不需要绑定账号、则成功
+                            if ((user.is_force_bind_user || 0) != 1) {
+                                this.setData({
+                                    user: user
+                                });
+
+                                // 缓存当前用户数据
+                                uni.setStorageSync(app.globalData.data.cache_user_info_key, user);
+
+                                // 成功回调
+                                this.success_back_handle(res);
+                            }
+
+                            // 重新初始化
+                            this.init();
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error'));
+                    },
+                });
             },
 
             // 第三方登录绑定账号取消

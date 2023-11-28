@@ -64,8 +64,8 @@
                     },
                     "weixin" : {
                         "__platform__" : [ "ios", "android" ],
-                        "appid" : "wx6ce676d70c00d5d1",
-                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                        "appid" : "wx3bac19ff90c0a976",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     }
                 },
                 "push" : {},
@@ -73,13 +73,13 @@
                 "oauth" : {
                     "apple" : {},
                     "weixin" : {
-                        "appid" : "wx6ce676d70c00d5d1",
-                        "appsecret" : "c549f30ba2404a7b1449323c9e55a614",
-                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                        "appid" : "wx3bac19ff90c0a976",
+                        "appsecret" : "91f132b39c5c575fe61b04993c57c734",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     },
                     "qq" : {
-                        "appid" : "101944843",
-                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                        "appid" : "102076195",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     }
                 },
                 "maps" : {
@@ -96,12 +96,12 @@
                 },
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx6ce676d70c00d5d1",
-                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                        "appid" : "wx3bac19ff90c0a976",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     },
                     "qq" : {
-                        "appid" : "101944843",
-                        "UniversalLinks" : "https://www.ntfqw.com/.well-known/"
+                        "appid" : "102076195",
+                        "UniversalLinks" : "https://d1.shopxo.vip/.well-known/"
                     }
                 }
             },

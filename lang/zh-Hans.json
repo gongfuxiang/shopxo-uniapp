@@ -29,6 +29,8 @@
 		"processing_in_text": "处理中...",
 		"loading_in_text": "加载中...",
 		"upload_in_text": "上传中...",
+        "auth_in_text": "授权中...",
+        "login_in_text": "登录中...",
         "sending_in_text": "发送中...",
         "sending": "发送中",
 		"warm_tips": "温馨提示",
