@@ -21,15 +21,12 @@
                             <!-- #endif -->
                         ></component-search>
                         <view class="custom-info margin-top-sm">
-                            <block v-if="(custom_data || null) != null">
-                                <block v-if="(custom_data.data || null) != null">
-                                    <image class="custom-avatar circle br va-m" :src="custom_data.data.avatar" mode="aspectFill"></image>
-                                    <text class="va-m margin-left-sm">{{custom_data.data.user_name_view}}</text>
-                                    <text class="cr-grey fr">{{custom_data.data.add_time_text}}</text>
-                                </block>
-                                <view v-else class="cr-red">{{custom_data.error_msg}}</view>
+                            <block v-if="(custom_data || null) != null && (custom_data.data || null) != null">
+                                <image class="custom-avatar circle br va-m" :src="custom_data.data.avatar" mode="aspectFill"></image>
+                                <text class="va-m margin-left-sm">{{custom_data.data.user_name_view}}</text>
+                                <text class="cr-grey fr">{{custom_data.data.add_time_text || ''}}</text>
                             </block>
-                            <view v-else class="cr-grey">请先输入用户信息搜索！</view>
+                            <view v-else class="cr-red">{{custom_data.error_msg || '请先输入用户信息搜索！'}}</view>
                         </view>
                     </view>
 
@@ -108,6 +105,11 @@ export default {
         app.globalData.page_share_handle();
     },
 
+    // 下拉刷新
+    onPullDownRefresh() {
+        this.init();
+    },
+
     methods: {
         // 初始化
         init() {
@@ -138,7 +140,7 @@ export default {
                 data: this.params,
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
+                    uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var result = res.data.data;
                         var data = result.data || {};
@@ -161,6 +163,7 @@ export default {
                     }
                 },
                 fail: () => {
+                    uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
                         data_list_loding_msg: '网络开小差了哦~',

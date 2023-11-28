@@ -319,7 +319,7 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data();
+            this.init();
         },
 
         methods: {
