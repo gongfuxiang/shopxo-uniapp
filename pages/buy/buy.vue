@@ -112,14 +112,19 @@
                     <view v-if="(plugins_points_data || null) != null && ((plugins_points_data.discount_price || 0) > 0 || (plugins_points_data.is_support_goods_exchange || 0) == 1)" class="plugins-points-buy-container padding-main border-radius-main bg-white spacing-mb">
                         <block v-if="(plugins_points_data.discount_price || 0) > 0">
                             <view class="select oh">
-                                <text v-if="plugins_points_data.discount_type == 1">使用{{ plugins_points_data.use_integral }}个积分兑换商品</text>
-                                <text v-else>使用积分{{ plugins_points_data.use_integral }}个</text>
-                                <text class="sales-price">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
+                                <text v-if="plugins_points_data.discount_type == 1" class="va-m">使用{{ plugins_points_data.use_integral }}个积分兑换商品</text>
+                                <view v-else class="dis-inline-block">
+                                    <text class="va-m">使用</text>
+                                    <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" placeholder="抵扣" />
+                                    <button type="default" size="mini" class="bg-grey-e cr-gray cr-base text-size-xs radius va-m margin-right-xs plugins-points-use-submit" @tap="points_use_value_confirm_event">确认</button>
+                                    <text class="va-m">个积分</text>
+                                </view>
+                                <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
                                 <view @tap="points_event" class="fr cp">
                                     <iconfont :name="'icon-zhifu-'+(plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                 </view>
                             </view>
-                            <view class="desc">
+                            <view class="desc margin-top-xs">
                                 <text v-if="plugins_points_data.discount_type == 1">你有积分{{ plugins_points_data.user_integral }}个</text>
                                 <text v-else>你有积分{{ plugins_points_data.user_integral }}个，可用{{ plugins_points_data.use_integral }}个</text>
                             </view>
@@ -308,6 +313,7 @@
                 popup_plugins_coupon_index: null,
                 // 积分
                 plugins_points_data: null,
+                actual_use_integral: 0,
                 plugins_points_status: false,
                 // 门店
                 plugins_realstore_data: [],
@@ -361,9 +367,6 @@
         onShow() {
             // 数据加载
             this.init();
-            this.setData({
-                is_first: 0,
-            });
 
             // 初始化配置
             this.init_config();
@@ -492,6 +495,13 @@
                                     plugins_realstore_data: data.plugins_realstore_data || null,
                                 });
 
+                                // 可使用积分数量
+                                if(this.plugins_coupon_data != null && this.is_first == 1) {
+                                    this.setData({
+                                        actual_use_integral: this.plugins_points_data.use_integral || ''
+                                    });
+                                }
+
                                 // 优惠劵选择处理
                                 if ((data.plugins_coupon_data || null) != null) {
                                     var plugins_choice_coupon_value = [];
@@ -519,6 +529,11 @@
                                 uni.setStorage({
                                     key: app.globalData.data.cache_buy_user_address_select_key,
                                     data: data.base.address || null,
+                                });
+
+                                // 非首次状态
+                                this.setData({
+                                    is_first: 0,
                                 });
                             }
                         } else {
@@ -566,6 +581,9 @@
 
                 // 积分
                 data['is_points'] = this.plugins_points_status === true ? 1 : 0;
+                if(data['is_points'] == 1) {
+                    data['actual_use_integral'] = this.actual_use_integral;
+                }
                 return data;
             },
 
@@ -818,10 +836,31 @@
                 app.globalData.open_location(data.lng, data.lat, name, address);
             },
 
+            // 积分使用值输入事件
+            points_use_value_event(e) {
+                var value = parseInt(e.detail.value || 0);
+                var use_integral = parseInt(this.plugins_points_data.use_integral || 0);
+                if(value > use_integral && use_integral > 0) {
+                    value = use_integral;
+                }
+                this.setData({
+                    actual_use_integral: value || '',
+                });
+            },
+
+            // 积分使用值确认事件
+            points_use_value_confirm_event(e) {
+                this.setData({
+                    plugins_points_status: this.actual_use_integral > 0,
+                });
+                this.init();
+            },
+
             // 积分选择事件
             points_event(e) {
                 this.setData({
                     plugins_points_status: !this.plugins_points_status,
+                    actual_use_integral: this.actual_use_integral > 0 ? this.actual_use_integral : this.plugins_points_data.use_integral,
                 });
                 this.init();
             },

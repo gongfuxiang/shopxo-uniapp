@@ -219,6 +219,20 @@
     color: #F37B1D;
 }
 
+.plugins-points-use-value {
+    width: 130rpx;
+    height: 42rpx;
+    line-height: 42rpx;
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.plugins-points-use-submit {
+    line-height: 42rpx !important;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
 /**
  * 门店次卡-页面选择
  */
