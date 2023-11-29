@@ -57,7 +57,7 @@
     import componentNoData from '../../components/no-data/no-data';
     import componentBottomLine from '../../components/bottom-line/bottom-line';
     const theme_color = app.globalData.get_theme_color();
-    const theme_color_light = app.globalData.get_theme_color(true);
+    const theme_color_light = app.globalData.get_theme_color(null, true);
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {

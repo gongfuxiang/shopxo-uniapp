@@ -164,7 +164,7 @@
 
     var common_static_url = app.globalData.get_static_url('common');
     const theme_color = app.globalData.get_theme_color();
-    const theme_color_light = app.globalData.get_theme_color(true);
+    const theme_color_light = app.globalData.get_theme_color(null, true);
     export default {
         data() {
             return {

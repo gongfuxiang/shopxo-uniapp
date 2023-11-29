@@ -1071,7 +1071,7 @@
                             this.set_theme_value(data.plugins_themestyle_data);
 
                             // 设置底部菜单
-                            this.set_tabbar();
+                            this.set_tabbar(data.plugins_themestyle_data);
 
                             // 用户自动登录处理
                             this.user_auto_login_handle();
@@ -1986,7 +1986,7 @@
 
             // 获取主题色值
             // is_light 是否获取浅主色（false, true）
-            get_theme_color(is_light = false) {
+            get_theme_color(theme, is_light = false) {
                 let color_obj = {
                     // 主色
                     red: '#ff0036', // 红色
@@ -2008,7 +2008,10 @@
                     brown_light: '#eadcd2', // 棕色
                     purple_light: '#d6cbfb', // 紫色
                 };
-                var theme = this.get_theme_value();
+                // 当前主题
+                if((theme || null) == null) {
+                    theme = this.get_theme_value();
+                }
                 if (is_light) {
                     theme += '_light';
                 }
@@ -2041,13 +2044,15 @@
             },
 
             // 底部菜单设置
-            set_tabbar() {
+            set_tabbar(theme) {
                 // 当前主题
-                var theme = this.get_theme_value();
+                if((theme || null) == null) {
+                    theme = this.get_theme_value();
+                }
 
                 // 整体样式
                 uni.setTabBarStyle({
-                    selectedColor: this.get_theme_color(),
+                    selectedColor: this.get_theme_color(theme),
                 });
 
                 // 菜单
