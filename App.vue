@@ -148,6 +148,11 @@
 
                 // 错误圆形提示图片
                 default_round_error_icon: '/static/images/common/round-error-icon.png',
+                
+
+                // 其他数据
+                // 位置监听更新页面临时记录数据
+                location_update_page_temp_record_data: [],
             },
 
             /**
@@ -1661,11 +1666,17 @@
             },
 
             // 当前页面地址
-            current_page() {
+            // is_whole 完整地址（?后面的参数）
+            current_page(is_whole = true) {
                 // 来源地址、拼接当前小程序页面
                 var pages = getCurrentPages();
                 var page = pages[pages.length - 1];
-                return this.page_url_handle(page);
+                var url = this.page_url_handle(page);
+                if (is_whole == false) {
+                    var temp = url.split('?');
+                    url = temp[0];
+                }
+                return url;
             },
 
             // 上一页页面地址
@@ -1874,43 +1885,64 @@
                 // #endif
             },
 
-            // 启动位置监听（0 打开小程序监听、1小程序后台运行也监听）
+            // 启动位置监听（0 打开位置实时监听、1小程序后台运行也监听（仅微信、快手）小程序支持）
             start_location_update(type = 0, object, method) {
-                // 先停止再调用
-                uni.stopLocationUpdate();
-                // 关闭监听
-                uni.offLocationChange();
-                // 根据类型调用api
-                if (type == 0) {
-                    // 打开小程序监听
-                    uni.startLocationUpdate({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: (res) => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({
-                                    status: 0,
-                                    msg: res.errMsg,
-                                });
-                            }
-                        },
-                    });
-                } else {
-                    // 小程序后台运行监听
-                    uni.startLocationUpdateBackground({
-                        success: (res) => {
-                            this.start_location_update_change(object, method);
-                        },
-                        fail: (res) => {
-                            if (typeof object === 'object' && (method || null) != null) {
-                                object[method]({
-                                    status: 0,
-                                    msg: res.errMsg,
-                                });
-                            }
-                        },
-                    });
+                // 非微信和快手小程序type=1则赋值为0
+                // #ifndef MP-WEIXIN || MP-KUAISHOU
+                if(type == 1) {
+                    type = 0;
+                }
+                // #endif
+
+                // 如果页面已存在位置调用则不重复调用
+                var page = this.current_page(false);
+                var temp_location = this.data.location_update_page_temp_record_data;
+                if(temp_location.indexOf(page) == -1) {
+                    // 根据类型调用api
+                    if (type == 1) {
+                        // 开始监听实时地理位置信息变化事件，小程序进入前后台时均接收实时地理位置信息
+                        // 这个方法仅微信和快手小程序支持
+                        // #ifdef MP-WEIXIN || MP-KUAISHOU
+                        uni.startLocationUpdateBackground({
+                            success: (res) => {
+                                // 增加页面记录
+                                temp_location.push(page);
+                                this.data.location_update_page_temp_record_data = temp_location;
+
+                                // 调用位置监听方法
+                                this.start_location_update_change(object, method);
+                            },
+                            fail: (res) => {
+                                if (typeof object === 'object' && (method || null) != null) {
+                                    object[method]({
+                                        status: 0,
+                                        msg: res.errMsg,
+                                    });
+                                }
+                            },
+                        });
+                        // #endif
+                    } else {
+                        // 打开位置监听
+                        uni.startLocationUpdate({
+                            success: (res) => {
+                                // 增加页面记录
+                                temp_location.push(page);
+                                this.data.location_update_page_temp_record_data = temp_location;
+
+                                // 调用位置监听方法
+                                this.start_location_update_change(object, method);
+                            },
+                            fail: (res) => {
+                                if (typeof object === 'object' && (method || null) != null) {
+                                    object[method]({
+                                        status: 0,
+                                        msg: res.errMsg,
+                                    });
+                                }
+                            },
+                        });
+                    }
                 }
             },
 

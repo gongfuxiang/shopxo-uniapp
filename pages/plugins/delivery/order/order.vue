@@ -266,13 +266,11 @@
             });
             this.init();
 
-            // 分享菜单处理
-            app.globalData.page_share_handle();
-        },
-
-        onShow() {
             // 位置实时监听
             this.start_location_update();
+
+            // 分享菜单处理
+            app.globalData.page_share_handle();
         },
 
         methods: {

@@ -38,7 +38,7 @@
             </view>
             <view class="bottom-fixed br-0 bg-grey-f5">
                 <view class="bottom-line-exclude">
-                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">关闭页面</button>
+                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">退出页面</button>
                 </view>
             </view>
         </view>
@@ -130,9 +130,14 @@
                 });
             },
 
-            // 退出小程序
+            // 关闭页面
             exit_event(e) {
+                // #ifdef APP || H5
+                uni.navigateBack();
+                // #endif
+                // #ifdef MP
                 uni.exitMiniProgram();
+                // #endif
             },
         },
     };
