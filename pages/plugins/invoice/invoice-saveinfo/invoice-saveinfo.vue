@@ -268,7 +268,7 @@
             invoice_container_handle() {
                 // 发票类型
                 var invoice_type = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
-                if (invoice_type == 2) {
+                if (invoice_type == 2 || invoice_type == 3) {
                     // 选择专票的时候申请类型必须是企业
                     this.setData({
                         form_apply_type_index: 1,
@@ -298,7 +298,7 @@
                             email_container: false,
                         });
                         break;
-                    // 增值税专业纸质发票
+                    // 增值税专用纸质发票
                     case 2:
                         this.setData({
                             company_container: true,
@@ -307,10 +307,20 @@
                             email_container: false,
                         });
                         break;
+                        
+                    // 增值税专用纸质发票
+                    case 3:
+                        this.setData({
+                            company_container: true,
+                            company_special_container: true,
+                            addressee_container: false,
+                            email_container: true,
+                        });
+                        break;
                 }
 
-                // 增值税专业纸质发票情况下个人类型处理
-                if (invoice_type != 2) {
+                // 增值税专用纸质发票情况下个人类型处理
+                if (invoice_type == 0 || invoice_type == 1) {
                     var apply_type = this.apply_type_list[this.form_apply_type_index]['id'];
                     this.setData({
                         company_container: apply_type != 0,
@@ -347,7 +357,7 @@
                         validation.push({ fields: 'invoice_address', msg: '请填写企业注册地址、最多230个字符' });
                     }
 
-                    if (invoice_type != 0) {
+                    if (invoice_type == 1 || invoice_type == 2) {
                         validation.push({ fields: 'name', msg: '请填写收件人姓名格式 2~30 个字符之间' });
                         validation.push({ fields: 'tel', msg: '请填写收件人电话 6~15 个字符' });
                         validation.push({ fields: 'address', msg: '请填写收件人地址、最多230个字符' });
