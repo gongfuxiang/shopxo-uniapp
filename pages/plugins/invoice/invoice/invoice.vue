@@ -36,20 +36,23 @@
                             <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
                         </view>
                     </view>
-                    <view class="bottom-fixed">
-                        <view class="bottom-line-exclude">
-                            <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
-                                <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">订单开票</button>
-                            </navigator>
-                        </view>
-                    </view>
+
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
                     <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                 </view>
-                <!-- 结尾 -->
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+                <!-- 添加发票 -->
+                <view class="bottom-fixed">
+                    <view class="bottom-line-exclude">
+                        <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
+                            <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">订单开票</button>
+                        </navigator>
+                    </view>
+                </view>
             </view>
         </scroll-view>
     </view>
