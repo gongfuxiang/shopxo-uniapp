@@ -1100,7 +1100,7 @@
                         break;
                     // 默认
                     default:
-                        app.globalData.showToast('事件未处理');
+                        app.globalData.showToast('事件未处理('+type+')');
                 }
             },
 

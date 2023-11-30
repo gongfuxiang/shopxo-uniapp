@@ -115,7 +115,7 @@
                                 <text v-if="plugins_points_data.discount_type == 1" class="va-m">使用{{ plugins_points_data.use_integral }}个积分兑换商品</text>
                                 <view v-else class="dis-inline-block">
                                     <text class="va-m">使用</text>
-                                    <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" placeholder="抵扣" />
+                                    <input type="number" class="br radius dis-inline-block va-m tc text-size-xs padding-horizontal-sm margin-left-xs plugins-points-use-value" :value="actual_use_integral" @input="points_use_value_event" @confirm="points_use_value_confirm_event" placeholder="抵扣" />
                                     <button type="default" size="mini" class="bg-grey-e cr-gray cr-base text-size-xs radius va-m margin-right-xs plugins-points-use-submit" @tap="points_use_value_confirm_event">确认</button>
                                     <text class="va-m">个积分</text>
                                 </view>

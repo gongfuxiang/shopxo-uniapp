@@ -56,7 +56,7 @@
                         <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
                             <block v-for="(item, index) in buy_button.data" :key="index">
                                 <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
-                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-type="item.type" hover-class="none">{{ item.name }}</button>
+                                    <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
                         </view>
@@ -216,13 +216,14 @@ export default {
                                 goods_spec_base_original_price: "...",
                             });
                             // 必须不存在已选择项
-                            var active =
-                                temp_data[i]["value"]
-                                    .map(function (v) {
-                                        return v.is_active;
-                                    })
-                                    .join("") || null;
+                            var active = temp_data[i]["value"].map(function (v) {
+                                    return v.is_active;
+                                }).join("") || null;
                             if (active == null) {
+                                // 不能选择规格处理
+                                self.spec_handle_dont(i);
+
+                                // 规格选择处理
                                 var status = false;
                                 for (var k in temp_data[i]["value"]) {
                                     // 必须是可选和未选
@@ -642,6 +643,7 @@ export default {
 
                     // 操作类型
                     var type = e == null ? this.buy_event_type : e.currentTarget.dataset.type || this.buy_event_type;
+                    var value = e.currentTarget.dataset.value || null;
                     switch (type) {
                         case "buy":
                             // 进入订单确认页面
@@ -670,8 +672,17 @@ export default {
                             this.goods_cart_event(spec);
                             break;
 
+                        // url事件
+                        case "url":
+                            if (value == null) {
+                                app.globalData.showToast("url事件为空");
+                                return false;
+                            }
+                            app.globalData.url_open(value);
+                            break;
+
                         default:
-                            app.globalData.showToast("操作事件类型有误");
+                            app.globalData.showToast("操作事件类型有误("+type+")");
                     }
                 }
             }
