@@ -150,7 +150,7 @@
 
                         <!-- 魔方 - 插件 -->
                         <block v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
-                            <component-magic-list :propData="plugins_magic_data"></component-magic-list>
+                            <component-magic-list :propData="plugins_magic_data" :propCurrencySymbol="currency_symbol"></component-magic-list>
                         </block>
                     </block>
                 </block>

@@ -13,7 +13,7 @@
                     </view>
                     <view class="content margin-top">
                         <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view v-if="(item[fv.field] || null) != null" class="single-text margin-top-sm">
+                            <view v-if="(item[fv.field] || null) != null" class="margin-top-sm">
                                 <text class="cr-grey margin-right-xl va-m">{{ fv.name }}</text>
                                 <block v-if="fv.field == 'images'">
                                     <block v-for="(iv, ix) in item[fv.field]" :key="ix">

@@ -23,7 +23,7 @@
                                                     <view class="padding-horizontal-main tc" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
                                                         <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
                                                         <view class="price tc single-text">
-                                                            <text class="sales-price va-m text-size-xss va-b">{{ currency_symbol }}</text>
+                                                            <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
                                                             <text class="sales-price va-m text-size-xs">{{ listItem.min_price }}</text>
                                                         </view>
                                                     </view>
@@ -46,6 +46,10 @@
     export default {
         name: 'recommend-hot',
         props: {
+            propCurrencySymbol: {
+                type: String,
+                default: app.globalData.data.currency_symbol,
+            },
             propData: {
                 type: Object,
                 default: () => {
@@ -65,7 +69,6 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 data_goods_list: [],
-                currency_symbol: app.globalData.data.currency_symbol,
             };
         },
         mounted() {
