@@ -133,16 +133,16 @@
 /**
 * 留言
 */
-.content-textarea-container {
+.content-textarea-container .content {
     height: 100rpx;
 }
 
-.content-textarea-container view,
-.content-textarea-container textarea {
+.content-textarea-container .textarea-view,
+.content-textarea-container .textarea {
     height: 100% !important;
 }
 
-.content-textarea-container textarea {
+.content-textarea-container .textarea {
     padding: 5rpx 0;
 }
 
@@ -220,17 +220,22 @@
 }
 
 .plugins-points-use-value {
-    width: 130rpx;
-    height: 42rpx;
-    line-height: 42rpx;
     border-top-right-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    width: 130rpx;
+    height: 38rpx;
+    line-height: 38rpx;
 }
 
 .plugins-points-use-submit {
-    line-height: 42rpx !important;
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
+    height: 38rpx !important;
+    line-height: 38rpx !important;
+    /* #ifend H5 || APP */
+    height: 42rpx !important;
+    line-height: 42rpx !important;
+    /* #endif */
 }
 
 /**
@@ -285,4 +290,12 @@
     background: #dfdfdf !important;
     color: #c0c0c0 !important;
     cursor: no-drop !important;
+}
+
+
+/**
+ * 留言快捷选择 - 智能工具箱
+ */
+.plugins-intellectstools-data-note-fast .note-fast-data-list {
+    width: calc(100% - 112rpx);
 }

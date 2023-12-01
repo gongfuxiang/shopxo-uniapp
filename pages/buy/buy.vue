@@ -158,8 +158,20 @@
 
                     <!-- 留言 -->
                     <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
-                        <textarea v-if="user_note_status" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="60" placeholder="留言"></textarea>
-                        <view v-else @tap="bind_user_note_tap_event" :class="(user_note_value || null) == null ? 'cr-grey' : ''">{{ user_note_value || '留言' }}</view>
+                        <view class="content">
+                            <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" placeholder="留言"></textarea>
+                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view '+((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || '留言' }}</view>
+                        </view>
+                        <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
+                            <text class="cr-grey margin-right-sm va-m text-size-xs">快捷输入</text>
+                            <view class="note-fast-data-list scroll-view-horizontal dis-inline-block va-m">
+                                <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
+                                    <block v-for="(item, index) in plugins_intellectstools_data.note_fast_data" :key="index">
+                                        <view :class="'dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right br-grey-f5 cr-base cp '+(index > 0 ? 'margin-left-sm' : '')" :data-value="item" @tap="note_fast_event">{{ item }}</view>
+                                    </block>
+                                </scroll-view>
+                            </view>
+                        </view>
                     </view>
 
                     <!-- 支付方式 -->
@@ -321,6 +333,8 @@
                 popup_plugins_realstore_status: false,
                 popup_plugins_realstore_group_id: 0,
                 popup_plugins_realstore_card_index: 0,
+                // 智能工具箱
+                plugins_intellectstools_data: null,
 
                 // 支付弹窗参数
                 pay_url: '',
@@ -493,6 +507,7 @@
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null,
                                     plugins_realstore_data: data.plugins_realstore_data || null,
+                                    plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                                 });
 
                                 // 可使用积分数量
@@ -606,6 +621,28 @@
                 this.setData({
                     user_note_status: false,
                 });
+            },
+
+            // 留言快捷选择
+            note_fast_event(e) {
+                var value = e.currentTarget.dataset.value;
+                var user_note = this.user_note_value || '';
+                if(user_note != '') {
+                    // 已存在则不追加
+                    if(user_note.indexOf(value) != -1) {
+                        return false;
+                    }
+                    // 有数据组则增加分割符号
+                    user_note += ',';
+                }
+                user_note += value;
+
+                // 大于限定长度则不增加
+                if(user_note.length <= 230) {
+                    this.setData({
+                        user_note_value: user_note
+                    });
+                }
             },
 
             // 提交订单
