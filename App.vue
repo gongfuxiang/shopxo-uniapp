@@ -63,6 +63,9 @@
                 // 门店详情搜索框内扫码加购（0否, 1是）
                 is_realstore_top_search_scan: 1,
 
+                // 门店详情商品不跳转到商品详情页面去（0否, 1是）
+                is_realstore_goods_to_detail: 0,
+
                 // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
                 is_online_service_fixed: 1,
 

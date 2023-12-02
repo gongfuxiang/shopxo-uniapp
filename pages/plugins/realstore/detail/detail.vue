@@ -163,7 +163,7 @@
                             <!-- 右侧商品列表 -->
                             <block v-if="(data_list || null) != null && data_list.length > 0">
                                 <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                    <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="url_event">
+                                    <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
                                         <view class="flex-row jc-sb">
                                             <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
                                             <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -225,7 +225,7 @@
                             </view>
                             <scroll-view :scroll-y="true" class="cart-list goods-list">
                                 <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                    <navigator :url="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" hover-class="none">
+                                    <view :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
                                         <view class="flex-row jc-sb">
                                             <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
                                             <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -252,7 +252,7 @@
                                                 </view>
                                             </view>
                                         </view>
-                                    </navigator>
+                                    </view>
                                 </view>
                             </scroll-view>
                         </block>
@@ -1413,9 +1413,11 @@
                 return data;
             },
 
-            // url事件
-            url_event(e) {
-                app.globalData.url_event(e);
+            // 商品url事件
+            goods_url_event(e) {
+                if(app.globalData.data.is_realstore_goods_to_detail == 1) {
+                    app.globalData.url_event(e);
+                }
             },
 
             // 客服服务事件
