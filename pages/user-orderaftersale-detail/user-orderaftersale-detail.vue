@@ -4,7 +4,7 @@
             <!-- 商品 -->
             <view class="goods padding-main border-radius-main bg-white spacing-mb">
                 <view class="goods-item oh">
-                    <navigator :url="order_data.items.goods_url" hover-class="none">
+                    <view :data-value="order_data.items.goods_url" @tap="url_event" class="cp">
                         <image class="goods-image fl radius" :src="order_data.items.images" mode="aspectFill"></image>
                         <view class="goods-base">
                             <view class="multi-text">{{ order_data.items.title }}</view>
@@ -19,7 +19,7 @@
                                 <text class="margin-left-sm">x{{ order_data.items.buy_number }}</text>
                             </view>
                         </view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
 
@@ -776,6 +776,11 @@ export default {
         text_event(e) {
             app.globalData.text_event_handle(e);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

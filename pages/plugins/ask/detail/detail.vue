@@ -12,7 +12,7 @@
                     </view>
                     <view v-if="info.title != info.content" class="text-size-md">{{ info.content }}</view>
                     <block v-if="(info.goods_data || null) !== null">
-                        <navigator :url="info.goods_data.goods_url" hover-class="none">
+                        <view :data-value="info.goods_data.goods_url" @tap="url_event" class="cp">
                             <view class="goods-link spacing-mt bg-grey-f9 padding-main border-radius-sm">
                                 <view class="flex-row jc-sb">
                                     <view class="img border-radius-sm oh margin-right-main">
@@ -30,7 +30,7 @@
                                     </view>
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                     </block>
                 </view>
                 <view v-if="info.is_reply && info.is_reply === '1'" class="padding-main br-t-dashed">
@@ -222,6 +222,11 @@
                 // 传1表示为购物车回调方法调用的此方法
                 this.get_data(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

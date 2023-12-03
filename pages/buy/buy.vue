@@ -74,22 +74,30 @@
                         <!-- 优惠劵 -->
                         <view
                             v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0"
-                            class="buy-data-item buy-data-item-group arrow-right"
+                            class="buy-data-item"
                             :data-index="index"
                             @tap="plugins_coupon_open_event"
                         >
                             <text class="cr-base">优惠劵</text>
-                            <text class="cr-grey fr cp">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : '请选择优惠券' }}</text>
+                            <view class="fr cp">
+                                <text class="cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : '请选择优惠券' }}</text>
+                                <view class="dis-inline-block va-m lh-xs">
+                                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                </view>
+                            </view>
                         </view>
                         <!-- 门店次卡 -->
                         <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[group.id] || null) != null" class="plugins-realstore-container-view">
                             <block v-for="(item, index2) in plugins_realstore_data[group.id]['data']" :key="index2">
-                                <view class="buy-data-item buy-data-item-group arrow-right">
+                                <view class="buy-data-item oh wh-auto">
                                     <text class="cr-base va-m">门店次卡</text>
                                     <image class="image circle br va-m margin-left-lg" :src="item.images" mode="aspectFill"></image>
                                     <text class="cr-grey va-m margin-left-xs text-size-xs">x{{ item.stock }}</text>
-                                    <view class="right-value single-text dis-inline-block fr tr" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
-                                        <text class="cr-grey">{{ item.tips_msg }}</text>
+                                    <view class="fr cp tr right-value single-text" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
+                                        <text class="cr-grey va-m">{{ item.tips_msg }}</text>
+                                        <view class="dis-inline-block va-m lh-xs">
+                                            <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
                             </block>
@@ -137,7 +145,7 @@
                     </view>
 
                     <!-- 时间选择 -->
-                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item bg-white border-radius-main spacing-mb arrow-right">
+                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item padding-horizontal-main bg-white border-radius-main spacing-mb">
                         <text class="cr-base">{{ buy_datetime_info.title }}</text>
                         <view class="right-value single-text dis-inline-block fr tr">
                             <component-time-select
@@ -150,8 +158,11 @@
                                 :propIsShow="buy_datetime_info.status"
                                 @selectEvent="buy_datetime_event"
                             >
-                                <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey">{{ buy_datetime_info.placeholder }}</text>
-                                <text v-else class="cr-base">{{ buy_datetime_info.value }}</text>
+                                <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
+                                <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
+                                <view class="dis-inline-block va-m lh-xs">
+                                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                </view>
                             </component-time-select>
                         </view>
                     </view>
@@ -429,6 +440,21 @@
                             address_id: cache_address.id,
                         });
                     }
+                }
+
+                // 门店订单
+                if(app.globalData.data.is_buy_user_order_to_realstore_order == 1) {
+                    var realstore_order_page = '/pages/plugins/realstore/orderallot-list/orderallot-list';
+                    this.setData({
+                        to_page_back: {
+                            title: '进入门店订单',
+                            page: realstore_order_page,
+                        },
+                        // 支付失败跳转的页面
+                        to_fail_page: realstore_order_page,
+                        // 现金--跳转指定页面
+                        to_appoint_page: realstore_order_page,
+                    });
                 }
 
                 // 加载loding
@@ -724,7 +750,7 @@
             // 订单提交响应处理
             buy_submit_response_handle(data) {
                 this.setData({
-                    to_appoint_page: '/pages/user-order/user-order?order_ids=' + data.order_ids.join(','),
+                    to_appoint_page: this.to_appoint_page+'?order_ids=' + data.order_ids.join(','),
                 });
                 this.$refs.payment.pay_handle(data.order_ids.join(','), data.payment_id);
             },

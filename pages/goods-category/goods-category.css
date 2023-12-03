@@ -276,11 +276,11 @@
 
 .goods-right-content .word-list {
     position: sticky;
-    top: -2rpx;
+    top: 0;
     right: 0;
     background: #fff;
     z-index: 1;
-    padding: 0px 1px 20rpx 1px;
+    padding: 20rpx 0;
 }
 
 .goods-list .goods-img {

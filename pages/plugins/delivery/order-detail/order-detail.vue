@@ -50,7 +50,7 @@
                 <view v-if="detail.goods_data.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
                     <view v-for="(item, index) in detail.goods_data" :key="index" class="goods-item br-b-dashed oh padding-main">
-                        <navigator :url="item.goods_url" hover-class="none">
+                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{item.title}}</view>
@@ -66,7 +66,7 @@
                                 </view>
                                 <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{item.orderaftersale_btn_text}}</view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
                         <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text>元</text>
@@ -219,6 +219,11 @@
                 var data = this.detail.address_data;
                 var name = data.alias || data.name || '';
                 app.globalData.open_location(data.lng, data.lat, name, data.address_info);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

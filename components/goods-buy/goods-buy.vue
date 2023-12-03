@@ -642,8 +642,8 @@ export default {
                     }
 
                     // 操作类型
-                    var type = e == null ? this.buy_event_type : e.currentTarget.dataset.type || this.buy_event_type;
-                    var value = e.currentTarget.dataset.value || null;
+                    var type = (e == null) ? this.buy_event_type : (e.currentTarget.dataset.type || this.buy_event_type);
+                    var value = (e == null) ? null : (e.currentTarget.dataset.value || null);
                     switch (type) {
                         case "buy":
                             // 进入订单确认页面

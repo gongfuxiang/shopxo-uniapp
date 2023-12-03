@@ -95,7 +95,7 @@
                                     <!-- 商品列表 -->
                                     <view :class="'goods-right-content pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view class="padding-top-main padding-left-sm" :class="(common_site_type != 1 ? 'right-content-actual' : '') + ' pr'">
+                                            <view :class="'padding-left-sm '+(((data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0) ? '' : 'padding-top-main ')+((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
                                                 <!-- 三级导航 -->
                                                 <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
                                                     <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
@@ -276,7 +276,7 @@
                                         </view>
                                         <scroll-view :scroll-y="true" class="cart-list goods-list" :show-scrollbar="false">
                                             <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                                <navigator :url="goods.goods_url" hover-class="none" class="flex-row jc-sb">
+                                                <view :data-value="goods.goods_url" @tap="url_event" class="cp flex-row jc-sb">
                                                     <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
                                                     <view class="goods-base flex-1 flex-width flex-col jc-sb">
                                                         <view class="goods-base-content">
@@ -308,7 +308,7 @@
                                                             </view>
                                                         </view>
                                                     </view>
-                                                </navigator>
+                                                </view>
                                             </view>
                                         </scroll-view>
                                     </block>

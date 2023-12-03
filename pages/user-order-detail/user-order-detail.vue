@@ -23,7 +23,7 @@
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
-                        <navigator :url="item.goods_url" hover-class="none">
+                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{ item.title }}</view>
@@ -39,7 +39,7 @@
                                 </view>
                                 <view v-if="detail.is_can_launch_aftersale == 1 && (item.orderaftersale_btn_text || null) != null" class="orderaftersale-btn-text cr-blue pa bg-white" @tap.stop="orderaftersale_event" :data-oid="detail.id" :data-did="item.id">{{ item.orderaftersale_btn_text }}</view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
                         <text
@@ -264,6 +264,11 @@
                 var address = (data.province_name || '') + (data.city_name || '') + (data.county_name || '') + (data.address || '');
                 app.globalData.open_location(data.lng, data.lat, name, address);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

@@ -43,8 +43,22 @@
                             >元</text
                         >
                     </view>
-                    <view v-if="item.operate_data.is_collect == 1 || ((item.express_data || null) != null && item.express_data.length > 0)" class="item-operation tr br-t padding-vertical-main">
+                    <view v-if="
+                        (
+                            item.operate_data.is_cancel +
+                            item.operate_data.is_pay +
+                            item.operate_data.is_collect +
+                            (item.plugins_is_order_frequencycard_button || 0) > 0
+                        ) ||
+                        ((item.express_data || null) != null && item.express_data.length > 0) ||
+                        (item.operate_data.is_order_batch || 0) == 1 ||
+                        (item.operate_data.is_order_frequencycard || 0) == 1
+                    " class="item-operation tr br-t padding-vertical-main">
+                        <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
+                        <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">批次</button>
+                        <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">次卡</button>
                         <block v-if="(item.express_data || null) != null && item.express_data.length > 0">
                             <block v-for="(ev, ei) in item.express_data" :key="ei">
                                 <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&eid=' + ev.id + '&action_type=realstore'" hover-class="none">物流{{ ei + 1 }}</button>
@@ -61,12 +75,29 @@
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
+
+        <!-- 支付组件 -->
+        <component-payment
+            :prop-pay-url="pay_url"
+            :prop-qrcode-url="qrcode_url"
+            :prop-payment-list="payment_list"
+            prop-pay-data-key="ids"
+            :prop-temp-pay-value="temp_pay_value"
+            :prop-temp-pay-index="temp_pay_index"
+            :prop-payment-id="payment_id"
+            :prop-default-payment-id="default_payment_id"
+            :prop-pay-price="pay_price"
+            :prop-is-show-payment="is_show_payment_popup"
+            @close-payment-popup="payment_popup_event_close"
+            @pay-success="order_item_pay_success_handle"
+        ></component-payment>
     </view>
 </template>
 <script>
 const app = getApp();
 import componentNoData from "../../../../components/no-data/no-data";
 import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+import componentPayment from '@/components/payment/payment';
 
 export default {
     data() {
@@ -89,12 +120,23 @@ export default {
                 { name: "已失效", value: "6,7" },
             ],
             nav_status_index: 0,
+            // 前往页面携带的参数
+            pay_price: 0,
+            pay_url: '',
+            qrcode_url: '',
+            payment_list: [],
+            temp_pay_value: '',
+            temp_pay_index: 0,
+            payment_id: 0,
+            default_payment_id: 0,
+            is_show_payment_popup: false,
         };
     },
 
     components: {
         componentNoData,
         componentBottomLine,
+        componentPayment
     },
     props: {},
 
@@ -143,6 +185,11 @@ export default {
                     });
                     return false;
                 } else {
+                    this.setData({
+                        pay_url: app.globalData.get_request_url('pay', 'order'),
+                        qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+                    });
+
                     // 获取数据
                     this.get_data_list();
                 }
@@ -206,6 +253,8 @@ export default {
                                 }
                             }
                             this.setData({
+                                payment_list: res.data.data.payment_list || [],
+                                default_payment_id: res.data.data.default_payment_id || 0,
                                 data_list: temp_data_list,
                                 data_total: res.data.data.total,
                                 data_page_total: res.data.data.page_total,
@@ -218,6 +267,20 @@ export default {
                             this.setData({
                                 data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                             });
+
+                            // 判断url是否含有从其他页面携带过来的参数
+                            if ((this.params.order_ids || null) !== null) {
+                                var order_ids_arr = this.params.order_ids.split(',');
+                                var temp_data_list = this.data_list;
+                                for (var i in temp_data_list) {
+                                    if (order_ids_arr.indexOf(temp_data_list[i]['order_id']) != -1) {
+                                        temp_data_list[i]['is_under_line'] = 1;
+                                    }
+                                }
+                                this.setData({
+                                    data_list: temp_data_list,
+                                });
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -251,6 +314,94 @@ export default {
         // 滚动加载
         scroll_lower(e) {
             this.get_data_list();
+        },
+
+        // 支付
+        pay_event(e) {
+            this.setData({
+                is_show_payment_popup: true,
+                temp_pay_value: e.currentTarget.dataset.value,
+                temp_pay_index: e.currentTarget.dataset.index,
+                payment_id: e.currentTarget.dataset.payment || 0,
+                pay_price: e.currentTarget.dataset.price,
+                order_select_ids: [],
+            });
+        },
+
+        // 支付弹窗关闭
+        payment_popup_event_close(e) {
+            this.setData({
+                is_show_payment_popup: false,
+            });
+        },
+
+        // 支付成功数据设置
+        // 订单完成回调
+        order_item_pay_success_handle(data, index, order_ids) {
+            var order_ids_arr = data.order_id.split(',');
+            var temp_data_list = this.data_list;
+            for (var i in temp_data_list) {
+                if (order_ids_arr.indexOf(temp_data_list[i]['order_id']) != -1) {
+                    temp_data_list[i]['operate_data']['is_pay'] = 0;
+                    temp_data_list[i]['operate_data']['is_cancel'] = 0;
+                    temp_data_list[i]['status'] = 2;
+                    temp_data_list[i]['status_name'] = '已接收';
+                }
+            }
+            this.setData({
+                data_list: temp_data_list,
+            });
+        },
+
+        // 取消
+        cancel_event(e) {
+            uni.showModal({
+                title: '温馨提示',
+                content: '取消后不可恢复，确定继续吗?',
+                confirmText: '确认',
+                cancelText: '不了',
+                success: (result) => {
+                    if (result.confirm) {
+                        // 参数
+                        var id = e.currentTarget.dataset.value;
+                        var index = e.currentTarget.dataset.index;
+        
+                        // 加载loding
+                        uni.showLoading({
+                            title: '处理中...',
+                        });
+                        uni.request({
+                            url: app.globalData.get_request_url("cancel", "orderallot", "realstore"),
+                            method: 'POST',
+                            data: {
+                                id: id,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    var temp_data_list = this.data_list;
+                                    temp_data_list[index]['status'] = 5;
+                                    temp_data_list[index]['status_name'] = '已取消';
+                                    temp_data_list[index]['operate_data']['is_cancel'] = 0;
+                                    temp_data_list[index]['operate_data']['is_pay'] = 0;
+                                    temp_data_list[index]['operate_data']['is_delete'] = 1;
+                                    this.setData({
+                                        data_list: temp_data_list,
+                                    });
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                } else {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast('网络开小差了哦~');
+                            },
+                        });
+                    }
+                },
+            });
         },
 
         // 收货

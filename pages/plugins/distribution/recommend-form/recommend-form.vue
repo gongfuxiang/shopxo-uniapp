@@ -37,9 +37,9 @@
                             <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
                                 <block v-for="(item, index) in recommend_data.detail_list" :key="index">
                                     <view :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
-                                        <navigator :url="item.goods.goods_url" hover-class="none" class="br dis-block fl radius oh">
+                                        <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
                                             <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
-                                        </navigator>
+                                        </view>
                                         <view class="base fr">
                                             <view class="cr-base single-text">{{ item.goods.title }}</view>
                                             <view class="margin-top-xs">
@@ -89,9 +89,9 @@
                                 <block v-if="popup_search_goods_list.length > 0">
                                     <block v-for="(item, index) in popup_search_goods_list" :key="index">
                                         <view :class="'item oh pr margin-top-lg ' + (index > 0 ? 'br-t-dashed padding-top-lg' : '')">
-                                            <navigator :url="item.goods_url" hover-class="none" class="br dis-block fl radius oh">
+                                            <view :data-value="item.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
                                                 <image :src="item.images" mode="aspectFill" class="dis-block"></image>
-                                            </navigator>
+                                            </view>
                                             <view class="base fr">
                                                 <view class="cr-base single-text">{{ item.title }}</view>
                                                 <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
@@ -566,6 +566,11 @@
                 }
             },
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     };
 </script>
 <style>

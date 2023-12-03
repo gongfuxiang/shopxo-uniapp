@@ -982,14 +982,14 @@
                     "path": "orderallot-list/orderallot-list",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "子订单列表"
+                        "navigationBarTitleText": "门店订单"
                     }
                 },
                 {
                     "path": "orderallot-detail/orderallot-detail",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "子订单详情"
+                        "navigationBarTitleText": "门店订单详情"
                     }
                 },
                 {

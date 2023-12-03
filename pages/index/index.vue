@@ -213,10 +213,10 @@
                                                     <text v-if="(item.user.province || null) != null"><text class="padding-left-xs padding-right-xs">-</text>{{ item.user.province }}</text>
                                                 </view>
                                                 <view class="item-content fl">
-                                                    <navigator :url="item.goods_url" hover-class="none" class="single-text">
+                                                    <view :data-value="item.goods_url" @tap="url_event" class="cp single-text">
                                                         <image mode="widthFix" :src="item.images" class="va-m br"> </image>
                                                         <text class="margin-left-sm single-text">{{ item.title }}</text>
-                                                    </navigator>
+                                                    </view>
                                                 </view>
                                                 <view class="item-content single-text fr tr cr-grey padding-top-xs">
                                                     {{ item.add_time }}

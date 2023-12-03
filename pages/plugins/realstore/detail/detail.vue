@@ -435,7 +435,7 @@
                     method: 'POST',
                     data: this.request_params_merge(
                         {
-                            id: this.params.id || 0,
+                            id: ((this.info || null) == null) ? (this.params.id || 0) : (this.info.id || 0),
                         },
                         'init'
                     ),
@@ -1415,7 +1415,7 @@
 
             // 商品url事件
             goods_url_event(e) {
-                if(app.globalData.data.is_realstore_goods_to_detail == 1) {
+                if(app.globalData.data.is_realstore_forbid_to_goods_detail != 1) {
                     app.globalData.url_event(e);
                 }
             },

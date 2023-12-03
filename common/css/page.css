@@ -275,10 +275,6 @@ button:before {
     margin: 0 auto;
 }
 
-.lh-0 {
-    line-height: 0 !important;
-}
-
 .cp {
     /* #ifdef H5 */
     cursor: pointer;
@@ -967,6 +963,7 @@ button[disabled].bg-grey {
     border: 2rpx solid #FFCAC0;
     color: #FFCAC0;
     padding: 0 12rpx;
+    line-height: 40rpx;
 }
 
 .word-list .word-icon:not(:last-child) {

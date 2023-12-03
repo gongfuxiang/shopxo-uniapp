@@ -28,7 +28,7 @@
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
-                        <navigator :url="item.goods_url" hover-class="none">
+                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{ item.title }}</view>
@@ -43,7 +43,7 @@
                                     <text class="margin-left-sm">x{{ item.buy_number }}</text>
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
                         <text
@@ -229,6 +229,11 @@ export default {
             var address = (data.province_name || "") + (data.city_name || "") + (data.county_name || "") + (data.address || "");
             app.globalData.open_location(data.lng, data.lat, name, address);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

@@ -15,22 +15,22 @@
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
                                             <view>
-                                                <navigator :url="item.goods_url" hover-class="none">
+                                                <view :data-value="item.goods_url" @tap="url_event" class="cp">
                                                     <!-- 图片 -->
                                                     <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                                     <!-- 错误 -->
                                                     <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
                                                         <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
                                                     </view>
-                                                </navigator>
+                                                </view>
                                             </view>
 
                                             <!-- 基础 -->
                                             <view class="cart-goods-base padding-left-main flex-1">
                                                 <!-- 标题、规格 -->
-                                                <navigator :url="item.goods_url" hover-class="none">
+                                                <view :data-value="item.goods_url" @tap="url_event" class="cp">
                                                     <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
-                                                </navigator>
+                                                </view>
                                                 <view v-if="item.spec != null" class="margin-bottom-sm">
                                                     <block v-for="(sv, si) in item.spec" :key="si">
                                                         <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
@@ -840,6 +840,11 @@
                 }
                 return _res;
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

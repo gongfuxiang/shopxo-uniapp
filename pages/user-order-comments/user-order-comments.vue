@@ -5,9 +5,9 @@
                 <form @submit="formSubmit" class="form-container">
                     <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh">
                         <view class="oh">
-                            <navigator :url="item.goods_url" hover-class="none">
+                            <view :data-value="item.goods_url" @tap="url_event" class="cp">
                                 <image class="goods-image fl radius br margin-right-lg" :src="item.images" mode="aspectFill"></image>
-                            </navigator>
+                            </view>
                             <view class="item-base fl margin-top-sm">
                                 <block v-for="(tv, ti) in [1, 2, 3, 4, 5]" :key="ti">
                                     <image class="xingxing-icon va-m" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
@@ -398,6 +398,11 @@ export default {
                 },
             });
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

@@ -3,7 +3,7 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white pr spacing-mb">
-                    <navigator :url="item.goods_url" hover-class="none">
+                    <view :data-value="item.goods_url" @tap="url_event" class="cp">
                         <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
                         <view class="goods-base">
                             <view class="goods-title multi-text">{{item.title}}</view>
@@ -12,7 +12,7 @@
                                 <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
                             </view>
                         </view>
-                    </navigator>
+                    </view>
                     <button class="br-yellow cr-yellow bg-white fr round pa operate-submit" type="default" size="mini" @tap="cancel_event" :data-value="item.goods_id" :data-index="index" hover-class="none">取消</button>
                 </view>
             </view>
@@ -254,6 +254,11 @@
                         }
                     }
                 });
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };
