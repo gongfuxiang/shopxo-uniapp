@@ -110,7 +110,7 @@
                             </view>
                         </view>
                         <!-- 小计 -->
-                        <view class="oh tr goods-group-footer padding-top-xl">
+                        <view class="oh tr wh-auto goods-group-footer padding-top-xl">
                             <text v-if="group.order_base.total_price != group.order_base.actual_price" class="original-price margin-right-sm">{{ currency_symbol }}{{ group.order_base.total_price }}</text>
                             <text class="sales-price">{{ currency_symbol }}{{ group.order_base.actual_price }}</text>
                         </view>

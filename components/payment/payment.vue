@@ -25,7 +25,7 @@
                 <iconfont name="icon-huiyuan-guanbi" prop-class="pa right-0 margin-right-main margin-top-xs" size="30rpx" color="#999" @tap="payment_popup_event_close"></iconfont>
             </view>
             <view class="payment-price tc padding-top-sm padding-bottom-sm br-b">
-                <text class="text-size-md">{{ currency_symbol }}</text>
+                <text class="text-size-md">{{ propCurrencySymbol }}</text>
                 {{ propPayPrice }}
             </view>
             <view v-if="propPaymentList.length > 0" class="oh">
@@ -68,6 +68,10 @@
     export default {
         name: 'pay',
         props: {
+            propCurrencySymbol: {
+                type: String,
+                default: app.globalData.data.currency_symbol,
+            },
             propPayUrl: {
                 type: String,
                 default: '',
@@ -198,7 +202,6 @@
                 payment_id: Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
                 submit_disabled_status: true,
                 order_id: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
                 popup_view_pay_html_is_show: false,
             };
         },

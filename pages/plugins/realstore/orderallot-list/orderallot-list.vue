@@ -51,7 +51,7 @@
                         (item.operate_data.is_order_frequencycard || 0) == 1
                     " class="item-operation tr br-t padding-vertical-main">
                         <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" hover-class="none">支付</button>
+                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">支付</button>
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
                         <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">批次</button>
                         <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">次卡</button>
@@ -74,6 +74,7 @@
 
         <!-- 支付组件 -->
         <component-payment
+            :prop-currency-symbol="payment_currency_symbol"
             :prop-pay-url="pay_url"
             :prop-qrcode-url="qrcode_url"
             :prop-payment-list="payment_list"
@@ -117,6 +118,7 @@ export default {
             ],
             nav_status_index: 0,
             // 前往页面携带的参数
+            payment_currency_symbol: app.globalData.data.currency_symbol,
             pay_price: 0,
             pay_url: '',
             qrcode_url: '',
@@ -126,6 +128,9 @@ export default {
             payment_id: 0,
             default_payment_id: 0,
             is_show_payment_popup: false,
+            // 智能工具箱（限定仅可选择下单支付方式）
+            is_order_pay_only_can_buy_payment: 0,
+            original_payment_list: [],
         };
     },
 
@@ -152,6 +157,9 @@ export default {
             nav_status_index: nav_status_index,
         });
 
+        // 初始化配置
+        this.init_config();
+
         // 数据加载
         this.init();
     },
@@ -170,6 +178,17 @@ export default {
     },
 
     methods: {
+        // 初始化配置
+        init_config(status) {
+            if ((status || false) == true) {
+                this.setData({
+                    is_order_pay_only_can_buy_payment: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_order_pay_only_can_buy_payment', 0)),
+                });
+            } else {
+                app.globalData.is_config(this, 'init_config');
+            }
+        },
+
         // 获取数据
         init() {
             var user = app.globalData.get_user_info(this, "init");
@@ -249,6 +268,7 @@ export default {
                                 }
                             }
                             this.setData({
+                                original_payment_list: res.data.data.payment_list || [],
                                 payment_list: res.data.data.payment_list || [],
                                 default_payment_id: res.data.data.default_payment_id || 0,
                                 data_list: temp_data_list,
@@ -314,11 +334,30 @@ export default {
 
         // 支付
         pay_event(e) {
+            // 参数
+            var index = e.currentTarget.dataset.index || 0;
+            var payment_id = e.currentTarget.dataset.payment || 0;
+
+            // 智能工具箱（限定仅可选择下单支付方式）
+            if(this.is_order_pay_only_can_buy_payment == 1) {
+                var payment_list = [];
+                this.original_payment_list.forEach(function(v, k) {
+                    if(v.id == payment_id) {
+                        payment_list.push(v);
+                    }
+                });
+            } else {
+                var payment_list = this.original_payment_list;
+            }
+
+            // 设置支付参数
             this.setData({
                 is_show_payment_popup: true,
+                payment_list: payment_list,
+                payment_currency_symbol: e.currentTarget.dataset.currencySymbol,
                 temp_pay_value: e.currentTarget.dataset.value,
-                temp_pay_index: e.currentTarget.dataset.index,
-                payment_id: e.currentTarget.dataset.payment || 0,
+                temp_pay_index: index,
+                payment_id: payment_id,
                 pay_price: e.currentTarget.dataset.price,
                 order_select_ids: [],
             });
