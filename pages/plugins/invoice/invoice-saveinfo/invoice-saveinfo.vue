@@ -8,7 +8,6 @@
                             <view>
                                 <text class="cr-base margin-right-sm">发票金额</text>
                                 <text class="cr-main text-size fw-b">{{ save_base_data.total_price }}</text>
-                                <text class="cr-grey margin-left-sm">元</text>
                             </view>
                             <view class="cr-base margin-top-sm">{{ save_base_data.business_desc }}</view>
                         </view>

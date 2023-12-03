@@ -121,12 +121,10 @@
                     {
                         name: '订单金额',
                         field: 'price',
-                        unit: '元',
                     },
                     {
                         name: '支付金额',
                         field: 'pay_price',
-                        unit: '元',
                     },
                 ],
             };

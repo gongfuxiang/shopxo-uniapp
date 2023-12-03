@@ -87,7 +87,7 @@ export default {
                             detail: data.data,
                             detail_list: [
                                 { name: "转账单号", value: data.data.transfer_no || "" },
-                                { name: "转账金额", value: data.data.money + " 元" || "" },
+                                { name: "转账金额", value: data.data.money || "" },
                                 { name: "备注", value: data.data.note || "" },
                                 { name: "转账时间", value: data.data.add_time || "" },
                             ],

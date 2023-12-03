@@ -88,11 +88,11 @@ export default {
                             detail_list: [
                                 { name: "提现单号", value: data.data.cash_no || "" },
                                 { name: "提现状态", value: data.data.status_name || "" },
-                                { name: "提现金额", value: data.data.money + " 元" || "" },
+                                { name: "提现金额", value: data.data.money || "" },
                                 { name: "转账平台", value: data.data.bank_name || "" },
                                 { name: "转账姓名", value: data.data.bank_username || "" },
                                 { name: "转账账户", value: data.data.bank_accounts || "" },
-                                { name: "打款金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money + " 元" || "" },
+                                { name: "打款金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
                                 { name: "打款时间", value: data.data.pay_time_time || "" },
                                 { name: "备注", value: data.data.msg || "" },
                                 { name: "申请时间", value: data.data.add_time_time || "" },

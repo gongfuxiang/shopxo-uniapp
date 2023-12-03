@@ -88,8 +88,8 @@ export default {
                             detail_list: [
                                 { name: "充值单号", value: data.data.recharge_no || "" },
                                 { name: "充值状态", value: data.data.status_name || "" },
-                                { name: "充值金额", value: data.data.money + " 元" || "" },
-                                { name: "支付金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money + " 元" || "" },
+                                { name: "充值金额", value: data.data.money || "" },
+                                { name: "支付金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
                                 { name: "支付方式", value: data.data.payment_name || "" },
                                 { name: "创建时间", value: data.data.add_time_time || "" },
                                 { name: "支付时间", value: data.data.pay_time_time || "" },

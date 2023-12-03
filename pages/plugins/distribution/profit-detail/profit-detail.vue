@@ -86,9 +86,9 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "订单金额", value: data.data.total_price + "元" || "" },
-                                { name: "退款金额", value: data.data.refund_price + "元" || "" },
-                                { name: "收益金额", value: data.data.profit_price + "元" || "" },
+                                { name: "订单金额", value: data.data.total_price || "" },
+                                { name: "退款金额", value: data.data.refund_price || "" },
+                                { name: "收益金额", value: data.data.profit_price || "" },
                                 { name: "当前级别", value: data.data.level_name || "" },
                                 { name: "结算状态", value: data.data.status_name || "" },
                                 { name: "订单状态", value: data.data.order_status_name || "" },

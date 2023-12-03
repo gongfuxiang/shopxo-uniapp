@@ -31,7 +31,6 @@
                                                 <view class="price flex-row align-s">
                                                     <text class="cr-red text-size-md pr top-lg margin-right-xs">{{ currency_symbol }}</text>
                                                     <text class="fw-b cr-red text-size-xl single-text">{{ rules.price }}</text>
-                                                    <!-- <text class="cr-grey margin-left-sm">元</text> -->
                                                 </view>
                                             </view>
                                         </view>

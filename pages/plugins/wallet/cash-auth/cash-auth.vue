@@ -49,12 +49,10 @@
                     <view>
                         <text>当前有效金额</text>
                         <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
-                        <text class="cr-grey">元</text>
                     </view>
                     <view class="margin-top-sm">
                         <text>提现最低金额</text>
                         <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
-                        <text class="cr-grey">元起</text>
                     </view>
                 </view>
             </view>

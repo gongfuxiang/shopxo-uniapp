@@ -46,11 +46,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text
-                            >共<text class="fw-b">{{ detail.buy_number_count }}</text
-                            >件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text
-                            >元</text
-                        >
+                        <text>共<text class="fw-b">{{ detail.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
 

@@ -67,7 +67,7 @@ export default {
             nav_status_index: 0,
             content_list: [
                 { name: "订单号", field: "order_no" },
-                { name: "订单金额", field: "total_price", unit: "元" },
+                { name: "订单金额", field: "total_price" },
                 { name: "支付状态", field: "order_pay_status_name" },
                 { name: "来源终端", field: "order_client_type_name" },
                 { name: "订单时间", field: "add_time" },

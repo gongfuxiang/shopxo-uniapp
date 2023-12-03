@@ -64,9 +64,9 @@ export default {
             ],
             nav_status_index: 0,
             content_list: [
-                { name: "订单金额", field: "total_price", unit: "元" },
-                { name: "退款金额", field: "refund_price", unit: "元" },
-                { name: "收益金额", field: "profit_price", unit: "元" },
+                { name: "订单金额", field: "total_price" },
+                { name: "退款金额", field: "refund_price" },
+                { name: "收益金额", field: "profit_price" },
                 { name: "当前级别", field: "level_name" },
             ],
         };

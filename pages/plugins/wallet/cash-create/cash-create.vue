@@ -5,28 +5,24 @@
                 <view class="padding-main oh">
                     <view class="form-gorup">
                         <view class="form-gorup-title">提现金额<text class="form-group-tips-must">*</text></view>
-                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="'提现金额，最低' + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + '元，最高' + can_cash_max_money + '元'" />
+                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="'提现金额，最低' + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + '，最高' + can_cash_max_money" />
                         <view class="notice-content-blue">
                             <view v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-bottom-sm">赠送金额不可提现</view>
                             <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0">
                                 <text>提现最低金额</text>
                                 <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
-                                <text class="cr-grey">元起</text>
                             </view>
                             <view>
                                 <text>可提现金额</text>
                                 <text class="cr-main fw-b margin-left-sm margin-right-sm">{{ can_cash_max_money }}</text>
-                                <text class="cr-grey">元</text>
                             </view>
                             <view>
                                 <text>可用金额</text>
                                 <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
-                                <text class="cr-grey">元</text>
                             </view>
                             <view>
                                 <text>赠送总额</text>
                                 <text class="cr-base fw-b margin-left-sm margin-right-sm">{{ user_wallet.give_money }}</text>
-                                <text class="cr-grey">元</text>
                             </view>
                         </view>
                     </view>
@@ -206,11 +202,11 @@
                 if (app.globalData.fields_check(form_data, validation)) {
                     // 提现金额不能小于最低金额、不能大于最大可提现金额
                     if (parseFloat(this.data_base.cash_minimum_amount || 0) > 0 && parseFloat(form_data.money) < parseFloat(this.data_base.cash_minimum_amount)) {
-                        app.globalData.showToast('提现不能低于' + this.data_base.cash_minimum_amount + '元');
+                        app.globalData.showToast('提现不能低于' + this.data_base.cash_minimum_amount);
                         return false;
                     }
                     if (parseFloat(form_data.money) > this.can_cash_max_money) {
-                        app.globalData.showToast('提现不能大于' + this.can_cash_max_money + '元');
+                        app.globalData.showToast('提现不能大于' + this.can_cash_max_money);
                         return false;
                     }
 

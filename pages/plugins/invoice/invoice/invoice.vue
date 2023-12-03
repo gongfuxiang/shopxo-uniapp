@@ -81,7 +81,7 @@
                     { name: '业务类型', field: 'business_type_name' },
                     { name: '申请类型', field: 'apply_type_name' },
                     { name: '发票类型', field: 'invoice_type_name' },
-                    { name: '发票金额', field: 'total_price', unit: '元' },
+                    { name: '发票金额', field: 'total_price' },
                     { name: '发票抬头', field: 'invoice_title' },
                 ],
             };

@@ -99,8 +99,8 @@
                 nav_status_index: 0,
                 content_list: [
                     { name: '充值单号', field: 'recharge_no' },
-                    { name: '充值金额', field: 'money', unit: '元' },
-                    { name: '支付金额', field: 'pay_money', unit: '元' },
+                    { name: '充值金额', field: 'money' },
+                    { name: '支付金额', field: 'pay_money' },
                 ],
 
                 // 支付弹窗参数

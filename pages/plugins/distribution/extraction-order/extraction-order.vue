@@ -104,7 +104,7 @@ export default {
             search_keywords_value: "",
             content_list: [
                 { name: "订单号", field: "order_no" },
-                { name: "支付金额", field: "pay_price", unit: "元" },
+                { name: "支付金额", field: "pay_price" },
             ],
         };
     },

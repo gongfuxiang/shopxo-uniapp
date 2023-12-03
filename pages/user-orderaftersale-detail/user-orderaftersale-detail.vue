@@ -158,7 +158,7 @@
 
                     <view class="form-gorup">
                         <view class="form-gorup-title"
-                            >退款金额<text class="form-group-tips">不能大于{{ returned_data.refund_price }}元</text></view
+                            >退款金额<text class="form-group-tips">不能大于{{ returned_data.refund_price }}</text></view
                         >
                         <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入退款金额" :value="form_price" />
                     </view>

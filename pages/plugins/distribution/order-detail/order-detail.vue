@@ -60,11 +60,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text
-                            >共<text class="fw-b">{{ detail.buy_number_count }}</text
-                            >件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text
-                            >元</text
-                        >
+                        <text>共<text class="fw-b">{{ detail.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
             </view>
@@ -147,8 +143,8 @@ export default {
                             detail_list: [
                                 { name: "用户昵称", value: data.data.user_name_view || "" },
                                 { name: "订单号", value: data.data.order_no || "" },
-                                { name: "订单金额", value: data.data.total_price + " 元" || "" },
-                                { name: "退款金额", value: data.data.refund_price + " 元" || "" },
+                                { name: "订单金额", value: data.data.total_price || "" },
+                                { name: "退款金额", value: data.data.refund_price || "" },
                                 { name: "订单状态", value: data.data.order_status_name || "" },
                                 { name: "支付状态", value: data.data.order_pay_status_name || "" },
                                 { name: "来源终端", value: data.data.order_client_type_name || "" },

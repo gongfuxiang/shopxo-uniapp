@@ -35,10 +35,9 @@
                             <view class="flex-1">
                                 <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                                 <text class="va-m">{{ item.name }}</text>
-                                <text v-if="(item.tips || null) !== null" class="va-m cr-red">（{{ item.tips }}元）</text>
+                                <text v-if="(item.tips || null) !== null" class="va-m cr-red">（{{ item.tips }}）</text>
                             </view>
                             <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'" size="44rpx" :color="payment_id == item.id ? '#E22C08' : '#ccc'"></iconfont>
-                            <!-- <iconfont v-else name="icon-qiandao-tancguanbi" size="44rpx" color="#ccc"></iconfont> -->
                         </view>
                     </scroll-view>
                 </view>

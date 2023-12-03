@@ -191,7 +191,7 @@
                             <view :class="'item-content pr radius br ' + (payment_id == item.id ? 'cr-main br-main' : '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{ item.name }}</text>
-                                <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}元</text>
+                                <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                             </view>
                         </view>
                     </view>

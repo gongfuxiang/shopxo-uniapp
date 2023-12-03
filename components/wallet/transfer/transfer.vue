@@ -59,7 +59,7 @@
                 params: null,
                 content_list: [
                     { name: '收款人', field: 'transfer_no' },
-                    { name: '转账金额', field: 'money', unit: '元' },
+                    { name: '转账金额', field: 'money' },
                     { name: '转账备注', field: 'note' },
                 ],
             };

@@ -1209,11 +1209,11 @@
                     if (limit_type.length > 0) {
                         var buy_use_type = this.info.buy_use_type_list[this.buy_use_type_index];
                         if (limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
-                            app.globalData.showToast(buy_use_type['name'] + '起步价' + starting_price + '元');
+                            app.globalData.showToast(buy_use_type['name'] + '起步价' + starting_price);
                             return false;
                         }
                     } else {
-                        app.globalData.showToast('起步价' + starting_price + '元');
+                        app.globalData.showToast('起步价' + starting_price);
                         return false;
                     }
                 }

@@ -47,8 +47,8 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "消费金额", field: "order_total", unit: "元" },
-                { name: "下级消费", field: "find_order_total", unit: "元" },
+                { name: "消费金额", field: "order_total" },
+                { name: "下级消费", field: "find_order_total" },
                 { name: "下级用户", field: "referrer_count" },
                 { name: "加入时间", field: "add_time" },
             ],

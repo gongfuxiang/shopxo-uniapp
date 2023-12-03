@@ -22,7 +22,7 @@
                                             </view>
                                             <view class="pr z-i flex-row jc-c align-s">
                                                 <view class="flex-1 flex-width">
-                                                    <view>有效(元)</view>
+                                                    <view>有效</view>
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                                 </view>
                                                 <view class="flex-row">
@@ -37,11 +37,11 @@
                                             <view class="pr z-i flex-row jc-c align-c">
                                                 <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
                                                     <view class="flex-1">
-                                                        <view class="tetx-size-xs">冻结(元)</view>
+                                                        <view class="tetx-size-xs">冻结</view>
                                                         <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
                                                     </view>
                                                     <view class="flex-1">
-                                                        <view class="tetx-size-xs">赠送(元)</view>
+                                                        <view class="tetx-size-xs">赠送</view>
                                                         <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
                                                     </view>
                                                 </view>

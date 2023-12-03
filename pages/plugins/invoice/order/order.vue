@@ -68,9 +68,9 @@
                 select_ids: [],
                 content_list: [
                     { name: '订单编号', field: 'order_no' },
-                    { name: '订单总额', field: 'total_price', unit: '元' },
-                    { name: '支付金额', field: 'pay_price', unit: '元' },
-                    { name: '订单单价', field: 'price', unit: '元' },
+                    { name: '订单总额', field: 'total_price' },
+                    { name: '支付金额', field: 'pay_price' },
+                    { name: '订单单价', field: 'price' },
                 ],
             };
         },

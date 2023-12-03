@@ -72,7 +72,7 @@
                 nav_status_index: 0,
                 content_list: [
                     { name: '提现单号', field: 'cash_no' },
-                    { name: '提现金额', field: 'money', unit: '元' },
+                    { name: '提现金额', field: 'money' },
                 ],
             };
         },

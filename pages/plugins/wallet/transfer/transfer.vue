@@ -23,7 +23,7 @@
                         <input name="money" type="number" class="text-size-xl tc cr-red" placeholder="请输入转账金额" placeholder-class="cr-grey-c" />
                         <view class="tc spacing-mt-10 margin-bottom-xxxl padding-bottom-main">
                             <text class="cr-grey-9">我的余额：</text>
-                            <text class="fw-b">{{ data.normal_money }}元</text>
+                            <text class="fw-b">{{ data.normal_money }}</text>
                         </view>
                         <input name="note" class="text-size-md bg-grey-f9 padding-main border-radius-sm" placeholder="请输入转账备注信息" placeholder-class="cr-grey-c" />
                     </view>
