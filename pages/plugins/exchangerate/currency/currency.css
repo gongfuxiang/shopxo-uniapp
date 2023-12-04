@@ -1,7 +1,7 @@
-.data-list .item .icon {
-    width: 35rpx;
-    height: 35rpx !important;
-}
 .data-list .item .value {
-    width: calc(100% - 55rpx);
+    width: calc(100% - 50rpx);
+}
+.data-list .item .value .icon {
+    width: 44rpx !important;
+    height: 44rpx !important;
 }

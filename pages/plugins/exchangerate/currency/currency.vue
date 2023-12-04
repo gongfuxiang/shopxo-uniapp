@@ -4,10 +4,16 @@
         <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
                 <view class="item padding-main border-radius-main bg-white oh spacing-mb" @tap="selected_event" :data-index="index">
-                    <view v-if="common_site_type != 1" class="dis-inline-block icon fl margin-right-sm">
+                    <view v-if="common_site_type != 1" class="dis-inline-block va-m">
                         <iconfont :name="'icon-zhifu-'+((item.id == data_default.id) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(item.id == data_default.id) ? theme_color : '#999'"></iconfont>
                     </view>
-                    <view :class="'value fl single-text ' + (item.id == data_default.id ? 'cr-main' : 'cr-base')">{{item.name}} / {{item.symbol}}</view>
+                    <view class="value fr single-text">
+                        <image v-if="(item.icon || null) != null" class="icon va-m margin-right-xs" :src="item.icon" mode="aspectFit"></image>
+                        <text :class="'va-m '+(item.id == data_default.id ? 'cr-main' : 'cr-base')">{{item.name}} / {{item.symbol}}</text>
+                        <view class="fr margin-top-xs">
+                            <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                        </view>
+                    </view>
                 </view>
             </block>
         </view>

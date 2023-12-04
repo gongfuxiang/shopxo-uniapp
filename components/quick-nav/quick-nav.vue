@@ -141,6 +141,9 @@
 
             // 操作事件
             navigation_event(e) {
+                this.setData({
+                    popup_status: false,
+                });
                 app.globalData.operation_event(e);
             },
         },
