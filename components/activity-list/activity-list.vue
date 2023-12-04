@@ -33,7 +33,7 @@
         props: {
             propCurrencySymbol: {
                 type: String,
-                default: app.globalData.data.currency_symbol,
+                default: app.globalData.currency_symbol(),
             },
             propLocation: {
                 type: [String, Number],

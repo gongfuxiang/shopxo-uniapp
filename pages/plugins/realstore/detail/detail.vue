@@ -287,7 +287,7 @@
                 <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
 
                 <!-- 商品购买 -->
-                <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
@@ -324,7 +324,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_is_loading: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
                 buy_use_type_index: 0,
                 params: null,

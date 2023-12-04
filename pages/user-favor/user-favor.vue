@@ -43,7 +43,7 @@
                 data_bottom_line_status: false,
                 data_is_loading: 0,
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol
+                currency_symbol: app.globalData.currency_symbol()
             };
         },
 

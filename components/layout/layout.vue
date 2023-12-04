@@ -599,7 +599,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 // 基础配置
                 is_first: 1,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 // 轮播基础配置
                 indicator_color: 'rgba(0, 0, 0, .2)',
                 indicator_active_color: '#666',

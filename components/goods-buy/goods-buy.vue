@@ -12,8 +12,8 @@
                     <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                     <view class="goods-spec-base-content">
                         <view class="goods-price">
-                            <view class="sales-price">{{ currency_symbol }}{{ goods_spec_base_price }}</view>
-                            <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ currency_symbol }}{{ goods_spec_base_original_price }}</view>
+                            <view class="sales-price">{{ propCurrencySymbol }}{{ goods_spec_base_price }}</view>
+                            <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ propCurrencySymbol }}{{ goods_spec_base_original_price }}</view>
                         </view>
                         <view class="inventory text-size-xs margin-top-xs">
                             <text class="cr-grey">库存</text>
@@ -75,7 +75,6 @@ export default {
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
-            currency_symbol: app.globalData.get_config("currency_symbol", app.globalData.data.currency_symbol),
             params: {},
             back_data: {},
             popup_status: false,
@@ -103,6 +102,10 @@ export default {
         componentPopup,
     },
     props: {
+        propCurrencySymbol: {
+            type: String,
+            default: app.globalData.currency_symbol(),
+        },
         propIndex: {
             type: Number,
             default: 100,

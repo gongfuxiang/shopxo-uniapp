@@ -71,7 +71,7 @@
             // 价格符号
             propCurrencySymbol: {
                 type: String,
-                default: app.globalData.data.currency_symbol,
+                default: app.globalData.currency_symbol()
             },
             propConfig: {
                 type: [String, Object],

@@ -160,7 +160,7 @@
                 already_valid_selected_status: false,
                 source_type: null,
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 common_site_type: 0,
                 common_is_exhibition_mode_btn_text: null,
                 common_app_customer_service_tel: null,

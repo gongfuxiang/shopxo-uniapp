@@ -71,7 +71,7 @@
                 ],
                 nav_tabs_value: 'not_use',
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 // 首页地址
                 home_page_url: app.globalData.data.tabbar_pages[0],
             };

@@ -81,7 +81,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

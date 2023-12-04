@@ -196,7 +196,7 @@
             // 价格符号
             propCurrencySymbol: {
                 type: String,
-                default: app.globalData.data.currency_symbol,
+                default: app.globalData.currency_symbol(),
             },
             // 列表数据
             propData: {

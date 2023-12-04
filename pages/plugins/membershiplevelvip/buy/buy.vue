@@ -98,7 +98,7 @@
                 selected_tabs_value: '',
                 selected_content_index: null,
                 submit_disabled_status: false,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',

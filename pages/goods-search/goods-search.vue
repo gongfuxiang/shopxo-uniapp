@@ -235,7 +235,7 @@
 				// 数据展示样式（0图文、1九方格）
 				data_show_type_value: 1,
 				// 基础配置
-				currency_symbol: app.globalData.data.currency_symbol,
+				currency_symbol: app.globalData.currency_symbol(),
 				// 搜素条件
 				search_map_list: {
 					brand_list: [],

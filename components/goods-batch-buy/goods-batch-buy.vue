@@ -104,7 +104,7 @@ export default {
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
-            currency_symbol: app.globalData.get_config("currency_symbol", app.globalData.data.currency_symbol),
+            currency_symbol: app.globalData.currency_symbol(),
             popup_status: false,
             nav_active_index: 0,
             goods: null,

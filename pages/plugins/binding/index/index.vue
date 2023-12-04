@@ -42,7 +42,7 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 data_list: [],
                 data_total: 0,
                 data_page_total: 0,

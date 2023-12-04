@@ -323,7 +323,7 @@
                     { name: '自提点取货', value: 2 },
                 ],
                 // 基础配置
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 common_order_is_booking: 0,
                 // 下单时间选择
                 buy_datetime_info: {},
@@ -521,6 +521,7 @@
 
                                 // 设置数据
                                 this.setData({
+                                    currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
                                     goods_list: data.goods_list,
                                     total_price: data.base.actual_price,
                                     extension_data: data.extension_data || [],

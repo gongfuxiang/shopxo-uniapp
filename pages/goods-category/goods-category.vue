@@ -345,7 +345,7 @@
                     <component-cart-para-curve ref="cart_para_curve"></component-cart-para-curve>
 
                     <!-- 商品购买 -->
-                    <component-goods-buy ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+                    <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
                     <!-- 用户基础 -->
                     <component-user-base ref="user_base"></component-user-base>
@@ -399,7 +399,7 @@
                 data_total: 0,
                 data_page_total: 0,
                 data_page: 1,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 is_first: 1,
                 search_keywords_value: '',
                 nav_active_index: 0,

@@ -118,7 +118,7 @@ export default {
             ],
             nav_status_index: 0,
             // 前往页面携带的参数
-            payment_currency_symbol: app.globalData.data.currency_symbol,
+            payment_currency_symbol: app.globalData.currency_symbol(),
             pay_price: 0,
             pay_url: '',
             qrcode_url: '',

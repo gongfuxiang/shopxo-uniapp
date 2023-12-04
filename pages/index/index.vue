@@ -307,7 +307,7 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 load_status: 0,
-                currency_symbol: app.globalData.data.currency_symbol,
+                currency_symbol: app.globalData.currency_symbol(),
                 is_home_search_scan: app.globalData.data.is_home_search_scan,
                 data_list: [],
                 banner_list: [],
