@@ -22,11 +22,11 @@
   content: "\e6ee";
 }
 
-.icon-blog-del:before {
+.icon-delete:before {
   content: "\e6ec";
 }
 
-.icon-blog-checked:before {
+.icon-checked:before {
   content: "\e6eb";
 }
 

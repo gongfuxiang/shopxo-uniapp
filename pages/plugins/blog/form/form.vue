@@ -108,7 +108,7 @@
                         <view v-for="(item, index) in blog_category_list" :key="index">
                             <view class="padding-vertical-main flex-row jc-sb align-c" :class="data.blog_category_id == item.id ? 'cr-main' : ''" :data-value="item.name" :data-id="item.id" @tap="get_type_event">
                                 {{ item.name }}
-                                <iconfont v-if="data.blog_category_id === item.id" name="icon-blog-checked" color="#333" size="28rpx"></iconfont>
+                                <iconfont v-if="data.blog_category_id === item.id" name="icon-checked" color="#333" size="28rpx"></iconfont>
                             </view>
                         </view>
                     </view>

@@ -23,7 +23,7 @@
                             </view>
                             <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
                                 <view class="margin-right-xs dis-inline-block">
-                                    <iconfont name="icon-blog-del" size="32rpx"></iconfont>
+                                    <iconfont name="icon-delete" size="32rpx"></iconfont>
                                 </view>
                                 删除
                             </view>

@@ -64,7 +64,7 @@
                         <view class="br-t-f5 padding-main list">
                             <view v-for="(value, key) in language_list" :key="key" class="spacing-mb flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap="checked_language_event">
                                 {{ value }}
-                                <iconfont v-if="language_key == key" name="icon-blog-checked" size="32rpx"></iconfont>
+                                <iconfont v-if="language_key == key" name="icon-checked" size="32rpx"></iconfont>
                             </view>
                         </view>
                     </view>
