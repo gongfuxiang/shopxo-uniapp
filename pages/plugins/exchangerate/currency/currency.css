@@ -7,6 +7,9 @@
     height: 100rpx !important;
 }
 .data-list .item .checked {
-    top: calc(50% - 18rpx);
-    right: 24rpx;
+    top: 0;
+    right: 0;
+    width: 50rpx;
+    height: 38rpx;
+    border-bottom-left-radius: 100rpx;
 }

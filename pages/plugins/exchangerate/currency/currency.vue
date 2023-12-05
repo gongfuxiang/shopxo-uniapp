@@ -3,11 +3,12 @@
         <!-- 货币列表 -->
         <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item padding-main border-radius-main bg-white oh pr spacing-mb" @tap="selected_event" :data-index="index">
+                <view :class="'item padding-main border-radius-main bg-white oh pr spacing-mb '+(item.id == data_default.id ? 'br-main' : 'br')" @tap="selected_event" :data-index="index">
                     <image v-if="(item.icon || null) != null" class="icon va-m margin-right" :src="item.icon" mode="aspectFit"></image>
                     <text class="va-m">{{item.name}}</text>
-                    <view v-if="item.id == data_default.id" class="checked pa lh-lg">
-                        <iconfont name="icon-zhifu-yixuan" size="34rpx" :color="theme_color"></iconfont>
+                    <text class="cr-grey fr">{{item.symbol}}</text>
+                    <view v-if="item.id == data_default.id" class="checked pa bg-main lh-sm tc padding-top-xs padding-left-xs">
+                        <iconfont name="icon-checked" size="32rpx" color="#fff"></iconfont>
                     </view>
                 </view>
             </block>
