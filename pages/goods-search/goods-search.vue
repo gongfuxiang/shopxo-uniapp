@@ -26,7 +26,7 @@
 				<view class="nav-sort-content">
 					<block v-for="(item, index) in search_nav_sort_list" :key="index">
 						<view class="item tc fl cp" :data-index="index" @tap="nav_sort_event">
-							<text class="cr-base va-m">{{item.name}}</text>
+							<text class="cr-base va-m text-size-sm">{{item.name}}</text>
 							<image v-if="(item.icon || null) != null" class="icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
 						</view>
 					</block>
@@ -202,34 +202,34 @@
 				// 排序导航
 				search_nav_sort_index: 0,
 				search_nav_sort_list: [{
-						name: "综合",
-						field: "default",
-						sort: "asc",
-						"icon": null
+						name: '综合',
+						field: 'default',
+						sort: 'asc',
+						icon: null
 					},
 					{
-						name: "销量",
-						field: "sales_count",
-						sort: "asc",
-						"icon": "default"
+						name: '销量',
+						field: 'sales_count',
+						sort: 'asc',
+						icon: 'default'
 					},
 					{
-						name: "热度",
-						field: "access_count",
-						sort: "asc",
-						"icon": "default"
+						name: '热度',
+						field: 'access_count',
+						sort: 'asc',
+						icon: 'default'
 					},
 					{
-						name: "价格",
-						field: "min_price",
-						sort: "asc",
-						"icon": "default"
+						name: '价格',
+						field: 'min_price',
+						sort: 'asc',
+						icon: 'default'
 					},
 					{
-						name: "最新",
-						field: "id",
-						sort: "asc",
-						"icon": "default"
+						name: '最新',
+						field: 'id',
+						sort: 'asc',
+						icon: 'default'
 					}
 				],
 				// 数据展示样式（0图文、1九方格）

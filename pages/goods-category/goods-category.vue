@@ -93,26 +93,36 @@
                                         </scroll-view>
                                     </view>
                                     <!-- 商品列表 -->
-                                    <view :class="'goods-right-content pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
+                                    <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view :class="'padding-left-sm '+(((data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0) ? '' : 'padding-top-main ')+((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
-                                                <!-- 三级导航 -->
-                                                <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal">
-                                                    <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
-                                                        <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
-                                                        <block v-for="(item, index) in data_three_content.items" :key="index">
-                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
+                                            <view :class="'padding-left-sm '+((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
+                                                <!-- 操作导航 -->
+                                                <view class="goods-list-top-nav">
+                                                    <!-- 排序 -->
+                                                    <view class="nav-sort-content oh bg-white">
+                                                        <block v-for="(item, index) in search_nav_sort_list" :key="index">
+                                                            <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
+                                                                <text class="cr-base va-m text-size-sm">{{item.name}}</text>
+                                                                <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                                                            </view>
                                                         </block>
-                                                    </scroll-view>
+                                                    </view>
+                                                    <!-- 三级导航 -->
+                                                    <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list bg-white scroll-view-horizontal padding-bottom-main">
+                                                        <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
+                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
+                                                            <block v-for="(item, index) in data_three_content.items" :key="index">
+                                                                <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
+                                                            </block>
+                                                        </scroll-view>
+                                                    </view>
                                                 </view>
                                                 <!-- 右侧商品列表 -->
                                                 <view v-if="(data_list || null) != null && data_list.length > 0" class="oh">
-                                                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white oh pr spacing-mb">
+                                                    <view v-for="(item, index) in data_list" :key="index" class="item oh pr spacing-mb">
                                                         <!-- 商品主体内容 -->
                                                         <view class="flex-row jc-sb" :data-value="item.goods_url + '&is_opt_back=1'" @tap="url_event">
-                                                            <view class="">
-                                                                <image :src="item.images" mode="widthFix" class="goods-img radius"></image>
-                                                            </view>
+                                                            <image :src="item.images" mode="widthFix" class="goods-img radius dis-block"></image>
                                                             <view class="goods-base flex-col jc-sb">
                                                                 <view class="goods-base-content">
                                                                     <view class="goods-title multi-text">{{ item.title }}</view>
@@ -412,6 +422,39 @@
                 category_one_subset_count: 0,
                 // 基础配置
                 category_show_level: 0,
+                // 排序导航
+                search_nav_sort_index: 0,
+                search_nav_sort_list: [{
+                		name: '综合',
+                		field: 'default',
+                		sort: 'asc',
+                		icon: null
+                	},
+                	{
+                		name: '销量',
+                		field: 'sales_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '热度',
+                		field: 'access_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '价格',
+                		field: 'min_price',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '最新',
+                		field: 'id',
+                		sort: 'asc',
+                		icon: 'default'
+                	}
+                ],
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
@@ -630,29 +673,34 @@
                 });
 
                 // 请求参数
-                var data = {
+                var post_data = {
                     page: this.data_page,
                     wd: this.search_keywords_value || '',
                 };
                 // 分类id
                 if ((this.data_content || null) != null) {
                     // 主分类id
-                    data['category_id'] = this.data_content['id'];
+                    post_data['category_id'] = this.data_content['id'];
                     // 是否选中了二级分类
                     if (this.nav_active_item_two_index != -1) {
-                        data['category_id'] = this.data_content['items'][this.nav_active_item_two_index]['id'];
+                        post_data['category_id'] = this.data_content['items'][this.nav_active_item_two_index]['id'];
                     }
                     // 是否选中了三级分类
                     if (this.data_three_content != null && this.nav_active_item_three_index != -1) {
-                        data['category_id'] = this.data_three_content['items'][this.nav_active_item_three_index]['id'];
+                        post_data['category_id'] = this.data_three_content['items'][this.nav_active_item_three_index]['id'];
                     }
                 }
+                // 排序
+                var temp_index = this.search_nav_sort_index;
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                post_data['order_by_type'] = temp_search_nav_sort[temp_index]['sort'] == 'desc' ? 'asc' : 'desc';
+                post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
 
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'search'),
                     method: 'POST',
-                    data: data,
+                    data: post_data,
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {
@@ -1236,18 +1284,42 @@
             // 计算搜索框的高度
             search_height_computer() {
                 const query = uni.createSelectorQuery();
-                query
-                    .select('.nav-search')
-                    .boundingClientRect((res) => {
-                        if ((res || null) != null) {
-                            // 获取搜索框高度
-                            this.setData({
-                                search_height: res.height,
-                            });
-                        }
-                    })
-                    .exec();
+                query.select('.nav-search').boundingClientRect((res) => {
+                    if ((res || null) != null) {
+                        // 获取搜索框高度
+                        this.setData({
+                            search_height: res.height,
+                        });
+                    }
+                }).exec();
             },
+
+            // 排序事件
+            nav_sort_event(e) {
+            	var index = e.currentTarget.dataset.index || 0;
+            	var temp_search_nav_sort = this.search_nav_sort_list;
+            	var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
+            	for (var i in temp_search_nav_sort) {
+            		if (i != index) {
+            			if (temp_search_nav_sort[i]['icon'] != null) {
+            				temp_search_nav_sort[i]['icon'] = 'default';
+            			}
+            			temp_search_nav_sort[i]['sort'] = 'desc';
+            		}
+            	}
+            	temp_search_nav_sort[index]['sort'] = temp_sort;
+            	if (temp_search_nav_sort[index]['icon'] != null) {
+            		temp_search_nav_sort[index]['icon'] = temp_sort;
+            	}
+
+            	this.setData({
+            		search_nav_sort_index: index,
+            		search_nav_sort_list: temp_search_nav_sort,
+            		data_page: 1
+            	});
+                this.reset_scroll();
+            	this.get_goods_list(1);
+            }
         },
     };
 </script>
