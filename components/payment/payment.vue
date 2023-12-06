@@ -28,10 +28,10 @@
                 <text class="text-size-md">{{ propCurrencySymbol }}</text>
                 {{ propPayPrice }}
             </view>
-            <view v-if="propPaymentList.length > 0" class="oh">
+            <view v-if="payment_list.length > 0" class="oh">
                 <view class="payment-list">
                     <scroll-view scroll-y="true" class="scroll-y wh-auto">
-                        <view v-for="(item, index) in propPaymentList" :key="index" class="item br-b flex-row jc-sb align-c" :data-value="item.id" @tap="checked_payment">
+                        <view v-for="(item, index) in payment_list" :key="index" class="item br-b flex-row jc-sb align-c" :data-value="item.id" @tap="checked_payment">
                             <view class="flex-1">
                                 <image v-if="(item.logo || null) != null" class="icon va-m margin-right-sm" :src="item.logo" mode="widthFix"></image>
                                 <text class="va-m">{{ item.name }}</text>
@@ -162,17 +162,18 @@
             componentPopup,
         },
         watch: {
+            // 是否显示支付方式
             propIsShowPayment(newVal, oldVal) {
                 if (newVal !== oldVal) {
                     let bool = true;
-                    if (this.propPaymentList.length === 1) {
+                    if (this.payment_list.length === 1) {
                         bool = false;
                         this.setData({
-                            payment_id: this.propPaymentList[0].id,
+                            payment_id: this.payment_list[0].id,
                         });
                     } else {
                         let self = this;
-                        self.propPaymentList.forEach((item) => {
+                        self.payment_list.forEach((item) => {
                             let new_payment_id = Number(self.propPaymentId) === 0 ? self.propDefaultPaymentId : Number(self.propPaymentId);
                             if (item.id == new_payment_id) {
                                 bool = false;
@@ -188,10 +189,24 @@
                     });
                 }
             },
+            // 支付方式是否改变
+            propPaymentList(value, old_value) {
+                this.setData({
+                    payment_list: value,
+                });
+            },
+        },
+        // 页面被展示
+        created: function () {
+            this.setData({
+                payment_list: this.payment_list
+            });
         },
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                // 支付方式列表
+                payment_list: [],
                 // 弹窗开关
                 is_show_payment_popup: false,
                 popup_view_pay_qrcode_is_show: false,
@@ -240,11 +255,17 @@
             },
 
             // 支付方法
-            pay_handle(order_id, payment_id) {
-                var self = this;
-                this.propPaymentList.forEach((item) => {
+            pay_handle(order_id, payment_id, payment_list = []) {
+                // 没有指定支付方式则使用属性传过来的值
+                if((payment_list || null) != null && payment_list.length > 0) {
+                    this.setData({
+                        payment_list: payment_list
+                    });
+                }
+                this.payment_list.forEach((item) => {
                     if (item.id == payment_id) {
                         if (item.payment === 'WalletPay') {
+                            var self = this;
                             uni.showModal({
                                 title: '温馨提示',
                                 content: '操作后将立即扣除支付费用、确认继续吗？',
@@ -264,6 +285,7 @@
                     }
                 });
             },
+            // 支付处理
             pay_handle_event(order_id, payment_id) {
                 // #ifdef H5
                 // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
@@ -273,9 +295,9 @@
                 // #endif
                 // 支付方式
                 var payment = null;
-                for (var i in this.propPaymentList) {
-                    if (this.propPaymentList[i]['id'] == (payment_id || this.payment_id)) {
-                        payment = this.propPaymentList[i];
+                for (var i in this.payment_list) {
+                    if (this.payment_list[i]['id'] == (payment_id || this.payment_id)) {
+                        payment = this.payment_list[i];
                     }
                 }
                 if (payment == null) {
@@ -328,7 +350,7 @@
                                             this.app_pay_handle(this, data, order_id);
                                             // #endif
                                             // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
-                                            this.common_pay_handle(this, data, order_id);
+                                            this.mp_pay_handle(this, data, order_id);
                                             // #endif
                                             // #ifdef MP-KUAISHOU
                                             this.kuaishou_pay_handle(this, data, order_id);
@@ -444,8 +466,8 @@
                     },
                 });
             },
-            // 微信、支付宝、百度、头条、QQ
-            common_pay_handle(self, data, order_id) {
+            // 小程序: 微信、支付宝、百度、头条、QQ
+            mp_pay_handle(self, data, order_id) {
                 uni.requestPayment({
                     // #ifdef MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
                     orderInfo: data.data,
@@ -504,7 +526,7 @@
                         },
                     });
                 } else {
-                    self.common_pay_handle(self, data, order_id);
+                    self.mp_pay_handle(self, data, order_id);
                 }
             },
             // h5支付处理

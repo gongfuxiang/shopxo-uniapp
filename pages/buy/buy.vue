@@ -479,6 +479,13 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
 
+                            // 基础数据
+                            this.setData({
+                                currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
+                                payment_list: data.payment_list || [],
+                                payment_id: data.default_payment_id || '',
+                            });
+
                             // 订单是否已提交、直接进入支付页面
                             if ((data.is_order_submit || 0) == 1) {
                                 this.buy_submit_response_handle(data);
@@ -521,15 +528,12 @@
 
                                 // 设置数据
                                 this.setData({
-                                    currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
                                     goods_list: data.goods_list,
                                     total_price: data.base.actual_price,
                                     extension_data: data.extension_data || [],
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],
-                                    payment_list: data.payment_list || [],
-                                    payment_id: data.default_payment_id || '',
                                     buy_datetime_info: datetime,
                                     plugins_coupon_data: data.plugins_coupon_data || null,
                                     plugins_points_data: data.plugins_points_data || null,
@@ -538,7 +542,7 @@
                                 });
 
                                 // 可使用积分数量
-                                if(this.plugins_coupon_data != null && this.is_first == 1) {
+                                if(this.plugins_points_data != null && this.is_first == 1) {
                                     this.setData({
                                         actual_use_integral: this.plugins_points_data.use_integral || ''
                                     });
@@ -753,7 +757,7 @@
                 this.setData({
                     to_appoint_page: this.to_appoint_page+'?order_ids=' + data.order_ids.join(','),
                 });
-                this.$refs.payment.pay_handle(data.order_ids.join(','), data.payment_id);
+                this.$refs.payment.pay_handle(data.order_ids.join(','), data.payment_id, this.payment_list);
             },
 
             // 支付方式选择
