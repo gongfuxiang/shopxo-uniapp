@@ -138,27 +138,26 @@
                     <!-- 右侧 -->
                     <scroll-view :scroll-y="true" class="right-content ht-auto goods-list flex-1 flex-width" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                         <view class="right-content-actual pr">
-                            <!-- 二级分类 -->
-                            <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal">
-                                <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
-                                    <view
-                                        :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
-                                        :data-index="nav_active_index"
-                                        :data-itemindex="-1"
-                                        @tap="nav_event"
-                                        >全部</view
-                                    >
-                                    <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
-                                        <view
-                                            :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')"
-                                            :id="'two-nav-item-' + ci"
-                                            :data-index="nav_active_index"
-                                            :data-itemindex="ci"
-                                            @tap="nav_event"
-                                            >{{ cv.name }}</view
-                                        >
+                            <!-- 操作导航 -->
+                            <view class="goods-list-top-nav bg-white">
+                                <!-- 排序 -->
+                                <view class="nav-sort-content oh">
+                                    <block v-for="(item, index) in search_nav_sort_list" :key="index">
+                                        <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
+                                            <text class="cr-base va-m text-size-sm">{{item.name}}</text>
+                                            <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                                        </view>
                                     </block>
-                                </scroll-view>
+                                </view>
+                                <!-- 二级分类 -->
+                                <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal padding-horizontal-main padding-bottom-main">
+                                    <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
+                                        <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                        <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
+                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{ cv.name }}</view>
+                                        </block>
+                                    </scroll-view>
+                                </view>
                             </view>
                             <!-- 右侧商品列表 -->
                             <block v-if="(data_list || null) != null && data_list.length > 0">
@@ -352,6 +351,39 @@
                 popup_spec_status: false,
                 goods_choose_data: {},
                 header_service_status: false,
+                // 排序导航
+                search_nav_sort_index: 0,
+                search_nav_sort_list: [{
+                		name: '综合',
+                		field: 'default',
+                		sort: 'asc',
+                		icon: null
+                	},
+                	{
+                		name: '销量',
+                		field: 'sales_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '热度',
+                		field: 'access_count',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '价格',
+                		field: 'min_price',
+                		sort: 'asc',
+                		icon: 'default'
+                	},
+                	{
+                		name: '最新',
+                		field: 'id',
+                		sort: 'asc',
+                		icon: 'default'
+                	}
+                ],
                 // 收藏信息
                 favor_info: {
                     text: '收藏',
@@ -556,27 +588,30 @@
                     mask: true,
                 });
 
+                // 请求参数
+                var post_data = {
+                    id: this.info.id || 0,
+                    page: this.data_page,
+                    keywords: this.search_keywords_value,
+                };
                 // 分类id
                 var temp_category = this.goods_category;
                 if (this.nav_active_item_index != -1) {
-                    var category_id = temp_category[this.nav_active_index]['items'][this.nav_active_item_index]['id'];
+                    post_data['category_id'] = temp_category[this.nav_active_index]['items'][this.nav_active_item_index]['id'];
                 } else {
-                    var category_id = this.nav_active_index == -1 ? 0 : temp_category[this.nav_active_index]['id'];
+                    post_data['category_id'] = this.nav_active_index == -1 ? 0 : temp_category[this.nav_active_index]['id'];
                 }
+                // 排序
+                var temp_index = this.search_nav_sort_index;
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                post_data['order_by_type'] = temp_search_nav_sort[temp_index]['sort'] == 'desc' ? 'asc' : 'desc';
+                post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
 
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('datalist', 'detail', 'realstore'),
                     method: 'POST',
-                    data: this.request_params_merge(
-                        {
-                            id: this.info.id || 0,
-                            page: this.data_page,
-                            keywords: this.search_keywords_value,
-                            category_id: category_id,
-                        },
-                        'data'
-                    ),
+                    data: this.request_params_merge(post_data, 'data'),
                     dataType: 'json',
                     success: (res) => {
                         uni.hideLoading();
@@ -1316,6 +1351,33 @@
                 });
             },
 
+            // 排序事件
+            nav_sort_event(e) {
+            	var index = e.currentTarget.dataset.index || 0;
+            	var temp_search_nav_sort = this.search_nav_sort_list;
+            	var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
+            	for (var i in temp_search_nav_sort) {
+            		if (i != index) {
+            			if (temp_search_nav_sort[i]['icon'] != null) {
+            				temp_search_nav_sort[i]['icon'] = 'default';
+            			}
+            			temp_search_nav_sort[i]['sort'] = 'desc';
+            		}
+            	}
+            	temp_search_nav_sort[index]['sort'] = temp_sort;
+            	if (temp_search_nav_sort[index]['icon'] != null) {
+            		temp_search_nav_sort[index]['icon'] = temp_sort;
+            	}
+            
+            	this.setData({
+            		search_nav_sort_index: index,
+            		search_nav_sort_list: temp_search_nav_sort,
+            		data_page: 1
+            	});
+                this.reset_scroll();
+            	this.get_data_list(1);
+            },
+
             // 使用类型事件
             buy_use_type_event(e) {
                 var self = this;
@@ -1425,7 +1487,7 @@
                 this.setData({
                     header_service_status: !this.header_service_status,
                 });
-            },
+            }
         },
     };
 </script>

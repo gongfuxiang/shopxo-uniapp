@@ -65,49 +65,51 @@
 
                 <!-- 中间导航 -->
                 <view class="user-bottom padding-horizontal-main" :style="(payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow: 0px -8px 8px 2px rgba(0, 0, 0, 0.2);' : ''">
-                    <!-- 订单导航 -->
-                    <view v-if="(navigation_order || null) != null" class="nav-list bg-white bg-white padding-vertical-main border-radius-main spacing-mb">
-                        <!-- 订单导航 -->
-                        <view class="nav-content flex-row jc-sb align-c">
-                            <!-- 主导航 -->
-                            <view class="nav-list-sub oh flex-row jc-sa align-c flex-1">
-                                <!-- 订单自定义副导航 -->
-                                <block v-for="(items, index) in user_order_status_list" :key="index">
-                                    <navigator :url="items.url" hover-class="none" class="flex-1">
-                                        <view class="item pr tc">
-                                            <view class="badge-icon pa">
-                                                <component-badge :propNumber="items.count"></component-badge>
-                                            </view>
-                                            <image class="item-icon margin-bottom-xs" :src="static_url + 'order-icon-' + items.status + '.png'" mode="aspectFill"></image>
-                                            <view class="item-name cr-base text-size-sm">{{ items.name }}</view>
+                    <!-- 主要的订单+副导航 -->
+                    <block v-if="(main_navigation_data || null) != null && main_navigation_data.length > 0">
+                        <block v-for="(item, index) in main_navigation_data" :key="index">
+                            <block v-if="(item.extension_data || null) != null && item.extension_data.length > 0">
+                                <view class="nav-list bg-white bg-white padding-vertical-main border-radius-main spacing-mb">
+                                    <view class="nav-content flex-row jc-sb align-c">
+                                        <!-- 副导航 -->
+                                        <view class="nav-list-sub oh flex-row jc-sa align-c flex-1">
+                                            <block v-for="(items, index2) in item.extension_data" :key="index2">
+                                                <navigator :url="items.url" hover-class="none" class="flex-1">
+                                                    <view class="item pr tc">
+                                                        <view class="badge-icon pa">
+                                                            <component-badge :propNumber="items.count"></component-badge>
+                                                        </view>
+                                                        <image class="item-icon margin-bottom-xs" :src="items.icon" mode="aspectFill"></image>
+                                                        <view class="item-name cr-base text-size-sm">{{ items.name }}</view>
+                                                    </view>
+                                                </navigator>
+                                            </block>
                                         </view>
-                                    </navigator>
-                                </block>
-                            </view>
-                            <navigator :url="navigation_order.event_value" hover-class="none" class="nav-all-order-goods pr">
-                                <view class="item pr tc">
-                                    <image class="item-icon margin-bottom-xs" :src="navigation_order.images_url" mode="aspectFill"></image>
-                                    <view class="item-name cr-base text-size-sm">{{ navigation_order.name }}</view>
+                                        <!-- 主导航 -->
+                                        <navigator :url="item.url || item.event_value" hover-class="none" class="nav-all-order-goods pr">
+                                            <view class="item pr tc">
+                                                <image class="item-icon margin-bottom-xs" :src="item.icon || item.images_url" mode="aspectFill"></image>
+                                                <view class="item-name cr-base text-size-sm">{{ item.name }}</view>
+                                            </view>
+                                        </navigator>
+                                    </view>
                                 </view>
-                            </navigator>
-                        </view>
-                    </view>
+                            </block>
+                        </block>
+                    </block>
 
                     <!-- 聚合导航 -->
                     <view class="service-nav padding-main border-radius-main bg-white spacing-mb">
                         <!-- 列表模式 -->
                         <view v-if="nav_show_model_type == 1" class="nav-list">
                             <block v-for="(item, index) in navigation" :key="index">
-                                <!-- 这里不展示订单导航 -->
-                                <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :class="'nav-item cp padding-main ' + (index > 0 ? 'br-t-e' : '')">
-                                        <view class="arrow-right">
-                                            <image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
-                                            <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ item.name }}</text>
-                                            <text v-if="(item.desc || null) != null" class="item-desc fr tr single-text cr-grey-9 text-size-sm">{{ item.desc }}</text>
-                                        </view>
+                                <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :class="'nav-item cp padding-main ' + (index > 0 ? 'br-t-e' : '')">
+                                    <view class="arrow-right">
+                                        <image :src="item.images_url" class="item-icon va-m" mode="widthFix"></image>
+                                        <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ item.name }}</text>
+                                        <text v-if="(item.desc || null) != null" class="item-desc fr tr single-text cr-grey-9 text-size-sm">{{ item.desc }}</text>
                                     </view>
-                                </block>
+                                </view>
                             </block>
                             <!-- 清除缓存 -->
                             <view class="nav-item br-t cp padding-main" @tap="remove_user_cache_event">
@@ -194,6 +196,7 @@
                     name: client_value == 'mp' ? '清除缓存' : '退出账号',
                     icon: client_value == 'mp' ? 'cache' : 'logout',
                 },
+                // 头部小导航
                 head_nav_list: [
                     {
                         name: '订单总数',
@@ -216,33 +219,8 @@
                         count: 0,
                     },
                 ],
-                user_order_status_list: [
-                    {
-                        name: '待付款',
-                        status: 1,
-                        count: 0,
-                        url: '/pages/user-order/user-order?status=1',
-                    },
-                    {
-                        name: '待发货',
-                        status: 2,
-                        count: 0,
-                        url: '/pages/user-order/user-order?status=2',
-                    },
-                    {
-                        name: '待收货',
-                        status: 3,
-                        count: 0,
-                        url: '/pages/user-order/user-order?status=3',
-                    },
-                    {
-                        name: '退款/售后',
-                        status: 101,
-                        count: 0,
-                        url: '/pages/user-orderaftersale/user-orderaftersale',
-                    },
-                ],
-                navigation_order: null,
+                // 主要的订单+副导航
+                main_navigation_data: [],
                 // 远程自定义导航
                 navigation: [],
                 // 基础配置
@@ -380,46 +358,82 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 订单状态
-                            var temp_user_order_status_list = this.user_order_status_list;
-                            if ((data.user_order_status || null) != null && data.user_order_status.length > 0) {
-                                for (var i in temp_user_order_status_list) {
-                                    for (var t in data.user_order_status) {
-                                        if (temp_user_order_status_list[i]['status'] == data.user_order_status[t]['status']) {
-                                            temp_user_order_status_list[i]['count'] = data.user_order_status[t]['count'];
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+                            var navigation = data.navigation || [];
 
-                            // 头部导航总数
+                            // 头部小导航总数
                             var temp_head_nav_list = this.head_nav_list;
                             temp_head_nav_list[0]['count'] = (data.user_order_count || 0) == 0 ? 0 : data.user_order_count;
                             temp_head_nav_list[1]['count'] = (data.user_goods_favor_count || 0) == 0 ? 0 : data.user_goods_favor_count;
                             temp_head_nav_list[2]['count'] = (data.user_goods_browse_count || 0) == 0 ? 0 : data.user_goods_browse_count;
                             temp_head_nav_list[3]['count'] = (data.integral || 0) == 0 ? 0 : data.integral;
 
-                            // 数据设置
-                            var upd_data = {
-                                user_order_status_list: temp_user_order_status_list,
-                                message_total: parseInt(data.message_total || 0),
-                                head_nav_list: temp_head_nav_list,
-                                navigation: data.navigation || [],
-                            };
-                            // 是否存在配置订单导航
-                            var temp_nav_order = null;
-                            if (upd_data.navigation.length > 0) {
-                                for (var i in upd_data.navigation) {
-                                    var url = app.globalData.get_url_main_part(upd_data.navigation[i]['event_value']);
-                                    if (url == '/pages/user-order/user-order') {
-                                        temp_nav_order = upd_data.navigation[i];
-                                        upd_data.navigation.splice(i, 1);
-                                        break;
+                            // 订单状态总数
+                            var user_order_status_list = [
+                                {
+                                    name: '待付款',
+                                    status: 1,
+                                    count: 0,
+                                    url: '/pages/user-order/user-order?status=1',
+                                },
+                                {
+                                    name: '待发货',
+                                    status: 2,
+                                    count: 0,
+                                    url: '/pages/user-order/user-order?status=2',
+                                },
+                                {
+                                    name: '待收货',
+                                    status: 3,
+                                    count: 0,
+                                    url: '/pages/user-order/user-order?status=3',
+                                },
+                                {
+                                    name: '退款/售后',
+                                    status: 101,
+                                    count: 0,
+                                    url: '/pages/user-orderaftersale/user-orderaftersale',
+                                },
+                            ];
+                            if ((data.user_order_status || null) != null && data.user_order_status.length > 0) {
+                                for (var i in user_order_status_list) {
+                                    for (var t in data.user_order_status) {
+                                        if (user_order_status_list[i]['status'] == data.user_order_status[t]['status']) {
+                                            user_order_status_list[i]['count'] = data.user_order_status[t]['count'];
+                                            user_order_status_list[i]['icon'] = this.static_url + 'order-icon-' + user_order_status_list[i]['status'] + '.png';
+                                            break;
+                                        }
                                     }
                                 }
                             }
-                            upd_data['navigation_order'] = temp_nav_order;
+
+                            // 是否存在主要的订单+副导航
+                            var main_navigation_data = [];
+                            if (navigation.length > 0) {
+                                for (var i in navigation) {
+                                    // 去除参数
+                                    var url = app.globalData.get_url_main_part(navigation[i]['event_value']);
+                                    // 系统订单
+                                    if (url == '/pages/user-order/user-order') {
+                                        var temp = navigation[i];
+                                        temp['extension_data'] = user_order_status_list;
+                                        main_navigation_data.push(temp);
+                                        navigation.splice(i, 1);
+                                    }
+                                    // 门店订单
+                                    if (url == '/pages/plugins/realstore/orderallot-list/orderallot-list' && (navigation[i]['extension_data'] || null) != null && navigation[i]['extension_data'].length > 0) {
+                                        main_navigation_data.push(navigation[i]);
+                                        navigation.splice(i, 1);
+                                    }
+                                }
+                            }
+
+                            // 数据设置
+                            var upd_data = {
+                                message_total: parseInt(data.message_total || 0),
+                                head_nav_list: temp_head_nav_list,
+                                navigation: navigation,
+                                main_navigation_data: main_navigation_data,
+                            };
 
                             // 用户基础信息处理
                             if ((data.avatar || null) != null) {

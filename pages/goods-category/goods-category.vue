@@ -97,9 +97,9 @@
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
                                             <view :class="'padding-left-sm '+((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
                                                 <!-- 操作导航 -->
-                                                <view class="goods-list-top-nav">
+                                                <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
-                                                    <view class="nav-sort-content oh bg-white">
+                                                    <view class="nav-sort-content oh">
                                                         <block v-for="(item, index) in search_nav_sort_list" :key="index">
                                                             <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
                                                                 <text class="cr-base va-m text-size-sm">{{item.name}}</text>
@@ -108,7 +108,7 @@
                                                         </block>
                                                     </view>
                                                     <!-- 三级导航 -->
-                                                    <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list bg-white scroll-view-horizontal padding-bottom-main">
+                                                    <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
                                                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
                                                             <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
                                                             <block v-for="(item, index) in data_three_content.items" :key="index">
