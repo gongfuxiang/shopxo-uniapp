@@ -55,7 +55,7 @@
                     <view v-if="(buy_button || null) != null && (buy_button.data || null) != null && buy_button.data.length > 0" class="padding-bottom-main">
                         <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
                             <block v-for="(item, index) in buy_button.data" :key="index">
-                                <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
+                                <view v-if="(item.name || null) != null && (item.type || null) != null && (item.type == 'cart' || item.type == 'buy')" class="item fl bs-bb padding-horizontal-main">
                                     <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
@@ -140,6 +140,19 @@ export default {
             } else {
                 var buy_number = goods.buy_min_number || 1;
             }
+
+            // 购买按钮处理，仅展示购买和购物车
+            var buy_button = params.buy_button || null;
+            if(buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
+                var arr = ['buy', 'cart'];
+                for(var i in buy_button.data) {
+                    if(arr.indexOf(buy_button.data[i]['type']) == -1) {
+                        buy_button.data.splice(i, 1);
+                    }
+                }
+                buy_button.count = buy_button.data.length;
+            }
+
             // 设置数据
             this.setData({
                 popup_status: status,
@@ -153,7 +166,7 @@ export default {
                 goods_spec_base_images: goods.images,
                 buy_number: buy_number,
                 buy_event_type: params.buy_event_type || "cart",
-                buy_button: params.buy_button || null,
+                buy_button: buy_button,
                 is_direct_cart: is_direct_cart,
                 is_success_tips: is_success_tips,
             });
@@ -673,15 +686,6 @@ export default {
                         // 加入购物车
                         case "cart":
                             this.goods_cart_event(spec);
-                            break;
-
-                        // url事件
-                        case "url":
-                            if (value == null) {
-                                app.globalData.showToast("url事件为空");
-                                return false;
-                            }
-                            app.globalData.url_open(value);
                             break;
 
                         default:
