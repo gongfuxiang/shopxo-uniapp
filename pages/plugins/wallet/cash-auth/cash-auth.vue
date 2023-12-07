@@ -3,39 +3,43 @@
         <view v-if="data_base != null" class="padding-main">
             <view v-if="is_can_cash == 1">
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
-                    <view class="form-gorup">
-                        <view class="form-gorup-title">选择身份认证方式<text class="form-group-tips-must">*</text></view>
-                        <view class="section">
-                            <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
-                                <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
-                                    <view v-if="check_account_value == null">请选择认证账号</view>
-                                    <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
-                                </view>
-                            </picker>
+                    <view class="bg-white border-radius-main">
+                        <view class="form-gorup">
+                            <view class="form-gorup-title">选择身份认证方式<text class="form-group-tips-must">*</text></view>
+                            <view class="section">
+                                <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
+                                    <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
+                                        <view v-if="check_account_value == null">请选择认证账号</view>
+                                        <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
+                                    </view>
+                                </picker>
+                            </view>
+                        </view>
+
+                        <view class="form-gorup pr">
+                            <view class="form-gorup-title">请输入安全验证码<text class="form-group-tips-must">*</text></view>
+                            <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" placeholder="验证码格式 4 位数字" maxlength="4" />
+                            <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
+                                {{ verify_submit_text }}
+                            </button>
                         </view>
                     </view>
 
-                    <view class="form-gorup pr">
-                        <view class="form-gorup-title">请输入安全验证码<text class="form-group-tips-must">*</text></view>
-                        <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" placeholder="验证码格式 4 位数字" maxlength="4" />
-                        <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
-                            {{ verify_submit_text }}
-                        </button>
-                    </view>
-
-                    <view class="form-gorup form-gorup-submit">
+                    <view class="form-gorup form-gorup-submit margin-top-main">
                         <button class="bg-main cr-white br-main round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
                     </view>
                 </form>
 
                 <view class="margin-top-lg cr-base">
                     <view class="fw-b text-size">操作提示</view>
-                    <view>1. 请选择 "<text class="cr-red">绑定邮箱</text>" 或 "<text class="cr-red">绑定手机</text>" 方式其一作为安全校验码的获取方式并正确输入。</view>
-                    <view>2. 如果您未绑定手机或者邮箱已失效，可以绑定手机后通过接收手机短信完成验证。</view>
-                    <view>3. 如果您未绑定邮箱或者已失效，可以绑定邮箱后通过接收邮件完成验证。</view>
-                    <view>4. 请正确输入下方图形验证码，如看不清可点击图片进行更换，输入完成后进行下一步操作。</view>
-                    <view>5. 收到安全验证码后，请在10分钟内完成验证。</view>
-                    <view>6. 安全验证成功后，请在30分钟内完成提现申请。</view>
+                    <view class="text-size-xs">
+                        <view>1. 请选择 "<text class="cr-red">绑定邮箱</text>" 或 "<text class="cr-red">绑定手机</text>" 方式其一作为安全校验码的获取方式并正确输入。</view>
+                        <view>2. 如果您未绑定手机或者邮箱已失效，可以绑定手机后通过接收手机短信完成验证。</view>
+                        <view>3. 如果您未绑定邮箱或者已失效，可以绑定邮箱后通过接收邮件完成验证。</view>
+                        <view>4. 请正确输入下方图形验证码，如看不清可点击图片进行更换，输入完成后进行下一步操作。</view>
+                        <view>5. 收到安全验证码后，请在10分钟内完成验证。</view>
+                        <view>6. 安全验证成功后，请在30分钟内完成提现申请。</view>
+                    </view>
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
@@ -277,7 +281,7 @@
                             });
                             if (res.data.code == 0) {
                                 uni.redirectTo({
-                                    url: '/pages/plugins/wallet/user/user?type=2',
+                                    url: '/pages/plugins/wallet/cash-create/cash-create',
                                 });
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

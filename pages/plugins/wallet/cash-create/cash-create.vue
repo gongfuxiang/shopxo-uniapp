@@ -6,7 +6,7 @@
                     <view class="form-gorup">
                         <view class="form-gorup-title">提现金额<text class="form-group-tips-must">*</text></view>
                         <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="'提现金额，最低' + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + '，最高' + can_cash_max_money" />
-                        <view class="notice-content-blue">
+                        <view class="cr-red text-size-xs">
                             <view v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-bottom-sm">赠送金额不可提现</view>
                             <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0">
                                 <text>提现最低金额</text>
@@ -30,19 +30,19 @@
                     <view class="form-gorup">
                         <view class="form-gorup-title">收款平台<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" placeholder="收款平台格式 1~60 个字符之间" />
-                        <view class="notice-content-blue"> 强烈建议优先填写国有4大银行(中国银行、中国建设银行、中国工商银行和中国农业银行) 请填写详细的开户银行分行名称，虚拟账户如支付宝、财付通、微信 直接填写 相应的名称 即可。 </view>
+                        <view class="cr-red text-size-xs"> 强烈建议优先填写国有4大银行(中国银行、中国建设银行、中国工商银行和中国农业银行) 请填写详细的开户银行分行名称，虚拟账户如支付宝、财付通、微信 直接填写 相应的名称 即可。 </view>
                     </view>
 
                     <view class="form-gorup">
                         <view class="form-gorup-title">收款账号<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" placeholder="收款账号格式 1~60 个字符之间" />
-                        <view class="notice-content-blue"> 银行账号或虚拟账号(支付宝、财付通、微信等账号) </view>
+                        <view class="cr-red text-size-xs"> 银行账号或虚拟账号(支付宝、财付通、微信等账号) </view>
                     </view>
 
                     <view class="form-gorup">
                         <view class="form-gorup-title">开户人姓名<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_username" :value="default_data.bank_username || ''" placeholder-class="cr-grey" class="cr-base" maxlength="30" placeholder="开户人姓名格式 1~30 个字符之间" />
-                        <view class="notice-content-blue"> 收款账号的开户人真实姓名 </view>
+                        <view class="cr-red text-size-xs"> 收款账号的开户人真实姓名 </view>
                     </view>
 
                     <view class="bottom-fixed">
