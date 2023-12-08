@@ -103,7 +103,7 @@
                     </view>
                 </view>
                 <!-- 销售,自提,虚拟销售 -->
-                <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-t bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
+                <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
                     <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                         <view class="cart-selected flex-row align-c">
                             <view @tap="selected_event" data-type="all">
@@ -121,7 +121,7 @@
                         </view>
                     </view>
                     <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                        <button class="bg-main cr-white round text-size-sm" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
                             去结算<block v-if="total_num > 0">({{ total_num }})</block>
                         </button>
                     </view>

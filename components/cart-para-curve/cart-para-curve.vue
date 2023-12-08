@@ -31,8 +31,8 @@
             },
         },
         methods: {
-            // 初始（购物车对象、当前点击对象、图标）
-            init(cart, pos, icon = '') {
+            // 初始（购物车对象、当前点击对象、图标、支持tabbar位置）
+            init(cart, pos, icon = '', tabbar_pos = null) {
                 if((pos || null) != null) {
                     var self = this;
                     var btn_size = this.propBtnHeight;
@@ -54,15 +54,17 @@
                             default :
                                 // 无购物车菜单则结束执行
                                 var tabbar = app.globalData.data.tabbar_pages;
-                                var tabbar_cart_pos = tabbar.indexOf('/pages/cart/cart');
-                                if(tabbar_cart_pos == -1) {
-                                    return false;
+                                if(tabbar_pos === null) {
+                                    tabbar_pos = tabbar.indexOf('/pages/cart/cart');
+                                    if(tabbar_pos == -1) {
+                                        return false;
+                                    }
                                 }
                                 // 计算购物车菜单位置
                                 var tabbar_count = tabbar.length;
                                 var cart_top = info.screenHeight;
                                 var cart_width = info.screenWidth/tabbar_count;
-                                var cart_left = cart_width*tabbar_cart_pos;
+                                var cart_left = cart_width*tabbar_pos;
                         }
                     } else {
                         var temp = cart[0];

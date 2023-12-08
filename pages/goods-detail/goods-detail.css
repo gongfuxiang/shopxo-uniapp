@@ -202,7 +202,7 @@
     min-height: 86rpx;
 }
 
-.goods-base-content .goods-title {
+.goods-base-content .goods-title-content .goods-title {
     font-size: 36rpx;
     line-height: 52rpx;
     font-weight: bold;

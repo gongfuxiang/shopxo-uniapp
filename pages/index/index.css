@@ -6,17 +6,22 @@
     background-size: 100% auto;
     padding-top: calc(var(--status-bar-height) + 5px);
 }
-
+.home-top-nav-location {
+    max-width: calc(100% - 230rpx);
+    height: 56rpx;
+    line-height: 56rpx;
+}
+.home-top-nav-location.top-nav-enable-search {
+    max-width: 230rpx;
+}
 .home-top-nav-logo {
     text-align: left;
     height: 56rpx;
 }
-
 .home-top-nav-logo-image {
     width: 56rpx;
     height: 100% !important;
 }
-
 .home-top-nav-logo-title {
     font-weight: bold;
     font-size: 42rpx;
@@ -38,11 +43,9 @@
     top: 2px;
     /* #endif */
 }
-
 .nav-top-right-icon .item:not(:last-child) {
     margin-right: 20rpx;
 }
-
 .nav-top-right-icon .badge-icon {
     top: -10px;
     right: 2px;
@@ -59,21 +62,18 @@
     padding-top: 60rpx;
     /* #endif */
 }
-
 .search-content-fixed {
     position: fixed !important;
     top: 0;
     z-index: 11;
     width: 100%;
 }
-
 .search-content-input {
     width: calc(100% - 320rpx);
     /* #ifdef MP-ALIPAY */
     padding-left: 60rpx;
     /* #endif */
 }
-
 .search-content-fixed-content {
     background-repeat: no-repeat;
     background-size: 100% auto;
@@ -87,7 +87,7 @@
 
 /* #ifdef H5 || MP-TOUTIAO */
 .search-content-fixed .nav-top-right-icon {
-    top: 11px !important;
+    top: 8px !important;
 }
 
 /* #endif */
@@ -99,15 +99,12 @@
     width: 130rpx !important;
     height: 42rpx !important;
 }
-
 .article-list .right-content {
     width: calc(100% - 150rpx);
 }
-
 .article-list .right-content swiper {
     height: 40rpx;
 }
-
 .notice {
     margin: 20rpx 0 14rpx 0;
 }
@@ -123,21 +120,17 @@
     background-color: #fff;
 
 }
-
 .plugins-seckill-data .icon {
     max-width: 140rpx;
     max-height: 34rpx;
 }
-
 .plugins-seckill-data .goods-list .swiper {
     height: 310rpx !important;
 }
-
 .plugins-seckill-data .goods-list .item .goods-img {
     width: 100%;
     height: 210rpx;
 }
-
 .plugins-seckill-data .goods-list .goods-base .icon {
     right: 20rpx;
     bottom: 13rpx;
@@ -149,21 +142,17 @@
 .plugins-salerecords swiper {
     height: 506rpx;
 }
-
 .plugins-salerecords image {
     width: 40rpx !important;
     height: 40rpx !important;
     border-radius: 50%;
 }
-
 .plugins-salerecords .item-content {
     width: 24%;
 }
-
 .plugins-salerecords .item-content:nth-child(1) {
     width: 36%;
 }
-
 .plugins-salerecords .item-content:nth-child(2) {
     width: 40%;
 }
@@ -183,11 +172,9 @@
 .plugins-homemiddleadv .item {
     width: calc(50% - 10rpx);
 }
-
 .plugins-homemiddleadv .item:nth-of-type(2n + 1) {
     float: left;
 }
-
 .plugins-homemiddleadv .item:nth-of-type(2n) {
     float: right;
 }
@@ -202,7 +189,6 @@
     z-index: 20;
     background-color: rgb(0 0 0 / 0.3);
 }
-
 .plugins-popupscreen .close {
     right: 10%;
     top: 0;
@@ -213,11 +199,9 @@
     background-color: rgb(4 4 4 / 0.3);
     border: solid 1px #a9a9a9;
 }
-
 .plugins-popupscreen .content {
     margin-top: calc(50vh - 200rpx) !important;
 }
-
 .plugins-popupscreen .content image {
     width: 600rpx;
 }

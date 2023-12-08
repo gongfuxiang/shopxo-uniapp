@@ -402,7 +402,7 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 底部操作 -->
-            <view class="goods-buy-nav oh wh-auto bg-white br-t bottom-line-exclude flex-row jc-sb align-c">
+            <view v-if="!plugins_realstore_cart_nav_status" class="goods-buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
                 <!-- 左侧集合操作 -->
                 <view class="bus-items tc flex-row jc-sa align-c flex-width-half padding-right-sm">
                     <!-- 是否指定返回操作、返回操作情况下仅展示返回和收藏操作 -->
@@ -601,6 +601,9 @@
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
+
+        <!-- 门店购物车 -->
+        <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
     </view>
 </template>
 <script>
@@ -621,6 +624,7 @@
     import componentGoodsComments from '../../components/goods-comments/goods-comments';
     import componentAskCommentsGoods from '../../components/ask-comments-goods/ask-comments-goods';
     import componentCouponCard from '../../components/coupon-card/coupon-card';
+    import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
@@ -740,6 +744,7 @@
                 plugins_chat_data: null,
                 // 门店插件
                 plugins_realstore_data: null,
+                plugins_realstore_cart_nav_status: false,
                 popup_realstore_status: false,
                 // 组合搭配插件
                 plugins_binding_data: null,
@@ -770,6 +775,7 @@
             componentGoodsComments,
             componentAskCommentsGoods,
             componentCouponCard,
+            componentRealstoreCart
         },
 
         onLoad(params) {
@@ -926,10 +932,31 @@
                             // 如果已默认开启购买弹窗，库存为0则不开启
                             if (this.popup_buy_status && parseInt(goods.inventory) > 0) {
                                 if ((this.$refs.goods_buy || null) != null) {
-                                    var buy_params = this.params;
-                                    buy_params['buy_event_type'] = this.buy_event_type;
-                                    buy_params['buy_button'] = this.buy_button;
-                                    this.$refs.goods_buy.init(this.goods, buy_params);
+                                    this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button}, ...this.params});
+                                }
+                            }
+
+                            // 是否展示门店购物车导航
+                            if((this.plugins_realstore_data || null) != null) {
+                                var realstore_info = null;
+                                var len = this.plugins_realstore_data.length;
+                                if(len > 1) {
+                                    var realstore_id = this.params.realstore_id || null;
+                                    if(realstore_id != null) {
+                                        this.plugins_realstore_data.forEach(function(item, index) {
+                                            if(item.id == realstore_id) {
+                                                realstore_info = item;
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    realstore_info = this.plugins_realstore_data[0];
+                                }
+                                if(realstore_info != null) {
+                                    this.setData({
+                                        plugins_realstore_cart_nav_status: true
+                                    });
+                                    this.$refs.realstore_cart.init({...{info: realstore_info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
                                 }
                             }
 
@@ -1064,11 +1091,7 @@
                     case 'cart':
                         this.setData({ buy_event_type: type });
                         if ((this.$refs.goods_buy || null) != null) {
-                            var buy_params = this.params;
-                            buy_params['buy_event_type'] = this.buy_event_type;
-                            buy_params['buy_button'] = this.buy_button;
-                            buy_params['is_init'] = 0;
-                            this.$refs.goods_buy.init(this.goods, buy_params);
+                            this.$refs.goods_buy.init(this.goods, {...{buy_event_type: this.buy_event_type, buy_button: this.buy_button, is_init: 0}, ...this.params});
                         }
                         break;
                     // url事件
@@ -1118,14 +1141,7 @@
                     temp_goods['specifications']['choose'] = e.goods_spec_choose;
                 }
                 this.setData({
-                    goods_spec_selected_text:
-                        (e.spec || null) == null
-                            ? ''
-                            : e.spec
-                                  .map(function (v) {
-                                      return v.value;
-                                  })
-                                  .join(' / '),
+                    goods_spec_selected_text: (e.spec || null) == null ? '' : e.spec.map(function (v) {return v.value;}).join(' / '),
                     goods: temp_goods,
                 });
             },

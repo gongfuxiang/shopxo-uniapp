@@ -52,9 +52,9 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="(buy_button || null) != null && (buy_button.data || null) != null && buy_button.data.length > 0" class="padding-bottom-main">
-                        <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
-                            <block v-for="(item, index) in buy_button.data" :key="index">
+                    <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
+                        <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
+                            <block v-for="(item, index) in opt_button" :key="index">
                                 <view v-if="(item.name || null) != null && (item.type || null) != null && (item.type == 'cart' || item.type == 'buy')" class="item fl bs-bb padding-horizontal-main">
                                     <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                 </view>
@@ -88,7 +88,7 @@ export default {
             goods_spec_choose: [],
             buy_number: 1,
             buy_event_type: "cart",
-            buy_button: null,
+            opt_button: [],
             is_direct_cart: 0,
             is_success_tips: 1,
             // 智能工具插件
@@ -142,15 +142,15 @@ export default {
             }
 
             // 购买按钮处理，仅展示购买和购物车
+            var opt_button = [];
             var buy_button = params.buy_button || null;
             if(buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
                 var arr = ['buy', 'cart'];
                 for(var i in buy_button.data) {
-                    if(arr.indexOf(buy_button.data[i]['type']) == -1) {
-                        buy_button.data.splice(i, 1);
+                    if(arr.indexOf(buy_button.data[i]['type']) != -1) {
+                        opt_button.push(buy_button.data[i]);
                     }
                 }
-                buy_button.count = buy_button.data.length;
             }
 
             // 设置数据
@@ -166,7 +166,7 @@ export default {
                 goods_spec_base_images: goods.images,
                 buy_number: buy_number,
                 buy_event_type: params.buy_event_type || "cart",
-                buy_button: buy_button,
+                opt_button: opt_button,
                 is_direct_cart: is_direct_cart,
                 is_success_tips: is_success_tips,
             });
@@ -216,7 +216,6 @@ export default {
                 var config = self.plugins_intellectstools_config || null;
                 if (config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
                     // 必须存在购买和加入购物车任意一个、规格必须多个
-                    var buy = self.buy_button;
                     var sku_count = app.globalData.get_length(temp_data);
                     // 先清除价格展示信息
                     self.setData({

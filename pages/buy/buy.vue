@@ -198,12 +198,12 @@
                 </view>
 
                 <!-- 导航 -->
-                <view class="buy-nav oh wh-auto bg-white br-t bottom-line-exclude flex-row jc-sb align-c">
+                <view class="buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
                     <view class="nav-base single-text padding-left-main flex-1 flex-width">
                         <text>合计：</text>
                         <text class="sales-price">{{ currency_symbol }}{{ total_price }}</text>
                     </view>
-                    <view class="nav-submit padding-top-sm padding-bottom-sm padding-horizontal-main">
+                    <view class="nav-submit padding-vertical-main padding-horizontal-main">
                         <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="buy_submit_disabled_status" hover-class="none">提交订单</button>
                     </view>
                 </view>

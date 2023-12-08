@@ -78,9 +78,6 @@
                 // 分类页面商品列表模式一级分类使用图标类型（0 实景图, 1 icon图标, 2 大图片）
                 category_goods_model_icon_type: 0,
 
-                // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
-                is_logo_use_text: 0,
-
                 // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
                 user_center_nav_show_model_type: 0,
 
@@ -102,6 +99,12 @@
 
                 // 首页搜索框开启扫一扫自动（0否, 1是）仅【小程序、APP】支持
                 is_home_search_scan: 1,
+
+                // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
+                is_home_logo_use_text: 1,
+                
+                // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
+                is_home_location_choice: 1,
 
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
@@ -2158,14 +2161,14 @@
             },
 
             // 计算文本宽度
-            string_width(value) {
+            string_width(value, max = null) {
                 var width = 0;
                 var reg = /^[A-Za-z0-0]+$/;
                 var arr = value.split('');
                 for (var i in arr) {
                     width += reg.test(arr[i]) ? 34 : 50;
                 }
-                return width;
+                return (max !== null && width > max) ? max : width;
             },
 
             // weburl地址id值匹配
@@ -2267,6 +2270,30 @@
             // 获取当前语言
             get_language_value() {
                 return uni.getLocale() || this.data.default_language;
+            },
+            
+            // 选择用户地理位置
+            choose_user_location_event() {
+                uni.navigateTo({
+                    url: '/pages/common/open-setting-location/open-setting-location',
+                });
+            },
+
+            // 地址信息初始化
+            choice_user_location_init() {
+                var result = uni.getStorageSync(this.data.cache_userlocation_key) || null;
+                var user_location = {status: 0};
+                if (result != null) {
+                    user_location = {...user_location, ...{
+                        name: result.name || null,
+                        address: result.address || null,
+                        lat: result.latitude || null,
+                        lng: result.longitude || null,
+                        status: 1,
+                    }};
+                }
+                user_location['text'] = (user_location.status == 0) ? '未选择位置' : (user_location.name || user_location.address || '');
+                return user_location;
             },
         },
 

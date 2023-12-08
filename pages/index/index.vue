@@ -11,18 +11,27 @@
                 <!-- 搜索 -->
                 <view v-if="common_app_is_header_nav_fixed == 1" class="search-fixed-seat"></view>
                 <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view class="search-content-fixed-content padding-left-main" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
-                        <!-- logo/标题 -->
-                        <!-- #ifndef MP-TOUTIAO -->
-                        <view v-if="(is_logo_use_text == 0 && (application_logo || null) != null) || (is_logo_use_text == 1 && (application_title || null) != null)" class="home-top-nav-logo dis-inline-block va-m margin-right-xxl">
-                            <block v-if="is_logo_use_text == 0 && (application_logo || null) != null">
-                                <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
-                            </block>
-                            <block v-else>
-                                <view v-if="is_logo_use_text == 1 && (application_title || null) != null" class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
-                            </block>
+                    <view class="search-content-fixed-content" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
+                        <!-- 定位 -->
+                        <view v-if="is_home_location_choice == 1" :class="'home-top-nav-location dis-inline-block va-m single-text cr-white padding-left-main margin-right-sm '+(common_app_is_enable_search == 1 ? 'top-nav-enable-search' : '')" @tap="choose_user_location_event">
+                            <view class="dis-inline-block va-m">
+                                <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr lh-sm" color="#fff"></iconfont>
+                            </view>
+                            <text class="va-m margin-left-xs text-size-sm">{{user_location.text || ''}}</text>
                         </view>
-                        <!-- #endif -->
+                        <block v-else>
+                            <!-- logo/标题 -->
+                            <!-- #ifndef MP-TOUTIAO -->
+                            <view v-if="(is_home_logo_use_text == 0 && (application_logo || null) != null) || (is_home_logo_use_text == 1 && (application_title || null) != null)" class="home-top-nav-logo dis-inline-block va-m padding-left-main margin-right-xxl">
+                                <block v-if="is_home_logo_use_text == 0 && (application_logo || null) != null">
+                                    <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
+                                </block>
+                                <block v-else>
+                                    <view v-if="is_home_logo_use_text == 1 && (application_title || null) != null" class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
+                                </block>
+                            </view>
+                            <!-- #endif -->
+                        </block>
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
@@ -322,10 +331,11 @@
                 common_app_is_enable_search: 0,
                 common_app_is_header_nav_fixed: 0,
                 common_app_is_online_service: 0,
-                // 名称
+                // 顶部导航、名称、logo、定位
                 application_title: app.globalData.data.application_title,
                 application_logo: app.globalData.data.application_logo,
-                is_logo_use_text: app.globalData.data.is_logo_use_text || 0,
+                is_home_logo_use_text: app.globalData.data.is_home_logo_use_text,
+                is_home_location_choice: app.globalData.data.is_home_location_choice,
                 // 顶部+搜索样式配置
                 top_content_bg_color: '',
                 top_content_search_bg_color: '',
@@ -338,6 +348,8 @@
                 search_is_fixed: 0,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
+                // 用户位置信息
+                user_location: {},
                 // 轮播滚动时，背景色替换
                 slider_bg: null,
                 // 插件顺序列表
@@ -396,6 +408,25 @@
         props: {},
 
         onShow() {
+            if(this.is_home_location_choice == 1) {
+                // 用户位置初始化
+                this.user_location_init();
+                // 先解绑自定义事件
+                uni.$off('refresh');
+                // 监听自定义事件并进行页面刷新操作
+                uni.$on('refresh', (data) => {
+                    // 初始位置数据
+                    if((data.location_success || false) == true) {
+                        // 用户位置初始化
+                        this.user_location_init();
+                        // 重新请求数据
+                        // #ifdef APP
+                        this.init();
+                        // #endif
+                    }
+                });
+            }
+
             // 数据加载
             this.init();
 
@@ -495,7 +526,12 @@
                             }
 
                             // 搜索框宽度处理
-                            var width = this.is_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : (this.application_logo || null) == null ? 0 : 112;
+                            // 是否开启了地理位置定位
+                            if(this.is_home_location_choice == 1) {
+                                var width = app.globalData.string_width(this.user_location.text, 230);
+                            } else {
+                                var width = this.is_home_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : (this.application_logo || null) == null ? 0 : 112;
+                            }
                             // #ifdef H5 || MP-TOUTIAO || APP
                             var len = right_icon_list.length;
                             width += len <= 0 ? 0 : 70 * len;
@@ -551,9 +587,21 @@
                 });
             },
 
+            // 选择用户地理位置
+            choose_user_location_event(e) {
+                app.globalData.choose_user_location_event();
+            },
+
+            // 用户地理位置初始化
+            user_location_init() {
+                this.setData({
+                    user_location: app.globalData.choice_user_location_init()
+                });
+            },
+
             // 页面滚动监听
             onPageScroll(e) {
-                if (this.common_app_is_header_nav_fixed == 1 && this.common_app_is_enable_search == 1) {
+                if (this.common_app_is_header_nav_fixed == 1 && (this.common_app_is_enable_search == 1 || this.is_home_location_choice == 1)) {
                     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
                     if (!this.plugins_mourning_data_is_app) {
                         this.setData({

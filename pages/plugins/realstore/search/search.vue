@@ -4,7 +4,7 @@
             <!-- 顶部 -->
             <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
                 <!-- 位置 -->
-                <view class="nav-location flex-row align-c" @tap="choose_location_event">
+                <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_location_event">
                     <view class="dis-inline-block va-m pr top-sm">
                         <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr top-xs"></iconfont>
                     </view>
@@ -14,7 +14,7 @@
                     </text>
                 </view>
                 <!-- 搜索 -->
-                <view class="nav-search">
+                <view class="nav-search wh-auto">
                     <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" propPlaceholder="输入门店名称" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
             </view>
