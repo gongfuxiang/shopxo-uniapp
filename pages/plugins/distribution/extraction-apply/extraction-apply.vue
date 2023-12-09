@@ -62,7 +62,7 @@
                     <view class="form-gorup bg-white">
                         <view class="form-gorup-title">地理位置<text class="form-group-tips-must">*</text></view>
                         <view @tap="choose_location_event" class="form-gorup-text">
-                            <view v-if="(user_location || null) == null" class="cr-grey">请选择地理位置</view>
+                            <view v-if="(user_location.status || 0) == 0" class="cr-grey">请选择地理位置</view>
                             <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
                         </view>
                     </view>
@@ -104,8 +104,7 @@
                 province_value: null,
                 city_value: null,
                 county_value: null,
-                user_location_cache_key: app.globalData.data.cache_userlocation_key,
-                user_location: null,
+                user_location: {},
                 form_submit_disabled_status: false,
             };
         },
@@ -121,9 +120,9 @@
 
         onReady: function () {
             // 清除位置缓存信息
-            uni.removeStorage({
-                key: this.user_location_cache_key,
-            });
+            app.globalData.choice_user_location_remove();
+
+            // 初始数据
             this.init();
         },
 
@@ -387,25 +386,13 @@
 
             // 选择地理位置
             choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location',
-                });
+                app.globalData.choose_user_location_event();
             },
 
             // 地址信息初始化
             user_location_init() {
-                var result = uni.getStorageSync(this.user_location_cache_key) || null;
-                var data = null;
-                if (result != null) {
-                    data = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null,
-                    };
-                }
                 this.setData({
-                    user_location: data,
+                    user_location: app.globalData.choice_user_location_init()
                 });
             },
 

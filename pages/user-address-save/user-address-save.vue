@@ -24,8 +24,8 @@
                                     <text class="form-group-tips-must">*</text>
                                 </view>
                                 <view class="flex-1 flex-width flex-col">
-                                    <view v-if="home_user_address_map_status == 1" @tap="choose_location_event" class="flex-row jc-sb align-c">
-                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_location_event">点击选择地理位置</view>
+                                    <view v-if="home_user_address_map_status == 1" @tap="choose_user_location_event" class="flex-row jc-sb align-c">
+                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">点击选择地理位置</view>
                                         <iconfont name="icon-xzdz-dingwei" size="28rpx"></iconfont>
                                     </view>
                                     <block v-if="is_user_address_forbid_choice_region == 0">
@@ -185,7 +185,6 @@
                 city_name: '',
                 county_name: '',
                 idcard_images_data: {},
-                user_location_cache_key: app.globalData.data.cache_userlocation_key,
                 user_location: null,
                 address_discern_value: '',
                 form_submit_disabled_status: false,
@@ -229,7 +228,7 @@
             this.init_config();
 
             // 清除位置缓存信息
-            this.user_location_remove();
+            this.choose_user_location_remove();
 
             // 初始化
             this.init();
@@ -350,38 +349,24 @@
             },
 
             // 选择地理位置
-            choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location',
-                });
+            choose_user_location_event(e) {
+                app.globalData.choose_user_location_event();
             },
 
             // 清除位置缓存信息
-            user_location_remove() {
-                uni.removeStorage({
-                    key: this.user_location_cache_key,
-                });
+            choose_user_location_remove() {
+                app.globalData.choice_user_location_remove();
             },
 
             // 地址信息初始化
             user_location_init() {
-                var result = uni.getStorageSync(this.user_location_cache_key) || null;
-                var data = null;
-                if (result != null) {
-                    data = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null,
-                    };
-                }
                 this.setData({
-                    user_location: data,
+                    user_location: app.globalData.choice_user_location_init()
                 });
 
                 // 是否开启地理位置选择后自动识别
-                if (result != null && this.is_user_address_location_discern == 1) {
-                    this.address_discern_handle(result, 0, 1);
+                if (this.user_location.status == 1 && this.is_user_address_location_discern == 1) {
+                    this.address_discern_handle(this.user_location, 0, 1);
                 }
             },
 
@@ -545,13 +530,13 @@
                             // 用户手动识别操作
                             // 识别成功后清除用户选择的地理位置信息、避免坐标与识别的地址不相符
                             if (type == 0) {
-                                // 已获取的数据置为null
-                                upd_data['user_location'] = null;
                                 // 已有的地址坐标也清除
                                 temp_ads['lng'] = '';
                                 temp_ads['lat'] = '';
+                                // 已获取的数据置为null
+                                upd_data['user_location'] = null;
                                 // 清除位置缓存信息
-                                this.user_location_remove();
+                                this.choose_user_location_remove();
                             }
                             upd_data['address_data'] = temp_ads;
                             this.setData(upd_data);

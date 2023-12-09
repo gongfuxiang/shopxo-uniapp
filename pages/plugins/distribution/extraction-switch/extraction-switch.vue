@@ -57,7 +57,6 @@ export default {
             data_bottom_line_status: false,
             data_list: [],
             params: null,
-            user_location_cache_key: app.globalData.data.cache_userlocation_key,
             user_location: null,
             is_first: 1,
             home_extraction_address_position: 0,
@@ -76,15 +75,11 @@ export default {
 
     onReady: function () {
         // 清除位置缓存信息
-        uni.removeStorage({
-            key: this.user_location_cache_key,
-        });
+        app.globalData.choice_user_location_remove();
 
         // 是否获取位置
         if (this.home_extraction_address_position == 1) {
-            uni.navigateTo({
-                url: "/pages/common/open-setting-location/open-setting-location",
-            });
+            app.globalData.choose_user_location_event();
         }
     },
 
@@ -147,18 +142,8 @@ export default {
 
         // 地址信息初始化
         user_location_init() {
-            var result = uni.getStorageSync(this.user_location_cache_key) || null;
-            var data = null;
-            if (result != null) {
-                data = {
-                    name: result.name || null,
-                    address: result.address || null,
-                    lat: result.latitude || null,
-                    lng: result.longitude || null,
-                };
-            }
             this.setData({
-                user_location: data,
+                user_location: app.globalData.choice_user_location_init()
             });
         },
 

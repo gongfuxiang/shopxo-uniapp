@@ -101,7 +101,7 @@
                 is_home_search_scan: 1,
 
                 // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
-                is_home_logo_use_text: 1,
+                is_home_logo_use_text: 0,
                 
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
                 is_home_location_choice: 1,
@@ -278,16 +278,19 @@
             request_params_handle(url) {
                 // 用户信息
                 var user = this.get_user_cache_info();
-                var token = user == null ? '' : user.token || '';
+                var token = user == null ? '' : (user.token || '');
                 var uuid = this.request_uuid();
                 var client_value = this.application_client_type();
                 // 启动参数
                 var params = this.get_launch_cache_info();
-                var referrer = params == null ? null : params.referrer || null;
+                var referrer = params == null ? null : (params.referrer || null);
                 var referrer_params = referrer == null ? '' : '&referrer=' + referrer;
+                // 用户位置
+                var user_location = this.choice_user_location_init();
+                var user_location_params = ((user_location || null) != null && (user_location.status || 0) == 1) ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params;
             },
 
             /**
@@ -1626,7 +1629,7 @@
             get_application_logo() {
                 var logo = this.data.application_logo || null;
                 if (logo == null) {
-                    logo = this.get_config('config.home_site_logo_app');
+                    logo = this.get_config('config.home_site_logo_app') || this.get_config('config.home_site_logo_wap');
                 }
                 return logo;
             },
@@ -2277,6 +2280,11 @@
                 uni.navigateTo({
                     url: '/pages/common/open-setting-location/open-setting-location',
                 });
+            },
+
+            // 清除位置缓存信息
+            choice_user_location_remove() {
+                uni.removeStorageSync(this.data.cache_userlocation_key);
             },
 
             // 地址信息初始化

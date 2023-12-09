@@ -6,14 +6,14 @@
             <!-- 顶部 -->
             <view class="spacing-mb pr z-i cr-white">
                 <!-- 位置 -->
-                <view class="nav-location single-text flex-row align-c" @tap="choose_location_event">
+                <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xxxxl" @tap="choose_user_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr top-xs"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="32rpx" prop-class="lh"></iconfont>
                     </view>
-                    <text class="va-m margin-left-xs">
-                        <block v-if="(user_location || null) != null">{{ user_location.name || user_location.address || '' }}</block>
-                        <block v-else>未选择位置</block>
-                    </text>
+                    <text class="va-m margin-left-xs text-size-sm">{{user_location.text || ''}}</text>
+                    <view class="icon-arrow-down lh pa right-xxxxxl">
+                        <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
+                    </view>
                 </view>
             </view>
             <!-- 搜索 -->
@@ -56,7 +56,7 @@
                     <view class="padding-lg">
                         <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w margin-top-sm" :src="data_base.home_choice_location_images" mode="widthFix"></image>
                         <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{ data_base.home_choice_location_msg }}</view>
-                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_location_event">选择位置</button>
+                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_user_location_event">选择位置</button>
                     </view>
                 </view>
             </view>
@@ -96,7 +96,7 @@
                 icon_list: [],
                 data_list: [],
                 // 用户位置信息
-                user_location: null,
+                user_location: {},
                 location_tips_close_status: false,
                 // 自定义分享信息
                 share_info: {},
@@ -239,31 +239,17 @@
             },
 
             // 选择地理位置
-            choose_location_event(e) {
-                uni.navigateTo({
-                    url: '/pages/common/open-setting-location/open-setting-location',
-                });
+            choose_user_location_event(e) {
+                app.globalData.choose_user_location_event();
             },
 
             // 地址信息初始化
             user_location_init() {
-                var result = uni.getStorageSync(app.globalData.data.cache_userlocation_key) || null;
-                var upd_data = {};
-                if (result != null) {
-                    upd_data['user_location'] = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null,
-                    };
-                    upd_data['location_tips_close_status'] = false;
-                } else {
-                    upd_data['user_location'] = null;
-                    if (this.is_first == 1) {
-                        upd_data['location_tips_close_status'] = true;
-                    }
-                }
-                this.setData(upd_data);
+                var res = app.globalData.choice_user_location_init();
+                this.setData({
+                    user_location: res,
+                    location_tips_close_status: res.status != 1
+                });
             },
 
             // 地址选择提示关闭事件

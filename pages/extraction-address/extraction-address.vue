@@ -56,8 +56,6 @@ export default {
             data_list: [],
             params: null,
             is_default: 0,
-            user_location_cache_key: app.globalData.data.cache_userlocation_key,
-            user_location: null,
             is_first: 1,
             home_extraction_address_position: 0,
         };
@@ -77,17 +75,10 @@ export default {
     },
 
     onReady: function () {
-        // 清除位置缓存信息
-        uni.removeStorage({
-            key: this.user_location_cache_key,
-        });
-
         // #ifndef MP-KUAISHOU
         // 是否获取位置、下单选择地址进入需要传参 is_buy
         if ((this.params.is_buy || 0) == 1 && this.home_extraction_address_position == 1) {
-            uni.navigateTo({
-                url: "/pages/common/open-setting-location/open-setting-location",
-            });
+            app.globalData.choose_user_location_event();
         }
         // #endif
     },
@@ -104,8 +95,6 @@ export default {
                 uni.$on('refresh', (data) => {
                     // 初始位置数据
                     if((data.location_success || false) == true) {
-                        // 用户位置初始化
-                        this.user_location_init();
                         // 重新请求数据
                         // #ifdef APP
                         this.init();
@@ -160,23 +149,6 @@ export default {
             }
         },
 
-        // 地址信息初始化
-        user_location_init() {
-            var result = uni.getStorageSync(this.user_location_cache_key) || null;
-            var data = null;
-            if (result != null) {
-                data = {
-                    name: result.name || null,
-                    address: result.address || null,
-                    lat: result.latitude || null,
-                    lng: result.longitude || null,
-                };
-            }
-            this.setData({
-                user_location: data,
-            });
-        },
-
         // 获取数据列表
         get_data_list() {
             // 加载loding
@@ -191,9 +163,10 @@ export default {
             var data = this.params || {};
 
             // 是否有坐标
-            if ((this.user_location || null) != null) {
-                data["lng"] = this.user_location.lng;
-                data["lat"] = this.user_location.lat;
+            var user_location = app.globalData.choice_user_location_init();
+            if ((user_location || null) != null) {
+                data["lng"] = user_location.lng;
+                data["lat"] = user_location.lat;
             }
 
             // 请求接口

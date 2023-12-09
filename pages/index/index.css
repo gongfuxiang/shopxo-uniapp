@@ -6,13 +6,13 @@
     background-size: 100% auto;
     padding-top: calc(var(--status-bar-height) + 5px);
 }
+.home-top-nav {
+    min-height: 56rpx;
+}
 .home-top-nav-location {
-    max-width: calc(100% - 230rpx);
+    max-width: calc(100% - 260rpx);
     height: 56rpx;
     line-height: 56rpx;
-}
-.home-top-nav-location.top-nav-enable-search {
-    max-width: 230rpx;
 }
 .home-top-nav-logo {
     text-align: left;
@@ -33,15 +33,9 @@
 /**
  * 右侧图标导航
  */
-/* #ifdef H5 || MP-TOUTIAO || APP */
+/* #ifdef H5 || APP */
 .nav-top-right-icon {
-    top: calc(var(--status-bar-height) + 10px);
-    right: 28rpx;
-    z-index: 12;
-    line-height: 28px;
-    /* #ifdef MP-TOUTIAO */
-    top: 2px;
-    /* #endif */
+    line-height: 56rpx;
 }
 .nav-top-right-icon .item:not(:last-child) {
     margin-right: 20rpx;
@@ -50,16 +44,21 @@
     top: -10px;
     right: 2px;
 }
-
 /* #endif */
 
 /**
  * 搜索
  */
 .search-fixed-seat {
-    padding-top: 82rpx;
+    padding-top: 72rpx;
     /* #ifdef MP-TOUTIAO */
-    padding-top: 60rpx;
+    padding-top: 50rpx;
+    /* #endif */
+}
+.search-fixed-seat.nav-enable-search {
+    padding-top: 140rpx;
+    /* #ifdef MP-TOUTIAO */
+    padding-top: 82rpx;
     /* #endif */
 }
 .search-content-fixed {
@@ -69,7 +68,6 @@
     width: 100%;
 }
 .search-content-input {
-    width: calc(100% - 320rpx);
     /* #ifdef MP-ALIPAY */
     padding-left: 60rpx;
     /* #endif */
@@ -78,11 +76,13 @@
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: top;
-    padding-bottom: 24rpx;
+    padding-bottom: 6rpx;
     /* #ifdef H5 */
     padding-top: 15rpx !important;
-    padding-bottom: 15rpx !important;
     /* #endif */
+}
+.search-content-fixed-content.nav-enable-search {
+    padding-bottom: 24rpx;
 }
 
 /* #ifdef H5 || MP-TOUTIAO */

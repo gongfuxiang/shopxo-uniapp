@@ -4,14 +4,11 @@
             <!-- 顶部 -->
             <view class="bg-white padding-top-main padding-horizontal-main oh flex-row jc-sb align-c cr-grey">
                 <!-- 位置 -->
-                <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_location_event">
-                    <view class="dis-inline-block va-m pr top-sm">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr top-xs"></iconfont>
+                <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_user_location_event">
+                    <view class="dis-inline-block va-m">
+                        <iconfont name="icon-mendian-dingwei" size="32rpx" prop-class="lh"></iconfont>
                     </view>
-                    <text class="va-m margin-left-xs text-size-sm single-text">
-                        <block v-if="(user_location || null) != null">{{ user_location.name || user_location.address || "" }}</block>
-                        <block v-else>未选择位置</block>
-                    </text>
+                    <text class="va-m margin-left-xs text-size-sm single-text">{{user_location.text || ''}}</text>
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search wh-auto">
@@ -69,7 +66,7 @@ export default {
             nav_active_value: 0,
             favor_user: [],
             // 用户位置信息
-            user_location: null,
+            user_location: {},
             // 自定义分享信息
             share_info: {},
         };
@@ -307,26 +304,14 @@ export default {
         },
 
         // 选择地理位置
-        choose_location_event(e) {
-            uni.navigateTo({
-                url: "/pages/common/open-setting-location/open-setting-location",
-            });
+        choose_user_location_event(e) {
+            app.globalData.choose_user_location_event();
         },
 
         // 地址信息初始化
         user_location_init() {
-            var result = uni.getStorageSync(app.globalData.data.cache_userlocation_key) || null;
-            var data = null;
-            if (result != null) {
-                data = {
-                    name: result.name || null,
-                    address: result.address || null,
-                    lat: result.latitude || null,
-                    lng: result.longitude || null,
-                };
-            }
             this.setData({
-                user_location: data,
+                user_location: app.globalData.choice_user_location_init()
             });
         },
     },

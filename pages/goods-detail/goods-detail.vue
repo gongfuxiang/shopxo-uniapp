@@ -532,7 +532,7 @@
 
             <!-- 门店弹层 -->
             <component-popup :propShow="popup_realstore_status" propPosition="bottom" @onclose="popup_realstore_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="padding-horizontal-main padding-top-main bg-grey-f5">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_realstore_close_event">
                             <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>

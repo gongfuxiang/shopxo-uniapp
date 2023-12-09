@@ -114,8 +114,6 @@
                 // 下单类型
                 cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
                 buy_use_type_index: 0,
-                // 用户位置信息
-                user_location: null,
                 // 指定商品信息
                 realstore_goods_data: null,
                 realstore_goods_data_cart_status: false,
@@ -163,9 +161,6 @@
                         realstore_goods_data: realstore_goods_data,
                         realstore_goods_data_cart_status: realstore_goods_data_cart_status,
                     });
-
-                    // 用户位置初始化
-                    this.user_location_init();
 
                     // 获取购物车数据
                     this.get_cart_data();
@@ -652,23 +647,6 @@
                 return index || 0;
             },
 
-            // 地址信息初始化
-            user_location_init() {
-                var result = uni.getStorageSync(app.globalData.data.cache_userlocation_key) || null;
-                var data = null;
-                if (result != null) {
-                    data = {
-                        name: result.name || null,
-                        address: result.address || null,
-                        lat: result.latitude || null,
-                        lng: result.longitude || null,
-                    };
-                }
-                this.setData({
-                    user_location: data,
-                });
-            },
-
             // 请求参数处理
             // 默认增加使用类型参数
             // 下单 buy / 初始化 init / 获取数据 data / 获取购物车 cart
@@ -695,9 +673,10 @@
                     // 用户选择的位置
                     var lng = 0;
                     var lat = 0;
-                    if ((this.user_location || null) != null) {
-                        lng = this.user_location.lng || 0;
-                        lat = this.user_location.lat || 0;
+                    var user_location = app.globalData.choice_user_location_init();
+                    if ((user_location || null) != null) {
+                        lng = user_location.lng || 0;
+                        lat = user_location.lat || 0;
                     }
                     data['lng'] = lng;
                     data['lat'] = lat;

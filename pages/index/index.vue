@@ -9,55 +9,58 @@
                 </view>
 
                 <!-- 搜索 -->
-                <view v-if="common_app_is_header_nav_fixed == 1" class="search-fixed-seat"></view>
+                <view v-if="common_app_is_header_nav_fixed == 1" :class="'search-fixed-seat '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')"></view>
                 <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view class="search-content-fixed-content" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
-                        <!-- 定位 -->
-                        <view v-if="is_home_location_choice == 1" :class="'home-top-nav-location dis-inline-block va-m single-text cr-white padding-left-main margin-right-sm '+(common_app_is_enable_search == 1 ? 'top-nav-enable-search' : '')" @tap="choose_user_location_event">
-                            <view class="dis-inline-block va-m">
-                                <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="pr lh-sm" color="#fff"></iconfont>
+                    <view :class="'search-content-fixed-content '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
+                        <view class="home-top-nav margin-bottom-sm pr padding-right-main">
+                            <!-- 定位 -->
+                            <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
+                                <view class="dis-inline-block va-m">
+                                    <iconfont name="icon-mendian-dingwei" size="32rpx" prop-class="lh" color="#fff"></iconfont>
+                                </view>
+                                <text class="va-m margin-left-xs text-size-sm">{{user_location.text || ''}}</text>
+                                <view class="lh pa right-0 top-xxxl">
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
+                                </view>
                             </view>
-                            <text class="va-m margin-left-xs text-size-sm">{{user_location.text || ''}}</text>
-                        </view>
-                        <block v-else>
-                            <!-- logo/标题 -->
-                            <!-- #ifndef MP-TOUTIAO -->
-                            <view v-if="(is_home_logo_use_text == 0 && (application_logo || null) != null) || (is_home_logo_use_text == 1 && (application_title || null) != null)" class="home-top-nav-logo dis-inline-block va-m padding-left-main margin-right-xxl">
-                                <block v-if="is_home_logo_use_text == 0 && (application_logo || null) != null">
-                                    <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
-                                </block>
-                                <block v-else>
-                                    <view v-if="is_home_logo_use_text == 1 && (application_title || null) != null" class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
+                            <block v-else>
+                                <!-- logo/标题 -->
+                                <view class="home-top-nav-logo dis-inline-block va-m padding-left-main">
+                                    <block v-if="is_home_logo_use_text == 0 && (application_logo || null) != null">
+                                        <image :src="application_logo" mode="heightFix" class="home-top-nav-logo-image"></image>
+                                    </block>
+                                    <block v-else>
+                                        <view v-if="(application_title || null) != null" class="home-top-nav-logo-title cr-white single-text">{{ application_title }}</view>
+                                    </block>
+                                </view>
+                            </block>
+                            <!-- #ifdef H5 || APP -->
+                            <!-- 右上角icon列表 -->
+                            <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon fr">
+                                <block v-for="(item, index) in right_icon_list">
+                                    <view class="item dis-inline-block cp pr" :data-value="item.url || ''" @tap="url_event">
+                                        <uni-icons :type="item.icon" size="32rpx" color="#f1f1f1"></uni-icons>
+                                        <view v-if="(item.badge || null) != null" class="badge-icon pa">
+                                            <component-badge :propNumber="item.badge"></component-badge>
+                                        </view>
+                                    </view>
                                 </block>
                             </view>
                             <!-- #endif -->
-                        </block>
-                        <view v-if="common_app_is_enable_search == 1" class="search-content-input dis-inline-block va-m" :style="top_content_search_style">
+                        </view>
+                        <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                <component-search :propIsBtn="true" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                     <!-- #ifndef H5 -->
                                     @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                     <!-- #endif -->
                                 ></component-search>
                             </block>
                             <block v-else>
-                                <component-search propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                                <component-search :propIsBtn="true" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
                             </block>
                         </view>
-                        <!-- #ifdef H5 || MP-TOUTIAO || APP -->
-                        <!-- 右上角icon列表 -->
-                        <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon pa">
-                            <block v-for="(item, index) in right_icon_list">
-                                <view class="item dis-inline-block cp" :data-value="item.url || ''" @tap="url_event">
-                                    <uni-icons :type="item.icon" size="32rpx" color="#f1f1f1"></uni-icons>
-                                    <view v-if="(item.badge || null) != null" class="badge-icon pa">
-                                        <component-badge :propNumber="item.badge"></component-badge>
-                                    </view>
-                                </view>
-                            </block>
-                        </view>
-                        <!-- #endif -->
                     </view>
                 </view>
 
@@ -344,7 +347,6 @@
                 // #ifdef H5 || MP-TOUTIAO || APP
                 top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
                 // #endif
-                top_content_search_style: '',
                 search_is_fixed: 0,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
@@ -487,8 +489,7 @@
                             var common_static_url = app.globalData.get_static_url('common');
                             var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
                             var static_url = app.globalData.get_static_url('home');
-                            var right_icon_list = data.right_icon_list || [];
-                            var upd_data = {
+                            this.setData({
                                 theme_view: theme_view,
                                 theme_color: theme_color,
                                 common_static_url: common_static_url,
@@ -502,7 +503,7 @@
                                 data_list: data.data_list,
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
-                                right_icon_list: right_icon_list,
+                                right_icon_list: data.right_icon_list || [],
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
@@ -517,34 +518,13 @@
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_magic_data: data.plugins_magic_data || null,
-                            };
+                            });
 
                             // 轮播数据处理
                             if (this.load_status == 0) {
                                 var color = (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) ? data.banner_list[0].bg_color : theme_color;
                                 this.change_banner(color);
                             }
-
-                            // 搜索框宽度处理
-                            // 是否开启了地理位置定位
-                            if(this.is_home_location_choice == 1) {
-                                var width = app.globalData.string_width(this.user_location.text, 230);
-                            } else {
-                                var width = this.is_home_logo_use_text == 1 ? app.globalData.string_width(this.application_title) : (this.application_logo || null) == null ? 0 : 112;
-                            }
-                            // #ifdef H5 || MP-TOUTIAO || APP
-                            var len = right_icon_list.length;
-                            width += len <= 0 ? 0 : 70 * len;
-                            // #endif
-                            // #ifdef MP
-                            width += 220;
-                            // #endif
-                            // #ifdef MP-ALIPAY
-                            width += 90;
-                            // #endif
-                            upd_data['top_content_search_style'] = 'width: calc(100% - ' + width + 'rpx);';
-                            // 设置数据
-                            this.setData(upd_data);
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
@@ -601,7 +581,7 @@
 
             // 页面滚动监听
             onPageScroll(e) {
-                if (this.common_app_is_header_nav_fixed == 1 && (this.common_app_is_enable_search == 1 || this.is_home_location_choice == 1)) {
+                if (this.common_app_is_header_nav_fixed == 1) {
                     // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
                     if (!this.plugins_mourning_data_is_app) {
                         this.setData({
