@@ -152,8 +152,15 @@
                     // 店铺状态正常、是否指定商品、如果不存在操作按钮、不可以加入购物车则置空
                     var realstore_goods_data = params.realstore_goods_data || null;
                     var realstore_goods_data_cart_status = false;
-                    if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null && (realstore_goods_data.buy_button.is_cart || 0) == 1) {
-                        realstore_goods_data_cart_status = true;
+                    if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null && realstore_goods_data.buy_button.data.length > 0) {
+                        var buy_button = realstore_goods_data.buy_button.data;
+                        var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
+                        for(var i in buy_button) {
+                            if(arr.indexOf(buy_button[i]['type']) != -1) {
+                                realstore_goods_data_cart_status = true;
+                                break;
+                            }
+                        }
                     }
                     this.setData({
                         params: params || {},

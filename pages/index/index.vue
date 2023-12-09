@@ -16,9 +16,9 @@
                             <!-- 定位 -->
                             <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
                                 <view class="dis-inline-block va-m">
-                                    <iconfont name="icon-mendian-dingwei" size="32rpx" prop-class="lh" color="#fff"></iconfont>
+                                    <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-md" color="#fff"></iconfont>
                                 </view>
-                                <text class="va-m margin-left-xs text-size-sm">{{user_location.text || ''}}</text>
+                                <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
                                 <view class="lh pa right-0 top-xxxl">
                                     <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
                                 </view>

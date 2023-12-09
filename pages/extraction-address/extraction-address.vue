@@ -20,8 +20,8 @@
                         </view>
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="item-operation br-t oh padding-top-main margin-top-main">
-                        <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
-                            <text class="cr-grey">距离</text>
+                        <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-sm">
+                            <text class="cr-grey">距您</text>
                             <text class="cr-base">{{ item.distance_value }}</text>
                             <text class="cr-grey">{{ item.distance_unit }}</text>
                         </view>

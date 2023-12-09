@@ -6,9 +6,9 @@
                 <!-- 位置 -->
                 <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_user_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="32rpx" prop-class="lh"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-md"></iconfont>
                     </view>
-                    <text class="va-m margin-left-xs text-size-sm single-text">{{user_location.text || ''}}</text>
+                    <text class="va-m margin-left-xs text-size-md single-text">{{user_location.text || ''}}</text>
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search wh-auto">
