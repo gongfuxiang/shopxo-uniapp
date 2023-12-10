@@ -169,27 +169,35 @@
                     var cart_text = '';
                     var realstore_goods_data = params.realstore_goods_data || null;
                     if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null) {
-                        if(realstore_goods_data.buy_button.data.length > 0) {
-                            var buy_button = realstore_goods_data.buy_button.data;
-                            var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
-                            for(var i in buy_button) {
-                                if(arr.indexOf(buy_button[i]['type']) != -1) {
-                                    cart_status = true;
-                                    cart_text = '加入购物车';
-                                    break;
+                        // 是否存在错误
+                        if((realstore_goods_data.buy_button.error || null) != null) {
+                            cart_text = realstore_goods_data.buy_button.error;
+                        } else {
+                            // 匹配是否可以加入购物车操作
+                            if(realstore_goods_data.buy_button.data.length > 0) {
+                                var buy_button = realstore_goods_data.buy_button.data;
+                                var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
+                                for(var i in buy_button) {
+                                    if(arr.indexOf(buy_button[i]['type']) != -1) {
+                                        cart_status = true;
+                                        cart_text = '加入购物车';
+                                        break;
+                                    }
                                 }
                             }
-                        } else {
-                            cart_text = realstore_goods_data.buy_button.error;
                         }
                     }
                     this.setData({
                         params: params || {},
                         info: info,
-                        buy_use_type_index: this.get_buy_use_type_index(),
                         realstore_goods_data: realstore_goods_data,
                         realstore_goods_data_cart_status: cart_status,
                         realstore_goods_data_cart_text: cart_text,
+                    });
+
+                    // 设置下单类型
+                    this.setData({
+                        buy_use_type_index: this.get_buy_use_type_index()
                     });
 
                     // 获取购物车数据

@@ -72,13 +72,11 @@
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.quantity }}</text>
                                     <text>{{ goods.inventory_unit }}</text>
                                 </text>
-                                <text class="text-size-xs fr"
-                                    >金额：<text class="fw-b sales-price">{{ currency_symbol }}{{ base_data.amount_money }}</text></text
-                                >
+                                <text class="text-size-xs fr">金额：<text class="fw-b sales-price">{{ currency_symbol }}{{ base_data.amount_money }}</text></text>
                             </view>
-                            <view v-if="(buy_button.data || null) != null && buy_button.data.length > 0" class="padding-bottom-main">
-                                <view :class="'oh buy-nav-btn-number-' + buy_button.count || 0">
-                                    <block v-for="(item, index) in buy_button.data" :key="index">
+                            <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
+                                <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
+                                    <block v-for="(item, index) in opt_button" :key="index">
                                         <view v-if="(item.name || null) != null && (item.type || null) != null" class="item fl bs-bb padding-horizontal-main">
                                             <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="confirm_event" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                         </view>
@@ -108,9 +106,9 @@ export default {
             popup_status: false,
             nav_active_index: 0,
             goods: null,
-            buy_button: null,
             batchbuy_data: null,
             back_data: null,
+            opt_button: [],
             base_data: {
                 kind: 0,
                 quantity: 0,
@@ -132,11 +130,24 @@ export default {
             if (!app.globalData.is_single_page_check()) {
                 return false;
             }
+
+            // 购买按钮处理，仅展示购买和购物车
+            var opt_button = [];
+            if(buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
+                var arr = ['plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
+                for(var i in buy_button.data) {
+                    if(arr.indexOf(buy_button.data[i]['type']) != -1) {
+                        opt_button.push(buy_button.data[i]);
+                    }
+                }
+            }
+
+            // 设置数据
             this.setData({
                 popup_status: true,
                 goods: goods || null,
                 batchbuy_data: batchbuy_data || null,
-                buy_button: buy_button || null,
+                opt_button: opt_button,
                 back_data: back_data,
             });
         },

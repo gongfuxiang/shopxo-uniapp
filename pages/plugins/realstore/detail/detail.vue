@@ -397,11 +397,6 @@
                                 content_style: 'height: calc(100vh - '+content_other_height+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+');',
                             });
 
-                            // 下单类型是否存在索引
-                            this.setData({
-                                buy_use_type_index: this.get_buy_use_type_index(),
-                            });
-
                             // 收藏处理
                             if ((this.info || null) != null) {
                                 // 收藏信息
@@ -412,6 +407,11 @@
                                         status: status,
                                         text: (status == 1 ? '已' : '') + '收藏',
                                     },
+                                });
+
+                                // 标题名称
+                                uni.setNavigationBarTitle({
+                                    title: this.info.name,
                                 });
 
                                 // 基础自定义分享
@@ -425,13 +425,13 @@
                                     },
                                 });
 
-                                // 标题名称
-                                uni.setNavigationBarTitle({
-                                    title: this.info.name,
-                                });
-                                
                                 // 获取购物车数据
                                 this.get_cart_data();
+
+                                // 下单类型是否存在索引
+                                this.setData({
+                                    buy_use_type_index: this.get_buy_use_type_index(),
+                                });
 
                                 // 获取数据、仅首次调用，获取列表接口
                                 if (this.is_first == 1) {
