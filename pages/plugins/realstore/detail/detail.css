@@ -1,23 +1,6 @@
 page {
     background: #fff;
 }
-/**
- * 顶部
- */
-.header-top {
-    padding-right: 230rpx;
-    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
-    padding-top: 20rpx !important;
-    padding-right: 20rpx;
-    /* #endif */
-    /* #ifdef H5 || APP */
-    padding-right: 20rpx;
-    /* #endif */
-    padding-bottom: 10px;
-}
-.nav-search {
-    width: 100%;
-}
 
 /**
  * 头部内容

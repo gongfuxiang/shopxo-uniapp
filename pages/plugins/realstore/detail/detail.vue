@@ -1,216 +1,218 @@
 <template>
     <view :class="theme_view">
         <view class="pr">
-            <!-- 头部背景 -->
-            <image v-if="(info || null) != null" :src="info.banner" mode="widthFix" class="header-bg wh-auto pa top-0 left-0 right-0" />
-            <!-- 头部 -->
-            <view class="header pr z-i">
-                <component-nav-back :prop-fixed="false" prop-color="#333">
-                    <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
-                        <view v-if="(info || null) != null" :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
-                            <!-- #ifndef H5 -->
-                            <component-search
-                                @onsearch="search_button_event"
-                                @onicon="search_icon_event"
-                                :propIsIconOnEvent="is_realstore_top_search_scan == 1"
-                                :propIsOnEvent="true"
-                                :propIsRequired="false"
-                                :propIcon="is_realstore_top_search_scan == 1 ? 'icon-mendian-sousuosm' : 'icon-qiandao-dqxz'"
-                                propPlaceholderClass="cr-grey-c"
-                                propBgColor="#fff"
-                                propIconColor="#333"
-                                propPlaceholder="商品搜索"
-                            ></component-search>
-                            <!-- #endif -->
-                            <!-- #ifdef H5 -->
-                            <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" propPlaceholder="商品搜索" propBgColor="#fff"></component-search>
-                            <!-- #endif -->
-                        </view>
-                    </template>
-                    <template slot="content">
-                        <!-- 桌码 -->
-                        <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red"> {{ tablecode.name }}({{ tablecode.code }}) </view>
-                    </template>
-                </component-nav-back>
-            </view>
-            <view v-if="(info || null) != null" class="pr">
+            <block v-if="(info || null) != null">
+                <!-- 头部背景 -->
+                <image :src="info.banner" mode="widthFix" class="header-bg wh-auto pa top-0 left-0 right-0" />
+                <!-- 头部 -->
+                <view class="header pr z-i">
+                    <component-nav-back :propIsShowBack="is_realstore_top_nav_back == 1" :propFixed="false" propColor="#333">
+                        <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
+                            <view :class="'va-m wh-auto '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
+                                <!-- #ifndef H5 -->
+                                <component-search
+                                    @onsearch="search_button_event"
+                                    @onicon="search_icon_event"
+                                    :propIsIconOnEvent="is_realstore_top_search_scan == 1"
+                                    :propIsOnEvent="true"
+                                    :propIsRequired="false"
+                                    :propIcon="is_realstore_top_search_scan == 1 ? 'icon-mendian-sousuosm' : 'icon-qiandao-dqxz'"
+                                    propPlaceholderClass="cr-grey-c"
+                                    propBgColor="#fff"
+                                    propIconColor="#333"
+                                    propPlaceholder="商品搜索"
+                                ></component-search>
+                                <!-- #endif -->
+                                <!-- #ifdef H5 -->
+                                <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" propPlaceholder="商品搜索" propBgColor="#fff"></component-search>
+                                <!-- #endif -->
+                            </view>
+                        </template>
+                        <template slot="content">
+                            <!-- 桌码 -->
+                            <view v-if="(tablecode || null) != null" class="tablecode dis-inline-block margin-left-main round cr-red"> {{ tablecode.name }}({{ tablecode.code }}) </view>
+                        </template>
+                    </component-nav-back>
+                </view>
                 <view class="pr">
-                    <!-- 头部基础内容 -->
-                    <view class="header-content padding-horizontal-main">
-                        <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
-                            <view class="base flex-row">
-                                <!-- 基础内容 -->
-                                <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
-                                <view class="base-right flex-1 flex-width">
-                                    <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
-                                        <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
-                                        <view class="dis-inline-block va-m pr top-sm">
-                                            <iconfont name="icon-mendian-jiantou2" size="28rpx" color="#fff"></iconfont>
+                    <view class="header-top pr">
+                        <!-- 头部基础内容 -->
+                        <view class="header-content padding-horizontal-main">
+                            <view class="padding-main border-radius-main bg-white pr box-shadow z-i-deep">
+                                <view class="base flex-row">
+                                    <!-- 基础内容 -->
+                                    <image :src="info.logo" mode="widthFix" class="logo border-radius-sm fl br" :data-value="info.logo" @tap="image_show_event"></image>
+                                    <view class="base-right flex-1 flex-width">
+                                        <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="use-type-icon pa text-size-xs cr-white bg-main" @tap="buy_use_type_event">
+                                            <text class="va-m margin-right-xs">{{ info.buy_use_type_list[buy_use_type_index]['name'] }}</text>
+                                            <view class="dis-inline-block va-m pr top-sm">
+                                                <iconfont name="icon-mendian-jiantou2" size="28rpx" color="#fff"></iconfont>
+                                            </view>
                                         </view>
-                                    </view>
-                                    <view :class="'title fw-b text-size single-text ' + ((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
-                                        <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
-                                        <text class="va-m">{{ info.name }}</text>
-                                    </view>
-                                    <view class="margin-top-xs text-size-xs cr-grey">
-                                        <view v-if="(info.status_info.time || null) != null">营业时间：{{ info.status_info.time }}</view>
-                                        <view v-if="(info.distance || null) != null">距您{{ info.distance }}</view>
+                                        <view :class="'title fw-b text-size single-text ' + ((info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0 ? 'title-length-limit' : '')">
+                                            <text v-if="(info.alias || null) != null" class="va-m title-icon border-radius-sm br-main cr-main text-size-xs padding-left-sm padding-right-sm margin-right-xs">{{ info.alias }}</text>
+                                            <text class="va-m">{{ info.name }}</text>
+                                        </view>
+                                        <view class="margin-top-xs text-size-xs cr-grey">
+                                            <view v-if="(info.status_info.time || null) != null">营业时间：{{ info.status_info.time }}</view>
+                                            <view v-if="(info.distance || null) != null">距您{{ info.distance }}</view>
+                                        </view>
                                     </view>
                                 </view>
-                            </view>
-                            <view class="margin-top-main cp br-t-dashed padding-top-sm">
-                                <view class="flex-row jc-sb align-c">
-                                    <!-- 地址 -->
-                                    <view class="flex-row align-c flex-1 flex-width">
-                                        <iconfont name="icon-index-zxmd-dress" size="28rpx" prop-class="pr top-xs"></iconfont>
-                                        <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
-                                            {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
+                                <view class="margin-top-main cp br-t-dashed padding-top-sm">
+                                    <view class="flex-row jc-sb align-c">
+                                        <!-- 地址 -->
+                                        <view class="flex-row align-c flex-1 flex-width">
+                                            <iconfont name="icon-index-zxmd-dress" size="28rpx" prop-class="pr top-xs"></iconfont>
+                                            <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
+                                                {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
+                                            </view>
+                                            <!-- #ifndef MP-KUAISHOU -->
+                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event"> 导航 </view>
+                                            <!-- #endif -->
                                         </view>
-                                        <!-- #ifndef MP-KUAISHOU -->
-                                        <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event"> 导航 </view>
-                                        <!-- #endif -->
-                                    </view>
-                                    <!-- 右侧操作 -->
-                                    <view class="icon-list margin-left-main">
-                                        <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="header_service_event">
-                                            <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
-                                        </view>
-                                        <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
-                                            <iconfont name="icon-mendian-sc" size="26rpx"></iconfont>
-                                            <view class="badge-icon pa">
-                                                <component-badge :propNumber="favor_info.count"></component-badge>
+                                        <!-- 右侧操作 -->
+                                        <view class="icon-list margin-left-main">
+                                            <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="header_service_event">
+                                                <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
+                                            </view>
+                                            <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
+                                                <iconfont name="icon-mendian-sc" size="26rpx"></iconfont>
+                                                <view class="badge-icon pa">
+                                                    <component-badge :propNumber="favor_info.count"></component-badge>
+                                                </view>
                                             </view>
                                         </view>
                                     </view>
                                 </view>
                             </view>
                         </view>
+
+                        <!-- 在线客服 -->
+                        <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
+                            <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
+                                <text class="va-m">客服：</text>
+                                <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                                    <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
+                                    <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
+                                </view>
+                            </view>
+                            <view v-if="(info.service_qq || null) != null" class="item padding-main br-t single-text">
+                                <text>Q Q：</text>
+                                <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{ info.service_qq }}</text>
+                            </view>
+                            <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
+                                <text>电话：</text>
+                                <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{ info.service_tel }}</text>
+                            </view>
+                            <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
+                                <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
+                                    <view>长按微信咨询</view>
+                                </view>
+                                <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
+                                    <view>长按line咨询</view>
+                                </view>
+                            </view>
+                        </view>
                     </view>
 
-                    <!-- 在线客服 -->
-                    <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
-                        <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
-                            <text class="va-m">客服：</text>
-                            <view class="dis-inline-block chat-info cp" @tap="chat_event">
-                                <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
-                                <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
+                    <!-- 内容 -->
+                    <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
+                        <!-- 左侧 -->
+                        <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
+                            <view class="left-content-actual text-size-xs">
+                                <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                <block v-if="(goods_category || null) != null && goods_category.length > 0">
+                                    <block v-for="(item, index) in goods_category" :key="index">
+                                        <view :class="'item tc cr-base pr cp ' + (nav_active_index == index ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
+                                            <text>{{ item.name }}</text>
+                                            <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
+                                                <component-badge :propNumber="item.buy_number"></component-badge>
+                                            </view>
+                                        </view>
+                                    </block>
+                                </block>
                             </view>
-                        </view>
-                        <view v-if="(info.service_qq || null) != null" class="item padding-main br-t single-text">
-                            <text>Q Q：</text>
-                            <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{ info.service_qq }}</text>
-                        </view>
-                        <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
-                            <text>电话：</text>
-                            <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{ info.service_tel }}</text>
-                        </view>
-                        <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
-                            <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
-                                <view>长按微信咨询</view>
-                            </view>
-                            <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
-                                <view>长按line咨询</view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-
-                <!-- 内容 -->
-                <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
-                    <!-- 左侧 -->
-                    <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
-                        <view class="left-content-actual text-size-xs">
-                            <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">全部</view>
-                            <block v-if="(goods_category || null) != null && goods_category.length > 0">
-                                <block v-for="(item, index) in goods_category" :key="index">
-                                    <view :class="'item tc cr-base pr cp ' + (nav_active_index == index ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
-                                        <text>{{ item.name }}</text>
-                                        <view v-if="(item.buy_number || 0) > 0" class="badge-icon pa">
-                                            <component-badge :propNumber="item.buy_number"></component-badge>
+                        </scroll-view>
+                        <!-- 右侧 -->
+                        <scroll-view :scroll-y="true" class="right-content ht-auto goods-list flex-1 flex-width" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
+                            <view class="right-content-actual pr">
+                                <!-- 操作导航 -->
+                                <view class="goods-list-top-nav bg-white">
+                                    <!-- 排序 -->
+                                    <view class="nav-sort-content oh">
+                                        <block v-for="(item, index) in search_nav_sort_list" :key="index">
+                                            <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
+                                                <text class="cr-base va-m text-size-sm">{{item.name}}</text>
+                                                <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
+                                            </view>
+                                        </block>
+                                    </view>
+                                    <!-- 二级分类 -->
+                                    <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal padding-horizontal-main padding-bottom-main">
+                                        <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
+                                            <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                            <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
+                                                <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{ cv.name }}</view>
+                                            </block>
+                                        </scroll-view>
+                                    </view>
+                                </view>
+                                <!-- 右侧商品列表 -->
+                                <block v-if="(data_list || null) != null && data_list.length > 0">
+                                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
+                                        <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
+                                            <view class="flex-row jc-sb">
+                                                <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
+                                                <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                    <view class="goods-base-content">
+                                                        <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
+                                                        <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
+                                                    </view>
+                                                    <view class="margin-top oh flex-row jc-sb align-c">
+                                                        <view class="single-text sales-price va-b va-m">
+                                                            <text class="text-size-xss">{{ currency_symbol }}</text>
+                                                            <text class="text-size-lg">{{ item.min_price }}</text>
+                                                        </view>
+                                                        <view class="tc flex-row align-c">
+                                                            <block v-if="(item.is_error || 0) == 0">
+                                                                <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                                    <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                                                                </view>
+                                                                <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
+                                                                    {{ item.buy_number }}
+                                                                </view>
+                                                                <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                                    <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                                </view>
+                                                            </block>
+                                                            <block v-else>
+                                                                <text class="cr-grey-c text-size-xs">{{ item.is_error_msg }}</text>
+                                                            </block>
+                                                        </view>
+                                                    </view>
+                                                </view>
+                                            </view>
                                         </view>
                                     </view>
                                 </block>
-                            </block>
-                        </view>
-                    </scroll-view>
-                    <!-- 右侧 -->
-                    <scroll-view :scroll-y="true" class="right-content ht-auto goods-list flex-1 flex-width" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                        <view class="right-content-actual pr">
-                            <!-- 操作导航 -->
-                            <view class="goods-list-top-nav bg-white">
-                                <!-- 排序 -->
-                                <view class="nav-sort-content oh">
-                                    <block v-for="(item, index) in search_nav_sort_list" :key="index">
-                                        <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
-                                            <text class="cr-base va-m text-size-sm">{{item.name}}</text>
-                                            <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
-                                        </view>
-                                    </block>
-                                </view>
-                                <!-- 二级分类 -->
-                                <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal padding-horizontal-main padding-bottom-main">
-                                    <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
-                                        <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
-                                        <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
-                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{ cv.name }}</view>
-                                        </block>
-                                    </scroll-view>
-                                </view>
+                                <block v-else>
+                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                                </block>
                             </view>
-                            <!-- 右侧商品列表 -->
-                            <block v-if="(data_list || null) != null && data_list.length > 0">
-                                <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                    <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
-                                        <view class="flex-row jc-sb">
-                                            <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                            <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
-                                                <view class="goods-base-content">
-                                                    <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
-                                                    <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
-                                                </view>
-                                                <view class="margin-top oh flex-row jc-sb align-c">
-                                                    <view class="single-text sales-price va-b va-m">
-                                                        <text class="text-size-xss">{{ currency_symbol }}</text>
-                                                        <text class="text-size-lg">{{ item.min_price }}</text>
-                                                    </view>
-                                                    <view class="tc flex-row align-c">
-                                                        <block v-if="(item.is_error || 0) == 0">
-                                                            <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
-                                                            </view>
-                                                            <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
-                                                                {{ item.buy_number }}
-                                                            </view>
-                                                            <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
-                                                            </view>
-                                                        </block>
-                                                        <block v-else>
-                                                            <text class="cr-grey-c text-size-xs">{{ item.is_error_msg }}</text>
-                                                        </block>
-                                                    </view>
-                                                </view>
-                                            </view>
-                                        </view>
-                                    </view>
-                                </view>
-                            </block>
-                            <block v-else>
-                                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-                            </block>
-                        </view>
-                    </scroll-view>
-                </view>
+                        </scroll-view>
+                    </view>
 
-                <!-- 商品购买 -->
-                <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_spec_cart_back_event"></component-goods-buy>
-            </view>
-            <view v-else>
+                    <!-- 商品购买 -->
+                    <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_spec_cart_back_event"></component-goods-buy>
+                </view>
+            </block>
+            <block v-else>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            </view>
+            </block>
         </view>
 
         <!-- 门店购物车 -->
@@ -265,6 +267,8 @@
                 nav_active_index: -1,
                 nav_active_item_index: -1,
                 header_service_status: false,
+                // 下单类型
+                buy_use_type_index: 0,
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
@@ -332,16 +336,14 @@
         },
 
         onShow() {
-            // 类型选择
-            this.setData({
-                buy_use_type_index: this.get_buy_use_type_index(),
-            });
-
-            // 获取数据
-            this.get_detail_init();
-
             // 初始化配置
             this.init_config();
+
+            // 获取数据
+            var self = this;
+            setTimeout(function() {
+                self.get_detail_init();
+            }, 100);
         },
 
         // 下拉刷新
@@ -428,7 +430,7 @@
                                 // 获取购物车数据
                                 this.get_cart_data();
 
-                                // 下单类型是否存在索引
+                                // 下单类型索引
                                 this.setData({
                                     buy_use_type_index: this.get_buy_use_type_index(),
                                 });
