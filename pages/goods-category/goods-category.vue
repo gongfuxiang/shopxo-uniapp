@@ -805,8 +805,8 @@
                     data_content: temp_data_content,
                     data_three_content: temp_data_three_content,
                     data_page: 1,
-                    data_list_loding_status: 1,
                     data_list: [],
+                    data_list_loding_status: 1,
                     popup_status: false,
                 });
 

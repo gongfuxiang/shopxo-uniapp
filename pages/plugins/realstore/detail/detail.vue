@@ -7,7 +7,7 @@
             <view class="header pr z-i">
                 <component-nav-back :prop-fixed="false" prop-color="#333">
                     <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
-                        <view :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
+                        <view v-if="(info || null) != null" :class="'va-m padding-left-main ' + (is_realstore_top_nav_back == 1 ? 'nav-search' : 'wh-auto')">
                             <!-- #ifndef H5 -->
                             <component-search
                                 @onsearch="search_button_event"
@@ -480,12 +480,6 @@
                     data_is_loading: 1,
                 });
 
-                // 加载loding
-                uni.showLoading({
-                    title: '加载中...',
-                    mask: true,
-                });
-
                 // 请求参数
                 var post_data = {
                     id: this.info.id || 0,
@@ -512,7 +506,6 @@
                     data: this.$refs.realstore_cart.request_params_merge(post_data, 'data'),
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -561,7 +554,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
@@ -838,6 +830,8 @@
                     nav_active_index: e.currentTarget.dataset.index,
                     nav_active_item_index: e.currentTarget.dataset.itemindex,
                     data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
                 });
                 this.reset_scroll();
                 this.get_data_list(1);

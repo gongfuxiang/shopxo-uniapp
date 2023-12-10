@@ -122,7 +122,7 @@
                 info: null,
                 // 结算按钮
                 settlement_btn_status: false,
-                settlement_btn_text: '先选购',
+                settlement_btn_text: '加载中',
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
@@ -231,15 +231,18 @@
                                 is_first: 0,
                             });
 
-                            this.settlement_btn_handle();
-
                             // 购物车获取成功回调
                             this.$emit('CartDataBackEvent', this.cart);
                         } else {
                             app.globalData.showToast('请求失败，请重试！');
                         }
+                        
+                        // 结算按钮处理
+                        this.settlement_btn_handle();
                     },
                     fail: () => {
+                        // 结算按钮处理
+                        this.settlement_btn_handle();
                         app.globalData.showToast('网络开小差了哦~');
                     },
                 });
