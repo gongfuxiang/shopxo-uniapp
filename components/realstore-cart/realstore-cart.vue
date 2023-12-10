@@ -8,17 +8,22 @@
             <view class="plugins-realstore-cart-content pf wh-auto">
                 <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main">
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
-                        <view class="oh br-b padding-vertical-main padding-horizontal-main">
-                            <text class="va-m text-size-xs cr-base">已选商品</text>
-                            <view class="dis-inline-block margin-left-xl text-size-xs">
+                        <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
+                            <text class="va-m cr-base">已选商品</text>
+                            <view class="dis-inline-block margin-left-xl">
                                 <text class="cr-red">没有已加购的商品？</text>
-                                <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
+                                <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
+                                    <text class="va-m">切换({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                    <view class="va-m dis-inline-block margin-left-xs">
+                                        <iconfont name="icon-mendian-jiantou2" size="24rpx" propClass="cr-green"></iconfont>
+                                    </view>
+                                </view>
                             </view>
                             <view class="fr cp" @tap="cart_all_delete_event">
                                 <view class="dis-inline-block va-m">
                                     <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
                                 </view>
-                                <text class="cr-red va-m text-size-xs margin-left-xs">清空</text>
+                                <text class="cr-red va-m margin-left-xs">清空</text>
                             </view>
                         </view>
                         <scroll-view :scroll-y="true" class="cart-list goods-list">
@@ -57,8 +62,13 @@
                     <block v-else>
                         <component-no-data propStatus="0" propMsg="请先加购商品"></component-no-data>
                         <view class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
-                            <text class="cr-red">没有已加购的商品？</text>
-                            <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
+                            <text class="cr-red va-m">没有已加购的商品？</text>
+                            <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
+                                <text class="va-m">切换({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                <view class="va-m dis-inline-block margin-left-xs">
+                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" propClass="cr-green"></iconfont>
+                                </view>
+                            </view>
                         </view>
                     </block>
                 </view>
@@ -176,6 +186,7 @@
                     this.setData({
                         params: params || {},
                         info: info,
+                        buy_use_type_index: this.get_buy_use_type_index(),
                         realstore_goods_data: realstore_goods_data,
                         realstore_goods_data_cart_status: cart_status,
                         realstore_goods_data_cart_text: cart_text,
