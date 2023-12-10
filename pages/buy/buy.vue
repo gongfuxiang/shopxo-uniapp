@@ -442,8 +442,8 @@
                     }
                 }
 
-                // 门店订单
-                if(app.globalData.data.is_buy_user_order_to_realstore_order == 1) {
+                // 是否门店订单
+                if((this.params.realstore_id || null) != null) {
                     var realstore_order_page = '/pages/plugins/realstore/orderallot-list/orderallot-list';
                     this.setData({
                         to_page_back: {

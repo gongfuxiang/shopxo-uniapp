@@ -1,10 +1,12 @@
 <template>
     <view :class="theme_view">
         <view v-if="propStatus">
-            <!-- 购物车列表 -->
-            <block v-if="cart_status">
-                <view class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event()"></view>
-                <view class="plugins-realstore-cart-content bg-white border-radius-main pf oh">
+            <!-- 弹层背景 -->
+            <view v-if="cart_status" class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event"></view>
+
+            <!-- 购物列表 -->
+            <view class="plugins-realstore-cart-content pf wh-auto">
+                <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main">
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
                             <text class="va-m text-size-xs cr-base">已选商品</text>
@@ -38,11 +40,11 @@
                                                 <view class="sales-price text-size-sm single-text dis-inline-block va-m">{{ propCurrencySymbol }}{{ goods.price }}</view>
                                                 <view class="tc fr flex-row align-c">
                                                     <view v-if="(goods.stock || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="cart_stock_event">
-                                                        <iconfont name="icon-cart-dec" size="28rpx" :color="theme_color"></iconfont>
+                                                        <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
                                                     </view>
                                                     <view v-if="(goods.stock || 0) > 0" class="buy-number dis-inline-block cr-black text-size-sm padding-left-xs padding-right-xs va-m">{{ goods.stock }} </view>
                                                     <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="cart_stock_event">
-                                                        <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color"></iconfont>
+                                                        <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
                                                     </view>
                                                 </view>
                                             </view>
@@ -53,37 +55,36 @@
                         </scroll-view>
                     </block>
                     <block v-else>
-                        <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
+                        <component-no-data propStatus="0" propMsg="请先加购商品"></component-no-data>
                         <view class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
                             <text class="cr-red">没有已加购的商品？</text>
                             <text class="br-green cr-green round padding-left padding-right padding-top-xs padding-bottom-xs cp" @tap="buy_use_type_event">切换下单类型</text>
                         </view>
                     </block>
                 </view>
-            </block>
-            
-            <!-- 购物车底部导航 -->
-            <view class="plugins-realstore-cart-botton-nav pf oh wh-auto bg-white br-top-shadow">
-                <view class="wh-auto flex-row jc-sb align-c bottom-line-exclude">
-                    <view class="flex-row align-c flex-1 flex-width padding-bottom-sm">
-                        <view class="cart-icon-total pr cp top-sm" @tap="cart_switch_event()">
-                            <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
-                            <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
-                                <component-badge :propNumber="cart.buy_number"></component-badge>
+
+                <!-- 购物车底部导航 -->
+                <view class="plugins-realstore-cart-botton-nav pr oh bg-white br-top-shadow">
+                    <view class="wh-auto flex-row jc-sb align-c bottom-line-exclude">
+                        <view class="flex-row align-c flex-1 flex-width padding-bottom-sm">
+                            <view class="cart-icon-total pr cp top-sm" @tap="cart_switch_event">
+                                <iconfont name="icon-applet-shop-acquiesce" size="36rpx" color="#666"></iconfont>
+                                <view v-if="(cart || null) != null && (cart.buy_number || 0) > 0" class="badge-icon pa">
+                                    <component-badge :propNumber="cart.buy_number"></component-badge>
+                                </view>
+                            </view>
+                            <view class="cart-total-price single-text fw-b cr-red flex-1">
+                                <text class="text-size-xss">{{ propCurrencySymbol }}</text>
+                                <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                             </view>
                         </view>
-                        <view class="cart-total-price single-text fw-b cr-red flex-1">
-                            <text class="text-size-xss">{{ propCurrencySymbol }}</text>
-                            <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
+                        <view class="padding-right-main padding-top-main padding-bottom-sm">
+                            <button v-if="(realstore_goods_data_cart_text || null) != null" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :class="'text-size-sm round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
+                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey cr-grey')">{{ settlement_btn_text }}</button>
                         </view>
-                    </view>
-                    <view class="padding-right-main padding-top-main padding-bottom-sm">
-                        <button v-if="(realstore_goods_data || null) != null" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :class="'text-size-sm round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey cr-grey')" :disabled="!realstore_goods_data_cart_status">加入购物车</button>
-                        <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm round ' + (info.status_info.status == 1 ? 'bg-main cr-white' : 'bg-grey cr-grey')">{{ info.status_info.status == 1 ? '去结算' : info.status_info.msg }}</button>
                     </view>
                 </view>
             </view>
-
             <!-- 商品购买 -->
             <component-goods-buy ref="goods_buy" :propCurrencySymbol="propCurrencySymbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
@@ -109,6 +110,9 @@
                 cart_status: false,
                 cart: null,
                 info: null,
+                // 结算按钮
+                settlement_btn_status: false,
+                settlement_btn_text: '先选购',
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
@@ -117,6 +121,7 @@
                 // 指定商品信息
                 realstore_goods_data: null,
                 realstore_goods_data_cart_status: false,
+                realstore_goods_data_cart_text: '',
             };
         },
 
@@ -150,23 +155,30 @@
                 var info = params.info || null;
                 if(info != null) {
                     // 店铺状态正常、是否指定商品、如果不存在操作按钮、不可以加入购物车则置空
+                    var cart_status = false;
+                    var cart_text = '';
                     var realstore_goods_data = params.realstore_goods_data || null;
-                    var realstore_goods_data_cart_status = false;
-                    if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null && realstore_goods_data.buy_button.data.length > 0) {
-                        var buy_button = realstore_goods_data.buy_button.data;
-                        var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
-                        for(var i in buy_button) {
-                            if(arr.indexOf(buy_button[i]['type']) != -1) {
-                                realstore_goods_data_cart_status = true;
-                                break;
+                    if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null) {
+                        if(realstore_goods_data.buy_button.data.length > 0) {
+                            var buy_button = realstore_goods_data.buy_button.data;
+                            var arr = ['cart', 'buy', 'plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
+                            for(var i in buy_button) {
+                                if(arr.indexOf(buy_button[i]['type']) != -1) {
+                                    cart_status = true;
+                                    cart_text = '加入购物车';
+                                    break;
+                                }
                             }
+                        } else {
+                            cart_text = realstore_goods_data.buy_button.error;
                         }
                     }
                     this.setData({
                         params: params || {},
                         info: info,
                         realstore_goods_data: realstore_goods_data,
-                        realstore_goods_data_cart_status: realstore_goods_data_cart_status,
+                        realstore_goods_data_cart_status: cart_status,
+                        realstore_goods_data_cart_text: cart_text,
                     });
 
                     // 获取购物车数据
@@ -200,6 +212,8 @@
                                 is_first: 0,
                             });
 
+                            this.settlement_btn_handle();
+
                             // 购物车获取成功回调
                             this.$emit('CartDataBackEvent', this.cart);
                         } else {
@@ -210,6 +224,56 @@
                         app.globalData.showToast('网络开小差了哦~');
                     },
                 });
+            },
+
+            // 结算按钮处理
+            settlement_btn_handle() {
+                // 结算按钮状态处理
+                var btn_status = true;
+                var btn_text = '去结算';
+                if(this.info.status_info.status != 1) {
+                    btn_status = false;
+                    btn_text = this.info.status_info.msg;
+                }
+
+                // 购物车是否存在商品
+                if((this.cart || null) == null || parseInt(this.cart.buy_number || 0) == 0) {
+                    btn_status = false;
+                    btn_text = '未加购';
+                } else {
+                    // 起步价
+                    var msg = this.starting_price_handle();
+                    if(msg !== null) {
+                        btn_status = false;
+                        btn_text = msg;
+                    }
+                }
+
+                this.setData({
+                    settlement_btn_status: btn_status,
+                    settlement_btn_text: btn_text,
+                });
+            },
+
+            // 起步价处理
+            starting_price_handle() {
+                var starting_price = parseFloat(this.info.starting_price) || 0;
+                if (starting_price > 0 && (this.cart || null) != null) {
+                    if(parseFloat(this.cart.total_price) < starting_price) {
+                        // 是否限制类型
+                        var limit_type = this.info.starting_price_limit_type_list || [];
+                        if (limit_type.length > 0) {
+                            var index = this.get_buy_use_type_index();
+                            var buy_use_type = this.info.buy_use_type_list[index];
+                            if (limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
+                                return buy_use_type['name'] + '起步'+ this.propCurrencySymbol + starting_price;
+                            }
+                        } else {
+                            return '起步' + this.propCurrencySymbol + starting_price;
+                        }
+                    }
+                }
+                return null;
             },
 
             // 购物车状态切换
@@ -255,25 +319,15 @@
                     }
                 }
                 if (ids.length <= 0) {
-                    app.globalData.showToast('请先选购商品');
+                    app.globalData.showToast('请先加购商品');
                     return false;
                 }
 
                 // 起步价
-                var starting_price = parseFloat(this.info.starting_price) || 0;
-                if (starting_price > 0 && this.cart.total_price < starting_price) {
-                    // 是否限制类型
-                    var limit_type = this.info.starting_price_limit_type_list || [];
-                    if (limit_type.length > 0) {
-                        var buy_use_type = this.info.buy_use_type_list[this.buy_use_type_index];
-                        if (limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
-                            app.globalData.showToast(buy_use_type['name'] + '起步价' + starting_price);
-                            return false;
-                        }
-                    } else {
-                        app.globalData.showToast('起步价' + starting_price);
-                        return false;
-                    }
+                var msg = this.starting_price_handle();
+                if(msg !== null) {
+                    app.globalData.showToast('请先加购商品');
+                    return false;
                 }
 
                 // 进入订单确认页面
@@ -659,7 +713,7 @@
             // 下单 buy / 初始化 init / 获取数据 data / 获取购物车 cart
             request_params_merge(data, type = 'init') {
                 // 用户使用类型
-                var index = this.buy_use_type_index;
+                var index = this.get_buy_use_type_index();
                 if ((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
                     if (this.info.buy_use_type_list[index] == undefined) {
                         index = 0;
@@ -713,14 +767,41 @@
     };
 </script>
 <style>
-    /**
-     * 底部导航
-     */
-    .plugins-realstore-cart-botton-nav {
+    .plugins-realstore-cart-mask {
+        left: 0;
+        top: 0;
+        background: rgb(0, 0, 0, 0.6);
+        z-index: 5;
+    }
+    .plugins-realstore-cart-content {
         left: 0;
         bottom: 0;
         z-index: 6;
     }
+    
+    /**
+     * 购物车列表
+     */
+    .plugins-realstore-cart-content .cart-list {
+        max-height: 60vh;
+    }
+    .plugins-realstore-cart-content .cart-list .goods-img {
+        width: 120rpx;
+        height: 120rpx !important;
+    }
+    .plugins-realstore-cart-content .cart-list .goods-base {
+        width: calc(100% - 140rpx);
+    }
+    .plugins-realstore-cart-content .cart-list .goods-base-content {
+        min-height: 60rpx;
+    }
+    .plugins-realstore-cart-content .cart-list .goods-base .buy-number {
+        min-width: 32rpx;
+    }
+
+    /**
+     * 底部导航
+     */
     .plugins-realstore-cart-botton-nav .cart-icon-total .badge-icon {
         top: -20rpx;
         right: -2rpx;
@@ -742,38 +823,5 @@
     }
     .plugins-realstore-cart-botton-nav .cart-icon-total {
         padding-left: 40rpx;
-    }
-    
-    /**
-     * 购物车
-     */
-    .plugins-realstore-cart-mask {
-        left: 0;
-        top: 0;
-        background: rgb(0, 0, 0, 0.6);
-        z-index: 5;
-    }
-    .plugins-realstore-cart-content {
-        left: 20rpx;
-        bottom: calc(136rpx + env(safe-area-inset-bottom));
-        width: calc(100% - 40rpx);
-        z-index: 6;
-        max-width: calc(800px - 40rpx);
-    }
-    .plugins-realstore-cart-content .cart-list {
-        max-height: 60vh;
-    }
-    .plugins-realstore-cart-content .cart-list .goods-img {
-        width: 120rpx;
-        height: 120rpx !important;
-    }
-    .plugins-realstore-cart-content .cart-list .goods-base {
-        width: calc(100% - 140rpx);
-    }
-    .plugins-realstore-cart-content .cart-list .goods-base-content {
-        min-height: 60rpx;
-    }
-    .plugins-realstore-cart-content .cart-list .goods-base .buy-number {
-        min-width: 32rpx;
     }
 </style>

@@ -69,9 +69,6 @@
                 // 门店详情阻止跳转到商品详情页面去（0否, 1是）
                 is_realstore_forbid_to_goods_detail: 0,
 
-                // 下单进入门店订单列表、而不是系统订单（0否, 1是）
-                is_buy_user_order_to_realstore_order: 0,
-
                 // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
                 is_online_service_fixed: 1,
 

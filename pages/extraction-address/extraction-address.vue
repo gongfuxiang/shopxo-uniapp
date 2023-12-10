@@ -21,9 +21,7 @@
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="item-operation br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-sm">
-                            <text class="cr-grey">距您</text>
-                            <text class="cr-base">{{ item.distance_value }}</text>
-                            <text class="cr-grey">{{ item.distance_unit }}</text>
+                            <text class="cr-grey text-size-xs">距您{{ item.distance_value }}{{ item.distance_unit }}</text>
                         </view>
                         <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
                     </view>

@@ -233,7 +233,7 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view v-if="goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
+                <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
                     <view class="fl item-title">规格</view>
                     <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'show'">{{ goods_spec_selected_text }}</view>
                 </view>
@@ -587,11 +587,6 @@
 
         <!-- 提示信息 -->
         <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-
-        <!-- 无商品信息展示返回按钮 -->
-        <view v-if="goods == null && data_list_loding_status != 1" class="tc margin-top-xxxl">
-            <button type="default" class="bg-main br-main cr-white round" size="mini" @tap="goods_error_event">返回</button>
-        </view>
 
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
@@ -1464,18 +1459,6 @@
                         }
                     }
                     app.globalData.url_open(url);
-                }
-            },
-
-            // 商品错误返回、无上一个则返回首页
-            goods_error_event(e) {
-                var prev_url = app.globalData.prev_page();
-                if (prev_url == null) {
-                    uni.switchTab({
-                        url: app.globalData.data.tabbar_pages[0],
-                    });
-                } else {
-                    uni.navigateBack();
                 }
             },
 

@@ -646,7 +646,7 @@
                                 if ((this.$refs.goods_buy || null) != null) {
                                     var buy_params = this.params;
                                     buy_params['buy_event_type'] = 'cart';
-                                    buy_params['buy_use_type_index'] = this.buy_use_type_index;
+                                    buy_params['buy_use_type_index'] = this.get_buy_use_type_index();
                                     buy_params['realstore_id'] = this.info.id;
                                     this.$refs.goods_buy.init(temp_goods, buy_params);
                                 }
