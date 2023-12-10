@@ -89,8 +89,8 @@
                             </view>
                         </view>
                         <view class="padding-right-main padding-top-main padding-bottom-sm">
-                            <button v-if="(realstore_goods_data_cart_text || null) != null" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :class="'text-size-sm round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
-                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-sm round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey cr-grey')">{{ settlement_btn_text }}</button>
+                            <button v-if="(realstore_goods_data_cart_text || null) != null" type="default" size="mini" hover-class="none" @tap="cart_submit_event" :class="'text-size-md round margin-right-main ' + (realstore_goods_data_cart_status ? 'bg-main-pair cr-white' : 'bg-grey cr-grey')" :disabled="!realstore_goods_data_cart_status">{{ realstore_goods_data_cart_text }}</button>
+                            <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" :class="'text-size-md round ' + (settlement_btn_status ? 'bg-main cr-white' : 'bg-grey cr-grey')">{{ settlement_btn_text }}</button>
                         </view>
                     </view>
                 </view>

@@ -121,7 +121,7 @@
                         </view>
                     </view>
                     <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round text-size-sm" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
                             去结算<block v-if="total_num > 0">({{ total_num }})</block>
                         </button>
                     </view>
@@ -956,6 +956,8 @@
     .cart-nav-submit button {
         font-size: 32rpx;
         padding: 0 32rpx;
+        height: 70rpx;
+        line-height: 70rpx;
     }
 
     .cart-nav-base {
