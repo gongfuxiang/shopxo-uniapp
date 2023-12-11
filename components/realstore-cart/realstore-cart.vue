@@ -1,10 +1,9 @@
 <template>
     <view :class="theme_view">
         <view v-if="propStatus">
-            <!-- 弹层背景 -->
+            <!-- 购物车弹层背景 -->
             <view v-if="cart_status" class="plugins-realstore-cart-mask wh-auto ht-auto pf" @tap="cart_switch_event"></view>
-
-            <!-- 购物列表 -->
+            <!-- 购物车列表 -->
             <view class="plugins-realstore-cart-content pf wh-auto">
                 <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main">
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
@@ -95,6 +94,34 @@
                     </view>
                 </view>
             </view>
+
+            <!-- 下单类型选择弹窗 -->
+            <block v-if="buy_use_type_choice_status">
+                <!-- 下单类型选择弹层背景 -->
+                <view class="plugins-realstore-buy-type-mask wh-auto ht-auto pf"></view>
+                <!-- 下单类型弹窗选择 -->
+                <view class="plugins-realstore-buy-type-choice pf bg-white border-radius-main padding-xxl">
+                    <view class="tc margin-top-xs margin-bottom-xl">
+                        <text class="cr-grey text-size">请选择下单类型</text>
+                        <view class="fr" @tap="buy_use_type_choice_close_event">
+                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <block v-for="(item, index) in info.buy_use_type_list" :key="index">
+                        <view :class="'item pr padding border-radius-main item-'+item.index" :data-index="index" @tap="buy_use_type_choice_event">
+                            <image class="left-icon dis-inline-block va-m" :src="static_url+'buy_use_type/'+index+'.png'" mode="aspectFit"></image>
+                            <text class="cr-black text-size-sm va-m margin-left-sm">{{item.name}}</text>
+                            <view v-if="item.index == 0" class="scan-icon pa padding" :data-index="index" @tap.stop="search_icon_event">
+                                <iconfont name="icon-mendian-sousuosm" color="#02b3c2"></iconfont>
+                            </view>
+                            <view class="pa right-arrow">
+                                <iconfont name="icon-qiandao-jiantou2" color="#333"></iconfont>
+                            </view>
+                        </view>
+                    </block>
+                </view>
+            </block>
+
             <!-- 商品购买 -->
             <component-goods-buy ref="goods_buy" :propCurrencySymbol="propCurrencySymbol" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
 
@@ -110,24 +137,30 @@
     import componentGoodsBuy from '../../components/goods-buy/goods-buy';
     import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
     import componentBadge from '../../components/badge/badge';
+
+    var static_url = app.globalData.get_static_url('realstore', true);
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
+                static_url: static_url,
                 params: {},
                 is_first: 1,
                 cart_status: false,
                 cart: null,
                 info: null,
+                base: null,
                 // 结算按钮
                 settlement_btn_status: false,
                 settlement_btn_text: '加载中',
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
-                cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index',
+                cache_buy_use_type_index_key: 'cache_plugins_realstore_buy_use_type_index_',
                 buy_use_type_index: 0,
+                // 下单类型选择弹窗
+                buy_use_type_choice_status: false,
                 // 指定商品信息
                 realstore_goods_data: null,
                 realstore_goods_data_cart_status: false,
@@ -188,12 +221,22 @@
                         }
                     }
                     this.setData({
-                        params: params || {},
+                        params: params,
                         info: info,
+                        base: params.base || null,
                         realstore_goods_data: realstore_goods_data,
                         realstore_goods_data_cart_status: cart_status,
                         realstore_goods_data_cart_text: cart_text,
                     });
+
+                    // 是否需要弹出下单类型选择
+                    // 打开开关，并且店铺必须存在下单类型
+                    var index = this.get_cache_buy_use_type_index();
+                    if((this.base || null) != null && parseInt(this.base.is_tips_user_choice_buy_use_type || 0) == 1 && (index === null || index === '') && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0 && (this.info.status_info || null) != null && this.info.status_info.status == 1) {
+                        this.setData({
+                            buy_use_type_choice_status: true
+                        });
+                    }
 
                     // 设置下单类型
                     this.setData({
@@ -216,13 +259,13 @@
                         }, 'cart'),
                     dataType: 'json',
                     success: (res) => {
-                        if (res.data.code == 0) {
+                        if(res.data.code == 0) {
                             this.setData({
                                 cart: res.data.data,
                             });
 
                             // 首次判断是否需要开启购物车
-                            if (this.is_first == 1 && (this.params.is_show_cart || 0) == 1) {
+                            if(this.is_first == 1 && (this.params.is_show_cart || 0) == 1) {
                                 this.cart_event(true);
                             }
 
@@ -280,14 +323,14 @@
             // 起步价处理
             starting_price_handle() {
                 var starting_price = parseFloat(this.info.starting_price) || 0;
-                if (starting_price > 0 && (this.cart || null) != null) {
+                if(starting_price > 0 && (this.cart || null) != null) {
                     if(parseFloat(this.cart.total_price) < starting_price) {
                         // 是否限制类型
                         var limit_type = this.info.starting_price_limit_type_list || [];
-                        if (limit_type.length > 0) {
+                        if(limit_type.length > 0) {
                             var index = this.get_buy_use_type_index();
                             var buy_use_type = this.info.buy_use_type_list[index];
-                            if (limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
+                            if(limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
                                 return buy_use_type['name'] + '起步'+ this.propCurrencySymbol + starting_price;
                             }
                         } else {
@@ -323,24 +366,24 @@
 
             // 购物车结算
             buy_submit_event(e) {
-                if (!app.globalData.is_single_page_check()) {
+                if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
 
                 // 门店状态
-                if (!this.is_status_check()) {
+                if(!this.is_status_check()) {
                     return false;
                 }
 
                 // 获取购物车数据
                 var ids = [];
-                if ((this.cart || null) != null) {
+                if((this.cart || null) != null) {
                     var temp_data = this.cart.data || [];
                     for (var i in temp_data) {
                         ids.push(temp_data[i]['id']);
                     }
                 }
-                if (ids.length <= 0) {
+                if(ids.length <= 0) {
                     app.globalData.showToast('请先加购商品');
                     return false;
                 }
@@ -365,11 +408,11 @@
 
             // 门店状态判断
             is_status_check() {
-                if ((this.info || null) == null) {
+                if((this.info || null) == null) {
                     app.globalData.showToast('门店信息有误');
                     return false;
                 } else {
-                    if (this.info.status_info.status != 1) {
+                    if(this.info.status_info.status != 1) {
                         app.globalData.showToast(this.info.status_info.msg);
                         return false;
                     }
@@ -385,7 +428,7 @@
                     confirmText: '确认',
                     cancelText: '暂不',
                     success: (result) => {
-                        if (result.confirm) {
+                        if(result.confirm) {
                             this.setData({
                                 temp_opt_data: null,
                             });
@@ -403,13 +446,13 @@
 
             // 购物车数量操作
             cart_stock_event(e) {
-                if (!app.globalData.is_single_page_check()) {
+                if(!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 var user = app.globalData.get_user_info(this);
-                if (user != false) {
+                if(user != false) {
                     // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
+                    if(app.globalData.user_is_need_login(user)) {
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=cart_stock_event',
                         });
@@ -419,10 +462,10 @@
                         var type = parseInt(e.currentTarget.dataset.type) || 0;
                         var temp_data = this.cart.data;
                         var temp_goods = temp_data[index];
-            
+
                         // 数据操作处理
                         var opt_number = this.stock_handle(type, temp_goods, 'stock');
-                        if (opt_number === false) {
+                        if(opt_number === false) {
                             return false;
                         }
 
@@ -432,7 +475,7 @@
                         });
 
                         // 操作类型
-                        if (opt_number == 0) {
+                        if(opt_number == 0) {
                             this.cart_delete(temp_goods['id'], temp_goods.goods_id);
                         } else {
                             var number = type == 0 ? parseInt(temp_goods['stock']) - opt_number : opt_number + parseInt(temp_goods['stock']);
@@ -446,15 +489,15 @@
             stock_handle(type, goods, stock_field) {
                 // 加减处理
                 var stock = parseInt(goods[stock_field]) || 0;
-                if (type == 0) {
+                if(type == 0) {
                     stock -= 1;
                 } else {
                     stock += 1;
                 }
-                if (stock < 0) {
+                if(stock < 0) {
                     stock = 0;
                 }
-            
+        
                 // 数据校验
                 var buy_min_number = parseInt(goods['buy_min_number']) || 1;
                 var buy_max_number = parseInt(goods['buy_max_number']) || 0;
@@ -462,49 +505,49 @@
                 var spec_buy_max_number = parseInt(goods['spec_buy_max_number']) || 0;
                 var inventory = parseInt(goods['inventory']);
                 var inventory_unit = goods['inventory_unit'];
-            
+
                 // 最小起购数量
                 var min = spec_buy_min_number > 0 ? spec_buy_min_number : buy_min_number;
-                if (min > 0) {
-                    if (type == 0) {
-                        if (stock < min) {
+                if(min > 0) {
+                    if(type == 0) {
+                        if(stock < min) {
                             stock = 0;
                         }
                     } else {
-                        if (stock < min) {
+                        if(stock < min) {
                             stock = min;
                         }
                     }
                 }
-            
+
                 // 最大购买数量
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
-                if (max > 0 && stock > max) {
+                if(max > 0 && stock > max) {
                     stock = max;
                     app.globalData.showToast('限购' + max + inventory_unit);
                     return false;
                 }
-            
+
                 // 数量是否改变
-                if (goods[stock_field] == stock) {
+                if(goods[stock_field] == stock) {
                     app.globalData.showToast('数量未改变');
                     return false;
                 }
-            
+
                 // 操作数量
                 var opt_number = 1;
-                if (type == 0) {
-                    if (stock <= 0) {
+                if(type == 0) {
+                    if(stock <= 0) {
                         opt_number = 0;
                     }
                 } else {
-                    if (stock > goods['buy_number']) {
+                    if(stock > goods['buy_number']) {
                         opt_number = stock - goods['buy_number'];
                     }
                 }
                 return opt_number;
             },
-            
+
             // 购物车添加
             cart_save(goods_id, stock, spec = '') {
                 uni.request({
@@ -517,7 +560,7 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if (res.data.code == 0) {
+                        if(res.data.code == 0) {
                             // 购物车操作成功回调
                             this.cart_opt_success_handle({
                                 type: 'save',
@@ -525,7 +568,7 @@
                                 stock: stock,
                             });
                         } else {
-                            if (app.globalData.is_login_check(res.data)) {
+                            if(app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
@@ -535,7 +578,7 @@
                     },
                 });
             },
-            
+
             // 购物车更新
             cart_update(cart_id, goods_id, stock) {
                 uni.request({
@@ -548,7 +591,7 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if (res.data.code == 0) {
+                        if(res.data.code == 0) {
                             // 购物车操作成功回调
                             this.cart_opt_success_handle({
                                 type: 'update',
@@ -557,7 +600,7 @@
                                 stock: stock,
                             });
                         } else {
-                            if (app.globalData.is_login_check(res.data)) {
+                            if(app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
                                 app.globalData.showToast('提交失败，请重试！');
@@ -569,7 +612,7 @@
                     },
                 });
             },
-            
+
             // 购物车删除
             cart_delete(cart_id, goods_id = null) {
                 uni.request({
@@ -580,7 +623,7 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        if (res.data.code == 0) {
+                        if(res.data.code == 0) {
                             // 购物车操作成功回调
                             this.cart_opt_success_handle({
                                 type: (goods_id === null) ? 'all-delete' : 'delete',
@@ -589,7 +632,7 @@
                                 stock: 0,
                             });
                         } else {
-                            if (app.globalData.is_login_check(res.data)) {
+                            if(app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
                                 app.globalData.showToast('提交失败，请重试！');
@@ -601,11 +644,77 @@
                     },
                 });
             },
+
+            // 扫码事件
+            search_icon_event(e) {
+                this.buy_use_type_choice_event(e);
+                this.search_icon_handle(e);
+            },
+
+            // 搜索icon扫码事件、扫码商品id实现加入购物车
+            search_icon_handle(e) {
+                var user = app.globalData.get_user_info(this, 'search_icon_handle');
+                if (user != false) {
+                    // 用户未绑定手机则转到登录页面
+                    if (app.globalData.user_is_need_login(user)) {
+                        uni.navigateTo({
+                            url: '/pages/login/login?event_callback=search_icon_handle',
+                        });
+                        return false;
+                    } else {
+                        // 门店状态
+                        if (!this.is_status_check()) {
+                            return false;
+                        }
             
+                        // 调用扫码
+                        var self = this;
+                        uni.scanCode({
+                            success: function (res) {
+                                uni.showLoading({
+                                    title: '处理中...',
+                                    mask: true,
+                                });
+                                uni.request({
+                                    url: app.globalData.get_request_url('scan', 'detail', 'realstore'),
+                                    method: 'POST',
+                                    data: self.request_params_merge(
+                                        {
+                                            value: res.result,
+                                        }, 'buy'),
+                                    dataType: 'json',
+                                    success: (res) => {
+                                        uni.hideLoading();
+                                        if (res.data.code == 0) {
+                                            if (res.data.data.is_error == 1) {
+                                                app.globalData.showToast(res.data.data.is_error_msg);
+                                            } else {
+                                                // 加入购物车
+                                                self.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
+                                            }
+                                        } else {
+                                            if (app.globalData.is_login_check(res.data)) {
+                                                app.globalData.showToast(res.data.msg);
+                                            } else {
+                                                app.globalData.showToast('提交失败，请重试！');
+                                            }
+                                        }
+                                    },
+                                    fail: () => {
+                                        uni.hideLoading();
+                                        app.globalData.showToast('网络开小差了哦~');
+                                    },
+                                });
+                            },
+                        });
+                    }
+                }
+            },
+
             // 商品操作处理，添加，减少，增加数量自动处理
             goods_opt_handle(type, goods, spec, stock_field, pos = null) {
                 var opt_number = this.stock_handle(type, goods, stock_field);
-                if (opt_number === false) {
+                if(opt_number === false) {
                     return false;
                 }
 
@@ -622,13 +731,13 @@
                 var cart_item = this.goods_opt_cart_data(type, goods, spec);
                 
                 // 操作类型
-                if (opt_number == 0) {
-                    if (cart_item == null) {
+                if(opt_number == 0) {
+                    if(cart_item == null) {
                         app.globalData.showToast('购物车id有误');
                         return false;
                     }
                     this.cart_delete(cart_item.id, cart_item.goods_id);
-                } else if (cart_item == null) {
+                } else if(cart_item == null) {
                     this.cart_save(goods['id'], opt_number, spec);
                 } else {
                     var number = type == 0 ? parseInt(cart_item['stock']) - opt_number : opt_number + parseInt(cart_item['stock']);
@@ -642,13 +751,13 @@
             // spec 操作的商品规格
             goods_opt_cart_data(type, goods, spec = '') {
                 var cart_item = null;
-                if (type == 0 || (type == 1 && goods['buy_number'] > 0)) {
+                if(type == 0 || (type == 1 && goods['buy_number'] > 0)) {
                     var cart_data = this.cart.data;
                     var params_spec = (spec || null) == null || typeof spec != 'object' ? '' : JSON.stringify(spec);
                     for (var i in cart_data) {
-                        if (goods['id'] == cart_data[i]['goods_id']) {
+                        if(goods['id'] == cart_data[i]['goods_id']) {
                             var cart_spec = (cart_data[i]['spec'] || null) == null || typeof cart_data[i]['spec'] != 'object' ? '' : JSON.stringify(cart_data[i]['spec']);
-                            if (type == 0 || (type == 1 && cart_spec == params_spec)) {
+                            if(type == 0 || (type == 1 && cart_spec == params_spec)) {
                                 cart_item = cart_data[i];
                             }
                             break;
@@ -657,7 +766,7 @@
                 }
                 return cart_item;
             },
-            
+
             // 购物车操作成功处理
             cart_opt_success_handle(params) {
                 // 获取购物车数据
@@ -672,13 +781,13 @@
 
             // 购物车抛物线动画
             cart_para_curve_handle() {
-                if ((this.temp_opt_data || null) != null && (this.temp_opt_data.pos || null) != null && (this.temp_opt_data.type || 0) == 1) {
-                    if ((this.$refs.cart_para_curve || null) != null) {
+                if((this.temp_opt_data || null) != null && (this.temp_opt_data.pos || null) != null && (this.temp_opt_data.type || 0) == 1) {
+                    if((this.$refs.cart_para_curve || null) != null) {
                         this.$refs.cart_para_curve.init(null, this.temp_opt_data.pos, this.temp_opt_data.goods.images, 0);
                     }
                 }
             },
-            
+
             // 使用类型事件
             buy_use_type_event() {
                 var self = this;
@@ -687,47 +796,73 @@
                         return v.name;
                     }),
                     success: function (res) {
-                        self.setData({
-                            buy_use_type_index: res.tapIndex,
-                        });
-                        uni.setStorageSync(self.cache_buy_use_type_index_key, res.tapIndex);
-
-                        // 获取购物车数据
-                        self.get_cart_data();
-
-                        // 下单类型切换回调
-                        self.$emit('BuyTypeSwitchEvent', res.tapIndex);
+                        self.buy_use_type_confirm_handle(self, res.tapIndex);
                     },
                 });
             },
-            
+
+            // 下单类型选择事件
+            buy_use_type_choice_event(e) {
+                this.buy_use_type_confirm_handle(this, e.currentTarget.dataset.index);
+                this.setData({
+                    buy_use_type_choice_status: false,
+                });
+            },
+
+            // 下单类型确认处理
+            buy_use_type_confirm_handle(self, index) {
+                self.setData({
+                    buy_use_type_index: index,
+                });
+                uni.setStorageSync(self.cache_buy_use_type_index_key+self.info.id, index);
+
+                // 获取购物车数据
+                self.get_cart_data();
+
+                // 下单类型切换回调
+                self.$emit('BuyTypeSwitchEvent', index);
+            },
+
+            // 下单类型弹窗关闭
+            buy_use_type_choice_close_event(e) {
+                this.setData({
+                    buy_use_type_choice_status: false,
+                });
+            },
+
             // 获取使用类型数据索引、默认在店0
             get_buy_use_type_index() {
-                var index = uni.getStorageSync(this.cache_buy_use_type_index_key);
-                if ((this.info || null) != null) {
+                if((this.info || null) != null) {
                     // 用户未设置类型则使用默认的
-                    if (index === null || index === '') {
+                    var index = this.get_cache_buy_use_type_index();
+                    if(index === null || index === '') {
                         // 是否默认类型
-                        if (this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
+                        if(this.info.default_buy_use_type != undefined && this.info.default_buy_use_type != -1) {
                             // 不在店铺设置的类型列表则默认0
                             var temp_index = null;
                             for (var i in this.info.buy_use_type_list) {
-                                if (this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
+                                if(this.info.buy_use_type_list[i]['index'] == this.info.default_buy_use_type) {
                                     temp_index = i;
                                 }
                             }
-                            if (temp_index !== null) {
+                            if(temp_index !== null) {
                                 index = temp_index;
                             }
                         }
                     }
             
                     // 不在店铺设置的类型列表则默认0
-                    if (this.info.buy_use_type_list[index] == undefined) {
+                    if(this.info.buy_use_type_list[index] == undefined) {
                         index = 0;
                     }
+                    return index;
                 }
-                return index || 0;
+                return 0;
+            },
+
+            // 获取下单类型缓存数据
+            get_cache_buy_use_type_index() {
+                return uni.getStorageSync(this.cache_buy_use_type_index_key+this.info.id);
             },
 
             // 请求参数处理
@@ -735,29 +870,29 @@
             // 下单 buy / 初始化 init / 获取数据 data / 获取购物车 cart
             request_params_merge(data, type = 'init') {
                 // 用户使用类型
-                var index = this.get_buy_use_type_index();
-                if ((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
-                    if (this.info.buy_use_type_list[index] == undefined) {
+                if((this.info || null) != null && (this.info.buy_use_type_list || null) != null && this.info.buy_use_type_list.length > 0) {
+                    var index = this.get_buy_use_type_index();
+                    if(this.info.buy_use_type_list[index] == undefined) {
                         index = 0;
                     }
                     data['buy_use_type_index'] = index;
                 }
 
                 // 初始化
-                if (type == 'init' || type == 'buy') {
+                if(type == 'init' || type == 'buy') {
                     // 桌码
-                    if ((this.params.tablecode_id || null) != null) {
+                    if((this.params.tablecode_id || null) != null) {
                         data['tablecode_id'] = this.params.tablecode_id;
                     }
                 }
 
                 // 初始化、获取数据
-                if (type == 'init' || type == 'data' || type == 'cart') {
+                if(type == 'init' || type == 'data' || type == 'cart') {
                     // 用户选择的位置
                     var lng = 0;
                     var lat = 0;
                     var user_location = app.globalData.choice_user_location_init();
-                    if ((user_location || null) != null) {
+                    if((user_location || null) != null) {
                         lng = user_location.lng || 0;
                         lat = user_location.lat || 0;
                     }
@@ -766,7 +901,7 @@
                 }
 
                 // 提交订单
-                if (type == 'buy') {
+                if(type == 'buy') {
                     // 门店id
                     data['realstore_id'] = this.info.id;
                 }
@@ -789,18 +924,20 @@
     };
 </script>
 <style>
-    .plugins-realstore-cart-mask {
+    .plugins-realstore-cart-mask,
+    .plugins-realstore-buy-type-mask {
         left: 0;
         top: 0;
         background: rgb(0, 0, 0, 0.6);
         z-index: 5;
     }
-    .plugins-realstore-cart-content {
+    .plugins-realstore-cart-content,
+    .plugins-realstore-buy-type-choice {
         left: 0;
         bottom: 0;
         z-index: 6;
     }
-    
+
     /**
      * 购物车列表
      */
@@ -845,5 +982,47 @@
     }
     .plugins-realstore-cart-botton-nav .cart-icon-total {
         padding-left: 40rpx;
+    }
+    
+    /**
+     * 弹窗下单类型选择
+     */
+    .plugins-realstore-buy-type-mask {
+        z-index: 10;
+    }
+    .plugins-realstore-buy-type-choice {
+        z-index: 11;
+        width: calc(100% - 240rpx);
+        left: 80rpx;
+        top: calc(50% + 50rpx);
+        height: max-content;
+        margin-top: -50%;
+    }
+    .plugins-realstore-buy-type-choice .item-0 {
+        background: #E8FFF2;
+    }
+    .plugins-realstore-buy-type-choice .item-1 {
+        background: #FFF9DC;
+    }
+    .plugins-realstore-buy-type-choice .item-2 {
+        background: #FFE8DC;
+    }
+    .plugins-realstore-buy-type-choice .item-3 {
+        background: #EDF9FF;
+    }
+    .plugins-realstore-buy-type-choice .item:not(:last-child) {
+        margin-bottom: 32rpx;
+    }
+    .plugins-realstore-buy-type-choice .item .left-icon {
+        width: 68rpx;
+        height: 68rpx;
+    }
+    .plugins-realstore-buy-type-choice .item .right-arrow {
+        top: 40rpx;
+        right: 20rpx;
+    }
+    .plugins-realstore-buy-type-choice .item .scan-icon {
+        top: 16rpx;
+        right: 60rpx;
     }
 </style>

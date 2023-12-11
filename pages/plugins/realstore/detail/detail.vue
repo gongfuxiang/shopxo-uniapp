@@ -731,7 +731,7 @@
 
             // 获取购物车数据
             get_cart_data() {
-                this.$refs.realstore_cart.init({...{info: this.info}, ...this.params});
+                this.$refs.realstore_cart.init({...{base: this.data_base, info: this.info}, ...this.params});
             },
 
             // 列表数量事件处理
@@ -752,62 +752,7 @@
 
             // 搜索icon扫码事件、扫码商品id实现加入购物车
             search_icon_event(e) {
-                var user = app.globalData.get_user_info(this);
-                if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=search_icon_event',
-                        });
-                        return false;
-                    } else {
-                        // 门店状态
-                        if (!this.$refs.realstore_cart.is_status_check()) {
-                            return false;
-                        }
-
-                        // 调用扫码
-                        var self = this;
-                        uni.scanCode({
-                            success: function (res) {
-                                uni.showLoading({
-                                    title: '处理中...',
-                                    mask: true,
-                                });
-                                uni.request({
-                                    url: app.globalData.get_request_url('scan', 'detail', 'realstore'),
-                                    method: 'POST',
-                                    data: self.$refs.realstore_cart.request_params_merge(
-                                        {
-                                            value: res.result,
-                                        }, 'buy'),
-                                    dataType: 'json',
-                                    success: (res) => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            if (res.data.data.is_error == 1) {
-                                                app.globalData.showToast(res.data.data.is_error_msg);
-                                            } else {
-                                                // 加入购物车
-                                                self.$refs.realstore_cart.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
-                                            }
-                                        } else {
-                                            if (app.globalData.is_login_check(res.data)) {
-                                                app.globalData.showToast(res.data.msg);
-                                            } else {
-                                                app.globalData.showToast('提交失败，请重试！');
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        uni.hideLoading();
-                                        app.globalData.showToast('网络开小差了哦~');
-                                    },
-                                });
-                            },
-                        });
-                    }
-                }
+                this.$refs.realstore_cart.search_icon_handle();
             },
 
             // 剪切板

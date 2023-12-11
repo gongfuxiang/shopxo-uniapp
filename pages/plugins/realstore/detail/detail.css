@@ -131,7 +131,7 @@ page {
     min-width: 32rpx;
 }
 .goods-list .goods-item.item-highlight {
-    box-shadow: 0rpx 9rpx 20rpx 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 0rpx 8rpx 12rpx 0px rgba(0, 0, 0, 0.06);
     background: #F7FBF6 !important;
 }
 

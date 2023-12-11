@@ -270,12 +270,12 @@
                 </block>
 
                 <!-- 门店 -->
-                <view v-if="plugins_realstore_data != null && plugins_realstore_data.length > 0" class="plugins-realstore-container">
+                <view v-if="plugins_realstore_data != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">相关门店</text>
                         <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                     </view>
-                    <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
+                    <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                 </view>
 
                 <!-- 多商户 -->
@@ -539,8 +539,8 @@
                         </view>
                     </view>
                     <view class="plugins-realstore-popup">
-                        <block v-if="(plugins_realstore_data || null) != null && plugins_realstore_data.length > 0">
-                            <component-realstore-list :propDataList="plugins_realstore_data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
+                        <block v-if="(plugins_realstore_data || null) != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0">
+                            <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关门店信息</view>
@@ -859,14 +859,7 @@
                     });
 
                     // 底部业务导航按钮数量处理
-                    var value = 4;
-                    if (this.is_opt_cart != 1) {
-                        value--;
-                    }
-                    if (this.common_app_is_online_service != 1) {
-                        value--;
-                    }
-                    this.setData({ bottom_nav_bus_number: value });
+                    this.bottom_nav_bus_number_handle();
                 } else {
                     app.globalData.is_config(this, 'init_config');
                 }
@@ -932,27 +925,33 @@
                             }
 
                             // 是否展示门店购物车导航
-                            if((this.plugins_realstore_data || null) != null) {
+                            if((this.plugins_realstore_data || null) != null && (this.plugins_realstore_data.data || null) != null) {
                                 var realstore_info = null;
-                                var len = this.plugins_realstore_data.length;
+                                var len = this.plugins_realstore_data.data.length;
                                 if(len > 1) {
                                     var realstore_id = this.params.realstore_id || null;
                                     if(realstore_id != null) {
-                                        this.plugins_realstore_data.forEach(function(item, index) {
+                                        this.plugins_realstore_data.data.forEach(function(item, index) {
                                             if(item.id == realstore_id) {
                                                 realstore_info = item;
                                             }
                                         });
                                     }
                                 } else {
-                                    realstore_info = this.plugins_realstore_data[0];
+                                    realstore_info = this.plugins_realstore_data.data[0];
                                 }
                                 if(realstore_info != null) {
                                     this.setData({
                                         plugins_realstore_cart_nav_status: true
                                     });
-                                    this.$refs.realstore_cart.init({...{info: realstore_info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
+                                    this.$refs.realstore_cart.init({...{base: this.plugins_realstore_data.base, info: realstore_info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
                                 }
+                            }
+
+                            // 是否需要隐藏购物车
+                            if(parseInt(data.is_hide_goods_detail_bottom_opt_cart || 0) == 1) {
+                                this.setData({is_opt_cart: 0});
+                                this.bottom_nav_bus_number_handle();
                             }
 
                             // 分享配置
@@ -992,6 +991,18 @@
                         app.globalData.showToast('网络开小差了哦~');
                     },
                 });
+            },
+
+            // 底部业务导航数量处理
+            bottom_nav_bus_number_handle() {
+                var value = 4;
+                if (this.is_opt_cart != 1) {
+                    value--;
+                }
+                if (this.common_app_is_online_service != 1) {
+                    value--;
+                }
+                this.setData({ bottom_nav_bus_number: value });
             },
 
             // 返回事件
@@ -1099,9 +1110,9 @@
                         break;
                     // 门店
                     case 'plugins-realstore':
-                        var temp_data_list = this.plugins_realstore_data || [];
+                        var temp_data_list = this.plugins_realstore_data.data || [];
                         if (temp_data_list.length == 1) {
-                            app.globalData.url_open(temp_data_list[0]['url']);
+                            app.globalData.url_open(temp_data_list[0]['url']+'&source_goods_id='+this.goods.id);
                         } else {
                             this.setData({
                                 popup_realstore_status: true,

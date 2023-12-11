@@ -47,6 +47,14 @@
                 // 2.去lang里面各个文件去新增语言翻译
                 default_language: 'zh-Hans',
 
+                // tabbar页面
+                tabbar_pages: [
+                    '/pages/index/index',
+                    '/pages/goods-category/goods-category',
+                    '/pages/cart/cart',
+                    '/pages/user/user'
+                ],
+
                 // 公共配置
                 // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
                 is_share_use_image: 1,
@@ -106,8 +114,6 @@
                 // 钱包插件货币符号使用当前 currency_symbol 数据的固定值（0否, 1是）
                 is_wallet_use_fixed_currency_symbol: 0,
 
-                // tabbar页面
-                tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
 
                 // 数据缓存key
                 // 场景值
