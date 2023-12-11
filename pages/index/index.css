@@ -50,15 +50,15 @@
  * 搜索
  */
 .search-fixed-seat {
-    padding-top: 72rpx;
+    padding-top: 78rpx;
     /* #ifdef MP-TOUTIAO */
-    padding-top: 50rpx;
+    padding-top: 58rpx;
     /* #endif */
 }
 .search-fixed-seat.nav-enable-search {
-    padding-top: 140rpx;
+    padding-top: 146rpx;
     /* #ifdef MP-TOUTIAO */
-    padding-top: 82rpx;
+    padding-top: 88rpx;
     /* #endif */
 }
 .search-content-fixed {

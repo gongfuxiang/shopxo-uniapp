@@ -540,7 +540,7 @@
                     </view>
                     <view class="plugins-realstore-popup">
                         <block v-if="(plugins_realstore_data || null) != null && plugins_realstore_data.length > 0">
-                            <component-realstore-list :propDataList="plugins_realstore_data" :propIsFavor="false"></component-realstore-list>
+                            <component-realstore-list :propDataList="plugins_realstore_data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关门店信息</view>

@@ -130,6 +130,10 @@ page {
 .goods-list .goods-base .buy-number {
     min-width: 32rpx;
 }
+.goods-list .goods-item.item-highlight {
+    box-shadow: 0rpx 9rpx 20rpx 0px rgba(0, 0, 0, 0.1);
+    background: #F7FBF6 !important;
+}
 
 /**
  * 客服弹窗

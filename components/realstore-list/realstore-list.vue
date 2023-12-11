@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-realstore-data-list oh">
             <block v-for="(item, index) in data_list" :key="index">
-                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url" @tap="url_event">
+                <view class="item bg-white padding-top-xl padding-bottom-sm padding-horizontal-main border-radius-main pr spacing-mb" :class="item.status_info.type === 2 ? 'opacity' : ''" :data-value="item.url+propRealstoreDetailQuery" @tap="url_event">
                     <view class="base oh flex-row">
                         <!-- 基础内容 -->
                         <image :src="item.logo" mode="widthFix" class="logo circle br"></image>
@@ -71,6 +71,10 @@ export default {
         propFavorUser: {
             type: Array,
             default: () => [],
+        },
+        propRealstoreDetailQuery: {
+            type: String,
+            default: '',
         },
     },
     // 属性值改变监听

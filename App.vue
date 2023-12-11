@@ -60,15 +60,6 @@
                 // 全站阻止打开商品详情页面（0 否, 1 是）
                 is_forbid_to_goods_detail: 0,
 
-                // 门店详情顶部导航返回按钮（0 否, 1 是）
-                is_realstore_top_nav_back: 1,
-
-                // 门店详情搜索框内扫码加购（0否, 1是）
-                is_realstore_top_search_scan: 1,
-
-                // 门店详情阻止跳转到商品详情页面去（0否, 1是）
-                is_realstore_forbid_to_goods_detail: 0,
-
                 // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
                 is_online_service_fixed: 1,
 
@@ -99,9 +90,21 @@
 
                 // 强制使用文字作为logo（默认当前指定logo->后台站点设置手机端图片logo->后台手机管理小程序配置名称->站点设置中的站点名称）
                 is_home_logo_use_text: 0,
-                
+
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
                 is_home_location_choice: 1,
+
+                // 门店详情顶部导航返回按钮（0 否, 1 是）
+                is_realstore_top_nav_back: 1,
+
+                // 门店详情搜索框内扫码加购（0否, 1是）
+                is_realstore_top_search_scan: 1,
+
+                // 门店详情阻止跳转到商品详情页面去（0否, 1是）
+                is_realstore_forbid_to_goods_detail: 0,
+
+                // 钱包插件货币符号使用当前 currency_symbol 数据的固定值（0否, 1是）
+                is_wallet_use_fixed_currency_symbol: 0,
 
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],

@@ -256,18 +256,18 @@
                 if(this.info.status_info.status != 1) {
                     btn_status = false;
                     btn_text = this.info.status_info.msg;
-                }
-
-                // 购物车是否存在商品
-                if((this.cart || null) == null || parseInt(this.cart.buy_number || 0) == 0) {
-                    btn_status = false;
-                    btn_text = '未加购';
                 } else {
-                    // 起步价
-                    var msg = this.starting_price_handle();
-                    if(msg !== null) {
+                    // 购物车是否存在商品
+                    if((this.cart || null) == null || parseInt(this.cart.buy_number || 0) == 0) {
                         btn_status = false;
-                        btn_text = msg;
+                        btn_text = '未加购';
+                    } else {
+                        // 起步价
+                        var msg = this.starting_price_handle();
+                        if(msg !== null) {
+                            btn_status = false;
+                            btn_text = msg;
+                        }
                     }
                 }
 

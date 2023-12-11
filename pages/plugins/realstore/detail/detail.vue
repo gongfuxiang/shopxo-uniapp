@@ -162,41 +162,43 @@
                                 </view>
                                 <!-- 右侧商品列表 -->
                                 <block v-if="(data_list || null) != null && data_list.length > 0">
-                                    <view v-for="(item, index) in data_list" :key="index" class="item bg-white padding-main border-radius-main oh spacing-mb">
-                                        <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
-                                            <view class="flex-row jc-sb">
-                                                <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
-                                                <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
-                                                    <view class="goods-base-content">
-                                                        <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
-                                                        <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
-                                                    </view>
-                                                    <view class="margin-top oh flex-row jc-sb align-c">
-                                                        <view class="single-text sales-price va-b va-m">
-                                                            <text class="text-size-xss">{{ currency_symbol }}</text>
-                                                            <text class="text-size-lg">{{ item.min_price }}</text>
+                                    <block v-for="(item, index) in data_list" :key="index">
+                                        <view :class="'goods-item bg-white padding-main border-radius-main oh spacing-mb '+((item.is_highlight || 0) == 1 ? 'item-highlight' : '')">
+                                            <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
+                                                <view class="flex-row jc-sb">
+                                                    <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
+                                                    <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
+                                                        <view class="goods-base-content">
+                                                            <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
+                                                            <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
                                                         </view>
-                                                        <view class="tc flex-row align-c">
-                                                            <block v-if="(item.is_error || 0) == 0">
-                                                                <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
-                                                                    <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
-                                                                </view>
-                                                                <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
-                                                                    {{ item.buy_number }}
-                                                                </view>
-                                                                <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
-                                                                    <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
-                                                                </view>
-                                                            </block>
-                                                            <block v-else>
-                                                                <text class="cr-grey-c text-size-xs">{{ item.is_error_msg }}</text>
-                                                            </block>
+                                                        <view class="margin-top oh flex-row jc-sb align-c">
+                                                            <view class="single-text sales-price va-b va-m">
+                                                                <text class="text-size-xss">{{ currency_symbol }}</text>
+                                                                <text class="text-size-lg">{{ item.min_price }}</text>
+                                                            </view>
+                                                            <view class="tc flex-row align-c">
+                                                                <block v-if="(item.is_error || 0) == 0">
+                                                                    <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
+                                                                        <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
+                                                                    </view>
+                                                                    <view v-if="(item.buy_number || 0) > 0" class="buy-number cr-black text-size-sm padding-left-xs padding-right-xs">
+                                                                        {{ item.buy_number }}
+                                                                    </view>
+                                                                    <view class="cp pr top-sm" :data-index="index" data-type="1" @tap.stop="buy_number_event">
+                                                                        <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
+                                                                    </view>
+                                                                </block>
+                                                                <block v-else>
+                                                                    <text class="cr-grey-c text-size-xs">{{ item.is_error_msg }}</text>
+                                                                </block>
+                                                            </view>
                                                         </view>
                                                     </view>
                                                 </view>
                                             </view>
                                         </view>
-                                    </view>
+                                    </block>
                                 </block>
                                 <block v-else>
                                     <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
@@ -350,6 +352,7 @@
         onPullDownRefresh() {
             this.setData({
                 data_page: 1,
+                data_list_loding_status: (this.data_list_loding_status == 2) ? 1 : this.data_list_loding_status
             });
             this.reset_scroll();
             this.get_detail_init();
@@ -500,6 +503,10 @@
                 var temp_search_nav_sort = this.search_nav_sort_list;
                 post_data['order_by_type'] = temp_search_nav_sort[temp_index]['sort'] == 'desc' ? 'asc' : 'desc';
                 post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
+                // 指定商品
+                if((this.params.source_goods_id || null) != null) {
+                    post_data['source_goods_id'] = this.params.source_goods_id;
+                }
 
                 // 获取数据
                 uni.request({
@@ -511,6 +518,16 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            // 存在参数指定来源商品id则清空
+                            if((this.params.source_goods_id || null) != null) {
+                                var temp_params = this.params;
+                                delete temp_params['source_goods_id'];
+                                this.setData({
+                                    params: temp_params
+                                });
+                            }
+
+                            // 列表数据处理
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = data.data;

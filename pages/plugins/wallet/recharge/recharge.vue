@@ -54,6 +54,7 @@
         </view>
         <!-- 支付弹窗 -->
         <component-payment
+            :prop-currency-symbol="currency_symbol"
             :prop-pay-url="pay_url"
             :prop-qrcode-url="qrcode_url"
             prop-pay-data-key="recharge_id"
@@ -76,12 +77,13 @@
     import componentPayment from '@/components/payment/payment';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
 
+    var currency_symbol = (app.globalData.data.is_wallet_use_fixed_currency_symbol == 1) ? app.globalData.data.currency_symbol : app.globalData.currency_symbol();
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
-                currency_symbol: app.globalData.currency_symbol(),
+                currency_symbol: currency_symbol,
                 params: null,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',

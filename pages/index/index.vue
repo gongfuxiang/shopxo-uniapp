@@ -51,14 +51,14 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search :propIsBtn="true" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                <component-search :propIsBtn="true" propSize="sm" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                     <!-- #ifndef H5 -->
                                     @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                     <!-- #endif -->
                                 ></component-search>
                             </block>
                             <block v-else>
-                                <component-search :propIsBtn="true" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                                <component-search :propIsBtn="true" propSize="sm" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
                             </block>
                         </view>
                     </view>

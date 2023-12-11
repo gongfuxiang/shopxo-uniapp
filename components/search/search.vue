@@ -217,6 +217,18 @@
         z-index: 2;
     }
 
+    .search-content.sm .search-icon {
+        padding-top: 16rpx;
+    }
+    .search-content.sm .input {
+        height: 60rpx;
+        line-height: 60rpx;
+    }
+    .search-content.sm .search-btn {
+        height: 50rpx;
+        line-height: 50rpx;
+    }
+
     .search-content.md .search-icon {
         padding-top: 20rpx;
     }
