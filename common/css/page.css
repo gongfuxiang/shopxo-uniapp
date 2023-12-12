@@ -770,27 +770,27 @@ button:before {
 .bg-black {
     background-color: #333333 !important;
 }
-
+.bg-white-disabled,
 button[disabled].bg-white {
     background-color: #fdfdfd !important;
     color: #ccc !important;
 }
-
+.bg-green-disabled,
 button[disabled].bg-green {
     background-color: #94de94 !important;
     color: #d5f5d5 !important;
 }
-
+.bg-red-disabled,
 button[disabled].bg-red {
     background-color: #ffbaba !important;
     color: #ffdfdf !important;
 }
-
+.bg-yellow-disabled,
 button[disabled].bg-yellow {
     background-color: #fff1cb !important;
     color: #fbd777 !important;
 }
-
+.bg-grey-disabled,
 button[disabled].bg-grey {
     background-color: #ececec !important;
     color: #ababab !important;

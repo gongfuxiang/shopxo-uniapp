@@ -14,7 +14,7 @@ page {
     min-height: 242rpx;
 }
 .header-content .address-content {
-    width: calc(100% - 100rpx);
+    max-width: calc(100% - 100rpx);
 }
 .header-content .navigation {
     width: 68rpx;

@@ -678,7 +678,7 @@
                 // 更新列表数据处理
                 this.cart_data_list_handle(params, 1);
             },
-            
+
             // 购物车操作成功回调
             goods_opt_cart_back_event(params) {
                 // 更新列表数据处理
@@ -715,7 +715,7 @@
                 if (temp_data_list.length > 0) {
                     for (var i in temp_data_list) {
                         // 非追加则赋值0
-                        if(is_append == 0) {
+                        if(is_append == 0 && (params.type || null) != 'save') {
                             temp_data_list[i]['buy_number'] = 0;
                         }
                         // 对应商品叠加数量
@@ -731,7 +731,7 @@
 
             // 获取购物车数据
             get_cart_data() {
-                this.$refs.realstore_cart.init({...{base: this.data_base, info: this.info}, ...this.params});
+                this.$refs.realstore_cart.init({...{source: 'realstore', base: this.data_base, info: this.info}, ...this.params});
             },
 
             // 列表数量事件处理
@@ -858,9 +858,9 @@
             },
 
             // 下单类型切换事件回调
-            buy_type_switch_event(index) {
+            buy_type_switch_event(params) {
                 this.setData({
-                    buy_use_type_index: index,
+                    buy_use_type_index: params.index,
                     data_page: 1,
                 });
                 this.reset_scroll();

@@ -598,7 +598,7 @@
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
 
         <!-- 门店购物车 -->
-        <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
+        <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" v-on:BuyTypeSwitchEvent="refresh_loading_event" v-on:RefreshLoadingEvent="refresh_loading_event" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
     </view>
 </template>
 <script>
@@ -925,33 +925,20 @@
                             }
 
                             // 是否展示门店购物车导航
-                            if((this.plugins_realstore_data || null) != null && (this.plugins_realstore_data.data || null) != null) {
-                                var realstore_info = null;
-                                var len = this.plugins_realstore_data.data.length;
-                                if(len > 1) {
-                                    var realstore_id = this.params.realstore_id || null;
-                                    if(realstore_id != null) {
-                                        this.plugins_realstore_data.data.forEach(function(item, index) {
-                                            if(item.id == realstore_id) {
-                                                realstore_info = item;
-                                            }
-                                        });
-                                    }
-                                } else {
-                                    realstore_info = this.plugins_realstore_data.data[0];
-                                }
-                                if(realstore_info != null) {
+                            if((this.plugins_realstore_data || null) != null) {
+                                // 当前门店信息
+                                if((this.plugins_realstore_data.info || null) != null) {
                                     this.setData({
                                         plugins_realstore_cart_nav_status: true
                                     });
-                                    this.$refs.realstore_cart.init({...{base: this.plugins_realstore_data.base, info: realstore_info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
+                                    this.$refs.realstore_cart.init({...{source: 'goods', base: this.plugins_realstore_data.base, info: this.plugins_realstore_data.info, realstore_goods_data: {...{buy_button: this.buy_button}, ...this.goods}}, ...this.params});
                                 }
-                            }
 
-                            // 是否需要隐藏购物车
-                            if(parseInt(data.is_hide_goods_detail_bottom_opt_cart || 0) == 1) {
-                                this.setData({is_opt_cart: 0});
-                                this.bottom_nav_bus_number_handle();
+                                // 是否需要隐藏购物车
+                                if(parseInt(this.plugins_realstore_data.is_hide_cart || 0) == 1) {
+                                    this.setData({is_opt_cart: 0});
+                                    this.bottom_nav_bus_number_handle();
+                                }
                             }
 
                             // 分享配置
@@ -1110,6 +1097,10 @@
                         break;
                     // 门店
                     case 'plugins-realstore':
+                        if((this.plugins_realstore_data || null) == null || (this.plugins_realstore_data.data || null) == null) {
+                            app.globalData.showToast('门店数据有误');
+                            return false;
+                        }
                         var temp_data_list = this.plugins_realstore_data.data || [];
                         if (temp_data_list.length == 1) {
                             app.globalData.url_open(temp_data_list[0]['url']+'&source_goods_id='+this.goods.id);
@@ -1477,7 +1468,13 @@
             batch_goods_cart_back_event(e) {
                 this.goods_cart_count_handle(e.cart_number);
             },
-        },
+
+            // 下单类型切换事件、数据刷新事件
+            refresh_loading_event(params) {
+                this.setData({params: {...this.params, ...params}});
+                this.init();
+            }
+        }
     };
 </script>
 <style>
