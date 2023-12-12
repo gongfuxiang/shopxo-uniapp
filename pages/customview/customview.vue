@@ -9,8 +9,8 @@
                 </view>
             </block>
 
-            <!-- 拖拽模式、引入拖拽数据模块 -->
-            <component-layout :propData="layout_data"></component-layout>
+            <!-- 内容 -->
+            <mp-html :content="data.html_content" />
 
             <!-- 结尾 -->
             <block v-if="(data.is_footer || 0) == 1">
@@ -25,7 +25,6 @@
 </template>
 <script>
     const app = getApp();
-    import componentLayout from "../../components/layout/layout";
     import componentSearch from "../../components/search/search";
     import componentNoData from "../../components/no-data/no-data";
     import componentBottomLine from "../../components/bottom-line/bottom-line";
@@ -36,16 +35,14 @@
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                params: null,
+                params: {},
                 data: null,
-                layout_data: [],
                 // 自定义分享信息
                 share_info: {}
             };
         },
 
         components: {
-            componentLayout,
             componentSearch,
             componentNoData,
             componentBottomLine
@@ -71,7 +68,7 @@
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url("index", "design"),
+                    url: app.globalData.get_request_url("index", "customview"),
                     method: 'POST',
                     data: this.params,
                     dataType: 'json',
@@ -80,8 +77,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data: (data.data || null) != null && data.data.length != 0 ? data.data : null,
-                                layout_data: data.layout_data || [],
+                                data: data.data || null,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true
@@ -93,7 +89,7 @@
                                     share_info: {
                                         title: this.data.seo_title || this.data.name,
                                         desc: this.data.seo_desc,
-                                        path: '/pages/design/design',
+                                        path: '/pages/customview/customview',
                                         query: 'id='+this.data.id,
                                         img: this.data.logo
                                     }
@@ -104,7 +100,7 @@
                                     title: this.data.name
                                 });
                             }
-                            
+
                             // 分享菜单处理
                             app.globalData.page_share_handle(this.share_info);
                         } else {

@@ -226,6 +226,13 @@
             }
         },
         {
+            "path": "pages/customview/customview",
+            "style": {
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": "自定义页面"
+            }
+        },
+        {
             "path": "pages/design/design",
             "style": {
                 "enablePullDownRefresh": true,
