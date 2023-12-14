@@ -1030,16 +1030,13 @@
                     articleTitle: share.title,
                     description: share.desc,
                     image: share.img,
-                    video:
-                        (share.video || null) == null
-                            ? []
-                            : [
-                                  {
-                                      url: share.video,
-                                      duration: '100',
-                                      image: share.img,
-                                  },
-                              ],
+                    video: (share.video || null) == null ? [] : [
+                              {
+                                  url: share.video,
+                                  duration: '100',
+                                  image: share.img,
+                              },
+                          ],
                 });
                 // #endif
             },

@@ -182,14 +182,49 @@
 
             // 进入直播
             player_event(e) {
+                // 打开直播参数
                 var params = encodeURIComponent(
                     JSON.stringify({
                         type: 'detail',
                     })
                 );
+                var url = `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${this.detail.roomid}&custom_params=${params}`;
+
+                // #ifdef APP
+                // APP则直接打开微信小程序直播
+                var weixin_original_id = app.globalData.get_config('config.common_app_mini_share_weixin_original_id', null);
+                if(weixin_original_id != null) {
+                    plus.share.getServices(res => {
+                        let sweixin = null;
+                        for(let i in res) {
+                            if(res[i].id == 'weixin') {
+                                sweixin = res[i];
+                            }
+                        }
+                        //唤醒微信小程序
+                        if(sweixin) {
+                            sweixin.launchMiniProgram({
+                                id: weixin_original_id,
+                                type: 0,
+                                path: url
+                            });
+                        } else {
+                            app.globalData.showToast('未安装微信APP');
+                        }
+                    });
+                }
+                return false;
+                // #endif
+
+                // #ifdef MP-WEIXIN
                 uni.navigateTo({
-                    url: `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${this.detail.roomid}&custom_params=${params}`,
+                    url: url
                 });
+                return false;
+                // #endif
+
+                // 非微信环境和APP环境
+                app.globalData.showToast('请在微信小程序中打开');
             },
 
             // 海报分享

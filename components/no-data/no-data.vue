@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 是否有网络 -->
-        <view v-if="network_type_value == 'none'" class="network-type-tips pa left-0 wh-auto tc bs-bb padding-horizontal-main">
+        <view v-if="network_type_value == 'none'" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
             <view class="cr-base text-size">暂时无网络连接</view>
             <view class="cr-grey margin-top-sm">请您检查是否系统设置-＞蜂窝移动网络中是否允许【{{title}}】APP使用蜂窝移动网络或无线局域网</view>
         </view>
@@ -77,7 +77,7 @@
 </script>
 <style>
     .network-type-tips {
-        top: calc(50vh - 60rpx);
+        padding-top: 15%;
     }
     .no-data-box {
         padding: 15% 0;

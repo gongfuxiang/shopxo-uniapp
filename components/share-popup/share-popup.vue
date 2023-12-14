@@ -212,7 +212,27 @@
                 // 分享基础数据
                 var share = app.globalData.share_content_handle(this.share_info || {});
                 var img = this.images || share.img;
+                var url = this.url || share.url;
+                var title = this.title || share.title;
+                var summary = this.summary || share.desc;
                 var type = (this.type === null) ? ((img || null) == null ? 1 : 0) : this.type;
+                var miniProgram = {};
+
+                // #ifdef APP
+                // 分享到好友，是否走微信小程序，则获取微信小程序原始id
+                if(scene == 'WXSceneSession') {
+                    var weixin_original_id = app.globalData.get_config('config.common_app_mini_share_weixin_original_id', null);
+                    if(weixin_original_id != null) {
+                        type = 5;
+                        miniProgram = {
+                            id: weixin_original_id,
+                            path: url.split('#')[1],
+                            type: 0,
+                            webUrl: url,
+                        };
+                    }
+                }
+                // #endif
 
                 // 关闭分享弹窗
                 this.setData({
@@ -224,10 +244,11 @@
                 	provider: provider,
                 	scene: scene,
                 	type: type,
-                	href: this.url || share.url,
-                	title: this.title || share.title,
-                	summary: this.summary || share.desc,
+                	href: url,
+                	title: title,
+                	summary: summary,
                 	imageUrl: img,
+                    miniProgram: miniProgram,
                 	success: function (res) {},
                 	fail: function (err) {}
                 });
