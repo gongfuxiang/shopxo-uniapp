@@ -6,16 +6,11 @@ page {
  * 基础
  */
 .content .icon {
-    width: 160rpx;
-    height: 160rpx !important;
+    width: 130rpx;
+    height: 130rpx !important;
 }
-
 .dom-content {
     min-height: 100vh;
-}
-
-.top-nav {
-    padding: 34rpx;
 }
 
 /**
@@ -24,7 +19,6 @@ page {
 .form-content {
     padding: 34rpx;
 }
-
 .form-content .form-item,
 .form-content .code,
 .form-content .verify {
@@ -34,31 +28,26 @@ page {
     border-radius: 25px;
     border: 0;
 }
-
 .form-content .code input,
 .form-content .verify input {
     height: 50px;
     line-height: 50px;
     padding: 0 36rpx;
 }
-
 .form-content .form-item ::v-deep .input-placeholder,
 .form-content .form-item ::v-deep .uni-input-input {
     padding: 0 36rpx;
     font-size: 30rpx;
 }
-
 .form-content .form-item ::v-deep .input-placeholder,
 .form-content .code input ::v-deep .input-placeholder,
 .form-content .verify input ::v-deep .input-placeholder {
     font-size: 30rpx;
 }
-
 .form-content .code input,
 .form-content .verify input {
     width: 63%;
 }
-
 .form-content .form-item ::v-deep .uni-input-input:-webkit-autofill {
     /* //这个地方的颜色是字体颜色，可以根据实际情况修改 */
     /* -webkit-text-fill-color: #ededed !important;  */
@@ -69,14 +58,12 @@ page {
     background-image: none;
     transition: background-color 50000s ease-in-out 0s;
 }
-
 .form-content .code ::v-deep .uni-input-input:-webkit-autofill {
     /* //设置input输入框的背景颜色为透明色 */
     background-color: #f9f9f9;
     background-image: none;
     transition: background-color 50000s ease-in-out 0s;
 }
-
 .form-content .code .verify-submit {
     padding: 0 12px;
     height: 28px;
@@ -84,7 +71,6 @@ page {
     top: 11px;
     right: 36rpx;
 }
-
 .form-content .verify .verify-image {
     width: 35%;
     height: 50px;
@@ -92,7 +78,6 @@ page {
     top: 0;
     right: 36rpx;
 }
-
 .opt-type-list text:not(:last-child) {
     margin-right: 50rpx;
 }
@@ -105,44 +90,35 @@ page {
     height: 76rpx;
     padding: 5rpx;
 }
-
 .plugins-thirdpartylogin .item:not(:last-child) {
     margin-right: 54rpx;
 }
-
 .plugins-thirdpartylogin .item image {
     width: 50rpx !important;
     height: 50rpx !important;
 }
-
 .plugins-thirdpartylogin .item:last-of-type image {
     width: 76rpx !important;
     height: 76rpx !important;
 }
-
 .plugins-thirdpartylogin-bind image {
     width: 40rpx !important;
     height: 40rpx !important;
 }
-
 .plugins-thirdpartylogin-bind button {
     line-height: 40rpx;
 }
-
 .popup-login .content,
 .popup-login .footer .cancel-btn {
     border-radius: 32rpx;
 }
-
 .popup-login .content .item:not(:last-child) {
     border-bottom: 1px solid #eee;
 }
-
 .popup-login .content .item image {
     width: 36rpx !important;
     height: 36rpx !important;
 }
-
 .popup-login .content .item .login-width {
     width: 180rpx;
 }
@@ -153,7 +129,6 @@ page {
 .popup-language {
     height: 100vh;
 }
-
 .popup-language .list {
     height: calc(100vh - 95rpx);
     overflow-y: auto;

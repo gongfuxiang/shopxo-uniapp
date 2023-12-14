@@ -242,7 +242,11 @@
         },
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data();
+            if(this.data_list_loding_status === 1) {
+                uni.stopPullDownRefresh();
+            } else {
+                this.get_data();
+            }
         },
         methods: {
             // 初始化配置
@@ -255,8 +259,16 @@
                     app.globalData.is_config(this, 'init_config');
                 }
             },
+
             // 获取数据
-            get_data() {
+            get_data(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'get_data');
+                    return false;
+                }
+
+                // 请求数据
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'shop'),
                     method: 'POST',

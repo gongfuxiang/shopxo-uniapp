@@ -101,14 +101,25 @@
         },
         // 下拉刷新
         onPullDownRefresh() {
-            this.setData({
-                data_page: 1,
-            });
-            this.get_data_list(1);
+            if(this.data_list_loding_status === 1) {
+                uni.stopPullDownRefresh();
+            } else {
+                this.setData({
+                    data_page: 1,
+                });
+                this.get_data_list(1);
+            }
         },
         methods: {
             // 初始化
-            get_data() {
+            get_data(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'get_data');
+                    return false;
+                }
+
+                // 请求数据
                 uni.showLoading({
                     title: '加载中...',
                 });
@@ -158,7 +169,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: '网络开小差了哦~00home',
                         });
                     },
                 });

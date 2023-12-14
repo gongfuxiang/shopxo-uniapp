@@ -218,11 +218,12 @@
     }
 
     .search-content.sm .search-icon {
-        padding-top: 16rpx;
+        padding-top: 18rpx;
     }
     .search-content.sm .input {
         height: 60rpx;
         line-height: 60rpx;
+        font-size: 26rpx;
     }
     .search-content.sm .search-btn {
         height: 50rpx;
@@ -230,11 +231,12 @@
     }
 
     .search-content.md .search-icon {
-        padding-top: 20rpx;
+        padding-top: 22rpx;
     }
     .search-content.md .input {
         height: 66rpx;
         line-height: 66rpx;
+        font-size: 28rpx;
     }
     .search-content.md .search-btn {
         height: 56rpx;

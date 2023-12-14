@@ -149,7 +149,11 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data();
+            if(this.data_list_loding_status === 1) {
+                uni.stopPullDownRefresh();
+            } else {
+                this.get_data();
+            }
         },
 
         // 页面销毁时执行
@@ -161,8 +165,14 @@
 
         methods: {
             // 初始化
-            get_data() {
-                // 用户位置
+            get_data(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'get_data');
+                    return false;
+                }
+
+                // 请求数据
                 var lng = 0;
                 var lat = 0;
                 if ((this.user_location || null) != null) {

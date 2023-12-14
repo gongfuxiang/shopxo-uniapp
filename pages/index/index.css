@@ -10,7 +10,7 @@
     min-height: 56rpx;
 }
 .home-top-nav-location {
-    max-width: calc(100% - 260rpx);
+    max-width: calc(100% - 200rpx);
     height: 56rpx;
     line-height: 56rpx;
 }
@@ -38,7 +38,7 @@
     line-height: 56rpx;
 }
 .nav-top-right-icon .item:not(:last-child) {
-    margin-right: 20rpx;
+    margin-right: 40rpx;
 }
 .nav-top-right-icon .badge-icon {
     top: -10px;
@@ -89,7 +89,6 @@
 .search-content-fixed .nav-top-right-icon {
     top: 8px !important;
 }
-
 /* #endif */
 
 /**

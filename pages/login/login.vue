@@ -5,7 +5,7 @@
                 <view class="flex-col jc-sb dom-content">
                     <view>
                         <!-- 多语言切换 -->
-                        <view class="flex-row tr top-nav margin-bottom-xl">
+                        <view class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
                             <view class="flex-1 cr-base text-size" @tap="open_language_event">
                                 <view class="pr top-sm margin-right-sm dis-inline-block">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
@@ -83,7 +83,7 @@
                             <!-- 绑定账号提示 -->
                             <view v-if="(plugins_thirdpartylogin_user || null) != null && (plugins_thirdpartylogin_user.is_force_bind_user || 0) == 1" class="plugins-thirdpartylogin-bind tc padding-horizontal-main margin-top-xl">
                                 <view class="margin-bottom-sm">
-                                    <image :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
+                                    <image v-if="(plugins_thirdpartylogin_user.avatar || null) != null" :src="plugins_thirdpartylogin_user.avatar" mode="aspectFit" class="round br va-m"></image>
                                     <text class="cr-blue margin-left-sm">{{ plugins_thirdpartylogin_user.nickname }}</text>
                                     <button type="default" size="mini" class="br-red cr-red bg-white round va-m text-size-xs margin-left-lg padding-top-xs padding-bottom-xs" @tap="plugins_thirdpartylogin_cancel_event">{{ $t('common.cancel') }}</button>
                                 </view>
@@ -1425,66 +1425,34 @@
                 // #endif
 
                 // #ifdef APP
-                let $this = this;
+                let self = this;
                 switch(type) {
-                    // 微信、QQ
+                    // 微信、QQ、apple
                     case 'weixin' :
                     case 'qq' :
+                    case 'apple' :
                         uni.login({
                             provider: type,
                             success: function(res) {
-                                let auth_result = res.authResult;
-                                $this.app_login_bind_handle({
+                                let auth_result = res.appleInfo || res.userInfo || res.authResult;
+                                self.app_login_bind_handle({...auth_result, ...{
                                     platform: type,
-                                    openid: auth_result['openid'],
-                                    access_token: auth_result['access_token']
-                                }, auth_result);
+                                    openid: auth_result.openid || auth_result.openId || auth_result.user,
+                                    access_token: auth_result.access_token || ''
+                                }}, auth_result);
                             },
                             fail: function (error) {
                                 app.globalData.showToast(error.errMsg || '调用登录SDK失败');
                             },
                         });
                         break;
+
+                    default :
+                        app.globalData.showToast(type+'登录方式未处理');
                 }
                 // #endif
             },
-            
-            // apple登录
-            loginByApple(){
-                let $this = this
-                //console.log("weixin")
-                uni.login({
-                    provider: 'apple',
-                    success: function (loginRes) {
-                        let {authResult} = loginRes
-                        console.log("授权信息",authResult)
-                        uni.getUserInfo({  
-                            provider: 'apple',  
-                            success(info) {  
-                                let {userInfo} = info
-                                let {openId,...otherUserInfo} = userInfo
-                                /* console.log("userInfo",userInfo)
-                                console.log("otherUserInfo",otherUserInfo) */
-                                let post_data = {
-                                    pluginsname:"thirdpartylogin",
-                                    pluginscontrol:"index",
-                                    pluginsaction:"bind",
-                                    platform:"iphone",
-                                    ...otherUserInfo,
-                                    openid:openId
-                                }
-                                console.log("请求参数",post_data)
-                                $this.app_login_bind_handle(post_data,userInfo)
-                            }  
-                        })  
-                        
-                    },
-                    fail: function (error) {
-                        console.log(JSON.stringify(error));
-                    },
-                });
-            },
-            
+
             // 登录回处理
             app_login_bind_handle(post_data, auth_result) {
                 uni.showLoading({
@@ -1498,7 +1466,7 @@
                     success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            var user = {...res.data.data, ...auth_result};
+                            var user = {...auth_result, ...res.data.data};
                             // 设置当前第三方登录用户数据
                             this.setData({
                                 plugins_thirdpartylogin_user: user

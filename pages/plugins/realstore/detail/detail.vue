@@ -201,7 +201,7 @@
                                     </block>
                                 </block>
                                 <block v-else>
-                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propBackBtn="false"></component-no-data>
                                 </block>
                             </view>
                         </scroll-view>
@@ -371,7 +371,14 @@
             },
 
             // 获取数据-初始化
-            get_detail_init() {
+            get_detail_init(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'get_detail_init');
+                    return false;
+                }
+
+                // 请求数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'detail', 'realstore'),
                     method: 'POST',
@@ -518,15 +525,6 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            // 存在参数指定来源商品id则清空
-                            if((this.params.source_goods_id || null) != null) {
-                                var temp_params = this.params;
-                                delete temp_params['source_goods_id'];
-                                this.setData({
-                                    params: temp_params
-                                });
-                            }
-
                             // 列表数据处理
                             if (data.data.length > 0) {
                                 if (this.data_page <= 1) {
@@ -746,6 +744,7 @@
                     search_keywords_value: e || '',
                     data_page: 1,
                 });
+                this.source_goods_remove();
                 this.reset_scroll();
                 this.get_data_list(1);
             },
@@ -797,6 +796,7 @@
                     data_list: [],
                     data_list_loding_status: 1,
                 });
+                this.source_goods_remove();
                 this.reset_scroll();
                 this.get_data_list(1);
             },
@@ -848,8 +848,21 @@
             		search_nav_sort_list: temp_search_nav_sort,
             		data_page: 1
             	});
+                this.source_goods_remove();
                 this.reset_scroll();
             	this.get_data_list(1);
+            },
+
+            // 来源商品清空
+            source_goods_remove() {
+                // 存在参数指定来源商品id则清空
+                if((this.params.source_goods_id || null) != null) {
+                    var temp_params = this.params;
+                    delete temp_params['source_goods_id'];
+                    this.setData({
+                        params: temp_params
+                    });
+                }
             },
 
             // 使用类型事件

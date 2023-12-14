@@ -166,7 +166,7 @@
                                                     </view>
                                                 </view>
                                                 <block v-else>
-                                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propBackBtn="false"></component-no-data>
                                                 </block>
                                             </view>
                                         </scroll-view>
@@ -536,13 +536,19 @@
             },
 
             // 获取数据
-            init() {
+            init(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'init');
+                    return false;
+                }
+
+                // 请求数据
                 if (this.is_first == 1) {
                     this.setData({
                         data_list_loding_status: 1,
                     });
                 }
-
                 uni.request({
                     url: app.globalData.get_request_url('category', 'goods'),
                     method: 'POST',

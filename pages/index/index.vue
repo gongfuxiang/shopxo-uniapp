@@ -10,7 +10,7 @@
 
                 <!-- 搜索 -->
                 <view v-if="common_app_is_header_nav_fixed == 1" :class="'search-fixed-seat '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')"></view>
-                <view v-if="load_status == 1" :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
+                <view :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
                     <view :class="'search-content-fixed-content '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
                         <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                             <!-- 定位 -->
@@ -39,7 +39,7 @@
                             <view v-if="(right_icon_list || null) != null && right_icon_list.length > 0" class="nav-top-right-icon fr">
                                 <block v-for="(item, index) in right_icon_list">
                                     <view class="item dis-inline-block cp pr" :data-value="item.url || ''" @tap="url_event">
-                                        <uni-icons :type="item.icon" size="32rpx" color="#f1f1f1"></uni-icons>
+                                        <iconfont :name="item.icon" size="38rpx" color="#fff"></iconfont>
                                         <view v-if="(item.badge || null) != null" class="badge-icon pa">
                                             <component-badge :propNumber="item.badge"></component-badge>
                                         </view>
@@ -124,46 +124,46 @@
                         </view>
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
-                        <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
+                        <view v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
                             <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="0" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-activity-list>
-                        </block>
+                        </view>
 
                         <!-- 门店 - 插件 -->
-                        <block v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
+                        <view v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
                             <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
-                        </block>
+                        </view>
 
                         <!-- 多商户 - 插件 -->
-                        <block v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
+                        <view v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
                             <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
-                        </block>
+                        </view>
 
                         <!-- 组合搭配 - 插件 -->
-                        <block v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
+                        <view v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
                             <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
                                 <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
                             </view>
                             <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
-                        </block>
+                        </view>
 
                         <!-- 博客-楼层顶部 - 插件 -->
-                        <block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
+                        <view v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
                             <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="0"></component-blog-list>
-                        </block>
+                        </view>
 
                         <!-- 魔方 - 插件 -->
-                        <block v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
+                        <view v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
                             <component-magic-list :propData="plugins_magic_data" :propCurrencySymbol="currency_symbol"></component-magic-list>
-                        </block>
+                        </view>
                     </block>
                 </block>
 
@@ -197,14 +197,14 @@
                 <block v-if="plugins_sort_list.length > 0">
                     <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
                         <!-- 活动配置-楼层底部 - 插件 -->
-                        <block v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
+                        <view v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
                             <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :prop-open-cart="false"></component-activity-list>
-                        </block>
+                        </view>
 
                         <!-- 博客-楼层底部 - 插件 -->
-                        <block v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
+                        <view v-if="pv.plugins == 'blog' && (plugins_blog_data || null) != null">
                             <component-blog-list :propConfig="plugins_blog_data.base" :propData="plugins_blog_data.data" propLocation="1"></component-blog-list>
-                        </block>
+                        </view>
 
                         <!--- 底部购买记录 - 插件 -->
                         <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
@@ -343,9 +343,14 @@
                 top_content_bg_color: '',
                 top_content_search_bg_color: '',
                 top_content_search_content_style: '',
+                // #ifdef MP
                 top_content_style: 'padding-top:' + (bar_height + 6) + 'px;',
-                // #ifdef H5 || MP-TOUTIAO || APP
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
                 top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
+                // #endif
+                // #ifdef APP
+                top_content_style: 'padding-top:' + (bar_height) + 'px;',
                 // #endif
                 search_is_fixed: 0,
                 // 是否单页预览
@@ -443,7 +448,11 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.init();
+            if(this.data_list_loding_status === 1) {
+                uni.stopPullDownRefresh();
+            } else {
+                this.init();
+            }
         },
 
         methods: {
@@ -466,7 +475,14 @@
             },
 
             // 获取数据
-            init() {
+            init(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'init');
+                    return false;
+                }
+
+                // 请求数据
                 this.setData({
                     data_list_loding_status: 1,
                 });

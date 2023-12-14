@@ -330,7 +330,9 @@ button:before {
  * 兼容底部横线底部内边距
  */
 .bottom-line-exclude {
+    /* #ifndef APP */
     padding-bottom: calc(env(safe-area-inset-bottom) - 40rpx);
+    /* #endif */
 }
 
 /**

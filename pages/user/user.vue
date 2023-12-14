@@ -64,7 +64,7 @@
                 </view>
 
                 <!-- 中间导航 -->
-                <view class="user-bottom padding-horizontal-main" :style="(payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow: 0px -8px 8px 2px rgba(0, 0, 0, 0.2);' : ''">
+                <view :class="'user-bottom padding-horizontal-main '+((payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow' : '')">
                     <!-- 主要的订单+副导航 -->
                     <block v-if="(main_navigation_data || null) != null && main_navigation_data.length > 0">
                         <block v-for="(item, index) in main_navigation_data" :key="index">
@@ -247,11 +247,11 @@
         props: {},
 
         onShow() {
-            // 数据加载
-            this.init();
-
             // 初始化配置
             this.init_config();
+
+            // 数据加载
+            this.init();
         },
 
         // 下拉刷新

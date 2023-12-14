@@ -209,9 +209,6 @@
 
             // 初始化配置
             this.init_config();
-
-            // 猜你喜欢
-            this.get_data_list(1);
         },
 
         methods: {
@@ -230,9 +227,16 @@
             },
 
             // 获取数据
-            init(source_type = null) {
+            init(params = {}) {
+                // 网络检查
+                if((params || null) == null || (params.loading || 0) == 0) {
+                    app.globalData.network_type_handle(this, 'init');
+                    return false;
+                }
+
+                // 请求数据
                 this.setData({
-                    source_type: source_type,
+                    source_type: params.source_type || null,
                 });
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
@@ -262,6 +266,9 @@
                     } else {
                         // 获取数据
                         this.get_data();
+
+                        // 猜你喜欢
+                        this.get_data_list(1);
 
                         // 用户头像和昵称设置提示
                         if ((this.$refs.user_base || null) != null) {

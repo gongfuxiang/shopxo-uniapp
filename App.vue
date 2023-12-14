@@ -169,6 +169,11 @@
                 
 
                 // 其他数据
+                // 公共数是否已初始化成功
+                common_data_init_status: 0,
+                common_data_init_timer: null,
+                // 网络状态检查
+                network_type_page_record_timer: null,
                 // 位置监听更新页面临时记录数据
                 location_update_page_temp_record_data: [],
             },
@@ -323,26 +328,33 @@
             get_user_info(object, method, params) {
                 var user = this.get_user_cache_info();
                 if (user == null) {
-                    // #ifdef MP
-                    // 小程序唤醒用户授权
-                    this.user_login(object, method, params);
-                    // #endif
-                    // #ifdef H5 || APP
-                    // h5、app登录注册
-                    uni.showModal({
-                        title: '温馨提示',
-                        content: '请先登录或注册',
-                        confirmText: '确认',
-                        cancelText: '暂不',
-                        success: (result) => {
-                            if (result.confirm) {
-                                uni.navigateTo({
-                                    url: '/pages/login/login',
+                    var self = this;
+                    uni.getNetworkType({
+                    	success: function (res) {
+                    		if(res.networkType != 'none') {
+                                // #ifdef MP
+                                // 小程序唤醒用户授权
+                                self.user_login(object, method, params);
+                                // #endif
+                                // #ifdef H5 || APP
+                                // h5、app登录注册
+                                uni.showModal({
+                                    title: '温馨提示',
+                                    content: '请先登录或注册',
+                                    confirmText: '确认',
+                                    cancelText: '暂不',
+                                    success: (result) => {
+                                        if (result.confirm) {
+                                            uni.navigateTo({
+                                                url: '/pages/login/login',
+                                            });
+                                        }
+                                    },
                                 });
+                                // #endif
                             }
-                        },
+                    	}
                     });
-                    // #endif
                     return false;
                 }
                 return user;
@@ -1075,42 +1087,51 @@
 
             // 初始化 配置信息
             init_config(status = 0) {
-                uni.request({
-                    url: this.get_request_url('common', 'base'),
-                    method: 'POST',
-                    data: {
-                        is_key: 1,
-                    },
-                    dataType: 'json',
-                    success: (res) => {
-                        if (res.data.code == 0) {
-                            // 配置存储
-                            var data = res.data.data;
-                            uni.setStorageSync(this.data.cache_config_info_key, data);
-
-                            // 主题设置
-                            this.set_theme_value(data.plugins_themestyle_data);
-
-                            // 设置底部菜单
-                            this.set_tabbar(data.plugins_themestyle_data);
-
-                            // 用户自动登录处理
-                            this.user_auto_login_handle();
-                        } else {
-                            this.showToast(res.data.msg);
-                            // 首次则再次初始化配置
-                            if (status == 0) {
-                                this.init_config(1);
-                            }
+                var self = this;
+                uni.getNetworkType({
+                    success: function (res) {
+                        if(res.networkType != 'none') {
+                            uni.request({
+                                url: self.get_request_url('common', 'base'),
+                                method: 'POST',
+                                data: {
+                                    is_key: 1,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    if (res.data.code == 0) {
+                                        // 记录已初始化公共数据状态
+                                        self.data.common_data_init_status = 1;
+                            
+                                        // 配置存储
+                                        var data = res.data.data;
+                                        uni.setStorageSync(self.data.cache_config_info_key, data);
+                            
+                                        // 主题设置
+                                        self.set_theme_value(data.plugins_themestyle_data);
+                            
+                                        // 设置底部菜单
+                                        self.set_tabbar(data.plugins_themestyle_data);
+                            
+                                        // 用户自动登录处理
+                                        self.user_auto_login_handle();
+                                    } else {
+                                        self.showToast(res.data.msg);
+                                        // 首次则再次初始化配置
+                                        if (status == 0) {
+                                            self.init_config(1);
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    // 首次则再次初始化配置
+                                    if (status == 0) {
+                                        self.init_config(1);
+                                    }
+                                },
+                            });
                         }
-                    },
-                    fail: () => {
-                        this.showToast('网络开小差了哦~');
-                        // 首次则再次初始化配置
-                        if (status == 0) {
-                            this.init_config(1);
-                        }
-                    },
+                    }
                 });
             },
 
@@ -1991,6 +2012,53 @@
                 });
             },
 
+            // 公共数据初始化处理
+            common_data_init_handle() {
+                var self = this;
+                self.data.common_data_init_timer = setInterval(function () {
+                    if(self.data.common_data_init_status == 0) {
+                        self.init_config(1);
+                    } else {
+                        // 已初始化则清除定时任务
+                        clearInterval(self.data.common_data_init_timer);
+                    }
+                }, 2000);
+            },
+
+            // 网络状态检查处理
+            network_type_handle(object, method, params = {}) {
+                // 如果页面已存在位置调用则不重复调用
+                var page = this.current_page(false);
+                var temp_network = this.data.network_type_page_record_timer || {};
+                var temp = temp_network[page] || null;
+                if(temp == null) {
+                    var self = this;
+                    temp_network[page] = {
+                        object: object,
+                        method: method,
+                        params: params
+                    };
+                    temp_network[page]['timer'] = setInterval(function () {
+                        uni.getNetworkType({
+                            success: function (res) {
+                                if(res.networkType != 'none') {
+                                    // 已初始化则清除定时任务
+                                    clearInterval(temp_network[page]['timer']);
+                                    var pv = temp_network[page];
+                                    delete temp_network[page];
+                                    self.data.network_type_page_record_timer = temp_network;
+                                    // 回调页面
+                                    if (typeof pv.object === 'object' && (pv.method || null) != null) {
+                                        pv.object[pv.method]({...(pv.params || {}), ...{loading: 1}});
+                                    }
+                                }
+                            }
+                        });
+                    }, 500);
+                    this.data.network_type_page_record_timer = temp_network;
+                }
+            },
+
             // 微信隐私弹窗提示
             weixin_privacy_setting() {
                 if (this.data.is_weixin_privacy_setting == 1) {
@@ -2089,19 +2157,27 @@
                 // 菜单
                 uni.setTabBarItem({
                     index: 0,
+                    iconPath: 'static/images/common/tabbar/home.png',
                     selectedIconPath: 'static/images/' + theme + '/tabbar/home.png',
+                    text: '首页',
                 });
                 uni.setTabBarItem({
                     index: 1,
+                    iconPath: 'static/images/common/tabbar/category.png',
                     selectedIconPath: 'static/images/' + theme + '/tabbar/category.png',
+                    text: '分类',
                 });
                 uni.setTabBarItem({
                     index: 2,
+                    iconPath: 'static/images/common/tabbar/cart.png',
                     selectedIconPath: 'static/images/' + theme + '/tabbar/cart.png',
+                    text: '购物车',
                 });
                 uni.setTabBarItem({
                     index: 3,
+                    iconPath: 'static/images/common/tabbar/user.png',
                     selectedIconPath: 'static/images/' + theme + '/tabbar/user.png',
+                    text: '我的',
                 });
             },
 
@@ -2309,6 +2385,22 @@
                 user_location['text'] = (user_location.status == 0) ? '未选择位置' : (user_location.name || user_location.address || '');
                 return user_location;
             },
+
+            // 清除定时任务
+            clear_interval_handle() {
+                // 清除初始化公共数据方法定时任务
+                clearInterval(this.data.common_data_init_timer);
+                // 清除网络状态检查方法定时任务
+                var network = this.data.network_type_page_record_timer || null;
+                if(network != null) {
+                    for(var i in network) {
+                        clearInterval(network[i]['timer']);
+                    }
+                }
+                this.data.network_type_page_record_timer = null;
+                // 清除微信隐私方法定时任务
+                clearInterval(this.data.weixin_privacy_setting_timer);
+            }
         },
 
         // 初始化完成时触发（全局只触发一次）
@@ -2328,6 +2420,9 @@
             // 场景值
             this.globalData.set_scene_data(params);
 
+            // 公共数据初始化处理
+            this.globalData.common_data_init_handle();
+
             // #ifdef MP-WEIXIN
             // 协议验证处理
             this.globalData.weixin_privacy_setting();
@@ -2336,14 +2431,12 @@
 
         // 从前台进入后台
         onHide() {
-            // 清除微信隐私方法定时任务
-            clearInterval(this.weixin_privacy_setting_timer);
+            this.globalData.clear_interval_handle();
         },
 
         // 监听应用退出
         onExit() {
-            // 清除微信隐私方法定时任务
-            clearInterval(this.weixin_privacy_setting_timer);
+            this.globalData.clear_interval_handle();
         },
         methods: {},
     };
