@@ -109,7 +109,7 @@
                     </view>
                     <block v-for="(item, index) in buy_use_type_choice_list" :key="index">
                         <view class="item pr">
-                            <view :class="'item-content pr padding-horizontal border-radius-main item-content-'+item.key" :data-index="item.key" @tap="buy_use_type_choice_event">
+                            <view :class="'item-content pr padding-horizontal border-radius-main item-content-key-'+item.key+' item-content-index-'+item.index" :data-index="item.key" @tap="buy_use_type_choice_event">
                                 <image class="left-icon dis-inline-block va-m" :src="static_url+'buy_use_type/'+item.key+'.png'" mode="aspectFit"></image>
                                 <text class="cr-black text-size-sm va-m margin-left-sm">{{item.name}}</text>
                                 <view class="right-arrow pa top-0 right-xxxxl">
@@ -1042,16 +1042,16 @@
         line-height: 112rpx;
     }
     .plugins-realstore-buy-type-choice .item .scan-item,
-    .plugins-realstore-buy-type-choice .item-content-0 {
+    .plugins-realstore-buy-type-choice .item-content-key-0 {
         background: #E8FFF2;
     }
-    .plugins-realstore-buy-type-choice .item-content-1 {
+    .plugins-realstore-buy-type-choice .item-content-key-1 {
         background: #FFF9DC;
     }
-    .plugins-realstore-buy-type-choice .item-content-2 {
+    .plugins-realstore-buy-type-choice .item-content-key-2 {
         background: #FFE8DC;
     }
-    .plugins-realstore-buy-type-choice .item-content-3 {
+    .plugins-realstore-buy-type-choice .item-content-key-3 {
         background: #EDF9FF;
     }
     .plugins-realstore-buy-type-choice .item-content .left-icon {
@@ -1062,7 +1062,7 @@
         margin-bottom: 32rpx;
     }
     /* #ifndef H5 */
-    .plugins-realstore-buy-type-choice .item-content-0 {
+    .plugins-realstore-buy-type-choice .item-content-index-0 {
         width: calc(100% - 190rpx);
     }
     .plugins-realstore-buy-type-choice .item .scan-item {

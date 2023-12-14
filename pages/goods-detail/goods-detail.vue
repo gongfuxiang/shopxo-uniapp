@@ -1380,16 +1380,6 @@
                 });
             },
 
-            // 评价图片预览
-            comment_images_show_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var ix = e.currentTarget.dataset.ix;
-                uni.previewImage({
-                    current: this.goods.comments_data[index]['images'][ix],
-                    urls: this.goods.comments_data[index]['images'],
-                });
-            },
-
             // 更多导航事件
             nav_more_event(e) {
                 app.globalData.operation_event(e);
