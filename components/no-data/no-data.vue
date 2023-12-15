@@ -76,9 +76,6 @@
     };
 </script>
 <style>
-    .network-type-tips {
-        padding-top: 15%;
-    }
     .no-data-box {
         padding: 15% 0;
     }
@@ -93,6 +90,10 @@
     .no-data-loading text {
         color: #999;
     }
+    .loading-animation,
+    .network-type-tips {
+        padding-top: 25%;
+    }
     .loading-animation {
         background: #e7e7e7 -webkit-linear-gradient(left, #c6c6c6 0%, #c6c6c6 90%) no-repeat 0 0;
         background-size: 20% 100%;
@@ -100,9 +101,6 @@
         -webkit-text-fill-color: transparent;
         font-size: 60rpx;
         font-weight: bold;
-        padding-top: 50%;
-    }
-    .loading-animation {
         -webkit-animation: loading-animation 2s linear infinite;
         animation: loading-animation 2s linear infinite;
     }
