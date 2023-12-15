@@ -96,8 +96,6 @@
 <style scoped>
     .nav-back {
         height: 30px;
-        /* #ifdef MP */
         padding-bottom: 10px !important;
-        /* #endif */
     }
 </style>

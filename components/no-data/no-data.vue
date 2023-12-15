@@ -100,7 +100,7 @@
         -webkit-text-fill-color: transparent;
         font-size: 60rpx;
         font-weight: bold;
-        padding-top: 20%;
+        padding-top: 50%;
     }
     .loading-animation {
         -webkit-animation: loading-animation 2s linear infinite;
