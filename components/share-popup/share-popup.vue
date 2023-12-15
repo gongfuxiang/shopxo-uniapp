@@ -8,12 +8,6 @@
                     </view>
                 </view>
                 <view class="share-popup-content">
-                    <!-- #ifdef H5 -->
-                    <view class="share-items oh cp" @tap="share_h5_event">
-                        <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">点击复制地址分享给好友、群聊</text>
-                    </view>
-                    <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
                         <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
@@ -49,6 +43,12 @@
                             <text class="cr-grey text-size-xs single-text">一键分享到QQ好友、空间</text>
                         </view>
                     </block>
+                    <!-- #endif -->
+                    <!-- #ifdef H5 || APP -->
+                    <view class="share-items oh cp" @tap="share_url_copy_event">
+                        <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
+                        <text class="cr-grey text-size-xs single-text">点击复制地址分享给好友、群聊</text>
+                    </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
                         <image :src="common_static_url + 'share-poster-icon.png'" mode="scaleToFill"></image>
@@ -140,8 +140,8 @@
                 });
             },
 
-            // h5分享
-            share_h5_event() {
+            // url链接地址复制分享
+            share_url_copy_event() {
                 app.globalData.text_copy_event(app.globalData.get_page_url());
             },
 

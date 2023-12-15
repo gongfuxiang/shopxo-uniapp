@@ -297,7 +297,7 @@
                                             <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
                                         </view>
                                     </block>
-                                    <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round" @tap="popup_login_open_event">
+                                    <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round more-submit" @tap="popup_login_open_event">
                                         <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
                                     </view>
                                 </view>

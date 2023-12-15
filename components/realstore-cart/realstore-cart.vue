@@ -113,12 +113,12 @@
                                 <image class="left-icon dis-inline-block va-m" :src="static_url+'buy_use_type/'+item.key+'.png'" mode="aspectFit"></image>
                                 <text class="cr-black text-size-sm va-m margin-left-sm">{{item.name}}</text>
                                 <view class="right-arrow pa top-0 right-xxxxl">
-                                    <iconfont name="icon-qiandao-jiantou2" size="24rpx" propClass="lh-xs" color="#333"></iconfont>
+                                    <iconfont name="icon-qiandao-jiantou2" size="24rpx" propClass="lh-il" color="#333"></iconfont>
                                 </view>
                             </view>
                             <!-- #ifndef H5 -->
                             <view v-if="item.index == 0" class="scan-item border-radius-main tc pa right-0 top-0" :data-index="index" @tap="search_icon_event">
-                                <iconfont name="icon-mendian-sousuosm" size="36rpx" propClass="lh-lg" color="#02b3c2"></iconfont>
+                                <iconfont name="icon-mendian-sousuosm" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
                             </view>
                             <!-- #endif -->
                         </view>

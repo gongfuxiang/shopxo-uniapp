@@ -97,7 +97,7 @@ page {
     width: 50rpx !important;
     height: 50rpx !important;
 }
-.plugins-thirdpartylogin .item:last-of-type image {
+.plugins-thirdpartylogin .item.more-submit image {
     width: 76rpx !important;
     height: 76rpx !important;
 }
