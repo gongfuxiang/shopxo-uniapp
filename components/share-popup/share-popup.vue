@@ -46,7 +46,7 @@
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <view class="share-items oh cp" @tap="share_url_copy_event">
-                        <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
+                        <image :src="common_static_url + 'share-url-icon.png'" mode="scaleToFill"></image>
                         <text class="cr-grey text-size-xs single-text">点击复制地址分享给好友、群聊</text>
                     </view>
                     <!-- #endif -->

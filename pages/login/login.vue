@@ -1427,17 +1427,35 @@
                 // #ifdef APP
                 let self = this;
                 switch(type) {
-                    // 微信、QQ、apple
+                    // 微信、QQ、谷歌
                     case 'weixin' :
                     case 'qq' :
+                    case 'google' :
+                        uni.login({
+                            provider: type,
+                            success: function(res) {
+                                let auth_result = res.authResult;
+                                self.app_login_bind_handle({...auth_result, ...{
+                                    platform: type,
+                                    openid: auth_result.openid,
+                                    access_token: auth_result.access_token,
+                                }}, auth_result);
+                            },
+                            fail: function (error) {
+                                app.globalData.showToast(error.errMsg || '调用登录SDK失败');
+                            },
+                        });
+                        break;
+
+                    // 苹果
                     case 'apple' :
                         uni.login({
                             provider: type,
                             success: function(res) {
-                                let auth_result = res.appleInfo || res.userInfo || res.authResult;
+                                let auth_result = res.appleInfo || res.userInfo;
                                 self.app_login_bind_handle({...auth_result, ...{
                                     platform: type,
-                                    openid: auth_result.openid || auth_result.openId || auth_result.user,
+                                    openid: auth_result.openId || auth_result.user,
                                     access_token: auth_result.access_token || ''
                                 }}, auth_result);
                             },
@@ -1491,7 +1509,7 @@
                             app.globalData.showToast(res.data.msg);
                         }
                     },
-                    fail: () => {
+                    fail: (res) => {
                         uni.hideLoading();
                         app.globalData.showToast(this.$t('common.internet_error'));
                     },
