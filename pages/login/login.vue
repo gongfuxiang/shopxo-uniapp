@@ -138,10 +138,12 @@
                                                     </label>
                                                 </radio-group>
                                             </view>
-                                            <view class="dis-inline-block va-m text-size-xs"
-                                                >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                                                >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
-                                            >
+                                            <view class="dis-inline-block va-m text-size-xs">
+                                                <text>{{ $t('login.login.nddg2x') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
+                                                <text>{{ $t('login.login.l3r4vr') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                            </view>
                                         </view>
                                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.i1deai') }}</button>
                                         <view class="margin-top-xxl oh flex-row jc-sb align-c">
@@ -205,9 +207,11 @@
                                                     </label>
                                                 </radio-group>
                                             </view>
-                                            <view class="dis-inline-block va-m text-size-xs"
-                                                >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                                                >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                            <view class="dis-inline-block va-m text-size-xs">
+                                                <text>{{ $t('login.login.nddg2x') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
+                                                <text>{{ $t('login.login.l3r4vr') }}</text>
+                                                <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
                                             </view>
                                         </view>
                                         <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.hvunf8') }}</button>
@@ -262,10 +266,12 @@
                                         </label>
                                     </radio-group>
                                 </view>
-                                <view class="dis-inline-block va-m text-size-xs"
-                                    >{{ $t('login.login.nddg2x') }}<text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text
-                                    >{{ $t('login.login.l3r4vr') }}<text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text></view
-                                >
+                                <view class="dis-inline-block va-m text-size-xs">
+                                    <text>{{ $t('login.login.nddg2x') }}</text>
+                                    <text class="cr-main" @tap="agreement_event" data-value="userregister">{{ $t('login.login.2v11we') }}</text>
+                                    <text>{{ $t('login.login.l3r4vr') }}</text>
+                                    <text class="cr-main" @tap="agreement_event" data-value="userprivacy">{{ $t('login.login.myno2x') }}</text>
+                                </view>
                             </view>
                             <view class="margin-top-xxl">
                                 <navigator open-type="navigateBack" hover-class="none" class="dis-inline-block margin-right-lg">
