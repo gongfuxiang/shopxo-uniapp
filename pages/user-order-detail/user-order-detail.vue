@@ -225,9 +225,9 @@
                         self.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: this.$t('common.internet_error'),
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error'));
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

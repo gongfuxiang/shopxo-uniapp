@@ -904,7 +904,7 @@
                             form_input_image_verify_value: '',
                         });
                         this.image_verify_event(image_verify_type);
-                        app.globalData.showToast(this.$t('common.internet_error'));
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -958,7 +958,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(this.$t('common.internet_error'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1001,7 +1001,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast(this.$t('common.internet_error'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 } else {
@@ -1074,7 +1074,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(this.$t('common.internet_error'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1143,7 +1143,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(this.$t('common.internet_error'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1201,7 +1201,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(this.$t('common.internet_error'));
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1239,7 +1239,7 @@
                                 this.setData({
                                     form_submit_loading: false,
                                 });
-                                app.globalData.showToast(this.$t('common.internet_error'));
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     } else {
@@ -1517,7 +1517,7 @@
                     },
                     fail: (res) => {
                         uni.hideLoading();
-                        app.globalData.showToast(this.$t('common.internet_error'));
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

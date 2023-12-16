@@ -356,96 +356,124 @@
 
             // app登录处理
             app_login_handle(self, object, method, params) {
-                // 是否存在一键登录服务
-                uni.getProvider({
-                  service: 'oauth',
-                  success: function (res) {
-                        if(res.provider.includes('univerify')) {
-                            // 预登录检查
-                            uni.preLogin({
-                                provider: 'univerify',
-                                success(res) {
-                                    // 显示一键登录弹窗
-                                    var theme_color = self.get_theme_color();
-                                    var theme_color_light = self.get_theme_color(null, true);
-                                    uni.login({
-                                        provider: 'univerify',
-                                        univerifyStyle: {
-                                            authButton: {
-                                                // 授权按钮正常状态背景颜色 默认值：#3479f5
-                                                normalColor: theme_color,
-                                                // 授权按钮按下状态背景颜色 默认值：#2861c5（仅ios支持）
-                                                highlightColor: theme_color_light,
-                                                // 授权按钮不可点击时背景颜色 默认值：#73aaf5（仅ios支持）
-                                                disabledColor: theme_color_light,
+                // 是否开启一键登录服务
+                if(self.get_config('plugins_base.thirdpartylogin.data.apponekeyusermobile_is_enable') == 1) {
+                    uni.getProvider({
+                        service: 'oauth',
+                        success: function (res) {
+                            if(res.provider.includes('univerify')) {
+                                // 预登录检查
+                                uni.preLogin({
+                                    provider: 'univerify',
+                                    success(res) {
+                                        // 显示一键登录弹窗
+                                        var theme_color = self.get_theme_color();
+                                        var theme_color_light = self.get_theme_color(null, true);
+                                        uni.login({
+                                            provider: 'univerify',
+                                            univerifyStyle: {
+                                                authButton: {
+                                                    // 授权按钮正常状态背景颜色 默认值：#3479f5
+                                                    normalColor: theme_color,
+                                                    // 授权按钮按下状态背景颜色 默认值：#2861c5（仅ios支持）
+                                                    highlightColor: theme_color_light,
+                                                    // 授权按钮不可点击时背景颜色 默认值：#73aaf5（仅ios支持）
+                                                    disabledColor: theme_color_light,
+                                                    // 授权按钮文案 默认值：“本机号码一键登录”
+                                                    title: '本机号码一键登录',
+                                                },
+                                                otherLoginButton: {
+                                                    // 其他登录方式按钮文字 默认值：“其他登录方式”
+                                                    title: '其他登录方式',
+                                                },
+                                                privacyTerms: {
+                                                    // 条款前的文案 默认值：“我已阅读并同意”
+                                                    prefix: '我已阅读并同意',
+                                                    // 条款后的文案 默认值：“并使用本机号码登录”
+                                                    suffix: '并使用本机号码登录',
+                                                    // 自定义协议条款，最大支持2个，需要同时设置url和title. 否则不生效
+                                                    privacyItems: [
+                                                        {
+                                                            url: self.get_config('config.agreement_userregister_url'),
+                                                            title: '服务协议'
+                                                        },
+                                                        {
+                                                            url: self.get_config('config.agreement_userprivacy_url'),
+                                                            title: '隐私权政策'
+                                                        }
+                                                    ]
+                                                },
                                             },
-                                            privacyTerms: {
-                                                // 自定义协议条款，最大支持2个，需要同时设置url和title. 否则不生效
-                                                privacyItems: [
-                                                    {
-                                                        url: self.get_config('config.agreement_userregister_url'),
-                                                        title: '服务协议'
-                                                    },
-                                                    {
-                                                        url: self.get_config('config.agreement_userprivacy_url'),
-                                                        title: '隐私权政策'
+                                            success(res) {
+                                                // 在得到access_token和openid后，通过callfunction调用云函数
+                                                uniCloud.callFunction({
+                                                    name: 'getPhoneNumber',
+                                                    data: {
+                                                        access_token: res.authResult.access_token,
+                                                        openid: res.authResult.openid
                                                     }
-                                                ]
+                                                }).then(res => {
+                                                    uni.request({
+                                                        url: self.get_request_url('apponekeyusermobile', 'index', 'thirdpartylogin'),
+                                                        method: 'POST',
+                                                        data: {
+                                                            mobile: res.result
+                                                        },
+                                                        dataType: 'json',
+                                                        success: (res) => {
+                                                            uni.closeAuthView();
+                                                            if(res.data.code == 0) {
+                                                                uni.setStorageSync(self.data.cache_user_info_key, res.data.data);
+                                                                if (typeof object === 'object' && (method || null) != null) {
+                                                                    object[method](params);
+                                                                }
+                                                            } else {
+                                                                self.showToast(res.data.msg);
+                                                            }
+                                                        },
+                                                        fail: () => {
+                                                            uni.closeAuthView();
+                                                            self.showToast('网络开小差了哦~');
+                                                        },
+                                                    });
+                                                }).catch(err => {
+                                                    uni.closeAuthView();
+                                                    self.showToast('本机号码组件调起失败');
+                                                });
                                             },
-                                        },
-                                        success(res) {
-                                            // 登录成功
-                                            // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
-                                            console.log(res.authResult, 'success');
-                                            // 在得到access_token后，通过callfunction调用云函数
-                                            uniCloud.callFunction({
-                                              name: 'uni-id-cf',
-                                              data: {
-                                                access_token: res.authResult.access_token,
-                                                openid: res.authResult.openid
-                                              }
-                                            }).then(res => {
-                                                // res.result = {
-                                                //   code: '',
-                                                //   message: ''
-                                                // }
-                                                // 登录成功，可以关闭一键登录授权界面了
-                                                console.log(res, 'success')
-                                            }).catch(err=>{
-                                                // 处理错误
-                                                console.log(err, 'error')
-                                            });
-                                        },
-                                        fail(res) {
-                                            // 用户点击了其他登录方式、则进入登录页面
-                                            if(res.errCode == 30002) {
+                                            fail(res) {
                                                 // 关闭一键登录弹窗
                                                 uni.closeAuthView();
-                                                // 进入独立登录注册页面
-                                                uni.navigateTo({
-                                                    url: '/pages/login/login',
-                                                });
-                                            } else {
-                                                // 用户不是点击关闭验证界面则提示错误
-                                                if(res.errCode != 30003) {
-                                                    app.globalData.showToast(res.errMsg+'('+res.errCode+')');
+                                                // 用户点击了其他登录方式、则进入登录页面
+                                                if(res.errCode == 30002) {
+                                                    // 进入独立登录注册页面
+                                                    uni.navigateTo({
+                                                        url: '/pages/login/login',
+                                                    });
+                                                } else {
+                                                    // 用户不是点击关闭验证界面则提示错误
+                                                    if(res.errCode != 30003) {
+                                                        self.showToast(res.errMsg+'('+res.errCode+')');
+                                                    }
                                                 }
                                             }
-                                        }
-                                    });
-                                },
-                                fail(res) {
-                                    self.login_confirm_tips_modal();
-                                }
-                            });
-                        } else {
+                                        });
+                                    },
+                                    fail(res) {
+                                        self.login_confirm_tips_modal();
+                                    }
+                                });
+                            } else {
+                                self.login_confirm_tips_modal();
+                            }
+                        },
+                        fail(res) {
                             self.login_confirm_tips_modal();
                         }
-                    },
-                    fail(res) {
-                        self.login_confirm_tips_modal();
-                    }
-                });
+                    });
+                } else {
+                    self.login_confirm_tips_modal();
+                }
             },
 
             // 确认提示登录弹窗
@@ -2019,7 +2047,7 @@
                         }
                     },
                     fail: (res) => {
-                        app.globalData.showToast('请先获取授权');
+                        self.showToast('请先获取授权');
                         if (typeof object === 'object' && (method || null) != null) {
                             object[method](0);
                         }
@@ -2032,7 +2060,7 @@
                 }
                 // #endif
                 // #ifdef MP-KUAISHOU
-                app.globalData.showToast('不支持地理位置选择！');
+                self.showToast('不支持地理位置选择！');
                 if (typeof object === 'object' && (method || null) != null) {
                     object[method](0);
                 }
