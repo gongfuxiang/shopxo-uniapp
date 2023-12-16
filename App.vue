@@ -336,21 +336,15 @@
                                 // 小程序唤醒用户授权
                                 self.user_login(object, method, params);
                                 // #endif
-                                // #ifdef H5 || APP
-                                // h5、app登录注册
-                                uni.showModal({
-                                    title: '温馨提示',
-                                    content: '请先登录或注册',
-                                    confirmText: '确认',
-                                    cancelText: '暂不',
-                                    success: (result) => {
-                                        if (result.confirm) {
-                                            uni.navigateTo({
-                                                url: '/pages/login/login',
-                                            });
-                                        }
-                                    },
-                                });
+
+                                // #ifdef APP
+                                // app登录注册
+                                self.app_login_handle(self, object, method, params);
+                                // #endif
+
+                                // #ifdef H5
+                                // h5登录注册
+                                self.login_confirm_tips_modal();
                                 // #endif
                             }
                     	}
@@ -358,6 +352,117 @@
                     return false;
                 }
                 return user;
+            },
+
+            // app登录处理
+            app_login_handle(self, object, method, params) {
+                // 是否存在一键登录服务
+                uni.getProvider({
+                  service: 'oauth',
+                  success: function (res) {
+                        if(res.provider.includes('univerify')) {
+                            // 预登录检查
+                            uni.preLogin({
+                                provider: 'univerify',
+                                success(res) {
+                                    // 显示一键登录弹窗
+                                    var theme_color = self.get_theme_color();
+                                    var theme_color_light = self.get_theme_color(null, true);
+                                    uni.login({
+                                        provider: 'univerify',
+                                        univerifyStyle: {
+                                            authButton: {
+                                                // 授权按钮正常状态背景颜色 默认值：#3479f5
+                                                normalColor: theme_color,
+                                                // 授权按钮按下状态背景颜色 默认值：#2861c5（仅ios支持）
+                                                highlightColor: theme_color_light,
+                                                // 授权按钮不可点击时背景颜色 默认值：#73aaf5（仅ios支持）
+                                                disabledColor: theme_color_light,
+                                            },
+                                            privacyTerms: {
+                                                // 自定义协议条款，最大支持2个，需要同时设置url和title. 否则不生效
+                                                privacyItems: [
+                                                    {
+                                                        url: self.get_config('config.agreement_userregister_url'),
+                                                        title: '服务协议'
+                                                    },
+                                                    {
+                                                        url: self.get_config('config.agreement_userprivacy_url'),
+                                                        title: '隐私权政策'
+                                                    }
+                                                ]
+                                            },
+                                        },
+                                        success(res) {
+                                            // 登录成功
+                                            // {openid:'登录授权唯一标识',access_token:'接口返回的 token'}
+                                            console.log(res.authResult, 'success');
+                                            // 在得到access_token后，通过callfunction调用云函数
+                                            uniCloud.callFunction({
+                                              name: 'uni-id-cf',
+                                              data: {
+                                                access_token: res.authResult.access_token,
+                                                openid: res.authResult.openid
+                                              }
+                                            }).then(res => {
+                                                // res.result = {
+                                                //   code: '',
+                                                //   message: ''
+                                                // }
+                                                // 登录成功，可以关闭一键登录授权界面了
+                                                console.log(res, 'success')
+                                            }).catch(err=>{
+                                                // 处理错误
+                                                console.log(err, 'error')
+                                            });
+                                        },
+                                        fail(res) {
+                                            // 用户点击了其他登录方式、则进入登录页面
+                                            if(res.errCode == 30002) {
+                                                // 关闭一键登录弹窗
+                                                uni.closeAuthView();
+                                                // 进入独立登录注册页面
+                                                uni.navigateTo({
+                                                    url: '/pages/login/login',
+                                                });
+                                            } else {
+                                                // 用户不是点击关闭验证界面则提示错误
+                                                if(res.errCode != 30003) {
+                                                    app.globalData.showToast(res.errMsg+'('+res.errCode+')');
+                                                }
+                                            }
+                                        }
+                                    });
+                                },
+                                fail(res) {
+                                    self.login_confirm_tips_modal();
+                                }
+                            });
+                        } else {
+                            self.login_confirm_tips_modal();
+                        }
+                    },
+                    fail(res) {
+                        self.login_confirm_tips_modal();
+                    }
+                });
+            },
+
+            // 确认提示登录弹窗
+            login_confirm_tips_modal() {
+                uni.showModal({
+                    title: '温馨提示',
+                    content: '请先登录或注册',
+                    confirmText: '确认',
+                    cancelText: '暂不',
+                    success: (result) => {
+                        if (result.confirm) {
+                            uni.navigateTo({
+                                url: '/pages/login/login',
+                            });
+                        }
+                    },
+                });
             },
 
             /**
