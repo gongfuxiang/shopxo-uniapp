@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view :class="'search-content pr round '+propSize">
+        <view :class="'search-content pr round '+propSize" :style="'background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')">
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
@@ -15,7 +15,7 @@
                 @confirm="search_submit_confirm_event"
                 @focus="search_input_focus_event"
                 @blur="search_input_blur_event"
-                :style="'color:' + propTextColor + ';background:' + propBgColor + ';' + ((propBrColor || null) != null ? 'border:1px solid ' + propBrColor + ';' : '')"
+                :style="'color:' + propTextColor + ';'"
             />
             <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">搜索</button>
         </view>
@@ -188,9 +188,6 @@
     };
 </script>
 <style scoped>
-    .search-content {
-        background-color: #fff;
-    }
     .search-content .search-icon {
         z-index: 1;
         left: 0;
