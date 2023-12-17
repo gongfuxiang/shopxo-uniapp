@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view :class="'search-content pr '+propSize">
+        <view :class="'search-content pr round '+propSize">
             <view class="search-icon dis-inline-block pa" @tap="search_icon_event">
                 <iconfont :name="propIcon" :color="propIconColor" size="24rpx"></iconfont>
             </view>
@@ -188,6 +188,9 @@
     };
 </script>
 <style scoped>
+    .search-content {
+        background-color: #fff;
+    }
     .search-content .search-icon {
         z-index: 1;
         left: 0;
