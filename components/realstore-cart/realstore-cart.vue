@@ -109,15 +109,15 @@
                     </view>
                     <block v-for="(item, index) in buy_use_type_choice_list" :key="index">
                         <view class="item pr">
-                            <view :class="'item-content pr padding-horizontal border-radius-main item-content-'+item.key" :data-index="item.key" @tap="buy_use_type_choice_event">
-                                <image class="left-icon dis-inline-block va-m" :src="static_url+'buy_use_type/'+item.key+'.png'" mode="aspectFit"></image>
+                            <view :class="'item-content pr padding-horizontal border-radius-main item-content-'+item.index" :data-index="item.key" @tap="buy_use_type_choice_event">
+                                <image class="left-icon dis-inline-block va-m" :src="static_url+'buy_use_type/'+item.index+'.png'" mode="aspectFit"></image>
                                 <text class="cr-black text-size-sm va-m margin-left-sm">{{item.name}}</text>
                                 <view class="right-arrow pa top-0 right-xxxxl">
                                     <iconfont name="icon-qiandao-jiantou2" size="24rpx" propClass="lh-il" color="#333"></iconfont>
                                 </view>
                             </view>
                             <!-- #ifndef H5 -->
-                            <view v-if="item.key == 0" class="scan-item border-radius-main tc pa right-0 top-0" :data-index="index" @tap="search_icon_event">
+                            <view v-if="item.index == 0" class="scan-item border-radius-main tc pa right-0 top-0" :data-index="index" @tap="search_icon_event">
                                 <iconfont name="icon-mendian-sousuosm" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
                             </view>
                             <!-- #endif -->
