@@ -261,12 +261,14 @@
                         uni.hideLoading();
                         this.setData({
                             submit_disabled_status: false,
-                            is_show_payment_popup: this.is_show_payment_popup ? false : true,
-                            temp_pay_value: res.data.data.id,
-                            pay_price: res.data.data.price,
-                            payment_id: res.data.data.payment_user_id,
                         });
                         if (res.data.code == 0) {
+                            this.setData({
+                                is_show_payment_popup: this.is_show_payment_popup ? false : true,
+                                temp_pay_value: res.data.data.id,
+                                pay_price: res.data.data.price,
+                                payment_id: res.data.data.payment_user_id,
+                            });
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, {
                                 order_ids: res.data.data.id,
                             });
