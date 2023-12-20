@@ -27,7 +27,7 @@
                                         <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
                                             <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
                                                 {{ (extraction || null) == null ? '申请' : '' }}取货点
-                                                <iconfont name="icon-qiandao-jiantou2" size="18rpx" color="#fff" prop-class="pa"></iconfont>
+                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" prop-class="pa"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>
@@ -63,7 +63,7 @@
                                     <view class="title-left-border text-size fw-b">基础统计</view>
                                     <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
                                         {{ popup_time_value.name }}
-                                        <iconfont name="icon-mendian-jiantou2" size="24rpx" class="pa" color="#999"></iconfont>
+                                        <iconfont name="icon-arrow-bottom" size="24rpx" class="pa" color="#999"></iconfont>
                                     </button>
                                 </view>
                                 <!-- 推广统计 -->
@@ -160,7 +160,7 @@
                             <view class="padding-horizontal-main padding-top-main bg-white">
                                 <view class="close oh">
                                     <view class="tr" @tap.stop="popup_time_close_event">
-                                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                                     </view>
                                 </view>
                                 <view class="popup-time-container page-bottom-fixed">
@@ -202,7 +202,7 @@
                             <view class="padding-horizontal-main padding-top-main bg-white">
                                 <view class="close oh">
                                     <view class="tr" @tap.stop="modify_superior_close_event">
-                                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                                     </view>
                                 </view>
                                 <view class="popup-time-container page-bottom-fixed">

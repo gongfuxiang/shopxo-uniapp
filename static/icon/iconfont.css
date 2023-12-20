@@ -14,6 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-store:before {
+  content: "\e6f3";
+}
+
 .icon-star:before {
   content: "\e6ef";
 }
@@ -150,7 +154,7 @@
   content: "\e6d4";
 }
 
-.icon-tongyong-fanhui:before {
+.icon-arrow-left:before {
   content: "\e6d1";
 }
 
@@ -174,11 +178,11 @@
   content: "\e6cb";
 }
 
-.icon-mendian-jiantou2:before {
+.icon-arrow-bottom:before {
   content: "\e6cc";
 }
 
-.icon-huiyuan-guanbi:before {
+.icon-close-o:before {
   content: "\e6c9";
 }
 
@@ -218,7 +222,7 @@
   content: "\e6bf";
 }
 
-.icon-qiandao-jiantou:before {
+.icon-arrow-right-round:before {
   content: "\e6c0";
 }
 
@@ -226,7 +230,7 @@
   content: "\e6c1";
 }
 
-.icon-qiandao-jiantou2:before {
+.icon-arrow-right:before {
   content: "\e6c2";
 }
 
@@ -242,7 +246,7 @@
   content: "\e6b9";
 }
 
-.icon-fenlei-top:before {
+.icon-arrow-top:before {
   content: "\e6b8";
 }
 
@@ -272,14 +276,6 @@
 
 .icon-md-dh:before {
   content: "\e6b2";
-}
-
-.icon-index-morejiantou:before {
-  content: "\e6ab";
-}
-
-.icon-index-xptj-jiantou:before {
-  content: "\e6aa";
 }
 
 .icon-index-zxmd-phone:before {

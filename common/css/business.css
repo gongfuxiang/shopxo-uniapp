@@ -5,23 +5,19 @@
     border: 0 !important;
     padding-bottom: 0 !important;
 }
-
 .panel-item .panel-content .item .title {
     width: 25%;
 }
-
 .panel-item .panel-content .item .content {
     width: calc(75% - 52rpx);
     min-height: 46rpx;
     word-wrap: break-word;
     word-break: normal;
 }
-
 .panel-item .panel-content .item .title,
 .panel-item .panel-content .item .content {
     line-height: 46rpx;
 }
-
 .panel-item-only .panel-content .item .content {
     width: 100%;
 }
@@ -32,11 +28,9 @@
 .panel-item .panel-content-images .item {
     margin: 20rpx 20rpx 0 0;
 }
-
 .panel-item .panel-content-images .item:last-child {
     margin-right: 0;
 }
-
 .panel-item .panel-content-images .item image {
     width: 120rpx;
     height: 120rpx !important;

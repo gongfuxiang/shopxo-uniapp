@@ -265,6 +265,11 @@
                 type: Boolean,
                 default: true,
             },
+            // 是否开启购物车数量同步到底部导航
+            propIsCartNumberTabBarBadgeSync: {
+                type: Boolean,
+                default: true,
+            },
         },
         // 属性值改变监听
         watch: {
@@ -328,17 +333,22 @@
                 this.setData({
                     data: temp,
                 });
+
                 // 抛物线
                 if (this.propIsCartParaCurve && (this.$refs.cart_para_curve || null) != null) {
                     this.$refs.cart_para_curve.init(null, back.pos, goods.images);
                 }
+
                 // 导航购物车处理
-                var cart_total = e.cart_number || 0;
-                if (cart_total <= 0) {
-                    app.globalData.set_tab_bar_badge(2, 0);
-                } else {
-                    app.globalData.set_tab_bar_badge(2, 1, cart_total);
+                if(this.propIsCartNumberTabBarBadgeSync) {
+                    var cart_total = e.cart_number || 0;
+                    if (cart_total <= 0) {
+                        app.globalData.set_tab_bar_badge(2, 0);
+                    } else {
+                        app.globalData.set_tab_bar_badge(2, 1, cart_total);
+                    }
                 }
+
                 // 当前页面
                 var page = app.globalData.current_page().split('?');
                 switch (page[0]) {
@@ -354,7 +364,7 @@
                         }
                         break;
                 }
-                this.$emit('CartSuccessEvent');
+                this.$emit('CartSuccessEvent', e);
             },
             // url事件
             url_event(e) {

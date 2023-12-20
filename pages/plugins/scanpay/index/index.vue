@@ -36,7 +36,7 @@
                     </view>
                     <view v-if="data.payment_list.length > 2" class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">
                         <text>更多</text>
-                        <iconfont :name="is_more ? 'icon-mendian-jiantou2' : 'icon-fenlei-top'" size="24rpx"></iconfont>
+                        <iconfont :name="is_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx"></iconfont>
                     </view>
                 </view>
             </view>

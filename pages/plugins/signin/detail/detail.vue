@@ -23,7 +23,7 @@
                         <block v-if="is_already_coming == 1"> 已签到 </block>
                         <block v-else>
                             立即签到
-                            <iconfont name="icon-qiandao-jiantou" color="#fff" size="32rpx" prop-class="margin-left-sm"></iconfont>
+                            <iconfont name="icon-arrow-right-round" color="#fff" size="32rpx" prop-class="margin-left-sm"></iconfont>
                         </block>
                     </view>
                 </view>
@@ -76,7 +76,7 @@
                             <view v-if="(team_signin_data || null) != null && user.id == data.user_id" class="content bg-white flex-row jc-sb align-c">
                                 <text class="fw-b">今日{{ team_signin_data.day }}人签到，共{{ team_signin_data.total }}人</text>
                                 <navigator v-if="(data_base.is_team_show_coming_user || 0) == 1" :url="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" hover-class="none">
-                                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                                    <iconfont name="icon-arrow-right"></iconfont>
                                 </navigator>
                             </view>
                             <view v-else class="content bg-white flex-row jc-sb align-c">
@@ -87,7 +87,7 @@
                                     签到，获得{{ user_signin_data.integral || 0 }}积分，共{{ user_signin_data.total || 0 }}次
                                 </text>
                                 <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
-                                    <iconfont name="icon-qiandao-jiantou2"></iconfont>
+                                    <iconfont name="icon-arrow-right"></iconfont>
                                 </navigator>
                             </view>
                         </view>

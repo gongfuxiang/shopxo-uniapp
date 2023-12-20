@@ -12,7 +12,7 @@
                                     <button class="bg-white br-0 lh-0 padding-horizontal-sm" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                         <image :src="user_data.avatar || default_avatar" mode="widthFix" class="circle br user-avatar flex-1 flex-width"></image>
                                     </button>
-                                    <iconfont name="icon-qiandao-jiantou2" size="34rpx" color="#ccc"></iconfont>
+                                    <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 
@@ -29,7 +29,7 @@
                                     <picker class="margin-right-sm wh-auto tr" name="birthday" mode="date" :value="user_data.birthday || ''" data-field="birthday" @change="select_change_event">
                                         <view :class="'picker ' + ((user_data.birthday || null) == null ? 'cr-grey' : '')">{{ user_data.birthday || '请选择生日' }}</view>
                                     </picker>
-                                    <iconfont name="icon-qiandao-jiantou2" size="34rpx" color="#ccc"></iconfont>
+                                    <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 
@@ -46,7 +46,7 @@
                                     <picker @change="select_change_event" :value="user_data.gender || ''" :range="gender_list" range-key="name" name="gender" data-field="gender" class="margin-right-sm wh-auto tr">
                                         <view class="uni-input cr-base picker">{{ gender_list[user_data.gender].name || '' }}</view>
                                     </picker>
-                                    <iconfont name="icon-qiandao-jiantou2" size="34rpx" color="#ccc"></iconfont>
+                                    <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
                         </view>

@@ -1,6 +1,5 @@
 <template>
     <view :class="theme_view">
-        <!-- 购物车 -->
         <component-cart ref="cart"></component-cart>
     </view>
 </template>
@@ -10,21 +9,26 @@ import componentCart from "../../components/cart/cart";
 export default {
     data() {
         return {
-            theme_view: app.globalData.get_theme_value_view(),
+            theme_view: app.globalData.get_theme_value_view()
         };
     },
     components: {
-        componentCart,
+        componentCart
     },
 
     onShow() {
-        // 数据加载
-        if ((this.$refs.cart || null) != null) {
-            this.$refs.cart.init("cart");
-        }
+        this.loading_cart();
     },
 
-    methods: {},
+    methods: {
+        // 加载购物车
+        loading_cart() {
+            if ((this.$refs.cart || null) != null) {
+                this.$refs.cart.init('cart');
+            }
+        }
+    },
 };
 </script>
-<style></style>
+<style>
+</style>

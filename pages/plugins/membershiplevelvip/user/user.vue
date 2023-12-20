@@ -57,7 +57,7 @@
                                             <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                                 <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                     开通会员
-                                                    <iconfont name="icon-qiandao-jiantou2" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                    <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
                                                 </button>
                                             </navigator>
                                         </block>
@@ -66,7 +66,7 @@
                                                 <block v-if="(data_base.is_supported_renew_old_order || null) == 1">
                                                     <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">
                                                         续费会员
-                                                        <iconfont name="icon-qiandao-jiantou2" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                        <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
                                                     </button>
                                                 </block>
                                                 <block v-else>
@@ -74,7 +74,7 @@
                                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                                             <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                                 连续开通
-                                                                <iconfont name="icon-qiandao-jiantou2" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                                <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
                                                             </button>
                                                         </navigator>
                                                     </block>
@@ -89,7 +89,7 @@
                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                             <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                 开通会员
-                                                <iconfont name="icon-qiandao-jiantou2" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>

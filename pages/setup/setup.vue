@@ -57,7 +57,7 @@
                     <view class="popup-language">
                         <view class="flex-row align-c jc-sb padding-main">
                             <view @tap="popup_language_close_event">
-                                <iconfont name="icon-huiyuan-guanbi" size="28rpx"></iconfont>
+                                <iconfont name="icon-close-o" size="28rpx"></iconfont>
                             </view>
                             <view class="text-size" @tap="popup_sub_language_event">{{ $t('common.confirm') }}</view>
                         </view>

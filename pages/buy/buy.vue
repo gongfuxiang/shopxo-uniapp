@@ -82,7 +82,7 @@
                             <view class="fr cp">
                                 <text class="cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : '请选择优惠券' }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
-                                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -96,7 +96,7 @@
                                     <view class="fr cp tr right-value single-text" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
                                         <text class="cr-grey va-m">{{ item.tips_msg }}</text>
                                         <view class="dis-inline-block va-m lh-xs">
-                                            <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                            <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                         </view>
                                     </view>
                                 </view>
@@ -161,7 +161,7 @@
                                 <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
                                 <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
-                                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
                             </component-time-select>
                         </view>
@@ -218,7 +218,7 @@
                 <view class="plugins-coupon-popup bg-base">
                     <view class="close oh">
                         <view class="fr" @tap.stop="plugins_coupon_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view v-if="plugins_coupon_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-bottom-main oh">
@@ -252,7 +252,7 @@
                 <view class="bg-base padding-top-lg">
                     <view class="close oh margin-right-lg padding-bottom-sm">
                         <view class="fr" @tap.stop="plugins_realstore_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-container padding-horizontal-main padding-bottom-main oh">

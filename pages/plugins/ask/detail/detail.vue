@@ -26,7 +26,7 @@
                                                 <text class="text-size-xs cr-grey-9 original-price">{{ currency_symbol }}{{ info.goods_data.original_price }}</text>
                                             </view>
                                         </view>
-                                        <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                                        <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                     </view>
                                 </view>
                             </view>

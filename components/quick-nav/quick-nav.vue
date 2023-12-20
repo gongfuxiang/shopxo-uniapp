@@ -12,7 +12,7 @@
             <view :class="'nav-popup-container ' + common_ent">
                 <view class="close oh">
                     <view class="fr" @tap.stop="quick_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="nav-popup-content">

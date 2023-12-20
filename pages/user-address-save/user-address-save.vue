@@ -69,7 +69,7 @@
                                 </view>
                                 <view class="tc padding-top-main" @tap="identfication_change">
                                     <text class="padding-right-sm">地址粘贴板</text>
-                                    <iconfont :name="identfication_show ? 'icon-fenlei-top' : 'icon-mendian-jiantou2'" size="28rpx" color="#666"></iconfont>
+                                    <iconfont :name="identfication_show ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="28rpx" color="#666"></iconfont>
                                 </view>
                             </view>
                         </view>

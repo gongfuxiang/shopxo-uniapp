@@ -8,11 +8,11 @@
                 <!-- 位置 -->
                 <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xxxxl" @tap="choose_user_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-md"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-il"></iconfont>
                     </view>
                     <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
                     <view class="icon-arrow-down lh pa right-xxxxxl">
-                        <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
+                        <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="lh-il" color="#fff"></iconfont>
                     </view>
                 </view>
             </view>
@@ -50,7 +50,7 @@
                 <view class="content bg-white auto padding-xxxl pr radius">
                     <view v-if="(data_base.is_home_choice_location_force || 0) == 0" class="close oh pa">
                         <view @tap="location_tips_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="padding-lg">

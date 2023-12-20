@@ -18,7 +18,7 @@
                                 <view class="flex-1 flex-width tr" @tap="popupOpen">
                                     <text :class="data.blog_category_name ? 'cr-black' : 'cr-grey-9'">{{ data.blog_category_name || '请选择' }}</text>
                                     <view class="pr top-sm margin-left-sm dis-inline-block">
-                                        <iconfont name="icon-qiandao-jiantou2" color="#999" size="28rpx"></iconfont>
+                                        <iconfont name="icon-arrow-right" color="#999" size="28rpx"></iconfont>
                                     </view>
                                 </view>
                             </view>
@@ -86,7 +86,7 @@
                         <view class="padding-main flex-row jc-c align-c cr-grey-9" @tap="more_event">
                             <text>{{ is_more ? '收起更多' : '展开更多' }}</text>
                             <view class="margin-left-sm dis-inline-block">
-                                <iconfont :name="is_more ? 'icon-fenlei-top' : 'icon-mendian-jiantou2'" color="#999" size="24rpx"></iconfont>
+                                <iconfont :name="is_more ? 'icon-arrow-top' : 'icon-arrow-bottom'" color="#999" size="24rpx"></iconfont>
                             </view>
                         </view>
                     </view>
@@ -101,7 +101,7 @@
                     <view class="p-title flex-row jc-sb align-c padding-main br-b-e">
                         <view class="text-size-lg fw-b">帖子分类</view>
                         <view class="popup-colse" @tap="popup_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" color="#333" size="28rpx"></iconfont>
+                            <iconfont name="icon-close-o" color="#333" size="28rpx"></iconfont>
                         </view>
                     </view>
                     <view class="p-content padding-main">

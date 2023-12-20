@@ -4,7 +4,7 @@
             <view :class="'user-base-popup bg-white ' + (propIsGrayscale ? 'grayscale' : '')">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="24rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="24rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_submit" class="form-container">
@@ -15,7 +15,7 @@
                             <view class="form-gorup-title text-size-md">头像<text class="form-group-tips-must">*</text></view>
                             <button class="bg-white br-0 padding-0 margin-left-xxl flex-row jc-sb align-c flex-1" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                 <image :src="user_avatar || default_avatar" mode="widthFix" class="circle br user-base-avatar"></image>
-                                <iconfont name="icon-qiandao-jiantou2" size="24rpx" color="#ccc"></iconfont>
+                                <iconfont name="icon-arrow-right" size="24rpx" color="#ccc"></iconfont>
                             </button>
                         </view>
                         <view v-if="(user.nickname || null) == null" class="form-gorup oh flex-row align-c br-b">

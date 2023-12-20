@@ -318,7 +318,7 @@
                     <view class="bg-white padding-horizontal-main padding-top-main">
                         <view class="fr oh">
                             <view class="fr" @tap.stop="popup_image_verify_close_event">
-                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                         <view class="form-content margin-top-xxxl padding-top-xxl">
@@ -338,7 +338,7 @@
                     <view class="popup-language">
                         <view class="flex-row align-c jc-sb padding-main">
                             <view @tap="popup_language_close_event">
-                                <iconfont name="icon-huiyuan-guanbi" size="28rpx"></iconfont>
+                                <iconfont name="icon-close-o" size="28rpx"></iconfont>
                             </view>
                             <view class="text-size" @tap="popup_sub_language_event">{{ $t('common.confirm') }}</view>
                         </view>

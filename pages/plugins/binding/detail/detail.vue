@@ -42,7 +42,7 @@
                                         </view>
                                         <view v-if="(item.is_exist_many_spec || 0) == 1" class="bg-grey-e cr-grey round single-text text-size-xss spec-choice" :data-index="index" @tap="spec_choice_event">
                                             {{ item.spec_choice_text || '选择规格' }}
-                                            <iconfont name="icon-mendian-jiantou2" size="14rpx" color="#666" class="pa"></iconfont>
+                                            <iconfont name="icon-arrow-bottom" size="14rpx" color="#666" class="pa"></iconfont>
                                         </view>
                                     </view>
                                     <view v-else class="cr-grey-9 text-size-xs">{{ item.error_msg }}</view>

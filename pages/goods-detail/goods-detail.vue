@@ -205,7 +205,7 @@
                                 <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
                             </block>
                         </view>
-                        <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                        <iconfont name="icon-arrow-right" color="#999"></iconfont>
                     </view>
                 </view>
 
@@ -227,7 +227,7 @@
                         </view>
                         <view @tap="popup_coupon_event">
                             <text class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
-                            <iconfont name="icon-qiandao-jiantou2" color="#999" prop-class="va-m"></iconfont>
+                            <iconfont name="icon-arrow-right" color="#999" prop-class="va-m"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -248,7 +248,7 @@
                             <text>{{ item.value }}</text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                 </view>
 
                 <!-- 商品服务 -->
@@ -261,7 +261,7 @@
                             </text>
                         </block>
                     </view>
-                    <iconfont name="icon-qiandao-jiantou2" color="#999"></iconfont>
+                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -300,7 +300,7 @@
                             <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
                                 <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                     我要评价
-                                    <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
+                                    <iconfont name="icon-arrow-right" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
                                 </view>
                             </navigator>
                         </view>
@@ -320,7 +320,7 @@
                         <navigator url="/pages/plugins/ask/form/form" hover-class="none">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                 我要提问
-                                <iconfont name="icon-qiandao-jiantou2" color="#666" prop-class="pr top-sm margin-left-sm"></iconfont>
+                                <iconfont name="icon-arrow-right" color="#666" prop-class="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </navigator>
                     </view>
@@ -460,7 +460,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_params_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup-params-container">
@@ -484,7 +484,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_wholesale_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-wholesale-container">
@@ -514,7 +514,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_coupon_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-coupon-container padding-bottom-main">
@@ -535,7 +535,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-grey-f5">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_realstore_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-realstore-popup">
@@ -554,7 +554,7 @@
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="close oh">
                         <view class="fr" @tap.stop="popup_goodsservice_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="plugins-goodsservice-container">

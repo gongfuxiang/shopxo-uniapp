@@ -150,7 +150,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_success_content_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_delivery_success_submit_event" class="form-container">
@@ -186,7 +186,7 @@
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="close oh">
                     <view class="fr" @tap.stop="popup_abnormal_content_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <form @submit="form_delivery_abnormal_submit_event" class="form-container">

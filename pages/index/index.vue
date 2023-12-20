@@ -20,7 +20,7 @@
                                 </view>
                                 <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
                                 <view class="lh pa right-0 top-xxxl">
-                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
+                                    <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
                                 </view>
                             </view>
                             <block v-else>
@@ -246,7 +246,7 @@
                 <view v-if="(plugins_popupscreen_data || null) != null && plugins_popupscreen_status == 1" class="plugins-popupscreen wh-auto ht-auto">
                     <view class="content pr">
                         <view class="close pa cp round padding-sm tc" @tap.stop="plugins_popupscreen_close_event">
-                            <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#cacaca"></iconfont>
+                            <iconfont name="icon-close-o" size="28rpx" color="#cacaca"></iconfont>
                         </view>
                         <image class="dis-block auto" :src="plugins_popupscreen_data.images" mode="widthFix" :data-value="plugins_popupscreen_data.images_url || ''" @tap="url_event"></image>
                     </view>

@@ -4,7 +4,7 @@
             <view class="bg-white">
                 <view class="close oh padding-horizontal-main padding-top-main">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="plugins-batchbuy-container oh">

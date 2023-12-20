@@ -71,7 +71,7 @@
                         <view class="padding-horizontal-main">
                             <view class="close oh">
                                 <view class="fr" @tap.stop="popup_goods_choice_close_event">
-                                    <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                    <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>

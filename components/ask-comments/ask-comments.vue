@@ -89,7 +89,7 @@
                                 <text :data-index="index" :data-askid="item.ask_id" :data-askcommentsid="item.id" @tap="comments_list_reply_event">
                                     <text v-if="item.is_comments_list_submit == undefined" class="cr-base">查看全部{{ item.comments_count }}条回复</text>
                                     <text v-else class="cr-base">查看更多回复</text>
-                                    <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
+                                    <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                                 </text>
                             </view>
                         </view>
@@ -99,13 +99,13 @@
                     <view v-if="propType == 'detail'" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-value="'/pages/plugins/ask/comments/comments?id=' + data.id" @tap="url_event">
                             <text class="cr-base">查看全部{{ data.comments_count }}条评论</text>
-                            <iconfont name="icon-qiandao-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
+                            <iconfont name="icon-arrow-right" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                     <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-askid="data.id" @tap="comments_list_reply_event">
                             <text class="cr-base">查看更多评论</text>
-                            <iconfont name="icon-mendian-jiantou2" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
+                            <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                 </block>
@@ -117,7 +117,7 @@
                         <text>回复 @{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
-                                <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                                <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                     </view>

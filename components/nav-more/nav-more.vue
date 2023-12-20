@@ -13,7 +13,7 @@
                 </view>
                 <view class="tc padding-top-lg" @tap="quick_close_event">
                     <text class="padding-right-sm">点击收起</text>
-                    <iconfont name="icon-fenlei-top" color="#ccc"></iconfont>
+                    <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                 </view>
             </view>
         </component-popup>

@@ -4,7 +4,7 @@
             <view class="share-popup bg-white">
                 <view class="close fr oh">
                     <view class="fr" @tap.stop="popup_close_event">
-                        <iconfont name="icon-huiyuan-guanbi" size="28rpx" color="#999"></iconfont>
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view class="share-popup-content">
