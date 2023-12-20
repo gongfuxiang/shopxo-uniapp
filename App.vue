@@ -2173,7 +2173,9 @@
                             success: function (res) {
                                 if(res.networkType != 'none') {
                                     // 已初始化则清除定时任务
-                                    clearInterval(temp_network[page]['timer']);
+                                    if((temp_network[page]['timer'] || null) != null) {
+                                        clearInterval(temp_network[page]['timer']);
+                                    }
                                     var pv = temp_network[page];
                                     delete temp_network[page];
                                     self.data.network_type_page_record_timer = temp_network;
@@ -2524,7 +2526,9 @@
                 var network = this.data.network_type_page_record_timer || null;
                 if(network != null) {
                     for(var i in network) {
-                        clearInterval(network[i]['timer']);
+                        if((network[i]['timer'] || null) != null) {
+                            clearInterval(network[i]['timer']);
+                        }
                     }
                 }
                 this.data.network_type_page_record_timer = null;

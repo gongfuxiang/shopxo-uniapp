@@ -406,6 +406,9 @@
 
                 // 门店购物车
                 if(this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
+                    // 门店购物车初始化、避免上一个页面更改了门店下单类型
+                    this.realstore_cart_data_init();
+                    // 门店请求参数
                     var post_data = {
                         buy_use_type_index: this.plugins_realstore_buy_use_type_index,
                         id: this.plugins_realstore_info.id,
