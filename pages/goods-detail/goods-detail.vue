@@ -137,8 +137,7 @@
                                             :style="((item.br_color || null) == null ? '' : 'border:1px solid ' + item.br_color + ';') + '' + ((item.color || null) == null ? '' : 'color: ' + item.color + ';')"
                                             :data-value="item.url || ''"
                                             @tap="url_event"
-                                            >{{ item.name }}</text
-                                        >
+                                            >{{ item.name }}</text>
                                     </block>
                                 </view>
                             </view>
@@ -156,7 +155,7 @@
                             </view>
                         </view>
                         <!-- 简述 -->
-                        <view v-if="(goods.simple_desc || null) != null" class="cr-red text-size-xs margin-top-lg">{{ goods.simple_desc }}</view>
+                        <view v-if="(goods.simple_desc || null) != null" class="cr-red text-size-xs margin-top-sm">{{ goods.simple_desc }}</view>
                     </view>
 
                     <!-- 基础总计数据 -->
