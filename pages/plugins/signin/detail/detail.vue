@@ -28,7 +28,7 @@
                     </view>
                 </view>
 
-                <view class="padding-horizontal-main padding-bottom-xxxl">
+                <view class="padding-horizontal-main padding-bottom-main">
                     <view class="signin-calendar spacing-mb">
                         <view class="calendar-title flex-row align-c jc-sb">
                             <view class="title-left fw-b text-size">
@@ -100,6 +100,15 @@
                             <block v-for="(item, index) in data_base.signin_desc" :key="index">{{ item }}</block>
                         </view>
                     </view>
+
+                    <!-- 推荐商品 -->
+                    <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="spacing-mt">
+                        <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
+                            <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐商品</text>
+                            <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-base">更多</navigator>
+                        </view>
+                        <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                    </view>
                 </view>
 
                 <!-- 签到成功提示信息 -->
@@ -134,6 +143,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '../../../../components/no-data/no-data';
     import componentSharePopup from '../../../../components/share-popup/share-popup';
+    import componentGoodsList from '../../../../components/goods-list/goods-list';
     var signin_static_url = app.globalData.get_static_url('signin', true) + 'app/';
     export default {
         data() {
@@ -175,6 +185,7 @@
             componentNavBack,
             componentNoData,
             componentSharePopup,
+            componentGoodsList
         },
         props: {},
         computed: {
