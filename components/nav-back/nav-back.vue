@@ -72,7 +72,10 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                status_bar_height: 0,
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || H5 || APP
                 status_bar_height: parseInt(app.globalData.get_system_info('statusBarHeight', 0, true)),
+                // #endif
                 // 顶部返回导航背景透明度
                 opacity: 0,
             };
