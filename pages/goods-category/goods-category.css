@@ -168,7 +168,10 @@
  * 商品列表模式
  */
 .category-content {
+    height: 100vh;
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP */
     height: calc(100vh - 134rpx - var(--window-bottom));
+    /* #endif */
     /* #ifdef H5 */
     height: calc(100vh - 104rpx - var(--window-bottom));
     /* #endif */

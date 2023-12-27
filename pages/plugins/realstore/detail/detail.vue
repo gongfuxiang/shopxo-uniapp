@@ -316,6 +316,9 @@
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 顶部导航返回按钮
                 is_realstore_top_nav_back: app.globalData.data.is_realstore_top_nav_back || 0,
+                // #ifdef MP-TOUTIAO
+                is_realstore_top_nav_back : 0,
+                // #endif
                 is_realstore_top_search_scan: app.globalData.data.is_realstore_top_search_scan || 0,
             };
         },

@@ -51,15 +51,9 @@
  */
 .search-fixed-seat {
     padding-top: 78rpx;
-    /* #ifdef MP-TOUTIAO */
-    padding-top: 58rpx;
-    /* #endif */
 }
 .search-fixed-seat.nav-enable-search {
     padding-top: 146rpx;
-    /* #ifdef MP-TOUTIAO */
-    padding-top: 88rpx;
-    /* #endif */
 }
 .search-content-fixed {
     position: fixed !important;

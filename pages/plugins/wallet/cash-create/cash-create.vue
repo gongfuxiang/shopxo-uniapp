@@ -228,7 +228,7 @@
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
                                     uni.redirectTo({
-                                        url: '/pages/plugins/wallet/user-cash/user-cash',
+                                        url: '/pages/plugins/wallet/user/user?type=2',
                                     });
                                 }, 1000);
                             } else {

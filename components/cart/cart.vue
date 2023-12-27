@@ -35,7 +35,9 @@
                 </view>
             </block>
             <block v-else>
+                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP -->
                 <component-nav-back propClass="bg-white" propNameClass="cr-black" propName="购物车" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false"></component-nav-back>
+                <!-- #endif -->
             </block>
         </block>
 

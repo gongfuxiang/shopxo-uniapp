@@ -349,7 +349,15 @@
                                             // #ifdef APP
                                             this.app_pay_handle(this, data, order_id);
                                             // #endif
-                                            // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU || MP-TOUTIAO
+                                            // #ifdef MP-TOUTIAO
+                                            // 头条是否非普通版本支持
+                                            if(parseInt(data.data.pay_type || 0) == 1) {
+                                                this.toutiao_transaction_pay_handle(this, data, order_id);
+                                            } else {
+                                                this.mp_pay_handle(this, data, order_id);
+                                            }
+                                            // #endif
+                                            // #ifdef MP-WEIXIN || MP-ALIPAY || MP-BAIDU
                                             this.mp_pay_handle(this, data, order_id);
                                             // #endif
                                             // #ifdef MP-KUAISHOU
@@ -464,6 +472,32 @@
                     fail: (res) => {
                         self.order_item_pay_fail_handle(data, order_id, '支付失败');
                     },
+                });
+            },
+            // 头条小程序非普通交易支付处理
+            toutiao_transaction_pay_handle(self, data, order_id) {
+                if(!uni.canIUse('requestOrder') || !uni.canIUse('getOrderPayment')) {
+                    app.globalData.showToast('请使用真机操作、或小程序基础版本太低！');
+                    return false;
+                }
+                uni.requestOrder({
+                    data: data.data.data,
+                    byteAuthorization: data.data.auth,
+                    success: (res) => {
+                        uni.getOrderPayment({
+                            orderId: res.orderId,
+                            success: (res) => {
+                                // 数据设置
+                                self.order_item_pay_success_handle(data, order_id);
+                            },
+                            fail: (res) => {
+                                self.order_item_pay_fail_handle(data, order_id, '支付失败');
+                            }
+                        });
+                    },
+                    fail: (res) => {
+                        app.globalData.showToast(res.errMsg+'('+res.errNo+')');
+                    }
                 });
             },
             // 小程序: 微信、支付宝、百度、头条、QQ

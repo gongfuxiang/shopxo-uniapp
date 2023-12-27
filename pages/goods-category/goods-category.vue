@@ -472,7 +472,10 @@
                 // 获取搜索框高度
                 search_height: 0,
                 // 底部tab高度 - 只有H5下有值
+                window_bottom_height: 0,
+                // #ifdef H5
                 window_bottom_height: uni.getWindowInfo().windowBottom || 0,
+                // #endif
             };
         },
 
