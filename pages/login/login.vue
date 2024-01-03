@@ -366,8 +366,9 @@
                     </view>
                 </component-popup>
             </block>
-            <view v-else class="margin-top-xxxl padding-top-xxxl tc">
-                <text class="cr-red">{{ $t('login.login.pgyv78') }}</text>
+            <view v-else class="padding-top-xxxl tc">
+                <view class="cr-red margin-top-xxxl">{{ $t('login.login.pgyv78') }}</view>
+                <view class="cr-grey-c text-size-xs margin-top-xxl">{{ $t('login.login.d76tgh') }}</view>
                 <view class="margin-top-xl">
                     <button type="default" size="mini" class="br-main cr-white bg-main dis-inline-block padding-left-xxxl padding-right-xxxl padding-top-sm padding-bottom-sm round" @tap="cache_refresh_event">{{ $t('login.login.6fe6ra') }}</button>
                 </view>
@@ -461,7 +462,11 @@
 
         // 页面加载初始化
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // #ifdef APP
+            // 获取app第三方登录通道设置
             this.provider_action()
             //#endif
 
@@ -514,6 +519,9 @@
 
         // 页面显示
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 异步初始化配置
             this.init_config();
 

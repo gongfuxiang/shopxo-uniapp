@@ -123,7 +123,7 @@
                                                 <view class="margin-top-xs flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                         <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
-                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color" prop-class="pr top-xs margin-right-xs"></iconfont>
+                                                            <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color" propClass="pr top-xs margin-right-xs"></iconfont>
                                                             <view class="cart-badge-icon pa">
                                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
                                                             </view>

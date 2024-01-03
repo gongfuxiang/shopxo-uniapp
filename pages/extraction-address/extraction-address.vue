@@ -66,13 +66,17 @@ export default {
     props: {},
 
     onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
             home_extraction_address_position: app.globalData.get_config("config.home_extraction_address_position", 0),
         });
     },
 
-    onReady: function () {
+    onReady() {
         // #ifndef MP-KUAISHOU
         // 是否获取位置、下单选择地址进入需要传参 is_buy
         if ((this.params.is_buy || 0) == 1 && this.home_extraction_address_position == 1) {
@@ -82,6 +86,9 @@ export default {
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // #ifndef MP-KUAISHOU
         // 是否需要选择地理位置、这里不校验参数is_buy，仅页面进入才需要校验is_buy进入位置选择页面
         if (this.home_extraction_address_position == 1) {

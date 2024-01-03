@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
-            <component-nav-back :prop-name="data_base.application_name || '领券中心'"></component-nav-back>
+            <component-nav-back :propName="data_base.application_name || '领券中心'"></component-nav-back>
             <view class="pr">
                 <view class="pa top-0 bg-img wh-auto">
                     <image class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
@@ -11,7 +11,7 @@
                         <!-- 优惠劵列表 -->
                         <view v-if="data_list.length > 0" class="flex-col">
                             <block v-for="(item, index) in data_list" :key="index">
-                                <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                                <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
                             </block>
                         </view>
                         <view v-else>
@@ -70,9 +70,19 @@
             componentCouponCard,
         },
         props: {},
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
+
             // 初始化配置
             this.init_config();
         },

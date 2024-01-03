@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :prop-fixed="false" :prop-style="seckill_bg">
+        <component-nav-back :propFixed="false" :propStyle="seckill_bg">
             <template slot="right" class="flex-1 flex-width seckill-right-title">
                 <view class="flex-1 seckill-right-title tc">
                     <image :src="seckill_title_url" mode="widthFix" class="title pr top-md"></image>
@@ -27,20 +27,20 @@
                         <view v-if="is_valid == 1" class="dis-inline-block va-m margin-left-sm">
                             <view v-for="(item, index) in periods_list" :key="index">
                                 <view v-show="nav_active_index === index">
-                                    <component-countdown :propHour="item.time.hours" :propMinute="item.time.minutes" :propSecond="item.time.seconds" :prop-time-background-color="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
+                                    <component-countdown :propHour="item.time.hours" :propMinute="item.time.minutes" :propSecond="item.time.seconds" :propTimeBackgroundColor="seckill_status === 1 ? '#E22C08' : '#333333'"></component-countdown>
                                 </view>
                             </view>
                         </view>
                     </view>
                     <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
                         活动规则
-                        <iconfont name="icon-miaosha-hdgz" size="26rpx" prop-class="margin-left-xs pr top-xs" color="#999"></iconfont>
+                        <iconfont name="icon-miaosha-hdgz" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
                     </view>
                 </view>
 
                 <!-- 商品 -->
                 <view v-if="goods.length > 0">
-                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="grid_btn_config" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
+                    <component-goods-list :propData="{ style_type: 1, goods_list: goods }" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="grid_btn_config" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="seckill_min_price"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -126,17 +126,28 @@
             componentPopup,
         },
         props: {},
-        onLoad() {},
+
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 初始化配置
             this.init_config();
+
             // 获取数据
             this.get_data();
         },
+
         // 下拉刷新
         onPullDownRefresh() {
             this.get_data();
         },
+
         watch: {
             seckill_status(val) {
                 if (val === 0) {

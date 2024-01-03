@@ -11,7 +11,7 @@
                         :propCurrencySymbol="propCurrencySymbol"
                         :propIsCartParaCurve="propIsCartParaCurve"
                         :propSource="propSource"
-                        :prop-open-cart="floor.style_type === '2' ? false : true"
+                        :propOpenCart="floor.style_type === '2' ? false : true"
                     ></component-goods-list>
                 </block>
             </block>

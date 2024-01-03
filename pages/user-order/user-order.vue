@@ -16,7 +16,7 @@
                         <view class="item-base oh br-b padding-bottom-main">
                             <!-- 选择 -->
                             <view v-if="nav_status_index == 1 && home_is_enable_order_bulk_pay == 1" :data-price="item.total_price" :data-oid="item.id" :data-payment="item.payment_id" class="dis-inline-block va-m margin-right-lg" @tap="selected_event">
-                                <iconfont :name="'icon-zhifu-'+((order_select_ids.indexOf(item.id) != -1) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(order_select_ids.indexOf(item.id) != -1) ? theme_color : '#999'" prop-class="fl margin-top-xs"></iconfont>
+                                <iconfont :name="'icon-zhifu-'+((order_select_ids.indexOf(item.id) != -1) ? 'yixuan' : 'weixuan')" size="34rpx" :color="(order_select_ids.indexOf(item.id) != -1) ? theme_color : '#999'" propClass="fl margin-top-xs"></iconfont>
                             </view>
                             <!-- 基础信息 -->
                             <view class="dis-inline-block va-m cp" @tap="url_event" :data-value="item.warehouse_url || ''">
@@ -59,11 +59,12 @@
                                     item.operate_data.is_delete +
                                     (item.plugins_is_order_allot_button || 0) +
                                     (item.plugins_is_order_batch_button || 0) +
-                                    (item.plugins_is_order_frequencycard_button || 0) > 0
-                                ) ||
+                                    (item.plugins_is_order_frequencycard_button || 0) +
+                                    (item.plugins_delivery_data || 0) +
+                                    (item.plugins_ordergoodsform_data || 0)
+                                 > 0 ) ||
                                 (item.status == 2 && item.order_model != 2) ||
                                 ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
-                                (item.plugins_delivery_data || 0) == 1 ||
                                 ((item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0)
                             "
                             class="item-operation tr br-t padding-vertical-main">
@@ -78,15 +79,8 @@
                             <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
                             <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
                             <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">次卡</button>
-                            <button
-                                v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0"
-                                class="round bg-white cr-green br-green"
-                                type="default"
-                                size="mini"
-                                :data-index="index"
-                                @tap="continue_buy_event"
-                                hover-class="none"
-                            >再次购买</button>
+                            <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">表单</button>
+                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">回购</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -108,17 +102,17 @@
 
         <!-- 支付组件 -->
         <component-payment
-            :prop-currency-symbol="payment_currency_symbol"
-            :prop-pay-url="pay_url"
-            :prop-qrcode-url="qrcode_url"
-            :prop-payment-list="payment_list"
-            prop-pay-data-key="ids"
-            :prop-temp-pay-value="temp_pay_value"
-            :prop-temp-pay-index="temp_pay_index"
-            :prop-payment-id="payment_id"
-            :prop-default-payment-id="default_payment_id"
-            :prop-pay-price="pay_price"
-            :prop-is-show-payment="is_show_payment_popup"
+            :propCurrencySymbol="payment_currency_symbol"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            :propPaymentList="payment_list"
+            propPayDataKey="ids"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
+            :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
         ></component-payment>
@@ -189,6 +183,9 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // 是否指定状态
             var nav_status_index = 0;
             if ((params.status || null) != null) {
@@ -212,6 +209,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },
@@ -702,20 +702,86 @@
                 app.globalData.url_event(e);
             },
 
-            // 再次购买事件
+            // 回购事件
             continue_buy_event(e) {
-                var index = e.currentTarget.dataset.index;
-                var data = this.data_list[index];
-                if ((data.plugins_intellectstools_data || null) != null && (data.plugins_intellectstools_data.continue_buy_data || null) != null && data.plugins_intellectstools_data.continue_buy_data.length > 0) {
-                    // 进入订单确认页面
-                    var data = {
-                        buy_type: 'goods',
-                        goods_data: encodeURIComponent(base64.encode(JSON.stringify(data.plugins_intellectstools_data.continue_buy_data))),
-                    };
-                    uni.navigateTo({
-                        url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                    });
+                var item = this.data_list[e.currentTarget.dataset.index];
+                if ((item.plugins_intellectstools_data || null) != null) {
+                    var plugins_intellectstools_data = item.plugins_intellectstools_data;
+                    var continue_buy_data = plugins_intellectstools_data.continue_buy_data || null;
+                    // 是否存在订单可以购买的商品数据
+                    if(continue_buy_data != null && continue_buy_data.length > 0) {
+                        // 是否直接购买
+                        var is_buy_again_buy = parseInt(plugins_intellectstools_data.is_buy_again_buy || 0);
+                        // 是否加入购物车
+                        var is_buy_again_cart = parseInt(plugins_intellectstools_data.is_buy_again_cart || 0);
+                        // 如果同时都支持则让用户选择
+                        if(is_buy_again_buy == 1 && is_buy_again_cart == 1) {
+                            var self = this;
+                            uni.showActionSheet({
+                                itemList: ['加购物车', '直接购买'],
+                                success: function (res) {
+                                    if(res.tapIndex == 0) {
+                                        // 加入购物车
+                                        self.continue_order_goods_cart_handle(continue_buy_data, self);
+                                    } else {
+                                        // 直接购买
+                                        self.continue_order_goods_buy_handle(continue_buy_data);
+                                    }
+                                }
+                            });
+                        } else if(is_buy_again_cart == 1) {
+                            // 加入购物车
+                            this.continue_order_goods_cart_handle(continue_buy_data, this);
+                        } else if(is_buy_again_buy == 1) {
+                            // 直接购买
+                            this.continue_order_goods_buy_handle(continue_buy_data);
+                        }
+                    }
                 }
+            },
+
+            // 订单商品直接购买处理
+            continue_order_goods_buy_handle(goods_data) {
+                // 进入订单确认页面
+                var data = {
+                    buy_type: 'goods',
+                    goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
+                };
+                uni.navigateTo({
+                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
+                });
+            },
+
+            // 订单商品加入购物车处理
+            continue_order_goods_cart_handle(goods_data, self) {
+                uni.showLoading({
+                    title: "处理中...",
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("save", "cart"),
+                    method: "POST",
+                    data: { goods_data: goods_data },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, "success");
+                            setTimeout(function() {
+                                uni.navigateTo({
+                                    url: '/pages/cart-page/cart-page'
+                                });
+                            }, 1000);
+                        } else {
+                            if (app.globalData.is_login_check(res.data, self, "continue_order_goods_cart_handle", goods_data)) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast("网络开小差了哦~");
+                    },
+                });
             },
         },
     };

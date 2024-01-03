@@ -7,7 +7,7 @@
                         <view class="base oh br-b-dashed padding-bottom-main">
                             <view class="dis-inline-block va-m" data-type="node":data-value="item.id" @tap="selected_event">
                                 <iconfont
-                                    prop-class="margin-right-sm pr top-md"
+                                    propClass="margin-right-sm pr top-md"
                                     :name="select_ids.indexOf(item.id) != -1 ? 'icon-zhifu-yixuan' : 'icon-zhifu-weixuan'"
                                     size="34rpx"
                                     :color="select_ids.indexOf(item.id) != -1 ? '#E22C08' : '#999'"
@@ -82,12 +82,20 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
 
             // 分享菜单处理

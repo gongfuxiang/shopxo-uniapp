@@ -12,27 +12,27 @@
                 <!-- 未使用 -->
                 <block v-if="(data_list.not_use || null) != null && data_list.not_use.length > 0 && nav_tabs_value == 'not_use'">
                     <block v-for="(item, index) in data_list.not_use" :key="index">
-                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start_show_text" :prop-end-time="item.time_end_show_text" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
+                        <component-coupon-card :propData="item.coupon" :propStartTime="item.time_start_show_text" :propEndTime="item.time_end_show_text" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" propBg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
 
                 <!-- 已使用 -->
                 <block v-if="(data_list.already_use || null) != null && data_list.already_use.length > 0 && nav_tabs_value == 'already_use'">
                     <block v-for="(item, index) in data_list.already_use" :key="index">
-                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start_show_text" :prop-end-time="item.time_end_show_text" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
+                        <component-coupon-card :propData="item.coupon" :propStartTime="item.time_start_show_text" :propEndTime="item.time_end_show_text" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" propBg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
 
                 <!-- 已过期 -->
                 <block v-if="(data_list.already_expire || null) != null && data_list.already_expire.length > 0 && nav_tabs_value == 'already_expire'">
                     <block v-for="(item, index) in data_list.already_expire" :key="index">
-                        <component-coupon-card :prop-data="item.coupon" :prop-start-time="item.time_start_show_text" :prop-end-time="item.time_end_show_text" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" prop-bg="#f5f5f5"></component-coupon-card>
+                        <component-coupon-card :propData="item.coupon" :propStartTime="item.time_start_show_text" :propEndTime="item.time_end_show_text" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" propBg="#f5f5f5"></component-coupon-card>
                     </block>
                 </block>
             </view>
 
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :prop-url="coupon_static_url + 'no-data.png'"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propUrl="coupon_static_url + 'no-data.png'"></component-no-data>
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -84,7 +84,15 @@
         },
         props: {},
 
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
 

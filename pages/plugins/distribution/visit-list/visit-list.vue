@@ -77,6 +77,10 @@ export default {
     props: {},
 
     onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
         });
@@ -86,6 +90,9 @@ export default {
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // 先解绑自定义事件
         uni.$off('refresh');
         // 监听自定义事件并进行页面刷新操作

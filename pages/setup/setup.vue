@@ -109,7 +109,10 @@
             componentNoData,
             componentPopup,
         },
-        onLoad(){
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // 多语言
             let systemInfo = uni.getSystemInfoSync();
             this.systemLocale = systemInfo.language;
@@ -128,6 +131,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
 

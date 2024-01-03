@@ -35,7 +35,7 @@
                                                     <text v-if="province_name"> {{ province_name }}{{ city_name ? '-' + city_name : '' }}{{ county_name ? '-' + county_name : '' }} </text>
                                                     <text v-else class="cr-grey-9"> 省市区 </text>
                                                 </view>
-                                                <component-region-picker :prop-province-id="province_id" :prop-city-id="city_id" :prop-county-id="county_id" :prop-show="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
+                                                <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
                                                 <input type="text" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="地址编号" @input="region_code_value_event" />
@@ -214,12 +214,15 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
-        },
 
-        onReady: function () {
+            // 设置标题
             uni.setNavigationBarTitle({
                 title: '地址' + ((this.params.id || null) == null ? '添加' : '编辑'),
             });
@@ -235,6 +238,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 先解绑自定义事件
             uni.$off('refresh');
             // 监听自定义事件并进行页面刷新操作

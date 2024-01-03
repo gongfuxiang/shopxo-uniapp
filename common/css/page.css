@@ -30,8 +30,13 @@ iframe,
 .plugins-popupscreen .content,
 .cart-buy-nav,
 .bg-img,
-.pa-w {
+.pa-w,
+.plugins-realstore-cart-content {
     max-width: 800px !important;
+    margin: 0 auto !important;
+}
+.plugins-realstore-buy-type-choice {
+    max-width: 700px !important;
     margin: 0 auto !important;
 }
 .trn-nav-top,
@@ -40,7 +45,8 @@ iframe,
 .quick-movable-container,
 .online-service-movable-container,
 .buy-nav,
-.cart-buy-nav {
+.cart-buy-nav,
+.plugins-realstore-cart-content {
     left: auto !important;
 }
 iframe,

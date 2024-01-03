@@ -38,7 +38,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">封面图片</view>
                             <view class="margin-top-main">
-                                <component-upload :propData="image_list" :prop-max-num="1" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
+                                <component-upload :propData="image_list" :propMaxNum="1" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                             </view>
                         </view>
                     </view>
@@ -163,6 +163,10 @@
         },
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             if (params !== null && params.id) {
                 this.setData({
                     blog_id: params.id,
@@ -172,7 +176,10 @@
             this.init();
         },
 
-        onShow() {},
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+        },
 
         // 下拉刷新
         onPullDownRefresh() {},

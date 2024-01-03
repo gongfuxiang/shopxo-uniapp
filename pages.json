@@ -1197,6 +1197,17 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/ordergoodsform",
+            "pages": [{
+                    "path": "order/order",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "商品表单"
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {

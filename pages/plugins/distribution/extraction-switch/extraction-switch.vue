@@ -67,13 +67,15 @@ export default {
     props: {},
 
     onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
             home_extraction_address_position: app.globalData.get_config("config.home_extraction_address_position", 0),
         });
-    },
 
-    onReady: function () {
         // 清除位置缓存信息
         app.globalData.choice_user_location_remove();
 
@@ -84,6 +86,9 @@ export default {
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // 是否需要选择地理位置
         if (this.home_extraction_address_position == 1) {
             // 首次不请求数据

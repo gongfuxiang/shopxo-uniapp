@@ -53,11 +53,11 @@
                             <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
                                 <block v-if="!item.hide_comments_list_num"> 查看全部{{ item.comments_count }}个回答 </block>
                                 <block v-else>查看更多</block>
-                                <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" prop-class="pr top-xs"></iconfont>
+                                <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
                             </view>
                             <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
                                 收起回答
-                                <iconfont name="icon-arrow-top" size="24rpx" prop-class="pr top-xs"></iconfont>
+                                <iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
                             </view>
                         </view>
                     </block>
@@ -101,6 +101,10 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             if (params || params.goods_id) {
                 this.setData({
                     goods_id: params.goods_id,
@@ -109,6 +113,10 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
         },
 

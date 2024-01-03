@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :prop-fixed="false" prop-class="bg-white" prop-color="#333">
+        <component-nav-back :propFixed="false" propClass="bg-white" propColor="#333">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
@@ -47,13 +47,13 @@
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
                 <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="divider-r-d wh-auto">
-                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" prop-class="margin-right-sm"></iconfont>
+                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>
                         我要提问
                     </view>
                 </navigator>
                 <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="wh-auto">
-                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" prop-class="margin-right-sm pr top-xs"></iconfont>
+                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>
                         我的提问
                     </view>
                 </navigator>
@@ -104,9 +104,16 @@
         },
         props: {},
 
-        onLoad() {},
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.get_data();
 
             // 分享菜单处理

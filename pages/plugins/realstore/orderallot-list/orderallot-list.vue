@@ -74,17 +74,17 @@
 
         <!-- 支付组件 -->
         <component-payment
-            :prop-currency-symbol="payment_currency_symbol"
-            :prop-pay-url="pay_url"
-            :prop-qrcode-url="qrcode_url"
-            :prop-payment-list="payment_list"
-            prop-pay-data-key="ids"
-            :prop-temp-pay-value="temp_pay_value"
-            :prop-temp-pay-index="temp_pay_index"
-            :prop-payment-id="payment_id"
-            :prop-default-payment-id="default_payment_id"
-            :prop-pay-price="pay_price"
-            :prop-is-show-payment="is_show_payment_popup"
+            :propCurrencySymbol="payment_currency_symbol"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            :propPaymentList="payment_list"
+            propPayDataKey="ids"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
+            :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
         ></component-payment>
@@ -142,6 +142,9 @@ export default {
     props: {},
 
     onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
         // 是否指定状态
         var nav_status_index = 0;
         if ((params.status || null) != null) {
@@ -165,6 +168,9 @@ export default {
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // 分享菜单处理
         app.globalData.page_share_handle();
     },

@@ -56,6 +56,7 @@
                         <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
                             <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="right-value fr">
+                                <view v-if="(item.spec_text || null) != null" class="text-grey padding-bottom-xs margin-bottom-xs br-b-f9 text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
                                 <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
                             </view>
@@ -136,13 +137,19 @@
         props: {},
 
         onLoad(params) {
-            //params['id'] = 5;
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
 

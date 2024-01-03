@@ -18,24 +18,24 @@
                 <view v-if="cart_type_value == 'realstore'" class="realstore-nav border-radius-main margin-main oh pr">
                     <view class="fl padding-main cp" @tap="realstore_choice_open_event">
                         <view class="dis-inline-block va-m">
-                            <iconfont name="icon-store" size="28rpx" prop-class="lh-il" color="#191F39"></iconfont>
+                            <iconfont name="icon-store" size="28rpx" propClass="lh-il" color="#191F39"></iconfont>
                         </view>
                         <text class="va-m margin-left-xs">{{plugins_realstore_info.name}}</text>
                         <text v-if="(plugins_realstore_info.distance || null) != null" class="va-m">({{plugins_realstore_info.distance}})</text>
                         <view class="dis-inline-block va-m margin-left-xs">
-                            <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="lh-il" color="#666"></iconfont>
+                            <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
                     </view>
                     <view class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
                         <text class="cr-base">{{plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name']}}</text>
                         <view class="dis-inline-block va-m margin-left-xs">
-                            <iconfont name="icon-arrow-right" size="24rpx" prop-class="lh-il" color="#666"></iconfont>
+                            <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
                     </view>
                 </view>
             </block>
             <block v-else>
-                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP -->
+                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP -->
                 <component-nav-back propClass="bg-white" propNameClass="cr-black" propName="购物车" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
@@ -192,7 +192,7 @@
                                     <text class="cr-base">{{ item.name }}</text>
                                     <text v-if="(item.distance || null) != null" class="cr-grey margin-left-xs">({{item.distance}})</text>
                                     <view v-if="(plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id" class="fr">
-                                        <iconfont name="icon-zhifu-yixuan" size="24rpx" prop-class="lh-il cr-main"></iconfont>
+                                        <iconfont name="icon-zhifu-yixuan" size="24rpx" propClass="lh-il cr-main"></iconfont>
                                     </view>
                                 </view>
                             </view>
@@ -201,7 +201,7 @@
                             <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
                                 <text class="cr-grey text-size-xs va-m">查看更多</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
-                                    <iconfont name="icon-arrow-right" size="24rpx" prop-class="lh-il cr-grey"></iconfont>
+                                    <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -1101,6 +1101,16 @@
     .scroll-box.cart.realstore .content {
         padding-bottom: 420rpx;
     }
+    /* #ifdef H5 */
+    .scroll-box .content,
+    .scroll-box.realstore .content {
+        padding-bottom: 40rpx;
+    }
+    .scroll-box.cart .content,
+    .scroll-box.cart.realstore .content {
+        padding-bottom: 120rpx;
+    }
+    /* #endif */
     .cart-goods-title {
         line-height: 44rpx;
         min-height: 86rpx;
@@ -1253,6 +1263,9 @@
     .cart-top-nav {
         width: 260rpx;
         height: 80rpx;
+        /* #ifdef H5 */
+        padding-top: 20rpx;
+        /* #endif */
     }
     .cart-top-nav .item {
         width: 50%;

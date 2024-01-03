@@ -8,11 +8,11 @@
                 <!-- 位置 -->
                 <view class="nav-location single-text dis-inline-block bs-bb pr padding-left-main padding-right-xxxxl" @tap="choose_user_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-il"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="28rpx" propClass="lh-il"></iconfont>
                     </view>
                     <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
                     <view class="icon-arrow-down lh pa right-xxxxxl">
-                        <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="lh-il" color="#fff"></iconfont>
+                        <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-il" color="#fff"></iconfont>
                     </view>
                 </view>
             </view>
@@ -38,7 +38,7 @@
         <view v-if="data_list.length > 0">
             <view class="padding-horizontal-main">
                 <!-- 导航 -->
-                <component-title :prop-title="data_base.home_data_list_title || '最新门店'" prop-more-url="/pages/plugins/realstore/search/search"></component-title>
+                <component-title :propTitle="data_base.home_data_list_title || '最新门店'" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
                 <!-- 数据列表 -->
                 <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
             </view>
@@ -115,6 +115,10 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
@@ -126,6 +130,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 用户位置初始化
             this.user_location_init();
             // 先解绑自定义事件

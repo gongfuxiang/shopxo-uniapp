@@ -40,7 +40,11 @@
         },
 
         // 页面加载初始化
-        onLoad() {
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 协议验证
             uni.getPrivacySetting({
                 success: (res) => {
                     if (res.needAuthorization) {
@@ -56,6 +60,11 @@
                     uni.navigateBack();
                 },
             });
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
         },
 
         methods: {

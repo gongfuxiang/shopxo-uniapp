@@ -6,7 +6,7 @@
                 <!-- 位置 -->
                 <view class="nav-location flex-row align-c margin-right-sm" @tap="choose_user_location_event">
                     <view class="dis-inline-block va-m">
-                        <iconfont name="icon-mendian-dingwei" size="28rpx" prop-class="lh-md"></iconfont>
+                        <iconfont name="icon-mendian-dingwei" size="28rpx" propClass="lh-md"></iconfont>
                     </view>
                     <text class="va-m margin-left-xs text-size-md single-text">{{user_location.text || ''}}</text>
                 </view>
@@ -81,6 +81,10 @@ export default {
     props: {},
 
     onLoad(params) {
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
             search_keywords_value: params.keywords || "",
@@ -92,8 +96,12 @@ export default {
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // 用户位置初始化
         this.user_location_init();
+
         // 先解绑自定义事件
         uni.$off('refresh');
         // 监听自定义事件并进行页面刷新操作

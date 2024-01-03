@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back prop-name="充值"></component-nav-back>
+        <component-nav-back propName="充值"></component-nav-back>
         <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
                 <view class="page-bottom-fixed">
@@ -46,7 +46,7 @@
                                                     </view>
                                                 </view>
                                                 <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
-                                                    <iconfont name="icon-transfer" size="28rpx" prop-class="transfer-icon"></iconfont>
+                                                    <iconfont name="icon-transfer" size="28rpx" propClass="transfer-icon"></iconfont>
                                                     <text class="margin-left-xs">转账</text>
                                                 </view>
                                             </view>
@@ -70,16 +70,16 @@
                                     <!-- 明细 -->
                                     <view class="nav-detail margin-bottom-lg">
                                         <view v-if="current === 0">
-                                            <component-wallet-log :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-wallet-log>
+                                            <component-wallet-log :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-wallet-log>
                                         </view>
                                         <view v-if="current === 1">
-                                            <component-user-recharge :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
+                                            <component-user-recharge :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool" @pay-success="pay_success_event"></component-user-recharge>
                                         </view>
                                         <view v-if="current === 2">
-                                            <component-user-cash :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-user-cash>
+                                            <component-user-cash :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-user-cash>
                                         </view>
                                         <view v-if="current === 3">
-                                            <component-transfer :prop-pull-down-refresh="propPullDownRefresh" :prop-scroll-lower="scroll_lower_bool"></component-transfer>
+                                            <component-transfer :propPullDownRefresh="propPullDownRefresh" :propScrollLower="scroll_lower_bool"></component-transfer>
                                         </view>
                                     </view>
                                 </view>
@@ -157,6 +157,9 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // 是否指定状态
             if ((params.type || null) != null) {
                 this.setData({
@@ -180,6 +183,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

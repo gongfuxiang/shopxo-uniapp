@@ -2,7 +2,7 @@
     <view :class="theme_view">
 		<!-- 轮播 -->
 		<view v-if="banner_list.length > 0">
-			<component-banner :propData="banner_list" prop-mode="round" prop-right propRadius=""></component-banner>
+			<component-banner :propData="banner_list" propMode="round" propRadius=""></component-banner>
 		</view>
 
 		<view class="spacing-mt" v-if="data_list.length > 0">
@@ -99,9 +99,17 @@
 			componentNoData,
 			componentBottomLine
 		},
-		props: {},
+		
+		onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
 		onShow() {
+			// 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
 			this.init();
 		},
 

@@ -30,6 +30,10 @@
 
         // 页面加载初始化
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             if((params.msg || null) != null) {
                 params['msg'] = base64.decode(decodeURIComponent(params.msg));
             }
@@ -40,6 +44,9 @@
 
         // 页面显示
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

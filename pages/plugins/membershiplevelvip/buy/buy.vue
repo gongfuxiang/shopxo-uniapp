@@ -50,7 +50,7 @@
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-kaitonghuiy-dingdan" prop-class="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
+                    <view> <iconfont name="icon-kaitonghuiy-dingdan" propClass="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
                     <iconfont name="icon-arrow-right" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>
@@ -64,19 +64,19 @@
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
         <component-payment
-            :prop-pay-url="pay_url"
-            :prop-qrcode-url="qrcode_url"
-            prop-pay-data-key="id"
-            :prop-payment-list="payment_list"
-            :prop-temp-pay-value="temp_pay_value"
-            :prop-temp-pay-index="temp_pay_index"
-            :prop-payment-id="payment_id"
-            :prop-default-payment-id="default_payment_id"
-            :prop-pay-price="pay_price"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            propPayDataKey="id"
+            :propPaymentList="payment_list"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPaymentId="payment_id"
+            :propDefaultPaymentId="default_payment_id"
+            :propPayPrice="pay_price"
             :propIsRedirectTo="true"
-            :prop-to-fail-page="to_fail_page"
-            :prop-to-appoint-page="to_appoint_page"
-            :prop-is-show-payment="is_show_payment_popup"
+            :propToFailPage="to_fail_page"
+            :propToAppointPage="to_appoint_page"
+            :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
         ></component-payment>
     </view>
@@ -121,9 +121,16 @@
         },
         props: {},
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 加载数据
             this.init();
         },
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

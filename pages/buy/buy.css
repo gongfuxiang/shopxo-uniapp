@@ -6,11 +6,9 @@
     padding-right: 40rpx;
     ;
 }
-
 .address-detail .text {
     width: calc(100% - 40rpx);
 }
-
 .address-alias,
 .goods-group-alias,
 .goods-group-map-submit {
@@ -25,30 +23,25 @@
     width: 30rpx;
     height: 30rpx;
 }
-
 .goods-group-title {
     font-weight: bold;
     vertical-align: middle;
 }
-
 .goods-group-alias {
     border: 1px solid #3bb4f2;
     color: #3bb4f2;
 }
-
 .goods-image {
-    width: 160rpx;
-    height: 160rpx;
+    width: 168rpx;
+    height: 168rpx;
     margin-right: 20rpx;
 }
-
 .buy-number {
     right: 0;
     bottom: 0;
 }
-
 .goods-base {
-    min-height: 160rpx;
+    min-height: 168rpx;
     margin-left: 180rpx;
 }
 
@@ -60,18 +53,15 @@
     left: 0;
     bottom: 0;
 }
-
 .buy-nav,
 .nav-base {
     height: 114rpx;
     line-height: 114rpx;
 }
-
 .nav-submit button {
     height: 70rpx;
     line-height: 70rpx;
 }
-
 .nav-submit {
     width: calc(40% - 48rpx);
 }
@@ -82,30 +72,27 @@
 .payment-list .item {
     width: calc(50% - 10rpx);
 }
-
 .payment-list .item:nth-child(2n) {
     float: right;
 }
-
 .payment-list .item:nth-child(2n+1) {
     float: left;
 }
-
 .payment-list .item-content {
-    padding: 20rpx 10rpx;
+    padding: 0 10rpx;
+    height: 80rpx;
+    line-height: 80rpx;
 }
-
 .payment-list .item-content image {
     width: 50rpx;
     height: 50rpx !important;
 }
-
 .pay-tips {
     height: 32rpx;
     line-height: 32rpx;
     display: inline-block;
     position: absolute;
-    top: -20rpx;
+    top: -16rpx;
     right: 0;
     color: #fff;
     padding: 0 12rpx;
@@ -121,11 +108,9 @@
     background-color: #ffffeb;
     border: 1px solid #ffe2cf;
 }
-
 .extension-list .item:not(:last-child) {
     border-bottom: 1px dashed #ffe2cf;
 }
-
 .extension-list .item .text-tips {
     color: #ff8f44;
 }
@@ -136,12 +121,10 @@
 .content-textarea-container .content {
     height: 100rpx;
 }
-
 .content-textarea-container .textarea-view,
 .content-textarea-container .textarea {
     height: 100% !important;
 }
-
 .content-textarea-container .textarea {
     padding: 5rpx 0;
 }
@@ -161,7 +144,6 @@
 .buy-data-item .right-value{
     line-height: 80rpx;
 }
-
 .buy-data-item .right-value {
     width: calc(100% - 300rpx);
 }
@@ -175,23 +157,19 @@
 .plugins-coupon-popup {
     padding-top: 20rpx;
 }
-
 .plugins-coupon-popup .close {
     margin-right: 20rpx;
 }
-
 .plugins-coupon-container {
     max-height: 80vh;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-
 .plugins-coupon-container .item,
 .plugins-coupon-container .v-right,
 .plugins-coupon-container .v-right .circle {
     height: 230rpx;
 }
-
 .plugins-coupon-container .not-use-tips {
     color: #f7b240;
     font-size: 32rpx;
@@ -203,13 +181,11 @@
 .plugins-points-buy-container {
     padding: 20rpx;
 }
-
 .plugins-points-buy-container .select .sales-price {
     margin-left: 30rpx;
     font-size: 28rpx;
     font-weight: 400;
 }
-
 .plugins-points-buy-container .desc {
     color: #F37B1D;
 }
@@ -245,12 +221,10 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
-
 .plugins-realstore-container .item {
     overflow: hidden;
     height: 220rpx;
 }
-
 .plugins-realstore-container .v-left {
     width: calc(100% - 140rpx);
     padding: 30rpx 0 30rpx 20rpx;
@@ -258,25 +232,21 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-
 .plugins-realstore-container .v-left .base {
     font-family: arial;
     color: #D2364C;
 }
-
 .plugins-realstore-container .v-right {
     width: 140rpx;
     height: 220rpx;
     font-weight: 500;
 }
-
 .plugins-realstore-container .v-right:before {
     content: '';
     display: inline-block;
     height: 100%;
     vertical-align: middle;
 }
-
 .plugins-realstore-container .item-disabled .v-right {
     background: #dfdfdf !important;
     color: #c0c0c0 !important;

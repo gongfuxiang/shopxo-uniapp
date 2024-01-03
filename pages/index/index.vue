@@ -16,11 +16,11 @@
                             <!-- 定位 -->
                             <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
                                 <view class="dis-inline-block va-m lh">
-                                    <iconfont name="icon-location" size="32rpx" prop-class="lh" color="#fff"></iconfont>
+                                    <iconfont name="icon-location" size="32rpx" propClass="lh" color="#fff"></iconfont>
                                 </view>
                                 <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
                                 <view class="lh pa right-0 top-xxxl">
-                                    <iconfont name="icon-arrow-bottom" size="24rpx" prop-class="lh-xs" color="#fff"></iconfont>
+                                    <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-xs" color="#fff"></iconfont>
                                 </view>
                             </view>
                             <block v-else>
@@ -120,7 +120,7 @@
                                 </view>
                                 <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">更多</navigator>
                             </view>
-                            <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :prop-open-cart="false"></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                         </view>
 
                         <!-- 活动配置-楼层顶部 - 插件 -->
@@ -198,7 +198,7 @@
                     <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
                         <!-- 活动配置-楼层底部 - 插件 -->
                         <view v-if="pv.plugins == 'activity' && (plugins_activity_data || null) != null">
-                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :prop-open-cart="false"></component-activity-list>
+                            <component-activity-list :propConfig="plugins_activity_data.base" :propData="plugins_activity_data.data" propLocation="1" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" propSource="index" :propOpenCart="false"></component-activity-list>
                         </view>
 
                         <!-- 博客-楼层底部 - 插件 -->
@@ -414,7 +414,16 @@
         },
         props: {},
 
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
+
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             if(this.is_home_location_choice == 1) {
                 // 用户位置初始化
                 this.user_location_init();

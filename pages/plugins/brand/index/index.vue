@@ -15,7 +15,7 @@
                         </block>
                     </view>
                 </scroll-view>
-                <component-nav-more prop-class="bg-white" :prop-status="popupStatus" @open-popup="open_popup_event">
+                <component-nav-more propClass="bg-white" :propStatus="popupStatus" @open-popup="open_popup_event">
                     <view class="nav-list-more">
                         <view class="flex-row flex-warp align-c">
                             <block v-for="(item, index) in brand_category_list" :key="index">
@@ -86,12 +86,20 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.get_data();
         },
 

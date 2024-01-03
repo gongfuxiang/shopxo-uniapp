@@ -27,7 +27,7 @@
                                         <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
                                             <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
                                                 {{ (extraction || null) == null ? '申请' : '' }}取货点
-                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" prop-class="pa"></iconfont>
+                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>
@@ -309,10 +309,17 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 加载数据
             this.init();
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

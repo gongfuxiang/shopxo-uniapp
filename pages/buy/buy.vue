@@ -54,20 +54,27 @@
                         <!-- 商品 -->
                         <view class="goods-content margin-bottom-sm">
                             <view v-for="(item, index2) in group.goods_items" :key="index2" class="goods-item padding-vertical-main oh br-b-dashed">
-                                <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
-                                <view class="goods-base">
-                                    <view class="goods-title multi-text">{{ item.title }}</view>
-                                    <view v-if="item.spec != null" class="margin-top-xs cr-grey">
-                                        <block v-for="(spec, si) in item.spec" :key="si">
-                                            <text v-if="si > 0">;</text>
-                                            <text>{{ spec.value }}</text>
-                                        </block>
+                                <!-- 商品主体 -->
+                                <view class="goods-item-content">
+                                    <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
+                                    <view class="goods-base">
+                                        <view class="goods-title multi-text">{{ item.title }}</view>
+                                        <view v-if="item.spec != null" class="margin-top-xs cr-grey">
+                                            <block v-for="(spec, si) in item.spec" :key="si">
+                                                <text v-if="si > 0">;</text>
+                                                <text>{{ spec.value }}</text>
+                                            </block>
+                                        </view>
+                                        <view class="oh pr margin-top-xs">
+                                            <text class="fw-b">{{ currency_symbol }}{{ item.price }}</text>
+                                            <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.original_price }}</text>
+                                            <text class="buy-number pa cr-grey">x{{ item.stock }}</text>
+                                        </view>
                                     </view>
-                                    <view class="oh pr margin-top-sm">
-                                        <text class="fw-b">{{ currency_symbol }}{{ item.price }}</text>
-                                        <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.original_price }}</text>
-                                        <text class="buy-number pa cr-grey">x{{ item.stock }}</text>
-                                    </view>
+                                </view>
+                                <!-- 订单商品表单 -->
+                                <view v-if="(item.plugins_ordergoodsform_data || null) != null && item.plugins_ordergoodsform_data.length > 0" class="goods-item-ordergoodsform">
+                                    <component-buy-ordergoodsform ref="buy_ordergoodsform" :propData="item.plugins_ordergoodsform_data" :propGoodsID="item.goods_id"></component-buy-ordergoodsform>
                                 </view>
                             </view>
                         </view>
@@ -104,7 +111,7 @@
                         </view>
                         <!-- 扩展数据展示 -->
                         <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
-                            <view v-for="(item, index2) in group.order_base.extension_data" :key="index2" class="item oh padding-main">
+                            <view v-for="(item, index2) in group.order_base.extension_data" :key="index2" class="item oh padding-vertical-xs padding-main">
                                 <text class="cr-base fl">{{ item.name }}</text>
                                 <text class="text-tips fr">{{ item.tips }}</text>
                             </view>
@@ -187,7 +194,7 @@
 
                     <!-- 支付方式 -->
                     <view v-if="total_price > 0 && payment_list.length > 0 && common_order_is_booking != 1" class="payment-list padding-horizontal-main padding-top-main border-radius-main bg-white oh">
-                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom-xl">
+                        <view v-for="(item, index) in payment_list" :key="index" class="item tc fl cp margin-bottom">
                             <view :class="'item-content pr radius br ' + (payment_id == item.id ? 'cr-main br-main' : '')" :data-value="item.id" @tap="payment_event">
                                 <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                 <text>{{ item.name }}</text>
@@ -283,7 +290,17 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment ref="payment" :propIsRedirectTo="true" :prop-pay-url="pay_url" :prop-qrcode-url="qrcode_url" :prop-to-appoint-page="to_appoint_page" prop-pay-data-key="ids" :prop-payment-list="payment_list" :prop-to-page-back="to_page_back" :prop-to-fail-page="to_fail_page"></component-payment>
+            <component-payment
+                ref="payment"
+                :propIsRedirectTo="true"
+                :propPayUrl="pay_url"
+                :propQrcodeUrl="qrcode_url"
+                :propToAppointPage="to_appoint_page"
+                propPayDataKey="ids"
+                :propPaymentList="payment_list"
+                :propTo-pageBack="to_page_back"
+                :propToFailPage="to_fail_page"
+            ></component-payment>
         </block>
     </view>
 </template>
@@ -294,6 +311,7 @@
     import componentNoData from '../../components/no-data/no-data';
     import componentTimeSelect from '../../components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
+    import componentBuyOrdergoodsform from '../../components/buy-ordergoodsform/buy-ordergoodsform';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -367,10 +385,15 @@
             componentNoData,
             componentTimeSelect,
             componentPayment,
+            componentBuyOrdergoodsform
         },
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             // params.data 参数 urlencode(base64_encode(json字符串))
             // buy_type 下单类型（goods 立即购买、cart 购物车）
             // goods_data 下单商品urlencode(base64_encode(json字符串[{goods_id,stock,spec}]))
@@ -390,6 +413,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
 
@@ -693,63 +719,74 @@
                         msg: '请选择地址',
                         is_can_zero: 1,
                     });
+                    if (!app.globalData.fields_check(data, validation)) {
+                        return false;
+                    }
                 }
 
-                if (app.globalData.fields_check(data, validation)) {
-                    // 请求参数处理
-                    data = this.request_data_ext_params_merge(data);
-
-                    // 是否需要选择时间
-                    var datetime = this.buy_datetime_info || {};
-                    if ((datetime.is_select || false) == true) {
-                        // 是否必选
-                        if ((datetime.required || false) == true && (datetime.value || null) == null) {
-                            app.globalData.showToast(datetime.error_msg || '请选择时间');
-                            return false;
-                        }
-                        data['buy_datetime_value'] = datetime.value || '';
-                    }
-
-                    // 是否需要选择支付方式
-                    if (this.total_price > 0 && this.common_order_is_booking != 1) {
-                        if ((data.payment_id || null) == null) {
-                            app.globalData.showToast('请选择支付方式');
+                // 订单商品表单插件数据验证处理
+                var buy_ordergoodsform = this.$refs.buy_ordergoodsform || [];
+                if(buy_ordergoodsform.length > 0) {
+                    for(var i in buy_ordergoodsform) {
+                        if(!buy_ordergoodsform[i].data_check()) {
                             return false;
                         }
                     }
-
-                    // 加载loding
-                    uni.showLoading({
-                        title: '提交中...',
-                    });
-                    this.setData({
-                        buy_submit_disabled_status: true,
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url('add', 'buy'),
-                        method: 'POST',
-                        data: data,
-                        dataType: 'json',
-                        success: (res) => {
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
-                                this.buy_submit_response_handle(res.data.data);
-                            } else {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                            this.setData({
-                                buy_submit_disabled_status: false,
-                            });
-                        },
-                        fail: () => {
-                            uni.hideLoading();
-                            this.setData({
-                                buy_submit_disabled_status: false,
-                            });
-                            app.globalData.showToast('网络开小差了哦~');
-                        },
-                    });
                 }
+
+                // 请求参数处理
+                data = this.request_data_ext_params_merge(data);
+
+                // 是否需要选择时间
+                var datetime = this.buy_datetime_info || {};
+                if ((datetime.is_select || false) == true) {
+                    // 是否必选
+                    if ((datetime.required || false) == true && (datetime.value || null) == null) {
+                        app.globalData.showToast(datetime.error_msg || '请选择时间');
+                        return false;
+                    }
+                    data['buy_datetime_value'] = datetime.value || '';
+                }
+
+                // 是否需要选择支付方式
+                if (this.total_price > 0 && this.common_order_is_booking != 1) {
+                    if ((data.payment_id || null) == null) {
+                        app.globalData.showToast('请选择支付方式');
+                        return false;
+                    }
+                }
+
+                // 加载loding
+                uni.showLoading({
+                    title: '提交中...',
+                });
+                this.setData({
+                    buy_submit_disabled_status: true,
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('add', 'buy'),
+                    method: 'POST',
+                    data: data,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            this.buy_submit_response_handle(res.data.data);
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                        this.setData({
+                            buy_submit_disabled_status: false,
+                        });
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        this.setData({
+                            buy_submit_disabled_status: false,
+                        });
+                        app.globalData.showToast('网络开小差了哦~');
+                    },
+                });
             },
 
             // 订单提交响应处理

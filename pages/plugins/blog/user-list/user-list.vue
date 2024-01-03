@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="data.length > 0">
+        <block v-if="data.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="page-bottom-fixed padding-top-main">
                     <view v-for="(item, index) in data" class="bg-white spacing-mb" :key="index">
@@ -33,22 +33,23 @@
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 底部操作 -->
-            <view class="bottom-fixed btn-bottom bg-white">
-                <view class="oh bottom-line-exclude">
-                    <button class="cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
-                        <view class="add-icon">
-                            <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
-                        </view>
-                        新增
-                    </button>
-                </view>
+        </block>
+
+        <!-- 底部操作 -->
+        <view class="bottom-fixed btn-bottom bg-white">
+            <view class="oh bottom-line-exclude">
+                <button class="cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
+                    <view class="add-icon">
+                        <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
+                    </view>
+                    新增
+                </button>
             </view>
         </view>
-        <view v-else>
+        <block v-if="data.length == 0 && data_list_loding_status != 3">
             <!-- 提示信息 -->
-            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-        </view>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
     </view>
 </template>
 <script>
@@ -62,6 +63,7 @@
                 theme_color: app.globalData.get_theme_color(),
                 data_bottom_line_status: false,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
                 data: [],
                 data_is_loading: 0,
                 data_total: 0,
@@ -74,9 +76,15 @@
             componentBottomLine,
         },
 
-        onLoad(params) {},
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 数据加载
             this.init();
         },
@@ -155,6 +163,7 @@
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
+                                    data_list_loding_msg: '',
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0,
                                 });
@@ -179,6 +188,7 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
                                 data_is_loading: 0,
                             });
                             app.globalData.showToast(res.data.msg);
@@ -189,6 +199,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: '网络开小差了哦~',
                             data_is_loading: 0,
                         });
                         app.globalData.showToast('网络开小差了哦~');

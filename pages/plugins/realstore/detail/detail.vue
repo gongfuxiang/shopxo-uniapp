@@ -63,7 +63,7 @@
                                     <view class="flex-row jc-sb align-c">
                                         <!-- 地址 -->
                                         <view class="flex-row align-c flex-1 flex-width">
-                                            <iconfont name="icon-index-zxmd-dress" size="28rpx" prop-class="pr top-xs"></iconfont>
+                                            <iconfont name="icon-index-zxmd-dress" size="28rpx" propClass="pr top-xs"></iconfont>
                                             <view class="address-content single-text cr-base margin-left-xs text-size-sm" :data-value="info.province_name + info.city_name + info.county_name + info.address" @tap="text_copy_event">
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>
@@ -335,12 +335,19 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: app.globalData.launch_params_handle(params),
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 初始化配置
             this.init_config();
 

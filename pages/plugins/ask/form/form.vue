@@ -7,7 +7,7 @@
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/500</view>
                     <view class="spacing-mt dis-none">
                         <view class="margin-bottom-main">添加图片({{ image_list.length }}/3)</view>
-                        <component-upload :propData="image_list" :prop-path-type="editor_path_type" @call-back="retrun_image_event"></component-upload>
+                        <component-upload :propData="image_list" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr margin-top-sm">
                         <checkbox-group @change="is_anonymous_change_event">
@@ -56,9 +56,16 @@
         },
         props: {},
 
-        onLoad() {},
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
 
             // 分享菜单处理

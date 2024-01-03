@@ -13,12 +13,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text
-                                v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0"
-                                class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs"
-                                @tap="address_map_event"
-                                >查看位置</text
-                            >
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -60,6 +55,7 @@
                         <view v-for="(item, index) in detail.items" :key="index" class="item br-b-dashed oh padding-bottom-main margin-bottom-main">
                             <image class="left-image br fl radius" :src="item.images" mode="aspectFill"></image>
                             <view class="right-value fr">
+                                <view v-if="(item.spec_text || null) != null" class="text-grey padding-bottom-xs margin-bottom-xs br-b-f9 text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
                                 <text v-else class="cr-grey">未配置数据</text>
                             </view>
@@ -128,13 +124,19 @@ export default {
     props: {},
 
     onLoad(params) {
-        //params['id'] = 5;
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
         });
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
         // 数据加载
         this.init();
 

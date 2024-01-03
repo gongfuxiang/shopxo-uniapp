@@ -15,7 +15,7 @@
             </block>
             <block v-else>
                 <view class="margin-top-xxl">
-                    <iconfont name="icon-qiandao-dqxz" size="28rpx" prop-class="cr-green circle"></iconfont>
+                    <iconfont name="icon-qiandao-dqxz" size="28rpx" propClass="cr-green circle"></iconfont>
                     <text class="margin-left-xs">已登录成功</text>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
@@ -52,12 +52,20 @@
         },
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params || {},
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
         },
 

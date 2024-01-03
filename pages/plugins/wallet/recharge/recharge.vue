@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back prop-name="充值"></component-nav-back>
+        <component-nav-back propName="充值"></component-nav-back>
         <view v-if="data_list_loding_status == 3" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 头部背景 -->
@@ -54,18 +54,18 @@
         </view>
         <!-- 支付弹窗 -->
         <component-payment
-            :prop-currency-symbol="currency_symbol"
-            :prop-pay-url="pay_url"
-            :prop-qrcode-url="qrcode_url"
-            prop-pay-data-key="recharge_id"
-            :prop-payment-list="payment_list"
-            :prop-temp-pay-value="temp_pay_value"
-            :prop-pay-price="pay_price"
-            :prop-payment-id="payment_id"
+            :propCurrencySymbol="currency_symbol"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            propPayDataKey="recharge_id"
+            :propPaymentList="payment_list"
+            :propTempPayValue="temp_pay_value"
+            :propPayPrice="pay_price"
+            :propPaymentId="payment_id"
             :propIsRedirectTo="true"
-            :prop-to-fail-page="to_fail_page"
-            :prop-to-appoint-page="to_appoint_page"
-            :prop-is-show-payment="is_show_payment_popup"
+            :propToFailPage="to_fail_page"
+            :propToAppointPage="to_appoint_page"
+            :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
         ></component-payment>
     </view>
@@ -118,6 +118,10 @@
         props: {},
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
                 recharge_money_value: params.money || '',
@@ -125,6 +129,10 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
 
             // 分享菜单处理

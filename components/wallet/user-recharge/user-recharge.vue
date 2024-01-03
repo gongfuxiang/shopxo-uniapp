@@ -41,17 +41,17 @@
 
         <!-- 支付弹窗 -->
         <component-payment
-            :prop-pay-url="pay_url"
-            :prop-qrcode-url="qrcode_url"
-            prop-pay-data-key="recharge_id"
-            :prop-payment-list="payment_list"
-            :prop-temp-pay-value="temp_pay_value"
-            :prop-temp-pay-index="temp_pay_index"
-            :prop-pay-price="pay_price"
-            :prop-payment-id="payment_id"
-            :prop-to-appoint-page="to_appoint_page"
-            :prop-default-payment-id="default_payment_id"
-            :prop-is-show-payment="is_show_payment_popup"
+            :propPayUrl="pay_url"
+            :propQrcodeUrl="qrcode_url"
+            propPayDataKey="recharge_id"
+            :propPaymentList="payment_list"
+            :propTempPayValue="temp_pay_value"
+            :propTempPayIndex="temp_pay_index"
+            :propPayPrice="pay_price"
+            :propPaymentId="payment_id"
+            :propToAppointPage="to_appoint_page"
+            :propDefaultPaymentId="default_payment_id"
+            :propIsShowPayment="is_show_payment_popup"
             @close-payment-popup="payment_popup_event_close"
             @pay-success="order_item_pay_success_handle"
         ></component-payment>

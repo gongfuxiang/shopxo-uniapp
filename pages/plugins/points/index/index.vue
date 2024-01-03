@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back prop-name="积分"></component-nav-back>
+        <component-nav-back propName="积分"></component-nav-back>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 广告图片 -->
@@ -43,7 +43,7 @@
                                 <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">分享</button>
                             </view>
                             <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
-                                <component-title prop-title="积分明细" prop-more-url="/pages/user-integral/user-integral"></component-title>
+                                <component-title propTitle="积分明细" propMoreUrl="/pages/user-integral/user-integral"></component-title>
                                 <view v-if="integral_list.length > 0">
                                     <view class="item">
                                         <view v-for="(item, index) in integral_list" class="list" :key="index">
@@ -76,7 +76,7 @@
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                            <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" prop-more-url-key="url" :propCurrencySymbol="currency_symbol" :prop-grid-btn-config="gridBtnConfig" :prop-is-open-grid-btn-set="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
                         </view>
                     </view>
 
@@ -159,17 +159,26 @@
         },
         props: {},
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params,
             });
         },
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 用户信息
             this.setData({
                 user: app.globalData.get_user_cache_info(),
             });
+
             // 初始化配置
             this.init_config();
+
             // 获取数据
             this.get_data();
             this.get_integral_data_list();

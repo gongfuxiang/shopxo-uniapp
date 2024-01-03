@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <view class="copyright">
-            <view class="text">Powered by ShopXO {{version}}</view>
+            <view class="text">Powered by 小涛华人商店 {{version}}</view>
         </view>
     </view>
 </template>

@@ -27,7 +27,7 @@
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="padding-horizontal-main goods-comment">
                     <!-- 评价 -->
-                    <component-goods-comments :prop-data="data_list" :prop-is-reply="true" prop-class="bg-white padding-main border-radius-main"></component-goods-comments>
+                    <component-goods-comments :propData="data_list" :propIsReply="true" propClass="bg-white padding-main border-radius-main"></component-goods-comments>
 
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -67,13 +67,20 @@ export default {
     props: {},
 
     onLoad(params) {
-        //params['goods_id']=9;
+        // 调用公共事件方法
+        app.globalData.page_event_onload_handle(params);
+
+        // 设置参数
         this.setData({
             params: params,
         });
     },
 
     onShow() {
+        // 调用公共事件方法
+        app.globalData.page_event_onshow_handle();
+
+        // 加载数据
         this.init();
 
         // 分享菜单处理

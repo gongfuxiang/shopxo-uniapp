@@ -136,8 +136,7 @@
                                             class="item round text-size-xs bg-white margin-left-sm"
                                             :style="((item.br_color || null) == null ? '' : 'border:1px solid ' + item.br_color + ';') + '' + ((item.color || null) == null ? '' : 'color: ' + item.color + ';')"
                                             :data-value="item.url || ''"
-                                            @tap="url_event"
-                                            >{{ item.name }}</text>
+                                            @tap="url_event">{{ item.name }}</text>
                                     </block>
                                 </view>
                             </view>
@@ -226,7 +225,7 @@
                         </view>
                         <view @tap="popup_coupon_event">
                             <text class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
-                            <iconfont name="icon-arrow-right" color="#999" prop-class="va-m"></iconfont>
+                            <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                         </view>
                     </view>
                 </view>
@@ -293,13 +292,13 @@
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <!-- 商品数据 -->
-                        <component-goods-comments :prop-data="goods.comments_data"></component-goods-comments>
+                        <component-goods-comments :propData="goods.comments_data"></component-goods-comments>
                         <!-- 是否开启评论入口 -->
                         <view v-if="(plugins_intellectstools_data || null) !== null && (plugins_intellectstools_data.is_comments_add || 0) == 1">
                             <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
                                 <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                     我要评价
-                                    <iconfont name="icon-arrow-right" color="#666" prop-class="margin-left-sm pr top-xs"></iconfont>
+                                    <iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
                                 </view>
                             </navigator>
                         </view>
@@ -315,11 +314,11 @@
                         <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">查看全部回答</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
-                        <component-ask-comments-goods :prop-data="plugins_ask_data.ask_data"></component-ask-comments-goods>
+                        <component-ask-comments-goods :propData="plugins_ask_data.ask_data"></component-ask-comments-goods>
                         <navigator url="/pages/plugins/ask/form/form" hover-class="none">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
                                 我要提问
-                                <iconfont name="icon-arrow-right" color="#666" prop-class="pr top-sm margin-left-sm"></iconfont>
+                                <iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </navigator>
                     </view>
@@ -394,6 +393,16 @@
                             <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">暂无详情数据</view>
                         </block>
                     </view>
+                </view>
+
+                <!-- 猜你喜欢 -->
+                <view v-if="guess_you_like.length > 0" class="padding-horizontal-main margin-top-main">
+                    <view class="tc spacing-mb">
+                        <view class="guess-like fw-b text-size-md">猜你喜欢</view>
+                    </view>
+                    <div class="spacing-mt">
+                        <component-goods-list :propData="{ style_type: 1, goods_list: guess_you_like }"  :propCurrencySymbol="currency_symbol"></component-goods-list>
+                    </div>
                 </view>
             </view>
 
@@ -519,7 +528,7 @@
                     <view class="plugins-coupon-container padding-bottom-main">
                         <block v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
-                                <component-coupon-card :prop-data="item" :prop-status-type="item.status_type" :prop-status-operable-name="item.status_operable_name" :prop-index="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                                <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
                             </block>
                         </block>
                         <block v-else>
@@ -619,6 +628,7 @@
     import componentAskCommentsGoods from '../../components/ask-comments-goods/ask-comments-goods';
     import componentCouponCard from '../../components/coupon-card/coupon-card';
     import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
+    import componentGoodsList from '../../components/goods-list/goods-list';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
@@ -644,6 +654,7 @@
                 system_info: system_info,
                 photo_height: win_width <= 0 ? '55vh' : app.globalData.window_width_handle(win_width) + 'px',
                 goods: null,
+                guess_you_like: [],
                 goods_photo: [],
                 goods_specifications_choose: [],
                 goods_content_app: [],
@@ -769,10 +780,15 @@
             componentGoodsComments,
             componentAskCommentsGoods,
             componentCouponCard,
-            componentRealstoreCart
+            componentRealstoreCart,
+            componentGoodsList
         },
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             params = app.globalData.launch_params_handle(params);
             this.setData({
                 params: params,
@@ -789,6 +805,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 初始化配置
             this.init_config();
 
@@ -883,6 +902,7 @@
                                 goods: goods,
                                 indicator_dots: goods.photo.length > 1,
                                 autoplay: goods.photo.length > 1,
+                                guess_you_like: data.guess_you_like || [],
                                 goods_photo: goods.photo,
                                 nav_more_list: data.nav_more_list || [],
                                 goods_content_app: goods.content_app || [],

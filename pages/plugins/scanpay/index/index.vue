@@ -102,18 +102,18 @@
             <!-- 支付弹窗 -->
             <component-payment
                 ref="payment"
-                :prop-pay-url="pay_url"
-                :prop-qrcode-url="qrcode_url"
-                :prop-payment-list="data.payment_list"
-                :prop-temp-pay-value="temp_pay_value"
-                :prop-pay-price="pay_price"
-                :prop-payment-id="payment_id"
+                :propPayUrl="pay_url"
+                :propQrcodeUrl="qrcode_url"
+                :propPaymentList="data.payment_list"
+                :propTempPayValue="temp_pay_value"
+                :propPayPrice="pay_price"
+                :propPaymentId="payment_id"
                 :propIsRedirectTo="true"
                 :propIsFailAlert="false"
                 :propToPage="to_page"
                 :propToFailPage="to_fail_page"
-                :prop-to-appoint-page="to_appoint_page"
-                :prop-is-show-payment="is_show_payment_popup"
+                :propToAppointPage="to_appoint_page"
+                :propIsShowPayment="is_show_payment_popup"
                 @close-payment-popup="payment_popup_event_close"
                 @pay-success="pay_back_event"
                 @pay-fail="pay_back_event"
@@ -174,12 +174,20 @@
         },
 
         onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params || {},
             });
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
         },
 

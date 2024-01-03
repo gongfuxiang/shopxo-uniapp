@@ -6,20 +6,20 @@
                 // 基础配置
                 // 数据接口请求地址
                 // request_url: 'https://new.shopxo.vip/',
-                 request_url: 'https://d1.shopxo.vip/',
-                // request_url: 'http://shopxo.com/',
+                // request_url: 'https://xiaotao8888.com/',
+                 request_url: 'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 // static_url: 'https://new.shopxo.vip/',
-                 static_url: 'https://d1.shopxo.vip/',
-                // static_url: 'http://shopxo.com/',
+                // static_url: 'https://xiaotao8888.com/',
+                 static_url: 'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
 
                 // 基础信息
-                application_title: 'ShopXO',
-                application_describe: '企业级B2C开源电商系统！',
+                application_title: '小涛华人商店',
+                application_describe: '小涛华人商店',
 
                 // 默认logo、如 /static/images/common/logo.png
                 application_logo: '',
@@ -1232,17 +1232,17 @@
                                     if (res.data.code == 0) {
                                         // 记录已初始化公共数据状态
                                         self.data.common_data_init_status = 1;
-                            
+
                                         // 配置存储
                                         var data = res.data.data;
                                         uni.setStorageSync(self.data.cache_config_info_key, data);
-                            
+
                                         // 主题设置
                                         self.set_theme_value(data.plugins_themestyle_data);
-                            
+
                                         // 设置底部菜单
                                         self.set_tabbar(data.plugins_themestyle_data);
-                            
+
                                         // 用户自动登录处理
                                         self.user_auto_login_handle();
                                     } else {
@@ -2534,7 +2534,16 @@
                 this.data.network_type_page_record_timer = null;
                 // 清除微信隐私方法定时任务
                 clearInterval(this.data.weixin_privacy_setting_timer);
-            }
+            },
+
+            // 页面加载事件处理
+            page_event_onload_handle(params) {
+                // 设置底部菜单
+                this.set_tabbar();
+            },
+
+            // 页面展示事件处理
+            page_event_onshow_handle() {}
         },
 
         // 初始化完成时触发（全局只触发一次）

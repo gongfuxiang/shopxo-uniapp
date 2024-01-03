@@ -1,47 +1,64 @@
 <template>
     <view :class="theme_view">
-        <view v-if="detail != null">
+        <block v-if="data != null && data.length > 0">
             <view class="padding-horizontal-main padding-top-main">
-                <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="panel-content oh">
-                        <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                <!-- 商品列表 -->
+                <view class="goods bg-white padding-main border-radius-main spacing-mb">
+                    <view v-for="(item, index) in data" :key="index" :class="'goods-item oh padding-main '+(index > 0 ? 'br-t-dashed' : '')">
+                        <!-- 订单主体内容 -->
+                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                            <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
+                            <view class="goods-base pr">
+                                <view class="multi-text">{{ item.title }}</view>
+                                <view v-if="item.spec != null" class="margin-top-xs cr-grey">{{ item.spec_text }}</view>
+                                <view class="margin-top-xs">
+                                    <text class="fw-b">{{ item.currency_data.currency_symbol }}{{ item.price }}</text>
+                                    <text class="margin-left-sm">x{{ item.buy_number }}</text>
+                                </view>
+                            </view>
                         </view>
+                        <!-- 订单商品表单 -->
+                        <view v-if="(item.form_data || null) != null && item.form_data.length > 0" class="goods-item-ordergoodsform">
+                            <component-buy-ordergoodsform ref="buy_ordergoodsform" :propData="item.form_data" :propIsRead="true"></component-buy-ordergoodsform>
+                        </view>
+                        <view v-else class="text-size-xs cr-grey">无表单数据</view>
                     </view>
                 </view>
             </view>
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-        </view>
-        <view v-else>
+        </block>
+        <block v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-        </view>
+        </block>
     </view>
 </template>
 <script>
 const app = getApp();
 import componentNoData from "../../../../components/no-data/no-data";
 import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+import componentBuyOrdergoodsform from '../../../../components/buy-ordergoodsform/buy-ordergoodsform';
 
+var common_static_url = app.globalData.get_static_url("common");
 export default {
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
+            common_static_url: common_static_url,
             params: null,
             data_list_loding_status: 1,
             data_list_loding_msg: "",
             data_bottom_line_status: false,
-            detail: null,
-            detail_list: [],
+            data: [],
         };
     },
 
     components: {
         componentNoData,
         componentBottomLine,
+        componentBuyOrdergoodsform
     },
     props: {},
 
@@ -53,12 +70,14 @@ export default {
         this.setData({
             params: params,
         });
-        this.init();
     },
 
     onShow() {
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
+
+        // 数据加载
+        this.init();
 
         // 分享菜单处理
         app.globalData.page_share_handle();
@@ -70,6 +89,7 @@ export default {
     },
 
     methods: {
+        // 获取数据
         init() {
             uni.showLoading({
                 title: "加载中...",
@@ -78,31 +98,18 @@ export default {
                 data_list_loding_status: 1,
             });
             uni.request({
-                url: app.globalData.get_request_url("detail", "recharge", "wallet"),
+                url: app.globalData.get_request_url("order", "goods", "ordergoodsform"),
                 method: "POST",
-                data: {
-                    id: this.params.id,
-                },
+                data: this.params,
                 dataType: "json",
                 success: (res) => {
                     uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
-                        var data = res.data.data;
+                        var data = res.data.data || [];
                         this.setData({
-                            detail: data.data,
-                            detail_list: [
-                                { name: "充值单号", value: data.data.recharge_no || "" },
-                                { name: "充值状态", value: data.data.status_name || "" },
-                                { name: "充值金额", value: data.data.money || "" },
-                                { name: "支付金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                { name: "支付方式", value: data.data.payment_name || "" },
-                                { name: "创建时间", value: data.data.add_time_time || "" },
-                                { name: "支付时间", value: data.data.pay_time_time || "" },
-                            ],
-                            data_list_loding_status: 3,
-                            data_bottom_line_status: true,
-                            data_list_loding_msg: "",
+                            data: data,
+                            data_list_loding_status: data.length == 0 ? 0 : 3,
                         });
                     } else {
                         this.setData({
@@ -127,7 +134,14 @@ export default {
                 },
             });
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>
-<style></style>
+<style>
+    @import "./order.css";
+</style>

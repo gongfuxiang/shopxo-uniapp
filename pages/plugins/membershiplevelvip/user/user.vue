@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back prop-color="#333"></component-nav-back>
+        <component-nav-back propColor="#333"></component-nav-back>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 头部背景 -->
@@ -47,7 +47,7 @@
                             <!-- 已开通会员 -->
                             <view class="pa vip-btn flex-row align-c">
                                 <navigator url="/pages/plugins/membershiplevelvip/member-code/member-code" hover-class="none">
-                                    <iconfont name="icon-wdhy-erweima" size="44rpx" color="#fff" prop-class="padding-right-main pr bottom-md"></iconfont>
+                                    <iconfont name="icon-wdhy-erweima" size="44rpx" color="#fff" propClass="padding-right-main pr bottom-md"></iconfont>
                                 </navigator>
                                 <block v-if="(user_vip || null) != null">
                                     <!-- 判断会员永久 -->
@@ -57,7 +57,7 @@
                                             <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                                 <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                     开通会员
-                                                    <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                    <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                 </button>
                                             </navigator>
                                         </block>
@@ -66,7 +66,7 @@
                                                 <block v-if="(data_base.is_supported_renew_old_order || null) == 1">
                                                     <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">
                                                         续费会员
-                                                        <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                        <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                     </button>
                                                 </block>
                                                 <block v-else>
@@ -74,7 +74,7 @@
                                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                                             <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                                 连续开通
-                                                                <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                                <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                             </button>
                                                         </navigator>
                                                     </block>
@@ -89,7 +89,7 @@
                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
                                             <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
                                                 开通会员
-                                                <iconfont name="icon-arrow-right" size="18rpx" prop-class="pa right-icon"></iconfont>
+                                                <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>
@@ -203,9 +203,16 @@
         },
         props: {},
 
-        onLoad(params) {},
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+        },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
+            // 加载数据
             this.init();
 
             // 分享菜单处理

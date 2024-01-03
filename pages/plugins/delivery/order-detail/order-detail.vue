@@ -110,7 +110,10 @@
         props: {},
 
         onLoad(params) {
-            //params['id'] = 1;
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
             this.setData({
                 params: params
             });
@@ -118,6 +121,9 @@
         },
 
         onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
+
             // 分享菜单处理
             app.globalData.page_share_handle();
         },

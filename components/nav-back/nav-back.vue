@@ -5,7 +5,7 @@
             <!-- #ifndef MP-ALIPAY -->
             <view v-if="(propName || null) != null || propIsRightSlot" class="nav-back padding-horizontal-main round va-m flex-row align-c" :class="(opacity > 0.3 ? 'cr-black ' : 'cr-white ') + (status_bar_height > 0 ? '' : 'padding-vertical-main')">
                 <view v-if="(propName || null) != null" :class="'text-size-md tc pa left-0 right-0 padding-top-xs '+propNameClass" :style="propNameOpacity ? (opacity ? 'color:rgba(51,51,51,' + opacity + ')' : '') : ''">{{ propName }}</view>
-                <iconfont v-if="propIsShowBack" name="icon-arrow-left" size="40rpx" @tap="top_nav_left_back_event" prop-class="pr top-xs z-i" :color="propColor"></iconfont>
+                <iconfont v-if="propIsShowBack" name="icon-arrow-left" size="40rpx" @tap="top_nav_left_back_event" propClass="pr top-xs z-i" :color="propColor"></iconfont>
                 <slot v-if="propIsRightSlot" name="right"></slot>
             </view>
             <!-- #endif -->

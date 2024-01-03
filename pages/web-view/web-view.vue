@@ -17,9 +17,12 @@
         components: {},
         props: {},
 
-        onLoad(option) {
+        onLoad(params) {
+            // 调用公共事件方法
+            app.globalData.page_event_onload_handle(params);
+
             // url处理
-            var url = decodeURIComponent(option.url) || null;
+            var url = decodeURIComponent(params.url) || null;
             if (url != null) {
                 // token处理
                 if (url.indexOf('{token}') >= 0) {
@@ -34,6 +37,11 @@
             this.setData({
                 web_url: url
             });
+        },
+
+        onShow() {
+            // 调用公共事件方法
+            app.globalData.page_event_onshow_handle();
         },
 
         methods: {}
