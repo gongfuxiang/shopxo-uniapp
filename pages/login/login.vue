@@ -70,7 +70,7 @@
                         </block>
 
                         <!-- 站点logo -->
-                        <image v-if="current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                        <image v-if="(home_site_logo_square || null) != null && current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
 
                         <!-- 非登录成功则需要展示的数据 -->
                         <block v-if="current_opt_form != 'success'">
@@ -541,7 +541,7 @@
                 // 数据处理
                 var type = user == null ? 'auth' : 'bind';
                 var form = type;
-                var is_base = (this.home_site_logo_square || null) != null ? 1 : 0;
+                var is_base = app.globalData.data.common_data_init_status || 0;
                 // #ifdef H5 || APP
                 if (user == null) {
                     // 非小程序：如果开启登录则取第一个登录方式

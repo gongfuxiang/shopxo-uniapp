@@ -808,12 +808,13 @@
             // 优惠劵弹层开启
             plugins_coupon_open_event(e) {
                 var index = e.currentTarget.dataset.index;
-                var temp_list = this.plugins_coupon_data[index]['coupon_data']['coupon_list'];
+                var coupon_data = this.plugins_coupon_data[index]['coupon_data'];
+                var coupon_choice = coupon_data.coupon_choice || null;
+                var temp_list = coupon_data.coupon_list || [];
                 // 选中处理
                 if (temp_list.length > 0) {
-                    var temp_ids = this.plugins_use_coupon_ids;
                     for (var i in temp_list) {
-                        temp_list[i]['is_active'] = temp_ids.indexOf(temp_list[i]['id']) != -1 ? 1 : 0;
+                        temp_list[i]['is_active'] = (coupon_choice.id == temp_list[i]['id']) ? 1 : 0;
                     }
                 }
                 this.setData({
@@ -838,22 +839,24 @@
                 if (this.popup_plugins_coupon_index !== null && temp_ids.indexOf(value) == -1) {
                     var temp_data = this.plugins_coupon_data[this.popup_plugins_coupon_index];
                     var temp_list = this.plugins_coupon_list;
+                    // 当前索引数据已选中则不处理
+                    if((temp_list[index]['is_active'] || 0) != 1) {
+                        // 选中处理
+                        for (var i in temp_list) {
+                            temp_list[i]['is_active'] = index == i ? 1 : 0;
+                        }
 
-                    // 选中处理
-                    for (var i in temp_list) {
-                        temp_list[i]['is_active'] = index == i ? 1 : 0;
+                        // 根据仓库id和优惠券id记录
+                        temp_ids[temp_data['warehouse_id']] = value;
+                        this.setData({
+                            plugins_use_coupon_ids: temp_ids,
+                            plugins_coupon_list: temp_list,
+                            popup_plugins_coupon_status: false,
+                        });
+
+                        // 重新获取数据
+                        this.init();
                     }
-
-                    // 根据仓库id和优惠券id记录
-                    temp_ids[temp_data['warehouse_id']] = value;
-                    this.setData({
-                        plugins_use_coupon_ids: temp_ids,
-                        plugins_coupon_list: temp_list,
-                        popup_plugins_coupon_status: false,
-                    });
-
-                    // 重新获取数据
-                    this.init();
                 }
             },
 
