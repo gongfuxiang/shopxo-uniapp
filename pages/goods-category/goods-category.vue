@@ -193,13 +193,13 @@
                                             <view v-if="(data_content || null) != null" class="oh">
                                                 <view class="padding-top-main padding-horizontal-main">
                                                     <!-- 一级基础信息 -->
-                                                    <block v-if="data_content.id === '1'">
-                                                        <view v-if="(data_content.banner_images || null) !== null" class="one-content border-radius-main cp spacing-mb" :data-value="data_content.id" @tap="category_event">
+                                                    <block v-if="(data_content.banner_images || null) !== null">
+                                                        <view :class="'one-content border-radius-main cp '+(category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
                                                             <image :src="data_content.banner_images" mode="scaleToFill" class="wh-auto radius"></image>
                                                         </view>
                                                     </block>
                                                     <block v-else>
-                                                        <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" class="one-content border-radius-main cp spacing-mb pr" :data-value="data_content.id" @tap="category_event">
+                                                        <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" :class="'one-content border-radius-main cp pr '+(category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
                                                             <image :src="theme_static_url + 'level2-content-bg.png'" mode="scaleToFill" class="wh-auto ht-auto radius pa top-0 left-0"></image>
                                                             <view class="pr padding-main">
                                                                 <view v-if="(data_content.vice_name || null) != null" class="text-size-md fw-b" :style="'color:' + data_content.bg_color + ';'">
@@ -213,7 +213,7 @@
                                                     <block v-if="(data_content.items || null) != null && data_content.items.length > 0">
                                                         <!-- 二级模式 -->
                                                         <block v-if="category_show_level == 2">
-                                                            <view class="two-content bg-base oh padding-main border-radius-main spacing-mb flex-row flex-warp">
+                                                            <view class="two-content oh border-radius-main spacing-mb flex-row flex-warp">
                                                                 <block v-for="(v, index) in data_content.items" :key="index">
                                                                     <view class="content-item tc cp two-img" :data-value="v.id" @tap="category_event">
                                                                         <view class="content">
@@ -234,7 +234,7 @@
                                                                     </view>
                                                                     <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">更多</view>
                                                                 </view>
-                                                                <view v-if="(v.items || null) != null && v.items.length > 0" class="bg-base oh padding-main border-radius-main spacing-mb flex-row flex-warp">
+                                                                <view v-if="(v.items || null) != null && v.items.length > 0" class="oh border-radius-main spacing-mb flex-row flex-warp">
                                                                     <block v-for="(vs, index2) in v.items" :key="index2">
                                                                         <view class="content-item two-img tc cp" :data-value="vs.id" @tap="category_event">
                                                                             <view class="content">
