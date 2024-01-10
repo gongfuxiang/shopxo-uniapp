@@ -1247,8 +1247,13 @@
                                         self.user_auto_login_handle();
                                     } else {
                                         self.showToast(res.data.msg);
-                                        // 首次则再次初始化配置
-                                        if (status == 0) {
+                                        // 站点关闭状态则 记录已初始化公共数据状态
+                                        if(res.data.code == -10000) {
+                                            self.data.common_data_init_status = 1;
+                                        }
+
+                                        // 首次则再次初始化配置、站点关闭状态则不处理
+                                        if (status == 0 && self.data.common_data_init_status == 0) {
                                             self.init_config(1);
                                         }
                                     }
