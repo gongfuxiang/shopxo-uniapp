@@ -514,7 +514,7 @@
 
                             // 订单是否已提交、直接进入支付页面
                             if ((data.is_order_submit || 0) == 1) {
-                                this.buy_submit_response_handle(data);
+                                this.buy_submit_response_handle(res.data);
                                 return false;
                             }
 
@@ -771,7 +771,7 @@
                     success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            this.buy_submit_response_handle(res.data.data);
+                            this.buy_submit_response_handle(res.data);
                         } else {
                             app.globalData.showToast(res.data.msg);
                         }
@@ -790,11 +790,33 @@
             },
 
             // 订单提交响应处理
-            buy_submit_response_handle(data) {
-                this.setData({
-                    to_appoint_page: this.to_appoint_page+'?order_ids=' + data.order_ids.join(','),
-                });
-                this.$refs.payment.pay_handle(data.order_ids.join(','), data.payment_id, this.payment_list);
+            buy_submit_response_handle(res) {
+                // 是否预约模式，则进入订单列表
+                if(res.data.order_status == 0) {
+                    var self = this;
+                    uni.showModal({
+                        title: '温馨提示',
+                        content: res.msg,
+                        confirmText: '确认',
+                        showCancel: false,
+                        success(res) {
+                            uni.redirectTo({
+                                url: self.to_appoint_page
+                            });
+                        },
+                        fail(res) {
+                            uni.redirectTo({
+                                url: this.to_appoint_page
+                            });
+                        },
+                    });
+                } else {
+                    // 调用支付
+                    this.setData({
+                        to_appoint_page: this.to_appoint_page+'?order_ids=' + res.data.order_ids.join(','),
+                    });
+                    this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
+                }
             },
 
             // 支付方式选择
