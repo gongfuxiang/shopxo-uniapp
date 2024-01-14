@@ -84,7 +84,6 @@
                 source: 'url("https://sungd.github.io/Pacifico.ttf")',
             });
             // #endif
-            onEditorReady();
         },
         watch: {
             templates: function (new_val, old_val) {
@@ -92,6 +91,9 @@
                     this.onEditorReady();
                 }
             },
+        },
+        mounted() {
+            onEditorReady();
         },
         methods: {
             onEditorReady() {
