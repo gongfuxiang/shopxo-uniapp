@@ -92,9 +92,6 @@
                 }
             },
         },
-        mounted() {
-            this.onEditorReady();
-        },
         methods: {
             onEditorReady() {
                 // #ifdef MP-BAIDU
@@ -109,9 +106,9 @@
                         this.editorCtx = res.context;
                         this.$emit('init', this.editorCtx);
                         // 启用preRender方法时会预先渲染templates内容，但是在小程序中会导致页面自动聚焦至富文本的区域
-                        // if (this.templates) {
-                        this.preRender();
-                        // }
+                        if (this.templates) {
+                            this.preRender();
+                        }
                     })
                     .exec((result) => {});
                 // #endif
