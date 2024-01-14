@@ -37,7 +37,7 @@
 </template>
 
 <script>
-    import PickerColor from './color-picker.vue';
+    import PickerColor from './color-picker';
     export default {
         components: {
             PickerColor,
@@ -104,6 +104,7 @@
                     .select('#editor')
                     .context((res) => {
                         this.editorCtx = res.context;
+                        this.$emit('init', this.editorCtx);
                         // 启用preRender方法时会预先渲染templates内容，但是在小程序中会导致页面自动聚焦至富文本的区域
                         if (this.templates) {
                             this.preRender();
@@ -127,7 +128,7 @@
             format(e) {
                 let { name, value } = e.target.dataset;
                 if (!name) return;
-                console.log('==== name :', name);
+                // console.log('==== name :', name);
                 switch (name) {
                     case 'color':
                     case 'background-color':
@@ -153,6 +154,8 @@
                         this.editorCtx.format('background-color', e.hex);
                         break;
                 }
+                // 建议在更改颜色时，插入一个空以重置颜色区块，否则可能会导致颜色切换失效
+                this.editorCtx.insertText({ text: '' });
             },
             onStatusChange(e) {
                 this.formats = e.detail;

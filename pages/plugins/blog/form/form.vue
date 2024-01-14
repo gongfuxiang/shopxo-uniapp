@@ -46,7 +46,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">内容<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
-                                <sp-editor :templates="data.content" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+                                <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                             </view>
                         </view>
                     </view>
@@ -299,6 +299,18 @@
                 new_data.cover = data[0];
                 this.setData({
                     data: new_data,
+                });
+            },
+            /**
+             * 编辑器就绪
+             * @param {Object} editor 编辑器实例，你可以自定义调用editor实例的方法
+             * @tutorial editor组件 https://uniapp.dcloud.net.cn/component/editor.html#editor-%E7%BB%84%E4%BB%B6
+             * @tutorial 相关api https://uniapp.dcloud.net.cn/api/media/editor-context.html
+             */
+            initEditor(editor) {
+                // 初始化编辑器内容
+                editor.setContents({
+                    html: (this.data || null) !== null ? this.data.content : '',
                 });
             },
 
