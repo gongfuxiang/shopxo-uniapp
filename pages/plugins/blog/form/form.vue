@@ -46,7 +46,7 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">内容<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
-                                <sp-editor @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+                                <sp-editor :templates="(data || null) !== null ? data.content : ''" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                             </view>
                         </view>
                     </view>
