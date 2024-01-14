@@ -8,8 +8,8 @@
                     <template slot="content">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss">
-                                <view :class="'item dis-inline-block round cp '+(cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">商城</view>
-                                <view :class="'item dis-inline-block round cp '+(cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">门店</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">商城</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">门店</view>
                             </view>
                         </view>
                     </template>
@@ -20,14 +20,14 @@
                         <view class="dis-inline-block va-m">
                             <iconfont name="icon-store" size="28rpx" propClass="lh-il" color="#191F39"></iconfont>
                         </view>
-                        <text class="va-m margin-left-xs">{{plugins_realstore_info.name}}</text>
-                        <text v-if="(plugins_realstore_info.distance || null) != null" class="va-m">({{plugins_realstore_info.distance}})</text>
+                        <text class="va-m margin-left-xs">{{ plugins_realstore_info.name }}</text>
+                        <text v-if="(plugins_realstore_info.distance || null) != null" class="va-m">({{ plugins_realstore_info.distance }})</text>
                         <view class="dis-inline-block va-m margin-left-xs">
                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
                     </view>
                     <view class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
-                        <text class="cr-base">{{plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name']}}</text>
+                        <text class="cr-base">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name'] }}</text>
                         <view class="dis-inline-block va-m margin-left-xs">
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
@@ -47,10 +47,10 @@
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->
-            <scroll-view :scroll-y="true" :class="'scroll-box '+(data_list.length > 0 ? 'cart ' : '')+cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60">
+            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view class="content">
                     <!-- 数据列表 -->
-                    <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss '+(source_type != 'cart' ? 'bottom-line-exclude ' : '')+(cart_type_value == 'realstore' ? '' : 'padding-top-main')">
+                    <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (source_type != 'cart' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
                         <uni-swipe-action>
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
@@ -144,7 +144,7 @@
                         </view>
                     </view>
                     <!-- 销售,自提,虚拟销售 -->
-                    <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="source_type != 'cart' ? 'bottom-line-exclude' : ''">
+                    <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(source_type != 'cart' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
                         <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                             <view class="cart-selected flex-row align-c">
                                 <view @tap="selected_event" data-type="all">
@@ -153,11 +153,24 @@
                                 <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
                                 <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
                             </view>
-                            <view class="price flex-row jc-e flex-nowrap align-c">
-                                <view>合计：</view>
-                                <view class="sales-price single-text fw-b">
-                                    <text class="text-size-sm">{{ currency_symbol }}</text>
-                                    <text class="text-size-lg">{{ total_price }}</text>
+                            <view class="price">
+                                <view class="flex-row jc-s flex-nowrap align-c">
+                                    <view>合计：</view>
+                                    <view class="sales-price single-text fw-b">
+                                        <text class="text-size-sm">{{ currency_symbol }}</text>
+                                        <text class="text-size-lg">{{ total_price }}</text>
+                                    </view>
+                                </view>
+                                <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
+                                    <block v-if="preferential_price > 0">
+                                        <view class="cr-base">优惠:{{ currency_symbol }}{{ preferential_price }}</view>
+                                    </block>
+                                    <block>
+                                        <block v-if="increase_price > 0">
+                                            <view class="cr-base">增加:{{ currency_symbol }}{{ increase_price }}</view>
+                                        </block>
+                                    </block>
+                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">查看明细</view>
                                 </view>
                             </view>
                         </view>
@@ -170,9 +183,8 @@
                 </block>
             </scroll-view>
 
-                <!-- 用户基础 -->
-                <component-user-base ref="user_base"></component-user-base>
-            </scroll-view>
+            <!-- 用户基础 -->
+            <component-user-base ref="user_base"></component-user-base>
         </block>
 
         <!-- 选择门店弹层 -->
@@ -188,9 +200,9 @@
                     <block v-if="(plugins_realstore_data || null) != null">
                         <block v-for="(item, index) in plugins_realstore_data" :key="index">
                             <view class="item" :data-index="index" @tap="realstore_choice_item_event">
-                                <view :class="'padding-main oh '+((plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id ? 'border-radius-main br-main' : 'br-white')">
+                                <view :class="'padding-main oh ' + ((plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id ? 'border-radius-main br-main' : 'br-white')">
                                     <text class="cr-base">{{ item.name }}</text>
-                                    <text v-if="(item.distance || null) != null" class="cr-grey margin-left-xs">({{item.distance}})</text>
+                                    <text v-if="(item.distance || null) != null" class="cr-grey margin-left-xs">({{ item.distance }})</text>
                                     <view v-if="(plugins_realstore_info || null) != null && plugins_realstore_info.id == item.id" class="fr">
                                         <iconfont name="icon-zhifu-yixuan" size="24rpx" propClass="lh-il cr-main"></iconfont>
                                     </view>
@@ -213,6 +225,77 @@
             </view>
         </component-popup>
 
+        <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
+            <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
+                <view class="oh tc margin-bottom-lg">
+                    <text class="text-size">金额明细</text>
+                    <view class="fr" @tap.stop="discount_detail_close_event">
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                    </view>
+                </view>
+                <view class="margin-bottom oh border-radius-main bg-white padding-sm">
+                    <!-- 购物车商品列表 -->
+                    <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
+                        <view class="content flex-row flex-warp">
+                            <!-- 数据列表 -->
+                            <view v-for="(item, index) in data_list" :key="index" class="item">
+                                <view class="padding-sm pr">
+                                    <!-- 选择 -->
+                                    <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
+                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                    </view>
+                                    <view>
+                                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                                            <!-- 图片 -->
+                                            <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                            <!-- 错误 -->
+                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
+                                            </view>
+                                        </view>
+                                        <view class="flex-row jc-sb align-c margin-top-xs">
+                                            <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ new_currency_symbol }}{{ item.price }} </view>
+                                            <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </scroll-view>
+                    <view class="tc padding-top-sm" @tap="open_goods_list_event">
+                        <text class="cr-grey-9 text-size-xs">已选{{ total_num }}件商品</text>
+                        <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
+                    </view>
+                </view>
+                <view class="padding bg-white border-radius-main">
+                    <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
+                        <view>金额明细</view>
+                        <view> {{ new_currency_symbol }}{{ all_total_price }} </view>
+                    </view>
+                    <block  v-if="preferential_price > 0">
+                        <view class="flex-row jc-sb align-c text-size-md margin-bottom">
+                            <view class="fw-b">共减</view>
+                            <view class="cr-red"> {{ new_currency_symbol }}{{ preferential_price }}</view>
+                        </view>
+                    </block>
+                    <block v-else>
+                        <block v-if="increase_price>0">
+                            <view class="flex-row jc-sb align-c text-size-md margin-bottom">
+                                <view class="fw-b">共加</view>
+                                <view class="cr-red"> {{ new_currency_symbol }}{{ increase_price }}</view>
+                            </view>
+                        </block>
+                    </block>
+                    <block v-for="(items, indexs) in discount_detail_list" :key="indexs">
+                        <view v-for="(item, index) in items.order_base.extension_data" :key="index" class="flex-row jc-sb align-c text-size-md margin-bottom">
+                            <view>{{ item.name }}</view>
+                            <view class="cr-red"> {{ item.tips }}</view>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </component-popup>
+
         <!-- 门店购物车 -->
         <component-realstore-cart ref="realstore_cart" :propStatus="false" :propCurrencySymbol="currency_symbol" v-on:BuyTypeSwitchEvent="realstore_buy_type_switch_back_event"></component-realstore-cart>
     </view>
@@ -226,7 +309,7 @@
     import componentNavBack from '../../components/nav-back/nav-back';
     import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
     import componentBottomLine from '../../components/bottom-line/bottom-line';
-    import componentPopup from "../../components/popup/popup";
+    import componentPopup from '../../components/popup/popup';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {
@@ -242,6 +325,11 @@
                 data_list: [],
                 total_price: '0.00',
                 total_num: 0,
+                preferential_price: 0,
+                increase_price: 0,
+                all_total_price: 0,
+                discount_detail_list: [],
+                new_currency_symbol: app.globalData.currency_symbol(),
                 is_selected_all: false,
                 already_selected_status: false,
                 already_valid_selected_status: false,
@@ -286,6 +374,10 @@
                 plugins_realstore_info: null,
                 plugins_realstore_buy_use_type_index: 0,
                 plugins_realstore_choice_status: false,
+                // 优惠明细弹窗
+                discount_detail_status: false,
+                // 优惠明细弹窗内商品列表显示隐藏更多
+                discount_detail_goods_list_status: false,
             };
         },
 
@@ -296,7 +388,7 @@
             componentNavBack,
             componentRealstoreCart,
             componentBottomLine,
-            componentPopup
+            componentPopup,
         },
 
         // 属性值改变监听
@@ -334,7 +426,7 @@
             // 获取数据
             init(params = {}) {
                 // 网络检查
-                if((params || null) == null || (params.loading || 0) == 0) {
+                if ((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'init');
                     return false;
                 }
@@ -373,7 +465,7 @@
                         this.get_data();
 
                         // 猜你喜欢、仅首次读取
-                        if(this.is_first == 1) {
+                        if (this.is_first == 1) {
                             this.get_data_list(1);
                         }
 
@@ -407,7 +499,7 @@
                 });
 
                 // 门店购物车
-                if(this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
+                if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
                     // 门店购物车初始化、避免上一个页面更改了门店下单类型
                     this.realstore_cart_data_init();
                     // 门店请求参数
@@ -460,9 +552,17 @@
                                 plugins_realstore_data: realstore,
                             });
                             // 门店为空、还没有初始门店信息，初始门店信息不在当前列表中则 赋值门店初始信息和门店购物车初始化
-                            if(realstore == null || this.plugins_realstore_info == null || !realstore.map(function(v){return v.id;}).includes(this.plugins_realstore_info.id)) {
+                            if (
+                                realstore == null ||
+                                this.plugins_realstore_info == null ||
+                                !realstore
+                                    .map(function (v) {
+                                        return v.id;
+                                    })
+                                    .includes(this.plugins_realstore_info.id)
+                            ) {
                                 this.setData({
-                                    plugins_realstore_info: (realstore == null) ? null : realstore[0],
+                                    plugins_realstore_info: realstore == null ? null : realstore[0],
                                 });
                                 this.realstore_cart_data_init();
                             }
@@ -589,16 +689,16 @@
                         if (res.data.code == 0) {
                             // 猜你喜欢商品处理
                             var temp_stock = parseInt(temp_data_list[index]['stock']);
-                            if(type === null) {
-                                if(temp_stock > buy_number) {
+                            if (type === null) {
+                                if (temp_stock > buy_number) {
                                     type = 0;
-                                    var number = temp_stock-buy_number;
+                                    var number = temp_stock - buy_number;
                                 } else {
                                     type = 1;
-                                    var number = buy_number-temp_stock;
+                                    var number = buy_number - temp_stock;
                                 }
                             } else {
-                                var number = (type == 0) ? temp_stock-buy_number : buy_number-temp_stock;
+                                var number = type == 0 ? temp_stock - buy_number : buy_number - temp_stock;
                             }
                             this.goods_change(temp_data_list[index]['goods_id'], type, number);
 
@@ -861,6 +961,11 @@
                                 this.setData({
                                     total_price: data.base.actual_price,
                                     total_num: data.base.buy_count,
+                                    preferential_price: data.base.preferential_price,
+                                    increase_price: data.base.increase_price,
+                                    all_total_price: data.base.total_price,
+                                    new_currency_symbol: data.currency_symbol,
+                                    discount_detail_list: data.goods_list,
                                 });
                             } else {
                                 app.globalData.showToast(res.data.msg);
@@ -887,14 +992,14 @@
                 if (selected_count <= 0) {
                     return false;
                 }
-                
+
                 // 结算参数
                 var data = {
                     buy_type: 'cart',
                     ids: ids.join(','),
                 };
                 // 是否门店模式
-                if(this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
+                if (this.cart_type_value == 'realstore' && (this.plugins_realstore_info || null) != null) {
                     data['realstore_id'] = this.plugins_realstore_info.id;
                     data['buy_use_type_index'] = this.plugins_realstore_buy_use_type_index;
                 }
@@ -1015,15 +1120,15 @@
             // 猜你喜欢数据更新
             goods_change(goods_id, type, number = 0) {
                 var temp_goods_list = this.goods_list || [];
-                if(temp_goods_list.length > 0) {
-                    for(var i in temp_goods_list) {
-                        if(temp_goods_list[i]['id'] == goods_id) {
+                if (temp_goods_list.length > 0) {
+                    for (var i in temp_goods_list) {
+                        if (temp_goods_list[i]['id'] == goods_id) {
                             var user_cart_count = parseInt(temp_goods_list[i]['user_cart_count'] || 0);
-                            temp_goods_list[i]['user_cart_count'] = (type == 0) ? user_cart_count-number : user_cart_count+number;
+                            temp_goods_list[i]['user_cart_count'] = type == 0 ? user_cart_count - number : user_cart_count + number;
                         }
                     }
                     this.setData({
-                        goods_list: temp_goods_list
+                        goods_list: temp_goods_list,
                     });
                 }
             },
@@ -1057,7 +1162,7 @@
 
             // 购物车类型事件
             cart_type_event(e) {
-                if(this.data_is_loading == 0) {
+                if (this.data_is_loading == 0) {
                     this.setData({
                         data_list_loding_status: 1,
                         cart_type_value: e.currentTarget.dataset.type || 'shop',
@@ -1086,7 +1191,7 @@
                 this.setData({
                     data_list_loding_status: 1,
                     plugins_realstore_choice_status: false,
-                    plugins_realstore_info: this.plugins_realstore_data[e.currentTarget.dataset.index]
+                    plugins_realstore_info: this.plugins_realstore_data[e.currentTarget.dataset.index],
                 });
                 // 重新初始化门店数据
                 this.realstore_cart_data_init();
@@ -1096,9 +1201,9 @@
 
             // 门店购物车数据初始化
             realstore_cart_data_init() {
-                if((this.plugins_realstore_info || null) != null) {
+                if ((this.plugins_realstore_info || null) != null) {
                     // 初始化门店购物车
-                    this.$refs.realstore_cart.init({source: 'system-cart', info: this.plugins_realstore_info});
+                    this.$refs.realstore_cart.init({ source: 'system-cart', info: this.plugins_realstore_info });
                     // 初始当前门店下单类型
                     this.setData({
                         plugins_realstore_buy_use_type_index: this.$refs.realstore_cart.get_buy_use_type_index(),
@@ -1115,11 +1220,35 @@
             realstore_buy_type_switch_back_event(params) {
                 this.setData({
                     data_list_loding_status: 1,
-                    plugins_realstore_buy_use_type_index: params.index
+                    plugins_realstore_buy_use_type_index: params.index,
                 });
                 // 重新加载数据
                 this.get_data();
-            }
+            },
+            // 打开优惠明细弹窗
+            discount_detail_open_event(e) {
+                this.setData({
+                    discount_detail_status: !this.discount_detail_status,
+                });
+            },
+            // 关闭优惠明细弹窗
+            discount_detail_close_event(e) {
+                this.setData({
+                    discount_detail_status: false,
+                });
+            },
+            // 打开优惠明细商品列表更多或关闭
+            open_goods_list_event() {
+                if (this.data_list.length > 4) {
+                    this.setData({
+                        discount_detail_goods_list_status: !this.discount_detail_goods_list_status,
+                    });
+                } else {
+                    this.setData({
+                        discount_detail_goods_list_status: false,
+                    });
+                }
+            },
         },
     };
 </script>
@@ -1252,9 +1381,17 @@
     }
     .cart-buy-nav .price {
         width: calc(100% - 170rpx);
+        padding: 16rpx 0;
     }
     .cart-buy-nav .sales-price {
-        max-width: calc(100% - 40px);
+        max-width: calc(100% - 80rpx);
+    }
+    .cart-buy-nav .price .discount-details {
+        height: 32rpx;
+        background: #f2f2f2;
+        padding: 0 12rpx;
+        border-radius: 16rpx;
+        margin-left: 18rpx;
     }
     .cart-nav-remove-submit {
         padding: 0rpx 20rpx;
@@ -1297,7 +1434,7 @@
     .guess-like::after {
         right: calc(100% + 20rpx);
     }
-    
+
     /**
      * 顶部导航
      */
@@ -1314,7 +1451,7 @@
         line-height: 54rpx;
     }
     .realstore-nav {
-        background: linear-gradient(180deg, #FFFAF1 0%, #FFFFFF 100%);
+        background: linear-gradient(180deg, #fffaf1 0%, #ffffff 100%);
     }
 
     /**
@@ -1325,5 +1462,28 @@
         overflow-y: scroll;
         overflow-x: hidden;
         margin-top: 20rpx;
+    }
+
+    /**
+     * 查看明细弹窗
+     */
+    .discount-detail-popup-z-index {
+        z-index: 1002;
+    }
+    .discount_detail-popup {
+        margin-bottom: 122rpx;
+    }
+    .scroll-box-popup {
+        height: 480rpx;
+    }
+    .scroll-box-popup.close {
+        transition: all 0.3s ease;
+        height: 234rpx;
+    }
+    .scroll-box-popup .content .item {
+        width: 25%;
+    }
+    .scroll-box-popup .content .item .cart-goods-image {
+        width: 100%;
     }
 </style>
