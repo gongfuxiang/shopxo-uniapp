@@ -841,10 +841,40 @@
                 } else {
                     app.globalData.set_tab_bar_badge(2, 1, cart_total);
                 }
+
+                // 调用预下单处理、优惠信息
+                this.pre_order_handle();
             },
 
-            // 结算
-            buy_submit_event(e) {
+            // 预下单处理
+            pre_order_handle() {
+                var data = this.buy_data_params();
+                if (data !== false) {
+                    uni.request({
+                        url: app.globalData.get_request_url('index', 'buy'),
+                        method: 'POST',
+                        data: data,
+                        dataType: 'json',
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                var data = res.data.data;
+                                this.setData({
+                                    total_price: data.base.actual_price,
+                                    total_num: data.base.buy_count,
+                                });
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            app.globalData.showToast('网络开小差了哦~');
+                        },
+                    });
+                }
+            },
+
+            // 结算数据参数
+            buy_data_params() {
                 var selected_count = 0;
                 var ids = [];
                 var temp_data_list = this.data_list || [];
@@ -855,10 +885,9 @@
                     }
                 }
                 if (selected_count <= 0) {
-                    app.globalData.showToast('请先选择商品');
                     return false;
                 }
-
+                
                 // 结算参数
                 var data = {
                     buy_type: 'cart',
@@ -869,6 +898,18 @@
                     data['realstore_id'] = this.plugins_realstore_info.id;
                     data['buy_use_type_index'] = this.plugins_realstore_buy_use_type_index;
                 }
+                return data;
+            },
+
+            // 结算
+            buy_submit_event(e) {
+                // 结算参数
+                var data = this.buy_data_params();
+                if (data === false) {
+                    app.globalData.showToast('请先选择商品');
+                    return false;
+                }
+
                 // 进入结算页面
                 uni.navigateTo({
                     url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
