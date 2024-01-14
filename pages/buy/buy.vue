@@ -79,12 +79,7 @@
                             </view>
                         </view>
                         <!-- 优惠劵 -->
-                        <view
-                            v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0"
-                            class="buy-data-item"
-                            :data-index="index"
-                            @tap="plugins_coupon_open_event"
-                        >
+                        <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item" :data-index="index" @tap="plugins_coupon_open_event">
                             <text class="cr-base">优惠劵</text>
                             <view class="fr cp">
                                 <text class="cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : '请选择优惠券' }}</text>
@@ -136,7 +131,7 @@
                                 </view>
                                 <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
                                 <view @tap="points_event" class="fr cp">
-                                    <iconfont :name="'icon-zhifu-'+(plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
+                                    <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                 </view>
                             </view>
                             <view class="desc margin-top-xs">
@@ -155,16 +150,7 @@
                     <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item padding-horizontal-main bg-white border-radius-main spacing-mb">
                         <text class="cr-base">{{ buy_datetime_info.title }}</text>
                         <view class="right-value single-text dis-inline-block fr tr">
-                            <component-time-select
-                                :propTitle="buy_datetime_info.title"
-                                :propPlaceholder="buy_datetime_info.placeholder"
-                                :propRangeDay="buy_datetime_info.range_day || 2"
-                                :propRangeStartTime="buy_datetime_info.time_start"
-                                :propRangeEndTime="buy_datetime_info.time_end"
-                                :propDisabled="buy_datetime_info.disabled"
-                                :propIsShow="buy_datetime_info.status"
-                                @selectEvent="buy_datetime_event"
-                            >
+                            <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
                                 <text v-if="(buy_datetime_info.value || null) == null" class="cr-grey va-m">{{ buy_datetime_info.placeholder }}</text>
                                 <text v-else class="cr-base va-m">{{ buy_datetime_info.value }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
@@ -178,14 +164,14 @@
                     <view class="content-textarea-container padding-main border-radius-main bg-white spacing-mb">
                         <view class="content">
                             <textarea v-if="user_note_status" class="textarea" @blur="bind_user_note_blur_event" @input="bind_user_note_event" :focus="true" :disable-default-padding="false" :value="user_note_value" maxlength="230" placeholder="留言"></textarea>
-                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view '+((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || '留言' }}</view>
+                            <view v-else @tap="bind_user_note_tap_event" :class="'textarea-view ' + ((user_note_value || null) == null ? 'cr-grey' : '')">{{ user_note_value || '留言' }}</view>
                         </view>
                         <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.note_fast_data || null) != null" class="plugins-intellectstools-data-note-fast margin-top-sm">
                             <text class="cr-grey margin-right-sm va-m text-size-xs">快捷输入</text>
                             <view class="note-fast-data-list scroll-view-horizontal dis-inline-block va-m">
                                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true">
                                     <block v-for="(item, index) in plugins_intellectstools_data.note_fast_data" :key="index">
-                                        <view :class="'dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right br-grey-f5 cr-base cp '+(index > 0 ? 'margin-left-sm' : '')" :data-value="item" @tap="note_fast_event">{{ item }}</view>
+                                        <view :class="'dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right br-grey-f5 cr-base cp ' + (index > 0 ? 'margin-left-sm' : '')" :data-value="item" @tap="note_fast_event">{{ item }}</view>
                                     </block>
                                 </scroll-view>
                             </view>
@@ -290,17 +276,7 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment
-                ref="payment"
-                :propIsRedirectTo="true"
-                :propPayUrl="pay_url"
-                :propQrcodeUrl="qrcode_url"
-                :propToAppointPage="to_appoint_page"
-                propPayDataKey="ids"
-                :propPaymentList="payment_list"
-                :propTo-pageBack="to_page_back"
-                :propToFailPage="to_fail_page"
-            ></component-payment>
+            <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propTo-pageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
         </block>
     </view>
 </template>
@@ -385,7 +361,7 @@
             componentNoData,
             componentTimeSelect,
             componentPayment,
-            componentBuyOrdergoodsform
+            componentBuyOrdergoodsform,
         },
         props: {},
 
@@ -469,7 +445,7 @@
                 }
 
                 // 是否门店订单
-                if((this.params.realstore_id || null) != null) {
+                if ((this.params.realstore_id || null) != null) {
                     var realstore_order_page = '/pages/plugins/realstore/orderallot-list/orderallot-list';
                     this.setData({
                         to_page_back: {
@@ -568,9 +544,9 @@
                                 });
 
                                 // 可使用积分数量
-                                if(this.plugins_points_data != null && this.is_first == 1) {
+                                if (this.plugins_points_data != null && this.is_first == 1) {
                                     this.setData({
-                                        actual_use_integral: this.plugins_points_data.use_integral || ''
+                                        actual_use_integral: this.plugins_points_data.use_integral || '',
                                     });
                                 }
 
@@ -653,7 +629,7 @@
 
                 // 积分
                 data['is_points'] = this.plugins_points_status === true ? 1 : 0;
-                if(data['is_points'] == 1) {
+                if (data['is_points'] == 1) {
                     data['actual_use_integral'] = this.actual_use_integral;
                 }
                 return data;
@@ -684,9 +660,9 @@
             note_fast_event(e) {
                 var value = e.currentTarget.dataset.value;
                 var user_note = this.user_note_value || '';
-                if(user_note != '') {
+                if (user_note != '') {
                     // 已存在则不追加
-                    if(user_note.indexOf(value) != -1) {
+                    if (user_note.indexOf(value) != -1) {
                         return false;
                     }
                     // 有数据组则增加分割符号
@@ -695,9 +671,9 @@
                 user_note += value;
 
                 // 大于限定长度则不增加
-                if(user_note.length <= 230) {
+                if (user_note.length <= 230) {
                     this.setData({
-                        user_note_value: user_note
+                        user_note_value: user_note,
                     });
                 }
             },
@@ -726,9 +702,9 @@
 
                 // 订单商品表单插件数据验证处理
                 var buy_ordergoodsform = this.$refs.buy_ordergoodsform || [];
-                if(buy_ordergoodsform.length > 0) {
-                    for(var i in buy_ordergoodsform) {
-                        if(!buy_ordergoodsform[i].data_check()) {
+                if (buy_ordergoodsform.length > 0) {
+                    for (var i in buy_ordergoodsform) {
+                        if (!buy_ordergoodsform[i].data_check()) {
                             return false;
                         }
                     }
@@ -792,7 +768,7 @@
             // 订单提交响应处理
             buy_submit_response_handle(res) {
                 // 是否预约模式，则进入订单列表
-                if(res.data.order_status == 0) {
+                if (res.data.order_status == 0) {
                     var self = this;
                     uni.showModal({
                         title: '温馨提示',
@@ -801,19 +777,19 @@
                         showCancel: false,
                         success(res) {
                             uni.redirectTo({
-                                url: self.to_appoint_page
+                                url: self.to_appoint_page,
                             });
                         },
                         fail(res) {
                             uni.redirectTo({
-                                url: this.to_appoint_page
+                                url: this.to_appoint_page,
                             });
                         },
                     });
                 } else {
                     // 调用支付
                     this.setData({
-                        to_appoint_page: this.to_appoint_page+'?order_ids=' + res.data.order_ids.join(','),
+                        to_appoint_page: this.to_appoint_page + '?order_ids=' + res.data.order_ids.join(','),
                     });
                     this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
                 }
@@ -836,7 +812,7 @@
                 // 选中处理
                 if (temp_list.length > 0) {
                     for (var i in temp_list) {
-                        temp_list[i]['is_active'] = (coupon_choice.id == temp_list[i]['id']) ? 1 : 0;
+                        temp_list[i]['is_active'] = (coupon_choice || null) !== null && (coupon_choice.id == temp_list[i]['id']) ? 1 : 0;
                     }
                 }
                 this.setData({
@@ -862,7 +838,7 @@
                     var temp_data = this.plugins_coupon_data[this.popup_plugins_coupon_index];
                     var temp_list = this.plugins_coupon_list;
                     // 当前索引数据已选中则不处理
-                    if((temp_list[index]['is_active'] || 0) != 1) {
+                    if ((temp_list[index]['is_active'] || 0) != 1) {
                         // 选中处理
                         for (var i in temp_list) {
                             temp_list[i]['is_active'] = index == i ? 1 : 0;
@@ -970,7 +946,7 @@
             points_use_value_event(e) {
                 var value = parseInt(e.detail.value || 0);
                 var use_integral = parseInt(this.plugins_points_data.use_integral || 0);
-                if(value > use_integral && use_integral > 0) {
+                if (value > use_integral && use_integral > 0) {
                     value = use_integral;
                 }
                 this.setData({

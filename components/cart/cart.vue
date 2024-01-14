@@ -157,21 +157,23 @@
                                 <view class="flex-row jc-s flex-nowrap align-c">
                                     <view>合计：</view>
                                     <view class="sales-price single-text fw-b">
-                                        <text class="text-size-sm">{{ currency_symbol }}</text>
+                                        <text class="text-size-sm">{{ buy_currency_symbol }}</text>
                                         <text class="text-size-lg">{{ total_price }}</text>
                                     </view>
                                 </view>
-                                <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
-                                    <block v-if="preferential_price > 0">
-                                        <view class="cr-base">优惠:{{ currency_symbol }}{{ preferential_price }}</view>
-                                    </block>
-                                    <block>
-                                        <block v-if="increase_price > 0">
-                                            <view class="cr-base">增加:{{ currency_symbol }}{{ increase_price }}</view>
+                                <block v-if="total_num > 0">
+                                    <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
+                                        <block v-if="preferential_price > 0">
+                                            <view class="cr-base">优惠:{{ buy_currency_symbol }}{{ preferential_price }}</view>
                                         </block>
-                                    </block>
-                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">查看明细</view>
-                                </view>
+                                        <block v-else>
+                                            <block v-if="increase_price > 0">
+                                                <view class="cr-base">增加:{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                            </block>
+                                        </block>
+                                        <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">查看明细</view>
+                                    </view>
+                                </block>
                             </view>
                         </view>
                         <view class="cart-nav-submit">
@@ -227,15 +229,15 @@
 
         <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
             <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
-                <view class="oh tc margin-bottom-lg">
+                <view class="oh tc discount_detail-popup-title">
                     <text class="text-size">金额明细</text>
                     <view class="fr" @tap.stop="discount_detail_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="margin-bottom oh border-radius-main bg-white padding-sm">
+                <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
                     <!-- 购物车商品列表 -->
-                    <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" @scrolltolower="scroll_lower" lower-threshold="60">
+                    <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
                         <view class="content flex-row flex-warp">
                             <!-- 数据列表 -->
                             <view v-for="(item, index) in data_list" :key="index" class="item">
@@ -245,7 +247,7 @@
                                         <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
                                     </view>
                                     <view>
-                                        <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                                        <view class="cp">
                                             <!-- 图片 -->
                                             <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                             <!-- 错误 -->
@@ -254,7 +256,7 @@
                                             </view>
                                         </view>
                                         <view class="flex-row jc-sb align-c margin-top-xs">
-                                            <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ new_currency_symbol }}{{ item.price }} </view>
+                                            <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ buy_currency_symbol }}{{ item.price }} </view>
                                             <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
                                         </view>
                                     </view>
@@ -267,22 +269,23 @@
                         <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                     </view>
                 </view>
-                <view class="padding bg-white border-radius-main">
+
+                <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
                     <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
                         <view>金额明细</view>
-                        <view> {{ new_currency_symbol }}{{ all_total_price }} </view>
+                        <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
                     </view>
-                    <block  v-if="preferential_price > 0">
+                    <block v-if="preferential_price > 0">
                         <view class="flex-row jc-sb align-c text-size-md margin-bottom">
                             <view class="fw-b">共减</view>
-                            <view class="cr-red"> {{ new_currency_symbol }}{{ preferential_price }}</view>
+                            <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
                         </view>
                     </block>
                     <block v-else>
-                        <block v-if="increase_price>0">
+                        <block v-if="increase_price > 0">
                             <view class="flex-row jc-sb align-c text-size-md margin-bottom">
                                 <view class="fw-b">共加</view>
-                                <view class="cr-red"> {{ new_currency_symbol }}{{ increase_price }}</view>
+                                <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
                             </view>
                         </block>
                     </block>
@@ -329,7 +332,7 @@
                 increase_price: 0,
                 all_total_price: 0,
                 discount_detail_list: [],
-                new_currency_symbol: app.globalData.currency_symbol(),
+                buy_currency_symbol: app.globalData.currency_symbol(),
                 is_selected_all: false,
                 already_selected_status: false,
                 already_valid_selected_status: false,
@@ -964,7 +967,7 @@
                                     preferential_price: data.base.preferential_price,
                                     increase_price: data.base.increase_price,
                                     all_total_price: data.base.total_price,
-                                    new_currency_symbol: data.currency_symbol,
+                                    buy_currency_symbol: data.currency_symbol,
                                     discount_detail_list: data.goods_list,
                                 });
                             } else {
@@ -1229,6 +1232,7 @@
             discount_detail_open_event(e) {
                 this.setData({
                     discount_detail_status: !this.discount_detail_status,
+                    discount_detail_goods_list_status: false,
                 });
             },
             // 关闭优惠明细弹窗
@@ -1467,11 +1471,25 @@
     /**
      * 查看明细弹窗
      */
+    .discount_detail-popup-title {
+        position: absolute;
+        left: 0;
+        right: 0;
+        background: #f6f6f6;
+        top: 0;
+        z-index: 2;
+        padding: 24rpx;
+    }
+    .discount_detail-popup-goods-list {
+        margin-top: 84rpx;
+    }
     .discount-detail-popup-z-index {
         z-index: 1002;
     }
     .discount_detail-popup {
         margin-bottom: 122rpx;
+        height: calc(70vh - 122rpx);
+        overflow-y: auto;
     }
     .scroll-box-popup {
         height: 480rpx;
