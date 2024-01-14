@@ -944,10 +944,7 @@
                     "path": "form/form",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "发布博文",
-                        "enablePullDownRefresh": false,
-                        // 禁止页面下拉
-                        "disableScroll": true
+                        "navigationBarTitleText": "发布博文"
                     }
                 }
             ]
