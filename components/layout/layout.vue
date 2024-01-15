@@ -705,7 +705,7 @@
      */
     .module-goods-content .module-item{background:#fff}
     .module-goods-content .module-item .item-bottom{margin-top:5px}
-    .module-goods-content .module-item .module-title{margin-bottom:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:38px;line-height:20px;font-size:12px;white-space:initial}
+    .module-goods-content .module-item .module-title{margin-bottom:5px;max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;min-height:40px;line-height:20px;font-size:12px;white-space:initial}
     .module-goods-content .module-item .module-price{color:#f40;font-weight:bold;word-wrap:normal;text-overflow:ellipsis;white-space:nowrap;font-size:14px;}
      
      

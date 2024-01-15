@@ -554,14 +554,9 @@
                                 plugins_realstore_data: realstore,
                             });
                             // 门店为空、还没有初始门店信息，初始门店信息不在当前列表中则 赋值门店初始信息和门店购物车初始化
-                            if (
-                                realstore == null ||
-                                this.plugins_realstore_info == null ||
-                                !realstore
-                                    .map(function (v) {
+                            if (realstore == null || this.plugins_realstore_info == null || !realstore.map(function (v) {
                                         return v.id;
-                                    })
-                                    .includes(this.plugins_realstore_info.id)
+                                    }).includes(this.plugins_realstore_info.id)
                             ) {
                                 this.setData({
                                     plugins_realstore_info: realstore == null ? null : realstore[0],
@@ -571,6 +566,7 @@
 
                             // 选择处理
                             this.cart_selected_calculate();
+
                             // 导航购物车处理
                             var cart_total = data.buy_number || 0;
                             if (cart_total <= 0) {
@@ -1141,28 +1137,6 @@
                         goods_list: temp_goods_list,
                     });
                 }
-            },
-
-            // 商品数量去重累加数量
-            cart_item_num(cart_list) {
-                let res = [];
-                for (let i = 0; i < cart_list.length; ) {
-                    let num = 0;
-                    let count = 0;
-                    for (let j = i; j < cart_list.length; j++) {
-                        if (cart_list[i].goods_id == cart_list[j].goods_id) {
-                            num += Number(cart_list[j].stock ? cart_list[j].stock : 0);
-                            count++;
-                        }
-                    }
-                    let obj = {
-                        id: cart_list[i].goods_id,
-                        num: num,
-                    };
-                    res.push(obj);
-                    i += count;
-                }
-                return res;
             },
 
             // url事件
