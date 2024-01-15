@@ -5,12 +5,8 @@
                 <view v-if="data_list.length > 0" class="padding-horizontal-main points-integral bg-white border-radius-main">
                     <view v-for="(item,index) in data_list" class="list" :key="index">
                         <view class="flex-row jc-sb align-c">
-                            <view class="cr-grey-9">
-                                原始
-                                <text class="cr-black fw-b padding-left-sm">{{item.original_integral}}</text>
-                                <text class="padding-horizontal-sm">/</text>
-                                最新
-                                <text class="cr-black fw-b padding-left-sm">{{item.new_integral}}</text>
+                            <view class="cr-grey-9">{{$t('index.index.srd2ch')}}<text class="cr-black fw-b padding-left-sm">{{item.original_integral}}</text>
+                                <text class="padding-horizontal-sm">/</text>{{$t('goods-category.goods-category.5p4ksj')}}<text class="cr-black fw-b padding-left-sm">{{item.new_integral}}</text>
                             </view>
                             <view class="cr-grey-9">{{item.add_time_time}}</view>
                         </view>
@@ -113,7 +109,7 @@
                 });
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...'
+                    title: this.$t('common.loading_in_text')
                 });
                 // 获取数据
                 uni.request({
@@ -172,7 +168,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },

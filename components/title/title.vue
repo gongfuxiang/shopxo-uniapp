@@ -5,7 +5,7 @@
                 <text class="text-wrapper" :class="propTitleLeftBorder ? 'title-left-border' : ''" :style="'color:' + propTitleColor + ';'">{{propTitle}}</text>
                 <text class="vice-name margin-left-sm" :style="'color:' + propViceTitleColor + ';'">{{propViceTitle}}</text>
             </view>
-            <navigator :url="propMoreUrl" hover-class="none" class="arrow-right padding-right cr-grey">{{propMore}}</navigator>
+            <navigator :url="propMoreUrl" hover-class="none" class="arrow-right padding-right cr-grey">{{propMore || this.$t('common.more')}}</navigator>
         </view>
     </view>
 </template>
@@ -32,7 +32,7 @@
             },
             propMore: {
                 type: String,
-                default: '更多'
+                default: '',
             },
             propMoreUrl: {
                 type: String,

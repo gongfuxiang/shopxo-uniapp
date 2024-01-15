@@ -21,9 +21,9 @@
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="item-operation br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-sm">
-                            <text class="cr-grey text-size-xs">距您{{ item.distance_value }}{{ item.distance_unit }}</text>
+                            <text class="cr-grey text-size-xs">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance_value }}{{ item.distance_unit }}</text>
                         </view>
-                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
+                        <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="fr round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('buy.buy.o7722q')}}</button>
                     </view>
                 </view>
             </view>
@@ -158,7 +158,7 @@ export default {
         get_data_list() {
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -220,7 +220,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -230,7 +230,7 @@ export default {
             var index = e.currentTarget.dataset.index || 0;
             var data = this.data_list[index] || null;
             if (data == null) {
-                app.globalData.showToast("地址有误");
+                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                 return false;
             }
 

@@ -13,7 +13,7 @@
                 </block>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
                     <view class="flex-row jc-sb align-c">
-                        <view class="text-size cr-grey-9 title-padding">消费金额</view>
+                        <view class="text-size cr-grey-9 title-padding">{{$t('promotion-user.promotion-user.32bf15')}}</view>
                         <view class="flex-1 flex-width tr">
                             <view class="pay-price" :class="form.price ? '' : 'cr-grey-9'">
                                 <text class="unit">{{ currency_symbol }}</text>
@@ -23,7 +23,7 @@
                     </view>
                 </view>
                 <view class="bg-white border-radius-main padding-main spacing-mb">
-                    <view class="text-size fw-b spacing-mb">支付方式</view>
+                    <view class="text-size fw-b spacing-mb">{{$t('user-order-detail.user-order-detail.0e1sfs')}}</view>
                     <view class="flex-col" :class="is_more ? 'pay-scroll' : ''">
                         <view v-for="(item, index) in is_more ? data.payment_list : data.payment_list.slice(0, 2)" :key="index" class="flex-row jc-sb align-c padding-vertical-sm" @tap="change_event(index, item.id)">
                             <div class="flex-1 flex-width flex-row align-c">
@@ -35,7 +35,7 @@
                         </view>
                     </view>
                     <view v-if="data.payment_list.length > 2" class="br-t margin-top-sm padding-top-main tc cr-grey-9" @tap="more_event">
-                        <text>更多</text>
+                        <text>{{$t('common.more')}}</text>
                         <iconfont :name="is_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx"></iconfont>
                     </view>
                 </view>
@@ -43,26 +43,26 @@
             <view class="bottom-fixed sub-key">
                 <view class="tc text-size-xs spacing-mb">
                     <block v-if="!form.note">
-                        <view class="cr-blue" @tap="add_desc_event">添加备注</view>
+                        <view class="cr-blue" @tap="add_desc_event">{{$t('index.index.1e582h')}}</view>
                     </block>
                     <block v-else>
                         <view class="flex-row align-c jc-c padding-horizontal-main">
                             <text class="cr-grey-9 single-text tc">{{ form.note }}</text>
-                            <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">修改</view>
+                            <view class="cr-blue margin-left-sm edit-width" @tap="add_desc_event">{{$t('user.user.567lwz')}}</view>
                         </view>
                     </block>
                     <!-- 输入框示例 -->
                     <uni-popup ref="inputDialog" type="dialog" :animation="false">
                         <view class="dialog-container">
                             <view class="dialog-title">
-                                <text>备注</text>
+                                <text>{{$t('invoice-saveinfo.invoice-saveinfo.tng0se')}}</text>
                             </view>
                             <view class="dialog-content">
                                 <input type="text" class="dialog-input" maxlength="200" @input="input_change" />
                             </view>
                             <view class="dialog-btn-group">
-                                <view class="dialog-btn cr-grey-9" @tap="input_dialog_colse">取消</view>
-                                <view class="dialog-btn divider-l" @tap="input_dialog_open">确定</view>
+                                <view class="dialog-btn cr-grey-9" @tap="input_dialog_colse">{{$t('common.cancel')}}</view>
+                                <view class="dialog-btn divider-l" @tap="input_dialog_open">{{$t('index.index.7w75zb')}}</view>
                             </view>
                         </view>
                     </uni-popup>
@@ -94,7 +94,7 @@
                             </view>
                         </view>
                         <view class="flex-1 key-num sub" @tap="key_up_event('sub')">
-                            <button type="default" class="flex-col jc-c ht-auto wh-auto radius-0 bg-red cr-white" :disabled="form_submit_loading">支付</button>
+                            <button type="default" class="flex-col jc-c ht-auto wh-auto radius-0 bg-red cr-white" :disabled="form_submit_loading">{{$t('order.order.1i873j')}}</button>
                         </view>
                     </view>
                 </view>
@@ -219,7 +219,7 @@
             get_data() {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...'
+                    title: this.$t('common.loading_in_text')
                 });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'scanpay'),
@@ -245,7 +245,7 @@
                             // 标题
                             if (data != null && (data.scanpay_info || null) != null) {
                                 uni.setNavigationBarTitle({
-                                    title: data.scanpay_info.name + '收款',
+                                    title: data.scanpay_info.name + this.$t('index.index.6941e7'),
                                 });
                             }
                         } else {
@@ -263,9 +263,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -359,11 +359,11 @@
                     ...this.params,
                     ...this.form,
                 };
-                var validation = [{ fields: 'price', msg: '请输入消费金额' }];
+                var validation = [{ fields: 'price', msg: this.$t('index.index.t1o84g') }];
                 if (app.globalData.fields_check(new_data, validation)) {
                     // 加载loding
                     uni.showLoading({
-                        title: '加载中...',
+                        title: this.$t('common.loading_in_text'),
                         mask: true
                     });
                     this.setData({
@@ -400,7 +400,7 @@
                             });
                             uni.hideLoading();
                             uni.stopPullDownRefresh();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

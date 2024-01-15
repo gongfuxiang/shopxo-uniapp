@@ -24,12 +24,11 @@
                                 <view class="title text-size fw-b">{{ item.title }}</view>
                                 <view v-if="item.title != item.content" class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
                                 <view class="status flex-row align-c spacing-mt text-size-xs">
-                                    <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</view>
+                                    <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</view>
                                     <view class="num cr-grey-9 flex-row self-c">
                                         {{ item.add_time_date }}
                                         <view class="fw-b padding-horizontal-xs">·</view>
-                                        {{ item.access_count || '0' }}浏览
-                                    </view>
+                                        {{ item.access_count || '0' }}{{$t('detail.detail.e6ga1y')}}</view>
                                 </view>
                             </view>
                         </navigator>
@@ -47,15 +46,11 @@
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
                 <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="divider-r-d wh-auto">
-                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>
-                        我要提问
-                    </view>
+                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('goods-detail.goods-detail.7ulh8b')}}</view>
                 </navigator>
                 <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
                     <view class="wh-auto">
-                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>
-                        我的提问
-                    </view>
+                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('detail.detail.p7o522')}}</view>
                 </navigator>
             </view>
         </view>
@@ -145,7 +140,7 @@
                                     nav_list: res.data.data.search_tab_list || [],
                                     // 基础自定义分享
                                     share_info: {
-                                        title: data_base.seo_title || data_base.application_name || '问答',
+                                        title: data_base.seo_title || data_base.application_name || this.$t('goods-detail.goods-detail.k5u755'),
                                         desc: data_base.seo_desc || '',
                                         path: '/pages/plugins/ask/index/index',
                                     },
@@ -156,7 +151,7 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 2,
-                                    data_list_loding_msg: '缺失tab数据！',
+                                    data_list_loding_msg: this.$t('index.index.17vy72'),
                                 });
                             }
                         } else {
@@ -167,7 +162,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -236,7 +231,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
                     },

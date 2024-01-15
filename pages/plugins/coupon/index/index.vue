@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <block v-if="(data_base || null) != null">
-            <component-nav-back :propName="data_base.application_name || '领券中心'"></component-nav-back>
+            <component-nav-back :propName="data_base.application_name || $t('index.index.p4872s')"></component-nav-back>
             <view class="pr">
                 <view class="pa top-0 bg-img wh-auto">
                     <image class="wh-auto dis-block" :src="data_base.app_banner_images || coupon_static_url + 'coupon-bg.png'" mode="widthFix" :data-value="data_base.url || ''" @tap="url_event"></image>
@@ -26,7 +26,7 @@
                 <view class="popup-bottom bottom-fixed bg-white">
                     <view class="bottom-line-exclude">
                         <view class="popup-btn tc">
-                            <navigator url="/pages/plugins/coupon/user/user" hover-class="none">我的优惠券</navigator>
+                            <navigator url="/pages/plugins/coupon/user/user" hover-class="none">{{$t('index.index.lk0i6c')}}</navigator>
                         </view>
                     </view>
                 </view>
@@ -108,7 +108,7 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 if (this.data_list.length <= 0) {
                     this.setData({
@@ -165,7 +165,7 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });
@@ -198,7 +198,7 @@
                         var temp_list = this.data_list;
                         if (temp_list[index]['is_operable'] != 0) {
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
@@ -223,7 +223,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

@@ -34,20 +34,20 @@
                 <view class="search-map padding-main bg-base">
                     <view class="padding-main border-radius-main bg-white">
                         <view class="map-item map-base br-b">
-                            <text>筛选出</text>
+                            <text>{{$t('goods-search.goods-search.j8o278')}}</text>
                             <text class="cr-main"> {{data_total}} </text>
-                            <text>条数据</text>
-                            <text class="fr cr-red" @tap="map_remove_event">清除</text>
+                            <text>{{$t('goods-search.goods-search.t9nikq')}}</text>
+                            <text class="fr cr-red" @tap="map_remove_event">{{$t('goods-search.goods-search.pxk051')}}</text>
                         </view>
                         <!-- 搜索关键字 -->
-                        <input type="text" confirm-type="done" placeholder="其实搜索很简单^_^ !" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
+                        <input type="text" confirm-type="done" :placeholder="$t('search.search.723rbx')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg" placeholder-class="cr-grey">
                     </view>
 
                     <!-- 分类 -->
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav pr br-b">
-                            <text>分类</text>
-                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
+                            <text>{{$t('goods-search.goods-search.ne5k68')}}</text>
+                            <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
                             <block v-for="(item, index) in search_map_list.category_list" :key="index">
@@ -57,7 +57,7 @@
                     </view>
 
                     <view class="search-submit padding-main pa">
-                        <button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+                        <button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">{{$t('common.confirm')}}</button>
                     </view>
                 </view>
             </form>
@@ -93,11 +93,11 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [
-                    { name: "综合", field: "default", sort: "asc", "icon": null },
-                    { name: "销量", field: "sales_count", sort: "asc", "icon": "default" },
-                    { name: "热度", field: "access_count", sort: "asc", "icon": "default" },
-                    { name: "价格", field: "min_price", sort: "asc", "icon": "default" },
-                    { name: "最新", field: "id", sort: "asc", "icon": "default" }
+                    { name: this.$t('goods-category.goods-category.x69aow'), field: "default", sort: "asc", "icon": null },
+                    { name: this.$t('goods-category.goods-category.at5p35'), field: "sales_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.283ot0'), field: "access_count", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.g2u3lf'), field: "min_price", sort: "asc", "icon": "default" },
+                    { name: this.$t('goods-category.goods-category.5p4ksj'), field: "id", sort: "asc", "icon": "default" }
                 ],
                 // 数据展示样式（0图文、1九方格）
                 data_show_type_value: 1,
@@ -179,7 +179,7 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                     mask: true
                 });
                 var post_data = this.request_map_handle();
@@ -247,7 +247,7 @@
                         this.setData({
                             data_list_loding_status: 2
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -270,7 +270,7 @@
                 
                 // 获取数据
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                     mask: true
                 });
                 var post_data = this.request_map_handle();
@@ -335,7 +335,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },

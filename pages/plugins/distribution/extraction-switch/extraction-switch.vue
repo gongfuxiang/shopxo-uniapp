@@ -21,13 +21,13 @@
                     </view>
                     <view v-if="((item.distance_value || null) != null && (item.distance_unit || null) != null) || ((item.lng || 0) != 0 && (item.lat || 0) != 0)" class="br-t oh padding-top-main margin-top-main">
                         <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="fl margin-top-lg">
-                            <text class="cr-grey">距离</text>
+                            <text class="cr-grey">{{$t('extraction-switch.extraction-switch.w94x36')}}</text>
                             <text class="cr-base">{{ item.distance_value }}</text>
                             <text class="cr-grey">{{ item.distance_unit }}</text>
                         </view>
                         <view class="item-operation fr oh">
-                            <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">选择</button>
-                            <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">查看地图</button>
+                            <button v-if="(item.is_default || 0) == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="address_switch_event" :data-index="index" hover-class="none">{{$t('buy.buy.inyxpx')}}</button>
+                            <button v-if="(item.lng || 0) != 0 && (item.lat || 0) != 0" class="round bg-white cr-base br" type="default" size="mini" @tap="address_map_event" :data-index="index" hover-class="none">{{$t('buy.buy.o7722q')}}</button>
                         </view>
                     </view>
                 </view>
@@ -156,7 +156,7 @@ export default {
         get_data_list() {
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -208,7 +208,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -218,7 +218,7 @@ export default {
             var index = e.currentTarget.dataset.index || 0;
             var data = this.data_list[index] || null;
             if (data == null) {
-                app.globalData.showToast("地址有误");
+                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                 return false;
             }
 
@@ -246,13 +246,13 @@ export default {
             var index = e.currentTarget.dataset.index || 0;
             var temp_data = this.data_list;
             if ((temp_data[index] || null) == null) {
-                app.globalData.showToast("数据有误");
+                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                 return false;
             }
 
             // 请求切换
             uni.showLoading({
-                title: "处理中...",
+                title: this.$t('common.processing_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("switchsave", "extraction", "distribution"),
@@ -277,13 +277,13 @@ export default {
                         if (app.globalData.is_login_check(res.data)) {
                             app.globalData.showToast(res.data.msg);
                         } else {
-                            app.globalData.showToast("提交失败，请重试！");
+                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                         }
                     }
                 },
                 fail: () => {
                     uni.hideLoading();
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

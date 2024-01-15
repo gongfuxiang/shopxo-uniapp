@@ -8,7 +8,7 @@
                             @onsearch="search_submit_event"
                             :propIsOnEvent="true"
                             :propIsRequired="false"
-                            propPlaceholder="输入用户ID/名/昵称/会员码/手机/邮箱"
+                            :propPlaceholder="$t('user.user.nk3cpq')"
                             propClass="br"
                             propSize="md"
                             :propIsBtn="true"
@@ -26,17 +26,17 @@
                                 <text class="va-m margin-left-sm">{{custom_data.data.user_name_view}}</text>
                                 <text class="cr-grey fr">{{custom_data.data.add_time_text || ''}}</text>
                             </block>
-                            <view v-else class="cr-red">{{custom_data.error_msg || '请先输入用户信息搜索！'}}</view>
+                            <view v-else class="cr-red">{{custom_data.error_msg || $t('user.user.iynkpl')}}</view>
                         </view>
                     </view>
 
                     <view class="form-gorup bg-white border-radius-main margin-top-main">
-                        <view class="form-gorup-title">拜访内容<text class="form-group-tips-must">*</text></view>
-                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="拜访内容,最多230个字符" :value="data.content || ''"></textarea>
+                        <view class="form-gorup-title">{{$t('visit-form.visit-form.0su017')}}<text class="form-group-tips-must">*</text></view>
+                        <textarea class="cr-base" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" :placeholder="$t('visit-form.visit-form.e9r65a')" :value="data.content || ''"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh border-radius-main margin-top-main">
-                        <view class="form-gorup-title">拜访照片<text class="form-group-tips-must">*</text><text class="form-group-tips">最多上传{{form_images_max_count}}张</text></view>
+                        <view class="form-gorup-title">{{$t('visit-form.visit-form.6l81lz')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('order.order.o11d44')}}{{form_images_max_count}}{{$t('buy.buy.5iuqow')}}</text></view>
                         <view class="form-upload-data oh">
                             <block v-if="form_images_list.length > 0">
                                 <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
@@ -50,7 +50,7 @@
 
                     <view class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
                         </view>
                     </view>
                 </view>
@@ -173,9 +173,9 @@ export default {
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '网络开小差了哦~',
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -193,15 +193,15 @@ export default {
 
             // 数据校验
             var validation = [
-                { fields: 'custom_user_id', msg: '请选择客户' },
-                { fields: 'content', msg: '请填写拜访内容' },
-                { fields: 'images', msg: '请上传拜访照片' },
+                { fields: 'custom_user_id', msg: this.$t('visit-form.visit-form.6f63it') },
+                { fields: 'content', msg: this.$t('visit-form.visit-form.5k455y') },
+                { fields: 'images', msg: this.$t('visit-form.visit-form.56vk4m') },
             ];
 
             // 验证提交表单
             if (app.globalData.fields_check(form_data, validation)) {
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 this.setData({
                     form_submit_disabled_status: true,
@@ -226,7 +226,7 @@ export default {
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -235,7 +235,7 @@ export default {
                         this.setData({
                             form_submit_disabled_status: false,
                         });
-                        app.globalData.showToast('获取数据失败');
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.h8f437'));
                     },
                 });
             }
@@ -272,7 +272,7 @@ export default {
         // 搜索用户
         search_user() {
             uni.showLoading({
-                title: '搜索中...',
+                title: this.$t('recommend-form.recommend-form.e5k407'),
                 mask: true
             });
             uni.request({
@@ -298,7 +298,7 @@ export default {
                 },
                 fail: () => {
                     uni.hideLoading();
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -315,8 +315,8 @@ export default {
         upload_delete_event(e) {
             var self = this;
             uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复、继续吗？",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('order.order.psi67g'),
                 success(res) {
                     if (res.confirm) {
                         var list = self.form_images_list;

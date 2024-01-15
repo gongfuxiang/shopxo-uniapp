@@ -57,15 +57,15 @@
                 data_list: null,
                 nav_tabs_list: [
                     {
-                        name: '未使用',
+                        name: this.$t('user.user.s3y4ji'),
                         value: 'not_use',
                     },
                     {
-                        name: '已使用',
+                        name: this.$t('user.user.pggs6s'),
                         value: 'already_use',
                     },
                     {
-                        name: '已过期',
+                        name: this.$t('user.user.528t26'),
                         value: 'already_expire',
                     },
                 ],
@@ -146,7 +146,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 if (this.data_list == null || (this.data_list[this.nav_tabs_value] || null) == null || this.data_list[this.nav_tabs_value].length <= 0) {
                     this.setData({
@@ -164,7 +164,7 @@
                         if (res.data.code == 0) {
                             self.setData({
                                 data_list: res.data.data || null,
-                                data_list_loding_msg: '您暂无优惠券哦～',
+                                data_list_loding_msg: this.$t('user.user.3ks1wi'),
                             });
                             self.data_view_handle();
                         } else {
@@ -184,7 +184,7 @@
                         self.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });

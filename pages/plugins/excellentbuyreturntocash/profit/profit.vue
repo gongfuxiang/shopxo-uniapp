@@ -27,8 +27,8 @@
                         </navigator>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">订单详情</button>
-                        <button v-if="item.status == 2" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="list_submit_settlement_event">立即结算</button>
+                        <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">{{$t('profit.profit.19a8l6')}}</button>
+                        <button v-if="item.status == 2" class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="list_submit_settlement_event">{{$t('profit.profit.4r88cp')}}</button>
                     </view>
                 </view>
             </view>
@@ -61,19 +61,19 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待生效", value: "0" },
-                { name: "生效中", value: "1" },
-                { name: "待结算", value: "2" },
-                { name: "已结算", value: "3" },
-                { name: "已失效", value: "4" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('profit.profit.3c7zmg'), value: "0" },
+                { name: this.$t('profit.profit.8jqr78'), value: "1" },
+                { name: this.$t('profit.profit.67o785'), value: "2" },
+                { name: this.$t('profit.profit.l5knxu'), value: "3" },
+                { name: this.$t('detail.detail.32171c'), value: "4" },
             ],
             nav_status_index: 0,
             content_list: [
-                { name: "订单金额", field: "total_price" },
-                { name: "退款金额", field: "refund_price" },
-                { name: "有效金额", field: "valid_price" },
-                { name: "返现金额", field: "profit_price" },
+                { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
+                { name: this.$t('order-detail.order-detail.v52n5r'), field: "refund_price" },
+                { name: this.$t('profit.profit.nk58v6'), field: "valid_price" },
+                { name: this.$t('profit.profit.vuvz6g'), field: "profit_price" },
             ],
         };
     },
@@ -164,7 +164,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -231,7 +231,7 @@ export default {
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '网络开小差了哦~',
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                         data_is_loading: 0,
                     });
                 },
@@ -246,7 +246,7 @@ export default {
                     url: "/pages/user-order-detail/user-order-detail?id=" + oid,
                 });
             } else {
-                app.globalData.showToast("订单id有误");
+                app.globalData.showToast(this.$t('profit.profit.5c7sof'));
             }
         },
 
@@ -254,7 +254,7 @@ export default {
         list_submit_settlement_event(e) {
             var index = e.currentTarget.dataset.index || 0;
             uni.showLoading({
-                title: "处理中...",
+                title: this.$t('common.processing_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("auto", "profit", "excellentbuyreturntocash"),
@@ -268,7 +268,7 @@ export default {
                     if (res.data.code == 0) {
                         var temp_data_list = this.data_list;
                         temp_data_list[index]["status"] = 3;
-                        temp_data_list[index]["status_name"] = "已结算";
+                        temp_data_list[index]["status_name"] = this.$t('profit.profit.l5knxu');
                         this.setData({
                             data_list: temp_data_list,
                         });
@@ -282,7 +282,7 @@ export default {
                 },
                 fail: () => {
                     uni.hideLoading();
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

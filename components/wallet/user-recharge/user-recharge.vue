@@ -26,8 +26,8 @@
                     </navigator>
                 </view>
                 <view v-if="item.status == 0" class="item-operation tr margin-top-main">
-                    <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">去支付</button>
+                    <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                    <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" @tap="pay_event" :data-price="item.money" :data-value="item.id" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('user-recharge.user-recharge.8y9dki')}}</button>
                 </view>
             </view>
         </view>
@@ -92,15 +92,15 @@
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '待支付', value: '0' },
-                    { name: '已支付', value: '1' },
+                    { name: this.$t('common.all'), value: '-1' },
+                    { name: this.$t('order.order.pjb15r'), value: '0' },
+                    { name: this.$t('order.order.s8g966'), value: '1' },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: '充值单号', field: 'recharge_no' },
-                    { name: '充值金额', field: 'money' },
-                    { name: '支付金额', field: 'pay_money' },
+                    { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), field: 'recharge_no' },
+                    { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), field: 'money' },
+                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: 'pay_money' },
                 ],
 
                 // 支付弹窗参数
@@ -202,7 +202,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 参数
@@ -273,7 +273,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -301,7 +301,7 @@
                 var temp_data_list = this.data_list;
                 temp_data_list[index]['pay_money'] = temp_data_list[index]['money'];
                 temp_data_list[index]['status'] = 1;
-                temp_data_list[index]['status_name'] = '已支付';
+                temp_data_list[index]['status_name'] = this.$t('order.order.s8g966');
                 this.setData({
                     data_list: temp_data_list,
                 });
@@ -311,10 +311,10 @@
             // 删除
             delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -323,7 +323,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('delete', 'recharge', 'wallet'),
@@ -353,7 +353,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

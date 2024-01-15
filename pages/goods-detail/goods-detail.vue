@@ -92,7 +92,7 @@
                 </view>
                 <!-- 秒杀 -->
                 <view v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
-                    <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || '限时秒杀' }}</view>
+                    <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || $t('goods-detail.goods-detail.775ppk') }}</view>
                     <component-countdown
                         :propHour="plugins_seckill_data.time.hours"
                         :propMinute="plugins_seckill_data.time.minutes"
@@ -108,14 +108,14 @@
                 </view>
                 <view v-else class="goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-main fr oh">
                     <!-- 收藏 -->
-                    <view class="collect tc cp fr margin-left-xl" @tap="goods_favor_event">
+                    <view class="collect tc cp fr margin-left" @tap="goods_favor_event">
                         <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
                         <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
                     </view>
                     <!-- 分享 -->
                     <view class="goods-share tc cp fr" @tap="popup_share_event">
                         <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                        <view class="cr-grey text-size-xs">分享</view>
+                        <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
                     </view>
                 </view>
             </view>
@@ -144,7 +144,7 @@
                                 <!-- 分享 -->
                                 <view class="goods-share tc cp" @tap="popup_share_event">
                                     <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                                    <view class="cr-grey text-size-xs">分享</view>
+                                    <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
                                 </view>
                                 <!-- 收藏 -->
                                 <view class="collect tc cp margin-left-xxxl" @tap="goods_favor_event">
@@ -161,15 +161,15 @@
                     <view class="br-t padding-main">
                         <view class="base-grid oh padding-top-sm padding-bottom-sm text-size-xs">
                             <view class="fl tl">
-                                <text class="cr-grey">库存</text>
+                                <text class="cr-grey">{{$t('goods-detail.goods-detail.1s79t4')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.inventory }}</text>
                             </view>
                             <view class="fl tc">
-                                <text class="cr-grey">热度</text>
+                                <text class="cr-grey">{{$t('goods-category.goods-category.283ot0')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.access_count }}</text>
                             </view>
                             <view class="fl tr">
-                                <text class="cr-grey">销量</text>
+                                <text class="cr-grey">{{$t('goods-category.goods-category.at5p35')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.sales_count }}</text>
                             </view>
                         </view>
@@ -209,7 +209,7 @@
 
                 <!-- 优惠券 -->
                 <view v-if="(plugins_coupon_data || null) != null && plugins_coupon_data.data.length > 0" class="plugins-coupon-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="item-title padding-right-main self-c">优惠券</view>
+                    <view class="item-title padding-right-main self-c">{{$t('goods-detail.goods-detail.w3jma9')}}</view>
                     <view class="flex-row align-c flex-1 flex-width">
                         <view class="margin-right-main cp flex-1 flex-width flex-row coupon-srcoll">
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
@@ -224,7 +224,7 @@
                             </block>
                         </view>
                         <view @tap="popup_coupon_event">
-                            <text class="text-size-xs cr-grey-9">共{{ plugins_coupon_data.data.length }}张</text>
+                            <text class="text-size-xs cr-grey-9">{{$t('user-order-detail.user-order-detail.423rmr')}}{{ plugins_coupon_data.data.length }}{{$t('buy.buy.5iuqow')}}</text>
                             <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                         </view>
                     </view>
@@ -232,7 +232,7 @@
 
                 <!-- 规格选择 -->
                 <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
-                    <view class="fl item-title">规格</view>
+                    <view class="fl item-title">{{$t('goods-detail.goods-detail.u401fi')}}</view>
                     <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'show'">{{ goods_spec_selected_text }}</view>
                 </view>
             </view>
@@ -270,8 +270,8 @@
                 <!-- 门店 -->
                 <view v-if="plugins_realstore_data != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">相关门店</text>
-                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.goods-detail.317jp2')}}</text>
+                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                 </view>
@@ -285,10 +285,10 @@
                 <view v-if="common_is_show_goods_comments == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
-                            <text class="text-wrapper title-left-border">商品评价</text>
+                            <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.znz76d')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
                         </view>
-                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">好评率 {{ goods.comments_score.rate }}%</navigator>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ goods.comments_score.rate }}%</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <!-- 商品数据 -->
@@ -296,9 +296,7 @@
                         <!-- 是否开启评论入口 -->
                         <view v-if="(plugins_intellectstools_data || null) !== null && (plugins_intellectstools_data.is_comments_add || 0) == 1">
                             <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
-                                <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
-                                    我要评价
-                                    <iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
+                                <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.6k7808')}}<iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
                                 </view>
                             </navigator>
                         </view>
@@ -308,17 +306,15 @@
                 <view v-if="(plugins_ask_data || null) !== null && (plugins_ask_data.is_ask_add || 0) == 1" class="goods-comment spacing-mb">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
-                            <text class="text-wrapper title-left-border">问答</text>
+                            <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.k5u755')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
                         </view>
-                        <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">查看全部回答</navigator>
+                        <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.q8e577')}}</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-ask-comments-goods :propData="plugins_ask_data.ask_data"></component-ask-comments-goods>
                         <navigator url="/pages/plugins/ask/form/form" hover-class="none">
-                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">
-                                我要提问
-                                <iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
+                            <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.7ulh8b')}}<iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </navigator>
                     </view>
@@ -343,7 +339,7 @@
                 <view v-if="(goods.parameters || null) != null && (goods.parameters.detail || null) != null && goods.parameters.detail.length > 0" class="spacing-mb">
                     <view class="spacing-nav-title">
                         <text class="line"></text>
-                        <text class="text-wrapper">商品参数</text>
+                        <text class="text-wrapper">{{$t('goods-detail.goods-detail.l7dzv2')}}</text>
                     </view>
                     <view class="goods-parameters border-radius-main padding-main bg-white">
                         <view class="content-item oh">
@@ -365,7 +361,7 @@
                 <!-- 商品详情 -->
                 <view class="goods-detail">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border">商品详情</text>
+                        <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.2j44o2')}}</text>
                     </view>
                     <view class="border-radius-main oh bg-white">
                         <block v-if="(common_is_goods_detail_show_photo == 1 && goods_photo.length > 0) || (common_app_is_use_mobile_detail == 0 && (goods.content_web || null) != null) || (common_app_is_use_mobile_detail == 1 && goods_content_app.length > 0)">
@@ -390,7 +386,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">暂无详情数据</view>
+                            <view class="cr-grey tc padding-top-xxl padding-bottom-xxl">{{$t('goods-detail.goods-detail.27wudx')}}</view>
                         </block>
                     </view>
                 </view>
@@ -398,7 +394,7 @@
                 <!-- 猜你喜欢 -->
                 <view v-if="guess_you_like.length > 0" class="padding-horizontal-main margin-top-main">
                     <view class="tc spacing-mb">
-                        <view class="guess-like fw-b text-size-md">猜你喜欢</view>
+                        <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
                     </view>
                     <div class="spacing-mt">
                         <component-goods-list :propData="{ style_type: 1, goods_list: guess_you_like }"  :propCurrencySymbol="currency_symbol"></component-goods-list>
@@ -418,7 +414,7 @@
                         <!-- 返回操作 -->
                         <view class="item cp" @tap="bottom_nav_back_event">
                             <image :src="common_static_url + 'back-icon.png'" mode="scaleToFill"></image>
-                            <text class="dis-block text-size-xs cr-grey">返回</text>
+                            <text class="dis-block text-size-xs cr-grey">{{$t('common.return')}}</text>
                         </view>
                     </block>
                     <block v-else>
@@ -445,7 +441,7 @@
                             <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                         </view>
                         <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
-                        <text class="dis-block text-size-xs cr-grey">购物车</text>
+                        <text class="dis-block text-size-xs cr-grey">{{$t('goods-detail.goods-detail.o1rnb5')}}</text>
                     </view>
                 </view>
                 <!-- 右侧主操作 -->
@@ -458,7 +454,7 @@
                         </block>
                     </block>
                     <block v-else>
-                        <button class="item bg-grey round tc" type="default" disabled>{{ buy_button.error || '暂停销售' }}</button>
+                        <button class="item bg-grey round tc" type="default" disabled>{{ buy_button.error || $t('goods-detail.goods-detail.35f378') }}</button>
                     </block>
                 </view>
             </view>
@@ -481,7 +477,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无参数数据</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.0gx41x')}}</view>
                         </block>
                     </view>
                 </view>
@@ -511,7 +507,7 @@
                             </view>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无批发信息</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.m3op38')}}</view>
                         </block>
                     </view>
                 </view>
@@ -532,7 +528,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无优惠券信息</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.96y691')}}</view>
                         </block>
                     </view>
                 </view>
@@ -551,7 +547,7 @@
                             <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关门店信息</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.gwwf19')}}</view>
                         </block>
                     </view>
                 </view>
@@ -580,7 +576,7 @@
                             </block>
                         </block>
                         <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关服务信息</view>
+                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.8ej346')}}</view>
                         </block>
                     </view>
                 </view>
@@ -663,7 +659,7 @@
                 buy_button: {},
                 goods_spec_base_price: 0,
                 goods_spec_base_original_price: 0,
-                goods_spec_selected_text: '请选择规格',
+                goods_spec_selected_text: this.$t('goods-detail.goods-detail.6brk57'),
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
                 // 更多导航
@@ -672,13 +668,13 @@
                 nav_more_list: [],
                 // 导航首页按钮
                 nav_home_button_info: {
-                    text: '首页',
+                    text: this.$t('goods-detail.goods-detail.ihf2mk'),
                     icon: common_static_url + 'home-icon.png',
                     value: app.globalData.data.tabbar_pages[0],
                 },
                 // 导航收藏按钮
                 nav_favor_button_info: {
-                    text: '收藏',
+                    text: this.$t('goods-detail.goods-detail.dco1sc'),
                     status: 0,
                 },
                 // 购物车快捷导航
@@ -895,7 +891,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var goods = data.goods;
-                            var price_text_arr = ['售价', '价格', '销售价'];
+                            var price_text_arr = [this.$t('goods-detail.goods-detail.bogx42'), this.$t('goods-category.goods-category.g2u3lf'), this.$t('goods-detail.goods-detail.3kdgjl')];
                             var upd_data = {
                                 data_bottom_line_status: true,
                                 data_list_loding_status: 3,
@@ -907,7 +903,7 @@
                                 nav_more_list: data.nav_more_list || [],
                                 goods_content_app: goods.content_app || [],
                                 nav_favor_button_info: {
-                                    text: (goods.is_favor == 1 ? '已' : '') + '收藏',
+                                    text: (goods.is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
                                     status: goods.is_favor,
                                 },
                                 buy_button: data.buy_button || null,
@@ -992,9 +988,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -1026,7 +1022,7 @@
             // 更多事件
             top_nav_left_more_event(e) {
                 if (this.nav_more_list.length <= 0) {
-                    app.globalData.showToast('无更多列表数据');
+                    app.globalData.showToast(this.$t('common.not_more_list_data_tips'));
                     return false;
                 }
 
@@ -1109,7 +1105,7 @@
                     // url事件
                     case 'url':
                         if (value == null) {
-                            app.globalData.showToast('url事件为空');
+                            app.globalData.showToast(this.$t('goods-detail.goods-detail.tq1976'));
                             return false;
                         }
                         app.globalData.url_open(value);
@@ -1117,7 +1113,7 @@
                     // 门店
                     case 'plugins-realstore':
                         if((this.plugins_realstore_data || null) == null || (this.plugins_realstore_data.data || null) == null) {
-                            app.globalData.showToast('门店数据有误');
+                            app.globalData.showToast(this.$t('goods-detail.goods-detail.98v424'));
                             return false;
                         }
                         var temp_data_list = this.plugins_realstore_data.data || [];
@@ -1139,7 +1135,7 @@
                         break;
                     // 默认
                     default:
-                        app.globalData.showToast('事件未处理('+type+')');
+                        app.globalData.showToast(this.$t('goods-detail.goods-detail.721e2h')+type+')');
                 }
             },
 
@@ -1184,7 +1180,7 @@
                         return false;
                     } else {
                         uni.showLoading({
-                            title: '处理中...',
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('favor', 'goods'),
@@ -1212,7 +1208,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -1311,7 +1307,7 @@
                     } else {
                         var temp_list = this.plugins_coupon_data.data;
                         uni.showLoading({
-                            title: '处理中...',
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
@@ -1349,7 +1345,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

@@ -27,12 +27,12 @@
                     </view>
                     <view class="card-type">
                         <!-- 按钮状态 0-领取，1-已领取，2-已抢完，3-去使用,4-已使用，5-已过期 -->
-                        <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName }}</view>
-                        <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName }}</view>
-                        <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName }}</view>
+                        <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
+                        <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
+                        <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <navigator v-else-if="propStatusType == 3" :url="home_page_url" open-type="switchTab" hover-class="none">
                             <view class="card-btn dis-inline-block cr-white">
-                                {{ propStatusOperableName }}
+                                {{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}
                             </view>
                         </navigator>
                         <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
@@ -41,7 +41,7 @@
                         <view v-else-if="propStatusType == 5" class="card-image pa top-0 right-0">
                             <image :src="coupon_static_url + 'coupon-expire.png'" mode="scaleToFill"></image>
                         </view>
-                        <view v-else @tap="receive">暂无type参数</view>
+                        <view v-else @tap="receive">{{$t('coupon-card.coupon-card.j318xx')}}</view>
                     </view>
                 </view>
                 <view class="card-circle-top" :style="{ background: `${propBg}` }"></view>
@@ -116,7 +116,7 @@
             // 按钮名称： 领取 已领取 已抢完 去使用
             propStatusOperableName: {
                 type: String,
-                default: '去使用',
+                default: '',
             },
             // 优惠券有效期
             propStartTime:{

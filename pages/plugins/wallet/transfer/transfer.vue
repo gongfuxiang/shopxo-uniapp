@@ -5,11 +5,11 @@
             <block v-if="(data || null) != null">
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white padding-vertical-main padding-left-main flex-row" :class="is_error_msg ? '' : 'spacing-mb'">
-                        <view class="title fw-b text-size margin-right-main">收款账号</view>
+                        <view class="title fw-b text-size margin-right-main">{{$t('cash-create.cash-create.36756z')}}</view>
                         <view class="flex-1 flex-width padding-right-main">
                             <view class="flex-row jc-sb align-c">
-                                <input name="keywords" :value="inputClearValue" class="text-size-md pr top-sm flex-1 flex-width" placeholder="请输入用户ID/名/码/手机/邮箱" placeholder-class="cr-grey-c" @input="input_account_event" />
-                                <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">确认</text>
+                                <input name="keywords" :value="inputClearValue" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.transfer.t53ary')" placeholder-class="cr-grey-c" @input="input_account_event" />
+                                <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">{{$t('common.confirm')}}</text>
                             </view>
                             <view v-if="(receive_user || null) != null && inputClearValue" class="br-t-e padding-top-main margin-top-main flex-row align-c">
                                 <image :src="receive_user.avatar" mode="widthFix" class="img margin-right-xs circle" />
@@ -19,16 +19,16 @@
                     </view>
                     <view v-if="is_error_msg" class="error-msg text-size-xs padding-vertical-xs">{{ error_msg }}</view>
                     <view class="border-radius-main bg-white padding-main spacing-mb">
-                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">转账金额</view>
-                        <input name="money" type="number" class="text-size-xl tc cr-red" placeholder="请输入转账金额" placeholder-class="cr-grey-c" />
+                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('transfer.transfer.2q274j')}}</view>
+                        <input name="money" type="number" class="text-size-xl tc cr-red" :placeholder="$t('transfer.transfer.g22y5v')" placeholder-class="cr-grey-c" />
                         <view class="tc spacing-mt-10 margin-bottom-xxxl padding-bottom-main">
-                            <text class="cr-grey-9">我的余额：</text>
+                            <text class="cr-grey-9">{{$t('transfer.transfer.9xe2bl')}}</text>
                             <text class="fw-b">{{ data.normal_money }}</text>
                         </view>
-                        <input name="note" class="text-size-md bg-grey-f9 padding-main border-radius-sm" placeholder="请输入转账备注信息" placeholder-class="cr-grey-c" />
+                        <input name="note" class="text-size-md bg-grey-f9 padding-main border-radius-sm" :placeholder="$t('transfer.transfer.2bwh7h')" placeholder-class="cr-grey-c" />
                     </view>
                     <view class="padding-main">
-                        <button type="default" form-type="submit" hover-class="none" size="mini" class="br-main bg-main cr-white round buy-submit text-size dis-block">确认</button>
+                        <button type="default" form-type="submit" hover-class="none" size="mini" class="br-main bg-main cr-white round buy-submit text-size dis-block">{{$t('common.confirm')}}</button>
                     </view>
                 </form>
             </block>
@@ -118,9 +118,9 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -158,9 +158,9 @@
                             this.setData({
                                 receive_user: null,
                                 is_error_msg: true,
-                                error_msg: '网络开小差了哦~',
+                                error_msg: this.$t('common.internet_error_tips'),
                             });
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -173,13 +173,13 @@
                         receive_user_id: (this.receive_user || null) === null ? '' : this.receive_user.id,
                     };
                     var validation = [
-                        { fields: 'keywords', msg: '请输入收款账号' },
-                        { fields: 'receive_user_id', msg: '请输入正确的收款账号' },
-                        { fields: 'money', msg: '请输入转账金额' },
+                        { fields: 'keywords', msg: this.$t('transfer.transfer.1aijp1') },
+                        { fields: 'receive_user_id', msg: this.$t('transfer.transfer.x4mzo9') },
+                        { fields: 'money', msg: this.$t('transfer.transfer.g22y5v') },
                     ];
                     if (app.globalData.fields_check(new_data, validation)) {
                         uni.showLoading({
-                            title: '处理中...',
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('save', 'transfer', 'wallet'),
@@ -200,7 +200,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

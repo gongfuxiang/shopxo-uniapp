@@ -19,11 +19,11 @@
                         </navigator>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" @tap="popup_share_event" :data-index="index">分享</button>
+                        <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" @tap="popup_share_event" :data-index="index">{{$t('common.share')}}</button>
                         <navigator :url="'/pages/plugins/distribution/recommend-form/recommend-form?id=' + item.id" hover-class="none" class="dis-inline-block margin-left-lg">
-                            <button class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none">编辑</button>
+                            <button class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                         </navigator>
-                        <button class="round bg-white br-red cr-red margin-left-lg" type="default" size="mini" hover-class="none" @tap="delete_event" :data-index="index">删除</button>
+                        <button class="round bg-white br-red cr-red margin-left-lg" type="default" size="mini" hover-class="none" @tap="delete_event" :data-index="index">{{$t('common.del')}}</button>
                     </view>
                 </view>
             </view>
@@ -64,10 +64,10 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "标题", field: "title" },
-                { name: "描述", field: "describe" },
-                { name: "商品", field: "goods_count" },
-                { name: "访问", field: "access_count" },
+                { name: this.$t('user-detail.user-detail.uy6lrz'), field: "title" },
+                { name: this.$t('form.form.xy87t8'), field: "describe" },
+                { name: this.$t('recommend-list.recommend-list.x74z3o'), field: "goods_count" },
+                { name: this.$t('recommend-list.recommend-list.78n1ly'), field: "access_count" },
             ],
             // 自定义分享信息
             share_info: {},
@@ -218,7 +218,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -233,7 +233,7 @@ export default {
             var index = e.currentTarget.dataset.index || 0;
             var data = this.data_list[index] || null;
             if (data == null) {
-                app.globalData.showToast("数据有误");
+                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                 return false;
             }
             this.setData({
@@ -263,18 +263,18 @@ export default {
             var temp_data = this.data_list;
             var data = temp_data[index] || null;
             if (data == null) {
-                app.globalData.showToast("数据有误");
+                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                 return false;
             }
             uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复，确定继续吗?",
-                confirmText: "确认",
-                cancelText: "不了",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('recommend-list.recommend-list.54d418'),
+                confirmText: this.$t('common.confirm'),
+                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                 success: (result) => {
                     if (result.confirm) {
                         uni.showLoading({
-                            title: "处理中...",
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url("delete", "recommend", "distribution"),
@@ -295,7 +295,7 @@ export default {
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("网络开小差了哦~");
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

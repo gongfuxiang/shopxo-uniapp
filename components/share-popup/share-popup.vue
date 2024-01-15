@@ -11,14 +11,14 @@
                     <!-- #ifdef MP-ALIPAY -->
                     <view class="share-items oh cp" @tap="share_base_event">
                         <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">一键分享给好友、群聊</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.h04xiy') }}</text>
                     </view>
                     <!-- #endif -->
                     <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-TOUTIAO || MP-KUAISHOU -->
                     <view class="share-items oh cp">
                         <button class="dis-block br-0 ht-auto" type="default" size="mini" open-type="share" hover-class="none" @tap="popup_close_event">
                             <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">一键分享给好友、群聊</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.h04xiy') }}</text>
                         </button>
                     </view>
                     <!-- #endif -->
@@ -26,33 +26,33 @@
                     <block v-if="is_app_weixin">
                         <view class="share-items oh cp" data-scene="WXSceneSession" data-provider="weixin" @tap="share_app_event">
                             <image :src="common_static_url + 'share-user-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">一键分享给微信好友、群聊</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.rhs2c5') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneTimeline" data-provider="weixin" @tap="share_app_event">
                             <image :src="common_static_url + 'share-friend-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">一键分享给微信朋友圈</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.mv9l10') }}</text>
                         </view>
                         <view class="share-items oh cp" data-scene="WXSceneFavorite" data-provider="weixin" @tap="share_app_event">
                             <image :src="common_static_url + 'share-favor-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">一键分享到微信收藏夹</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.f08y38') }}</text>
                         </view>
                     </block>
                     <block v-if="is_app_qq">
                         <view class="share-items oh cp" data-provider="qq" @tap="share_app_event">
                             <image :src="common_static_url + 'share-qq-icon.png'" mode="scaleToFill"></image>
-                            <text class="cr-grey text-size-xs single-text">一键分享到QQ好友、空间</text>
+                            <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.1242w9') }}</text>
                         </view>
                     </block>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <view class="share-items oh cp" @tap="share_url_copy_event">
                         <image :src="common_static_url + 'share-url-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">点击复制地址分享给好友、群聊</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.1oh013') }}</text>
                     </view>
                     <!-- #endif -->
                     <view v-if="is_goods_poster == 1 && (goods_id || 0) != 0" class="share-items oh cp" @tap="poster_event">
                         <image :src="common_static_url + 'share-poster-icon.png'" mode="scaleToFill"></image>
-                        <text class="cr-grey text-size-xs single-text">生成海报，分享到朋友圈、好友及群聊</text>
+                        <text class="cr-grey text-size-xs single-text">{{ $t('share-popup.share-popup.dcp2qu') }}</text>
                     </view>
                 </view>
             </view>
@@ -128,7 +128,7 @@
                             is_app_qq: provider.indexOf('qq') != -1,
                         });
                     },
-                    fail: (error) => {}
+                    fail: (error) => {},
                 });
                 // #endif
             },
@@ -173,7 +173,7 @@
                         return false;
                     } else {
                         uni.showLoading({
-                            title: '生成中...',
+                            title: this.$t('detail.detail.6xvl35'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('goodsposter', 'distribution', 'distribution'),
@@ -196,7 +196,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -215,14 +215,14 @@
                 var url = this.url || share.url;
                 var title = this.title || share.title;
                 var summary = this.summary || share.desc;
-                var type = (this.type === null) ? ((img || null) == null ? 1 : 0) : this.type;
+                var type = this.type === null ? ((img || null) == null ? 1 : 0) : this.type;
                 var miniProgram = {};
 
                 // #ifdef APP
                 // 分享到好友，是否走微信小程序，则获取微信小程序原始id
-                if(scene == 'WXSceneSession') {
+                if (scene == 'WXSceneSession') {
                     var weixin_original_id = app.globalData.get_config('config.common_app_mini_share_weixin_original_id', null);
-                    if(weixin_original_id != null) {
+                    if (weixin_original_id != null) {
                         type = 5;
                         miniProgram = {
                             id: weixin_original_id,
@@ -241,18 +241,18 @@
 
                 // 调用分享组件
                 uni.share({
-                	provider: provider,
-                	scene: scene,
-                	type: type,
-                	href: url,
-                	title: title,
-                	summary: summary,
-                	imageUrl: img,
+                    provider: provider,
+                    scene: scene,
+                    type: type,
+                    href: url,
+                    title: title,
+                    summary: summary,
+                    imageUrl: img,
                     miniProgram: miniProgram,
-                	success: function (res) {},
-                	fail: function (err) {}
+                    success: function (res) {},
+                    fail: function (err) {},
                 });
-            }
+            },
         },
     };
 </script>
@@ -275,6 +275,7 @@
     .share-popup-content .share-items {
         padding: 30rpx 0;
         min-height: 85rpx;
+        display: flex;
     }
     .share-popup-content .share-items:not(:first-child) {
         border-top: 1px solid #f0f0f0;

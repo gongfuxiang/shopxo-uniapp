@@ -57,17 +57,17 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_type_list: [
-                { name: "新增客户总GMV", value: 0 },
-                { name: "订单总数", value: 1 },
-                { name: "订单总GMV", value: 2 },
+                { name: this.$t('promotion-order.promotion-order.6rs63v'), value: 0 },
+                { name: this.$t('promotion-order.promotion-order.iwa646'), value: 1 },
+                { name: this.$t('promotion-order.promotion-order.2p5215'), value: 2 },
             ],
             nav_type_index: 0,
             content_list: [
-                { name: "订单号", field: "order_no" },
-                { name: "订单金额", field: "total_price" },
-                { name: "支付状态", field: "order_pay_status_name" },
-                { name: "来源终端", field: "order_client_type_name" },
-                { name: "订单时间", field: "add_time" },
+                { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
+                { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
+                { name: this.$t('user-order-detail.user-order-detail.23qj7m'), field: "order_pay_status_name" },
+                { name: this.$t('order.order.330m76'), field: "order_client_type_name" },
+                { name: this.$t('order-detail.order-detail.9153qn'), field: "add_time" },
             ],
         };
     },
@@ -158,7 +158,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 请求参数
@@ -225,7 +225,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -253,7 +253,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
     },

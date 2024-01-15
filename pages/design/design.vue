@@ -5,7 +5,7 @@
             <block v-if="(data.is_header || 0) == 1">
                 <!-- 搜索框 -->
                 <view class="padding-main bg-white">
-                    <component-search propClass="br" propPlaceholder="输入商品名称搜索"></component-search>
+                    <component-search propClass="br" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                 </view>
             </block>
 
@@ -128,9 +128,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             }

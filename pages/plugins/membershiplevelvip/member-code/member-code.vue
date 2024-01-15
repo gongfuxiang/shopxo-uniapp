@@ -15,14 +15,14 @@
                 </view>
 
                 <!-- 提示信息 -->
-                <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
+                <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 导航 -->
                 <view v-if="(plugins_wallet || null) != null" class="bottom-fixed padding-main br-0">
                     <view class="bottom-line-exclude oh">
                         <view class="bg-white br-grey-d round oh">
-                            <button type="default" class="bg-main cr-white round text-size fl br-0" size="mini">会员码</button>
-                            <button type="default" class="bg-white round text-size fr br-0" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">钱包付款码</button>
+                            <button type="default" class="bg-main cr-white round text-size fl br-0" size="mini">{{$t('member-code.member-code.26bu38')}}</button>
+                            <button type="default" class="bg-white round text-size fr br-0" size="mini" :data-value="'/pages/plugins/wallet/payment-code/payment-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.x58gqu')}}</button>
                         </view>
                     </view>
                 </view>
@@ -31,7 +31,7 @@
             <!-- 错误提示 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             <view v-if="is_to_login == 1" class="margin-top-lg tc">
-                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">去登录</button>
+                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">{{$t('member-code.member-code.yj6g3a')}}</button>
             </view>
         </view>
     </view>
@@ -125,7 +125,7 @@ export default {
                     });
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: "请先绑定手机",
+                        data_list_loding_msg: this.$t('setup.setup.07o10b'),
                         is_to_login: 1,
                     });
                     return false;
@@ -154,7 +154,7 @@ export default {
                     } else {
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: "会员码为空",
+                            data_list_loding_msg: this.$t('member-code.member-code.kx4yk8'),
                             is_to_login: 0,
                         });
                     }
@@ -162,7 +162,7 @@ export default {
             } else {
                 this.setData({
                     data_list_loding_status: 0,
-                    data_list_loding_msg: "请先登录",
+                    data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
                     is_to_login: 1,
                 });
             }

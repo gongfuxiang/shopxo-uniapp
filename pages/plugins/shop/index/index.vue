@@ -42,10 +42,10 @@
                                 </view>
                                 <view class="oh br-t-dashed padding-main">
                                     <view class="fl cr-grey-9 single-text"
-                                        >商品 <text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
+                                        >{{$t('recommend-list.recommend-list.x74z3o')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
                                     >
                                     <view class="fr cr-grey-9 single-text"
-                                        >销量 <text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
+                                        >{{$t('goods-category.goods-category.at5p35')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
                                     >
                                 </view>
                             </view>
@@ -133,7 +133,7 @@
 
                 // 请求数据
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'shop'),
@@ -181,7 +181,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~00home',
+                            data_list_loding_msg: this.$t('index.index.f69r4i'),
                         });
                     },
                 });
@@ -204,7 +204,7 @@
                 });
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 // 获取数据
                 uni.request({
@@ -270,7 +270,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

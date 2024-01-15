@@ -47,7 +47,7 @@
                             </view>
                         </view>
                         <view class="padding-vertical-main tr cr-base text-size">
-                            <text>共<text class="fw-b">{{ item.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
+                            <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                         </view>
                         <view
                             v-if="
@@ -67,20 +67,20 @@
                                 ((item.plugins_express_data || 0) == 1 && (item.express_number || null) != null) ||
                                 ((item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0)
                             "
-                            class="item-operation tr br-t padding-vertical-main">
-                            <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                            <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">支付</button>
-                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
-                            <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">物流</button>
-                            <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">物流</button>
-                            <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">评论</button>
-                            <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">催催</button>
-                            <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                            <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">子单</button>
-                            <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">批次</button>
-                            <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">次卡</button>
-                            <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">表单</button>
-                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">回购</button>
+                            class="item-operation tr br-t padding-top-main">
+                            <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow margin-bottom-main" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
+                            <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-index="index" :data-price="item.total_price" :data-payment="item.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">{{$t('order.order.1i873j')}}</button>
+                            <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
+                            <button v-if="(item.plugins_express_data || 0) == 1 && (item.express_number || null) != null" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?id=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                            <button v-if="(item.plugins_delivery_data || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                            <button v-if="item.operate_data.is_comments == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="comments_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('user-order.user-order.twc3r7')}}</button>
+                            <button v-if="item.status == 2 && item.order_model != 2" class="round cr-base br margin-bottom-main" type="default" size="mini" @tap="rush_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('user-order.user-order.lp1v28')}}</button>
+                            <button v-if="item.operate_data.is_delete == 1" class="round bg-white cr-red br-red margin-bottom-main" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                            <button v-if="(item.plugins_is_order_allot_button || 0) == 1" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/orderallot-list/orderallot-list?oid=' + item.id" hover-class="none">{{$t('user-order.user-order.ht65c9')}}</button>
+                            <button v-if="(item.plugins_is_order_batch_button || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
+                            <button v-if="(item.plugins_is_order_frequencycard_button || 0) == 1" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
+                            <button v-if="(item.plugins_ordergoodsform_data || 0) == 1" class="round bg-white cr-blue br-blue margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/ordergoodsform/order/order?id=' + item.id" hover-class="none">{{$t('user-order.user-order.9l47b6')}}</button>
+                            <button v-if="(item.plugins_intellectstools_data || null) != null && (item.plugins_intellectstools_data.continue_buy_data || null) != null && item.plugins_intellectstools_data.continue_buy_data.length > 0" class="round bg-white cr-green br-green margin-bottom-main" type="default" size="mini" :data-index="index" @tap="continue_buy_event" hover-class="none">{{$t('user-order.user-order.3l2jr5')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -96,7 +96,7 @@
         <!-- 合并支付 -->
         <view v-if="nav_status_index == 1 && order_select_ids.length > 0 && home_is_enable_order_bulk_pay == 1" class="bottom-fixed tc">
             <view class="bottom-line-exclude">
-                <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">合并支付</button>
+                <button class="pay-merge-submit bg-green cr-white round text-size" hover-class="none" @tap="pay_merge_event">{{$t('user-order.user-order.7571p2')}}</button>
             </view>
         </view>
 
@@ -142,12 +142,12 @@
                 data_is_loading: 0,
                 input_keyword_value: '',
                 nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '待付款', value: '1' },
-                    { name: '待发货', value: '2' },
-                    { name: '待收货', value: '3' },
-                    { name: '已完成', value: '4' },
-                    { name: '已失效', value: '5,6' },
+                    { name: this.$t('common.all'), value: '-1' },
+                    { name: this.$t('user.user.9u8e61'), value: '1' },
+                    { name: this.$t('user.user.66714e'), value: '2' },
+                    { name: this.$t('order.order.q820hx'), value: '3' },
+                    { name: this.$t('order.order.15lr5l'), value: '4' },
+                    { name: this.$t('detail.detail.32171c'), value: '5,6' },
                 ],
                 mult_payment_id_list: [],
                 order_select_ids: [],
@@ -292,7 +292,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 参数
@@ -378,7 +378,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -441,17 +441,17 @@
                             // 销售模式
                             case 0:
                                 temp_data_list[i]['status'] = 2;
-                                temp_data_list[i]['status_name'] = '待发货';
+                                temp_data_list[i]['status_name'] = this.$t('user.user.66714e');
                                 break;
                             // 自提模式
                             case 2:
                                 temp_data_list[i]['status'] = 2;
-                                temp_data_list[i]['status_name'] = '待取货';
+                                temp_data_list[i]['status_name'] = this.$t('user-order.user-order.hp123x');
                                 break;
                             // 虚拟模式
                             case 3:
                                 temp_data_list[i]['status'] = 3;
-                                temp_data_list[i]['status_name'] = '待收货';
+                                temp_data_list[i]['status_name'] = this.$t('order.order.q820hx');
                                 break;
                         }
                     }
@@ -464,10 +464,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '取消后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.pn78ns'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -476,7 +476,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('cancel', 'order'),
@@ -490,7 +490,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 5;
-                                        temp_data_list[index]['status_name'] = '已取消';
+                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
                                         temp_data_list[index]['operate_data']['is_cancel'] = 0;
                                         temp_data_list[index]['operate_data']['is_pay'] = 0;
                                         temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -505,7 +505,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }
@@ -516,10 +516,10 @@
             // 收货
             collect_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '请确认已收到货物或已完成，操作后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -528,7 +528,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('collect', 'order'),
@@ -542,7 +542,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 4;
-                                        temp_data_list[index]['status_name'] = '已完成';
+                                        temp_data_list[index]['status_name'] = this.$t('order.order.15lr5l');
                                         temp_data_list[index]['operate_data']['is_collect'] = 0;
                                         temp_data_list[index]['operate_data']['is_comments'] = 1;
                                         temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -556,7 +556,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }
@@ -567,10 +567,10 @@
             // 删除
             delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -579,7 +579,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('delete', 'order'),
@@ -606,7 +606,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }
@@ -616,7 +616,7 @@
 
             // 催催
             rush_event(e) {
-                app.globalData.showToast('催促成功', 'success');
+                app.globalData.showToast(this.$t('user-order.user-order.f5qqhu'), 'success');
             },
 
             // 导航事件
@@ -636,7 +636,7 @@
                 var oid = e.currentTarget.dataset.oid || 0;
                 var did = e.currentTarget.dataset.did || 0;
                 if (oid == 0 || did == 0) {
-                    app.globalData.showToast('参数有误');
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
                     return false;
                 }
 
@@ -718,7 +718,7 @@
                         if(is_buy_again_buy == 1 && is_buy_again_cart == 1) {
                             var self = this;
                             uni.showActionSheet({
-                                itemList: ['加购物车', '直接购买'],
+                                itemList: [this.$t('user-order.user-order.a3c81d'), this.$t('user-order.user-order.5o756f')],
                                 success: function (res) {
                                     if(res.tapIndex == 0) {
                                         // 加入购物车
@@ -755,7 +755,7 @@
             // 订单商品加入购物车处理
             continue_order_goods_cart_handle(goods_data, self) {
                 uni.showLoading({
-                    title: "处理中...",
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url("save", "cart"),
@@ -779,7 +779,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

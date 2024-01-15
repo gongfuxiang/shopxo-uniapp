@@ -21,7 +21,7 @@
                         <view v-if="(item.form_data || null) != null && item.form_data.length > 0" class="goods-item-ordergoodsform">
                             <component-buy-ordergoodsform ref="buy_ordergoodsform" :propData="item.form_data" :propIsRead="true"></component-buy-ordergoodsform>
                         </view>
-                        <view v-else class="text-size-xs cr-grey">无表单数据</view>
+                        <view v-else class="text-size-xs cr-grey">{{$t('order.order.93j3zq')}}</view>
                     </view>
                 </view>
             </view>
@@ -92,7 +92,7 @@ export default {
         // 获取数据
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -128,9 +128,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

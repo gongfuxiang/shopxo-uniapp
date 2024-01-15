@@ -10,7 +10,7 @@
                             <view class="multi-text cr-grey margin-top-sm">{{item.realstore_info.describe}}</view>
                         </view>
                     </navigator>
-                    <button class="br-yellow cr-yellow bg-white fr round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
+                    <button class="br-yellow cr-yellow bg-white fr round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                 </view>
             </view>
             <view v-else>
@@ -115,7 +115,7 @@
                 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...'
+                    title: this.$t('common.loading_in_text')
                 });
                 
                 // 获取数据
@@ -176,7 +176,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -189,10 +189,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '取消后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.pn78ns'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: result => {
                         if (result.confirm) {
                             // 参数
@@ -201,7 +201,7 @@
                             
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...'
+                                title: this.$t('common.processing_in_text')
                             });
                             uni.request({
                                 url: app.globalData.get_request_url("delete", "favor", "realstore"),
@@ -230,13 +230,13 @@
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
                                         } else {
-                                            app.globalData.showToast('提交失败，请重试！');
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                         }
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 }
                             });
                         }

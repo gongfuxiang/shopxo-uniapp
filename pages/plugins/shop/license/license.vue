@@ -103,9 +103,9 @@ export default {
                     this.setData({
                         data_bottom_line_status: false,
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

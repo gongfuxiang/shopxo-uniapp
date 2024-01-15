@@ -13,7 +13,7 @@
                         <image class="icon fl" :src="common_static_url + 'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text>{{ detail.address_data.province_name }}{{ detail.address_data.city_name }}{{ detail.address_data.county_name }}{{ detail.address_data.address }}</text>
-                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
+                            <text v-if="detail.order_model == 2 && (detail.address_data.lng || 0) != 0 && (detail.address_data.lat || (0 && detail.address_data.lng != 0 && detail.address_data.lat != 0)) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -21,7 +21,7 @@
 
                 <!-- 商品列表 -->
                 <view class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -41,7 +41,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{ detail.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                        <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
 
@@ -57,7 +57,7 @@
                             <view class="right-value fr">
                                 <view v-if="(item.spec_text || null) != null" class="text-grey padding-bottom-xs margin-bottom-xs br-b-f9 text-size-xs">{{item.spec_text}}</view>
                                 <mp-html v-if="(item.fictitious_goods_value || null) != null" :content="item.fictitious_goods_value" />
-                                <text v-else class="cr-grey">未配置数据</text>
+                                <text v-else class="cr-grey">{{$t('user-order-detail.user-order-detail.7xtnjt')}}</text>
                             </view>
                         </view>
                     </view>
@@ -65,11 +65,11 @@
 
                 <!-- 自提信息 -->
                 <view v-if="(detail.extraction_data || null) != null" class="site-extraction panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">取货信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7dikfm')}}</view>
                     <view class="panel-content oh padding-top-main">
                         <view>
-                            <text>取货码：</text>
-                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || "取货码不存在、请联系管理员" }}</text>
+                            <text>{{$t('user-order-detail.user-order-detail.o38952')}}</text>
+                            <text class="radius bg-green cr-white padding-left-sm padding-right-sm">{{ detail.extraction_data.code || $t("user-order-detail.user-order-detail.hpq62x") }}</text>
                         </view>
                         <image v-if="(detail.extraction_data.images || null) != null" class="qrcode br radius margin-top-lg" :src="detail.extraction_data.images" mode="aspectFill"></image>
                     </view>
@@ -77,7 +77,7 @@
 
                 <!-- 订单基础数据 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">订单信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0f26j2')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -154,7 +154,7 @@ export default {
         init() {
             var self = this;
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -174,16 +174,16 @@ export default {
                         self.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "订单类型", value: data.data.order_type_name || "" },
-                                { name: "订单编号", value: data.data.order_allot_no || "" },
-                                { name: "订单状态", value: data.data.status_name || "" },
-                                { name: "订单总价", value: data.data.total_price || "" },
-                                { name: "创建时间", value: data.data.add_time || "" },
-                                { name: "添加时间", value: data.data.add_time || "" },
-                                { name: "接收时间", value: data.data.receive_time || "" },
-                                { name: "服务时间", value: data.data.service_time || "" },
-                                { name: "完成时间", value: data.data.success_time || "" },
-                                { name: "取消时间", value: data.data.cancel_time || "" },
+                                { name: this.$t('orderallot-detail.orderallot-detail.81jvw1'), value: data.data.order_type_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.n18sd2'), value: data.data.order_allot_no || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.2y7l13'), value: data.data.total_price || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                { name: this.$t('profit-detail.profit-detail.b7v892'), value: data.data.add_time || "" },
+                                { name: this.$t('orderallot-detail.orderallot-detail.du0120'), value: data.data.receive_time || "" },
+                                { name: this.$t('orderallot-detail.orderallot-detail.8z8ika'), value: data.data.service_time || "" },
+                                { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_time || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.1jpv4n'), value: data.data.cancel_time || "" },
                             ],
                             site_fictitious: data.site_fictitious || null,
                             data_list_loding_status: 3,
@@ -207,9 +207,9 @@ export default {
                     self.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -217,7 +217,7 @@ export default {
         // 地图查看
         address_map_event(e) {
             if ((this.detail.address_data || null) == null) {
-                app.globalData.showToast("地址有误");
+                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                 return false;
             }
 

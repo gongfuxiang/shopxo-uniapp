@@ -19,7 +19,7 @@
                         @onsearch="search_submit_event"
                         :propIsOnEvent="true"
                         :propIsRequired="false"
-                        propPlaceholder="输入订单号/收件人/收件电话"
+                        :propPlaceholder="$t('order.order.725882')"
                         propClass="br"
                         :propIsBtn="true"
                         :propDefaultValue="search_input_keywords_value"
@@ -48,24 +48,24 @@
                         </view>
                         <view class="content margin-top">
                             <view class="single-text margin-top-sm">
-                                <text class="cr-grey">单ID：</text>
+                                <text class="cr-grey">{{$t('order.order.71n22h')}}</text>
                                 <text class="cr-base" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{ item.main_order_id }}</text>
                             </view>
                             <view class="single-text margin-top-sm">
-                                <text class="cr-grey">单号：</text>
+                                <text class="cr-grey">{{$t('order.order.232ygr')}}</text>
                                 <text class="cr-base" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{ item.main_order_no }}</text>
                             </view>
                             <view v-if="(item.address_data || null) != null">
                                 <view class="single-text margin-top-sm">
-                                    <text class="cr-grey">姓名：</text>
+                                    <text class="cr-grey">{{$t('order.order.u5p92y')}}</text>
                                     <text class="cr-base" data-event="copy" :data-value="item.address_data.name" @tap="text_event">{{ item.address_data.name }}</text>
                                 </view>
                                 <view class="single-text margin-top-sm">
-                                    <text class="cr-grey">电话：</text>
+                                    <text class="cr-grey">{{$t('order.order.7dxbm5')}}</text>
                                     <text class="cr-base" data-event="tel" :data-value="item.address_data.tel" @tap="text_event">{{ item.address_data.tel }}</text>
                                 </view>
                                 <view class="margin-top-sm pr">
-                                    <text class="cr-grey va-t">地址：</text>
+                                    <text class="cr-grey va-t">{{$t('order.order.ra8222')}}</text>
                                     <view class="dis-inline-block address-info">
                                         <text class="cr-base" data-event="copy" :data-value="item.address_data.address_info" @tap="text_event">{{ item.address_data.address_info }}</text>
                                         <view v-if="(item.address_data.lng || 0) != 0 && (item.address_data.lat || 0) != 0" class="icon-item bg-base circle dis-inline-block tc cp pa" :data-index="index" @tap.stop="address_map_event">
@@ -75,21 +75,21 @@
                                 </view>
                             </view>
                             <view v-else class="single-text margin-top-sm">
-                                <text class="cr-grey">地址：</text>
-                                <text class="cr-grey-white">没有地址信息</text>
+                                <text class="cr-grey">{{$t('order.order.ra8222')}}</text>
+                                <text class="cr-grey-white">{{$t('order.order.26yki1')}}</text>
                             </view>
                             <view class="margin-top-lg padding-top-sm br-t-dashed">
                                 <text>{{ item.describe }}</text>
-                                <text v-if="(item.distance || null) != null" class="fr cr-grey">距您{{ item.distance }}</text>
+                                <text v-if="(item.distance || null) != null" class="fr cr-grey">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</text>
                             </view>
                         </view>
                         <view class="item-operation tr br-t padding-top-main margin-top-main">
-                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id=' + item.id" @tap="url_event">详情</button>
-                            <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">开始配送</button>
-                            <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">再次配送</button>
+                            <button class="round bg-white br-base cr-base" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/delivery/order-detail/order-detail?id=' + item.id" @tap="url_event">{{$t('order.order.75ie9c')}}</button>
+                            <button v-if="item.status == 1" class="round bg-white br-blue cr-blue" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.order.021438')}}</button>
+                            <button v-if="item.status == 4" class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none" :data-index="index" @tap="start_delivery_event">{{$t('order.order.ip4xo5')}}</button>
                             <block v-if="item.status == 2">
-                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">完成配送</button>
-                                <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">异常</button>
+                                <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_success_content_event">{{$t('order.order.51q275')}}</button>
+                                <button class="round bg-white br-red cr-red" type="default" size="mini" hover-class="none" :data-index="index" @tap="popup_abnormal_content_event">{{$t('order.order.fb6dge')}}</button>
                             </block>
                         </view>
                     </view>
@@ -121,15 +121,15 @@
                     <block v-for="(item,index) in markers_active_data" :key="index">
                         <view :class="'pr '+(index > 0 ? 'br-t padding-top-sm margin-top-sm' : '')">
                             <view>
-                                <text>单ID：</text>
+                                <text>{{$t('order.order.71n22h')}}</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{item.main_order_id}}</text>
                             </view>
                             <view>
-                                <text>单号：</text>
+                                <text>{{$t('order.order.232ygr')}}</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{item.main_order_no}}</text>
                             </view>
                             <view class="single-text">
-                                <text>地址：</text>
+                                <text>{{$t('order.order.ra8222')}}</text>
                                 <text class="cp" data-event="copy" :data-value="item.address_data.address_info" @tap="text_event">{{ item.address_data.address_info }}</text>
                             </view>
                             <view v-if="(item.address_data.lng || 0) != 0 && (item.address_data.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" :data-index="index" @tap.stop="address_map_event">
@@ -156,13 +156,13 @@
                 <form @submit="form_delivery_success_submit_event" class="form-container">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">描述</view>
+                            <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
                             <view class="br padding-main radius margin-top">
-                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" placeholder="描述最多200个字符" maxlength="200" :auto-height="true" :value="form_delivery_success_msg_value" @input="form_delivery_success_msg_event"></textarea>
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.order.q4c8j0')" maxlength="200" :auto-height="true" :value="form_delivery_success_msg_value" @input="form_delivery_success_msg_event"></textarea>
                             </view>
                         </view>
                         <view class="form-gorup form-container-upload oh">
-                            <view class="form-gorup-title">上传照片<text class="form-group-tips-must">*</text><text class="form-group-tips">最多上传{{form_delivery_success_images_max_count}}张</text></view>
+                            <view class="form-gorup-title">{{$t('order.order.46q2z7')}}<text class="form-group-tips-must">*</text><text class="form-group-tips">{{$t('order.order.o11d44')}}{{form_delivery_success_images_max_count}}{{$t('buy.buy.5iuqow')}}</text></view>
                             <view class="form-upload-data oh">
                                 <block v-if="form_delivery_success_images_list.length > 0">
                                     <view v-for="(item, index) in form_delivery_success_images_list" :key="index" class="item fl">
@@ -174,7 +174,7 @@
                             </view>
                         </view>
                         <view class="form-gorup form-gorup-submit bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">提交完成</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.order.9cvj96')}}</button>
                         </view>
                     </view>
                 </form>
@@ -192,13 +192,13 @@
                 <form @submit="form_delivery_abnormal_submit_event" class="form-container">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">异常原因<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('order.order.865029')}}<text class="form-group-tips-must">*</text></view>
                             <view class="br padding-main radius margin-top">
-                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" placeholder="异常原因最多200个字符" maxlength="200" :auto-height="true" :value="form_delivery_abnormal_msg_value" @input="form_delivery_abnormal_msg_event"></textarea>
+                                <textarea placeholder-class="cr-grey" class="cr-base margin-0" :placeholder="$t('order.order.g23kyj')" maxlength="200" :auto-height="true" :value="form_delivery_abnormal_msg_value" @input="form_delivery_abnormal_msg_event"></textarea>
                             </view>
                         </view>
                         <view class="form-gorup form-gorup-submit bottom-line-exclude">
-                            <button class="bg-red br-red cr-white round text-size" type="default" form-type="submit" hover-class="none">提交异常</button>
+                            <button class="bg-red br-red cr-white round text-size" type="default" form-type="submit" hover-class="none">{{$t('order.order.eyir7g')}}</button>
                         </view>
                     </view>
                 </form>
@@ -379,7 +379,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中...",
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 参数
@@ -459,7 +459,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -527,7 +527,7 @@
                 } else {
                     var temp_data = this.data_list;
                     if ((temp_data[index] || null) == null || (temp_data[index]["address_data"] || null) == null) {
-                        app.globalData.showToast("地址有误");
+                        app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                         return false;
                     }
                     this.address_map_handle(temp_data[index]["address_data"]);
@@ -576,8 +576,8 @@
             upload_delete_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "删除后不可恢复、继续吗？",
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var list = self.form_delivery_success_images_list;
@@ -677,16 +677,16 @@
             // 开始配送
             start_delivery_event(e) {
                 uni.showModal({
-                    title: "温馨提示",
-                    content: "确定开始配送订单吗？",
-                    confirmText: "确认",
-                    cancelText: "暂不",
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.s5cpq5'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             this.order_status_handle({
                                 index: e.currentTarget.dataset.index,
                                 new_status: 2,
-                                status_name: "配送中",
+                                status_name: this.$t('order.order.13j20t'),
                                 action: "startdelivery",
                             });
                         }
@@ -697,13 +697,13 @@
             // 完成配送表单提交
             form_delivery_success_submit_event(e) {
                 if(this.form_delivery_success_images_list.length == 0) {
-                    app.globalData.showToast('请上传照片');
+                    app.globalData.showToast(this.$t('order.order.7ltibl'));
                     return false;
                 }
                 this.order_status_handle({
                     index: this.popup_success_data_index,
                     new_status: 3,
-                    status_name: "已配送",
+                    status_name: this.$t('order.order.c69064'),
                     action: "successdelivery",
                     msg: this.form_delivery_success_msg_value || '',
                     images: this.form_delivery_success_images_list
@@ -714,12 +714,12 @@
             form_delivery_abnormal_submit_event(e) {
                 var msg = this.form_delivery_abnormal_msg_value || null;
                 if (msg == null) {
-                    app.globalData.showToast("请填写原因");
+                    app.globalData.showToast(this.$t('order.order.hun5n3'));
                 } else {
                     this.order_status_handle({
                         index: this.popup_abnormal_data_index,
                         new_status: 4,
-                        status_name: "异常",
+                        status_name: this.$t('order.order.fb6dge'),
                         action: "abnormaldelivery",
                         msg: msg,
                     });
@@ -730,7 +730,7 @@
             order_status_handle(params) {
                 var temp_data = this.data_list;
                 uni.showLoading({
-                    title: "处理中...",
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url(params.action, "order", "delivery"),
@@ -770,7 +770,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

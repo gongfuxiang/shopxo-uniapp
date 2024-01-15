@@ -49,14 +49,12 @@
                             <view v-if="(membership_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="membership_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image>
-                                </view>
-                                会员码
-                            </view>
+                                </view>{{$t('member-code.member-code.26bu38')}}</view>
                             <view v-if="(payment_page_url || null) != null"  class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
-                                <text>付款码</text>
+                                <text>{{$t('user.user.91h03v')}}</text>
                             </view>
                         </view>
                         <iconfont v-if="(payment_page_url || null) == null || (membership_page_url || null) == null" name="icon-arrow-right" propClass="iconfont pa" color="#FEF6CF"></iconfont>
@@ -122,7 +120,7 @@
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item br-t cp padding-main" @tap="call_event">
                                 <view class="arrow-right">
                                     <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
-                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">联系客服</text>
+                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{$t('user.user.ki1nor')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -145,7 +143,7 @@
                             <!-- 联系客服 -->
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
                                 <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
-                                <view class="item-name single-text cr-base text-size-sm">联系客服</view>
+                                <view class="item-name single-text cr-base text-size-sm">{{$t('user.user.ki1nor')}}</view>
                             </view>
                         </view>
                     </view>
@@ -190,31 +188,31 @@
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 user_id: '',
-                nickname: '用户名',
+                nickname: this.$t('login.login.6yfr9g'),
                 message_total: 0,
                 nav_logout_data: {
-                    name: client_value == 'mp' ? '清除缓存' : '退出账号',
+                    name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
                     icon: client_value == 'mp' ? 'cache' : 'logout',
                 },
                 // 头部小导航
                 head_nav_list: [
                     {
-                        name: '订单总数',
+                        name: this.$t('promotion-order.promotion-order.iwa646'),
                         url: 'user-order',
                         count: 0,
                     },
                     {
-                        name: '商品收藏',
+                        name: this.$t('user.user.3q4p8k'),
                         url: 'user-favor',
                         count: 0,
                     },
                     {
-                        name: '我的足迹',
+                        name: this.$t('user.user.57xw84'),
                         url: 'user-goods-browse',
                         count: 0,
                     },
                     {
-                        name: '我的积分',
+                        name: this.$t('user.user.k78280'),
                         url: 'user-integral',
                         count: 0,
                     },
@@ -301,10 +299,10 @@
                     if (app.globalData.user_is_need_login(user)) {
                         uni.stopPullDownRefresh();
                         uni.showModal({
-                            title: '温馨提示',
-                            content: '绑定手机号码',
-                            confirmText: '确认',
-                            cancelText: '暂不',
+                            title: this.$t('common.warm_tips'),
+                            content: this.$t('cash-auth.cash-auth.d2ng16'),
+                            confirmText: this.$t('common.confirm'),
+                            cancelText: this.$t('common.not_yet'),
                             success: (result) => {
                                 uni.stopPullDownRefresh();
                                 if (result.confirm) {
@@ -378,25 +376,25 @@
                             // 订单状态总数
                             var user_order_status_list = [
                                 {
-                                    name: '待付款',
+                                    name: this.$t('user.user.9u8e61'),
                                     status: 1,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=1',
                                 },
                                 {
-                                    name: '待发货',
+                                    name: this.$t('user.user.66714e'),
                                     status: 2,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=2',
                                 },
                                 {
-                                    name: '待收货',
+                                    name: this.$t('order.order.q820hx'),
                                     status: 3,
                                     count: 0,
                                     url: '/pages/user-order/user-order?status=3',
                                 },
                                 {
-                                    name: '退款/售后',
+                                    name: this.$t('user.user.aa1ri3'),
                                     status: 101,
                                     count: 0,
                                     url: '/pages/user-orderaftersale/user-orderaftersale',
@@ -472,7 +470,7 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -485,7 +483,7 @@
             // 客服电话
             call_event() {
                 if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast('客服电话有误');
+                    app.globalData.showToast(this.$t('setup.setup.utnr7g'));
                 } else {
                     app.globalData.call_tel(this.common_app_customer_service_tel);
                 }

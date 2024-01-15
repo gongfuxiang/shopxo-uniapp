@@ -30,7 +30,7 @@
                             </view>
                             <text class="va-m margin-left-xs">{{ item.province_name }}{{ item.city_name }}{{ item.county_name }}{{ item.address }}</text>
                         </view>
-                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">距您{{ item.distance }}</view>
+                        <view v-if="(item.distance || null) != null" class="text-size-xs cr-grey-c pa address-distance">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</view>
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
@@ -124,7 +124,7 @@ export default {
                     var index = e.currentTarget.dataset.index;
                     var info = this.data_list[index];
                     uni.showLoading({
-                        title: "处理中...",
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url("reversal", "favor", "realstore"),
@@ -161,7 +161,7 @@ export default {
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast("网络开小差了哦~");
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -182,7 +182,7 @@ export default {
         address_map_event(e) {
             var info = this.data_list[e.currentTarget.dataset.index];
             if (info.lat == 0 || info.lng == 0) {
-                app.globalData.showToast("地址有误");
+                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                 return false;
             }
 

@@ -7,7 +7,7 @@
 
         <!-- 分类 -->
         <scroll-view v-if="(activity_category || null) != null && activity_category.length > 0" class="scroll-view-horizontal bg-white oh" scroll-x="true">
-            <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == 0 ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" data-value="0">全部 </view>
+            <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == 0 ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
             <block v-for="(item, index) in activity_category" :key="index">
                 <view :class="'item cr-grey dis-inline-block padding-horizontal-main padding-top-main padding-bottom-sm ' + (nav_active_value == item.id ? 'cr-main nav-active-line bg-main-befor fw-b' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
             </block>
@@ -99,7 +99,7 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index', 'activity'),
@@ -152,7 +152,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });
@@ -178,7 +178,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -246,7 +246,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

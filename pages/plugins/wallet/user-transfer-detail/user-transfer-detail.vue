@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,10 +92,10 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "转账单号", value: data.data.transfer_no || "" },
-                                { name: "转账金额", value: data.data.money || "" },
-                                { name: "备注", value: data.data.note || "" },
-                                { name: "转账时间", value: data.data.add_time || "" },
+                                { name: this.$t('user-transfer-detail.user-transfer-detail.stj2eh'), value: data.data.transfer_no || "" },
+                                { name: this.$t('transfer.transfer.2q274j'), value: data.data.money || "" },
+                                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), value: data.data.note || "" },
+                                { name: this.$t('user-transfer-detail.user-transfer-detail.x17599'), value: data.data.add_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -118,9 +118,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

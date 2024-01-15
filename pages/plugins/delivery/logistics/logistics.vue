@@ -24,14 +24,14 @@
                     </view>
                     <view class="br-t-dashed margin-top-sm padding-top-sm text-size-sm cr-base">
                         <view>
-                            <text>配送时间：</text>
+                            <text>{{$t('logistics.logistics.dxu6ql')}}</text>
                             <text v-if="(start_delivery_time || null) != null">{{start_delivery_time}}</text>
-                            <text v-else class="cr-grey-9">未开始配送</text>
+                            <text v-else class="cr-grey-9">{{$t('logistics.logistics.5542tq')}}</text>
                         </view>
                         <view class="margin-top-sm">
-                            <text>送达时间：</text>
+                            <text>{{$t('logistics.logistics.895ug2')}}</text>
                             <text v-if="(success_delivery_time || null) != null">{{success_delivery_time}}</text>
-                            <text v-else class="cr-grey-9">还没有送达</text>
+                            <text v-else class="cr-grey-9">{{$t('logistics.logistics.76q0ii')}}</text>
                         </view>
                     </view>
                 </view>
@@ -120,7 +120,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: "加载中...",
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -159,9 +159,9 @@
                         uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

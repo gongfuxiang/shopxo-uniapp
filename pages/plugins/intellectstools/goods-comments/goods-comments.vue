@@ -5,28 +5,28 @@
                 <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
                     <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
                     <view class="flex-1 flex-width flex-row align-c">
-                        <view class="margin-right-sm">商品评分</view>
+                        <view class="margin-right-sm">{{$t('goods-comments.goods-comments.31ees6')}}</view>
                         <uni-rate :value="rate_value" @change="rate_change_event" />
                     </view>
                 </view>
                 <view class="bg-white border-radius-main padding-main">
-                    <textarea name="content" @input="text_input_event" maxlength="230" auto-height placeholder="请输入您的评价" placeholder-class="cr-grey-9" class="wh-auto input-height" />
+                    <textarea name="content" @input="text_input_event" maxlength="230" auto-height :placeholder="$t('goods-comments.goods-comments.6p942c')" placeholder-class="cr-grey-9" class="wh-auto input-height" />
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
                     <view class="spacing-mt">
-                        <view class="margin-bottom-main">添加图片({{ image_list.length }}/3)</view>
+                        <view class="margin-bottom-main">{{$t('form.form.s14osm')}}{{ image_list.length }}/3)</view>
                         <component-upload :propData="image_list" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr">
                         <checkbox-group @change="is_anonymous_change_event">
                             <label class="cr-grey-9 text-size-xs">
                                 <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.5)" />
-                                <text class="pr top-xs">匿名发布</text>
+                                <text class="pr top-xs">{{$t('form.form.2f52v3')}}</text>
                             </label>
                         </checkbox-group>
                     </view>
                 </view>
                 <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                 </view>
             </form>
             <view v-else>
@@ -59,7 +59,7 @@
                 text_num: 0,
                 theme_color: theme_color,
                 data_list_loding_status: 1,
-                data_list_loding_msg: '处理错误',
+                data_list_loding_msg: this.$t('form.form.bniyyt'),
             };
         },
 
@@ -122,14 +122,14 @@
                         },
                         fail: () => {
                             uni.stopPullDownRefresh();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 } else {
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '用户未登录',
+                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
                     });
                 }
             },
@@ -138,8 +138,8 @@
             formSubmit(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'rating', msg: '请选择评分' },
-                    { fields: 'content', msg: '请输入评价' },
+                    { fields: 'rating', msg: this.$t('goods-comments.goods-comments.pe5p52') },
+                    { fields: 'content', msg: this.$t('goods-comments.goods-comments.1wut9j') },
                 ];
                 var validate = {
                     rating: this.rate_value,
@@ -147,7 +147,7 @@
                 };
                 if (app.globalData.fields_check(validate, validation)) {
                     uni.showLoading({
-                        title: '提交中...',
+                        title: this.$t('buy.buy.r79t77'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -178,7 +178,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -187,7 +187,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

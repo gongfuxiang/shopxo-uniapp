@@ -72,7 +72,7 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -92,14 +92,14 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: '业务类型', value: data.data.business_type_name || '' },
-                                    { name: '操作类型', value: data.data.operation_type_name || '' },
-                                    { name: '金额类型', value: data.data.money_type_name || '' },
-                                    { name: '操作金额', value: data.data.operation_money || '' },
-                                    { name: '原始金额', value: data.data.original_money || '' },
-                                    { name: '最新金额', value: data.data.latest_money || '' },
-                                    { name: '变更说明', value: data.data.msg || '' },
-                                    { name: '操作时间', value: data.data.add_time_time || '' },
+                                    { name: this.$t('invoice.invoice.l3832z'), value: data.data.business_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.tdf3wo'), value: data.data.operation_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.744os7'), value: data.data.money_type_name || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.ruq60b'), value: data.data.operation_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), value: data.data.original_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), value: data.data.latest_money || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.0ghn6g'), value: data.data.msg || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.i2kze7'), value: data.data.add_time_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
@@ -122,9 +122,9 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -26,7 +26,7 @@
                             </block>
                         </view>
                         <view v-if="item.status == 0" class="item-operation tr br-t-dashed padding-top-main margin-top-main">
-                            <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" :data-index="index" :data-oid="item.order_id" :data-uid="item.order_user_id" @tap="list_submit_take_event">取货</button>
+                            <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" :data-index="index" :data-oid="item.order_id" :data-uid="item.order_user_id" @tap="list_submit_take_event">{{$t('extraction-order.extraction-order.2y7lq1')}}</button>
                         </view>
                     </view>
                 </view>
@@ -49,11 +49,11 @@
         <component-popup :propShow="is_show_take_popup" propPosition="bottom" @onclose="take_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
                 <view class="form-gorup tc bg-white margin-top-lg">
-                    <view class="form-gorup-title">取货码</view>
-                    <input type="number" :value="extraction_code" placeholder-class="cr-grey" class="cr-base" placeholder="请输入取货码" maxlength="4" @input="extraction_code_input_event" />
+                    <view class="form-gorup-title">{{$t('extraction-order.extraction-order.3m038g')}}</view>
+                    <input type="number" :value="extraction_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-order.extraction-order.suo4oz')" maxlength="4" @input="extraction_code_input_event" />
                 </view>
                 <view class="form-gorup form-gorup-submit">
-                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_take_event">确认</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_take_event">{{$t('common.confirm')}}</button>
                 </view>
             </view>
         </component-popup>
@@ -62,11 +62,11 @@
         <component-popup :propShow="is_show_search_popup" propPosition="bottom" @onclose="search_popup_event_close">
             <view class="form-container bg-base padding-horizontal-main padding-top-main padding-bottom-xs">
                 <view class="form-gorup tc bg-white margin-top-lg">
-                    <view class="form-gorup-title">搜索条件</view>
-                    <input type="number" :value="search_keywords_value" placeholder-class="cr-grey" class="cr-base" placeholder="订单号/取货码" @input="search_input_keywords_event" />
+                    <view class="form-gorup-title">{{$t('extraction-order.extraction-order.xb4044')}}</view>
+                    <input type="number" :value="search_keywords_value" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-order.extraction-order.kuqvlv')" @input="search_input_keywords_event" />
                 </view>
                 <view class="form-gorup form-gorup-submit">
-                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="search_submit_event">搜索</button>
+                    <button class="bg-main-pair br-main-pair cr-white round text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="search_submit_event">{{$t('common.search')}}</button>
                 </view>
             </view>
         </component-popup>
@@ -91,9 +91,9 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待处理", value: "0" },
-                { name: "已处理", value: "1" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('extraction.extraction.53h4fj'), value: "0" },
+                { name: this.$t('extraction.extraction.wq25fk'), value: "1" },
             ],
             nav_status_index: 0,
             is_show_take_popup: false,
@@ -103,8 +103,8 @@ export default {
             is_show_search_popup: false,
             search_keywords_value: "",
             content_list: [
-                { name: "订单号", field: "order_no" },
-                { name: "支付金额", field: "pay_price" },
+                { name: this.$t('order-detail.order-detail.36op8f'), field: "order_no" },
+                { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: "pay_price" },
             ],
         };
     },
@@ -196,7 +196,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -264,7 +264,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -314,11 +314,11 @@ export default {
         form_submit_take_event(e) {
             // 参数
             if ((this.extraction_code || null) == null) {
-                app.globalData.showToast("请输入取件码");
+                app.globalData.showToast(this.$t('extraction-order.extraction-order.znufs8'));
                 return false;
             }
             if ((this.extraction_value || null) == null) {
-                app.globalData.showToast("操作数据有误");
+                app.globalData.showToast(this.$t('extraction-order.extraction-order.hbj4y7'));
                 return false;
             }
 
@@ -332,7 +332,7 @@ export default {
                 form_submit_disabled_status: true,
             });
             uni.showLoading({
-                title: "处理中...",
+                title: this.$t('common.processing_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("take", "extraction", "distribution"),
@@ -348,7 +348,7 @@ export default {
                         var temp_data_list = this.data_list;
                         var index = this.extraction_value.index;
                         temp_data_list[index]["status"] = 1;
-                        temp_data_list[index]["status_name"] = "已处理";
+                        temp_data_list[index]["status_name"] = this.$t('extraction.extraction.wq25fk');
                         this.setData({
                             is_show_take_popup: false,
                             data_list: temp_data_list,
@@ -363,7 +363,7 @@ export default {
                         form_submit_disabled_status: false,
                     });
                     uni.hideLoading();
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

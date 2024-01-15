@@ -80,7 +80,7 @@
                 var is_required = parseInt(item.is_required || 0);
                 var type = ((item.element_arr || null) == null || (item.element_arr[1] || null) == null) ? 'text' : item.element_arr[1];
                 var value = item.default_value;
-                var msg = item.validation_msg || item.error_message || '请输入数据';
+                var msg = item.validation_msg || item.error_message || this.$t('user-address-save.user-address-save.wkfi45');
                 var status = null;
 
                 // 强制填写数据，但是数据没有则错误

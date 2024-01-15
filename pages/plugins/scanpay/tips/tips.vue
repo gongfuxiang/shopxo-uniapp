@@ -10,15 +10,15 @@
                         <view class="text-size margin-top-sm">{{ data.scanpay_info.name }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">订单状态</view>
-                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? '支付成功' : '支付失败' }}</view>
+                        <view class="cr-base">{{$t('user-order-detail.user-order-detail.yxwu8n')}}</view>
+                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('paytips.paytips.679rxu') : $t('paytips.paytips.6y488i') }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">订单编号</view>
+                        <view class="cr-base">{{$t('user-order-detail.user-order-detail.n18sd2')}}</view>
                         <view class="flex-1 flex-width tr">{{ data.order_info.order_no }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
-                        <view class="cr-base">支付总额</view>
+                        <view class="cr-base">{{$t('tips.tips.0azfc3')}}</view>
                         <view class="flex-1 flex-width tr fw-b cr-red">{{ currency_symbol }}{{ data.order_info.pay_price }}</view>
                     </view>
                 </block>
@@ -27,7 +27,7 @@
                         <view class="cr-grey-c">
                             <iconfont name="icon-payment-fail" size="120rpx"></iconfont>
                         </view>
-                        <view class="margin-top-lg">支付失败</view>
+                        <view class="margin-top-lg">{{$t('paytips.paytips.6y488i')}}</view>
                     </view>
                 </block>
             </view>
@@ -38,7 +38,7 @@
             </view>
             <view class="bottom-fixed br-0 bg-grey-f5">
                 <view class="bottom-line-exclude">
-                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">退出页面</button>
+                    <button class="bg-red br-red cr-white round text-size" type="default" hover-class="none" @tap="exit_event">{{$t('tips.tips.579u02')}}</button>
                 </view>
             </view>
         </view>
@@ -99,7 +99,7 @@
             get_data() {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('orderinfo', 'index', 'scanpay'),
@@ -130,9 +130,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

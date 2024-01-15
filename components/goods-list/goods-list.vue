@@ -6,7 +6,7 @@
                     <text v-if="(data.title || null) != null" class="text-wrapper" :class="data.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (data.color || '#333') + ';'">{{ data.title }}</text>
                     <text v-if="(data.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ data.vice_title }}</text>
                 </view>
-                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
             </view>
             <view class="wh-auto oh pr goods-list">
                 <!-- 默认图文 -->
@@ -72,7 +72,7 @@
                                                         <text class="va-m text-size-xsss va-b">{{ propCurrencySymbol }}</text>
                                                         <text class="va-m text-size-xs">{{ item[propPriceField] }}</text>
                                                     </view>
-                                                    <view class="cr-main text-size-xs"> {{ item.integral }}积分 </view>
+                                                    <view class="cr-main text-size-xs"> {{ item.integral }}{{$t('index.index.t26j9z')}}</view>
                                                 </view>
                                             </block>
                                         </view>
@@ -179,7 +179,7 @@
                 grid_btn_config: {
                     bg_color: '#D8D8D8',
                     color: '#fff',
-                    name: '暂无货源',
+                    name: this.$t('goods-list.goods-list.nr77jf'),
                     disabled: false,
                     border_radius: '24rpx',
                     padding: '6rpx 16rpx',

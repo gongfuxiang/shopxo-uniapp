@@ -32,9 +32,7 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">
-                        活动规则
-                        <iconfont name="icon-miaosha-hdgz" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
+                    <view v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" class="text-size-xs cr-blak" @tap="quick_open_event">{{$t('index.index.516559')}}<iconfont name="icon-miaosha-hdgz" size="26rpx" propClass="margin-left-xs pr top-xs" color="#999"></iconfont>
                     </view>
                 </view>
 
@@ -44,7 +42,7 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
                 </view>
             </view>
             <!-- 结尾 -->
@@ -52,11 +50,11 @@
             <!-- 弹窗 -->
             <component-popup v-if="(data_base.content_notice || null) != null && data_base.content_notice.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
                 <view class="rule">
-                    <view class="title cr-black text-size-md fw-b margin-bottom-main tc">活动规则</view>
+                    <view class="title cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.516559')}}</view>
                     <scroll-view :scroll-y="true" class="item">
                         <view v-for="(item, index) in data_base.content_notice" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                     </scroll-view>
-                    <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
+                    <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
                 </view>
             </component-popup>
         </scroll-view>
@@ -112,7 +110,7 @@
                 // 配置商品列表按钮
                 isOpenGridBtnSet: false,
                 grid_btn_config: {
-                    name: '即将开抢',
+                    name: this.$t('index.index.872w3v'),
                     disabled: true,
                 },
             };
@@ -152,14 +150,14 @@
             seckill_status(val) {
                 if (val === 0) {
                     let newData = {
-                        name: '即将开抢',
+                        name: this.$t('index.index.872w3v'),
                     };
                     this.setData({
                         grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
                     });
                 } else if (val === 2) {
                     let newData = {
-                        name: '已结束',
+                        name: this.$t('index.index.443683'),
                     };
                     this.setData({
                         grid_btn_config: Object.assign({}, this.grid_btn_config, newData),
@@ -196,7 +194,7 @@
                             var is_valid = time == null ? 0 : time.status <= 1 ? 1 : 0;
                             if (goods.length > 0) {
                                 for (var i in goods) {
-                                    goods[i]['price_icon'] = is_valid == 1 ? current.goods_detail_icon || '秒杀价' : '';
+                                    goods[i]['price_icon'] = is_valid == 1 ? current.goods_detail_icon || this.$t('index.index.399f6c') : '';
                                 }
                             }
                             this.setData({
@@ -245,9 +243,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

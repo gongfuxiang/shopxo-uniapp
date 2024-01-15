@@ -47,9 +47,9 @@
                                     </view>
                                 </view>
                                 <view class="text-size-xs margin-top-sm">
-                                    <text class="cr-grey">下单总数</text>
+                                    <text class="cr-grey">{{$t('map.map.ivy154')}}</text>
                                     <text class="cr-base fw-b margin-left-sm">{{item.order_count}}</text>
-                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">查看订单</button>
+                                    <button type="default" size="mini" class="br-main cr-main bg-white text-size-xs round fr order-submit" :data-value="item.id" @tap="user_order_event">{{$t('map.map.557z8x')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -183,7 +183,7 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
                     }
                 });

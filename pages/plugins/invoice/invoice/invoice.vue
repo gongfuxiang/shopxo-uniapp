@@ -32,8 +32,8 @@
                         </view>
                         <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
                         <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
-                            <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
-                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">编辑</button>
+                            <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
+                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
 
@@ -49,7 +49,7 @@
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
                         <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
-                            <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">订单开票</button>
+                            <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">{{$t('invoice.invoice.p3dmd2')}}</button>
                         </navigator>
                     </view>
                 </view>
@@ -78,11 +78,11 @@
                 nav_status_list: [],
                 nav_status_index: 0,
                 content_list: [
-                    { name: '业务类型', field: 'business_type_name' },
-                    { name: '申请类型', field: 'apply_type_name' },
-                    { name: '发票类型', field: 'invoice_type_name' },
-                    { name: '发票金额', field: 'total_price' },
-                    { name: '发票抬头', field: 'invoice_title' },
+                    { name: this.$t('invoice.invoice.l3832z'), field: 'business_type_name' },
+                    { name: this.$t('invoice.invoice.hoenw8'), field: 'apply_type_name' },
+                    { name: this.$t('invoice.invoice.j04kjc'), field: 'invoice_type_name' },
+                    { name: this.$t('invoice.invoice.fvuc4p'), field: 'total_price' },
+                    { name: this.$t('invoice.invoice.y724c7'), field: 'invoice_title' },
                 ],
             };
         },
@@ -183,9 +183,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -211,7 +211,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 请求数据
@@ -283,7 +283,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -312,10 +312,10 @@
             // 删除
             delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -324,7 +324,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('delete', 'user', 'invoice'),
@@ -354,7 +354,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

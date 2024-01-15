@@ -23,7 +23,7 @@
                         </view>
                     </view>
                 </view>
-                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">确定</button>
+                <button class="bg-main br-main cr-white text-size-sm round" type="default" @tap.stop="spec_confirm_event" hover-class="none">{{$t('index.index.7w75zb')}}</button>
             </view>
         </component-popup>
     </view>
@@ -189,7 +189,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -222,7 +222,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -297,7 +297,7 @@
                         }
                     }
                     if (active_count < sku_count) {
-                        app.globalData.showToast('请选择规格');
+                        app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
                         return false;
                     }
                 }

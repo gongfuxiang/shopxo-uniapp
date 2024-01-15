@@ -9,8 +9,8 @@
                     >{{ label.name }}</view
                 >
                 <view class="dis-inline-block cr-grey margin-left-sm"
-                    >共有<text class="cr-red fw-b margin-left-xs margin-right-xs">{{ data_total }}</text
-                    >条相关商品</view
+                    >{{$t('detail.detail.025362')}}<text class="cr-red fw-b margin-left-xs margin-right-xs">{{ data_total }}</text
+                    >{{$t('detail.detail.0av5r9')}}</view
                 >
             </view>
 
@@ -71,11 +71,11 @@ export default {
             data_page: 1,
             label: null,
             search_nav_sort_list: [
-                { name: "综合", field: "default", sort: "asc", icon: null },
-                { name: "销量", field: "sales", sort: "asc", icon: "default" },
-                { name: "热度", field: "access", sort: "asc", icon: "default" },
-                { name: "价格", field: "price", sort: "asc", icon: "default" },
-                { name: "最新", field: "new", sort: "asc", icon: "default" },
+                { name: this.$t('goods-category.goods-category.x69aow'), field: "default", sort: "asc", icon: null },
+                { name: this.$t('goods-category.goods-category.at5p35'), field: "sales", sort: "asc", icon: "default" },
+                { name: this.$t('goods-category.goods-category.283ot0'), field: "access", sort: "asc", icon: "default" },
+                { name: this.$t('goods-category.goods-category.g2u3lf'), field: "price", sort: "asc", icon: "default" },
+                { name: this.$t('goods-category.goods-category.5p4ksj'), field: "new", sort: "asc", icon: "default" },
             ],
             search_nav_sort_value: "",
             // 数据展示样式（0图文、1九方格）
@@ -136,7 +136,7 @@ export default {
         // 获取数据
         get_data() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("detailinit", "index", "label"),
@@ -153,7 +153,7 @@ export default {
                             data_base: data.base || null,
                             label: label,
                             data_list_loding_status: label == null ? 0 : 1,
-                            data_list_loding_msg: "标签数据不存在",
+                            data_list_loding_msg: this.$t('detail.detail.53m44k'),
                         });
 
                         if (this.label != null) {
@@ -194,7 +194,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -223,7 +223,7 @@ export default {
 
             // 获取数据
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
                 mask: true,
             });
             uni.request({
@@ -291,7 +291,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

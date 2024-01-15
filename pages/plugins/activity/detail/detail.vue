@@ -20,16 +20,16 @@
                 <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <view class="title-left">
-                            <text class="text-wrapper title-left-border">活动商品</text>
+                            <text class="text-wrapper title-left-border">{{$t('detail.detail.b4f3nw')}}</text>
                             <text class="vice-name margin-left-lg cr-grey">{{ data.vice_title }}</text>
                         </view>
-                        <navigator url="'/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多活动</navigator>
+                        <navigator url="'/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('detail.detail.ans2p4')}}</navigator>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
                 </view>
             </view>
 
@@ -166,9 +166,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

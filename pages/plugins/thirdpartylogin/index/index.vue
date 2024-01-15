@@ -5,21 +5,21 @@
             <view class="margin-top-xs">{{user.user_name_view}}</view>
             <block v-if="data.status == 1">
                 <view class="margin-top-xxl">
-                    <view class="fw-b">授权登录{{application_title}}</view>
-                    <view class="cr-grey margin-top-sm">若非本人操作，请忽略申请</view>
+                    <view class="fw-b">{{$t('index.index.slf50q')}}{{application_title}}</view>
+                    <view class="cr-grey margin-top-sm">{{$t('index.index.rmv185')}}</view>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
-                    <button type="default" class="bg-main br-main cr-white round text-size" @tap="status_record(2)">确认登录</button>
-                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">取消</button>
+                    <button type="default" class="bg-main br-main cr-white round text-size" @tap="status_record(2)">{{$t('login.login.i1deai')}}</button>
+                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">{{$t('common.cancel')}}</button>
                 </view>
             </block>
             <block v-else>
                 <view class="margin-top-xxl">
                     <iconfont name="icon-qiandao-dqxz" size="28rpx" propClass="cr-green circle"></iconfont>
-                    <text class="margin-left-xs">已登录成功</text>
+                    <text class="margin-left-xs">{{$t('index.index.n0vnl6')}}</text>
                 </view>
                 <view class="margin-top-xxxl padding-top-xl">
-                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">关闭</button>
+                    <button type="default" class="bg-yellow br-yellow cr-white round text-size margin-top-lg" @tap="exit_event">{{$t('frequencycard-list.frequencycard-list.n36x3w')}}</button>
                 </view>
             </block>
         </view>
@@ -96,7 +96,7 @@
             status_record(status) {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 // 请求数据
                 var post_data = {
@@ -130,9 +130,9 @@
                         uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

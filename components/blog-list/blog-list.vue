@@ -9,7 +9,7 @@
                                 <text class="text-wrapper" :class="floor.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (floor.color || '#333') + ';'">{{ floor.title }}</text>
                                 <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ floor.vice_title }}</text>
                             </view>
-                            <navigator :url="floor.more_url" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                            <navigator :url="floor.more_url" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                         </view>
                         <view class="wh-auto oh pr">
                             <block v-if="floor.blog_list.length > 0">

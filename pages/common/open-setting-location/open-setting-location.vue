@@ -2,18 +2,18 @@
     <view :class="theme_view">
         <view v-if="is_show_open_setting" class="open-setting-view">
             <view class="content bg-white">
-                <view class="msg cr-grey">开启相应的权限服务</view>
-                <view class="value cr-base">获取[ <text>位置信息</text> ]权限</view>
-                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_event">打开设置页</button>
+                <view class="msg cr-grey">{{$t('open-setting-location.open-setting-location.61wezw')}}</view>
+                <view class="value cr-base">{{$t('open-setting-location.open-setting-location.6vev38')}}<text>{{$t('open-setting-location.open-setting-location.lult41')}}</text>{{$t('open-setting-location.open-setting-location.407106')}}</view>
+                <button type="primary" open-type="openSetting" size="mini" @opensetting="setting_event">{{$t('open-setting-location.open-setting-location.65q4b3')}}</button>
                 <view class="tc margin-top-sm">
-                    <navigator open-type="navigateBack" class="cp cr-grey dis-inline-block" hover-class="none">返回</navigator>
+                    <navigator open-type="navigateBack" class="cp cr-grey dis-inline-block" hover-class="none">{{$t('common.return')}}</navigator>
                 </view>
             </view>
         </view>
         <view v-else class="open-setting-loding">
             <image :src="common_static_url + 'bg-loding.gif'" class="avatar dis-block" mode="widthFix"></image>
             <view class="tc margin-top-sm">
-                <navigator open-type="navigateBack" class="cp cr-grey dis-inline-block" hover-class="none">返回</navigator>
+                <navigator open-type="navigateBack" class="cp cr-grey dis-inline-block" hover-class="none">{{$t('common.return')}}</navigator>
             </view>
         </view>
         <view v-if="(error_msg || null) != null" class="cr-red margin-top-lg padding-horizontal-main">{{ error_msg }}</view>
@@ -120,7 +120,7 @@ export default {
                 fail: (res) => {
                     // 取消则自动返回、则显示错误
                     // error=11 支付宝取消、msg包含cancel则其他平台
-                    var msg = res.errorMessage || res.chooseLocation || res.errMsg || '位置选择失败';
+                    var msg = res.errorMessage || res.chooseLocation || res.errMsg || this.$t('open-setting-location.open-setting-location.hwn386');
                     if(res.error == 11 || msg.indexOf('cancel') != -1) {
                         // app则不执行返回操作、上面已经返回过了
                         // #ifndef APP

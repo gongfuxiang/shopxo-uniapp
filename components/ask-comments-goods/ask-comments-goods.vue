@@ -3,12 +3,12 @@
         <block v-if="(propData || null) != null && propData.length > 0">
             <view v-for="(item, index) in propData" :key="index" class="ask-comment-item">
                 <navigator :url="item.url" hover-class="none" class="flex-row">
-                    <view class="title cr-white tc">问</view>
+                    <view class="title cr-white tc">{{$t('goods-list.goods-list.00n7i3')}}</view>
                     <view class="base-nav flex-1 flex-width margin-left-sm">
                         <view class="oh nav padding-bottom-sm">
                             <view class="flex-row jc-sb align-c">
                                 <text class="va-m single-text flex-1 flex-width">{{ item.title }}</text>
-                                <text class="cr-grey text-size-xs">共有{{ item.comments_count }}条回答</text>
+                                <text class="cr-grey text-size-xs">{{$t('detail.detail.025362')}}{{ item.comments_count }}{{$t('ask-comments-goods.ask-comments-goods.xl51n6')}}</text>
                             </view>
                             <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">
                                 <block v-for="(iv, ix) in item.images" :key="ix">
@@ -22,9 +22,7 @@
         </block>
         <block v-else>
             <view class="cr-grey-d tc spacing-mb flex-row jc-c align-c">
-                <image :src="ask_static_url + 'no-ask.png'" mode="widthFix" class="no-ask margin-right-main" />
-                有疑问就问问其他同学吧～
-            </view>
+                <image :src="ask_static_url + 'no-ask.png'" mode="widthFix" class="no-ask margin-right-main" />{{$t('ask-comments-goods.ask-comments-goods.g6mc44')}}</view>
         </block>
     </view>
 </template>

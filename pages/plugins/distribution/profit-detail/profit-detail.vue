@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,16 +92,16 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "订单金额", value: data.data.total_price || "" },
-                                { name: "退款金额", value: data.data.refund_price || "" },
-                                { name: "收益金额", value: data.data.profit_price || "" },
-                                { name: "当前级别", value: data.data.level_name || "" },
-                                { name: "结算状态", value: data.data.status_name || "" },
-                                { name: "订单状态", value: data.data.order_status_name || "" },
-                                { name: "订单支付状态", value: data.data.order_pay_status_name || "" },
-                                { name: "来源终端", value: data.data.order_client_type_name || "" },
-                                { name: "添加时间", value: data.data.add_time || "" },
-                                { name: "更新时间", value: data.data.upd_time || "" },
+                                { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
+                                { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || "" },
+                                { name: this.$t('profit.profit.utg512'), value: data.data.profit_price || "" },
+                                { name: this.$t('profit.profit.6a7t71'), value: data.data.level_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.order_status_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.x28rw5'), value: data.data.order_pay_status_name || "" },
+                                { name: this.$t('order.order.330m76'), value: data.data.order_client_type_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.b7v892'), value: data.data.add_time || "" },
+                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -124,9 +124,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

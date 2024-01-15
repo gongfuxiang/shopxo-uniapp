@@ -3,7 +3,7 @@
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">申请信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.s70kj4')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -14,7 +14,7 @@
 
                 <!-- 快递信息 -->
                 <view v-if="detail.status == 2 && detail.invoice_type != 0 && express_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">快递信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.0876xf')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in express_data" :key="index" class="item br-b oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -25,13 +25,13 @@
 
                 <!-- 电子发票 -->
                 <view v-if="detail.status == 2 && detail.invoice_type == 0 && (detail.electronic_invoice || null) != null" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">电子发票</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.1s2f0g')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail.electronic_invoice" :key="index" class="item br-b oh padding-vertical-main">
                             <view class="content fl" @tap="electronic_invoice_event" :data-value="item.url">{{ item.title }}</view>
                         </view>
                     </view>
-                    <view class="br-t cr-red padding-top-main margin-top-main">可点击发票名称复制后、到浏览器打开地址下载发票。</view>
+                    <view class="br-t cr-red padding-top-main margin-top-main">{{$t('invoice-detail.invoice-detail.4tu3v3')}}</view>
                 </view>
             </view>
 
@@ -96,7 +96,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -116,30 +116,30 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "业务类型", value: data.data.business_type_name || "" },
-                                { name: "申请类型", value: data.data.apply_type_name || "" },
-                                { name: "发票类型", value: data.data.invoice_type_name || "" },
-                                { name: "发票金额", value: data.data.total_price || "" },
-                                { name: "状态", value: data.data.status_name || "" },
-                                { name: "发票内容", value: data.data.invoice_content || "" },
-                                { name: "发票抬头", value: data.data.invoice_title || "" },
-                                { name: "纳税识别号", value: data.data.invoice_code || "" },
-                                { name: "企业开户行名称", value: data.data.invoice_bank || "" },
-                                { name: "企业开户帐号", value: data.data.invoice_account || "" },
-                                { name: "企业联系电话", value: data.data.invoice_tel || "" },
-                                { name: "企业注册地址", value: data.data.invoice_address || "" },
-                                { name: "收件人姓名", value: data.data.name || "" },
-                                { name: "收件人电话", value: data.data.tel || "" },
-                                { name: "收件人地址", value: data.data.address || "" },
-                                { name: "电子邮箱", value: data.data.email || "" },
-                                { name: "拒绝原因", value: data.data.refuse_reason || "" },
-                                { name: "用户备注", value: data.data.user_note || "" },
-                                { name: "创建时间", value: data.data.add_time || "" },
-                                { name: "更新时间", value: data.data.upd_time || "" },
+                                { name: this.$t('invoice.invoice.l3832z'), value: data.data.business_type_name || "" },
+                                { name: this.$t('invoice.invoice.hoenw8'), value: data.data.apply_type_name || "" },
+                                { name: this.$t('invoice.invoice.j04kjc'), value: data.data.invoice_type_name || "" },
+                                { name: this.$t('invoice.invoice.fvuc4p'), value: data.data.total_price || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.rrfex6'), value: data.data.status_name || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.p73963'), value: data.data.invoice_content || "" },
+                                { name: this.$t('invoice.invoice.y724c7'), value: data.data.invoice_title || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.e5n838'), value: data.data.invoice_code || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.41qbu6'), value: data.data.invoice_bank || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.3a9459'), value: data.data.invoice_account || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.2g7t23'), value: data.data.invoice_tel || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.6k6sov'), value: data.data.invoice_address || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.7159m0'), value: data.data.name || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.f2222p'), value: data.data.tel || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.q8l3zj'), value: data.data.address || "" },
+                                { name: this.$t('login.login.db1rf4'), value: data.data.email || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.rpdwd3'), value: data.data.refuse_reason || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.dt77rq'), value: data.data.user_note || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
                             ],
                             express_data: [
-                                { name: "快递名称", value: data.data.express_name || "" },
-                                { name: "快递单号", value: data.data.express_number || "" },
+                                { name: this.$t('invoice-detail.invoice-detail.2000a0'), value: data.data.express_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.2byl8l'), value: data.data.express_number || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -162,9 +162,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

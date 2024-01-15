@@ -5,7 +5,7 @@
         <view v-if="data_list.length > 0" class="data-list">
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text>转账时间</text>
+                    <text>{{$t('user-transfer-detail.user-transfer-detail.x17599')}}</text>
                     <text class="cr-grey-9">{{ item.add_time }}</text>
                 </view>
                 <view class="content margin-top">
@@ -58,9 +58,9 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: '收款人', field: 'transfer_no' },
-                    { name: '转账金额', field: 'money' },
-                    { name: '转账备注', field: 'note' },
+                    { name: this.$t('transfer.transfer.4g21cu'), field: 'transfer_no' },
+                    { name: this.$t('transfer.transfer.2q274j'), field: 'money' },
+                    { name: this.$t('transfer.transfer.t36tk2'), field: 'note' },
                 ],
             };
         },
@@ -135,7 +135,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -198,7 +198,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -211,6 +211,10 @@
         line-height: 60rpx;
         padding: 0 30rpx;
         min-width: 84rpx;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
     .transfer-item .name {
         min-width: 112rpx;

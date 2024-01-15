@@ -12,13 +12,13 @@
                 </view>
                 <!-- 搜索 -->
                 <view class="nav-search wh-auto">
-                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" propPlaceholder="输入门店名称" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
+                    <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propDefaultValue="search_keywords_value" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c" propBgColor="#f5f5f5"></component-search>
                 </view>
             </view>
 
             <!-- 分类 -->
             <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
+                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
                 <block v-for="(item, index) in category" :key="index">
                     <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main fw-b nav-active-line' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
                 </block>
@@ -132,7 +132,7 @@ export default {
         // 初始化
         get_data() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("index", "search", "realstore"),
@@ -181,7 +181,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -204,7 +204,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 用户位置
@@ -283,7 +283,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

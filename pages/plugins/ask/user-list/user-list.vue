@@ -6,7 +6,7 @@
                     <navigator :url="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
                         <view class="margin-bottom-xs flex-row jc-sb align-c">
                             <text class="cr-base text-size">{{ item.add_time_time }}</text>
-                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? '已回' : '未回' }}</text>
+                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</text>
                         </view>
                         <view class="spacing-mt">
                             <view class="text-size single-text">
@@ -29,7 +29,7 @@
             <view class="bottom-fixed question-btn bg-white">
                 <view class="bottom-line-exclude">
                     <navigator url="/pages/plugins/ask/form/form" hover-class="none">
-                        <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">我要提问</button>
+                        <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
                     </navigator>
                 </view>
             </view>
@@ -118,7 +118,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -179,7 +179,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -8,7 +8,7 @@
                         <view class="spacing-nav-title oh">
                             <text class="text-wrapper">{{bv.title}}</text>
                             <view v-if="(bv.estimate_discount_price || 0) != 0" class="estimate-discount-price fr">
-                                <text class="discount-icon cr-white text-size-xs">节省</text>
+                                <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
                                 <text class="cr-green text-size-lg va-m">{{propCurrencySymbol}}{{bv.estimate_discount_price}}</text>
                             </view>
                         </view>

@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,16 +92,16 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "订单号", value: data.data.payment_user_order_no || "" },
-                                { name: "开通时长", value: data.data.period_value + " " + data.data.period_unit || "" },
-                                { name: "订单状态", value: data.data.status_name || "" },
-                                { name: "结算状态", value: data.data.settlement_status_name || "" },
-                                { name: "类型", value: data.data.type_name || "" },
-                                { name: "订单金额", value: data.data.price || "" },
-                                { name: "支付金额", value: data.data.pay_price <= 0 ? "" : data.data.pay_price || "" },
-                                { name: "支付方式", value: data.data.payment_name || "" },
-                                { name: "创建时间", value: data.data.add_time || "" },
-                                { name: "更新时间", value: data.data.upd_time || "" },
+                                { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.payment_user_order_no || "" },
+                                { name: this.$t('order.order.vjfki8'), value: data.data.period_value + " " + data.data.period_unit || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.status_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.settlement_status_name || "" },
+                                { name: this.$t('order-detail.order-detail.rn4hhi'), value: data.data.type_name || "" },
+                                { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.price || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_price <= 0 ? "" : data.data.pay_price || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -124,9 +124,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

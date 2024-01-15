@@ -77,7 +77,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: '加载中...'
+                    title: this.$t('common.loading_in_text')
                 });
                 if (self.data_list.length <= 0) {
                     self.setData({
@@ -118,9 +118,9 @@
                         self.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -132,7 +132,7 @@
                 var temp_list = this.data_list;
                 var data = temp_list[index] || null;
                 if (data == null) {
-                    app.globalData.showToast('数据有误');
+                    app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                     return false;
                 }
                 
@@ -140,7 +140,7 @@
                 if (data.id != this.data_default.id) {
                     var self = this;
                     uni.showLoading({
-                        title: '处理中...'
+                        title: this.$t('common.processing_in_text')
                     });
                     uni.request({
                         url: app.globalData.get_request_url("setcurrency", "index", "exchangerate"),
@@ -170,7 +170,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         }
                     });
                 }

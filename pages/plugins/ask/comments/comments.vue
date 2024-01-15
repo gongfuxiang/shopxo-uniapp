@@ -62,7 +62,7 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('commentsinfo', 'index', 'ask'),
@@ -110,7 +110,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

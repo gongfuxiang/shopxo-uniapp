@@ -12,7 +12,7 @@
                 </scroll-view>
                 <!-- 分割线 -->
                 <view class="tc margin-top-xxl spacing-mb">
-                    <text class="divider pr">卡种选择</text>
+                    <text class="divider pr">{{$t('buy.buy.g7dk3f')}}</text>
                 </view>
                 <!-- 内容 -->
                 <view class="vip-content bg-white padding-vertical-main padding-horizontal-sm spacing-mb">
@@ -21,10 +21,10 @@
                             <block v-if="(item.pay_period_rules || null) != null">
                                 <view class="data-list flex-row flex-warp align-c">
                                     <block v-for="(rules, ri) in item.pay_period_rules" :key="ri">
-                                        <view class="list padding-sm oh" @tap="content_event" :data-index="ri" :data-value="currency_symbol + rules.price + '/' + ((rules.number || null) == null ? '终身' : rules.value + rules.unit)">
+                                        <view class="list padding-sm oh" @tap="content_event" :data-index="ri" :data-value="currency_symbol + rules.price + '/' + ((rules.number || null) == null ? $t('buy.buy.b3dyo7') : rules.value + rules.unit)">
                                             <view class="item flex-col" :class="selected_content_index === ri ? 'active' : ''">
                                                 <view class="number single-text text-size-lg">
-                                                    <text class="fw-b">{{ (rules.number || null) == null ? '终身' : rules.value }}</text>
+                                                    <text class="fw-b">{{ (rules.number || null) == null ? $t('buy.buy.b3dyo7') : rules.value }}</text>
                                                     <text v-if="(rules.unit || null) != null" class="margin-left-sm">{{ rules.unit }}</text>
                                                 </view>
                                                 <view v-if="(rules.desc || null) != null" class="desc margin-top-sm">{{ rules.desc }}</view>
@@ -37,26 +37,26 @@
                                     </block>
                                     <view class="bottom-fixed sub-pay">
                                         <view class="bottom-line-exclude">
-                                            <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">立即开通{{ selected_tabs_value }}</button>
+                                            <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="submit_event" :disabled="submit_disabled_status">{{$t('buy.buy.0s1k23')}}{{ selected_tabs_value }}</button>
                                         </view>
                                     </view>
                                 </view>
                             </block>
                             <block v-else>
                                 <!-- 提示信息 -->
-                                <component-no-data propStatus="0" propMsg="购买时长未配置"></component-no-data>
+                                <component-no-data propStatus="0" :propMsg="$t('buy.buy.5lr84j')"></component-no-data>
                             </block>
                         </block>
                     </block>
                 </view>
                 <view class="all-order flex-row jc-sb align-c padding-main bg-white spacing-mb" data-value="/pages/plugins/membershiplevelvip/order/order" @tap="url_event">
-                    <view> <iconfont name="icon-kaitonghuiy-dingdan" propClass="margin-right-sm" color="#666"></iconfont> 所有订单 </view>
+                    <view> <iconfont name="icon-kaitonghuiy-dingdan" propClass="margin-right-sm" color="#666"></iconfont>{{$t('buy.buy.ntm2z5')}}</view>
                     <iconfont name="icon-arrow-right" size="24rpx" color="#666"></iconfont>
                 </view>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data propStatus="0" propMsg="未配置会员等级"></component-no-data>
+                <component-no-data propStatus="0" :propMsg="$t('buy.buy.5x86n3')"></component-no-data>
             </view>
         </view>
         <view v-else>
@@ -166,7 +166,7 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 if (this.data_list.length <= 0) {
                     this.setData({
@@ -210,9 +210,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -236,18 +236,18 @@
             // 确认支付事件
             submit_event(e) {
                 if (this.selected_tabs_index < 0 || this.selected_content_index === null) {
-                    app.globalData.showToast('请选择开通时长');
+                    app.globalData.showToast(this.$t('buy.buy.bmueac'));
                     return false;
                 }
                 // 请求参数
                 var item = this.data_list[this.selected_tabs_index] || null;
                 if (item == null) {
-                    app.globalData.showToast('开通时长有误');
+                    app.globalData.showToast(this.$t('buy.buy.64ml60'));
                     return false;
                 }
                 var rules = (item['pay_period_rules'] || null) == null ? null : item['pay_period_rules'][this.selected_content_index] || null;
                 if (rules == null) {
-                    app.globalData.showToast('开通时长有误');
+                    app.globalData.showToast(this.$t('buy.buy.64ml60'));
                     return false;
                 }
                 // 请求生成支付订单
@@ -255,7 +255,7 @@
                     submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('create', 'buy', 'membershiplevelvip'),
@@ -290,7 +290,7 @@
                             submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

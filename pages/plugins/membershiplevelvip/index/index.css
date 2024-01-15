@@ -22,8 +22,9 @@
     color: #88651F !important;
     width: 308rpx;
     height: 94rpx;
-    line-height: 86rpx !important;
+    line-height: 94rpx !important;
     font-size: 44rpx;
+    box-sizing: content-box;
 }
 
 /**

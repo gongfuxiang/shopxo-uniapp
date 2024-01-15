@@ -18,7 +18,7 @@
             </view>
             <!-- 搜索 -->
             <view class="nav-search padding-main">
-                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入门店名称" propPlaceholderClass="cr-grey-c"></component-search>
+                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('index.index.c5273j')" propPlaceholderClass="cr-grey-c"></component-search>
             </view>
         </view>
 
@@ -38,7 +38,7 @@
         <view v-if="data_list.length > 0">
             <view class="padding-horizontal-main">
                 <!-- 导航 -->
-                <component-title :propTitle="data_base.home_data_list_title || '最新门店'" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
+                <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
                 <!-- 数据列表 -->
                 <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
             </view>
@@ -56,7 +56,7 @@
                     <view class="padding-lg">
                         <image v-if="(data_base.home_choice_location_images || null) != null" class="icon max-w margin-top-sm" :src="data_base.home_choice_location_images" mode="widthFix"></image>
                         <view v-if="(data_base.home_choice_location_msg || null) != null" class="cr-base margin-top-lg">{{ data_base.home_choice_location_msg }}</view>
-                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_user_location_event">选择位置</button>
+                        <button type="default" class="bg-green br-green cr-white text-size margin-top-xxl round" hover-class="none" @tap="choose_user_location_event">{{$t('index.index.t3d917')}}</button>
                     </view>
                 </view>
             </view>
@@ -241,7 +241,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });

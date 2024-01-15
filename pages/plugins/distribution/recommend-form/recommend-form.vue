@@ -5,7 +5,7 @@
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-main oh">
                         <view class="form-gorup bg-white form-container-upload oh">
-                            <view class="form-gorup-title">图标<text class="form-group-tips">建议100*100px</text></view>
+                            <view class="form-gorup-title">{{$t('recommend-form.recommend-form.57zrl5')}}<text class="form-group-tips">{{$t('recommend-form.recommend-form.3vk50b')}}</text></view>
                             <view class="form-upload-data oh">
                                 <block v-if="(recommend_data.icon || null) != null">
                                     <view class="item fl">
@@ -18,22 +18,22 @@
                         </view>
 
                         <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">标题<text class="form-group-tips-must">*</text></view>
-                            <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" placeholder="标题格式1~60个字符" />
+                            <view class="form-gorup-title">{{$t('user-detail.user-detail.uy6lrz')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" name="title" :value="recommend_data.title || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.q4qr64')" />
                         </view>
 
                         <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">描述</view>
-                            <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" placeholder="描述格式最多200个字符" />
+                            <view class="form-gorup-title">{{$t('form.form.xy87t8')}}</view>
+                            <input type="text" name="describe" :value="recommend_data.describe || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('recommend-form.recommend-form.29au77')" />
                         </view>
 
                         <view class="form-gorup anonymous">
-                            <view class="form-gorup-title">是否启用</view>
+                            <view class="form-gorup-title">{{$t('form.form.043a10')}}</view>
                             <switch name="is_enable" style="transform: scale(0.9)" class="margin-top-sm" :checked="recommend_data.is_enable == 1"></switch>
                         </view>
 
                         <view class="form-gorup bg-white">
-                            <view class="form-gorup-title">关联商品<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('recommend-form.recommend-form.5ws7m3')}}<text class="form-group-tips-must">*</text></view>
                             <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
                                 <block v-for="(item, index) in recommend_data.detail_list" :key="index">
                                     <view :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
@@ -47,19 +47,19 @@
                                                 <text class="fr cr-grey">{{ item.goods.inventory }}{{ item.goods.inventory_unit }}</text>
                                             </view>
                                             <view v-if="(item.spec_text_view || null) != null" class="cr-grey margin-top-xs text-size-xs">{{ item.spec_text_view }}</view>
-                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">移除</text>
+                                            <text class="br-red cr-red text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="goods_remove_event">{{$t('recommend-form.recommend-form.q536vp')}}</text>
                                         </view>
                                     </view>
                                 </block>
                             </view>
                             <view class="margin-top-sm padding-vertical-main">
-                                <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">+ 选择商品</text>
+                                <text class="br-dashed-grey cr-base text-size-sm padding-horizontal-main padding-top-xs padding-bottom-xs round cp" @tap="goods_add_event">{{$t('recommend-form.recommend-form.27goz3')}}</text>
                             </view>
                         </view>
 
                         <view class="bottom-fixed">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
                             </view>
                         </view>
                     </view>
@@ -79,11 +79,11 @@
                             <view class="nav-search oh br-b margin-top-sm padding-horizontal-main">
                                 <picker class="item br round fl padding-horizontal-main" @change="popup_goods_category_event" :value="popup_goods_cetagory_index" :range="goods_category_list" range-key="name">
                                     <view :class="'picker ' + (popup_goods_cetagory_index == 0 ? 'cr-grey' : 'cr-base') + ' arrow-bottom'">
-                                        {{ popup_goods_cetagory_index == 0 ? '商品分类' : goods_category_list[popup_goods_cetagory_index]['name'] }}
+                                        {{ popup_goods_cetagory_index == 0 ? $t('recommend-form.recommend-form.203itn') : goods_category_list[popup_goods_cetagory_index]['name'] }}
                                     </view>
                                 </picker>
-                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" placeholder="请输入商品名称" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
-                                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">搜索</button>
+                                <input type="search" :value="popup_keywords_value" placeholder-class="cr-grey" class="cr-base item br round fl padding-horizontal-main margin-left-main" :placeholder="$t('recommend-form.recommend-form.h5v45f')" @input="popup_keywords_value_event" @confirm="popup_goods_search_event" />
+                                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round fr" @tap="popup_goods_search_event">{{$t('common.search')}}</button>
                             </view>
                             <view class="view-goods-list padding-horizontal-main">
                                 <block v-if="popup_search_goods_list.length > 0">
@@ -96,11 +96,11 @@
                                                 <view class="cr-base single-text">{{ item.title }}</view>
                                                 <view class="margin-top-xs sales-price">{{ currency_symbol }}{{ item.price }}</view>
                                                 <view class="cr-grey margin-top-xs text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</view>
-                                                <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">选择</text>
+                                                <text class="br-green cr-green text-size-xs padding-horizontal-main padding-top-xs padding-bottom-xs round pa cp operate-submit" :data-index="index" @tap="popup_goods_choice_event">{{$t('buy.buy.inyxpx')}}</text>
                                             </view>
                                         </view>
                                     </block>
-                                    <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">当前展示{{ popup_search_goods_list.length }}条数据</view>
+                                    <view class="tc br-t-dashed padding-vertical-main margin-top-main cr-grey text-size-xs">{{$t('recommend-form.recommend-form.6rlju7')}}{{ popup_search_goods_list.length }}{{$t('goods-search.goods-search.t9nikq')}}</view>
                                 </block>
                                 <block v-else>
                                     <component-no-data :propStatus="search_data_list_loding_status" :propMsg="search_data_list_loding_msg"></component-no-data>
@@ -145,7 +145,7 @@
                 popup_keywords_value: '',
                 popup_search_goods_list: [],
                 search_data_list_loding_status: 1,
-                search_data_list_loding_msg: '请先搜索数据！',
+                search_data_list_loding_msg: this.$t('recommend-form.recommend-form.20m5gj'),
             };
         },
 
@@ -191,7 +191,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '请先绑定手机号码',
+                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.4s229b'),
                         });
                         uni.stopPullDownRefresh();
                         return false;
@@ -202,7 +202,7 @@
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '请先授权用户信息',
+                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
                 }
             },
@@ -221,7 +221,7 @@
                             // 如果存在分类则在最前面增加全部分类选项
                             var goods_category_list = data.goods_category_list || [];
                             if (goods_category_list.length > 0) {
-                                goods_category_list.unshift({ id: null, name: '全部分类' });
+                                goods_category_list.unshift({ id: null, name: this.$t('recommend-form.recommend-form.7gc30l') });
                             }
                             this.setData({
                                 data_list_loding_status: 3,
@@ -240,7 +240,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: '获取数据失败',
+                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.h8f437'),
                         });
                     },
                 });
@@ -273,15 +273,15 @@
 
                 // 校验参数并提交
                 var validation = [
-                    { fields: 'title', msg: '请填写标题' },
-                    { fields: 'goods_data', msg: '请选择商品' },
+                    { fields: 'title', msg: this.$t('recommend-form.recommend-form.yd3833') },
+                    { fields: 'goods_data', msg: this.$t('recommend-form.recommend-form.31k41l') },
                 ];
                 if (app.globalData.fields_check(form_data, validation)) {
                     this.setData({
                         form_submit_disabled_status: true,
                     });
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('save', 'recommend', 'distribution'),
@@ -303,7 +303,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -312,7 +312,7 @@
                                 form_submit_disabled_status: false,
                             });
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -330,8 +330,8 @@
             upload_delete_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复、继续吗？',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var temp_data = self.recommend_data || {};
@@ -455,11 +455,11 @@
                 }
 
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 this.setData({
                     search_data_list_loding_status: 1,
-                    search_data_list_loding_msg: '搜索中...',
+                    search_data_list_loding_msg: this.$t('recommend-form.recommend-form.e5k407'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('goodssearch', 'recommend', 'distribution'),
@@ -473,7 +473,7 @@
                             this.setData({
                                 popup_search_goods_list: list,
                                 search_data_list_loding_status: list.length > 0 ? 3 : 0,
-                                search_data_list_loding_msg: list.length > 0 ? '' : '没有相关商品',
+                                search_data_list_loding_msg: list.length > 0 ? '' : this.$t('detail.detail.5knxg6'),
                             });
                         } else {
                             this.setData({
@@ -486,7 +486,7 @@
                         uni.hideLoading();
                         this.setData({
                             search_data_list_loding_status: 2,
-                            search_data_list_loding_msg: '网络开小差了哦~',
+                            search_data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });
@@ -526,9 +526,9 @@
                         this.setData({
                             recommend_data: temp_data,
                         });
-                        app.globalData.showToast('选择成功', 'success');
+                        app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
                     } else {
-                        app.globalData.showToast('已存在选择列表');
+                        app.globalData.showToast(this.$t('recommend-form.recommend-form.ocg49p'));
                     }
                 }
             },
@@ -567,9 +567,9 @@
                     this.setData({
                         recommend_data: temp_data,
                     });
-                    app.globalData.showToast('选择成功', 'success');
+                    app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
                 } else {
-                    app.globalData.showToast('已存在选择列表');
+                    app.globalData.showToast(this.$t('recommend-form.recommend-form.ocg49p'));
                 }
             },
         },

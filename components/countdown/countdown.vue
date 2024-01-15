@@ -11,7 +11,7 @@
             <view class="ds" :style="ds_style">{{ propHourDs }}</view>
             <view class="time" :style="time_style">{{ hour }}</view>
         </view>
-        <view v-if="is_show && is_end" class="timer-title">{{ propMsg }}</view>
+        <view v-if="is_show && is_end" class="timer-title">{{ propMsg || this.$t('index.index.443683') }}</view>
     </view>
 </template>
 <script>
@@ -54,7 +54,7 @@
             },
             propMsg: {
                 type: String,
-                default: '已结束',
+                default: '',
             },
             propHourDs: {
                 type: String,

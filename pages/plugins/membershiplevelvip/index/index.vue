@@ -12,7 +12,7 @@
                         <!-- 购买按钮 -->
                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
                             <button class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
-                                {{ data_base.banner_middle_name || '加入会员' }}
+                                {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
                             </button>
                         </navigator>
                     </view>
@@ -95,7 +95,7 @@
             // 获取数据
             get_data_list() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 if (this.introduce_data.length <= 0) {
                     this.setData({
@@ -153,7 +153,7 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });

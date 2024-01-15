@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,13 +92,13 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "订单金额", value: data.data.total_price || "" },
-                                { name: "返佣金额", value: data.data.profit_price || "" },
-                                { name: "当前级别", value: data.data.level_name || "" },
-                                { name: "结算状态", value: data.data.status_name || "" },
-                                { name: "返佣规则", value: data.data.commission_rules || "" },
-                                { name: "创建时间", value: data.data.add_time || "" },
-                                { name: "更新时间", value: data.data.upd_time || "" },
+                                { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
+                                { name: this.$t('profit.profit.7y47sb'), value: data.data.profit_price || "" },
+                                { name: this.$t('profit.profit.6a7t71'), value: data.data.level_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
+                                { name: this.$t('profit-detail.profit-detail.3jg81h'), value: data.data.commission_rules || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
+                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -121,9 +121,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

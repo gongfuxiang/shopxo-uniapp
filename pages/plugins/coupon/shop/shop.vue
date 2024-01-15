@@ -36,7 +36,7 @@
                         <view class="dis-inline-block va-m">
                             <uni-icons type="shop" size="16" color="#fff"></uni-icons>
                         </view>
-                        <text class="va-m margin-left-sm">回到店铺</text>
+                        <text class="va-m margin-left-sm">{{$t('index.index.i78v36')}}</text>
                     </button>
                 </view>
             </view>
@@ -121,7 +121,7 @@
             get_data_list() {
                 var self = this;
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 if (self.data_list.length <= 0) {
                     self.setData({
@@ -183,9 +183,9 @@
                         self.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -221,7 +221,7 @@
                         var temp_list = this.data_list;
                         if (temp_list[index]['is_operable'] != 0) {
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
@@ -236,7 +236,7 @@
                                         app.globalData.showToast(res.data.msg, 'success');
                                         if (this.data_base != null && this.data_base.is_repeat_receive != 1) {
                                             temp_list[index]['is_operable'] = 0;
-                                            temp_list[index]['is_operable_name'] = '已领取';
+                                            temp_list[index]['is_operable_name'] = this.$t('shop.shop.4q9oe2');
                                             this.setData({
                                                 data_list: temp_list,
                                             });
@@ -249,7 +249,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

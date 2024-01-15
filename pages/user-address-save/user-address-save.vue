@@ -6,12 +6,12 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c br-b-f5 padding-bottom-sm">
-                                <view class="form-gorup-title">姓名<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="联系人2~16个字符" />
+                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.5yhgps')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="name" :value="address_data.name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.wii4sp')" />
                             </view>
                             <view class="flex-row jc-sb align-c padding-top-sm">
-                                <view class="form-gorup-title">电话<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="座机或手机" />
+                                <view class="form-gorup-title">{{$t('promotion-user.promotion-user.62c8m1')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="tel" :value="address_data.tel || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.65507o')" />
                             </view>
                         </view>
                     </view>
@@ -20,12 +20,12 @@
                         <view class="form-gorup">
                             <view class="flex-row jc-sb br-b-f5 padding-vertical-sm pr">
                                 <view class="form-gorup-title">
-                                    <text>地区</text>
+                                    <text>{{$t('user-address-save.user-address-save.h8f148')}}</text>
                                     <text class="form-group-tips-must">*</text>
                                 </view>
                                 <view class="flex-1 flex-width flex-col">
                                     <view v-if="home_user_address_map_status == 1" @tap="choose_user_location_event" class="flex-row jc-sb align-c">
-                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">点击选择地理位置</view>
+                                        <view v-if="home_user_address_map_status == 1" class="cr-main" @tap="choose_user_location_event">{{$t('user-address-save.user-address-save.13rpdw')}}</view>
                                         <iconfont name="icon-xzdz-dingwei" size="28rpx"></iconfont>
                                     </view>
                                     <block v-if="is_user_address_forbid_choice_region == 0">
@@ -33,13 +33,13 @@
                                             <view class="flex-1 flex-width">
                                                 <view @tap="open_ragion" class="single-text">
                                                     <text v-if="province_name"> {{ province_name }}{{ city_name ? '-' + city_name : '' }}{{ county_name ? '-' + county_name : '' }} </text>
-                                                    <text v-else class="cr-grey-9"> 省市区 </text>
+                                                    <text v-else class="cr-grey-9">{{$t('extraction-apply.extraction-apply.cy87k6')}}</text>
                                                 </view>
                                                 <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
-                                                <input type="text" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="地址编号" @input="region_code_value_event" />
-                                                <button type="default" size="mini" class="bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">检索</button>
+                                                <input type="text" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
+                                                <button type="default" size="mini" class="bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
                                             </view>
                                         </view>
                                     </block>
@@ -51,24 +51,24 @@
                                 </view>
                             </view>
                             <view class="flex-row jc-sb align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">地址<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.4rc269')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width">
-                                    <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey-9" :class="'cr-base bs-bb ' + (home_user_address_map_status == 1 ? 'address-value' : '')" placeholder="详细地址1~80个字符" />
+                                    <input type="text" name="address" :value="address_data.address || ''" maxlength="80" placeholder-class="cr-grey-9" :class="'cr-base bs-bb ' + (home_user_address_map_status == 1 ? 'address-value' : '')" :placeholder="$t('user-address-save.user-address-save.vdkv32')" />
                                 </view>
                             </view>
                             <!-- 智能识别 -->
                             <view v-if="is_user_address_discern == 1" class="pr padding-top-sm">
                                 <view class="intelligent-identification oh" :style="identfication_show ? 'height:254rpx;' : 'height:0;'">
                                     <view class="bg-base border-radius-main padding-main oh">
-                                        <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" placeholder="粘贴整段地址，自动拆分姓名、电话及地址" placeholder-class="cr-grey" />
+                                        <textarea @input="address_discern_value_event" :value="address_discern_value" class="margin-0" :placeholder="$t('user-address-save.user-address-save.b32r6v')" placeholder-class="cr-grey" />
                                         <view class="padding-top-sm tr" :class="identfication_show ? '' : 'dis-none'">
-                                            <button type="default" size="mini" class="round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">清除</button>
-                                            <button type="default" size="mini" class="round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">识别</button>
+                                            <button type="default" size="mini" class="round cr-base text-size-xs margin-right-sm padding-0 tc" @tap="clear_discern_submit_event">{{$t('goods-search.goods-search.pxk051')}}</button>
+                                            <button type="default" size="mini" class="round bg-main cr-white text-size-xs padding-0 tc" @tap="address_discern_submit_event">{{$t('user-address-save.user-address-save.s3o1p5')}}</button>
                                         </view>
                                     </view>
                                 </view>
                                 <view class="tc padding-top-main" @tap="identfication_change">
-                                    <text class="padding-right-sm">地址粘贴板</text>
+                                    <text class="padding-right-sm">{{$t('user-address-save.user-address-save.42l857')}}</text>
                                     <iconfont :name="identfication_show ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="28rpx" color="#666"></iconfont>
                                 </view>
                             </view>
@@ -78,21 +78,21 @@
                     <view class="border-radius-main bg-white spacing-mb oh">
                         <view class="form-gorup">
                             <view class="flex-row br-b-f5 padding-top-sm padding-bottom-main">
-                                <view class="form-gorup-title padding-top-sm alias-title">标签</view>
+                                <view class="form-gorup-title padding-top-sm alias-title">{{$t('user-address-save.user-address-save.231435')}}</view>
                                 <view class="flex-1 flex-width">
                                     <view class="flex-row">
                                         <view v-for="(item, index) in alias_list" :key="index" class="alias-btn" :class="item === (address_data.alias || null) ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" :data-value="item" @tap="alias_change">{{ item }}</view>
                                     </view>
                                     <view class="padding-top-lg label-edit-right">
                                         <view v-if="alias_eidt_bool" class="flex-row align-c alias-add pr">
-                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" placeholder="请输入标签名称" />
-                                            <button type="default" size="mini" class="round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">确定</button>
+                                            <input type="text" v-model="alias_eidt_text" maxlength="16" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.l6vjlm')" />
+                                            <button type="default" size="mini" class="round cr-white text-size-xs pa" :class="(alias_eidt_text || null) !== null ? 'br-main bg-main' : 'bg-grey br-grey'" @tap="alias_add_submit_event">{{$t('index.index.7w75zb')}}</button>
                                         </view>
                                         <view v-else>
                                             <view v-if="alias_eidt_text">
                                                 <view class="flex-row align-c alias-edit">
                                                     <button type="default" size="mini" class="text-size-xs" :class="alias_eidt_text === (address_data.alias || '') ? 'bg-main cr-white br-main' : 'bg-white cr-black br-grey-d'" @tap="alias_checked_change">{{ alias_eidt_text }}</button>
-                                                    <button type="default" size="mini" class="bg-main-pair cr-white br-main-pair text-size-xs" @tap="alias_edit_submit_event">编辑</button>
+                                                    <button type="default" size="mini" class="bg-main-pair cr-white br-main-pair text-size-xs" @tap="alias_edit_submit_event">{{$t('common.edit')}}</button>
                                                 </view>
                                             </view>
                                             <view v-else class="alias-btn bg-white cr-black br-grey-d" @tap="alias_add">
@@ -104,7 +104,7 @@
                                 </view>
                             </view>
                             <view class="flex-row jc-sb align-c padding-top-main">
-                                <view class="form-gorup-title default-title">设为默认地址</view>
+                                <view class="form-gorup-title default-title">{{$t('user-address-save.user-address-save.g43klm')}}</view>
                                 <switch :color="theme_color" :checked="(address_data.is_default || 0) == 1 ? true : false" @change="default_ads_change_event" />
                             </view>
                         </view>
@@ -114,16 +114,16 @@
                     <view v-if="home_user_address_idcard_status == 1" class="idcard-container border-radius-main bg-white oh">
                         <view class="form-gorup">
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">身份证姓名<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="请填写真实姓名" />
+                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.3w7r14')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="idcard_name" :value="address_data.idcard_name || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.c73v42')" />
                             </view>
                             <view class="flex-row align-c br-b-f5 padding-vertical-sm">
-                                <view class="form-gorup-title">身份证号码<text class="form-group-tips-must">*</text></view>
-                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" placeholder="请填写身份证号" />
+                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.0y1vl6')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="idcard" name="idcard_number" :value="address_data.idcard_number || ''" maxlength="18" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width" :placeholder="$t('user-address-save.user-address-save.c742c8')" />
                             </view>
                             <view class="flex-row align-c padding-vertical-sm margin-bottom-lg">
-                                <view class="form-gorup-title">身份证照片<text class="form-group-tips-must">*</text></view>
-                                <view class="form-upload-data cr-grey-9">请填使用身份证原件进行拍摄，图片清晰</view>
+                                <view class="form-gorup-title">{{$t('user-address-save.user-address-save.761ek6')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-upload-data cr-grey-9">{{$t('user-address-save.user-address-save.c811s5')}}</view>
                             </view>
                             <view class="flex-row align-c">
                                 <view class="flex-width-half oh padding-right-main pr">
@@ -144,8 +144,8 @@
 
                     <view class="padding-vertical-main margin-top-sm spacing-mb">
                         <view class="bottom-line-exclude oh">
-                            <button class="cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status" :style="btn_bg_color">保存</button>
-                            <button v-if="params && (params.id || null) !== null && params.id !== '0'" class="round bg-white cr-main br-main spacing-mt" type="default" @tap="address_delete_event" hover-class="none">删除</button>
+                            <button class="cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status" :style="btn_bg_color">{{$t('common.save')}}</button>
+                            <button v-if="params && (params.id || null) !== null && params.id !== '0'" class="round bg-white cr-main br-main spacing-mt" type="default" @tap="address_delete_event" hover-class="none">{{$t('common.del')}}</button>
                         </view>
                     </view>
                 </view>
@@ -200,7 +200,7 @@
                 // 智能识别
                 identfication_show: false,
                 // 别名
-                alias_list: ['家', '公司', '学校'],
+                alias_list: [this.$t('user-address-save.user-address-save.t1loj5'), this.$t('user-address-save.user-address-save.6t396c'), this.$t('user-address-save.user-address-save.34rqp8')],
                 alias_eidt_bool: false,
                 alias_eidt_text: '',
                 btn_bg_color: 'background:linear-gradient(107deg, ' + theme_color_light + ' 0%, ' + theme_color + ' 100%)',
@@ -224,7 +224,7 @@
 
             // 设置标题
             uni.setNavigationBarTitle({
-                title: '地址' + ((this.params.id || null) == null ? '添加' : '编辑'),
+                title: this.$t('user-address-save.user-address-save.4rc269') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
             });
 
             // 初始化配置
@@ -349,7 +349,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('省份信息失败');
+                        app.globalData.showToast(this.$t('user-address-save.user-address-save.2pey0m'));
                     },
                 });
             },
@@ -380,7 +380,7 @@
             file_upload_event(e) {
                 var form_name = e.currentTarget.dataset.value || null;
                 if (form_name == null) {
-                    app.globalData.showToast('表单名称类型有误');
+                    app.globalData.showToast(this.$t('user-address-save.user-address-save.7w01kd'));
                     return false;
                 }
 
@@ -444,14 +444,14 @@
             upload_delete_event(e) {
                 var form_name = e.currentTarget.dataset.value || null;
                 if (form_name == null) {
-                    app.globalData.showToast('表单名称类型有误');
+                    app.globalData.showToast(this.$t('user-address-save.user-address-save.7w01kd'));
                     return false;
                 }
 
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复、继续吗？',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var temp_idcard_images_data = self.idcard_images_data || {};
@@ -483,7 +483,7 @@
             // 地址信息识别确认事件
             address_discern_submit_event(e) {
                 if ((this.address_discern_value || null) == null) {
-                    app.globalData.showToast('请先输入地址信息');
+                    app.globalData.showToast(this.$t('user-address-save.user-address-save.z687lv'));
                     return false;
                 }
 
@@ -504,7 +504,7 @@
             address_discern_handle(data, is_user = 0, type = 0) {
                 data['is_user'] = is_user;
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                     mask: true,
                 });
                 uni.request({
@@ -550,13 +550,13 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -570,26 +570,26 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'name', msg: '请填写联系人' },
-                    { fields: 'tel', msg: '请填写联系电话' },
-                    { fields: 'province', msg: '请选择省份' },
-                    { fields: 'city', msg: '请选择城市' },
-                    { fields: 'address', msg: '请填写详细地址' },
+                    { fields: 'name', msg: this.$t('extraction-apply.extraction-apply.q15b4n') },
+                    { fields: 'tel', msg: this.$t('extraction-apply.extraction-apply.3or25c') },
+                    { fields: 'province', msg: this.$t('extraction-apply.extraction-apply.m99d2g') },
+                    { fields: 'city', msg: this.$t('extraction-apply.extraction-apply.03587o') },
+                    { fields: 'address', msg: this.$t('extraction-apply.extraction-apply.v1g617') },
                 ];
 
                 // 是否开启了地理位置选择
                 if (this.home_user_address_map_status == 1) {
-                    validation.push({ fields: 'lng', msg: '请选择地理位置' });
-                    validation.push({ fields: 'lat', msg: '请选择地理位置' });
+                    validation.push({ fields: 'lng', msg: this.$t('extraction-apply.extraction-apply.8831v6') });
+                    validation.push({ fields: 'lat', msg: this.$t('extraction-apply.extraction-apply.8831v6') });
                 }
 
                 // 是否开启了用户身份证信息
                 if (this.home_user_address_idcard_status == 1) {
                     // 验证
-                    validation.push({ fields: 'idcard_name', msg: '请填写身份证姓名' });
-                    validation.push({ fields: 'idcard_number', msg: '请填写身份证号码' });
-                    validation.push({ fields: 'idcard_front', msg: '请上传身份证正面照片' });
-                    validation.push({ fields: 'idcard_back', msg: '请上传身份证背面照片' });
+                    validation.push({ fields: 'idcard_name', msg: this.$t('user-address-save.user-address-save.lrlmxf') });
+                    validation.push({ fields: 'idcard_number', msg: this.$t('user-address-save.user-address-save.0x8i97') });
+                    validation.push({ fields: 'idcard_front', msg: this.$t('user-address-save.user-address-save.224l36') });
+                    validation.push({ fields: 'idcard_back', msg: this.$t('user-address-save.user-address-save.glf52g') });
 
                     // 数据
                     form_data['idcard_front'] = this.idcard_images_data.idcard_front || '';
@@ -622,7 +622,7 @@
                         form_submit_disabled_status: true,
                     });
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('save', 'useraddress'),
@@ -641,7 +641,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -650,7 +650,7 @@
                                 form_submit_disabled_status: false,
                             });
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -665,7 +665,7 @@
             // 地址编号搜索
             region_code_event(e) {
                 if ((this.region_code_value || null) == null) {
-                    app.globalData.showToast('请输入数据');
+                    app.globalData.showToast(this.$t('user-address-save.user-address-save.wkfi45'));
                     return false;
                 }
                 this.setData({
@@ -700,7 +700,7 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -708,7 +708,7 @@
                         this.setData({
                             form_submit_disabled_status: false,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -773,21 +773,21 @@
             address_delete_event() {
                 var value = this.params.id || null;
                 if (value == null) {
-                    app.globalData.showToast('地址ID有误');
+                    app.globalData.showToast(this.$t('user-address-save.user-address-save.620370'));
                     return false;
                 }
 
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
 
                             // 获取数据
@@ -807,13 +807,13 @@
                                         if (app.globalData.is_login_check(res.data)) {
                                             app.globalData.showToast(res.data.msg);
                                         } else {
-                                            app.globalData.showToast('提交失败，请重试！');
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                         }
                                     }
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

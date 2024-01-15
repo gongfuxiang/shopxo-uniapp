@@ -6,11 +6,11 @@
                     <view class="fw-b text-size-xl">{{ info.title }}</view>
                     <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
-                            <text>时间：</text>
+                            <text>{{$t('article-detail.article-detail.728374')}}</text>
                             <text>{{ info.add_time }}</text>
                         </view>
                         <view class="fr">
-                            <text class="margin-left-xxxl">浏览：</text>
+                            <text class="margin-left-xxxl">{{$t('article-detail.article-detail.j92ru0')}}</text>
                             <text>{{ info.access_count }}</text>
                         </view>
                     </view>
@@ -29,19 +29,19 @@
                 <!-- 上一篇、下一篇 -->
                 <view v-if="(last_next || null) != null" class="last-next-data spacing-mt margin-bottom-xxxl cr-grey-9">
                     <view v-if="(last_next.last || null) != null" class="flex-row">
-                        <text>上一篇：</text>
+                        <text>{{$t('article-detail.article-detail.281s4a')}}</text>
                         <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.last.title }}</navigator>
                     </view>
                     <view v-if="(last_next.next || null) != null" class="margin-top flex-row cr-main">
-                        <text>下一篇：</text>
+                        <text>{{$t('article-detail.article-detail.uq5814')}}</text>
                         <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.next.title }}</navigator>
                     </view>
                 </view>
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐{{ blog_main_name }}</text>
-                        <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.455787')}}{{ blog_main_name }}</text>
+                        <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                     </view>
                     <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
                         <navigator :url="item.url" hover-class="none">
@@ -58,8 +58,8 @@
                 <!-- 相关商品 -->
                 <view v-if="(info.goods_list || null) != null && info.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">相关商品</text>
-                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.1j6yxy')}}</text>
+                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: info.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
@@ -98,7 +98,7 @@
                 right_list: [],
                 last_next: null,
                 emoji_list: [],
-                blog_main_name: '博文',
+                blog_main_name: this.$t('detail.detail.e439j9'),
                 // 自定义分享信息
                 share_info: {},
             };
@@ -153,7 +153,7 @@
             // 初始化
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'blog'),
@@ -177,7 +177,7 @@
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
                                 emoji_list: data.emoji_list || [],
-                                blog_main_name: (info == null) ? (base == null ? '博文' : (base.blog_main_name || '博文')) : info.title,
+                                blog_main_name: (info == null) ? (base == null ? this.$t('detail.detail.e439j9') : (base.blog_main_name || this.$t('detail.detail.e439j9'))) : info.title,
                             });
 
                             if(info != null) {
@@ -212,7 +212,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

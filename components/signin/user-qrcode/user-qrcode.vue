@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav '+((data_base || null) != null && (data_base.signin_desc || null) != null && data_base.signin_desc.length > 0 ? 'top-notice' : '')" lower-threshold="60">
+        <scroll-view :scroll-y="true" :class="'scroll-box-ece-nav ' + ((data_base || null) != null && (data_base.signin_desc || null) != null && data_base.signin_desc.length > 0 ? 'top-notice' : '')" lower-threshold="60">
             <view class="data-list" :class="(data_base || null) != null && (data_base.is_team || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
                     <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
@@ -20,9 +20,9 @@
                             </navigator>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="show_event">签到</button>
-                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="coming_event">用户</button>
-                            <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="edit_event">编辑</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="show_event">{{ $t('detail.detail.y2217b') }}</button>
+                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="coming_event">{{ $t('login.login.1i4o86') }}</button>
+                            <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="edit_event">{{ $t('common.edit') }}</button>
                         </view>
                     </view>
                 </view>
@@ -32,7 +32,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container">
                         <view class="bottom-line-exclude">
-                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">组队签到</button>
+                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
                         </view>
                     </view>
                 </view>
@@ -70,8 +70,8 @@
                 data_page_total: 0,
                 data_page: 1,
                 content_list: [
-                    { name: '邀请人奖励', field: 'reward_master', unit: '积分' },
-                    { name: '受邀人奖励', field: 'reward_invitee', unit: '积分' },
+                    { name: this.$t('user-qrcode-detail.user-qrcode-detail.mjfygy'), field: 'reward_master', unit: this.$t('index.index.t26j9z') },
+                    { name: this.$t('user-qrcode-detail.user-qrcode-detail.pb2e32'), field: 'reward_invitee', unit: this.$t('index.index.t26j9z') },
                 ],
             };
         },
@@ -146,7 +146,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -211,7 +211,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

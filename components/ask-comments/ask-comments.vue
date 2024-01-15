@@ -2,20 +2,20 @@
     <view :class="theme_view">
         <view v-if="(data || null) != null && (data_base || null) != null">
             <view class="flex-row jc-sb align-c">
-                <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="fw-b">共{{ data.comments_count || 0 }}个回答</view>
+                <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="fw-b">{{$t('user-order-detail.user-order-detail.423rmr')}}{{ data.comments_count || 0 }}{{$t('goods-list.goods-list.8y3cc7')}}</view>
                 <!-- 点赞、评论、分享 -->
                 <view v-if="propType == 'detail'" class="tr ask-comments-bottom-container cr-base">
                     <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block cr-base" :data-value="'/pages/plugins/ask/comments/comments?id=' + data.id" @tap="url_event">
                         <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
-                        <text class="text-size-xs">评论({{ data.comments_count }})</text>
+                        <text class="text-size-xs">{{$t('ask-comments.ask-comments.2zlnb5')}}{{ data.comments_count }})</text>
                     </view>
                     <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block cr-' + ((data.is_give_thumbs || 0) == 1 ? 'main' : 'base')" :data-askid="data.id" @tap="give_thumbs_event">
                         <iconfont :name="(data.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
-                        <text class="va-m text-size-xs">点赞({{ data.give_thumbs_count }})</text>
+                        <text class="va-m text-size-xs">{{$t('ask-comments.ask-comments.du7rcv')}}{{ data.give_thumbs_count }})</text>
                     </view>
                     <view class="item dis-inline-block cr-base" @tap="popup_share_event">
                         <iconfont name="icon-bowenxiangqing-fenxiang" size="28rpx" propClass="pr top-sm margin-right-xs"></iconfont>
-                        <text class="text-size-xs">分享</text>
+                        <text class="text-size-xs">{{$t('common.share')}}</text>
                     </view>
                 </view>
             </view>
@@ -24,14 +24,14 @@
                 <image :src="avatar" mode="aspectFill" class="user-avatar fl circle"></image>
                 <view class="right-base flex-1 flex-width">
                     <view class="comments border-radius-main padding-main">
-                        <textarea placeholder="期待您的发言..." placeholder-class="cr-base" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                        <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="wh-auto bg-grey-f8" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                         <view class="oh flex-row jc-sb align-e">
                             <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                             <view class="flex-row align-e">
                                 <!-- #ifndef MP-ALIPAY -->
-                                <text class="text-size-xs cr-grey-d margin-right-sm">剩余{{ input_comments_length_value }}字</text>
+                                <text class="text-size-xs cr-grey-d margin-right-sm">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
                                 <!-- #endif  -->
-                                <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
+                                <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-md va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('user-order.user-order.twc3r7')}}</button>
                             </view>
                         </view>
                     </view>
@@ -51,11 +51,11 @@
                             <view class="ask-comments-right-content-operate margin-top-main flex-row jc-e align-c text-size-xs cr-grey-9">
                                 <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="item.user.user_name_view" :data-askcommentsid="item.id" @tap="modal_open_event">
                                     <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                    <text class="va-m">回复({{ item.comments_count }})</text>
+                                    <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ item.comments_count }})</text>
                                 </view>
                                 <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((item.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="1" :data-index="index" :data-askid="item.ask_id" :data-askcommentsid="item.id" @tap="give_thumbs_event">
                                     <iconfont :name="(item.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                    <text class="va-m">点赞({{ item.give_thumbs_count }})</text>
+                                    <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ item.give_thumbs_count }})</text>
                                 </view>
                             </view>
                             <view v-if="(item.reply_comments_list || null) != null && item.reply_comments_list.length > 0" class="reply-ask-comments-list">
@@ -73,11 +73,11 @@
                                                 <view class="ask-comments-right-content-operate flex-row jc-e align-c text-size-xs cr-grey-9 padding-0">
                                                     <view v-if="(data_base.is_ask_comments_show || 0) == 1" class="item dis-inline-block" :data-index="index" :data-username="comments.user.user_name_view" :data-askcommentsid="comments.ask_comments_id" :data-replycommentsid="comments.id" @tap="modal_open_event">
                                                         <iconfont name="icon-bowenxiangqing-huifu" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                                        <text class="va-m">回复({{ comments.comments_count }})</text>
+                                                        <text class="va-m">{{$t('ask-comments.ask-comments.3fcnme')}}{{ comments.comments_count }})</text>
                                                     </view>
                                                     <view v-if="(data_base.is_ask_give_thumbs || 0) == 1" :class="'item dis-inline-block margin-left-xxxl padding-left-sm cr-' + ((comments.is_give_thumbs || 0) == 1 ? 'main' : '')" data-type="2" :data-index="index" :data-indexs="index2" :data-askid="comments.ask_id" :data-askcommentsid="comments.id" :data-replycommentsid="comments.ask_comments_id" @tap="give_thumbs_event">
                                                         <iconfont :name="(comments.is_give_thumbs || 0) == 1 ? 'icon-bowenxiangqing-dianzan-xuaz' : 'icon-bowenxiangqing-dianzan'" size="28rpx" propClass="pr top-md margin-right-xs"></iconfont>
-                                                        <text class="va-m">点赞({{ comments.give_thumbs_count }})</text>
+                                                        <text class="va-m">{{$t('ask-comments.ask-comments.du7rcv')}}{{ comments.give_thumbs_count }})</text>
                                                     </view>
                                                 </view>
                                             </view>
@@ -87,8 +87,8 @@
                             </view>
                             <view v-if="(item.comments_count || 0) > 0 && (item.is_comments_list_submit == undefined || item.is_comments_list_submit == 1)" class="margin-top-lg text-size-xs">
                                 <text :data-index="index" :data-askid="item.ask_id" :data-askcommentsid="item.id" @tap="comments_list_reply_event">
-                                    <text v-if="item.is_comments_list_submit == undefined" class="cr-base">查看全部{{ item.comments_count }}条回复</text>
-                                    <text v-else class="cr-base">查看更多回复</text>
+                                    <text v-if="item.is_comments_list_submit == undefined" class="cr-base">{{$t('goods-list.goods-list.278qr1')}}{{ item.comments_count }}{{$t('ask-comments.ask-comments.ymmd24')}}</text>
+                                    <text v-else class="cr-base">{{$t('ask-comments.ask-comments.dfhg54')}}</text>
                                     <iconfont name="icon-arrow-bottom" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                                 </text>
                             </view>
@@ -98,13 +98,13 @@
                 <block v-if="((data_base.ask_detail_comments_more_page_number || 0) == 0 && (data.comments_count || 0) > 20) || ((data_base.ask_detail_comments_more_page_number || 0) > 0 && data.comments_count > data_base.ask_detail_comments_more_page_number)">
                     <view v-if="propType == 'detail'" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-value="'/pages/plugins/ask/comments/comments?id=' + data.id" @tap="url_event">
-                            <text class="cr-base">查看全部{{ data.comments_count }}条评论</text>
+                            <text class="cr-base">{{$t('goods-list.goods-list.278qr1')}}{{ data.comments_count }}{{$t('ask-comments.ask-comments.5401r1')}}</text>
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
                     <view v-if="propType == 'comments' && (data.is_comments_list_submit == undefined || data.is_comments_list_submit == 1)" class="margin-top-xxxl tc padding-vertical-main bg-grey-f8 border-radius-sm">
                         <text :data-askid="data.id" @tap="comments_list_reply_event">
-                            <text class="cr-base">查看更多评论</text>
+                            <text class="cr-base">{{$t('ask-comments.ask-comments.4l77wt')}}</text>
                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="margin-left-xs pr top-xs"></iconfont>
                         </text>
                     </view>
@@ -114,19 +114,19 @@
             <view v-if="input_comments_modal_status" class="ask-comments-modal pf">
                 <view class="ask-comments-modal-content bg-white border-radius-main pr">
                     <view class="tc margin-bottom-lg">
-                        <text>回复 @{{ input_comments_modal_username }}</text>
+                        <text>{{$t('ask-comments.ask-comments.8sjar6')}}{{ input_comments_modal_username }}</text>
                         <view class="close pa">
                             <view @tap.stop="modal_close_event">
                                 <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                             </view>
                         </view>
                     </view>
-                    <textarea placeholder="期待您的发言..." placeholder-class="cr-base" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
+                    <textarea :placeholder="$t('ask-comments.ask-comments.m67961')" placeholder-class="cr-base" class="wh-auto br padding-main" :value="input_comments_value" :maxlength="input_comments_length_max" @input="comments_input_event" @blur="comments_input_event"></textarea>
                     <view class="margin-top-lg oh">
                         <image :src="common_static_url + 'emoji-icon.png'" mode="aspectFill" class="emoji-icon va-m" @tap="emoji_event"></image>
                         <view class="fr">
-                            <text class="va-m text-size-xs cr-base margin-right-lg">剩余{{ input_comments_length_value }}字</text>
-                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">评论</button>
+                            <text class="va-m text-size-xs cr-base margin-right-lg">{{$t('login.login.n24i5u')}}{{ input_comments_length_value }}{{$t('ask-comments.ask-comments.6l6vz7')}}</text>
+                            <button type="default" size="mini" class="comment-btn cr-white border-radius-sm text-size-xs va-m" :class="input_comments_value.length > 0 ? 'bg-main br-main ' : 'comment-btn-default'" @tap="comments_event">{{$t('user-order.user-order.twc3r7')}}</button>
                         </view>
                     </view>
                 </view>
@@ -263,7 +263,7 @@
             // 表情选择事件
             emoji_event() {
                 if (this.input_comments_length_value == 0) {
-                    app.globalData.showToast('已超过最大输入字符限制');
+                    app.globalData.showToast(this.$t('ask-comments.ask-comments.3o1rq6'));
                     return false;
                 }
                 if ((this.$refs.emoji || null) != null) {
@@ -327,7 +327,7 @@
                     page = temp_data['comments_list'][index]['page'];
                 }
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('commentsreplylist', 'index', 'ask'),
@@ -364,7 +364,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -384,11 +384,11 @@
                         return false;
                     } else {
                         if (this.input_comments_value == '') {
-                            app.globalData.showToast('请填写评论内容');
+                            app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
                             return false;
                         }
                         uni.showLoading({
-                            title: '提交中...',
+                            title: this.$t('buy.buy.r79t77'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('comments', 'index', 'ask'),
@@ -440,7 +440,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -506,7 +506,7 @@
                                 }
                             },
                             fail: () => {
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

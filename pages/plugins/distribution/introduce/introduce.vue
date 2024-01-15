@@ -8,21 +8,21 @@
                         <view class="br-b padding-bottom-main fw-b text-size">{{ item.name }}</view>
                         <view class="panel-content oh padding-top-main">
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">等级证书</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.017d67')}}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <image :src="item.images_url" class="dis-block fl level-icon" mode="widthFix"></image>
                                 </view>
                             </view>
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">返佣比例</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.el4ib2')}}</view>
                                 <view class="content fl br-l padding-left-main">
-                                    <view>一级 {{ item.level_rate_one }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 0">二级{{ item.level_rate_two }}%</view>
-                                    <view v-if="data_base.level == undefined || data_base.level > 1">三级{{ item.level_rate_three }}%</view>
+                                    <view>{{$t('introduce.introduce.syf66q')}}{{ item.level_rate_one }}%</view>
+                                    <view v-if="data_base.level == undefined || data_base.level > 0">{{$t('introduce.introduce.q4t9kl')}}{{ item.level_rate_two }}%</view>
+                                    <view v-if="data_base.level == undefined || data_base.level > 1">{{$t('introduce.introduce.e5os6e')}}{{ item.level_rate_three }}%</view>
                                 </view>
                             </view>
                             <view class="item br-b oh padding-vertical-main">
-                                <view class="title fl padding-right-main cr-grey">等级规则</view>
+                                <view class="title fl padding-right-main cr-grey">{{$t('introduce.introduce.d7kle4')}}</view>
                                 <view class="content fl br-l padding-left-main">
                                     <block v-if="(item.rules_msg_list || null) != null">
                                         <view>{{ item.rules_msg_list.name }}</view>
@@ -36,7 +36,7 @@
                                                 </block>
                                             </block>
                                             <block v-else>
-                                                <view class="cr-grey">无条件</view>
+                                                <view class="cr-grey">{{$t('introduce.introduce.5t5vzi')}}</view>
                                             </block>
                                         </view>
                                     </block>
@@ -117,7 +117,7 @@ export default {
         init() {
             var self = this;
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -160,9 +160,9 @@ export default {
                     self.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

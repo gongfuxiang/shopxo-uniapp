@@ -27,7 +27,7 @@
                             </navigator>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">开票</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-ids="item.id" data-type="item" @tap="invoice_event">{{$t('invoice-saveinfo.invoice-saveinfo.89815t')}}</button>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -37,7 +37,7 @@
             <!-- 合并开票 -->
             <view v-if="select_ids.length > 0" class="bottom-fixed invoice-merge-submit">
                 <view class="bottom-line-exclude">
-                    <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">合并开票</button>
+                    <button class="bg-white cr-main br-main round wh-auto" type="default" size="mini" hover-class="none" data-type="all" @tap="invoice_event">{{$t('order.order.o411h6')}}</button>
                 </view>
             </view>
         </view>
@@ -67,10 +67,10 @@
                 params: null,
                 select_ids: [],
                 content_list: [
-                    { name: '订单编号', field: 'order_no' },
-                    { name: '订单总额', field: 'total_price' },
-                    { name: '支付金额', field: 'pay_price' },
-                    { name: '订单单价', field: 'price' },
+                    { name: this.$t('user-order-detail.user-order-detail.n18sd2'), field: 'order_no' },
+                    { name: this.$t('order.order.i52cw1'), field: 'total_price' },
+                    { name: this.$t('user-order-detail.user-order-detail.516tlr'), field: 'pay_price' },
+                    { name: this.$t('user-order-detail.user-order-detail.vg4jb1'), field: 'price' },
                 ],
             };
         },
@@ -153,7 +153,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -217,7 +217,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -248,14 +248,14 @@
                 var ids = e.currentTarget.dataset.ids || null;
                 if (type == 'all') {
                     if (this.select_ids.length <= 0) {
-                        app.globalData.showToast('请先选择数据');
+                        app.globalData.showToast(this.$t('order.order.15k32o'));
                         return false;
                     } else {
                         ids = this.select_ids.join(',');
                     }
                 } else {
                     if (ids === null) {
-                        app.globalData.showToast('元素参数id有误');
+                        app.globalData.showToast(this.$t('order.order.3fr155'));
                         return false;
                     }
                 }

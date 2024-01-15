@@ -48,8 +48,8 @@ export default {
             data_page_total: 0,
             data_page: 1,
             content_list: [
-                { name: "奖励积分", field: "integral" },
-                { name: "签到时间", field: "add_time" },
+                { name: this.$t('user-coming-list.user-coming-list.xkwnl8'), field: "integral" },
+                { name: this.$t('user-coming-list.user-coming-list.sq4379'), field: "add_time" },
             ],
         };
     },
@@ -130,7 +130,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -194,7 +194,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -213,7 +213,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
     },

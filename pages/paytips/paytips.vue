@@ -3,14 +3,14 @@
         <view class="content tc">
             <image class="pay-icon dis-block" v-if="params.code == '9000'" mode="widthFix" :src="default_round_success_icon"></image>
             <image class="pay-icon dis-block" v-else mode="widthFix" :src="default_round_error_icon"></image>
-            <view class="text-size-lg cr-base">{{ params.msg || '支付成功' }}</view>
+            <view class="text-size-lg cr-base">{{ params.msg || $t('paytips.paytips.679rxu') }}</view>
         </view>
         <view class="btn-box tc">
             <view>
-                <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">返回</button>
+                <button class="bg-main br-main cr-white round" type="default" hover-class="none" size="mini" @tap="back_event">{{$t('common.return')}}</button>
             </view>
             <view class="margin-top-lg">
-                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || '回到首页' }}</button>
+                <button class="bg-main-pair br-main-pair cr-white round" type="default" hover-class="none" size="mini" data-redirect="1" :data-value="default_to_url" @tap="url_event">{{ params.title || $t('paytips.paytips.jifuu8') }}</button>
             </view>
         </view>
     </view>
@@ -44,35 +44,35 @@
                 switch (url_params.code) {
                     // 支付成功
                     case '9000':
-                        msg = '支付成功';
+                        msg = this.$t('paytips.paytips.679rxu');
                         break;
                     // 正在处理中
                     case '8000':
-                        msg = '正在处理中';
+                        msg = this.$t('paytips.paytips.d8m853');
                         break;
                     // 支付失败
                     case '4000':
-                        msg = '支付失败';
+                        msg = this.$t('paytips.paytips.6y488i');
                         break;
                     // 用户中途取消
                     case '6001':
-                        msg = '已取消支付';
+                        msg = this.$t('paytips.paytips.e732we');
                         break;
                     // 网络连接出错
                     case '6002':
-                        msg = '网络连接出错';
+                        msg = this.$t('paytips.paytips.13v11t');
                         break;
                     // 支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
                     case '6004':
-                        msg = '支付结果未知';
+                        msg = this.$t('paytips.paytips.u1153p');
                         break;
                     // 用户点击忘记密码导致快捷界面退出(only iOS)
                     case '99':
-                        msg = '用户取消支付';
+                        msg = this.$t('paytips.paytips.6mpsl7');
                         break;
                     // 默认错误
                     default:
-                        msg = '其它异常错误';
+                        msg = this.$t('paytips.paytips.59u769');
                 }
                 url_params['msg'] = msg;
                 this.setData({

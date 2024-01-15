@@ -37,7 +37,7 @@
                         </navigator>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{ item.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
+                        <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>
                     </view>
                     <view v-if="
                         (
@@ -50,14 +50,14 @@
                         (item.operate_data.is_order_batch || 0) == 1 ||
                         (item.operate_data.is_order_frequencycard || 0) == 1
                     " class="item-operation tr br-t padding-vertical-main">
-                        <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">支付</button>
-                        <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">收货</button>
-                        <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">批次</button>
-                        <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">次卡</button>
+                        <button v-if="item.operate_data.is_cancel == 1" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="item.operate_data.is_pay == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.order_id" :data-index="index" :data-price="item.total_price" :data-payment="item.main_order_data.payment_id" :data-currency-symbol="item.currency_data.currency_symbol" hover-class="none">{{$t('order.order.1i873j')}}</button>
+                        <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
+                        <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
+                        <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
                         <block v-if="(item.express_data || null) != null && item.express_data.length > 0">
                             <block v-for="(ev, ei) in item.express_data" :key="ei">
-                                <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&eid=' + ev.id + '&action_type=realstore'" hover-class="none">物流{{ ei + 1 }}</button>
+                                <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&eid=' + ev.id + '&action_type=realstore'" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}{{ ei + 1 }}</button>
                             </block>
                         </block>
                     </view>
@@ -109,12 +109,12 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待处理", value: "0,1" },
-                { name: "服务中", value: "2,5" },
-                { name: "待收货", value: "3" },
-                { name: "已完成", value: "4" },
-                { name: "已失效", value: "6,7" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('extraction.extraction.53h4fj'), value: "0,1" },
+                { name: this.$t('orderallot-list.orderallot-list.285ir2'), value: "2,5" },
+                { name: this.$t('order.order.q820hx'), value: "3" },
+                { name: this.$t('order.order.15lr5l'), value: "4" },
+                { name: this.$t('detail.detail.32171c'), value: "6,7" },
             ],
             nav_status_index: 0,
             // 前往页面携带的参数
@@ -243,7 +243,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -328,7 +328,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -386,7 +386,7 @@ export default {
                     temp_data_list[i]['operate_data']['is_pay'] = 0;
                     temp_data_list[i]['operate_data']['is_cancel'] = 0;
                     temp_data_list[i]['status'] = 2;
-                    temp_data_list[i]['status_name'] = '已接收';
+                    temp_data_list[i]['status_name'] = this.$t('orderallot-list.orderallot-list.x5l17j');
                 }
             }
             this.setData({
@@ -397,10 +397,10 @@ export default {
         // 取消
         cancel_event(e) {
             uni.showModal({
-                title: '温馨提示',
-                content: '取消后不可恢复，确定继续吗?',
-                confirmText: '确认',
-                cancelText: '不了',
+                title: this.$t('common.warm_tips'),
+                content: this.$t('order.order.pn78ns'),
+                confirmText: this.$t('common.confirm'),
+                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                 success: (result) => {
                     if (result.confirm) {
                         // 参数
@@ -409,7 +409,7 @@ export default {
         
                         // 加载loding
                         uni.showLoading({
-                            title: '处理中...',
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url("cancel", "orderallot", "realstore"),
@@ -423,7 +423,7 @@ export default {
                                 if (res.data.code == 0) {
                                     var temp_data_list = this.data_list;
                                     temp_data_list[index]['status'] = 5;
-                                    temp_data_list[index]['status_name'] = '已取消';
+                                    temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
                                     temp_data_list[index]['operate_data']['is_cancel'] = 0;
                                     temp_data_list[index]['operate_data']['is_pay'] = 0;
                                     temp_data_list[index]['operate_data']['is_delete'] = 1;
@@ -437,7 +437,7 @@ export default {
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -448,10 +448,10 @@ export default {
         // 收货
         collect_event(e) {
             uni.showModal({
-                title: "温馨提示",
-                content: "请确认已收到货物或已完成，操作后不可恢复，确定继续吗?",
-                confirmText: "确认",
-                cancelText: "不了",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('orderallot-list.orderallot-list.o3ouqv'),
+                confirmText: this.$t('common.confirm'),
+                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                 success: (result) => {
                     if (result.confirm) {
                         // 参数
@@ -460,7 +460,7 @@ export default {
 
                         // 加载loding
                         uni.showLoading({
-                            title: "处理中...",
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url("collect", "orderallot", "realstore"),
@@ -474,7 +474,7 @@ export default {
                                 if (res.data.code == 0) {
                                     var temp_data_list = this.data_list;
                                     temp_data_list[index]["status"] = 4;
-                                    temp_data_list[index]["status_name"] = "已完成";
+                                    temp_data_list[index]["status_name"] = this.$t('order.order.15lr5l');
                                     temp_data_list[index]["operate_data"]["is_collect"] = 0;
                                     this.setData({
                                         data_list: temp_data_list,
@@ -486,7 +486,7 @@ export default {
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("网络开小差了哦~");
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

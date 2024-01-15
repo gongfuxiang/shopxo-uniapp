@@ -24,8 +24,8 @@
                             </view>
                             <view v-if="(item.blog_data || null) != null" class="single-text cr-grey text-size-xs">
                                 <text>{{ blog_main_name }}: {{ item.blog_data.blog_count }}</text>
-                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">评论: {{ item.blog_data.comments_count }}</text>
-                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">点赞: {{ item.blog_data.give_thumbs_count }}</text>
+                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">{{$t('index.index.lkld04')}}{{ item.blog_data.comments_count }}</text>
+                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">{{$t('index.index.r6vv25')}}{{ item.blog_data.give_thumbs_count }}</text>
                             </view>
                         </view>
                     </view>
@@ -35,8 +35,8 @@
             <!-- 分类 -->
             <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">所有{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.6rsqp1')}}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                 </view>
             </view>
 
@@ -57,8 +57,8 @@
             <!-- 热门博文-滚动 -->
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">热门{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.pot64x')}}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">
                     <view class="plugins-blog-rolling-list scroll-view-horizontal">
@@ -81,15 +81,15 @@
             <!-- 推荐博文 -->
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.455787')}}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
                     <block v-for="(item, index) in right_list" :key="index">
                         <view :class="'item padding-vertical-main oh ' + (index > 0 ? 'br-t' : '')">
                             <navigator :url="item.url" hover-class="none">
                                 <view class="blog-title single-text fl">{{ item.title }}</view>
-                                <text class="cr-grey fr">浏览{{ item.access_count }}次</text>
+                                <text class="cr-grey fr">{{$t('detail.detail.e6ga1y')}}{{ item.access_count }}{{$t('buy.buy.0pgsrm')}}</text>
                             </navigator>
                         </view>
                     </block>
@@ -99,8 +99,8 @@
             <!-- 推荐商品 -->
             <view v-if="goods_list.length > 0" class="goods-list oh padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐商品</text>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.8t4j95')}}</text>
+                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
@@ -138,7 +138,7 @@
                 goods_list: [],
                 hot_list: [],
                 right_list: [],
-                blog_main_name: '博文',
+                blog_main_name: this.$t('detail.detail.e439j9'),
                 // 自定义分享信息
                 share_info: {},
             };
@@ -206,7 +206,7 @@
                                 goods_list: data.goods_list || [],
                                 hot_list: data.hot_list || [],
                                 right_list: data.right_list || [],
-                                blog_main_name: (data.base || null) == null ? '博文' : data.base.blog_main_name || '博文',
+                                blog_main_name: (data.base || null) == null ? this.$t('detail.detail.e439j9') : data.base.blog_main_name || this.$t('detail.detail.e439j9'),
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
@@ -241,9 +241,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -10,7 +10,7 @@
                         <view class="dis-inline-block va-m">
                             <uni-icons type="redo" size="34rpx" color="#1AAD19"></uni-icons>
                         </view>
-                        <text class="va-m">分享</text>
+                        <text class="va-m">{{$t('common.share')}}</text>
                     </button>
                 </view>
 
@@ -52,7 +52,7 @@
                                     <view class="sales-price single-text margin-top-sm">{{ currency_symbol }}{{ data.total_price }}</view>
                                 </view>
                                 <view class="right-button fr tr">
-                                    <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">立即购买</button>
+                                    <button type="default" size="mini" class="bg-main br-main cr-white round dis-block text-size-sm" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -60,7 +60,7 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
                 </view>
             </view>
 
@@ -147,7 +147,7 @@
             // 获取数据
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'recommend', 'distribution'),
@@ -204,9 +204,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -262,7 +262,7 @@
                 }
                 var buy_min_number = 1;
                 if (goods_data.length < buy_min_number) {
-                    app.globalData.showToast('请至少选择' + buy_min_number + '个商品');
+                    app.globalData.showToast(this.$t('detail.detail.jsj3u8') + buy_min_number + this.$t('detail.detail.jksm81'));
                     return false;
                 }
 
@@ -313,19 +313,19 @@
                 // 最小起购数量
                 if (buy_min_number > 0 && number < buy_min_number) {
                     number = buy_min_number;
-                    app.globalData.showToast('起购' + buy_min_number + inventory_unit);
+                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + buy_min_number + inventory_unit);
                 }
 
                 // 最大购买数量
                 if (buy_max_number > 0 && number > buy_max_number) {
                     number = buy_max_number;
-                    app.globalData.showToast('限购' + buy_max_number + inventory_unit);
+                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + buy_max_number + inventory_unit);
                 }
 
                 // 是否超过库存数量
                 if (number > inventory) {
                     number = inventory;
-                    app.globalData.showToast('库存数量' + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
                 }
 
                 // 获取数据
@@ -357,7 +357,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

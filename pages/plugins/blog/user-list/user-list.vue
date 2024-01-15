@@ -18,15 +18,11 @@
                             <view class="cr-base flex-1 divider-r-f5 padding-vertical-main" :data-value="'/pages/plugins/blog/form/form?id=' + item.id" @tap="url_event">
                                 <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-wenda-wytw" size="32rpx"></iconfont>
-                                </view>
-                                编辑
-                            </view>
+                                </view>{{$t('common.edit')}}</view>
                             <view class="cr-main flex-1 padding-vertical-main" :data-id="item.id" @tap="del_event">
                                 <view class="margin-right-xs dis-inline-block">
                                     <iconfont name="icon-delete" size="32rpx"></iconfont>
-                                </view>
-                                删除
-                            </view>
+                                </view>{{$t('common.del')}}</view>
                         </view>
                     </view>
                     <!-- 结尾 -->
@@ -41,9 +37,7 @@
                 <button class="cr-main bg-white br-main round text-size wh-auto flex-row align-c jc-c" type="default" hover-class="none" data-value="/pages/plugins/blog/form/form" @tap="url_event">
                     <view class="add-icon">
                         <iconfont name="icon-xzdz-tianjiabiaoq" size="32rpx"></iconfont>
-                    </view>
-                    新增
-                </button>
+                    </view>{{$t('common.add')}}</button>
             </view>
         </view>
         <block v-if="data.length == 0 && data_list_loding_status != 3">
@@ -116,7 +110,7 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '用户未登录',
+                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
                     });
                 }
             },
@@ -138,7 +132,7 @@
                 });
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('index', 'blog', 'blog'),
@@ -199,10 +193,10 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -217,7 +211,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: '确定要删除这条帖子吗？',
+                        msg: this.$t('user-list.user-list.yhvl2q'),
                         is_show_cancel: 1,
                         object: this,
                         params: { id: e.currentTarget.dataset.id },
@@ -228,7 +222,7 @@
                 if (e.alert_status == 1) {
                     // 加载loding
                     uni.showLoading({
-                        title: '加载中...',
+                        title: this.$t('common.loading_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('delete', 'blog', 'blog'),
@@ -247,18 +241,18 @@
                                 this.setData({
                                     data: temp_list,
                                 });
-                                app.globalData.showToast('删除成功', 'success');
+                                app.globalData.showToast(this.$t('user-list.user-list.kpn3fp'), 'success');
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
-                                    app.globalData.showToast('删除失败');
+                                    app.globalData.showToast(this.$t('user-list.user-list.649j60'));
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

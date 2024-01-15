@@ -1,13 +1,13 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back propName="充值"></component-nav-back>
+        <component-nav-back :propName="$t('recharge.recharge.otwkjn')"></component-nav-back>
         <view v-if="data_list_loding_status == 3" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 头部背景 -->
                 <image :src="wallet_static_url + 'rechage-bg.png'" mode="widthFix" class="pa top-0 bg-img wh-auto" />
                 <view class="pr padding-top-main">
                     <view class="wallet-price cr-white">
-                        <view class="text-size-lg fw-b">账号余额</view>
+                        <view class="text-size-lg fw-b">{{$t('recharge.recharge.3shyx4')}}</view>
                         <view class="margin-top-sm">
                             <text class="unit">{{ currency_symbol }}</text>
                             <text class="price fw-b">{{ user_wallet.normal_money }}</text>
@@ -15,7 +15,7 @@
                     </view>
                     <view class="recharge-content bg-white spacing-mt">
                         <block v-if="preset_data.length > 0">
-                            <view class="padding-horizontal-sm spacing-mb">选择充值金额</view>
+                            <view class="padding-horizontal-sm spacing-mb">{{$t('recharge.recharge.60k2v3')}}</view>
                             <view class="flex-row flex-warp tc spacing-mb">
                                 <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list" :data-index="index" :data-value="item.value" @tap="change_price_event">
                                     <view class="recharge-price-content border-radius-main pr" :class="select_index === index ? 'active' : ''">
@@ -30,15 +30,15 @@
                         </block>
                         <view class="form-container padding-top-sm padding-horizontal-sm">
                             <view class="form-gorup border-radius-main custom-price flex-row align-c">
-                                <view class="margin-right-xxl">{{preset_data.length > 0 ? '其他' : '充值'}}金额</view>
-                                <input type="digit" name="money" v-model="recharge_money_value" placeholder-class="cr-grey-9" class="cr-base text-size-md flex-1 flex-width" placeholder="请输入充值金额" @input="recharge_money_value_input_event" maxlength="6" />
+                                <view class="margin-right-xxl">{{preset_data.length > 0 ? $t('recharge.recharge.23zwpz') : $t('recharge.recharge.otwkjn')}}{{$t('recharge.recharge.qbw1x2')}}</view>
+                                <input type="digit" name="money" v-model="recharge_money_value" placeholder-class="cr-grey-9" class="cr-base text-size-md flex-1 flex-width" :placeholder="$t('recharge.recharge.73f4v9')" @input="recharge_money_value_input_event" maxlength="6" />
                             </view>
                             <view class="form-gorup form-gorup-submit spacing-mt">
-                                <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">立即充值</button>
+                                <button class="round cr-white bg-main br-main text-size" type="default" hover-class="none" :disabled="form_submit_disabled_status" @tap="form_submit_event">{{$t('recharge.recharge.x27b25')}}</button>
                             </view>
                         </view>
                         <view v-if="((recharge_desc || null) != null && recharge_desc.length > 0)" class="recharge-desc padding-top-xxl padding-horizontal-sm">
-                            <view class="recharge-desc-title padding-bottom-sm">充值说明</view>
+                            <view class="recharge-desc-title padding-bottom-sm">{{$t('recharge.recharge.4fm61g')}}</view>
                             <view v-for="(item, index) in recharge_desc" :key="index" class="recharge-desc-content cr-grey-9 flex-row align-c">
                                 <text class="dis-inline-block circle bg-main circle-poiont margin-right-sm"></text>
                                 <text class="flex-1 flex-width text-size-xs">{{ item }}</text>
@@ -150,7 +150,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '请先绑定手机号码',
+                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.4s229b'),
                         });
                         return false;
                     } else {
@@ -163,7 +163,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '请先授权用户信息',
+                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
                 }
             },
@@ -199,9 +199,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -226,7 +226,7 @@
             form_submit_event(e) {
                 // 参数
                 if ((this.recharge_money_value || null) == null) {
-                    app.globalData.showToast('请输入充值金额');
+                    app.globalData.showToast(this.$t('recharge.recharge.73f4v9'));
                     return false;
                 }
 
@@ -234,7 +234,7 @@
                     form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('create', 'recharge', 'wallet'),
@@ -260,7 +260,7 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -269,7 +269,7 @@
                             form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

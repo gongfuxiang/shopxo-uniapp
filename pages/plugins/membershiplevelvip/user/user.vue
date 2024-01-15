@@ -55,26 +55,20 @@
                                         <!-- 会员已过期或未开通 -->
                                         <block v-if="(user_vip.surplus_time_number || 0) == 0">
                                             <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                                <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                                    开通会员
-                                                    <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
+                                                <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                 </button>
                                             </navigator>
                                         </block>
                                         <block v-else>
                                             <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
                                                 <block v-if="(data_base.is_supported_renew_old_order || null) == 1">
-                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">
-                                                        续费会员
-                                                        <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
+                                                    <button size="mini" type="default" hover-class="none" class="submit-buy cr-white pr" @tap="uservip_renew_event" :disabled="submit_disabled_status">{{$t('user.user.k614v7')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                     </button>
                                                 </block>
                                                 <block v-else>
                                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
                                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                                                连续开通
-                                                                <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
+                                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                                             </button>
                                                         </navigator>
                                                     </block>
@@ -87,9 +81,7 @@
                                 <block v-else>
                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
                                         <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">
-                                                开通会员
-                                                <iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
+                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>
@@ -106,7 +98,7 @@
                     <view v-if="statistics_data !== null" class="padding-horizontal-main spacing-mt">
                         <!-- 推广客户 -->
                         <view class="promotion padding-sm border-radius-main bg-white pr spacing-mb">
-                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">推广客户</view>
+                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.76dcx6')}}</view>
                             <view class="flex-row jc-sa align-c">
                                 <block v-for="(item, index) in statistics_data.user_total" :key="index">
                                     <view class="flex-width-half">
@@ -115,7 +107,7 @@
                                             <view class="flex-1 flex-width padding-left-main">
                                                 <view class="single-text margin-top-sm">
                                                     <text class="num fw-b">{{ item.value }}</text>
-                                                    <text class="cr-grey-9 text-size-xs">人</text>
+                                                    <text class="cr-grey-9 text-size-xs">{{$t('user.user.rjye50')}}</text>
                                                 </view>
                                                 <view class="cr-base text-size-xs single-text">{{ item.name }}</view>
                                             </view>
@@ -127,7 +119,7 @@
 
                         <!-- 返利概况 -->
                         <view class="rebate profit-container padding-main border-radius-main bg-white">
-                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">返利概况</view>
+                            <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.981200')}}</view>
                             <view class="oh tc flex-row jc-sa align-c">
                                 <block v-for="(item, index) in statistics_data.user_profit" :key="index">
                                     <view class="item padding-main flex-1" :class="index + 1 === statistics_data.user_profit.length ? '' : 'divider-r-f5'">
@@ -190,7 +182,7 @@
                 user_vip: null,
                 nav_list: [],
                 avatar: app.globalData.data.default_user_head_src,
-                nickname: '用户名',
+                nickname: this.$t('login.login.6yfr9g'),
                 submit_disabled_status: false,
                 // 推广客户，反力概况
                 statistics_data: null,
@@ -284,9 +276,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -312,10 +304,10 @@
             uservip_renew_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '按照原时长和费用续费，确定继续吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('user.user.95s1ez'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             // 请求生成支付订单
@@ -323,7 +315,7 @@
                                 submit_disabled_status: true,
                             });
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('renew', 'buy', 'membershiplevelvip'),
@@ -351,7 +343,7 @@
                                         submit_disabled_status: false,
                                     });
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

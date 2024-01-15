@@ -47,10 +47,10 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "消费金额", field: "order_total" },
-                { name: "下级消费", field: "find_order_total" },
-                { name: "下级用户", field: "referrer_count" },
-                { name: "加入时间", field: "add_time" },
+                { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total" },
+                { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total" },
+                { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count" },
+                { name: this.$t('team.team.6h2l64'), field: "add_time" },
             ],
         };
     },
@@ -131,7 +131,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -195,7 +195,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -214,7 +214,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
     },

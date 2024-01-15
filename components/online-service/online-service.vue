@@ -6,7 +6,7 @@
                 <block v-if="is_chat == 1">
                     <view @tap="chat_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
-                        <text class="text dis-block text-size-xs cr-grey">客服</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </view>
                 </block>
                 <block v-else>
@@ -22,7 +22,7 @@
                     <button type="default" @tap="call_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                     <!-- #endif -->
-                        <text class="text dis-block text-size-xs cr-grey">客服</text>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                 </block>
             </view>
@@ -222,7 +222,7 @@
             // 客服电话
             call_event() {
                 if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast("客服电话有误");
+                    app.globalData.showToast(this.$t('setup.setup.utnr7g'));
                 } else {
                     app.globalData.call_tel(this.common_app_customer_service_tel);
                 }

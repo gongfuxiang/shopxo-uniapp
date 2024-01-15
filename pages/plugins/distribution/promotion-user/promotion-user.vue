@@ -28,9 +28,9 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">邮箱</button>
-                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">电话</button>
-                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">用户订单</button>
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('login.login.p54kf1')}}</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('promotion-user.promotion-user.62c8m1')}}</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
                     </view>
                 </view>
             </view>
@@ -62,28 +62,28 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_type_list: [
-                { name: "推广用户", value: 0 },
-                { name: "已消费用户", value: 1 },
-                { name: "未消费用户", value: 2 },
-                { name: "新增客户", value: 3 },
-                { name: "新增客户(有效)", value: 4 },
-                { name: "新增客户(需复购)", value: 5 },
+                { name: this.$t('promotion-user.promotion-user.o6qi74'), value: 0 },
+                { name: this.$t('promotion-user.promotion-user.kx7595'), value: 1 },
+                { name: this.$t('promotion-user.promotion-user.2ey5t1'), value: 2 },
+                { name: this.$t('promotion-user.promotion-user.852zib'), value: 3 },
+                { name: this.$t('promotion-user.promotion-user.h8mx3e'), value: 4 },
+                { name: this.$t('promotion-user.promotion-user.fvbq25'), value: 5 },
             ],
             // 导航下标
             nav_type_index: 0,
             content_list: [
-                { name: "消费订单", field: "order_count", unit: "", default: 0 },
-                { name: "消费金额", field: "order_total", unit: "", default: 0 },
-                { name: "最后下单时间", field: "order_last_time", default: "" },
-                { name: "下级订单", field: "find_order_count", unit: "", default: 0 },
-                { name: "下级消费", field: "find_order_total", unit: "", default: 0 },
-                { name: "下级最后下单时间", field: "find_order_last_time", default: "" },
-                { name: "下级用户", field: "referrer_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.2g7enc'), field: "order_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.76748p'), field: "order_last_time", default: "" },
+                { name: this.$t('promotion-user.promotion-user.u43380'), field: "find_order_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.1gc3ny'), field: "find_order_last_time", default: "" },
+                { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count", unit: "", default: 0 },
             ],
             nav_search_buy_type_list: [
-                { value: -1, name: "全部" },
-                { value: 0, name: "未下单" },
-                { value: 1, name: "已下单" },
+                { value: -1, name: this.$t('common.all') },
+                { value: 0, name: this.$t('promotion-user.promotion-user.g5332w') },
+                { value: 1, name: this.$t('promotion-user.promotion-user.8i641g') },
             ],
             nav_search_value: {
                 team_search_user_time_start: "",
@@ -183,7 +183,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 请求参数
@@ -251,7 +251,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -270,7 +270,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
 

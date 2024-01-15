@@ -4,7 +4,7 @@
             <form @submit="form_submit" class="form-container">
                 <view class="padding-main oh border-radius-main">
                     <view class="form-gorup bg-white form-container-upload oh">
-                        <view class="form-gorup-title">logo图片<text class="form-group-tips">建议300x300px</text></view>
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.u439pg')}}<text class="form-group-tips">{{$t('extraction-apply.extraction-apply.bflosr')}}</text></view>
                         <view class="form-upload-data oh">
                             <block v-if="(extraction_data.logo || null) != null">
                                 <view class="item fl">
@@ -17,22 +17,22 @@
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">别名</view>
-                        <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" placeholder="别名格式最多 16 个字符" />
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.9t81k8')}}</view>
+                        <input type="text" name="alias" :value="extraction_data.alias || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.wt1w0m')" />
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">联系人<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" placeholder="联系人格式 2~16 个字符之间" />
+                        <view class="form-gorup-title">{{$t('user-detail.user-detail.k5867n')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="name" :value="extraction_data.name || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.73efnt')" />
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">联系电话<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" placeholder="座机 或 手机" />
+                        <view class="form-gorup-title">{{$t('user-detail.user-detail.gfe703')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="tel" :value="extraction_data.tel || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.qixk24')" />
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">省市区<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.cy87k6')}}<text class="form-group-tips-must">*</text></view>
                         <view class="select-address oh">
                             <view class="section fl">
                                 <picker name="province" @change="select_province_event" :value="province_value" :range="province_list" range-key="name">
@@ -43,34 +43,34 @@
                                 <picker v-if="(province_id || null) != null" name="city" @change="select_city_event" :value="city_value" :range="city_list" range-key="name">
                                     <view :class="'name ' + (city_value == null ? 'cr-grey' : 'cr-base')">{{ (city_list[city_value] || null) == null ? default_city : city_list[city_value]['name'] }}</view>
                                 </picker>
-                                <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择省份">请先选择省份</text>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.liqbru')">{{$t('extraction-apply.extraction-apply.liqbru')}}</text>
                             </view>
                             <view class="section fl">
                                 <picker v-if="(city_id || null) != null" name="county" @change="select_county_event" :value="county_value" :range="county_list" range-key="name">
                                     <view :class="'name ' + (county_value == null ? 'cr-grey' : 'cr-base')">{{ (county_list[county_value] || null) == null ? default_county : county_list[county_value]['name'] }}</view>
                                 </picker>
-                                <text v-else class="cr-grey" @tap="region_select_error_event" data-value="请先选择城市">请先选择城市</text>
+                                <text v-else class="cr-grey" @tap="region_select_error_event" :data-value="$t('extraction-apply.extraction-apply.r4q86m')">{{$t('extraction-apply.extraction-apply.r4q86m')}}</text>
                             </view>
                         </view>
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">详细地址<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" placeholder="详细地址格式 1~80 个字符之间" />
+                        <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="address" :value="extraction_data.address || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('extraction-apply.extraction-apply.gxo73a')" />
                     </view>
 
                     <view class="form-gorup bg-white">
-                        <view class="form-gorup-title">地理位置<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('extraction-apply.extraction-apply.47v7m0')}}<text class="form-group-tips-must">*</text></view>
                         <view @tap="choose_location_event" class="form-gorup-text">
-                            <view v-if="(user_location.status || 0) == 0" class="cr-grey">请选择地理位置</view>
+                            <view v-if="(user_location.status || 0) == 0" class="cr-grey">{{$t('extraction-apply.extraction-apply.8831v6')}}</view>
                             <view v-else class="cr-base">{{ user_location.lng }}, {{ user_location.lat }}</view>
                         </view>
                     </view>
 
-                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb"> 注意：编辑信息将重新审核后方可生效 </view>
+                    <view v-if="(extraction_data || null) != null && (extraction_data.status || 0) == 1" class="cr-red margin-top-sm spacing-mb">{{$t('extraction-apply.extraction-apply.5y2yzu')}}</view>
                     <view class="bottom-fixed">
                         <view class="bottom-line-exclude">
-                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
                         </view>
                     </view>
                 </view>
@@ -98,9 +98,9 @@
                 city_id: null,
                 county_id: null,
                 editor_path_type: '',
-                default_province: '请选择省',
-                default_city: '请选择市',
-                default_county: '请选择区/县',
+                default_province: this.$t('extraction-apply.extraction-apply.s3h5o3'),
+                default_city: this.$t('extraction-apply.extraction-apply.4s4s15'),
+                default_county: this.$t('extraction-apply.extraction-apply.fk4gw5'),
                 province_value: null,
                 city_value: null,
                 county_value: null,
@@ -157,7 +157,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '请先绑定手机号码',
+                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.4s229b'),
                         });
                         return false;
                     } else {
@@ -167,7 +167,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '请先授权用户信息',
+                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
                 }
             },
@@ -226,7 +226,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('获取数据失败');
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.h8f437'));
                     },
                 });
             },
@@ -273,7 +273,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('省份获取失败');
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.fo7y6c'));
                     },
                 });
             },
@@ -301,7 +301,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast('城市获取失败');
+                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.b6qg7b'));
                         },
                     });
                 }
@@ -331,7 +331,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast('区/县获取失败');
+                            app.globalData.showToast(this.$t('extraction-apply.extraction-apply.5s5734'));
                         },
                     });
                 }
@@ -410,14 +410,14 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'name', msg: '请填写联系人' },
-                    { fields: 'tel', msg: '请填写联系电话' },
-                    { fields: 'province', msg: '请选择省份' },
-                    { fields: 'city', msg: '请选择城市' },
-                    { fields: 'county', msg: '请选择区县' },
-                    { fields: 'address', msg: '请填写详细地址' },
-                    { fields: 'lng', msg: '请选择地理位置' },
-                    { fields: 'lat', msg: '请选择地理位置' },
+                    { fields: 'name', msg: this.$t('extraction-apply.extraction-apply.q15b4n') },
+                    { fields: 'tel', msg: this.$t('extraction-apply.extraction-apply.3or25c') },
+                    { fields: 'province', msg: this.$t('extraction-apply.extraction-apply.m99d2g') },
+                    { fields: 'city', msg: this.$t('extraction-apply.extraction-apply.03587o') },
+                    { fields: 'county', msg: this.$t('extraction-apply.extraction-apply.pt8436') },
+                    { fields: 'address', msg: this.$t('extraction-apply.extraction-apply.v1g617') },
+                    { fields: 'lng', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
+                    { fields: 'lat', msg: this.$t('extraction-apply.extraction-apply.8831v6') },
                 ];
 
                 // logo
@@ -450,10 +450,10 @@
                 if (app.globalData.fields_check(form_data, validation)) {
                     if ((self.extraction_data || null) != null && (self.extraction_data.status || 0) == 1) {
                         uni.showModal({
-                            title: '温馨提示',
-                            content: '数据需重新审核后方可生效',
-                            confirmText: '确认',
-                            cancelText: '暂不',
+                            title: this.$t('common.warm_tips'),
+                            content: this.$t('extraction-apply.extraction-apply.rm14pu'),
+                            confirmText: this.$t('common.confirm'),
+                            cancelText: this.$t('common.not_yet'),
                             success: (result) => {
                                 if (result.confirm) {
                                     self.request_data_save(form_data);
@@ -473,7 +473,7 @@
                     form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('applysave', 'extraction', 'distribution'),
@@ -494,7 +494,7 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -503,7 +503,7 @@
                             form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -520,8 +520,8 @@
             upload_delete_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复、继续吗？',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var temp_data = self.extraction_data || {};

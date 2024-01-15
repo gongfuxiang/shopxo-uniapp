@@ -32,7 +32,7 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-vertical-main">
-                        <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-used/frequencycard-used?cuid=' + item.id" hover-class="none">使用记录</button>
+                        <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-used/frequencycard-used?cuid=' + item.id" hover-class="none">{{$t('frequencycard-list.frequencycard-list.cgy327')}}</button>
                     </view>
                 </view>
             </view>
@@ -64,18 +64,18 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "有效", value: "0" },
-                { name: "暂停", value: "1" },
-                { name: "结束", value: "2" },
-                { name: "关闭", value: "3" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('frequencycard-list.frequencycard-list.954ewh'), value: "0" },
+                { name: this.$t('frequencycard-list.frequencycard-list.8x98g7'), value: "1" },
+                { name: this.$t('frequencycard-list.frequencycard-list.5n3ums'), value: "2" },
+                { name: this.$t('frequencycard-list.frequencycard-list.n36x3w'), value: "3" },
             ],
             nav_status_index: 0,
             content_list: [
-                { name: "可用次数", field: "valid_number", unit: "次" },
-                { name: "已用次数", field: "use_number", unit: "次" },
-                { name: "起始时间", field: "start_time" },
-                { name: "结束时间", field: "end_time" },
+                { name: this.$t('frequencycard-list.frequencycard-list.cx75t7'), field: "valid_number", unit: this.$t('buy.buy.0pgsrm') },
+                { name: this.$t('frequencycard-list.frequencycard-list.3m1w12'), field: "use_number", unit: this.$t('buy.buy.0pgsrm') },
+                { name: this.$t('frequencycard-list.frequencycard-list.89t8am'), field: "start_time" },
+                { name: this.$t('team.team.iee9bp'), field: "end_time" },
             ],
         };
     },
@@ -169,7 +169,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -237,7 +237,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

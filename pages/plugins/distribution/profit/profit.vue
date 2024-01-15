@@ -56,18 +56,18 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待生效", value: "0" },
-                { name: "待结算", value: "1" },
-                { name: "已结算", value: "2" },
-                { name: "已失效", value: "3" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('profit.profit.3c7zmg'), value: "0" },
+                { name: this.$t('profit.profit.67o785'), value: "1" },
+                { name: this.$t('profit.profit.l5knxu'), value: "2" },
+                { name: this.$t('detail.detail.32171c'), value: "3" },
             ],
             nav_status_index: 0,
             content_list: [
-                { name: "订单金额", field: "total_price" },
-                { name: "退款金额", field: "refund_price" },
-                { name: "收益金额", field: "profit_price" },
-                { name: "当前级别", field: "level_name" },
+                { name: this.$t('order-detail.order-detail.x3ge6c'), field: "total_price" },
+                { name: this.$t('order-detail.order-detail.v52n5r'), field: "refund_price" },
+                { name: this.$t('profit.profit.utg512'), field: "profit_price" },
+                { name: this.$t('profit.profit.6a7t71'), field: "level_name" },
             ],
         };
     },
@@ -158,7 +158,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -224,7 +224,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

@@ -8,7 +8,7 @@
                 type="text"
                 confirm-type="search"
                 :class="'input round wh-auto dis-block '+propClass"
-                :placeholder="propPlaceholder"
+                :placeholder="(propPlaceholder || this.$t('search.search.660us5'))"
                 :placeholder-class="propPlaceholderClass"
                 :value="propDefaultValue"
                 @input="search_input_value_event"
@@ -17,7 +17,7 @@
                 @blur="search_input_blur_event"
                 :style="'color:' + propTextColor + ';'"
             />
-            <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">搜索</button>
+            <button v-if="propIsBtn" class="search-btn pa bg-main" size="mini" type="default" @tap="search_submit_confirm_event">{{$t('common.search')}}</button>
         </view>
     </view>
 </template>
@@ -42,7 +42,7 @@
             },
             propPlaceholder: {
                 type: String,
-                default: '其实搜索很简单 ^_^!',
+                default: '',
             },
             propDefaultValue: {
                 type: String,
@@ -162,7 +162,7 @@
             search_submit_confirm_event(e) {
                 // 是否验证必须要传值
                 if (this.propIsRequired && this.input_value === '') {
-                    app.globalData.showToast('请输入搜索关键字');
+                    app.globalData.showToast(this.$t('search.search.ic9b89'));
                     return false;
                 }
 

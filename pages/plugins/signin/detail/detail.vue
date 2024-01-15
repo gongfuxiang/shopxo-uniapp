@@ -7,23 +7,17 @@
                 <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
                         <button type="default" class="content" @tap="share_event">
-                            <iconfont name="icon-qiandao-fenxiang" propClass="pr top-sm" size="32rpx"></iconfont>
-                            分享
-                        </button>
+                            <iconfont name="icon-qiandao-fenxiang" propClass="pr top-sm" size="32rpx"></iconfont>{{$t('common.share')}}</button>
                     </view>
                     <view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
                         <view class="content">
-                            <iconfont name="icon-qiandao-zudui" propClass="pr top-xs" size="34rpx"></iconfont>
-                            组队
-                        </view>
+                            <iconfont name="icon-qiandao-zudui" propClass="pr top-xs" size="34rpx"></iconfont>{{$t('detail.detail.8ua11k')}}</view>
                     </view>
                 </view>
                 <view class="signin-btn pa left-0 right-0 tc">
                     <view class="content cr-white" @tap="coming_event">
-                        <block v-if="is_already_coming == 1"> 已签到 </block>
-                        <block v-else>
-                            立即签到
-                            <iconfont name="icon-arrow-right-round" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
+                        <block v-if="is_already_coming == 1">{{$t('detail.detail.25x8ij')}}</block>
+                        <block v-else>{{$t('detail.detail.mvj266')}}<iconfont name="icon-arrow-right-round" color="#fff" size="32rpx" propClass="margin-left-sm"></iconfont>
                         </block>
                     </view>
                 </view>
@@ -36,9 +30,7 @@
                             </view>
                             <view class="title-right text-size-md">
                                 <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
-                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>
-                                    我的签到
-                                </navigator>
+                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</navigator>
                             </view>
                         </view>
                         <view class="calendar-week flex-row align-c jc-sa padding-horizontal-main">
@@ -54,7 +46,7 @@
                                             <iconfont name="icon-qiandao-yixuan" color="#E22C08" size="48rpx"></iconfont>
                                         </block>
                                         <block v-else>
-                                            <text class="fw-b">今天</text>
+                                            <text class="fw-b">{{$t('detail.detail.p07k62')}}</text>
                                         </block>
                                     </block>
                                     <block v-else>
@@ -74,18 +66,14 @@
                             <image :src="signin_static_url + 'calendar-link.png'" mode="widthFix" class="calendar-link-right"></image>
                             <!-- 判断是组队签到还是个人签到 -->
                             <view v-if="(team_signin_data || null) != null && user.id == data.user_id" class="content bg-white flex-row jc-sb align-c">
-                                <text class="fw-b">今日{{ team_signin_data.day }}人签到，共{{ team_signin_data.total }}人</text>
+                                <text class="fw-b">{{$t('detail.detail.96bwp0')}}{{ team_signin_data.day }}{{$t('detail.detail.rdxjvh')}}{{ team_signin_data.total }}{{$t('user.user.rjye50')}}</text>
                                 <navigator v-if="(data_base.is_team_show_coming_user || 0) == 1" :url="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" hover-class="none">
                                     <iconfont name="icon-arrow-right"></iconfont>
                                 </navigator>
                             </view>
                             <view v-else class="content bg-white flex-row jc-sb align-c">
-                                <text class="fw-b">
-                                    今日
-                                    <block v-if="user_signin_data.integral">已</block>
-                                    <block v-else>未</block>
-                                    签到，获得{{ user_signin_data.integral || 0 }}积分，共{{ user_signin_data.total || 0 }}次
-                                </text>
+                                <text class="fw-b">{{$t('detail.detail.96bwp0')}}<block v-if="user_signin_data.integral">{{$t('goods-detail.goods-detail.by7052')}}</block>
+                                    <block v-else>{{$t('detail.detail.we522y')}}</block>{{$t('detail.detail.mqmxbt')}}{{ user_signin_data.integral || 0 }}{{$t('detail.detail.15i191')}}{{ user_signin_data.total || 0 }}{{$t('buy.buy.0pgsrm')}}</text>
                                 <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
                                     <iconfont name="icon-arrow-right"></iconfont>
                                 </navigator>
@@ -95,7 +83,7 @@
 
                     <!-- 公告信息 -规则说明 -->
                     <view v-if="(data_base.signin_desc || null) != null && data_base.signin_desc.length > 0" class="notice-content border-radius-main text-size-md">
-                        <view class="title fw-b">规则说明</view>
+                        <view class="title fw-b">{{$t('detail.detail.sx6u43')}}</view>
                         <view class="content">
                             <block v-for="(item, index) in data_base.signin_desc" :key="index">{{ item }}</block>
                         </view>
@@ -104,8 +92,8 @@
                     <!-- 推荐商品 -->
                     <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="spacing-mt">
                         <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                            <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">推荐商品</text>
-                            <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-base">更多</navigator>
+                            <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.8t4j95')}}</text>
+                            <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-base">{{$t('common.more')}}</navigator>
                         </view>
                         <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                     </view>
@@ -116,13 +104,9 @@
                     <view class="coming-content">
                         <view class="coming-item tc pr">
                             <image :src="signin_static_url + 'signin-popup-title.png'" class="pa" mode="widthFix"></image>
-                            <view class="title">签到成功</view>
-                            <view class="desc">
-                                恭喜您获得
-                                <text>{{ coming_integral }}</text>
-                                积分
-                            </view>
-                            <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">立即使用</view>
+                            <view class="title">{{$t('detail.detail.6qk085')}}</view>
+                            <view class="desc">{{$t('detail.detail.ndp2k3')}}<text>{{ coming_integral }}</text>{{$t('index.index.t26j9z')}}</view>
+                            <view class="use-btn text-size fw-b cr-white" :data-value="home_page_url" @tap="url_event">{{$t('detail.detail.7itw5w')}}</view>
                             <view class="close-sub pa cr-white" @tap="coming_success_close_event">
                                 <iconfont name="icon-qiandao-tancguanbi" size="60rpx"></iconfont>
                             </view>
@@ -168,7 +152,7 @@
                 // 自定义分享信息
                 share_info: {},
                 // 周数
-                week: ['日', '一', '二', '三', '四', '五', '六'],
+                week: [this.$t('detail.detail.6w8t3g'), this.$t('detail.detail.xtcy73'), this.$t('detail.detail.w2p2d9'), this.$t('detail.detail.xt8596'), this.$t('detail.detail.13s18l'), this.$t('detail.detail.n5rm3q'), this.$t('detail.detail.3d23mc')],
                 // 年
                 year: new Date().getFullYear(),
                 // 月
@@ -176,7 +160,7 @@
                 // 日
                 date: new Date().getDate(),
                 // 日期
-                calendar: new Date().getFullYear() + '年' + (new Date().getMonth() + 1) + '月' + new Date().getDate() + '日',
+                calendar: new Date().getFullYear() + this.$t('detail.detail.73rb8q') + (new Date().getMonth() + 1) + this.$t('detail.detail.zill36') + new Date().getDate() + this.$t('detail.detail.6w8t3g'),
                 // 本月日历总天数
                 day_count: [],
             };
@@ -304,7 +288,7 @@
                                 // 基础自定义分享
                                 this.setData({
                                     share_info: {
-                                        title: this.data.seo_title || '签到',
+                                        title: this.data.seo_title || this.$t('detail.detail.y2217b'),
                                         desc: this.data.seo_desc,
                                         path: '/pages/plugins/signin/detail/detail',
                                         query: 'id=' + this.data.id,
@@ -327,9 +311,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -357,7 +341,7 @@
                 }
                 if (this.is_already_coming != 1 && this.init()) {
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('coming', 'index', 'signin'),
@@ -383,7 +367,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -398,7 +382,7 @@
             team_event(e) {
                 if (this.init()) {
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('team', 'userqrcode', 'signin'),
@@ -446,7 +430,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

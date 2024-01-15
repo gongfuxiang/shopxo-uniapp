@@ -8,8 +8,8 @@
                     <template slot="content">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss">
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">商城</view>
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">门店</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{$t('cart.cart.v37ow8')}}</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{$t('cart.cart.09gl3g')}}</view>
                             </view>
                         </view>
                     </template>
@@ -36,7 +36,7 @@
             </block>
             <block v-else>
                 <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP -->
-                <component-nav-back propClass="bg-white" propNameClass="cr-black" propName="购物车" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false"></component-nav-back>
+                <component-nav-back propClass="bg-white" propNameClass="cr-black" :propName="$t('goods-detail.goods-detail.o1rnb5')" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
         </block>
@@ -110,16 +110,16 @@
                     <!-- 空购物车 -->
                     <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
                         <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
-                        <view class="cr-grey text-size-sm">{{ data_list_loding_msg || '购物车空空如也' }}</view>
+                        <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('cart.cart.j8on74') }}</view>
                         <navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
-                            <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">去逛逛</button>
+                            <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">{{$t('cart.cart.wb5465')}}</button>
                         </navigator>
                     </view>
 
                     <!-- 猜你喜欢 -->
                     <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-main">
                         <view class="tc spacing-mb">
-                            <view class="guess-like fw-b text-size-md">猜你喜欢</view>
+                            <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
                         </view>
                         <div class="spacing-mt">
                             <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propIsCartNumberTabBarBadgeSync="(plugins_realstore_info || null) == null" :propIsCartParaCurve="(plugins_realstore_info || null) == null" :propCurrencySymbol="currency_symbol" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
@@ -150,12 +150,12 @@
                             <view @tap="selected_event" data-type="all">
                                 <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                             </view>
-                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">删除</text>
-                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">全选</text>
+                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{$t('common.del')}}</text>
+                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{$t('cart.cart.pxjwv8')}}</text>
                         </view>
                         <view class="price">
                             <view class="flex-row jc-s flex-nowrap align-c">
-                                <view>合计：</view>
+                                <view>{{$t('buy.buy.wx78ju')}}</view>
                                 <view class="sales-price single-text fw-b">
                                     <text class="text-size-sm">{{ buy_currency_symbol }}</text>
                                     <text class="text-size-lg">{{ total_price }}</text>
@@ -164,21 +164,20 @@
                             <block v-if="total_num > 0">
                                 <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
                                     <block v-if="preferential_price > 0">
-                                        <view class="cr-base">优惠:{{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                        <view class="cr-base">{{$t('cart.cart.3kr74b')}}{{ buy_currency_symbol }}{{ preferential_price }}</view>
                                     </block>
                                     <block v-else>
                                         <block v-if="increase_price > 0">
-                                            <view class="cr-base">增加:{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                            <view class="cr-base">{{$t('cart.cart.n76213')}}{{ buy_currency_symbol }}{{ increase_price }}</view>
                                         </block>
                                     </block>
-                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">查看明细</view>
+                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{$t('cart.cart.4tbj4s')}}</view>
                                 </view>
                             </block>
                         </view>
                     </view>
                     <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                            去结算<block v-if="total_num > 0">({{ total_num }})</block>
+                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">{{$t('goods-category.goods-category.44f1ww')}}<block v-if="total_num > 0">({{ total_num }})</block>
                         </button>
                     </view>
                 </view>
@@ -191,7 +190,7 @@
         <component-popup :propShow="plugins_realstore_choice_status" propPosition="bottom" @onclose="realstore_choice_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="oh tc">
-                    <text class="text-size">附近门店</text>
+                    <text class="text-size">{{$t('cart.cart.7gdej1')}}</text>
                     <view class="fr" @tap.stop="realstore_choice_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -211,7 +210,7 @@
                         </block>
                         <view class="padding-main tc">
                             <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
-                                <text class="cr-grey text-size-xs va-m">查看更多</text>
+                                <text class="cr-grey text-size-xs va-m">{{$t('goods-list.goods-list.h3t0f1')}}</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
                                     <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>
@@ -219,7 +218,7 @@
                         </view>
                     </block>
                     <block v-else>
-                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无门店信息</view>
+                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('cart.cart.h63814')}}</view>
                     </block>
                 </view>
             </view>
@@ -228,7 +227,7 @@
         <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
             <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
                 <view class="oh tc discount_detail-popup-title">
-                    <text class="text-size">金额明细</text>
+                    <text class="text-size">{{$t('cart.cart.t41i4x')}}</text>
                     <view class="fr" @tap.stop="discount_detail_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -263,26 +262,26 @@
                         </view>
                     </scroll-view>
                     <view class="tc padding-top-sm" @tap="open_goods_list_event">
-                        <text class="cr-grey-9 text-size-xs">已选{{ total_num }}件商品</text>
+                        <text class="cr-grey-9 text-size-xs">{{$t('buy.buy.g2vt78')}}{{ total_num }}{{$t('cart.cart.miti3i')}}</text>
                         <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                     </view>
                 </view>
 
                 <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
                     <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
-                        <view>金额明细</view>
+                        <view>{{$t('cart.cart.t41i4x')}}</view>
                         <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
                     </view>
                     <block v-if="preferential_price > 0">
                         <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                            <view class="fw-b">共减</view>
+                            <view class="fw-b">{{$t('cart.cart.9s0l57')}}</view>
                             <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
                         </view>
                     </block>
                     <block v-else>
                         <block v-if="increase_price > 0">
                             <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                <view class="fw-b">共加</view>
+                                <view class="fw-b">{{$t('cart.cart.qh35gz')}}</view>
                                 <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
                             </view>
                         </block>
@@ -343,13 +342,13 @@
                 swipe_item_index: null,
                 swipe_options: [
                     {
-                        text: '收藏',
+                        text: this.$t('goods-detail.goods-detail.dco1sc'),
                         style: {
                             backgroundColor: '#1AAD19',
                         },
                     },
                     {
-                        text: '删除',
+                        text: this.$t('common.del'),
                         style: {
                             backgroundColor: '#E64340',
                         },
@@ -418,7 +417,7 @@
                     this.setData({
                         currency_symbol: app.globalData.get_config('currency_symbol'),
                         common_site_type: app.globalData.get_config('config.common_site_type'),
-                        common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', '立即咨询'),
+                        common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
                     });
                 } else {
@@ -443,10 +442,10 @@
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.showModal({
-                            title: '温馨提示',
-                            content: '绑定手机号码',
-                            confirmText: '确认',
-                            cancelText: '暂不',
+                            title: this.$t('common.warm_tips'),
+                            content: this.$t('cash-auth.cash-auth.d2ng16'),
+                            confirmText: this.$t('common.confirm'),
+                            cancelText: this.$t('common.not_yet'),
                             success: (result) => {
                                 if (result.confirm) {
                                     uni.navigateTo({
@@ -455,7 +454,7 @@
                                 } else {
                                     this.setData({
                                         data_list_loding_status: 0,
-                                        data_list_loding_msg: '请绑定手机号码',
+                                        data_list_loding_msg: this.$t('cart.cart.2wfu7o'),
                                     });
                                 }
                             },
@@ -483,7 +482,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: '请先授权用户信息',
+                        data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
 
                     // 分享菜单处理
@@ -546,7 +545,7 @@
                                 data_is_loading: 0,
                                 data_list: data_list,
                                 data_list_loding_status: data_list.length == 0 ? 0 : 3,
-                                data_list_loding_msg: '购物车空空如也',
+                                data_list_loding_msg: this.$t('cart.cart.j8on74'),
                             });
 
                             // 门店数据初始化
@@ -601,9 +600,9 @@
                             is_first: 0,
                             data_is_loading: 0,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -626,10 +625,10 @@
             // 删除弹窗
             model_tips(id) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '挑了这么久，真的要删除吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('cart.cart.3v6ulk'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             this.cart_delete(id, 'delete');
@@ -650,7 +649,7 @@
                     buy_number = buy_min_number;
                     this.data_list[index].stock = buy_min_number;
                     if (buy_min_number > 1) {
-                        app.globalData.showToast('起购' + buy_min_number + inventory_unit);
+                        app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + buy_min_number + inventory_unit);
                         this.model_tips(temp_data_list[index]['id']);
                         return false;
                     }
@@ -658,13 +657,13 @@
 
                 if (buy_max_number > 0 && buy_number > buy_max_number) {
                     buy_number = buy_max_number;
-                    app.globalData.showToast('限购' + buy_max_number + inventory_unit);
+                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + buy_max_number + inventory_unit);
                     return false;
                 }
 
                 if (buy_number > inventory) {
                     buy_number = inventory;
-                    app.globalData.showToast('库存数量' + inventory + inventory_unit);
+                    app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
                     return false;
                 }
 
@@ -675,7 +674,7 @@
 
                 // 更新数据库
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                     mask: true,
                 });
                 uni.request({
@@ -726,13 +725,13 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -754,12 +753,12 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -767,10 +766,10 @@
             // 批量删除操作
             cart_all_remove_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '挑了这么久，真的要删除吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('cart.cart.3v6ulk'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             var data = [];
@@ -781,7 +780,7 @@
                                 }
                             }
                             if (data.length <= 0) {
-                                app.globalData.showToast('请先选择数据');
+                                app.globalData.showToast(this.$t('order.order.15k32o'));
                                 return false;
                             }
                             this.cart_delete(data.join(','), 'delete');
@@ -802,11 +801,11 @@
                 var index = e.index || 0;
                 var temp_data_list = this.data_list;
                 if (this.swipe_item_index === null) {
-                    app.globalData.showToast('请先滑动要操作的数据');
+                    app.globalData.showToast(this.$t('cart.cart.8q2yej'));
                     return false;
                 }
                 if ((temp_data_list[this.swipe_item_index] || null) == null) {
-                    app.globalData.showToast('数据不存在');
+                    app.globalData.showToast(this.$t('cart.cart.9g81jk'));
                     return false;
                 }
 
@@ -848,20 +847,20 @@
                                 data_list_loding_status: temp_list.length == 0 ? 0 : this.data_list_loding_status,
                                 random_value: Math.random(),
                             });
-                            app.globalData.showToast(type == 'delete' ? '删除成功' : '收藏成功', 'success');
+                            app.globalData.showToast(type == 'delete' ? this.$t('user-list.user-list.kpn3fp') : this.$t('cart.cart.346c25'), 'success');
 
                             // 选择处理
                             this.cart_selected_calculate();
                         } else {
                             if (app.globalData.is_login_check(res.data)) {
-                                app.globalData.showToast(type == 'delete' ? '删除失败' : '收藏失败');
+                                app.globalData.showToast(type == 'delete' ? this.$t('user-list.user-list.649j60') : this.$t('cart.cart.21051p'));
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -982,7 +981,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1021,7 +1020,7 @@
                 // 结算参数
                 var data = this.buy_data_params();
                 if (data === false) {
-                    app.globalData.showToast('请先选择商品');
+                    app.globalData.showToast(this.$t('cart.cart.3sy0mp'));
                     return false;
                 }
 
@@ -1114,7 +1113,7 @@
                         this.setData({
                             goods_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -1393,7 +1392,7 @@
     }
     .cart-buy-nav .price {
         width: calc(100% - 170rpx);
-        padding: 16rpx 0;
+        padding: 16rpx 0 16rpx 16rpx;
     }
     .cart-buy-nav .sales-price {
         max-width: calc(100% - 80rpx);

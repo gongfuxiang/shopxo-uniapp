@@ -64,15 +64,15 @@
                 data_is_loading: 0,
                 params: null,
                 nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '未打款', value: '0' },
-                    { name: '已打款', value: '1' },
-                    { name: '打款失败', value: '2' },
+                    { name: this.$t('common.all'), value: '-1' },
+                    { name: this.$t('user-cash.user-cash.3v1gzc'), value: '0' },
+                    { name: this.$t('user-cash.user-cash.t7gtu0'), value: '1' },
+                    { name: this.$t('user-cash.user-cash.x47iu3'), value: '2' },
                 ],
                 nav_status_index: 0,
                 content_list: [
-                    { name: '提现单号', field: 'cash_no' },
-                    { name: '提现金额', field: 'money' },
+                    { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), field: 'cash_no' },
+                    { name: this.$t('cash-create.cash-create.qg404q'), field: 'money' },
                 ],
             };
         },
@@ -147,7 +147,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 参数
@@ -215,7 +215,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

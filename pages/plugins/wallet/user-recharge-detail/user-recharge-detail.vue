@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,13 +92,13 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "充值单号", value: data.data.recharge_no || "" },
-                                { name: "充值状态", value: data.data.status_name || "" },
-                                { name: "充值金额", value: data.data.money || "" },
-                                { name: "支付金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                { name: "支付方式", value: data.data.payment_name || "" },
-                                { name: "创建时间", value: data.data.add_time_time || "" },
-                                { name: "支付时间", value: data.data.pay_time_time || "" },
+                                { name: this.$t('user-recharge-detail.user-recharge-detail.ch84a8'), value: data.data.recharge_no || "" },
+                                { name: this.$t('user-recharge-detail.user-recharge-detail.dq5v2u'), value: data.data.status_name || "" },
+                                { name: this.$t('user-recharge-detail.user-recharge-detail.7272ia'), value: data.data.money || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: data.data.payment_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time_time || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.wn83rn'), value: data.data.pay_time_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -121,9 +121,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

@@ -25,8 +25,8 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button type="default" size="mini" class="bg-white br-green cr-green text-size-xs round" :data-value="'/pages/plugins/distribution/visit-form/visit-form?id='+item.id" @tap="url_event">编辑</button>
-                        <button type="default" size="mini" class="bg-white br-red cr-red text-size-xs round margin-left-main" :data-index="index" @tap="delete_event">删除</button>
+                        <button type="default" size="mini" class="bg-white br-green cr-green text-size-xs round" :data-value="'/pages/plugins/distribution/visit-form/visit-form?id='+item.id" @tap="url_event">{{$t('common.edit')}}</button>
+                        <button type="default" size="mini" class="bg-white br-red cr-red text-size-xs round margin-left-main" :data-index="index" @tap="delete_event">{{$t('common.del')}}</button>
                     </view>
                 </view>
             </view>
@@ -63,9 +63,9 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "拜访描述", field: "content" },
-                { name: "拜访图片", field: "images"},
-                { name: "更新时间", field: "upd_time" },
+                { name: this.$t('visit-list.visit-list.q76du4'), field: "content" },
+                { name: this.$t('visit-list.visit-list.4z367h'), field: "images"},
+                { name: this.$t('order-detail.order-detail.21ift9'), field: "upd_time" },
             ],
         };
     },
@@ -215,7 +215,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -246,18 +246,18 @@ export default {
             var temp_data = this.data_list;
             var data = temp_data[index] || null;
             if (data == null) {
-                app.globalData.showToast("数据有误");
+                app.globalData.showToast(this.$t('extraction-switch.extraction-switch.613b58'));
                 return false;
             }
             uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复，确定继续吗?",
-                confirmText: "确认",
-                cancelText: "不了",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('recommend-list.recommend-list.54d418'),
+                confirmText: this.$t('common.confirm'),
+                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                 success: (result) => {
                     if (result.confirm) {
                         uni.showLoading({
-                            title: "处理中...",
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url("delete", "visit", "distribution"),
@@ -286,7 +286,7 @@ export default {
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("网络开小差了哦~");
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

@@ -130,7 +130,7 @@
                                             </view>
                                         </block>
                                         <!-- 协议 -->
-                                        <view class="margin-top-xl cr-grey">
+                                        <view class="margin-top-xl cr-grey flex-row flex-wrap">
                                             <view class="dis-inline-block va-m" @tap="agreement_change">
                                                 <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
                                                     <label>
@@ -1456,7 +1456,7 @@
                                 }}, auth_result);
                             },
                             fail: function (error) {
-                                app.globalData.showToast(error.errMsg || '调用登录SDK失败');
+                                app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
                             },
                         });
                         break;
@@ -1474,13 +1474,13 @@
                                 }}, auth_result);
                             },
                             fail: function (error) {
-                                app.globalData.showToast(error.errMsg || '调用登录SDK失败');
+                                app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
                             },
                         });
                         break;
 
                     default :
-                        app.globalData.showToast(type+'登录方式未处理');
+                        app.globalData.showToast(type+this.$t('login.login.li9573'));
                 }
                 // #endif
             },

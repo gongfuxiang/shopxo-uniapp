@@ -9,24 +9,24 @@
                 </view>
                 <form @submit="form_submit" class="form-container">
                     <view class="padding-top-sm">
-                        <view class="text-size-md spacing-mb">获取您的昵称、头像</view>
-                        <view class="padding-bottom-main cr-grey-9 br-b">获取用户头像、昵称完善个人资料，主要用于向用户提供 具有辨识度的用户中心界面</view>
+                        <view class="text-size-md spacing-mb">{{$t('user-base.user-base.g5663y')}}</view>
+                        <view class="padding-bottom-main cr-grey-9 br-b">{{$t('user-base.user-base.913g4e')}}</view>
                         <view v-if="(user.avatar || null) == null" class="form-gorup oh flex-row align-c br-b">
-                            <view class="form-gorup-title text-size-md">头像<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title text-size-md">{{$t('personal.personal.cw1d8p')}}<text class="form-group-tips-must">*</text></view>
                             <button class="bg-white br-0 padding-0 margin-left-xxl flex-row jc-sb align-c flex-1" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                 <image :src="user_avatar || default_avatar" mode="widthFix" class="circle br user-base-avatar"></image>
                                 <iconfont name="icon-arrow-right" size="24rpx" color="#ccc"></iconfont>
                             </button>
                         </view>
                         <view v-if="(user.nickname || null) == null" class="form-gorup oh flex-row align-c br-b">
-                            <view class="form-gorup-title text-size-md">昵称<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title text-size-md">{{$t('personal.personal.gw8br3')}}<text class="form-group-tips-must">*</text></view>
                             <view class="user-nickname-container padding-left-xxl">
-                                <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" maxlength="16" placeholder-class="cr-grey-c" class="cr-base" placeholder="输入昵称1~16个字符" @input="on_input_name" />
+                                <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" maxlength="16" placeholder-class="cr-grey-c" class="cr-base" :placeholder="$t('user-base.user-base.o19lj3')" @input="on_input_name" />
                             </view>
                         </view>
 
                         <view class="tc padding-top-xxl">
-                            <button class="sub-btn cr-white text-size" :class="form_submit_disabled_status ? 'bg-grey-d br-grey-d' : 'bg-main br-main'" type="default" form-type="submit" hover-class="none">保存</button>
+                            <button class="sub-btn cr-white text-size" :class="form_submit_disabled_status ? 'bg-grey-d br-grey-d' : 'bg-main br-main'" type="default" form-type="submit" hover-class="none">{{$t('common.save')}}</button>
                         </view>
                     </view>
                 </form>
@@ -95,7 +95,7 @@
                     // 当前缓存用户
                     var user = app.globalData.get_user_cache_info() || null;
                     // 默认昵称则赋空值
-                    var arr = ['支付宝用户', '百度用户', '头条用户', 'QQ用户', '快手用户', '微信用户', 'WeChat User', 'Usuarios de Wechat'];
+                    var arr = [this.$t('user-base.user-base.8u9on2'), this.$t('user-base.user-base.t8i9l4'), this.$t('user-base.user-base.0imw74'), this.$t('user-base.user-base.27q5af'), this.$t('user-base.user-base.211pk4'), this.$t('user-base.user-base.5x8o43'), 'WeChat User', 'Usuarios de Wechat'];
                     if (user != null && (user.nickname || null) != null && arr.indexOf(user.nickname) != -1) {
                         user.nickname = '';
                     }
@@ -185,7 +185,7 @@
                 if ((this.user.avatar || null) == null) {
                     validation.push({
                         fields: 'avatar',
-                        msg: '请上传头像',
+                        msg: this.$t('user-base.user-base.gzc3y4'),
                     });
                 } else {
                     delete form_data['avatar'];
@@ -193,7 +193,7 @@
                 if ((this.user.nickname || null) == null) {
                     validation.push({
                         fields: 'nickname',
-                        msg: '请填写昵称',
+                        msg: this.$t('user-base.user-base.lro9u7'),
                     });
                 } else {
                     delete form_data['nickname'];
@@ -201,7 +201,7 @@
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     // 数据保存
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('save', 'personal'),
@@ -220,13 +220,13 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

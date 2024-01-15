@@ -11,9 +11,9 @@
 				<view class="spacing-nav-title flex-row jc-sb align-c">
 					<view class="flex-row align-c">
 						<image :src="weixinliveplayer_static_url + 'player-title-icon.png'" mode="scaleToFill" class="player-title-icon margin-right-xs"></image>
-						<text class="text-wrapper">最新直播</text>
+						<text class="text-wrapper">{{$t('index.index.63g4m1')}}</text>
 					</view>
-					<navigator url="/pages/plugins/weixinliveplayer/search/search" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">更多</navigator>
+					<navigator url="/pages/plugins/weixinliveplayer/search/search" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</navigator>
 				</view>
 
 				<!-- 数据列表 -->
@@ -127,7 +127,7 @@
 			// 获取数据
 			get_data_list() {
 				uni.showLoading({
-					title: '加载中...'
+					title: this.$t('common.loading_in_text')
 				});
 				this.setData({
 					data_list_loding_status: 1
@@ -186,7 +186,7 @@
 						this.setData({
 							data_bottom_line_status: false,
 							data_list_loding_status: 2,
-							data_list_loding_msg: '网络开小差了哦~'
+							data_list_loding_msg: this.$t('common.internet_error_tips')
 						});
 					}
 				});

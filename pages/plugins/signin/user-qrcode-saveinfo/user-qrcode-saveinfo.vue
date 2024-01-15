@@ -6,38 +6,38 @@
                     <view class="padding-main oh">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
                             <view>
-                                <text class="cr-base margin-right-sm">邀请人奖励</text>
+                                <text class="cr-base margin-right-sm">{{$t('user-qrcode-detail.user-qrcode-detail.mjfygy')}}</text>
                                 <text class="cr-main fw-b">{{ data.reward_master || data_base.reward_master }}</text>
-                                <text class="cr-grey margin-left-sm">积分</text>
+                                <text class="cr-grey margin-left-sm">{{$t('index.index.t26j9z')}}</text>
                             </view>
                             <view class="margin-top-sm">
-                                <text class="cr-base margin-right-sm">受邀人奖励</text>
+                                <text class="cr-base margin-right-sm">{{$t('user-qrcode-detail.user-qrcode-detail.pb2e32')}}</text>
                                 <text class="cr-main fw-b">{{ data.reward_invitee || data_base.reward_invitee }}</text>
-                                <text class="cr-grey margin-left-sm">积分</text>
+                                <text class="cr-grey margin-left-sm">{{$t('index.index.t26j9z')}}</text>
                             </view>
                         </view>
 
                         <view v-if="(data_base.is_qrcode_must_userinfo || 0) == 1">
                             <view class="form-gorup">
-                                <view class="form-gorup-title">联系人姓名<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" placeholder="联系人姓名格式 2~30 个字符之间" maxlength="30" :value="data.name || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.do23j6')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.xa2k42')" maxlength="30" :value="data.name || ''" />
                             </view>
                             <view class="form-gorup">
-                                <view class="form-gorup-title">联系人电话<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" placeholder="联系人电话 6~15 个字符" maxlength="15" :value="data.tel || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.5k2ibd')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.e9ko33')" maxlength="15" :value="data.tel || ''" />
                             </view>
                             <view class="form-gorup">
-                                <view class="form-gorup-title">联系人地址<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" placeholder="联系人地址、最多230个字符" maxlength="230" :value="data.address || ''" />
+                                <view class="form-gorup-title">{{$t('user-qrcode-detail.user-qrcode-detail.911a61')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-qrcode-saveinfo.user-qrcode-saveinfo.bbxaw6')" maxlength="230" :value="data.address || ''" />
                             </view>
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">备注</view>
-                            <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" placeholder="备注最多230个字符" maxlength="60" :value="data.note || ''" />
+                            <view class="form-gorup-title">{{$t('invoice-saveinfo.invoice-saveinfo.tng0se')}}</view>
+                            <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="data.note || ''" />
                         </view>
                         <view class="bottom-fixed">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                             </view>
                         </view>
                     </view>
@@ -83,7 +83,7 @@
 
             // 设置标题
             uni.setNavigationBarTitle({
-                title: '签到码' + ((this.params.id || null) == null ? '添加' : '编辑'),
+                title: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.jw2h8l') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
             });
 
             // 加载数据
@@ -107,7 +107,7 @@
             init() {
                 var self = this;
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -142,9 +142,9 @@
                         uni.stopPullDownRefresh();
                         self.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -159,13 +159,13 @@
                 // 数据验证
                 var validation = [];
                 if ((this.data_base || null) != null && (this.data_base.is_qrcode_must_userinfo || 0) == 1) {
-                    validation.push({ fields: 'name', msg: '请填写联系人姓名格式 2~30 个字符之间' });
-                    validation.push({ fields: 'tel', msg: '请填写联系人电话 6~15 个字符' });
-                    validation.push({ fields: 'address', msg: '请填写联系人地址、最多230个字符' });
+                    validation.push({ fields: 'name', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.84g5t6') });
+                    validation.push({ fields: 'tel', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.1tilke') });
+                    validation.push({ fields: 'address', msg: this.$t('user-qrcode-saveinfo.user-qrcode-saveinfo.5m2752') });
                 }
                 if (app.globalData.fields_check(data, validation)) {
                     uni.showLoading({
-                        title: '提交中...',
+                        title: this.$t('buy.buy.r79t77'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -209,7 +209,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -218,7 +218,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

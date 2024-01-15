@@ -27,9 +27,9 @@
                         </navigator>
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">支付</button>
-                        <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">删除</button>
+                        <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('order.order.1i873j')}}</button>
+                        <button v-if="item.status == 0" class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="item.status == 2 || item.status == 3" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
                 </view>
             </view>
@@ -87,43 +87,43 @@
                 pay_price: 0,
                 nav_status_list: [
                     {
-                        name: '全部',
+                        name: this.$t('common.all'),
                         value: '-1',
                     },
                     {
-                        name: '待支付',
+                        name: this.$t('order.order.pjb15r'),
                         value: '0',
                     },
                     {
-                        name: '已支付',
+                        name: this.$t('order.order.s8g966'),
                         value: '1',
                     },
                     {
-                        name: '已取消',
+                        name: this.$t('order.order.1k98tk'),
                         value: '2',
                     },
                     {
-                        name: '已关闭',
+                        name: this.$t('order.order.6390gk'),
                         value: '3',
                     },
                 ],
                 nav_status_index: 0,
                 content_list: [
                     {
-                        name: '开通单号',
+                        name: this.$t('order.order.vvxct1'),
                         field: 'payment_user_order_no',
                     },
                     {
-                        name: '开通时长',
+                        name: this.$t('order.order.vjfki8'),
                         field: 'period_value',
                         unit_field: 'period_unit',
                     },
                     {
-                        name: '订单金额',
+                        name: this.$t('order-detail.order-detail.x3ge6c'),
                         field: 'price',
                     },
                     {
-                        name: '支付金额',
+                        name: this.$t('user-order-detail.user-order-detail.516tlr'),
                         field: 'pay_price',
                     },
                 ],
@@ -213,7 +213,7 @@
                 });
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 // 参数
                 var order_status = (this.nav_status_list[this.nav_status_index] || null) == null ? -1 : this.nav_status_list[this.nav_status_index]['value'];
@@ -280,7 +280,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -314,7 +314,7 @@
                 var temp_data_list = this.data_list;
                 temp_data_list[index]['pay_price'] = temp_data_list[index]['price'];
                 temp_data_list[index]['status'] = 1;
-                temp_data_list[index]['status_name'] = '已支付';
+                temp_data_list[index]['status_name'] = this.$t('order.order.s8g966');
                 this.setData({
                     data_list: temp_data_list,
                 });
@@ -322,10 +322,10 @@
             // 取消
             cancel_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '取消后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.pn78ns'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -333,7 +333,7 @@
                             var index = e.currentTarget.dataset.index;
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('cancel', 'order', 'membershiplevelvip'),
@@ -347,7 +347,7 @@
                                     if (res.data.code == 0) {
                                         var temp_data_list = this.data_list;
                                         temp_data_list[index]['status'] = 2;
-                                        temp_data_list[index]['status_name'] = '已取消';
+                                        temp_data_list[index]['status_name'] = this.$t('order.order.1k98tk');
                                         this.setData({
                                             data_list: temp_data_list,
                                         });
@@ -358,7 +358,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }
@@ -368,10 +368,10 @@
             // 删除
             delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复，确定继续吗?',
-                    confirmText: '确认',
-                    cancelText: '不了',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -379,7 +379,7 @@
                             var index = e.currentTarget.dataset.index;
                             // 加载loding
                             uni.showLoading({
-                                title: '处理中...',
+                                title: this.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('delete', 'order', 'membershiplevelvip'),
@@ -409,7 +409,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast('网络开小差了哦~');
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                                 },
                             });
                         }

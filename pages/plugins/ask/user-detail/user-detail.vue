@@ -9,33 +9,33 @@
                     </view>
                     <view class="padding-main pr margin-top-xxxl">
                         <view class="bg-white border-radius-main padding-main text-size">
-                            <view class="fw-b text-size-lg spacing-mb">提问详情</view>
+                            <view class="fw-b text-size-lg spacing-mb">{{$t('user-detail.user-detail.o92ral')}}</view>
                             <view v-if="detail_data.user && detail_data.user.user_name_view" class="spacing-mb">
-                                <view class="cr-grey-9">联系人</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.k5867n')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.user.user_name_view }}</view>
                             </view>
                             <view v-if="detail_data.tel" class="spacing-mb">
-                                <view class="cr-grey-9">联系电话</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.gfe703')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.tel }}</view>
                             </view>
                             <view v-if="detail_data.title" class="spacing-mb">
-                                <view class="cr-grey-9">标题</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.uy6lrz')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.title }}</view>
                             </view>
                             <view v-if="detail_data.content" class="spacing-mb">
-                                <view class="cr-grey-9">内容</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.7cufw6')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.content }}</view>
                             </view>
                             <view v-if="detail_data.reply" class="spacing-mb">
-                                <view class="cr-grey-9">回复内容</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.u411r2')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.reply }}</view>
                             </view>
                             <view v-if="detail_data.reply_time_time" class="spacing-mb">
-                                <view class="cr-grey-9">回复时间</view>
+                                <view class="cr-grey-9">{{$t('user-detail.user-detail.teo6qd')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.reply_time_time }}</view>
                             </view>
                             <view v-if="detail_data.add_time_time" class="spacing-mb">
-                                <view class="cr-grey-9">创建时间</view>
+                                <view class="cr-grey-9">{{$t('user-order-detail.user-order-detail.h2c78h')}}</view>
                                 <view class="margin-top-xs">{{ detail_data.add_time_time }}</view>
                             </view>
                         </view>
@@ -147,7 +147,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

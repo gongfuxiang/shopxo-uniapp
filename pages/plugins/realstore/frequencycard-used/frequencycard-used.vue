@@ -45,10 +45,10 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "扣除次数", field: "dec_number", unit: "次" },
-                { name: "描述说明", field: "msg" },
-                { name: "操作人员", field: "operate_name" },
-                { name: "使用时间", field: "use_time" },
+                { name: this.$t('frequencycard-used.frequencycard-used.538686'), field: "dec_number", unit: this.$t('buy.buy.0pgsrm') },
+                { name: this.$t('frequencycard-used.frequencycard-used.xjmepo'), field: "msg" },
+                { name: this.$t('frequencycard-used.frequencycard-used.aod4pc'), field: "operate_name" },
+                { name: this.$t('frequencycard-used.frequencycard-used.l4878i'), field: "use_time" },
             ],
         };
     },
@@ -132,7 +132,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -196,7 +196,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

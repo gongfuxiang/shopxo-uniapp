@@ -6,7 +6,7 @@
                     <view class="padding-main oh">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
                             <view>
-                                <text class="cr-base margin-right-sm">发票金额</text>
+                                <text class="cr-base margin-right-sm">{{$t('invoice.invoice.fvuc4p')}}</text>
                                 <text class="cr-main text-size fw-b">{{ save_base_data.total_price }}</text>
                             </view>
                             <view class="cr-base margin-top-sm">{{ save_base_data.business_desc }}</view>
@@ -14,97 +14,97 @@
 
                         <view class="border-radius-main bg-white oh spacing-mb">
                             <view class="form-gorup">
-                                <view class="form-gorup-title">发票类型<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('invoice.invoice.j04kjc')}}<text class="form-group-tips-must">*</text></view>
                                 <picker name="invoice_type" @change="form_invoice_type_event" :value="form_invoice_type_index" :range="can_invoice_type_list" range-key="name">
                                     <view :class="'picker ' + (can_invoice_type_list[form_invoice_type_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                        {{ can_invoice_type_list[form_invoice_type_index] == undefined ? '请选择发票类型' : can_invoice_type_list[form_invoice_type_index]['name'] }}
+                                        {{ can_invoice_type_list[form_invoice_type_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.t3i3e3') : can_invoice_type_list[form_invoice_type_index]['name'] }}
                                     </view>
                                 </picker>
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">申请类型<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('invoice.invoice.hoenw8')}}<text class="form-group-tips-must">*</text></view>
                                 <picker name="apply_type" @change="form_apply_type_event" :disabled="form_apply_type_disabled" :value="form_apply_type_index" :range="apply_type_list" range-key="name">
                                     <view :class="'picker ' + (apply_type_list[form_apply_type_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                        {{ apply_type_list[form_apply_type_index] == undefined ? '请选择申请类型' : apply_type_list[form_apply_type_index]['name'] }}
+                                        {{ apply_type_list[form_apply_type_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.k31t2s') : apply_type_list[form_apply_type_index]['name'] }}
                                     </view>
                                 </picker>
                             </view>
 
                             <view v-if="invoice_content_list.length > 0" class="form-gorup">
-                                <view class="form-gorup-title">发票内容<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.p73963')}}<text class="form-group-tips-must">*</text></view>
                                 <picker name="invoice_content" @change="form_invoice_content_event" :value="form_invoice_content_index" :range="invoice_content_list">
                                     <view :class="'picker ' + (invoice_content_list[form_invoice_content_index] == undefined ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                        {{ invoice_content_list[form_invoice_content_index] == undefined ? '请选择发票内容' : invoice_content_list[form_invoice_content_index] }}
+                                        {{ invoice_content_list[form_invoice_content_index] == undefined ? $t('invoice-saveinfo.invoice-saveinfo.i73t3c') : invoice_content_list[form_invoice_content_index] }}
                                     </view>
                                 </picker>
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">发票抬头<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" placeholder="发票抬头、最多200个字符" maxlength="200" :value="data.invoice_title || ''" />
+                                <view class="form-gorup-title">{{$t('invoice.invoice.y724c7')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="invoice_title" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.x461e0')" maxlength="200" :value="data.invoice_title || ''" />
                             </view>
 
                             <!-- 企业信息 -->
                             <view v-if="company_container">
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">企业统一社会信用代码或纳税识别号<text class="form-group-tips-must">*</text> </view>
-                                    <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" placeholder="企业统一社会信用代码或纳税识别号、最多160个字符" maxlength="160" :value="data.invoice_code || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-saveinfo.invoice-saveinfo.x8hhiv')}}<text class="form-group-tips-must">*</text> </view>
+                                    <input type="text" name="invoice_code" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.924cag')" maxlength="160" :value="data.invoice_code || ''" />
                                 </view>
                             </view>
 
                             <!-- 企业专票信息 -->
                             <view v-if="company_special_container">
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">企业开户行名称<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" placeholder="企业开户行名称、最多200个字符" maxlength="200" :value="data.invoice_bank || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.41qbu6')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="invoice_bank" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.ymvw6b')" maxlength="200" :value="data.invoice_bank || ''" />
                                 </view>
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">企业开户帐号<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" placeholder="企业开户帐号、最多160个字符" maxlength="160" :value="data.invoice_account || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.3a9459')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="invoice_account" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.664qc7')" maxlength="160" :value="data.invoice_account || ''" />
                                 </view>
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">企业联系电话<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" placeholder="企业联系电话 6~15 个字符" maxlength="15" :value="data.invoice_tel || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.2g7t23')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="invoice_tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bbseo1')" maxlength="15" :value="data.invoice_tel || ''" />
                                 </view>
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">企业注册地址<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" placeholder="企业注册地址、最多230个字符" maxlength="230" :value="data.invoice_address || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.6k6sov')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="invoice_address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.85735j')" maxlength="230" :value="data.invoice_address || ''" />
                                 </view>
                             </view>
 
                             <!-- 收件人信息 -->
                             <view v-if="addressee_container">
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">收件人姓名<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" placeholder="收件人姓名格式 2~30 个字符之间" maxlength="30" :value="data.name || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.7159m0')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="name" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.gsc7dy')" maxlength="30" :value="data.name || ''" />
                                 </view>
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">收件人电话<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" placeholder="收件人电话 6~15 个字符" maxlength="15" :value="data.tel || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.f2222p')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="tel" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.bp8822')" maxlength="15" :value="data.tel || ''" />
                                 </view>
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">收件人地址<text class="form-group-tips-must">*</text></view>
-                                    <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" placeholder="收件人地址、最多230个字符" maxlength="230" :value="data.address || ''" />
+                                    <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.q8l3zj')}}<text class="form-group-tips-must">*</text></view>
+                                    <input type="text" name="address" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.u7h724')" maxlength="230" :value="data.address || ''" />
                                 </view>
                             </view>
 
                             <!-- 电子邮箱信息 -->
                             <view v-if="email_container">
                                 <view class="form-gorup">
-                                    <view class="form-gorup-title">电子邮箱</view>
-                                    <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" placeholder="电子邮箱、最多60个字符" maxlength="60" :value="data.email || ''" />
+                                    <view class="form-gorup-title">{{$t('login.login.db1rf4')}}</view>
+                                    <input type="text" name="email" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.d3qbe1')" maxlength="60" :value="data.email || ''" />
                                 </view>
                             </view>
 
                             <view class="form-gorup">
-                                <view class="form-gorup-title">备注</view>
-                                <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" placeholder="备注最多230个字符" maxlength="60" :value="data.user_note || ''" />
+                                <view class="form-gorup-title">{{$t('invoice-saveinfo.invoice-saveinfo.tng0se')}}</view>
+                                <input type="text" name="user_note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="data.user_note || ''" />
                             </view>
                         </view>
                         <view class="bottom-fixed invoice-bottom">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                             </view>
                         </view>
                     </view>
@@ -163,7 +163,7 @@
 
             // 标题设置
             uni.setNavigationBarTitle({
-                title: '开票' + ((this.params.id || null) == null ? '添加' : '编辑'),
+                title: this.$t('invoice-saveinfo.invoice-saveinfo.89815t') + ((this.params.id || null) == null ? this.$t('invoice-saveinfo.invoice-saveinfo.004t56') : this.$t('common.edit')),
             });
 
             // 加载数据
@@ -186,7 +186,7 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -210,7 +210,7 @@
                                 data: (data.data || null) == null || data.data.length == 0 ? null : data.data,
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
-                                data_list_loding_msg: data.save_base_data.total_price <= 0 ? '发票金额必须大于0' : '',
+                                data_list_loding_msg: data.save_base_data.total_price <= 0 ? this.$t('invoice-saveinfo.invoice-saveinfo.dl11n1') : '',
                             };
                             // 类型数据处理
                             if (upd_data.data != null) {
@@ -241,9 +241,9 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -347,27 +347,27 @@
 
                 // 数据验证
                 var validation = [
-                    { fields: 'invoice_type', msg: '请选择发票类型', is_can_zero: 1 },
-                    { fields: 'apply_type', msg: '请选择申请类型', is_can_zero: 1 },
-                    { fields: 'invoice_title', msg: '请填写发票抬头、最多200个字符' },
+                    { fields: 'invoice_type', msg: this.$t('invoice-saveinfo.invoice-saveinfo.t3i3e3'), is_can_zero: 1 },
+                    { fields: 'apply_type', msg: this.$t('invoice-saveinfo.invoice-saveinfo.k31t2s'), is_can_zero: 1 },
+                    { fields: 'invoice_title', msg: this.$t('invoice-saveinfo.invoice-saveinfo.r13p43') },
                 ];
                 if (app.globalData.fields_check(data, validation)) {
                     var invoice_type = this.can_invoice_type_list[this.form_invoice_type_index]['id'];
                     var apply_type = this.apply_type_list[this.form_apply_type_index]['id'];
                     if (apply_type == 1) {
-                        validation.push({ fields: 'invoice_code', msg: '请填写企业统一社会信用代码或纳税识别号、最多160个字符' });
+                        validation.push({ fields: 'invoice_code', msg: this.$t('invoice-saveinfo.invoice-saveinfo.ws4wbb') });
                     }
                     if (invoice_type == 2) {
-                        validation.push({ fields: 'invoice_bank', msg: '请填写企业开户行名称、最多200个字符' });
-                        validation.push({ fields: 'invoice_account', msg: '请填写企业开户帐号、最多160个字符' });
-                        validation.push({ fields: 'invoice_tel', msg: '请填写企业联系电话 6~15 个字符' });
-                        validation.push({ fields: 'invoice_address', msg: '请填写企业注册地址、最多230个字符' });
+                        validation.push({ fields: 'invoice_bank', msg: this.$t('invoice-saveinfo.invoice-saveinfo.87itn8') });
+                        validation.push({ fields: 'invoice_account', msg: this.$t('invoice-saveinfo.invoice-saveinfo.01lw93') });
+                        validation.push({ fields: 'invoice_tel', msg: this.$t('invoice-saveinfo.invoice-saveinfo.414ihr') });
+                        validation.push({ fields: 'invoice_address', msg: this.$t('invoice-saveinfo.invoice-saveinfo.g3yh32') });
                     }
 
                     if (invoice_type == 1 || invoice_type == 2) {
-                        validation.push({ fields: 'name', msg: '请填写收件人姓名格式 2~30 个字符之间' });
-                        validation.push({ fields: 'tel', msg: '请填写收件人电话 6~15 个字符' });
-                        validation.push({ fields: 'address', msg: '请填写收件人地址、最多230个字符' });
+                        validation.push({ fields: 'name', msg: this.$t('invoice-saveinfo.invoice-saveinfo.4xy6xi') });
+                        validation.push({ fields: 'tel', msg: this.$t('invoice-saveinfo.invoice-saveinfo.quhnk0') });
+                        validation.push({ fields: 'address', msg: this.$t('invoice-saveinfo.invoice-saveinfo.kq77u3') });
                     }
 
                     if (app.globalData.fields_check(data, validation)) {
@@ -379,7 +379,7 @@
                             data['invoice_content'] = this.invoice_content_list[this.form_invoice_content_index];
                         }
                         uni.showLoading({
-                            title: '提交中...',
+                            title: this.$t('buy.buy.r79t77'),
                         });
                         this.setData({
                             form_submit_loading: true,
@@ -413,7 +413,7 @@
                                     if (app.globalData.is_login_check(res.data)) {
                                         app.globalData.showToast(res.data.msg);
                                     } else {
-                                        app.globalData.showToast('提交失败，请重试！');
+                                        app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                     }
                                 }
                             },
@@ -422,7 +422,7 @@
                                 this.setData({
                                     form_submit_loading: false,
                                 });
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }

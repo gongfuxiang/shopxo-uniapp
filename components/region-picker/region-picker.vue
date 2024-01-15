@@ -2,8 +2,8 @@
     <view :class="theme_view">
         <component-popup :propShow="propShow" propPosition="bottom" @onclose="popup_close_event">
             <view class="flex-row jc-sb align-c padding-main">
-                <text class="cr-grey" @tap="popup_close_event">取消</text>
-                <text class="cr-blue" @tap="sub_ragion_event">确认</text>
+                <text class="cr-grey" @tap="popup_close_event">{{$t('common.cancel')}}</text>
+                <text class="cr-blue" @tap="sub_ragion_event">{{$t('common.confirm')}}</text>
             </view>
             <view class="g-dp-ctt-wrapper">
                 <picker-view style="width: 32%; height: 240px" :indicator-style="indicatorStyle" :value="columns_index[0]" data-column="0" @change="changeHandler">
@@ -123,7 +123,7 @@ export default {
                     }
                 },
                 fail: () => {
-                    app.globalData.showToast("省份获取失败");
+                    app.globalData.showToast(this.$t('extraction-apply.extraction-apply.fo7y6c'));
                 },
             });
         },
@@ -154,7 +154,7 @@ export default {
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("城市获取失败");
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.b6qg7b'));
                     },
                 });
             }
@@ -184,7 +184,7 @@ export default {
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast("区/县获取失败");
+                        app.globalData.showToast(this.$t('extraction-apply.extraction-apply.5s5734'));
                     },
                 });
             }

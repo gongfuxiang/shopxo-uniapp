@@ -13,14 +13,14 @@
                     <view class="item padding-vertical-main flex-row jc-sb">
                         <view>
                             <image class="item-icon va-m margin-right-sm" :src="static_url + 'detail-status-icon.png'" mode="widthFix"></image>
-                            <text class="cr-grey va-m">直播状态</text>
+                            <text class="cr-grey va-m">{{$t('detail.detail.4u64dg')}}</text>
                         </view>
                         <view :class="'status status-' + detail.status">{{ detail.status_name }}</view>
                     </view>
                     <view class="item padding-vertical-main br-t oh flex-row jc-sb">
                         <view class="">
                             <image class="item-icon va-m margin-right-sm" :src="static_url + 'detail-time-icon.png'" mode="widthFix"></image>
-                            <text class="cr-grey va-m">开播时间</text>
+                            <text class="cr-grey va-m">{{$t('detail.detail.y2639j')}}</text>
                         </view>
                         <view class="flex-row flex-nowrap align-c flex-1 flex-width cr-grey-9 single-text padding-left-main"> {{ detail.start_time }} - {{ detail.end_time }} </view>
                     </view>
@@ -32,15 +32,15 @@
                 <view class="padding-main flex-row jc-sb">
                     <button class="share-friend-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="share_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-share-friend-icon.png'" mode="widthFix"></image>
-                        <text class="va-m">分享</text>
+                        <text class="va-m">{{$t('common.share')}}</text>
                     </button>
                     <button class="share-poster-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="share_poster_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-share-poster-icon.png'" mode="widthFix"></image>
-                        <text class="va-m">海报</text>
+                        <text class="va-m">{{$t('detail.detail.fa8h7j')}}</text>
                     </button>
                     <button class="player-submit cr-white text-size-sm round" type="default" hover-class="none" @tap="player_event">
                         <image class="item-icon va-m margin-right-sm" :src="static_url + 'nav-player-icon.png'" mode="widthFix"></image>
-                        <text class="va-m">进入直播</text>
+                        <text class="va-m">{{$t('detail.detail.eg25j9')}}</text>
                     </button>
                 </view>
             </view>
@@ -110,7 +110,7 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -169,9 +169,9 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -216,7 +216,7 @@
                                 path: url
                             });
                         } else {
-                            app.globalData.showToast('未安装微信APP');
+                            app.globalData.showToast(this.$t('detail.detail.86g7e1'));
                         }
                     });
                 }
@@ -231,13 +231,13 @@
                 // #endif
 
                 // 非微信环境和APP环境
-                app.globalData.showToast('请在微信小程序中打开');
+                app.globalData.showToast(this.$t('detail.detail.9d3o6w'));
             },
 
             // 海报分享
             share_poster_event() {
                 uni.showLoading({
-                    title: '生成中...',
+                    title: this.$t('detail.detail.6xvl35'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('poster', 'index', 'weixinliveplayer'),
@@ -259,7 +259,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -14,7 +14,7 @@
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
                 </view>
             </view>
 
@@ -146,9 +146,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

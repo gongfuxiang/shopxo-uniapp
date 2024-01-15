@@ -16,7 +16,7 @@
                             </view>
                         </view>
                         <view class="margin-top-main br-t">
-                            <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" placeholder="宝贝满足你的期待吗？说说它的优点和美中不足的地方吧" maxlength="230"></textarea>
+                            <textarea @input="form_content_event" :data-index="index" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-order-comments.user-order-comments.r9r3h0')" maxlength="230"></textarea>
                             <view class="form-container-upload">
                                 <view class="form-upload-data oh">
                                     <block v-if="(form_images_list[index] || null) != null && form_images_list[index].length > 0">
@@ -33,12 +33,12 @@
 
                     <view class="form-gorup anonymous">
                         <switch class="va-m" name="is_anonymous" @change="anonymous_event"></switch>
-                        <text class="cr-base va-m">匿名</text>
+                        <text class="cr-base va-m">{{$t('user-order-comments.user-order-comments.uboc44')}}</text>
                         <text class="fr cr-grey margin-top-lg">{{ anonymous_msg_list[anonymous_value] }}</text>
                     </view>
 
                     <view class="form-gorup form-gorup-submit">
-                        <button form-type="submit" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_button_disabled">提交</button>
+                        <button form-type="submit" class="bg-main br-main cr-white round text-size" type="default" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </form>
             </view>
@@ -65,9 +65,9 @@ export default {
             params: null,
             detail: null,
             editor_path_type: "",
-            rating_msg: ["非常差", "差", "一般", "好", "非常好"],
+            rating_msg: [this.$t('user-order-comments.user-order-comments.si255j'), this.$t('user-order-comments.user-order-comments.42b0x1'), this.$t('user-order-comments.user-order-comments.72mov3'), this.$t('user-order-comments.user-order-comments.16cmv6'), this.$t('user-order-comments.user-order-comments.e4i88f')],
             anonymous_value: 0,
-            anonymous_msg_list: ["你写的评论会以匿名的形式展现", "你写的评论会以昵称的形式展现"],
+            anonymous_msg_list: [this.$t('user-order-comments.user-order-comments.021i2d'), this.$t('user-order-comments.user-order-comments.h2ci83')],
             form_rating_list: [],
             form_images_list: [],
             form_content_list: [],
@@ -111,7 +111,7 @@ export default {
         init() {
             var self = this;
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -149,9 +149,9 @@ export default {
                     uni.stopPullDownRefresh();
                     self.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -172,8 +172,8 @@ export default {
             var ix = e.currentTarget.dataset.ix;
             var self = this;
             uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复、继续吗？",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('order.order.psi67g'),
                 success(res) {
                     if (res.confirm) {
                         var list = self.form_images_list;
@@ -320,28 +320,28 @@ export default {
             // 评分校验
             var count = this.form_rating_list.length;
             if (count < length) {
-                app.globalData.showToast("请先评分");
+                app.globalData.showToast(this.$t('user-order-comments.user-order-comments.34ne4c'));
                 return false;
             }
             var max = Math.max.apply(null, this.form_rating_list);
             var min = Math.min.apply(null, this.form_rating_list);
 
             if (min < 1 || max > 5) {
-                app.globalData.showToast("还有未评分");
+                app.globalData.showToast(this.$t('user-order-comments.user-order-comments.x6fwbf'));
                 return false;
             }
 
             // 内容校验
             var count = this.form_content_list.length;
             if (count < length) {
-                app.globalData.showToast("请填写评论内容");
+                app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
                 return false;
             }
 
             for (var i in this.form_content_list) {
                 var count = this.form_content_list[i].length;
                 if (count < 6 || count > 230) {
-                    app.globalData.showToast("评论内容 6~230 个字符之间");
+                    app.globalData.showToast(this.$t('user-order-comments.user-order-comments.39y6ym'));
                     return false;
                 }
             }
@@ -350,7 +350,7 @@ export default {
             if (this.form_images_list.length > 0) {
                 for (var i in this.form_images_list) {
                     if (this.form_images_list[i].length > 3) {
-                        app.globalData.showToast("每项评论图片不能超过3张");
+                        app.globalData.showToast(this.$t('user-order-comments.user-order-comments.488j15'));
                         return false;
                     }
                 }
@@ -372,7 +372,7 @@ export default {
             // 提交表单
             var self = this;
             uni.showLoading({
-                title: "处理中...",
+                title: this.$t('common.processing_in_text'),
             });
             self.setData({
                 form_button_disabled: true,
@@ -401,7 +401,7 @@ export default {
                     self.setData({
                         form_button_disabled: false,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

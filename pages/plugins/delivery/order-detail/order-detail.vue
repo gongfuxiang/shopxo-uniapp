@@ -13,7 +13,7 @@
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
                             <text data-event="copy" :data-value="detail.address_data.address_info" @tap="text_event">{{detail.address_data.address_info}}</text>
-                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">查看位置</text>
+                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
                     </view>
                     <view class="address-divider spacing-mb"></view>
@@ -21,7 +21,7 @@
 
                 <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">基础信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('order-detail.order-detail.9er1pc')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-gray">{{item.name}}</view>
@@ -48,7 +48,7 @@
 
                 <!-- 商品列表 -->
                 <view v-if="detail.goods_data.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                     <view v-for="(item, index) in detail.goods_data" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -69,7 +69,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{detail.buy_number_count}}</text>件 合计 <text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text></text>
+                        <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{detail.buy_number_count}}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{detail.currency_data.currency_symbol}}{{detail.total_price}}</text></text>
                     </view>
                 </view>
             </view>
@@ -136,7 +136,7 @@
         methods: {
             init() {
                 uni.showLoading({
-                    title: '加载中...'
+                    title: this.$t('common.loading_in_text')
                 });
                 this.setData({
                     data_list_loding_status: 1
@@ -156,21 +156,21 @@
                             this.setData({
                                 detail: data.data,
                                 detail_list: [
-                                    { name: "订单号", value: data.data.main_order_no || '', event: 'copy' },
-                                    { name: "订单金额", value: data.data.total_price || '' },
-                                    { name: "退款金额", value: data.data.refund_price || '' },
-                                    { name: "订单状态", value: data.data.main_status_name || '' },
-                                    { name: "商品数量", value: data.data.buy_number_count || '' },
-                                    { name: "配送状态", value: data.data.status_name || '' },
-                                    { name: "配送时间", value: data.data.start_delivery_time || '' },
-                                    { name: "完成时间", value: data.data.success_delivery_time || '' },
-                                    { name: "完成描述", value: data.data.success_delivery_msg || '' },
-                                    { name: "完成照片", value: data.data.success_delivery_images || '', type: 'images-list' },
-                                    { name: "异常时间", value: data.data.abnormal_delivery_time || '' },
-                                    { name: "异常原因", value: data.data.reason || '' },
-                                    { name: "派单时间", value: data.data.add_time || '' },
-                                    { name: "更新时间", value: data.data.upd_time || '' },
-                                    { name: "订单时间", value: data.data.order_add_time || '' },
+                                    { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.main_order_no || '', event: 'copy' },
+                                    { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || '' },
+                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || '' },
+                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.main_status_name || '' },
+                                    { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || '' },
+                                    { name: this.$t('order-detail.order-detail.2443o1'), value: data.data.status_name || '' },
+                                    { name: this.$t('order-detail.order-detail.342sfz'), value: data.data.start_delivery_time || '' },
+                                    { name: this.$t('order-detail.order-detail.2dw4gd'), value: data.data.success_delivery_time || '' },
+                                    { name: this.$t('order-detail.order-detail.r3bg45'), value: data.data.success_delivery_msg || '' },
+                                    { name: this.$t('order-detail.order-detail.521pp4'), value: data.data.success_delivery_images || '', type: 'images-list' },
+                                    { name: this.$t('order-detail.order-detail.u745i8'), value: data.data.abnormal_delivery_time || '' },
+                                    { name: this.$t('order.order.865029'), value: data.data.reason || '' },
+                                    { name: this.$t('order-detail.order-detail.5fq8pr'), value: data.data.add_time || '' },
+                                    { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || '' },
+                                    { name: this.$t('order-detail.order-detail.9153qn'), value: data.data.order_add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
@@ -193,9 +193,9 @@
                         this.setData({
                             data_list_loding_status: 2,
                             data_bottom_line_status: false,
-                            data_list_loding_msg: '网络开小差了哦~'
+                            data_list_loding_msg: this.$t('common.internet_error_tips')
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -217,7 +217,7 @@
             // 地图查看
             address_map_event(e) {
                 if ((this.detail.address_data || null) == null) {
-                    app.globalData.showToast("地址有误");
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
                 

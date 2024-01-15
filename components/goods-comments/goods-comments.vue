@@ -25,7 +25,7 @@
                         <view v-if="(item.msg || null) != null" class="spec cr-grey margin-top-lg">{{ item.msg }}</view>
                         <block v-if="propIsReply">
                             <view v-if="item.is_reply == 1 && (item.reply || null) != null" class="reply br-t-dashed margin-top-sm padding-top-sm text-size-sm">
-                                <text class="cr-base">管理员回复：</text>
+                                <text class="cr-base">{{$t('goods-comments.goods-comments.s65197')}}</text>
                                 <text class="reply-desc cr-main-pair">{{ item.reply }}</text>
                             </view>
                         </block>
@@ -35,9 +35,7 @@
         </block>
         <block v-else>
             <view class="cr-grey-d tc spacing-mb flex-row jc-c align-c">
-                <image :src="common_static_url + 'no-comment.png'" mode="widthFix" class="no-comment margin-right-main" />
-                此商品暂时还没有评价哦~
-            </view>
+                <image :src="common_static_url + 'no-comment.png'" mode="widthFix" class="no-comment margin-right-main" />{{$t('goods-comments.goods-comments.1p1r2e')}}</view>
         </block>
     </view>
 </template>

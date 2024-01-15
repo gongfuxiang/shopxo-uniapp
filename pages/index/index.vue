@@ -51,14 +51,14 @@
                         <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main">
                             <!-- 是否开启搜索框前面icon扫一扫 -->
                             <block v-if="is_home_search_scan == 1">
-                                <component-search :propIsBtn="true" propSize="sm" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
+                                <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                     <!-- #ifndef H5 -->
                                     @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
                                     <!-- #endif -->
                                 ></component-search>
                             </block>
                             <block v-else>
-                                <component-search :propIsBtn="true" propSize="sm" propPlaceholder="输入商品名称搜索" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
+                                <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
                             </block>
                         </view>
                     </view>
@@ -86,7 +86,7 @@
                 </view>
                 <!-- 推荐文章 -->
                 <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
-                    <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>最新</text><text class="cr-red">资讯</text> </view>
+                    <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>{{$t('index.index.t8bll8')}}</text><text class="cr-red">{{$t('index.index.t8bll9')}}</text> </view>
                     <view class="right-content fr va-m">
                         <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
                             <block v-for="(item, index) in article_list" :key="index">
@@ -118,7 +118,7 @@
                                         <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                     </view>
                                 </view>
-                                <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">更多</navigator>
+                                <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</navigator>
                             </view>
                             <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                         </view>
@@ -132,7 +132,7 @@
                         <view v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
                             <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                                <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                             </view>
                             <component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
                         </view>
@@ -141,7 +141,7 @@
                         <view v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
                             <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                                <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                             </view>
                             <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
                         </view>
@@ -150,7 +150,7 @@
                         <view v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
                             <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">更多</navigator>
+                                <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                             </view>
                             <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
                         </view>
@@ -182,7 +182,7 @@
                                     <text class="text-wrapper title-left-border" :style="'color:' + (floor.bg_color || '#333') + ';'">{{ floor.name }}</text>
                                     <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ floor.describe }}</text>
                                 </view>
-                                <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">更多 </navigator>
+                                <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
                             </view>
                             <view class="floor-list wh-auto oh pr">
                                 <block v-if="floor.goods.length > 0">
@@ -210,7 +210,7 @@
                         <view v-if="pv.plugins == 'salerecords' && (plugins_salerecords_data || null) != null && (plugins_salerecords_data.data || null) != null && plugins_salerecords_data.data.length > 0" class="plugins-salerecords bg-white border-radius-main padding-main spacing-mb">
                             <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <view class="title-left">
-                                    <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || '最新购买' }}</text>
+                                    <text class="text-wrapper">{{ plugins_salerecords_data.base.home_bottom_title || $t('index.index.s5r784') }}</text>
                                     <text v-if="(plugins_salerecords_data.base || null) != null && (plugins_salerecords_data.base.home_bottom_desc || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ plugins_salerecords_data.base.home_bottom_desc }}</text>
                                 </view>
                             </view>
@@ -583,11 +583,11 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_bottom_line_status: true,
                             load_status: 1,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -80,23 +80,23 @@ export default {
             data_page: 1,
             nav_status_list: [
                 {
-                    name: "全部",
+                    name: this.$t('common.all'),
                     value: "-1",
                 },
                 {
-                    name: "未开始",
+                    name: this.$t('search.search.e415ir'),
                     value: "0",
                 },
                 {
-                    name: "直播中",
+                    name: this.$t('search.search.46g3i2'),
                     value: "1",
                 },
                 {
-                    name: "暂停中",
+                    name: this.$t('search.search.v60305'),
                     value: "2",
                 },
                 {
-                    name: "已结束",
+                    name: this.$t('index.index.443683'),
                     value: "3",
                 },
             ],
@@ -173,7 +173,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -257,7 +257,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

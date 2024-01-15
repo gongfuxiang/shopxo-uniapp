@@ -13,10 +13,10 @@
                                 <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
                             </view>
                             <block v-if="is_goods_category_search_alone == 1">
-                                <component-search propPlaceholder="输入商品名称搜索"></component-search>
+                                <component-search :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                             <block v-else>
-                                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" propPlaceholder="输入商品名称搜索"></component-search>
+                                <component-search @onsearch="search_button_event" :propIsOnEvent="true" :propIsRequired="false" :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                         </view>
                     </block>
@@ -79,7 +79,7 @@
                                             <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
                                                 <view class="left-content-actual-list ht-auto">
                                                     <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                        <text>全部</text>
+                                                        <text>{{$t('common.all')}}</text>
                                                     </view>
                                                     <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
                                                         <block v-for="(item, index) in data_content.items" :key="index">
@@ -110,7 +110,7 @@
                                                     <!-- 三级导航 -->
                                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
                                                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
-                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">全部</view>
+                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
                                                             <block v-for="(item, index) in data_three_content.items" :key="index">
                                                                 <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
                                                             </block>
@@ -232,7 +232,7 @@
                                                                         <text class="text-wrapper text-size-md">{{ v.name }}</text>
                                                                         <text v-if="(v.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ v.describe }}</text>
                                                                     </view>
-                                                                    <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">更多</view>
+                                                                    <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</view>
                                                                 </view>
                                                                 <view v-if="(v.items || null) != null && v.items.length > 0" class="oh border-radius-main spacing-mb flex-row flex-warp">
                                                                     <block v-for="(vs, index2) in v.items" :key="index2">
@@ -249,13 +249,13 @@
                                                     </block>
                                                     <block v-else>
                                                         <!-- 提示信息 -->
-                                                        <component-no-data propStatus="0" propMsg="没有子分类数据"></component-no-data>
+                                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.7e4m68')"></component-no-data>
                                                     </block>
                                                 </view>
                                             </view>
                                             <view v-else>
                                                 <!-- 提示信息 -->
-                                                <component-no-data propStatus="0" propMsg="没有子分类数据"></component-no-data>
+                                                <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.7e4m68')"></component-no-data>
                                             </view>
                                         </scroll-view>
                                     </view>
@@ -276,12 +276,12 @@
                                 <view class="cart-content bg-white border-radius-main pa oh">
                                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
-                                            <text class="va-m text-size-xs cr-base">已选商品</text>
+                                            <text class="va-m text-size-xs cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
                                             <view class="fr cp" @tap="cart_all_delete_event">
                                                 <view class="dis-inline-block va-m pr top-xs">
                                                     <uni-icons type="trash" size="16" color="#f00"></uni-icons>
                                                 </view>
-                                                <text class="cr-red va-m text-size-xs">清空</text>
+                                                <text class="cr-red va-m text-size-xs">{{$t('common.clear')}}</text>
                                             </view>
                                         </view>
                                         <scroll-view :scroll-y="true" class="cart-list goods-list" :show-scrollbar="false">
@@ -323,7 +323,7 @@
                                         </scroll-view>
                                     </block>
                                     <block v-else>
-                                        <component-no-data propStatus="0" propMsg="请先选购商品"></component-no-data>
+                                        <component-no-data propStatus="0" :propMsg="$t('goods-category.goods-category.5pj8ip')"></component-no-data>
                                     </block>
                                 </view>
                             </block>
@@ -341,7 +341,7 @@
                                         <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                                     </view>
                                 </view>
-                                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" class="text-size-md radius-0 bg-main cr-white">去结算</button>
+                                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" class="text-size-md radius-0 bg-main cr-white">{{$t('goods-category.goods-category.44f1ww')}}</button>
                             </view>
                         </block>
                     </view>
@@ -425,31 +425,31 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
-                		name: '综合',
+                		name: this.$t('goods-category.goods-category.x69aow'),
                 		field: 'default',
                 		sort: 'asc',
                 		icon: null
                 	},
                 	{
-                		name: '销量',
+                		name: this.$t('goods-category.goods-category.at5p35'),
                 		field: 'sales_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '热度',
+                		name: this.$t('goods-category.goods-category.283ot0'),
                 		field: 'access_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '价格',
+                		name: this.$t('goods-category.goods-category.g2u3lf'),
                 		field: 'min_price',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '最新',
+                		name: this.$t('goods-category.goods-category.5p4ksj'),
                 		field: 'id',
                 		sort: 'asc',
                 		icon: 'default'
@@ -663,9 +663,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -772,10 +772,10 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -899,7 +899,7 @@
                                 this.setData({
                                     cart_status: true,
                                 });
-                                app.globalData.showToast('不同规格的商品需在购物车减购');
+                                app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
                             } else {
                                 if ((this.$refs.goods_buy || null) != null) {
                                     this.$refs.goods_buy.init(temp_goods, {
@@ -957,7 +957,7 @@
                 // 操作类型
                 if (res == 0) {
                     if (cart_item == null) {
-                        app.globalData.showToast('购物车id有误');
+                        app.globalData.showToast(this.$t('goods-category.goods-category.x46kbv'));
                         return false;
                     }
                     this.cart_delete(cart_item.id);
@@ -1069,13 +1069,13 @@
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if (max > 0 && buy_number > max) {
                     buy_number = max;
-                    app.globalData.showToast('限购' + max + inventory_unit);
+                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
                     return false;
                 }
 
                 // 数量是否改变
                 if (goods[buy_number_field] == buy_number) {
-                    app.globalData.showToast('数量未改变');
+                    app.globalData.showToast(this.$t('goods-category.goods-category.1ox23z'));
                     return false;
                 }
 
@@ -1115,7 +1115,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -1139,12 +1139,12 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -1165,12 +1165,12 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -1201,7 +1201,7 @@
                             }
                         },
                         fail: () => {
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }
@@ -1233,10 +1233,10 @@
             // 批量删除操作
             cart_all_delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '挑了这么久，真的要清空吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('goods-category.goods-category.o6i1w2'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             var ids = [];
@@ -1283,7 +1283,7 @@
                     }
                 }
                 if (ids.length <= 0) {
-                    app.globalData.showToast('请先选购商品');
+                    app.globalData.showToast(this.$t('goods-category.goods-category.5pj8ip'));
                     return false;
                 }
 

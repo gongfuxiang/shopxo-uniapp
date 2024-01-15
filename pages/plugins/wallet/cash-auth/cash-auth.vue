@@ -5,11 +5,11 @@
                 <form v-if="check_account_list.length > 0" @submit="form_submit" class="form-container oh">
                     <view class="bg-white border-radius-main">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">选择身份认证方式<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title">{{$t('cash-auth.cash-auth.b39a25')}}<text class="form-group-tips-must">*</text></view>
                             <view class="section">
                                 <picker name="account_type" @change="select_check_account_event" :value="check_account_value" :range="check_account_list" range-key="msg">
                                     <view :class="'picker name ' + (check_account_value == null ? 'cr-grey' : 'cr-base')">
-                                        <view v-if="check_account_value == null">请选择认证账号</view>
+                                        <view v-if="check_account_value == null">{{$t('cash-auth.cash-auth.582q6x')}}</view>
                                         <view v-else>{{ check_account_list[check_account_value]['msg'] }}</view>
                                     </view>
                                 </picker>
@@ -17,8 +17,8 @@
                         </view>
 
                         <view class="form-gorup pr">
-                            <view class="form-gorup-title">请输入安全验证码<text class="form-group-tips-must">*</text></view>
-                            <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" placeholder="验证码格式 4 位数字" maxlength="4" />
+                            <view class="form-gorup-title">{{$t('cash-auth.cash-auth.d318op')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="number" name="verify" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-auth.cash-auth.2hc312')" maxlength="4" />
                             <button :class="'bg-grey br-grey cr-base pa round text-size-sm verify-sub ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">
                                 {{ verify_submit_text }}
                             </button>
@@ -26,36 +26,36 @@
                     </view>
 
                     <view class="form-gorup form-gorup-submit margin-top-main">
-                        <button class="bg-main cr-white br-main round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">提交</button>
+                        <button class="bg-main cr-white br-main round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </form>
 
                 <view class="margin-top-lg cr-base">
-                    <view class="fw-b text-size">操作提示</view>
+                    <view class="fw-b text-size">{{$t('cash-auth.cash-auth.0j8388')}}</view>
                     <view class="text-size-xs">
-                        <view>1. 请选择 "<text class="cr-red">绑定邮箱</text>" 或 "<text class="cr-red">绑定手机</text>" 方式其一作为安全校验码的获取方式并正确输入。</view>
-                        <view>2. 如果您未绑定手机或者邮箱已失效，可以绑定手机后通过接收手机短信完成验证。</view>
-                        <view>3. 如果您未绑定邮箱或者已失效，可以绑定邮箱后通过接收邮件完成验证。</view>
-                        <view>4. 请正确输入下方图形验证码，如看不清可点击图片进行更换，输入完成后进行下一步操作。</view>
-                        <view>5. 收到安全验证码后，请在10分钟内完成验证。</view>
-                        <view>6. 安全验证成功后，请在30分钟内完成提现申请。</view>
+                        <view>{{$t('cash-auth.cash-auth.59iipw')}}<text class="cr-red">{{$t('cash-auth.cash-auth.8qcte7')}}</text>{{$t('cash-auth.cash-auth.t8y3r7')}}<text class="cr-red">{{$t('login.login.np9177')}}</text>{{$t('cash-auth.cash-auth.5wbuuy')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.r569wz')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.35837l')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.q2a553')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.lh6bjr')}}</view>
+                        <view>{{$t('cash-auth.cash-auth.ob4gn0')}}</view>
                     </view>
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
                     <navigator url="/pages/login/login?opt_form=bind_verify" hover-class="none">
-                        <button class="bg-main br-main cr-white text-size round" type="default">绑定手机号码</button>
+                        <button class="bg-main br-main cr-white text-size round" type="default">{{$t('cash-auth.cash-auth.d2ng16')}}</button>
                     </navigator>
                 </view>
             </view>
             <view v-else>
                 <view class="margin-top-lg">
                     <view>
-                        <text>当前有效金额</text>
+                        <text>{{$t('cash-auth.cash-auth.l2i4s8')}}</text>
                         <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
                     </view>
                     <view class="margin-top-sm">
-                        <text>提现最低金额</text>
+                        <text>{{$t('cash-auth.cash-auth.27b4w5')}}</text>
                         <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
                     </view>
                 </view>
@@ -81,7 +81,7 @@
                 data_base: null,
                 user_wallet: null,
                 check_account_list: [],
-                verify_submit_text: '获取验证码',
+                verify_submit_text: this.$t('login.login.s665h5'),
                 verify_loading: false,
                 verify_disabled: false,
                 form_submit_loading: false,
@@ -139,7 +139,7 @@
             get_data() {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -178,7 +178,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -195,15 +195,15 @@
                 // 数据验证
                 var self = this;
                 if (self.check_account_value == null) {
-                    app.globalData.showToast('请选择认证方式');
+                    app.globalData.showToast(this.$t('cash-auth.cash-auth.5dcsbd'));
                     return false;
                 }
 
                 uni.showLoading({
-                    title: '发送中...',
+                    title: this.$t('common.sending_in_text'),
                 });
                 this.setData({
-                    verify_submit_text: '发送中',
+                    verify_submit_text: this.$t('common.sending'),
                     verify_loading: true,
                     verify_disabled: true,
                 });
@@ -225,19 +225,19 @@
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: '获取验证码',
+                                        verify_submit_text: this.$t('login.login.s665h5'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: '剩余 ' + temp_time + ' 秒',
+                                        verify_submit_text: this.$t('login.login.n24i5u') + temp_time + this.$t('login.login.4306xr'),
                                     });
                                 }
                             }, 1000);
                         } else {
                             this.setData({
-                                verify_submit_text: '获取验证码',
+                                verify_submit_text: this.$t('login.login.s665h5'),
                                 verify_loading: false,
                                 verify_disabled: false,
                             });
@@ -247,11 +247,11 @@
                     fail: () => {
                         uni.hideLoading();
                         this.setData({
-                            verify_submit_text: '获取验证码',
+                            verify_submit_text: this.$t('login.login.s665h5'),
                             verify_loading: false,
                             verify_disabled: false,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -263,8 +263,8 @@
 
                 // 数据校验
                 var validation = [
-                    { fields: 'account_type', msg: '请选择认证方式', is_can_zero: 1 },
-                    { fields: 'verify', msg: '请输入验证码' },
+                    { fields: 'account_type', msg: this.$t('cash-auth.cash-auth.5dcsbd'), is_can_zero: 1 },
+                    { fields: 'verify', msg: this.$t('login.login.cesl5d') },
                 ];
 
                 // 验证提交表单
@@ -274,7 +274,7 @@
                         form_submit_disabled_status: true,
                     });
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('verifycheck', 'cash', 'wallet'),
@@ -294,7 +294,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -303,7 +303,7 @@
                                 form_submit_disabled_status: false,
                             });
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

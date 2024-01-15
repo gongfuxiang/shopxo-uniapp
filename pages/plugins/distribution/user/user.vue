@@ -26,8 +26,7 @@
                                     <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
                                         <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
                                             <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                                {{ (extraction || null) == null ? '申请' : '' }}取货点
-                                                <iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
+                                                {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
                                             </button>
                                         </navigator>
                                     </block>
@@ -45,13 +44,13 @@
                         <!-- 上级用户 -->
                         <view v-if="(data_base.is_show_superior || 0) == 1 && ((superior || null) != null || (data_base.is_modify_superior || 0) == 1)" class="superior">
                             <view class="superior-item flex-row jc-sb align-c oh border-radius-top-main">
-                                <view class="superior-title cr-white fw-b va-m text-size-sm">上级用户</view>
+                                <view class="superior-title cr-white fw-b va-m text-size-sm">{{$t('user.user.4rj120')}}</view>
                                 <view class="superior-content">
                                     <block v-if="(data_base.is_show_superior || 0) == 1 && (superior || null) != null">
                                         <image :src="superior.avatar" mode="widthFix" class="circle va-m"></image>
                                         <text class="cr-white va-m margin-left-sm text-size-xs">{{ superior.user_name_view }}</text>
                                     </block>
-                                    <text v-if="(data_base.is_modify_superior || 0) == 1" class="cr-white text-size-xs br round padding-horizontal-main padding-top-xs padding-bottom-xs margin-left" @tap="modify_superior_open_event">修改</text>
+                                    <text v-if="(data_base.is_modify_superior || 0) == 1" class="cr-white text-size-xs br round padding-horizontal-main padding-top-xs padding-bottom-xs margin-left" @tap="modify_superior_open_event">{{$t('user.user.567lwz')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -60,7 +59,7 @@
                         <view v-if="stats_user_promotion_data_list.length > 0 || stats_base_data_list.length > 0 || stats_profit_data_list.length > 0" class="padding-horizontal-main oh">
                             <view class="stats-container padding-main border-radius-main bg-white pr spacing-mb">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="title-left-border text-size fw-b">基础统计</view>
+                                    <view class="title-left-border text-size fw-b">{{$t('user.user.67y36w')}}</view>
                                     <button type="default" size="mini" class="br-grey-f5 bg-grey-f5 round stats-switch-submit text-size-xs pr margin-0" @tap="popup_time_event">
                                         {{ popup_time_value.name }}
                                         <iconfont name="icon-arrow-bottom" size="24rpx" class="pa" color="#999"></iconfont>
@@ -72,7 +71,7 @@
                                         <view class="padding-main flex-1" :class="stats_user_promotion_data_list.length - 1 > index ? 'divider-r-f5' : ''" :data-value="item.to_page" @tap="url_event">
                                             <view class="single-text margin-top-sm">
                                                 <text class="fw-b promotion-size">{{ item.value }}</text>
-                                                <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">人</text>
+                                                <text v-if="(item.unit || null) != null" class="cr-grey-9 text-size-xs">{{$t('user.user.rjye50')}}</text>
                                             </view>
                                             <view class="cr-grey text-size-xs">{{ item.name }}</view>
                                         </view>
@@ -109,7 +108,7 @@
 
                             <!-- 返佣统计 -->
                             <view v-if="stats_profit_data_list.length > 0" class="stats-container padding-sm border-radius-main bg-white pr">
-                                <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">返佣统计</view>
+                                <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.q822fj')}}</view>
                                 <view class="flex-row flex-warp">
                                     <block v-for="(item, index) in stats_profit_data_list" :key="index">
                                         <view class="flex-width-half">
@@ -150,7 +149,7 @@
                             <view class="padding-main">
                                 <view class="flex-row jc-sb align-c bottom-line-exclude">
                                     <text class="cr-base">{{ profit_ladder.msg }}</text>
-                                    <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">去推广</navigator>
+                                    <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">{{$t('user.user.xjxb2v')}}</navigator>
                                 </view>
                             </view>
                         </view>
@@ -176,20 +175,20 @@
                                         </view>
 
                                         <view class="form-gorup bg-white">
-                                            <view class="form-gorup-title">开始时间</view>
+                                            <view class="form-gorup-title">{{$t('team.team.pcaom3')}}</view>
                                             <view class="br-b">
-                                                <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
+                                                <uni-datetime-picker @change="time_start_change_event" v-model="popup_time_value.start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
                                             </view>
                                         </view>
                                         <view class="form-gorup bg-white">
-                                            <view class="form-gorup-title">结束时间</view>
+                                            <view class="form-gorup-title">{{$t('team.team.iee9bp')}}</view>
                                             <view class="br-b">
-                                                <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
+                                                <uni-datetime-picker @change="time_end_change_event" v-model="popup_time_value.end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
                                             </view>
                                         </view>
                                         <view class="bottom-fixed br-0">
                                             <view class="bottom-line-exclude">
-                                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">查询</button>
+                                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('user.user.25f97u')}}</button>
                                             </view>
                                         </view>
                                     </form>
@@ -213,7 +212,7 @@
                                                     @onsearch="modify_superior_search_submit_event"
                                                     :propIsOnEvent="true"
                                                     :propIsRequired="false"
-                                                    propPlaceholder="输入用户ID/名/昵称/会员码/手机/邮箱"
+                                                    :propPlaceholder="$t('user.user.nk3cpq')"
                                                     propClass="br"
                                                     propSize="md"
                                                     :propIsBtn="true"
@@ -234,13 +233,13 @@
                                                         </block>
                                                         <view v-else class="cr-red">{{modify_superior_user_data.error_msg}}</view>
                                                     </block>
-                                                    <view v-else class="cr-grey">请先输入用户信息搜索！</view>
+                                                    <view v-else class="cr-grey">{{$t('user.user.iynkpl')}}</view>
                                                 </view>
                                             </view>
                                         </view>
                                         <view class="bottom-fixed br-0">
                                             <view class="bottom-line-exclude">
-                                                <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">提交</button>
+                                                <button type="default" class="bg-main br-main cr-white round text-size" :disabled="form_submit_disabled_status" @tap="modify_superior_submit_event">{{$t('form.form.4yd066')}}</button>
                                             </view>
                                         </view>
                                     </view>
@@ -275,7 +274,7 @@
                 data_list_loding_msg: '',
                 currency_symbol: currency_symbol,
                 avatar: app.globalData.data.default_user_head_src,
-                nickname: '用户名',
+                nickname: this.$t('login.login.6yfr9g'),
                 data_base: null,
                 user_level: null,
                 extraction: null,
@@ -292,7 +291,7 @@
                 stats_profit_data_list: [],
                 popup_time_status: false,
                 form_submit_disabled_status: false,
-                popup_time_value: { name: '自定义', start: '', end: '', index: '' },
+                popup_time_value: { name: this.$t('user.user.dcbt21'), start: '', end: '', index: '' },
                 quit_time_checked_name: '',
                 modify_superior_popup_status: false,
                 modify_superior_search_input_keywords_value: '',
@@ -409,9 +408,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -489,7 +488,7 @@
                     form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '查询中...',
+                    title: this.$t('user.user.4141u2'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('stats', 'user', 'distribution'),
@@ -501,7 +500,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             var temp_value = this.popup_time_value;
-                            temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? '全部' : '自定义') : this.time_data[temp_value.index]['name'];
+                            temp_value.name = (temp_value.index || null) == null ? ((temp_value.start || null) == null && (temp_value.end || null) == null ? this.$t('common.all') : this.$t('user.user.dcbt21')) : this.time_data[temp_value.index]['name'];
                             this.setData({
                                 popup_time_status: false,
                                 form_submit_disabled_status: false,
@@ -518,7 +517,7 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -527,7 +526,7 @@
                             form_submit_disabled_status: false,
                         });
                         uni.hideLoading();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -577,7 +576,7 @@
             // 上级用户修改 - 搜索用户
             modify_superior_search_user() {
                 uni.showLoading({
-                    title: '搜索中...',
+                    title: this.$t('recommend-form.recommend-form.e5k407'),
                     mask: true
                 });
                 uni.request({
@@ -603,7 +602,7 @@
                     },
                     fail: () => {
                         uni.hideLoading();
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -611,14 +610,14 @@
             // 上级用户修改 - 提交
             modify_superior_submit_event(e) {
                 if((this.modify_superior_user_data || null) == null || (this.modify_superior_user_data.data || null) == null) {
-                    app.globalData.showToast('请先搜索用户');
+                    app.globalData.showToast(this.$t('user.user.f5rny5'));
                     return false;
                 }
                 this.setData({
                     form_submit_disabled_status: true
                 });
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                     mask: true
                 });
                 uni.request({
@@ -646,7 +645,7 @@
                             form_submit_disabled_status: false
                         });
                         uni.hideLoading();
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

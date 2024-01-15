@@ -48,8 +48,8 @@
                         </block>
                     </view>
                     <view v-if="item.status <= 2 || item.status == 4" class="item-operation tr br-t padding-vertical-main">
-                        <button v-if="item.status != 3 && item.status != 5" class="br-yellow cr-yellow bg-white round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">取消</button>
-                        <button v-if="item.status == 1 && item.type == 1" class="br-green cr-green bg-white round" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">退货</button>
+                        <button v-if="item.status != 3 && item.status != 5" class="br-yellow cr-yellow bg-white round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
+                        <button v-if="item.status == 1 && item.type == 1" class="br-green cr-green bg-white round" type="default" size="mini" @tap="delivery_event" :data-oid="item.order_id" :data-did="item.order_detail_id" :data-index="index" hover-class="none">{{$t('user-orderaftersale.user-orderaftersale.10c251')}}</button>
                     </view>
                 </view>
             </view>
@@ -86,13 +86,13 @@ export default {
             // 导航
             // 状态（0待确认, 1待退货, 2待审核, 3已完成, 4已拒绝, 5已取消）
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待确认", value: "0" },
-                { name: "待退货", value: "1" },
-                { name: "待审核", value: "2" },
-                { name: "已完成", value: "3" },
-                { name: "已拒绝", value: "4" },
-                { name: "已取消", value: "5" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('user-orderaftersale.user-orderaftersale.3wggcu'), value: "0" },
+                { name: this.$t('user-orderaftersale.user-orderaftersale.1kcn16'), value: "1" },
+                { name: this.$t('user-orderaftersale.user-orderaftersale.2kzi0t'), value: "2" },
+                { name: this.$t('order.order.15lr5l'), value: "3" },
+                { name: this.$t('user-orderaftersale.user-orderaftersale.1p5456'), value: "4" },
+                { name: this.$t('order.order.1k98tk'), value: "5" },
             ],
             nav_status_index: 0,
         };
@@ -188,7 +188,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -233,7 +233,7 @@ export default {
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: "没有相关数据",
+                                data_list_loding_msg: this.$t('common.no_relevant_data_tips'),
                                 data_list: [],
                                 data_bottom_line_status: false,
                                 data_is_loading: 0,
@@ -256,10 +256,10 @@ export default {
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -288,10 +288,10 @@ export default {
         // 取消
         cancel_event(e) {
             uni.showModal({
-                title: "温馨提示",
-                content: "取消后不可恢复，确定继续吗?",
-                confirmText: "确认",
-                cancelText: "不了",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('order.order.pn78ns'),
+                confirmText: this.$t('common.confirm'),
+                cancelText: this.$t('recommend-list.recommend-list.w9460o'),
                 success: (result) => {
                     if (result.confirm) {
                         // 参数
@@ -300,7 +300,7 @@ export default {
 
                         // 加载loding
                         uni.showLoading({
-                            title: "处理中...",
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url("cancel", "orderaftersale"),
@@ -314,7 +314,7 @@ export default {
                                 if (res.data.code == 0) {
                                     var temp_data_list = this.data_list;
                                     temp_data_list[index]["status"] = 5;
-                                    temp_data_list[index]["status_text"] = "已取消";
+                                    temp_data_list[index]["status_text"] = this.$t('order.order.1k98tk');
                                     this.setData({
                                         data_list: temp_data_list,
                                     });
@@ -323,13 +323,13 @@ export default {
                                     if (app.globalData.is_login_check(res.data)) {
                                         app.globalData.showToast(res.data.msg);
                                     } else {
-                                        app.globalData.showToast("提交失败，请重试！");
+                                        app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                     }
                                 }
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast("网络开小差了哦~");
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -342,7 +342,7 @@ export default {
             var oid = e.currentTarget.dataset.oid || 0;
             var did = e.currentTarget.dataset.did || 0;
             if (oid == 0 || did == 0) {
-                app.globalData.showToast("参数有误");
+                app.globalData.showToast(this.$t('user-order-detail.user-order-detail.5k6k56'));
                 return false;
             }
 

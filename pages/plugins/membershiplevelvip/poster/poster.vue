@@ -3,23 +3,23 @@
         <view v-if="user_share_qrode != null || user_share_url != null" class="padding-main">
             <!-- 二维码 -->
             <view v-if="user_share_qrode != null" class="share qrcode padding-main border-radius-main bg-white spacing-mb">
-                <view class="title border-color-main padding-left-lg text-size fw-b">二维码分享</view>
-                <view class="cr-grey br-b padding-vertical-main"> 保存二维码后，发送给微信好友/群、QQ好友/群，分享到分朋友圈，微博等进行推广，轻轻松松赚返利！ </view>
+                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('poster.poster.9y4bwq')}}</view>
+                <view class="cr-grey br-b padding-vertical-main">{{$t('poster.poster.h212v8')}}</view>
                 <view class="margin-top-lg">
                     <image :src="user_share_qrode" class="wh-auto dis-block radius" mode="widthFix"></image>
                 </view>
                 <view class="margin-top-lg">
-                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="images_show_event" :data-value="user_share_qrode">查看二维码长按保存</button>
+                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="images_show_event" :data-value="user_share_qrode">{{$t('poster.poster.j3qv45')}}</button>
                 </view>
             </view>
 
             <!-- 链接 -->
             <view v-if="user_share_url != null" class="share url padding-main border-radius-main bg-white spacing-mb">
-                <view class="title border-color-main padding-left-lg text-size fw-b">链接分享</view>
-                <view class="cr-grey br-b padding-vertical-main"> 复制以下链接，发送给微信好友/群、QQ好友/群，分享到分朋友圈，微博等进行推广，轻轻松松赚返利！ </view>
+                <view class="title border-color-main padding-left-lg text-size fw-b">{{$t('poster.poster.r534xd')}}</view>
+                <view class="cr-grey br-b padding-vertical-main">{{$t('poster.poster.vn36y7')}}</view>
                 <view class="cr-main text-size margin-top-lg">{{ user_share_url }}</view>
                 <view class="margin-top-lg">
-                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="url_event" :data-value="user_share_url">点击复制链接地址</button>
+                    <button class="dis-block wh-auto bg-white cr-green br-green round" type="default" size="mini" hover-class="none" @tap="url_event" :data-value="user_share_url">{{$t('poster.poster.673605')}}</button>
                 </view>
             </view>
 
@@ -42,7 +42,7 @@ export default {
         return {
             theme_view: app.globalData.get_theme_value_view(),
             data_list_loding_status: 1,
-            data_list_loding_msg: "加载中...",
+            data_list_loding_msg: this.$t('common.loading_in_text'),
             data_bottom_line_status: false,
             user_share_qrode: null,
             user_share_url: null,
@@ -79,7 +79,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -126,9 +126,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -142,7 +142,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("宣传图片地址有误");
+                app.globalData.showToast(this.$t('poster.poster.eu3j21'));
             }
         },
 

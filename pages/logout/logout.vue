@@ -8,8 +8,8 @@
                             <mp-html :content="agreement_data.value" />
                         </view>
                         <view class="bottom-fixed oh">
-                            <button class="bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">确认注销</button>
-                            <button class="bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">取消</button>
+                            <button class="bg-grey br-grey cr-base round text-size fl" type="default" size="mini" hover-class="none" @tap="logout_submit_event">{{$t('logout.logout.u10002')}}</button>
+                            <button class="bg-main br-main cr-white round text-size fr" type="default" size="mini" hover-class="none" @tap="logout_cancel_event">{{$t('common.cancel')}}</button>
                         </view>
                     </view>
                 </block>
@@ -63,7 +63,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: '请先绑定手机',
+                            data_list_loding_msg: this.$t('setup.setup.07o10b'),
                         });
                         return false;
                     } else {
@@ -72,7 +72,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: '请先登录',
+                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
                     });
                 }
             },
@@ -100,9 +100,9 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -112,7 +112,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: '账号注销后不可恢复、确定继续吗？',
+                        msg: this.$t('logout.logout.9vfzz4'),
                         is_show_cancel: 1,
                         object: this,
                         method: 'logout_submit_event',
@@ -123,7 +123,7 @@
                 // 注销提交
                 if (e.alert_status == 1) {
                     uni.showLoading({
-                        title: '处理中...',
+                        title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
                         url: app.globalData.get_request_url('logout', 'safety'),
@@ -142,13 +142,13 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

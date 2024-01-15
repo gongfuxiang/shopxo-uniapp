@@ -63,18 +63,18 @@ export default {
             data_is_loading: 0,
             params: null,
             nav_status_list: [
-                { name: "全部", value: "-1" },
-                { name: "待生效", value: "0" },
-                { name: "进行中", value: "1" },
-                { name: "已完成", value: "2" },
-                { name: "已关闭", value: "3" },
+                { name: this.$t('common.all'), value: "-1" },
+                { name: this.$t('profit.profit.3c7zmg'), value: "0" },
+                { name: this.$t('batchorder-list.batchorder-list.25sh5e'), value: "1" },
+                { name: this.$t('order.order.15lr5l'), value: "2" },
+                { name: this.$t('order.order.6390gk'), value: "3" },
             ],
             nav_status_index: 0,
             content_list: [
-                { name: "描述", field: "describe" },
-                { name: "备注", field: "note" },
-                { name: "时间", field: "upd_time" },
-                { name: "状态", field: "status_name" },
+                { name: this.$t('form.form.xy87t8'), field: "describe" },
+                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), field: "note" },
+                { name: this.$t('buy.buy.s7rr5s'), field: "upd_time" },
+                { name: this.$t('invoice-detail.invoice-detail.rrfex6'), field: "status_name" },
             ],
         };
     },
@@ -168,7 +168,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 参数
@@ -236,7 +236,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

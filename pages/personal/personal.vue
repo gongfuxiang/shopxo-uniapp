@@ -7,7 +7,7 @@
                     <view class="padding-main page-bottom-fixed">
                         <view class="bg-white border-radius-main oh">
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view>头像</view>
+                                <view>{{$t('personal.personal.cw1d8p')}}</view>
                                 <view class="flex-row align-c">
                                     <button class="bg-white br-0 lh-0 padding-horizontal-sm" hover-class="none" open-type="chooseAvatar" @chooseavatar="choose_avatar_event" @tap="choose_avatar_event">
                                         <image :src="user_data.avatar || default_avatar" mode="widthFix" class="circle br user-avatar flex-1 flex-width"></image>
@@ -17,31 +17,31 @@
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">昵称<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title">{{$t('personal.personal.gw8br3')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-row align-c flex-1 flex-width">
-                                    <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" placeholder="昵称1~16个字符" />
+                                    <input :type="application_client_type == 'weixin' ? 'nickname' : 'text'" name="nickname" :value="user_data.nickname || ''" maxlength="16" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.personal.44112i')" />
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">生日</view>
+                                <view class="form-gorup-title">{{$t('personal.personal.jibx42')}}</view>
                                 <view class="flex-1 flex-width flex-row jc-e align-c">
                                     <picker class="margin-right-sm wh-auto tr" name="birthday" mode="date" :value="user_data.birthday || ''" data-field="birthday" @change="select_change_event">
-                                        <view :class="'picker ' + ((user_data.birthday || null) == null ? 'cr-grey' : '')">{{ user_data.birthday || '请选择生日' }}</view>
+                                        <view :class="'picker ' + ((user_data.birthday || null) == null ? 'cr-grey' : '')">{{ user_data.birthday || $t('personal.personal.85404s') }}</view>
                                     </picker>
                                     <iconfont name="icon-arrow-right" size="34rpx" color="#ccc"></iconfont>
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">详细地址</view>
+                                <view class="form-gorup-title">{{$t('personal.personal.6m33c4')}}</view>
                                 <view class="flex-row align-c flex-1 flex-width">
-                                    <input type="text" name="address" :value="user_data.address || ''" maxlength="30" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" placeholder="详细地址最多30个字符" />
+                                    <input type="text" name="address" :value="user_data.address || ''" maxlength="30" placeholder-class="cr-grey-9 tr" class="cr-base tr margin-right-sm" :placeholder="$t('personal.personal.re674n')" />
                                 </view>
                             </view>
 
                             <view class="form-gorup oh flex-row jc-sb align-c">
-                                <view class="form-gorup-title">性别</view>
+                                <view class="form-gorup-title">{{$t('personal.personal.x2fofv')}}</view>
                                 <view class="flex-row jc-e align-c flex-1 flex-width">
                                     <picker @change="select_change_event" :value="user_data.gender || ''" :range="gender_list" range-key="name" name="gender" data-field="gender" class="margin-right-sm wh-auto tr">
                                         <view class="uni-input cr-base picker">{{ gender_list[user_data.gender].name || '' }}</view>
@@ -53,7 +53,7 @@
 
                         <view class="bottom-fixed">
                             <view class="bottom-line-exclude">
-                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">保存</button>
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.save')}}</button>
                             </view>
                         </view>
                     </view>
@@ -112,7 +112,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: '请先绑定手机',
+                            data_list_loding_msg: this.$t('setup.setup.07o10b'),
                         });
                         return false;
                     } else {
@@ -121,7 +121,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: '请先登录',
+                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
                     });
                 }
             },
@@ -150,9 +150,9 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -225,7 +225,7 @@
                     form_submit_disabled_status: true,
                 });
                 uni.showLoading({
-                    title: '处理中...',
+                    title: this.$t('common.processing_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('save', 'personal'),
@@ -247,7 +247,7 @@
                             if (app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
@@ -256,7 +256,7 @@
                         this.setData({
                             form_submit_disabled_status: false,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

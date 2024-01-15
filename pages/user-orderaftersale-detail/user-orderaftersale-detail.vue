@@ -30,11 +30,11 @@
                     <view class="dis-inline-block va-m margin-right-sm lh-0">
                         <uni-icons type="chatbubble" size="34rpx" color="#fff"></uni-icons>
                     </view>
-                    <text>联系客服</text>
+                    <text>{{$t('user.user.ki1nor')}}</text>
                 </button>
                 <view v-if="plugins_intellectstools_service_status" class="plugins-intellectstools-service pa border-radius-main oh bg-white br">
                     <view v-if="(plugins_intellectstools_data.chat || null) != null" class="item padding-main br-t single-text">
-                        <text class="va-m">客服：</text>
+                        <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                         <view class="dis-inline-block chat-info cp" @tap="chat_event">
                             <image class="dis-inline-block va-m" :src="plugins_intellectstools_data.chat.icon" mode="scaleToFill"></image>
                             <text class="margin-left-sm va-m cr-blue" :data-value="plugins_intellectstools_data.chat.chat_url">{{ plugins_intellectstools_data.chat.name }}</text>
@@ -45,17 +45,17 @@
                         <text class="cp" @tap="text_event" data-event="copy" :data-value="plugins_intellectstools_data.service_qq">{{ plugins_intellectstools_data.service_qq }}</text>
                     </view>
                     <view v-if="(plugins_intellectstools_data.service_tel || null) != null" class="item padding-main br-t single-text">
-                        <text>电话：</text>
+                        <text>{{$t('order.order.7dxbm5')}}</text>
                         <text class="cp" @tap="text_event" data-event="tel" :data-value="plugins_intellectstools_data.service_tel">{{ plugins_intellectstools_data.service_tel }}</text>
                     </view>
                     <view v-if="(plugins_intellectstools_data.service_weixin || null) != null || (plugins_intellectstools_data.service_line || null) != null" class="oh qrcode tc br-t">
                         <view v-if="(plugins_intellectstools_data.service_weixin || null) != null" class="item padding-bottom-lg dis-inline-block">
                             <image class="radius cp" :src="plugins_intellectstools_data.service_weixin" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_weixin"></image>
-                            <view>长按微信咨询</view>
+                            <view>{{$t('detail.detail.54k10s')}}</view>
                         </view>
                         <view v-if="(plugins_intellectstools_data.service_line || null) != null" class="item padding-bottom-lg dis-inline-block">
                             <image class="radius cp" :src="plugins_intellectstools_data.service_line" mode="scaleToFill" @tap="image_show_event" :data-value="plugins_intellectstools_data.service_line"></image>
-                            <view>长按line咨询</view>
+                            <view>{{$t('detail.detail.vj4nom')}}</view>
                         </view>
                     </view>
                 </view>
@@ -68,13 +68,13 @@
                     <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
                     <text class="msg-a" @tap="show_aftersale_event">查看 >></text>
                     <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
-                        <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">立即退货</button>
+                        <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
                     </view>
                 </view>
 
                 <!-- 退货地址 -->
                 <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="return-address msg-tips msg-tips-warning padding-main border-radius-main spacing-mb">
-                    <text class="cr-base fw-b">退货地址：</text>
+                    <text class="cr-base fw-b">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.00je4f')}}</text>
                     <view class="cr-blue" @tap="text_event" data-event="copy" :data-value="return_goods_address.name + ' ' + return_goods_address.tel + ' ' + return_goods_address.address">
                         <view>
                             <text class="margin-right-xxxl">{{ return_goods_address.name }}</text>
@@ -94,7 +94,7 @@
                 <view v-if="new_aftersale_data.status != 5">
                     <!-- 申请信息 -->
                     <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">申请信息</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.s70kj4')}}</view>
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_base_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -105,7 +105,7 @@
 
                     <!-- 快递信息 -->
                     <view v-if="new_aftersale_data.status > 1 && new_aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">快递信息</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.0876xf')}}</view>
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_express_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
@@ -116,7 +116,7 @@
 
                     <!-- 凭证 -->
                     <view v-if="(new_aftersale_data.images || null) != null && new_aftersale_data.images.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">凭证</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y2c1l')}}</view>
                         <view class="panel-content-images oh">
                             <view v-for="(item, index) in new_aftersale_data.images" :key="index" class="fl item padding-sm">
                                 <image :src="item" mode="aspectFill" @tap="images_view_event" :data-index="index" class="dis-block radius"></image>
@@ -141,35 +141,35 @@
                 <!-- 表单 -->
                 <view v-if="form_type != null" class="form-container oh spacing-mb">
                     <view class="form-gorup">
-                        <view class="form-gorup-title">退款原因<text class="form-group-tips-must">*</text></view>
+                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.bprwq9')}}<text class="form-group-tips-must">*</text></view>
                         <picker @change="form_reason_event" :value="form_reason_index" :range="reason_data_list">
                             <view :class="'picker ' + (form_reason_index == null ? 'cr-grey' : 'cr-base') + ' arrow-right'">
-                                {{ form_reason_index == null ? "请选择原因" : reason_data_list[form_reason_index] }}
+                                {{ form_reason_index == null ? $t("user-orderaftersale-detail.user-orderaftersale-detail.21icul") : reason_data_list[form_reason_index] }}
                             </view>
                         </picker>
                     </view>
 
                     <view v-if="form_type == 1" class="form-gorup">
                         <view class="form-gorup-title"
-                            >商品件数<text class="form-group-tips">数量不能大于{{ returned_data.returned_quantity }}</text></view
+                            >{{$t('user-orderaftersale-detail.user-orderaftersale-detail.85pnkf')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.84upo4')}}{{ returned_data.returned_quantity }}</text></view
                         >
                         <slider @change="form_number_event" min="0" :max="returned_data.returned_quantity" step="1" :value="returned_data.returned_quantity" show-value></slider>
                     </view>
 
                     <view class="form-gorup">
                         <view class="form-gorup-title"
-                            >退款金额<text class="form-group-tips">不能大于{{ returned_data.refund_price }}</text></view
+                            >{{$t('order-detail.order-detail.v52n5r')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1252if')}}{{ returned_data.refund_price }}</text></view
                         >
-                        <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入退款金额" :value="form_price" />
+                        <input type="digit" @input="form_price_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.9kvu52')" :value="form_price" />
                     </view>
 
                     <view class="form-gorup">
-                        <view class="form-gorup-title">退款说明</view>
-                        <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" placeholder="退款说明最多200个字符" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
+                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y')}}</view>
+                        <textarea @input="form_msg_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.4f8u0c')" maxlength="200" :auto-height="true" :value="form_msg"></textarea>
                     </view>
 
                     <view class="form-gorup form-container-upload oh">
-                        <view class="form-gorup-title">上传凭证<text class="form-group-tips">最多上传3张图片</text></view>
+                        <view class="form-gorup-title">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.4y9355')}}<text class="form-group-tips">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.1l42ms')}}</text></view>
                         <view class="form-upload-data oh">
                             <block v-if="form_images_list.length > 0">
                                 <view v-for="(item, index) in form_images_list" :key="index" class="item fl">
@@ -181,7 +181,7 @@
                         </view>
                     </view>
                     <view class="form-gorup form-gorup-submit">
-                        <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                        <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </view>
             </view>
@@ -207,15 +207,15 @@
                 <view class="margin-top-xxxl padding-top-xxl">
                     <view class="form-container">
                         <view class="form-gorup">
-                            <view class="form-gorup-title">快递名称<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入快递名称" :value="form_express_name" />
+                            <view class="form-gorup-title">{{$t('invoice-detail.invoice-detail.2000a0')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_express_name_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.6d14hq')" :value="form_express_name" />
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">快递单号<text class="form-group-tips-must">*</text></view>
-                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" placeholder="请输入快递单号" :value="form_express_number" />
+                            <view class="form-gorup-title">{{$t('user-order-detail.user-order-detail.2byl8l')}}<text class="form-group-tips-must">*</text></view>
+                            <input type="text" @input="form_express_number_event" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('user-orderaftersale-detail.user-orderaftersale-detail.8tt862')" :value="form_express_number" />
                         </view>
                         <view class="form-gorup form-gorup-submit">
-                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">提交</button>
+                            <button class="bg-main br-main cr-white round text-size" type="default" @tap="form_delivery_submit_event" hover-class="none" :disabled="form_button_disabled">{{$t('form.form.4yd066')}}</button>
                         </view>
                     </view>
                 </view>
@@ -254,78 +254,78 @@ export default {
             // 售后基础信息
             panel_base_data_list: [
                 {
-                    name: "退款类型",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.50cm8m'),
                     field: "type_text",
                 },
                 {
-                    name: "当前状态",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.17j4cy'),
                     field: "status_text",
                 },
                 {
-                    name: "申请原因",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.r2oy43'),
                     field: "reason",
                 },
                 {
-                    name: "退货数量",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c53k23'),
                     field: "number",
                 },
                 {
-                    name: "退款金额",
+                    name: this.$t('order-detail.order-detail.v52n5r'),
                     field: "price",
                 },
                 {
-                    name: "退款说明",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.9p6b1y'),
                     field: "msg",
                 },
                 {
-                    name: "退款方式",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.5t586p'),
                     field: "refundment_text",
                 },
                 {
-                    name: "拒绝原因",
+                    name: this.$t('invoice-detail.invoice-detail.rpdwd3'),
                     field: "refuse_reason",
                 },
                 {
-                    name: "申请时间",
+                    name: this.$t('user-cash-detail.user-cash-detail.y96262'),
                     field: "apply_time",
                 },
                 {
-                    name: "确认时间",
+                    name: this.$t('user-order-detail.user-order-detail.9vivhl'),
                     field: "confirm_time",
                 },
                 {
-                    name: "退货时间",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
                     field: "delivery_time",
                 },
                 {
-                    name: "审核时间",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.8n414b'),
                     field: "audit_time",
                 },
                 {
-                    name: "取消时间",
+                    name: this.$t('user-order-detail.user-order-detail.1jpv4n'),
                     field: "cancel_time",
                 },
                 {
-                    name: "添加时间",
+                    name: this.$t('profit-detail.profit-detail.b7v892'),
                     field: "add_time",
                 },
                 {
-                    name: "更新时间",
+                    name: this.$t('order-detail.order-detail.21ift9'),
                     field: "upd_time",
                 },
             ],
             // 快递信息
             panel_express_data_list: [
                 {
-                    name: "快递名称",
+                    name: this.$t('invoice-detail.invoice-detail.2000a0'),
                     field: "express_name",
                 },
                 {
-                    name: "快递单号",
+                    name: this.$t('user-order-detail.user-order-detail.2byl8l'),
                     field: "express_number",
                 },
                 {
-                    name: "退货时间",
+                    name: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.bifwmx'),
                     field: "delivery_time",
                 },
             ],
@@ -384,7 +384,7 @@ export default {
         init() {
             var self = this;
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -435,9 +435,9 @@ export default {
                     self.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -507,8 +507,8 @@ export default {
         upload_delete_event(e) {
             var self = this;
             uni.showModal({
-                title: "温馨提示",
-                content: "删除后不可恢复、继续吗？",
+                title: this.$t('common.warm_tips'),
+                content: this.$t('order.order.psi67g'),
                 success(res) {
                     if (res.confirm) {
                         var list = self.form_images_list;
@@ -610,18 +610,18 @@ export default {
             var validation = [
                 {
                     fields: "type",
-                    msg: "请选择操作类型",
+                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.23v6rp'),
                     is_can_zero: 1,
                 },
                 {
                     fields: "reason",
-                    msg: "请选择原因",
+                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.21icul'),
                 },
             ];
             if (form_data["type"] == 1) {
                 validation.push({
                     fields: "number",
-                    msg: "请选择退货数量",
+                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.dn3423'),
                 });
             }
 
@@ -629,7 +629,7 @@ export default {
             if (app.globalData.fields_check(form_data, validation)) {
                 var self = this;
                 uni.showLoading({
-                    title: "处理中...",
+                    title: this.$t('common.processing_in_text'),
                 });
                 self.setData({
                     form_button_disabled: true,
@@ -661,7 +661,7 @@ export default {
                         self.setData({
                             form_button_disabled: false,
                         });
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             }
@@ -694,11 +694,11 @@ export default {
             var validation = [
                 {
                     fields: "express_name",
-                    msg: "请填写快递名称",
+                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.c9e2ms'),
                 },
                 {
                     fields: "express_number",
-                    msg: "请填写快递单号",
+                    msg: this.$t('user-orderaftersale-detail.user-orderaftersale-detail.ld10pm'),
                 },
             ];
 
@@ -706,7 +706,7 @@ export default {
             if (app.globalData.fields_check(form_data, validation)) {
                 var self = this;
                 uni.showLoading({
-                    title: "处理中...",
+                    title: this.$t('common.processing_in_text'),
                 });
                 self.setData({
                     form_button_disabled: true,
@@ -741,7 +741,7 @@ export default {
                         self.setData({
                             form_button_disabled: false,
                         });
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             }

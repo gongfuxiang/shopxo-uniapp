@@ -66,13 +66,13 @@
                         <view class="confirm-submit pa wh-auto bottom-line-exclude bg-white padding-top-main">
                             <view class="oh padding-horizontal-main padding-bottom-main cr-grey">
                                 <text class="text-size-xs">
-                                    <text>已选</text>
+                                    <text>{{$t('buy.buy.g2vt78')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.kind }}</text>
-                                    <text>种</text>
+                                    <text>{{$t('goods-batch-buy.goods-batch-buy.9ectyf')}}</text>
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.quantity }}</text>
                                     <text>{{ goods.inventory_unit }}</text>
                                 </text>
-                                <text class="text-size-xs fr">金额：<text class="fw-b sales-price">{{ currency_symbol }}{{ base_data.amount_money }}</text></text>
+                                <text class="text-size-xs fr">{{$t('goods-batch-buy.goods-batch-buy.geq82x')}}<text class="fw-b sales-price">{{ currency_symbol }}{{ base_data.amount_money }}</text></text>
                             </view>
                             <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                                 <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
@@ -86,7 +86,7 @@
                         </view>
                     </block>
                     <block v-else>
-                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">无相关信息</view>
+                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-batch-buy.goods-batch-buy.ypby1k')}}</view>
                     </block>
                 </view>
             </view>
@@ -205,17 +205,17 @@ export default {
             // 不能小于起购数则0
             if (number > 0 && min > 0 && number < min) {
                 number = 0;
-                app.globalData.showToast("起购" + min + inventory_unit);
+                app.globalData.showToast(this.$t('recommend-detail.recommend-detail.265vyu') + min + inventory_unit);
             }
             // 不能超过最大限购
             if (max > 0 && number > max) {
                 number = max;
-                app.globalData.showToast("限购" + max + inventory_unit);
+                app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
             }
             // 不能超过库存
             if (number > inventory) {
                 number = inventory;
-                app.globalData.showToast("库存数量" + inventory + inventory_unit);
+                app.globalData.showToast(this.$t('recommend-detail.recommend-detail.2sis3v') + inventory + inventory_unit);
             }
             temp_spec_data["buy_number"] = number;
             if (parseInt(temp_data.is_only_level_one || 0) == 1) {
@@ -328,7 +328,7 @@ export default {
                     }
                 },
                 fail: () => {
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -371,7 +371,7 @@ export default {
                         }
                     });
                     if (goods_data.length <= 0) {
-                        app.globalData.showToast("请选择规格");
+                        app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
                         return false;
                     }
 
@@ -395,7 +395,7 @@ export default {
                             break;
 
                         default:
-                            app.globalData.showToast("操作事件类型有误");
+                            app.globalData.showToast(this.$t('goods-batch-buy.goods-batch-buy.7tp1tc'));
                     }
                 }
             }
@@ -404,7 +404,7 @@ export default {
         // 加入购物车事件
         goods_cart_event(goods_data) {
             uni.showLoading({
-                title: "处理中...",
+                title: this.$t('common.processing_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("save", "cart"),
@@ -432,7 +432,7 @@ export default {
                 },
                 fail: () => {
                     uni.hideLoading();
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

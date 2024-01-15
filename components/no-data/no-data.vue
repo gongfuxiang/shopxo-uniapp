@@ -2,8 +2,8 @@
     <view :class="theme_view">
         <!-- 是否有网络 -->
         <view v-if="network_type_value == 'none'" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
-            <view class="cr-base text-size">暂时无网络连接</view>
-            <view class="cr-grey margin-top-sm">请您检查是否系统设置-＞蜂窝移动网络中是否允许【{{title}}】APP使用蜂窝移动网络或无线局域网</view>
+            <view class="cr-base text-size">{{$t('no-data.no-data.1u202v')}}</view>
+            <view class="cr-grey margin-top-sm">{{$t('no-data.no-data.imw8f1')}}{{title}}{{$t('no-data.no-data.q87572')}}</view>
         </view>
         <view v-else>
             <!-- 1 加载中 -->
@@ -14,16 +14,16 @@
             <!-- 2 处理错误 -->
             <view v-else-if="propStatus == 2" class="no-data-box tc">
                 <image :src="static_dir + 'error.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || '处理错误'}}</view>
+                <view class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</view>
                 <view v-if="propBackBtn" class="margin-top-xxxl tc">
-                    <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">返回</button>
+                    <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
                 </view>
             </view>
 
             <!-- 0 默认没有数据 -->
             <view v-else-if="propStatus == 0" class="no-data-box tc">
                 <image :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
-                <view class="no-data-tips">{{propMsg || '没有相关数据'}}</view>
+                <view class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</view>
             </view>
         </view>
     </view>
@@ -47,7 +47,7 @@
             },
             propMsg: {
                 type: String,
-                default: '没有相关数据',
+                default: '',
             },
             propUrl: {
                 type: String,

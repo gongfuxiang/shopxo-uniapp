@@ -22,10 +22,10 @@
 
                 <!-- 基础信息 -->
                 <view v-if="detail_list.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">基础信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('order-detail.order-detail.9er1pc')}}</view>
                     <view class="panel-content oh">
                         <view class="item br-b oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">用户头像</view>
+                            <view class="title fl padding-right-main cr-grey">{{$t('order-detail.order-detail.pyw6xg')}}</view>
                             <view class="content fl br-l padding-left-main">
                                 <image :src="detail.avatar" class="avatar dis-block circle fl" mode="widthFix" @tap="avatar_event" :data-value="detail.avatar"></image>
                             </view>
@@ -39,7 +39,7 @@
 
                 <!-- 商品列表 -->
                 <view v-if="detail.items.length > 0" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">商品信息</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                     <view v-for="(item, index) in detail.items" :key="index" class="goods-item br-b-dashed oh padding-main">
                         <view :data-value="item.goods_url" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="item.images" mode="aspectFill"></image>
@@ -60,7 +60,7 @@
                         </view>
                     </view>
                     <view class="padding-top-main tr cr-base text-size">
-                        <text>共<text class="fw-b">{{ detail.buy_number_count }}</text>件 合计 <text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
+                        <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ detail.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ detail.currency_data.currency_symbol }}{{ detail.total_price }}</text></text>
                     </view>
                 </view>
             </view>
@@ -127,7 +127,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -147,15 +147,15 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "用户昵称", value: data.data.user_name_view || "" },
-                                { name: "订单号", value: data.data.order_no || "" },
-                                { name: "订单金额", value: data.data.total_price || "" },
-                                { name: "退款金额", value: data.data.refund_price || "" },
-                                { name: "订单状态", value: data.data.order_status_name || "" },
-                                { name: "支付状态", value: data.data.order_pay_status_name || "" },
-                                { name: "来源终端", value: data.data.order_client_type_name || "" },
-                                { name: "商品数量", value: data.data.buy_number_count || "" },
-                                { name: "下单时间", value: data.data.add_time || "" },
+                                { name: this.$t('order-detail.order-detail.2d766e'), value: data.data.user_name_view || "" },
+                                { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.order_no || "" },
+                                { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || "" },
+                                { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.order_status_name || "" },
+                                { name: this.$t('user-order-detail.user-order-detail.23qj7m'), value: data.data.order_pay_status_name || "" },
+                                { name: this.$t('order.order.330m76'), value: data.data.order_client_type_name || "" },
+                                { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || "" },
+                                { name: this.$t('order-detail.order-detail.w78rgm'), value: data.data.add_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -178,9 +178,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -194,7 +194,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
 

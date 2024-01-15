@@ -6,7 +6,7 @@
 				<view class="top-search-input">
 					<component-search :propDefaultValue="post_data.wd || ''" propBrColor="#ddd" @onsearch="search_input_confirm_event" :propIsOnEvent="true" @oninput="search_input_value_event" :propIsOnInputEvent="true"
 						@onfocus="search_input_focus_event" :propIsOnFocusEvent="true" @onblur="search_input_blur_event" :propIsOnBlurEvent="true" :propIsRequired="false"
-						propPlaceholder="输入商品名称搜索"></component-search>
+						:propPlaceholder="$t('customview.customview.726k7y')"></component-search>
 				</view>
 				<view class="pa top-search-right">
 					<view v-if="top_search_right_type_status" class="pr cp" @tap="search_submit_confirm_event">
@@ -57,13 +57,13 @@
 				<view class="search-map padding-main bg-base">
 					<view class="padding-main border-radius-main bg-white">
 						<view class="map-item map-base br-b">
-							<text>筛选出</text>
+							<text>{{$t('goods-search.goods-search.j8o278')}}</text>
 							<text class="cr-main"> {{data_total}} </text>
-							<text>条数据</text>
-							<text class="fr cr-red cp" @tap="map_remove_event">清除</text>
+							<text>{{$t('goods-search.goods-search.t9nikq')}}</text>
+							<text class="fr cr-red cp" @tap="map_remove_event">{{$t('goods-search.goods-search.pxk051')}}</text>
 						</view>
 						<!-- 搜索关键字 -->
-						<input type="text" confirm-type="search" placeholder="输入商品名称搜索" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg"
+						<input type="text" confirm-type="search" :placeholder="$t('customview.customview.726k7y')" name="wd" :value="(post_data.wd || '')" class="map-keywords wh-auto round bg-base margin-top-lg"
 							placeholder-class="cr-grey">
 					</view>
 
@@ -71,8 +71,8 @@
 					<view v-if="((search_map_list.brand_list || null) != null && search_map_list.brand_list.length > 0) || ((search_map_info.brand || null) != null)"
 						class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
 						<view class="map-nav br-b pr">
-							<text>品牌</text>
-							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">更多</text>
+							<text>{{$t('goods-search.goods-search.6n8316')}}</text>
+							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.brand_list.length > 3" @tap="more_event" data-value="brand_list">{{$t('common.more')}}</text>
 						</view>
 						<view v-if="(search_map_info.brand || null) != null && (params.brand || null) != null" class="map-content brand-info oh margin-top-lg">
 							<image v-if="(search_map_info.brand.logo || null) != null" :src="search_map_info.brand.logo" mode="aspectFit" class="fl"></image>
@@ -97,8 +97,8 @@
 					<view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0"
 						class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
 						<view class="map-nav pr br-b">
-							<text>分类</text>
-							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">更多</text>
+							<text>{{$t('goods-search.goods-search.ne5k68')}}</text>
+							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">{{$t('common.more')}}</text>
 						</view>
 						<view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">
 							<block v-for="(item, index) in search_map_list.category_list" :key="index">
@@ -112,8 +112,8 @@
 					<view v-if="(search_map_list.screening_price_list || null) != null && search_map_list.screening_price_list.length > 0"
 						class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
 						<view class="map-nav br-b pr">
-							<text>价格</text>
-							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">更多</text>
+							<text>{{$t('goods-category.goods-category.g2u3lf')}}</text>
+							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.screening_price_list.length > 3" @tap="more_event" data-value="screening_price_list">{{$t('common.more')}}</text>
 						</view>
 						<view class="map-content map-text-item screening-price-container oh margin-top-lg" :style="'height:' + map_fields_list.screening_price_list.height + ';'">
 							<block v-for="(item, index) in search_map_list.screening_price_list" :key="index">
@@ -127,8 +127,8 @@
 					<view v-if="(search_map_list.goods_params_list || null) != null && search_map_list.goods_params_list.length > 0"
 						class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
 						<view class="map-nav br-b pr">
-							<text>属性</text>
-							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">更多</text>
+							<text>{{$t('goods-search.goods-search.v6e5b7')}}</text>
+							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_params_list.length > 3" @tap="more_event" data-value="goods_params_list">{{$t('common.more')}}</text>
 						</view>
 						<view class="map-content map-text-item goods-params-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_params_list.height + ';'">
 							<block v-for="(item, index) in search_map_list.goods_params_list" :key="index">
@@ -142,8 +142,8 @@
 					<view v-if="(search_map_list.goods_spec_list || null) != null && search_map_list.goods_spec_list.length > 0"
 						class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
 						<view class="map-nav br-b pr">
-							<text>规格</text>
-							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">更多</text>
+							<text>{{$t('goods-detail.goods-detail.u401fi')}}</text>
+							<text class="arrow-bottom pa cr-grey cp" v-if="search_map_list.goods_spec_list.length > 3" @tap="more_event" data-value="goods_spec_list">{{$t('common.more')}}</text>
 						</view>
 						<view class="map-content map-text-item goods-spec-container oh margin-top-lg" :style="'height:' + map_fields_list.goods_spec_list.height + ';'">
 							<block v-for="(item, index) in search_map_list.goods_spec_list" :key="index">
@@ -154,7 +154,7 @@
 					</view>
 
 					<view class="search-submit padding-main pa">
-						<button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">确认</button>
+						<button form-type="submit" class="bg-main cr-white text-size wh-auto round" :disabled="popup_form_loading_status" hover-class="none">{{$t('common.confirm')}}</button>
 					</view>
 				</view>
 			</form>
@@ -202,31 +202,31 @@
 				// 排序导航
 				search_nav_sort_index: 0,
 				search_nav_sort_list: [{
-						name: '综合',
+						name: this.$t('goods-category.goods-category.x69aow'),
 						field: 'default',
 						sort: 'asc',
 						icon: null
 					},
 					{
-						name: '销量',
+						name: this.$t('goods-category.goods-category.at5p35'),
 						field: 'sales_count',
 						sort: 'asc',
 						icon: 'default'
 					},
 					{
-						name: '热度',
+						name: this.$t('goods-category.goods-category.283ot0'),
 						field: 'access_count',
 						sort: 'asc',
 						icon: 'default'
 					},
 					{
-						name: '价格',
+						name: this.$t('goods-category.goods-category.g2u3lf'),
 						field: 'min_price',
 						sort: 'asc',
 						icon: 'default'
 					},
 					{
-						name: '最新',
+						name: this.$t('goods-category.goods-category.5p4ksj'),
 						field: 'id',
 						sort: 'asc',
 						icon: 'default'
@@ -350,7 +350,7 @@
 			// 初始化数据
 			get_data() {
 				uni.showLoading({
-					title: '加载中...',
+					title: this.$t('common.loading_in_text'),
 					mask: true
 				});
 				var post_data = this.request_map_handle();
@@ -426,7 +426,7 @@
 						this.setData({
 							data_list_loding_status: 2
 						});
-						app.globalData.showToast('网络开小差了哦~');
+						app.globalData.showToast(this.$t('common.internet_error_tips'));
 					}
 				});
 			},
@@ -451,7 +451,7 @@
 
 				// 获取数据
 				uni.showLoading({
-					title: '加载中...',
+					title: this.$t('common.loading_in_text'),
 					mask: true
 				});
 				var post_data = this.request_map_handle();
@@ -517,7 +517,7 @@
 							data_list_loding_status: 2,
 							data_is_loading: 0
 						});
-						app.globalData.showToast('网络开小差了哦~');
+						app.globalData.showToast(this.$t('common.internet_error_tips'));
 					}
 				});
 			},

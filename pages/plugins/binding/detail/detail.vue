@@ -23,9 +23,7 @@
                                         <text class="text-size-xs">{{ currency_symbol }}</text>
                                         <text class="text-size-lg fw-b">{{ item.price }}</text>
                                     </view>
-                                    <view v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">
-                                        节省
-                                        <text class="text-size-xs">{{ currency_symbol }}</text>
+                                    <view v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">{{$t('detail.detail.6026t4')}}<text class="text-size-xs">{{ currency_symbol }}</text>
                                         {{ item.discount_price }}
                                     </view>
                                 </view>
@@ -41,7 +39,7 @@
                                             <text class="cr-grey-9 text-size-xs">{{ item.inventory }}{{ item.inventory_unit }}</text>
                                         </view>
                                         <view v-if="(item.is_exist_many_spec || 0) == 1" class="bg-grey-e cr-grey round single-text text-size-xss spec-choice" :data-index="index" @tap="spec_choice_event">
-                                            {{ item.spec_choice_text || '选择规格' }}
+                                            {{ item.spec_choice_text || $t('detail.detail.9624hp') }}
                                             <iconfont name="icon-arrow-bottom" size="14rpx" color="#666" class="pa"></iconfont>
                                         </view>
                                     </view>
@@ -51,7 +49,7 @@
                             <view v-if="item.is_error !== 0" class="pa left-0 right-0 top-0 bottom-0 lose-efficacy flex-row jc-c align-c">
                                 <view class="rotate pr">
                                     <image :src="binding_static_url + 'lapse-icon.png'" mode="widthFix" class="dis-block rotate-img"></image>
-                                    <text class="rotate-text pa cr-red text-size">已失效</text>
+                                    <text class="rotate-text pa cr-red text-size">{{$t('detail.detail.32171c')}}</text>
                                 </view>
                             </view>
                         </view>
@@ -70,7 +68,7 @@
                                     </text>
                                 </view>
                                 <view v-if="data.estimate_discount_price != 0" class="single-text estimate-discount-price margin-top-sm">
-                                    <text class="discount-icon cr-white text-size-xs">节省</text>
+                                    <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
                                     <text class="cr-green text-size-md">
                                         <text class="text-size-xss">
                                             {{ currency_symbol }}
@@ -80,14 +78,14 @@
                                 </view>
                             </view>
                             <view class="right-button">
-                                <button type="default" size="mini" class="bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">立即购买</button>
+                                <button type="default" size="mini" class="bg-main br-main cr-white round text-size fw-b wh-auto" @tap="buy_event">{{$t('detail.detail.27pmj3')}}</button>
                             </view>
                         </view>
                     </view>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
-                    <component-no-data propStatus="0" propMsg="没有相关商品"></component-no-data>
+                    <component-no-data propStatus="0" :propMsg="$t('detail.detail.5knxg6')"></component-no-data>
                 </view>
             </view>
 
@@ -189,7 +187,7 @@
             // 获取数据
             get_data() {
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'binding'),
@@ -247,9 +245,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -352,7 +350,7 @@
                         if (goods_id !== null) {
                             // 是否存在多规格
                             if ((temp_goods[i]['is_exist_many_spec'] || 0) == 1 && (temp_goods[i]['spec_choice_data'] || null) == null) {
-                                app.globalData.showToast('请选择第' + (parseInt(i) + 1) + '个商品规格');
+                                app.globalData.showToast(this.$t('detail.detail.8618mj') + (parseInt(i) + 1) + this.$t('detail.detail.09e3bx'));
                                 return false;
                             }
                             goods_data.push({
@@ -364,14 +362,14 @@
                     } else {
                         // 组合搭配则每一个商品都需要正确状态
                         if (type == 0) {
-                            app.globalData.showToast('第' + (parseInt(i) + 1) + '个商品不可用');
+                            app.globalData.showToast(this.$t('detail.detail.40298g') + (parseInt(i) + 1) + this.$t('detail.detail.5kbjoy'));
                             return false;
                         }
                     }
                 }
                 var buy_min_number = parseInt(this.data.buy_min_number || 1);
                 if (goods_data.length < buy_min_number) {
-                    app.globalData.showToast('请至少选择' + buy_min_number + '个商品');
+                    app.globalData.showToast(this.$t('detail.detail.jsj3u8') + buy_min_number + this.$t('detail.detail.jksm81'));
                     return false;
                 }
 

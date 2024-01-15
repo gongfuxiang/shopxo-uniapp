@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back propName="充值"></component-nav-back>
+        <component-nav-back :propName="$t('recharge.recharge.otwkjn')"></component-nav-back>
         <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
                 <view class="page-bottom-fixed">
@@ -22,7 +22,7 @@
                                             </view>
                                             <view class="pr z-i flex-row jc-c align-s">
                                                 <view class="flex-1 flex-width">
-                                                    <view>有效</view>
+                                                    <view>{{$t('frequencycard-list.frequencycard-list.954ewh')}}</view>
                                                     <text class="fw-b effective">{{ is_price_show ? user_wallet.normal_money || '0.00' : '***' }}</text>
                                                 </view>
                                                 <view class="flex-row">
@@ -37,17 +37,17 @@
                                             <view class="pr z-i flex-row jc-c align-c">
                                                 <view class="flex-1 flex-width flex-row jc-sb align-c margin-top-main">
                                                     <view class="flex-1">
-                                                        <view class="tetx-size-xs">冻结</view>
+                                                        <view class="tetx-size-xs">{{$t('user.user.mgx9x4')}}</view>
                                                         <text class="freeze">{{ is_price_show ? user_wallet.frozen_money || '0.00' : '***' }}</text>
                                                     </view>
                                                     <view class="flex-1">
-                                                        <view class="tetx-size-xs">赠送</view>
+                                                        <view class="tetx-size-xs">{{$t('user.user.424v6n')}}</view>
                                                         <text class="give">{{ is_price_show ? user_wallet.give_money || '0.00' : '***' }}</text>
                                                     </view>
                                                 </view>
                                                 <view v-if="(data_base || null) != null && (data_base.is_enable_transfer || 0) == 1" class="transfer-accounts cr-white va-m round flex-row align-c" data-value="/pages/plugins/wallet/transfer/transfer" @tap="url_event">
                                                     <iconfont name="icon-transfer" size="28rpx" propClass="transfer-icon"></iconfont>
-                                                    <text class="margin-left-xs">转账</text>
+                                                    <text class="margin-left-xs">{{$t('user.user.29f6n5')}}</text>
                                                 </view>
                                             </view>
                                         </view>
@@ -87,10 +87,10 @@
                             <view class="bottom-fixed submit-container">
                                 <view class="bottom-line-exclude flex-row jc-sb align-c">
                                     <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" url="/pages/plugins/wallet/recharge/recharge" hover-class="none" class="sub-btn">
-                                        <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">充值</button>
+                                        <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">{{$t('recharge.recharge.otwkjn')}}</button>
                                     </navigator>
                                     <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none" class="sub-btn">
-                                        <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">提现</button>
+                                        <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">{{$t('user.user.8752a4')}}</button>
                                     </navigator>
                                 </view>
                             </view>
@@ -247,9 +247,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

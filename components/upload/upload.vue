@@ -11,7 +11,7 @@
             </block>
             <view v-if="(propData || null) == null || propData.length < propMaxNum" class="img bg-grey-f5 border-radius-main flex-col align-c jc-c" @tap="file_upload_event">
                 <iconfont name="icon-wytw-sctp" size="52rpx" color="#999"></iconfont>
-                <text class="text-size-xs cr-grey-9">上传图片</text>
+                <text class="text-size-xs cr-grey-9">{{$t('upload.upload.b33f08')}}</text>
             </view>
         </view>
     </view>
@@ -120,8 +120,8 @@
             upload_delete_event(e) {
                 var self = this;
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '删除后不可恢复、继续吗？',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('order.order.psi67g'),
                     success(res) {
                         if (res.confirm) {
                             var list = self.form_images_list;

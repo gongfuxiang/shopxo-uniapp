@@ -8,11 +8,11 @@
                 <view v-if="cart_status" class="bg-white border-radius-main pr oh margin-main">
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                         <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
-                            <text class="va-m cr-base">已选商品</text>
+                            <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
                             <view class="dis-inline-block margin-left-xl">
-                                <text class="cr-red">没有已加购的商品？</text>
+                                <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                 <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
-                                    <text class="va-m">切换({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                    <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
                                     <view class="va-m dis-inline-block margin-left-xs">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                     </view>
@@ -22,7 +22,7 @@
                                 <view class="dis-inline-block va-m">
                                     <uni-icons type="trash" size="24rpx" color="#f00"></uni-icons>
                                 </view>
-                                <text class="cr-red va-m margin-left-xs">清空</text>
+                                <text class="cr-red va-m margin-left-xs">{{$t('common.clear')}}</text>
                             </view>
                         </view>
                         <scroll-view :scroll-y="true" class="cart-list goods-list">
@@ -59,11 +59,11 @@
                         </scroll-view>
                     </block>
                     <block v-else>
-                        <component-no-data propStatus="0" propMsg="请先加购商品"></component-no-data>
+                        <component-no-data propStatus="0" :propMsg="$t('realstore-cart.realstore-cart.2dc65q')"></component-no-data>
                         <view class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
-                            <text class="cr-red va-m">没有已加购的商品？</text>
+                            <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                             <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
-                                <text class="va-m">切换({{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
+                                <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
                                 <view class="va-m dis-inline-block margin-left-xs">
                                     <iconfont name="icon-arrow-bottom" size="24rpx" propClass="cr-green"></iconfont>
                                 </view>
@@ -102,7 +102,7 @@
                 <!-- 下单类型弹窗选择 -->
                 <view class="plugins-realstore-buy-type-choice pf bg-white border-radius-main padding-xxl">
                     <view class="tc margin-top-xs margin-bottom-xl">
-                        <text class="cr-grey text-size">请选择下单类型</text>
+                        <text class="cr-grey text-size">{{$t('realstore-cart.realstore-cart.d1kk7x')}}</text>
                         <view v-if="(base.is_tips_user_choice_buy_use_type_mandatory || 0) == 0" class="fr" @tap="buy_use_type_choice_close_event">
                             <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
@@ -159,7 +159,7 @@
                 // 结算按钮
                 settlement_btn_loading: true,
                 settlement_btn_status: false,
-                settlement_btn_text: '加载中',
+                settlement_btn_text: this.$t('realstore-cart.realstore-cart.50lf68'),
                 // 临时操作数据
                 temp_opt_data: null,
                 // 下单类型
@@ -174,7 +174,7 @@
                 // 操作按钮是否加载中
                 realstore_goods_data_cart_loading: true,
                 realstore_goods_data_cart_status: false,
-                realstore_goods_data_cart_text: '加载中',
+                realstore_goods_data_cart_text: this.$t('realstore-cart.realstore-cart.50lf68'),
             };
         },
 
@@ -239,7 +239,7 @@
                                         for(var i in buy_button) {
                                             if(arr.indexOf(buy_button[i]['type']) != -1) {
                                                 cart_status = true;
-                                                cart_text = '加入购物车';
+                                                cart_text = this.$t('realstore-cart.realstore-cart.b27ln3');
                                                 break;
                                             }
                                         }
@@ -323,7 +323,7 @@
                             // 购物车获取成功回调
                             this.$emit('CartDataBackEvent', this.cart);
                         } else {
-                            app.globalData.showToast('请求失败，请重试！');
+                            app.globalData.showToast(this.$t('realstore-cart.realstore-cart.47h2a0'));
                         }
                         
                         // 结算按钮处理
@@ -332,7 +332,7 @@
                     fail: () => {
                         // 结算按钮处理
                         this.settlement_btn_handle();
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -341,7 +341,7 @@
             settlement_btn_handle() {
                 // 结算按钮状态处理
                 var btn_status = true;
-                var btn_text = '去结算';
+                var btn_text = this.$t('goods-category.goods-category.44f1ww');
                 if(this.info.status_info.status != 1) {
                     btn_status = false;
                     btn_text = this.info.status_info.msg;
@@ -349,7 +349,7 @@
                     // 购物车是否存在商品
                     if((this.cart || null) == null || parseInt(this.cart.buy_number || 0) == 0) {
                         btn_status = false;
-                        btn_text = '未加购';
+                        btn_text = this.$t('realstore-cart.realstore-cart.3qmxs7');
                     } else {
                         // 起步价
                         var msg = this.starting_price_handle();
@@ -378,10 +378,10 @@
                             var index = this.get_buy_use_type_index();
                             var buy_use_type = this.info.buy_use_type_list[index];
                             if(limit_type.indexOf(buy_use_type['index']) != -1 || limit_type.indexOf(buy_use_type['index'].toString()) != -1) {
-                                return buy_use_type['name'] + '起步'+ this.propCurrencySymbol + starting_price;
+                                return buy_use_type['name'] + this.$t('realstore-cart.realstore-cart.miv944')+ this.propCurrencySymbol + starting_price;
                             }
                         } else {
-                            return '起步' + this.propCurrencySymbol + starting_price;
+                            return this.$t('realstore-cart.realstore-cart.miv944') + this.propCurrencySymbol + starting_price;
                         }
                     }
                 }
@@ -405,7 +405,7 @@
             // 加入购物车
             cart_submit_event(e) {
                 if((this.realstore_goods_data || null) == null) {
-                    app.globalData.showToast('商品数据有误');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.20epzm'));
                     return false;
                 }
                 this.$refs.goods_buy.init(this.realstore_goods_data, {...this.params, ...{buy_event_type: 'cart'}});
@@ -431,14 +431,14 @@
                     }
                 }
                 if(ids.length <= 0) {
-                    app.globalData.showToast('请先加购商品');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2dc65q'));
                     return false;
                 }
 
                 // 起步价
                 var msg = this.starting_price_handle();
                 if(msg !== null) {
-                    app.globalData.showToast('请先加购商品');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.2dc65q'));
                     return false;
                 }
 
@@ -456,7 +456,7 @@
             // 门店状态判断
             is_status_check() {
                 if((this.info || null) == null) {
-                    app.globalData.showToast('门店信息有误');
+                    app.globalData.showToast(this.$t('realstore-cart.realstore-cart.8tzr7l'));
                     return false;
                 } else {
                     if(this.info.status_info.status != 1) {
@@ -470,10 +470,10 @@
             // 批量删除操作
             cart_all_delete_event(e) {
                 uni.showModal({
-                    title: '温馨提示',
-                    content: '挑了这么久，真的要清空吗？',
-                    confirmText: '确认',
-                    cancelText: '暂不',
+                    title: this.$t('common.warm_tips'),
+                    content: this.$t('goods-category.goods-category.o6i1w2'),
+                    confirmText: this.$t('common.confirm'),
+                    cancelText: this.$t('common.not_yet'),
                     success: (result) => {
                         if(result.confirm) {
                             this.setData({
@@ -571,13 +571,13 @@
                 var max = spec_buy_max_number > 0 ? spec_buy_max_number : buy_max_number;
                 if(max > 0 && stock > max) {
                     stock = max;
-                    app.globalData.showToast('限购' + max + inventory_unit);
+                    app.globalData.showToast(this.$t('goods-category.goods-category.z1eh3v') + max + inventory_unit);
                     return false;
                 }
 
                 // 数量是否改变
                 if(goods[stock_field] == stock) {
-                    app.globalData.showToast('数量未改变');
+                    app.globalData.showToast(this.$t('goods-category.goods-category.1ox23z'));
                     return false;
                 }
 
@@ -621,7 +621,7 @@
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -650,12 +650,12 @@
                             if(app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -682,12 +682,12 @@
                             if(app.globalData.is_login_check(res.data)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
-                                app.globalData.showToast('提交失败，请重试！');
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                             }
                         }
                     },
                     fail: () => {
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -719,7 +719,7 @@
                         uni.scanCode({
                             success: function (res) {
                                 uni.showLoading({
-                                    title: '处理中...',
+                                    title: this.$t('common.processing_in_text'),
                                     mask: true,
                                 });
                                 uni.request({
@@ -743,13 +743,13 @@
                                             if (app.globalData.is_login_check(res.data)) {
                                                 app.globalData.showToast(res.data.msg);
                                             } else {
-                                                app.globalData.showToast('提交失败，请重试！');
+                                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                             }
                                         }
                                     },
                                     fail: () => {
                                         uni.hideLoading();
-                                        app.globalData.showToast('网络开小差了哦~');
+                                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                                     },
                                 });
                             },
@@ -780,7 +780,7 @@
                 // 操作类型
                 if(opt_number == 0) {
                     if(cart_item == null) {
-                        app.globalData.showToast('购物车id有误');
+                        app.globalData.showToast(this.$t('goods-category.goods-category.x46kbv'));
                         return false;
                     }
                     this.cart_delete(cart_item.id, cart_item.goods_id);
@@ -854,7 +854,7 @@
                 this.setData({
                     buy_use_type_choice_status: false,
                 });
-                app.globalData.showToast('选择成功', 'success');
+                app.globalData.showToast(this.$t('recommend-form.recommend-form.145ci4'), 'success');
             },
 
             // 下单类型确认处理

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 分类 -->
         <scroll-view v-if="(category_list || null) != null && category_list.length > 0" class="nav-base scroll-view-horizontal bg-white oh" scroll-x="true">
-            <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
+            <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
             <block v-for="(item, index) in category_list" :key="index">
                 <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
             </block>
@@ -17,7 +17,7 @@
                             <view class="cr-base fw-b" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
                             <view class="cr-grey oh margin-top-sm">
                                 <text class="fl">{{ item.add_time }}</text>
-                                <text class="fr">浏览量 {{ item.access_count }}</text>
+                                <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
                             </view>
                         </navigator>
                     </view>
@@ -95,7 +95,7 @@ export default {
         // 初始化
         get_data() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("index", "article"),
@@ -138,7 +138,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -161,7 +161,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -229,7 +229,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

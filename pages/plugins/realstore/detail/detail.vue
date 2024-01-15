@@ -20,11 +20,11 @@
                                     propPlaceholderClass="cr-grey-c"
                                     propBgColor="#fff"
                                     propIconColor="#333"
-                                    propPlaceholder="商品搜索"
+                                    :propPlaceholder="$t('detail.detail.q42ger')"
                                 ></component-search>
                                 <!-- #endif -->
                                 <!-- #ifdef H5 -->
-                                <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" propPlaceholder="商品搜索" propBgColor="#fff"></component-search>
+                                <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
                                 <!-- #endif -->
                             </view>
                         </template>
@@ -54,8 +54,8 @@
                                             <text class="va-m">{{ info.name }}</text>
                                         </view>
                                         <view class="margin-top-xs text-size-xs cr-grey">
-                                            <view v-if="(info.status_info.time || null) != null">营业时间：{{ info.status_info.time }}</view>
-                                            <view v-if="(info.distance || null) != null">距您{{ info.distance }}</view>
+                                            <view v-if="(info.status_info.time || null) != null">{{$t('detail.detail.dor2v9')}}{{ info.status_info.time }}</view>
+                                            <view v-if="(info.distance || null) != null">{{$t('extraction-address.extraction-address.42v8tv')}}{{ info.distance }}</view>
                                         </view>
                                     </view>
                                 </view>
@@ -68,7 +68,7 @@
                                                 {{ info.province_name }}{{ info.city_name }}{{ info.county_name }}{{ info.address }}
                                             </view>
                                             <!-- #ifndef MP-KUAISHOU -->
-                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event"> 导航 </view>
+                                            <view v-if="info.lat != 0 && info.lng != 0" class="dis-inline-block tc cp border-radius-sm text-size-xss cr-green navigation margin-left-xs" @tap="address_map_event">{{$t('detail.detail.688i26')}}</view>
                                             <!-- #endif -->
                                         </view>
                                         <!-- 右侧操作 -->
@@ -91,7 +91,7 @@
                         <!-- 在线客服 -->
                         <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
                             <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
-                                <text class="va-m">客服：</text>
+                                <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                                 <view class="dis-inline-block chat-info cp" @tap="chat_event">
                                     <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
                                     <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
@@ -102,17 +102,17 @@
                                 <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{ info.service_qq }}</text>
                             </view>
                             <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
-                                <text>电话：</text>
+                                <text>{{$t('order.order.7dxbm5')}}</text>
                                 <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{ info.service_tel }}</text>
                             </view>
                             <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
                                 <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                     <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
-                                    <view>长按微信咨询</view>
+                                    <view>{{$t('detail.detail.54k10s')}}</view>
                                 </view>
                                 <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                                     <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
-                                    <view>长按line咨询</view>
+                                    <view>{{$t('detail.detail.vj4nom')}}</view>
                                 </view>
                             </view>
                         </view>
@@ -123,7 +123,7 @@
                         <!-- 左侧 -->
                         <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
                             <view class="left-content-actual text-size-xs">
-                                <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
                                 <block v-if="(goods_category || null) != null && goods_category.length > 0">
                                     <block v-for="(item, index) in goods_category" :key="index">
                                         <view :class="'item tc cr-base pr cp ' + (nav_active_index == index ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="index" :data-itemindex="-1" @tap="nav_event">
@@ -153,7 +153,7 @@
                                     <!-- 二级分类 -->
                                     <view v-if="(goods_category || null) != null && goods_category.length > 0 && nav_active_index != -1 && (goods_category[nav_active_index]['items'] || null) != null && goods_category[nav_active_index]['items'].length > 0" class="word-list scroll-view-horizontal padding-horizontal-main padding-bottom-main">
                                         <scroll-view :scroll-x="true" :scroll-with-animation="true" :scroll-into-view="'two-nav-item-' + nav_active_item_index">
-                                            <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">全部</view>
+                                            <view :class="'word-icon dis-inline-block text-size-sm round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
                                             <block v-for="(cv, ci) in goods_category[nav_active_index]['items']" :key="ci">
                                                 <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_index != -1 && nav_active_item_index == ci ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'two-nav-item-' + ci" :data-index="nav_active_index" :data-itemindex="ci" @tap="nav_event">{{ cv.name }}</view>
                                             </block>
@@ -274,31 +274,31 @@
                 // 排序导航
                 search_nav_sort_index: 0,
                 search_nav_sort_list: [{
-                		name: '综合',
+                		name: this.$t('goods-category.goods-category.x69aow'),
                 		field: 'default',
                 		sort: 'asc',
                 		icon: null
                 	},
                 	{
-                		name: '销量',
+                		name: this.$t('goods-category.goods-category.at5p35'),
                 		field: 'sales_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '热度',
+                		name: this.$t('goods-category.goods-category.283ot0'),
                 		field: 'access_count',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '价格',
+                		name: this.$t('goods-category.goods-category.g2u3lf'),
                 		field: 'min_price',
                 		sort: 'asc',
                 		icon: 'default'
                 	},
                 	{
-                		name: '最新',
+                		name: this.$t('goods-category.goods-category.5p4ksj'),
                 		field: 'id',
                 		sort: 'asc',
                 		icon: 'default'
@@ -306,7 +306,7 @@
                 ],
                 // 收藏信息
                 favor_info: {
-                    text: '收藏',
+                    text: this.$t('goods-detail.goods-detail.dco1sc'),
                     status: 0,
                     count: 0,
                 },
@@ -427,7 +427,7 @@
                                     favor_info: {
                                         count: this.info.favor_count || 0,
                                         status: status,
-                                        text: (status == 1 ? '已' : '') + '收藏',
+                                        text: (status == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
                                     },
                                 });
 
@@ -477,9 +477,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -584,10 +584,10 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -607,7 +607,7 @@
                         return false;
                     } else {
                         uni.showLoading({
-                            title: '处理中...',
+                            title: this.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('reversal', 'favor', 'realstore'),
@@ -631,7 +631,7 @@
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast('网络开小差了哦~');
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             },
                         });
                     }
@@ -660,7 +660,7 @@
                             // 是否购物车中操作
                             if (type == 0) {
                                 this.$refs.realstore_cart.cart_event(true);
-                                app.globalData.showToast('不同规格的商品需在购物车减购');
+                                app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
                             } else {
                                 if ((this.$refs.goods_buy || null) != null) {
                                     var buy_params = this.params;
@@ -773,7 +773,7 @@
             address_map_event(e) {
                 var info = this.info;
                 if (info.lat == 0 || info.lng == 0) {
-                    app.globalData.showToast('地址有误');
+                    app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
 

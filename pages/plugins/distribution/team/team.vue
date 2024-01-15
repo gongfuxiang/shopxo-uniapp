@@ -3,45 +3,45 @@
         <!-- 搜索条件 -->
         <view class="form-container nav-search bg-white br-b oh padding-horizontal-main padding-bottom-main text-size-xs cr-base pr">
             <view class="margin-top oh">
-                <view class="fl margin-top">注册时间：</view>
+                <view class="fl margin-top">{{$t('team.team.784249')}}</view>
                 <view class="multiple-picker fl tc">
                     <view class="item br dis-inline-block pr radius tl fl">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                     <view class="item br dis-inline-block pr radius tl fr">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_user_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_user_time_reverse" @change="search_cholce_event">
-                    <label> <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" /> 反向 </label>
+                    <label> <checkbox value="1" :checked="nav_search_value.team_search_user_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
                 </checkbox-group>
             </view>
             <view class="margin-top oh">
-                <view class="fl margin-top">下单时间：</view>
+                <view class="fl margin-top">{{$t('team.team.2ny6k1')}}</view>
                 <view class="multiple-picker fl tc">
                     <view class="item br dis-inline-block pr radius tl fl">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="开始时间" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_start" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.pcaom3')" placeholder-class="cr-grey" />
                     </view>
                     <view class="dis-inline-block cr-grey-white margin-top-sm">-</view>
                     <view class="item br dis-inline-block pr radius tl fr">
-                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" placeholder="结束时间" placeholder-class="cr-grey" />
+                        <uni-datetime-picker v-model="nav_search_value.team_search_order_time_end" :border="false" :showFirstIcon="false" :hide-second="true" type="datetime" :placeholder="$t('team.team.iee9bp')" placeholder-class="cr-grey" />
                     </view>
                 </view>
                 <checkbox-group class="dis-inline-block fr margin-top-xs" data-value="team_search_order_time_reverse" @change="search_cholce_event">
-                    <label> <checkbox value="1" :checked="nav_search_value.team_search_order_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" /> 反向 </label>
+                    <label> <checkbox value="1" :checked="nav_search_value.team_search_order_time_reverse.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('team.team.i040fg')}}</label>
                 </checkbox-group>
             </view>
             <view class="margin-top oh">
-                <view class="fl">是否下单：</view>
+                <view class="fl">{{$t('team.team.2i4k79')}}</view>
                 <checkbox-group data-value="team_search_buy_type" @change="search_cholce_event">
-                    <label> <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf('0') != -1" style="transform: scale(0.7)" /> 未下单 </label>
-                    <label class="margin-left-xxl"> <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf('1') != -1" style="transform: scale(0.7)" /> 已下单 </label>
+                    <label> <checkbox value="0" :checked="nav_search_value.team_search_buy_type.indexOf('0') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.promotion-user.g5332w')}}</label>
+                    <label class="margin-left-xxl"> <checkbox value="1" :checked="nav_search_value.team_search_buy_type.indexOf('1') != -1" style="transform: scale(0.7)" />{{$t('promotion-user.promotion-user.8i641g')}}</label>
                 </checkbox-group>
             </view>
             <view class="search-submit-list pa">
-                <button type="default" size="mini" class="bg-grey br-grey cr-base text-size-xs round margin-right-main" @tap="search_reset_event">重置</button>
-                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round" @tap="search_submit_event">搜索</button>
+                <button type="default" size="mini" class="bg-grey br-grey cr-base text-size-xs round margin-right-main" @tap="search_reset_event">{{$t('team.team.3l538c')}}</button>
+                <button type="default" size="mini" class="bg-main br-main cr-white text-size-xs round" @tap="search_submit_event">{{$t('common.search')}}</button>
             </view>
         </view>
 
@@ -64,9 +64,9 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">邮箱</button>
-                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">电话</button>
-                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">用户订单</button>
+                        <button v-if="(item.email || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="copy" :data-value="item.email">{{$t('login.login.p54kf1')}}</button>
+                        <button v-if="(item.mobile || null) != null" class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="text_event" data-event="tel" :data-value="item.mobile">{{$t('promotion-user.promotion-user.62c8m1')}}</button>
+                        <button class="round bg-white br cr-base" type="default" size="mini" hover-class="none" @tap="user_order_event" :data-value="item.id">{{$t('promotion-user.promotion-user.i2rf31')}}</button>
                     </view>
                 </view>
             </view>
@@ -98,18 +98,18 @@ export default {
             data_is_loading: 0,
             params: null,
             content_list: [
-                { name: "消费订单", field: "order_count", unit: "", default: 0 },
-                { name: "消费金额", field: "order_total", unit: "", default: 0 },
-                { name: "最后下单时间", field: "order_last_time", default: "" },
-                { name: "下级订单", field: "find_order_count", unit: "", default: 0 },
-                { name: "下级消费", field: "find_order_total", unit: "", default: 0 },
-                { name: "下级最后下单时间", field: "find_order_last_time", default: "" },
-                { name: "下级用户", field: "referrer_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.2g7enc'), field: "order_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.32bf15'), field: "order_total", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.76748p'), field: "order_last_time", default: "" },
+                { name: this.$t('promotion-user.promotion-user.u43380'), field: "find_order_count", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.8n4tr3'), field: "find_order_total", unit: "", default: 0 },
+                { name: this.$t('promotion-user.promotion-user.1gc3ny'), field: "find_order_last_time", default: "" },
+                { name: this.$t('promotion-user.promotion-user.3l1187'), field: "referrer_count", unit: "", default: 0 },
             ],
             nav_search_buy_type_list: [
-                { value: -1, name: "全部" },
-                { value: 0, name: "未下单" },
-                { value: 1, name: "已下单" },
+                { value: -1, name: this.$t('common.all') },
+                { value: 0, name: this.$t('promotion-user.promotion-user.g5332w') },
+                { value: 1, name: this.$t('promotion-user.promotion-user.8i641g') },
             ],
             nav_search_value: {
                 team_search_user_time_start: "",
@@ -199,7 +199,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 请求参数
@@ -295,7 +295,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -314,7 +314,7 @@ export default {
                     urls: [value],
                 });
             } else {
-                app.globalData.showToast("头像地址有误");
+                app.globalData.showToast(this.$t('order.order.p3scy0'));
             }
         },
 

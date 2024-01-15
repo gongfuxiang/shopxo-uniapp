@@ -5,13 +5,13 @@
             <view class="padding-horizontal-main padding-top-main padding-bottom-sm bg-white">
                 <view class="search-keywords pr">
                     <icon type="search" size="12" class="pa"></icon>
-                    <input type="text" confirm-type="search" placeholder="其实搜索很简单^_^ !" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base round wh-auto" placeholder-class="cr-grey" />
+                    <input type="text" confirm-type="search" :placeholder="$t('search.search.723rbx')" :value="search_keywords_value" @confirm="search_keywords_event" class="cr-base round wh-auto" placeholder-class="cr-grey" />
                 </view>
             </view>
 
             <!-- 分类 -->
             <scroll-view v-if="(category || null) != null && category.length > 0" class="nav-list scroll-view-horizontal bg-white oh" scroll-x="true">
-                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">全部</view>
+                <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == 0 ? 'cr-main' : '')" @tap="nav_event" data-value="0">{{$t('common.all')}}</view>
                 <block v-for="(item, index) in category" :key="index">
                     <view :class="'item cr-grey dis-inline-block padding-horizontal-main ' + (nav_active_value == item.id ? 'cr-main' : '')" @tap="nav_event" :data-value="item.id">{{ item.name }}</view>
                 </block>
@@ -107,7 +107,7 @@ export default {
         // 初始化
         get_data() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("index", "search", "blog"),
@@ -124,8 +124,8 @@ export default {
                             category: data.category || [],
                         });
                         // 标题
-                        var blog_main_name = (data.base || null) == null ? "博文" : data.base.blog_main_name || "博文";
-                        uni.setNavigationBarTitle({ title: blog_main_name + "搜索" });
+                        var blog_main_name = (data.base || null) == null ? this.$t('detail.detail.e439j9') : data.base.blog_main_name || this.$t('detail.detail.e439j9');
+                        uni.setNavigationBarTitle({ title: blog_main_name + this.$t('common.search') });
 
                         // 基础自定义分享
                         var info = this.data_base;
@@ -165,7 +165,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -188,7 +188,7 @@ export default {
 
             // 加载loding
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
 
             // 获取数据
@@ -232,7 +232,7 @@ export default {
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
-                                data_list_loding_msg: "没有相关数据",
+                                data_list_loding_msg: this.$t('common.no_relevant_data_tips'),
                                 data_is_loading: 0,
                             });
                             if (this.data_page <= 1) {
@@ -258,7 +258,7 @@ export default {
                         data_list_loding_status: 2,
                         data_is_loading: 0,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

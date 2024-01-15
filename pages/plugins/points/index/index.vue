@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back propName="积分"></component-nav-back>
+        <component-nav-back :propName="$t('index.index.t26j9z')"></component-nav-back>
         <view v-if="(data_base || null) != null" class="weixin-nav-padding-top">
             <view class="padding-top-xxxl">
                 <!-- 广告图片 -->
@@ -21,8 +21,8 @@
                                     <block v-if="(user || null) == null">
                                         <image class="avatar dis-block circle" @tap="preview_event" :src="avatar_default" mode="widthFix"></image>
                                         <view class="padding-left-main">
-                                            <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">立即登录</view>
-                                            <view class="desc margin-top-sm cr-grey-9">获知会员积分详情</view>
+                                            <view class="login-submit text-size fw-b" type="default" size="mini" @tap="login_event">{{$t('login.login.zy8tc4')}}</view>
+                                            <view class="desc margin-top-sm cr-grey-9">{{$t('index.index.z88r5s')}}</view>
                                         </view>
                                     </block>
                                     <block v-else>
@@ -30,30 +30,23 @@
                                         <view class="padding-left-main">
                                             <view class="text-size fw-b">{{ user.user_name_view }}</view>
                                             <view class="desc margin-top-sm cr-grey"
-                                                >当前可用
-                                                <text class="cr-black fw-b padding-horizontal-xs">
+                                                >{{$t('index.index.b46kge')}}<text class="cr-black fw-b padding-horizontal-xs">
                                                     {{ user_integral.integral || 0 }}
-                                                </text>
-                                                积分
-                                            </view>
+                                                </text>{{$t('index.index.t26j9z')}}</view>
                                         </view>
                                     </block>
                                 </view>
                                 <!-- 分享 -->
-                                <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">分享</button>
+                                <button class="share-submit pa tc cr-white text-size-md" type="default" size="mini" @tap="share_event">{{$t('common.share')}}</button>
                             </view>
                             <view v-if="(user || null) !== null" class="points-integral br-t-dashed">
-                                <component-title propTitle="积分明细" propMoreUrl="/pages/user-integral/user-integral"></component-title>
+                                <component-title :propTitle="$t('index.index.i73nwk')" propMoreUrl="/pages/user-integral/user-integral"></component-title>
                                 <view v-if="integral_list.length > 0">
                                     <view class="item">
                                         <view v-for="(item, index) in integral_list" class="list" :key="index">
                                             <view class="flex-row jc-sb align-c">
-                                                <view class="cr-grey-9">
-                                                    原始
-                                                    <text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
-                                                    <text class="padding-horizontal-sm">/</text>
-                                                    最新
-                                                    <text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
+                                                <view class="cr-grey-9">{{$t('index.index.srd2ch')}}<text class="cr-black fw-b padding-left-sm">{{ item.original_integral }}</text>
+                                                    <text class="padding-horizontal-sm">/</text>{{$t('goods-category.goods-category.5p4ksj')}}<text class="cr-black fw-b padding-left-sm">{{ item.new_integral }}</text>
                                                 </view>
                                                 <view class="cr-grey-9">{{ item.add_time_time }}</view>
                                             </view>
@@ -72,11 +65,11 @@
                         </view>
 
                         <!-- 公告信息 -->
-                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">积分规则</button>
+                        <button v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" class="rule-btn pa right-0 tc cr-white text-size-md" @tap="quick_open_event">{{$t('index.index.u5642g')}}</button>
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                            <component-goods-list :propData="{ style_type: 1, title: '商品兑换', url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
                         </view>
                     </view>
 
@@ -85,11 +78,11 @@
                     <!-- 积分规则弹窗 -->
                     <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
                         <view class="rule">
-                            <view class="cr-black text-size-md fw-b margin-bottom-main tc">积分规则</view>
+                            <view class="cr-black text-size-md fw-b margin-bottom-main tc">{{$t('index.index.u5642g')}}</view>
                             <scroll-view :scroll-y="true" class="item">
                                 <view v-for="(item, index) in data_base.points_desc" :key="index" class="cr-grey text-size-md">{{ item }}</view>
                             </scroll-view>
-                            <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">知道了</button>
+                            <button type="default" class="bg-main cr-white round text-size-md pa bottom-0 left-0 right-0" @tap="quick_close_event">{{$t('index.index.qbi72m')}}</button>
                         </view>
                     </component-popup>
                 </view>
@@ -133,7 +126,7 @@
                 // 配置商品列表按钮
                 isOpenGridBtnSet: true,
                 gridBtnConfig: {
-                    name: '兑换',
+                    name: this.$t('index.index.4v5nq5'),
                     bg_color: app.globalData.get_theme_color(),
                     padding: '8rpx 16rpx',
                     border_radius: '8rpx',
@@ -249,9 +242,9 @@
                         this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -300,7 +293,7 @@
                 });
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 // 获取数据
                 uni.request({
@@ -343,7 +336,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

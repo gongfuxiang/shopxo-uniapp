@@ -21,7 +21,7 @@
                 <view class="bottom-line-exclude">
                     <button class="bg-main br-main cr-white round dis-block text-size" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
                         <uni-icons type="shop" size="20" color="#fff" class="pa back-icon"></uni-icons>
-                        <text class="va-m margin-left-xxxl">回到店铺</text>
+                        <text class="va-m margin-left-xxxl">{{$t('index.index.i78v36')}}</text>
                     </button>
                 </view>
             </view>
@@ -152,7 +152,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
                     },
                 });
@@ -176,7 +176,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -241,7 +241,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
                     },

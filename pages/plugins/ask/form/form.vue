@@ -3,23 +3,23 @@
         <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
             <view class="padding-main oh">
                 <view class="form-gorup border-radius-main">
-                    <textarea class="cr-base textarea-height" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" placeholder="请详细描述问题，我们将尽快为您解答！" @input="text_input_event"></textarea>
+                    <textarea class="cr-base textarea-height" name="content" maxlength="230" auto-height placeholder-class="cr-grey-9" :placeholder="$t('form.form.qt0q5u')" @input="text_input_event"></textarea>
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/500</view>
                     <view class="spacing-mt dis-none">
-                        <view class="margin-bottom-main">添加图片({{ image_list.length }}/3)</view>
+                        <view class="margin-bottom-main">{{$t('form.form.s14osm')}}{{ image_list.length }}/3)</view>
                         <component-upload :propData="image_list" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr margin-top-sm">
                         <checkbox-group @change="is_anonymous_change_event">
                             <label class="cr-grey-9 text-size-xs">
                                 <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.5)" />
-                                <text class="pr top-xs">匿名发布</text>
+                                <text class="pr top-xs">{{$t('form.form.2f52v3')}}</text>
                             </label>
                         </checkbox-group>
                     </view>
                 </view>
                 <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                 </view>
             </view>
         </form>
@@ -41,7 +41,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: theme_color,
                 data_list_loding_status: 1,
-                data_list_loding_msg: '处理错误',
+                data_list_loding_msg: this.$t('form.form.bniyyt'),
                 form_submit_loading: false,
                 text_num: 0,
                 image_list: [],
@@ -94,7 +94,7 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '用户未登录',
+                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
                     });
                 }
             },
@@ -105,11 +105,11 @@
             formSubmit(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'content', msg: '请填写内容' },
+                    { fields: 'content', msg: this.$t('form.form.5v5bjs') },
                 ];
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
-                        title: '提交中...',
+                        title: this.$t('buy.buy.r79t77'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -141,7 +141,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -150,7 +150,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

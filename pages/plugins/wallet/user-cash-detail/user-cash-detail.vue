@@ -72,7 +72,7 @@ export default {
     methods: {
         init() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             this.setData({
                 data_list_loding_status: 1,
@@ -92,17 +92,17 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: "提现单号", value: data.data.cash_no || "" },
-                                { name: "提现状态", value: data.data.status_name || "" },
-                                { name: "提现金额", value: data.data.money || "" },
-                                { name: "转账平台", value: data.data.bank_name || "" },
-                                { name: "转账姓名", value: data.data.bank_username || "" },
-                                { name: "转账账户", value: data.data.bank_accounts || "" },
-                                { name: "打款金额", value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
-                                { name: "打款时间", value: data.data.pay_time_time || "" },
-                                { name: "备注", value: data.data.msg || "" },
-                                { name: "申请时间", value: data.data.add_time_time || "" },
-                                { name: "更新时间", value: data.data.upd_time_time || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), value: data.data.cash_no || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.wyad6w'), value: data.data.status_name || "" },
+                                { name: this.$t('cash-create.cash-create.qg404q'), value: data.data.money || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.j5s3u6'), value: data.data.bank_name || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.53k647'), value: data.data.bank_username || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.m556tl'), value: data.data.bank_accounts || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.i308o1'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.451xxt'), value: data.data.pay_time_time || "" },
+                                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), value: data.data.msg || "" },
+                                { name: this.$t('user-cash-detail.user-cash-detail.y96262'), value: data.data.add_time_time || "" },
+                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
@@ -125,9 +125,9 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

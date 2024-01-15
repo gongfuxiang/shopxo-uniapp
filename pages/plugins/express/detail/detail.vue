@@ -87,7 +87,7 @@ export default {
                 });
             }
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             // 是否指定方法
             uni.request({
@@ -104,7 +104,7 @@ export default {
                         this.setData({
                             data_bottom_line_status: status,
                             data_list_loding_status: status ? 3 : 0,
-                            data_list_loding_msg: status ? "" : "暂无物流信息",
+                            data_list_loding_msg: status ? "" : this.$t('detail.detail.j5owf1'),
                             data_status: status,
                             data: data,
                         });
@@ -121,9 +121,9 @@ export default {
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

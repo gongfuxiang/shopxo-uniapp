@@ -9,7 +9,7 @@
             <view v-if="goods_score != null" class="score-container oh padding-main">
                 <view class="bg-white border-radius-main padding-main flex-row jc-sb align-c">
                     <view class="score tc">
-                        <view class="cr-base">综合评分</view>
+                        <view class="cr-base">{{$t('goods-comment.goods-comment.dfmjxd')}}</view>
                         <view class="value cr-main">{{ goods_score.avg || "0.0" }}</view>
                     </view>
                     <view class="progress tc border-radius-main flex-1 flex-width">
@@ -18,7 +18,7 @@
                                 <view v-if="item.portion > 0" :class="'progress-bar ' + progress_class[index]" :style="'width: ' + item.portion + '%;'">{{ item.name }}</view>
                             </block>
                         </block>
-                        <text v-else class="cr-grey">暂无评分</text>
+                        <text v-else class="cr-grey">{{$t('goods-comment.goods-comment.1qh8s8')}}</text>
                     </view>
                 </view>
             </view>
@@ -124,7 +124,7 @@ export default {
                     }
                 },
                 fail: () => {
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },
@@ -219,7 +219,7 @@ export default {
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast("网络开小差了哦~");
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             }

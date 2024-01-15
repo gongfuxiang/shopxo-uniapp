@@ -5,11 +5,11 @@
                 <view class="fw-b text-size-xl">{{ data.title }}</view>
                 <view class="cr-grey margin-top-lg oh br-t padding-top-main">
                     <view class="fl">
-                        <text>时间：</text>
+                        <text>{{$t('article-detail.article-detail.728374')}}</text>
                         <text>{{ data.add_time }}</text>
                     </view>
                     <view class="fr">
-                        <text class="margin-left-xxxl">浏览：</text>
+                        <text class="margin-left-xxxl">{{$t('article-detail.article-detail.j92ru0')}}</text>
                         <text>{{ data.access_count }}</text>
                     </view>
                 </view>
@@ -21,11 +21,11 @@
             <!-- 上一篇、下一篇 -->
             <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
                 <view v-if="(last_next.last || null) != null">
-                    <text class="cr-grey va-m">上一篇：</text>
+                    <text class="cr-grey va-m">{{$t('article-detail.article-detail.281s4a')}}</text>
                     <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{ last_next.last.title }}</navigator>
                 </view>
                 <view v-if="(last_next.next || null) != null" class="margin-top-sm">
-                    <text class="cr-grey va-m">下一篇：</text>
+                    <text class="cr-grey va-m">{{$t('article-detail.article-detail.uq5814')}}</text>
                     <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{ last_next.next.title }}</navigator>
                 </view>
             </view>
@@ -89,7 +89,7 @@ export default {
         // 初始化
         get_data() {
             uni.showLoading({
-                title: "加载中...",
+                title: this.$t('common.loading_in_text'),
             });
             uni.request({
                 url: app.globalData.get_request_url("detail", "article"),
@@ -140,7 +140,7 @@ export default {
                     this.setData({
                         data_list_loding_status: 2,
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

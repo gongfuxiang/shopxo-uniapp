@@ -4,12 +4,12 @@
             <block v-if="data_list.length > 0">
                 <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
                     <view class="title flex-row jc-sb align-c wh-auto">
-                        <view class="name flex-1 flex-width cr-base">{{ item.name }}的提问</view>
+                        <view class="name flex-1 flex-width cr-base">{{ item.name }}{{$t('goods-list.goods-list.27nkjm')}}</view>
                         <view class="date cr-grey-9">{{ item.add_time_date }}</view>
                     </view>
                     <view class="question spacing-mt">
                         <navigator :url="item.url" hover-class="none" class="flex-row">
-                            <view class="title cr-white tc margin-right-sm">问</view>
+                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.00n7i3')}}</view>
                             <view class="flex-1 flex-width">
                                 <view class="fw-b">{{ item.content }}</view>
                                 <view v-if="(item.images || null) != null && item.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
@@ -20,7 +20,7 @@
                     </view>
                     <block v-if="item.is_reply == 1 || item.comments_count > 0">
                         <view class="ask flex-row spacing-mt">
-                            <view class="title cr-white tc margin-right-sm">答</view>
+                            <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.rw12i7')}}</view>
                             <view class="flex-1 flex-width">
                                 <block v-for="(it, ix) in item.comments_list" :key="ix">
                                     <block v-if="item.bool_more">
@@ -51,13 +51,11 @@
                         </view>
                         <view class="more flex-row jc-e align-c spacing-mt">
                             <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
-                                <block v-if="!item.hide_comments_list_num"> 查看全部{{ item.comments_count }}个回答 </block>
-                                <block v-else>查看更多</block>
+                                <block v-if="!item.hide_comments_list_num">{{$t('goods-list.goods-list.278qr1')}}{{ item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</block>
+                                <block v-else>{{$t('goods-list.goods-list.h3t0f1')}}</block>
                                 <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
                             </view>
-                            <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
-                                收起回答
-                                <iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
+                            <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">{{$t('goods-list.goods-list.aem3e6')}}<iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
                             </view>
                         </view>
                     </block>
@@ -169,7 +167,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 获取数据
@@ -232,7 +230,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -257,7 +255,7 @@
                 if (new_data_list[i].bool_api === undefined || new_data_list[i].bool_api === true) {
                     // 加载loding
                     uni.showLoading({
-                        title: '加载中...',
+                        title: this.$t('common.loading_in_text'),
                     });
                     // 获取数据
                     uni.request({
@@ -302,7 +300,7 @@
                         },
                         fail: () => {
                             uni.hideLoading();
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 } else {

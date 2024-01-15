@@ -11,7 +11,7 @@
                     </view>
                     <view class="margin-top-xxxl">
                         <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                            <button class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">立即申请</button>
+                            <button class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('extraction.extraction.suna53')}}</button>
                         </navigator>
                     </view>
                 </view>
@@ -22,11 +22,11 @@
                     <!-- 审核中 -->
                     <view v-if="extraction.status == 0">
                         <view class="padding-main border-radius-main bg-white">
-                            <view class="cr-red tc text-size-lg">申请信息正在审核中...</view>
+                            <view class="cr-red tc text-size-lg">{{$t('extraction.extraction.j0o47u')}}</view>
                         </view>
                         <view class="margin-top-xxxl">
                             <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">编辑</button>
+                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                             </navigator>
                         </view>
                     </view>
@@ -36,9 +36,9 @@
                         <view class="padding-main border-radius-main bg-white">
                             <!-- 导航 -->
                             <view class="padding-bottom-main br-b">
-                                <text class="fw-b">取货点信息</text>
+                                <text class="fw-b">{{$t('extraction.extraction.60601g')}}</text>
                                 <view class="fr cr-blue">
-                                    <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">编辑信息</navigator>
+                                    <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">{{$t('extraction.extraction.48rp75')}}</navigator>
                                 </view>
                             </view>
                             <!-- 地址信息 -->
@@ -51,19 +51,19 @@
                             <view class="padding-main border-radius-main bg-white">
                                 <!-- 导航 -->
                                 <view class="padding-bottom-main br-b">
-                                    <text class="fw-b">取货订单统计</text>
+                                    <text class="fw-b">{{$t('extraction.extraction.641gp7')}}</text>
                                     <view class="fr cr-blue">
-                                        <navigator url="/pages/plugins/distribution/extraction-order/extraction-order" hover-class="none">查看取货订单</navigator>
+                                        <navigator url="/pages/plugins/distribution/extraction-order/extraction-order" hover-class="none">{{$t('extraction.extraction.wcv68q')}}</navigator>
                                     </view>
                                 </view>
                                 <!-- 自提地点统计 -->
                                 <view class="statistics oh padding-top-main">
                                     <view class="item fl tc padding-main" data-value="0" @tap="order_event">
-                                        <view class="title cr-base">待处理</view>
+                                        <view class="title cr-base">{{$t('extraction.extraction.53h4fj')}}</view>
                                         <view class="single-text cr-red fw-b margin-top-sm">{{ statistical.order_wait || 0 }}</view>
                                     </view>
                                     <view class="item fl tc padding-main" data-value="1" @tap="order_event">
-                                        <view class="title cr-base">已处理</view>
+                                        <view class="title cr-base">{{$t('extraction.extraction.wq25fk')}}</view>
                                         <view class="single-text cr-green fw-b margin-top-sm">{{ statistical.order_already || 0 }}</view>
                                     </view>
                                 </view>
@@ -79,21 +79,21 @@
                         </view>
                         <!-- 已解约 -->
                         <view v-else class="spacing-mt">
-                            <view class="notice-content-blue">当前状态也解约，可重新编辑数据提交审核。</view>
+                            <view class="notice-content-blue">{{$t('extraction.extraction.864dtt')}}</view>
                         </view>
                     </view>
                     <!-- 审核失败 -->
                     <view v-else="extraction.status == 2">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
-                            <view class="cr-red tc text-size-lg">申请信息审核失败</view>
+                            <view class="cr-red tc text-size-lg">{{$t('extraction.extraction.11825x')}}</view>
                             <view v-if="(extraction.fail_reason || null) != null" class="margin-top-lg">
-                                <text class="fw-b">原因：</text>
+                                <text class="fw-b">{{$t('extraction.extraction.w6hg74')}}</text>
                                 <text class="cr-grey">{{ extraction.fail_reason }}</text>
                             </view>
                         </view>
                         <view class="margin-top-xxxl">
                             <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">编辑</button>
+                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                             </navigator>
                         </view>
                     </view>
@@ -213,9 +213,9 @@ export default {
                     this.setData({
                         data_bottom_line_status: false,
                         data_list_loding_status: 2,
-                        data_list_loding_msg: "网络开小差了哦~",
+                        data_list_loding_msg: this.$t('common.internet_error_tips'),
                     });
-                    app.globalData.showToast("网络开小差了哦~");
+                    app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
         },

@@ -6,17 +6,17 @@
                     <view class="bg-white border-radius-main pr oh spacing-mb">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c">
-                                <view class="form-gorup-title padding-right-main">标题<text class="form-group-tips-must">*</text></view>
-                                <input type="text" name="title" :value="data.title || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
+                                <view class="form-gorup-title padding-right-main">{{$t('user-detail.user-detail.uy6lrz')}}<text class="form-group-tips-must">*</text></view>
+                                <input type="text" name="title" :value="data.title || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" :placeholder="$t('common.please_input')" />
                             </view>
                         </view>
                     </view>
                     <view class="bg-white border-radius-main pr oh spacing-mb">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c">
-                                <view class="form-gorup-title padding-right-main">分类<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title padding-right-main">{{$t('goods-search.goods-search.ne5k68')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width tr" @tap="popupOpen">
-                                    <text :class="data.blog_category_name ? 'cr-black' : 'cr-grey-9'">{{ data.blog_category_name || '请选择' }}</text>
+                                    <text :class="data.blog_category_name ? 'cr-black' : 'cr-grey-9'">{{ data.blog_category_name || $t('form.form.4cbom4') }}</text>
                                     <view class="pr top-sm margin-left-sm dis-inline-block">
                                         <iconfont name="icon-arrow-right" color="#999" size="28rpx"></iconfont>
                                     </view>
@@ -27,7 +27,7 @@
                     <view class="bg-white border-radius-main pr oh spacing-mb">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c">
-                                <view class="form-gorup-title padding-right-main">是否启用</view>
+                                <view class="form-gorup-title padding-right-main">{{$t('form.form.043a10')}}</view>
                                 <view class="flex-1 flex-width tr">
                                     <switch :color="theme_color" :checked="(data.is_enable || 0) == 1 ? true : false" @change="is_enable_event" />
                                 </view>
@@ -36,7 +36,7 @@
                     </view>
                     <view class="bg-white border-radius-main pr oh spacing-mb">
                         <view class="form-gorup">
-                            <view class="form-gorup-title padding-right-main">封面图片</view>
+                            <view class="form-gorup-title padding-right-main">{{$t('form.form.5hn8k3')}}</view>
                             <view class="margin-top-main">
                                 <component-upload :propData="image_list" :propMaxNum="1" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                             </view>
@@ -44,7 +44,7 @@
                     </view>
                     <view class="bg-white border-radius-main pr oh">
                         <view class="form-gorup">
-                            <view class="form-gorup-title padding-right-main">内容<text class="form-group-tips-must">*</text></view>
+                            <view class="form-gorup-title padding-right-main">{{$t('user-detail.user-detail.7cufw6')}}<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
                                 <!-- <sp-editor :templates="(data || null) !== null ? data.content : ''" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor> -->
                                 <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
@@ -54,38 +54,38 @@
                     <view class="more oh" :style="'height:' + more_height">
                         <view class="bg-white border-radius-main pr oh spacing-mb spacing-mt">
                             <view class="form-gorup">
-                                <view class="form-gorup-title padding-right-main">描述</view>
-                                <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" placeholder="请输入" maxlength="200" :value="data.describe"></textarea>
+                                <view class="form-gorup-title padding-right-main">{{$t('form.form.xy87t8')}}</view>
+                                <textarea name="describe" placeholder-class="cr-grey-9" class="cr-base" :placeholder="$t('common.please_input')" maxlength="200" :value="data.describe"></textarea>
                             </view>
                         </view>
                         <view class="bg-white border-radius-main pr oh spacing-mb">
                             <view class="form-gorup">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="form-gorup-title padding-right-main">SEO标题</view>
-                                    <input type="text" name="seo_title" :value="data.seo_title || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
+                                    <view class="form-gorup-title padding-right-main">{{$t('form.form.kvr2i3')}}</view>
+                                    <input type="text" name="seo_title" :value="data.seo_title || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" :placeholder="$t('common.please_input')" />
                                 </view>
                             </view>
                         </view>
                         <view class="bg-white border-radius-main pr oh spacing-mb">
                             <view class="form-gorup">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="form-gorup-title padding-right-main">SEO关键字</view>
-                                    <input type="text" name="seo_keywords" :value="data.seo_keywords || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
+                                    <view class="form-gorup-title padding-right-main">{{$t('form.form.l87ju1')}}</view>
+                                    <input type="text" name="seo_keywords" :value="data.seo_keywords || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" :placeholder="$t('common.please_input')" />
                                 </view>
                             </view>
                         </view>
                         <view class="bg-white border-radius-main pr oh">
                             <view class="form-gorup">
                                 <view class="flex-row jc-sb align-c">
-                                    <view class="form-gorup-title padding-right-main">SEO描述</view>
-                                    <input type="text" name="seo_desc" :value="data.seo_desc || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" placeholder="请输入" />
+                                    <view class="form-gorup-title padding-right-main">{{$t('form.form.5487bt')}}</view>
+                                    <input type="text" name="seo_desc" :value="data.seo_desc || ''" maxlength="16" placeholder-class="cr-grey-9" class="cr-base flex-1 flex-width tr" :placeholder="$t('common.please_input')" />
                                 </view>
                             </view>
                         </view>
                     </view>
                     <view class="bg-white border-radius-main pr oh spacing-mb spacing-mt">
                         <view class="padding-main flex-row jc-c align-c cr-grey-9" @tap="more_event">
-                            <text>{{ is_more ? '收起更多' : '展开更多' }}</text>
+                            <text>{{ is_more ? $t('form.form.4h814w') : $t('form.form.lfwj0g') }}</text>
                             <view class="margin-left-sm dis-inline-block">
                                 <iconfont :name="is_more ? 'icon-arrow-top' : 'icon-arrow-bottom'" color="#999" size="24rpx"></iconfont>
                             </view>
@@ -95,12 +95,12 @@
                 <!-- 底部操作 -->
                 <view class="bottom-fixed btn-bottom bg-white">
                     <view class="oh bottom-line-exclude">
-                        <button class="cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">提交</button>
+                        <button class="cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </view>
                 <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
                     <view class="p-title flex-row jc-sb align-c padding-main br-b-e">
-                        <view class="text-size-lg fw-b">帖子分类</view>
+                        <view class="text-size-lg fw-b">{{$t('form.form.4vku7u')}}</view>
                         <view class="popup-colse" @tap="popup_close_event">
                             <iconfont name="icon-close-o" color="#333" size="28rpx"></iconfont>
                         </view>
@@ -204,14 +204,14 @@
                     // 提示错误
                     this.setData({
                         data_list_loding_status: 2,
-                        data_list_loding_msg: '用户未登录',
+                        data_list_loding_msg: this.$t('form.form.8l3ul5'),
                     });
                 }
             },
             get_data_list() {
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
                 this.setData({
                     data_list_loding_status: 1,
@@ -256,7 +256,7 @@
                         this.setData({
                             data_list_loding_status: 2,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
@@ -324,7 +324,7 @@
                 // 使用 uniCloud.uploadFile 上传图片的示例方法（可适用多选上传）
                 tempFiles.forEach(async (item) => {
                     uni.showLoading({
-                        title: '上传中请稍后',
+                        title: this.$t('form.form.2e5rv3'),
                         mask: true,
                     });
                     await uni.uploadFile({
@@ -348,7 +348,7 @@
                                 editorCtx.insertImage({
                                     src: data.data.url, // 此处需要将图片地址切换成服务器返回的真实图片地址
                                     // width: '50%',
-                                    alt: '图片',
+                                    alt: this.$t('form.form.3h58hv'),
                                     success: function (e) {},
                                 });
                                 uni.hideLoading();
@@ -374,9 +374,9 @@
             form_submit(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'title', msg: '请输入标题' },
-                    { fields: 'blog_category_id', msg: '请选择分类' },
-                    { fields: 'content', msg: '请输入内容' },
+                    { fields: 'title', msg: this.$t('form.form.v19gg8') },
+                    { fields: 'blog_category_id', msg: this.$t('form.form.gu3x97') },
+                    { fields: 'content', msg: this.$t('form.form.adiq70') },
                 ];
                 var validate = {
                     blog_category_id: this.data.blog_category_id,
@@ -385,7 +385,7 @@
                 };
                 if (app.globalData.fields_check(validate, validation)) {
                     uni.showLoading({
-                        title: '提交中...',
+                        title: this.$t('buy.buy.r79t77'),
                     });
                     this.setData({
                         form_submit_loading: true,
@@ -414,7 +414,7 @@
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
-                                    app.globalData.showToast('提交失败，请重试！');
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
                                 }
                             }
                         },
@@ -423,7 +423,7 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast('网络开小差了哦~');
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
                 }

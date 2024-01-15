@@ -65,16 +65,16 @@
                 params: null,
                 nav_status_index: 0,
                 nav_status_list: [
-                    { name: '全部', value: '-1' },
-                    { name: '减少', value: '0' },
-                    { name: '增加', value: '1' },
+                    { name: this.$t('common.all'), value: '-1' },
+                    { name: this.$t('wallet-log.wallet-log.9p865e'), value: '0' },
+                    { name: this.$t('wallet-log.wallet-log.1nm6c2'), value: '1' },
                 ],
                 content_list: [
-                    { name: '业务类型', field: 'business_type_name' },
-                    { name: '金额类型', field: 'money_type_name' },
-                    { name: '操作金额', field: 'operation_money' },
-                    { name: '原始金额', field: 'original_money' },
-                    { name: '最新金额', field: 'latest_money' },
+                    { name: this.$t('invoice.invoice.l3832z'), field: 'business_type_name' },
+                    { name: this.$t('wallet-log-detail.wallet-log-detail.744os7'), field: 'money_type_name' },
+                    { name: this.$t('wallet-log-detail.wallet-log-detail.ruq60b'), field: 'operation_money' },
+                    { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), field: 'original_money' },
+                    { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), field: 'latest_money' },
                 ],
             };
         },
@@ -149,7 +149,7 @@
 
                 // 加载loding
                 uni.showLoading({
-                    title: '加载中...',
+                    title: this.$t('common.loading_in_text'),
                 });
 
                 // 参数
@@ -217,7 +217,7 @@
                             data_list_loding_status: 2,
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

@@ -17,7 +17,7 @@
                                     </text>
                                 </view>
                                 <view v-if="(item.estimate_discount_price || 0) != 0" class="margin-top-sm single-text flex-row align-c">
-                                    <text class="discount-icon cr-white text-size-xs">节省</text>
+                                    <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
                                     <view class="cr-green single-text">
                                         <text class="text-size-xs">
                                             {{ propCurrencySymbol }}
@@ -28,7 +28,7 @@
                                     </view>
                                 </view>
                             </view>
-                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}购买</button>
+                            <button type="default" size="mini" class="br-main bg-main cr-white round buy-submit self-e margin-0 text-size-xs">{{ item.type_name }}{{$t('binding-list.binding-list.kh7951')}}</button>
                         </view>
                     </view>
                     <view class="binding-goods-list border-radius-main margin-top-main oh" :style="'height: ' + ((item.is_home_show_goods || 0) == 1 ? Math.ceil(item.goods.length / 2) * 134 + 12 : '0') + 'rpx'">
@@ -39,7 +39,7 @@
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>
                                         <view class="single-text sales-price text-size-xss">{{ propCurrencySymbol }}{{ gv.price }}</view>
-                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">节省{{ propCurrencySymbol }}{{ gv.discount_price }}</view>
+                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">{{$t('detail.detail.6026t4')}}{{ propCurrencySymbol }}{{ gv.discount_price }}</view>
                                     </view>
                                 </view>
                             </block>
@@ -47,7 +47,7 @@
                     </view>
                     <view class="bg-white padding-top-main wh-auto bs-bb bottom-elastic" :class="(item.is_home_show_goods || 0) != 1 ? 'br-t-dashed' : ''" :data-index="index" @tap="item_more_goods_event">
                         <view class="flex-row jc-sb align-c">
-                            <view class="cr-grey-9 text-size-xs">{{ (item.is_home_show_goods || 0) == 1 ? '收起' : '展开' }}{{ item.type_name }}商品</view>
+                            <view class="cr-grey-9 text-size-xs">{{ (item.is_home_show_goods || 0) == 1 ? $t('binding-list.binding-list.2u4v35') : $t('binding-list.binding-list.91d60h') }}{{ item.type_name }}{{$t('recommend-list.recommend-list.x74z3o')}}</view>
                             <iconfont :name="(item.is_home_show_goods || 0) == 1 ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx" color="#666"></iconfont>
                         </view>
                     </view>

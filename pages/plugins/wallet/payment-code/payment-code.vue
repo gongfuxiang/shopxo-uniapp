@@ -15,17 +15,17 @@
                 </view>
 
                 <!-- 提示信息 -->
-                <view class="cr-grey tc margin-top-xxxl">如遇到扫码失败请将屏幕调至最亮重新扫码</view>
+                <view class="cr-grey tc margin-top-xxxl">{{$t('member-code.member-code.oc4x18')}}</view>
 
                 <!-- 倒计时 -->
-                <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }})秒后自动刷新付款码</view>
+                <view class="margin-top-xxxl cr-yellow tc">({{ scheduled_value }}{{$t('payment-code.payment-code.b74qxe')}}</view>
 
                 <!-- 导航 -->
                 <view v-if="(plugins_membershiplevelvip || null) != null" class="bottom-fixed padding-main br-0">
                     <view class="bottom-line-exclude oh">
                         <view class="bg-white br-grey-d round oh">
-                            <button type="default" class="bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">会员码</button>
-                            <button type="default" class="bg-main cr-white round text-size fr br-0" size="mini">钱包付款码</button>
+                            <button type="default" class="bg-white round text-size fl br-0" size="mini" :data-value="'/pages/plugins/membershiplevelvip/member-code/member-code?screen_brightness_value=' + screen_brightness_value" data-redirect="1" @tap="url_event">{{$t('member-code.member-code.26bu38')}}</button>
+                            <button type="default" class="bg-main cr-white round text-size fr br-0" size="mini">{{$t('member-code.member-code.x58gqu')}}</button>
                         </view>
                     </view>
                 </view>
@@ -34,7 +34,7 @@
             <!-- 错误提示 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             <view v-if="is_to_login == 1" class="margin-top-lg tc">
-                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">去登录</button>
+                <button type="default" class="bg-main br-main cr-white" size="mini" data-value="/pages/login/login" @tap="url_event">{{$t('member-code.member-code.yj6g3a')}}</button>
             </view>
         </view>
     </view>
@@ -129,7 +129,7 @@
                         });
                         this.setData({
                             data_list_loding_status: 0,
-                            data_list_loding_msg: '请先绑定手机',
+                            data_list_loding_msg: this.$t('setup.setup.07o10b'),
                             is_to_login: 1,
                         });
                         return false;
@@ -147,7 +147,7 @@
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
-                        data_list_loding_msg: '请先登录',
+                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
                         is_to_login: 1,
                     });
                 }
@@ -199,10 +199,10 @@
                     fail: () => {
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: '网络开小差了哦~',
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             is_to_login: 0,
                         });
-                        app.globalData.showToast('网络开小差了哦~');
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

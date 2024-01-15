@@ -934,6 +934,7 @@ button[disabled].bg-grey {
     height: 58rpx;
     line-height: 58rpx;
     display: inline-flex;
+    align-items: center;
 }
 
 /**
