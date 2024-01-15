@@ -7,12 +7,12 @@
                 // 数据接口请求地址
                 // request_url: 'https://new.shopxo.vip/',
                 // request_url: 'https://xiaotao8888.com/',
-                 request_url: 'http://shopxo.com/',
+                 request_url: 'https://new.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
                 // static_url: 'https://new.shopxo.vip/',
                 // static_url: 'https://xiaotao8888.com/',
-                 static_url: 'http://shopxo.com/',
+                 static_url: 'https://new.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -277,7 +277,6 @@
                 if (params != '' && params.substr(0, 1) != '&') {
                     params = '&' + params;
                 }
-                // 参数处理
                 var url = this.data.request_url + (group || 'api') + '.php?s=' + c + '/' + a + plugins_params;
                 return this.request_params_handle(url) + '&ajax=ajax' + params;
             },
@@ -299,9 +298,20 @@
                 // 用户位置
                 var user_location = this.choice_user_location_init();
                 var user_location_params = ((user_location || null) != null && (user_location.status || 0) == 1) ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
+                // 当前语言
+                var lang_list = {
+                    'zh-Hans': 'zh',
+                    'zh-Hant': 'cht',
+                    'en': 'en',
+                    'spa': 'spa',
+                };
+                var lang = this.get_language_value();
+                if((lang_list[lang] || null) == null) {
+                    lang = 'zh';
+                }
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang;
             },
 
             /**

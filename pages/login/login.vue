@@ -386,9 +386,9 @@
         data() {
             return {
                 // 多语言
-                systemLocale: '',
-                applicationLocale: '',
-                isAndroid: '',
+                system_locale: '',
+                application_locale: '',
+                is_android: '',
 
                 // 语言选择
                 popup_language_status: false,
@@ -471,12 +471,12 @@
             //#endif
 
             // 多语言
-            let systemInfo = uni.getSystemInfoSync();
-            this.systemLocale = systemInfo.language;
-            this.applicationLocale = uni.getLocale();
-            this.isAndroid = systemInfo.platform.toLowerCase() === 'android';
+            let system_info = uni.getSystemInfoSync();
+            this.system_locale = system_info.language;
+            this.application_locale = app.globalData.get_language_value();
+            this.is_android = system_info.platform.toLowerCase() === 'android';
             uni.onLocaleChange((e) => {
-                this.applicationLocale = e.locale;
+                this.application_locale = e.locale;
             });
             var language_key = app.globalData.get_language_value();
             var language_list = this.$t('language');
@@ -1582,7 +1582,7 @@
 
             // 多语言切换
             language_change(key) {
-                if (this.isAndroid) {
+                if (this.is_android) {
                     uni.showModal({
                         content: this.$t('login.login.d9d11z'),
                         success: (res) => {
