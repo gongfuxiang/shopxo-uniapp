@@ -46,7 +46,8 @@
                         <view class="form-gorup">
                             <view class="form-gorup-title padding-right-main">内容<text class="form-group-tips-must">*</text></view>
                             <view class="margin-top-main sp-editor">
-                                <sp-editor :templates="(data || null) !== null ? data.content : ''" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
+                                <!-- <sp-editor :templates="(data || null) !== null ? data.content : ''" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor> -->
+                                <sp-editor @init="initEditor" @input="rich_text_event" @upinImage="up_in_image_event"></sp-editor>
                             </view>
                         </view>
                     </view>
@@ -304,11 +305,17 @@
 
             // 回调富文本内容
             rich_text_event(e) {
-                console.log('==== input :', e);
+                // console.log('==== input :', e);
                 var new_data = this.data;
                 new_data.content = e.html;
                 this.setData({
                     data: new_data,
+                });
+            },
+            initEditor(editor) {
+                // 初始化编辑器内容
+                editor.setContents({
+                    html: (this.data || null) !== null ? this.data.content : '',
                 });
             },
 

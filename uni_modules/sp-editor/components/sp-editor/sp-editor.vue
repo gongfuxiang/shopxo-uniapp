@@ -85,13 +85,6 @@
             });
             // #endif
         },
-        watch: {
-            templates: function (new_val, old_val) {
-                if (new_val !== old_val) {
-                    this.onEditorReady();
-                }
-            },
-        },
         methods: {
             onEditorReady() {
                 // #ifdef MP-BAIDU
@@ -167,21 +160,8 @@
                     // count: 1, // 默认9
                     success: (res) => {
                         const { tempFiles } = res;
-                        /**
-                         * 使用uniCloud.uploadFile进行云存储时，需要开启$emit('upinImage')事件，
-                         * 再注释掉insertImage，否则在富文本中插入的图片都是本地路径。
-                         * 一般可能需要在传给父组件的upinImage事件中，先遍历tempFiles，
-                         * 再用uploadFile拿到云存储的图片路径，
-                         * 最后将该路径insertImage到src属性中。
-                         * 这一过程等于是将下方注释掉的this.editorCtx.insertImage方法移到父组件中，
-                         * 由使用者在父组件中使用子传父的upinImage方法中的editorCtx参数，手动调用editorCtx.insertImage操作
-                         */
+                        // 将文件和编辑器示例抛出，由开发者自行上传和插入图片
                         this.$emit('upinImage', tempFiles, this.editorCtx);
-                        /* this.editorCtx.insertImage({
-						src: tempFiles[0].path,
-						width: '80%',
-						success: function () {}
-					}) */
                     },
                     fail() {
                         uni.showToast({
@@ -225,7 +205,9 @@
                                 content: `超过${maxlength}字数啦~`,
                                 confirmText: '确定',
                                 showCancel: false,
-                                success: ({ confirm, cancel }) => {},
+                                success: () => {
+                                    this.$emit('overMax', { html, text });
+                                },
                             });
                         } else {
                             this.$emit('input', { html, text });
