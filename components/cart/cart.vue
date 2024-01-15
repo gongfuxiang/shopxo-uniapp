@@ -381,6 +381,8 @@
                 discount_detail_status: false,
                 // 优惠明细弹窗内商品列表显示隐藏更多
                 discount_detail_goods_list_status: false,
+                // 预下单计算开关
+                pre_order_status: 1,
             };
         },
 
@@ -931,22 +933,29 @@
                     }
                     cart_total += parseInt(temp_data_list[i]['stock']);
                 }
-
                 this.setData({
-                    total_price: total_price.toFixed(2),
-                    total_num: total_num,
                     already_selected_status: selected_count > 0,
                     already_valid_selected_status: data_count > 0,
                     is_selected_all: selected_count > 0 && selected_count >= temp_data_list.length,
                 });
+
+                // 预下单计算开关 0
+                if (this.pre_order_status === 0) {
+                    this.setData({
+                        total_price: total_price.toFixed(2),
+                        total_num: total_num,
+                    });
+                } else {
+                    // 调用预下单处理、优惠信息
+                    this.pre_order_handle();
+                }
+
+                // 底部tabs总数处理
                 if (cart_total <= 0) {
                     app.globalData.set_tab_bar_badge(2, 0);
                 } else {
                     app.globalData.set_tab_bar_badge(2, 1, cart_total);
                 }
-
-                // 调用预下单处理、优惠信息
-                this.pre_order_handle();
             },
 
             // 预下单处理
