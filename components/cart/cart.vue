@@ -1115,7 +1115,7 @@
             // 猜你喜欢加入购物车回调
             cart_success_event(e) {
                 // 猜你喜欢商品处理
-                this.goods_change(e.goods_id, 1, e.stock);
+                this.goods_change(e.goods_id, 1);
                 // 重新加载数据
                 this.get_data();
             },
@@ -1124,6 +1124,7 @@
             goods_change(goods_id, type, number = 0) {
                 var temp_goods_list = this.goods_list || [];
                 if (temp_goods_list.length > 0) {
+                    number = parseInt(number);
                     for (var i in temp_goods_list) {
                         if (temp_goods_list[i]['id'] == goods_id) {
                             var user_cart_count = parseInt(temp_goods_list[i]['user_cart_count'] || 0);

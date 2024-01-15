@@ -136,7 +136,7 @@ export default {
             // 是否成功提示、默认提示
             var is_success_tips = params.is_success_tips == undefined ? 1 : params.is_success_tips || 0;
             // 直接加购、并且用户已经存在购物车则依次+1
-            if (this.is_direct_cart == 1 && parseInt(this.goods.user_cart_count || 0) > 0) {
+            if (is_direct_cart == 1 && parseInt(goods.user_cart_count || 0) > 0) {
                 var buy_number = 1;
             } else {
                 var buy_number = goods.buy_min_number || 1;
