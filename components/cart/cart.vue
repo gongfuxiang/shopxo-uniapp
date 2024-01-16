@@ -1001,6 +1001,14 @@
                     }
                 }
                 if (selected_count <= 0) {
+                    this.setData({
+                        preferential_price: 0,
+                        increase_price: 0,
+                        total_price: 0,
+                        all_total_price: 0,
+                        total_num: 0,
+                        discount_detail_list: [],
+                    });
                     return false;
                 }
 
