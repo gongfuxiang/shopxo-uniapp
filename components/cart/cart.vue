@@ -4,10 +4,10 @@
         <block v-if="is_first == 0">
             <block v-if="(plugins_realstore_info || null) != null">
                 <!-- 顶部导航 -->
-                <component-nav-back propClass="bg-white" propNameClass="cr-black" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false">
-                    <template slot="content">
+                <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="is_nav_show_back">
+                    <template slot="right" class="flex-1 cart-right-title">
                         <view class="cart-top-nav tc auto">
-                            <view class="cart-top-nav-content bg-grey-f7 round padding-xss">
+                            <view class="cart-top-nav-content bg-grey-f7 round padding-xss cr-black">
                                 <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{ $t('cart.cart.v37ow8') }}</view>
                                 <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{ $t('cart.cart.09gl3g') }}</view>
                             </view>
@@ -381,6 +381,8 @@
                 discount_detail_goods_list_status: false,
                 // 预下单计算开关
                 pre_order_status: 1,
+                // 商城门户切换开关
+                is_nav_show_back: false,
             };
         },
 
@@ -489,6 +491,12 @@
                     // 分享菜单处理
                     app.globalData.page_share_handle();
                 }
+            },
+            cart_nav_back(status){
+                // 请求数据
+                this.setData({
+                    is_nav_show_back: status || false,
+                });
             },
 
             // 获取数据
@@ -1001,6 +1009,14 @@
                     }
                 }
                 if (selected_count <= 0) {
+                    this.setData({
+                        preferential_price: 0,
+                        increase_price: 0,
+                        total_price: 0,
+                        all_total_price: 0,
+                        total_num: 0,
+                        discount_detail_list: [],
+                    });
                     return false;
                 }
 
@@ -1433,12 +1449,11 @@
     /**
      * 顶部导航
      */
+     .cart-right-title {
+        padding-right: 40rpx;
+     }
     .cart-top-nav {
         width: 260rpx;
-        height: 80rpx;
-        /* #ifdef H5 */
-        padding-top: 20rpx;
-        /* #endif */
     }
     .cart-top-nav .item {
         width: 50%;

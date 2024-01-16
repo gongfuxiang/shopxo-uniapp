@@ -6,10 +6,10 @@
 		"es": "西班牙语"
 	},
 	"common": {
-        "home":"首页",
-        "category":"分类",
-        "cart":"购物车",
-        "my":"我的",
+		"home": "首页",
+		"category": "分类",
+		"cart": "购物车",
+		"my": "我的",
 		"confirm": "确认",
 		"cancel": "取消",
 		"not_yet": "暂不",

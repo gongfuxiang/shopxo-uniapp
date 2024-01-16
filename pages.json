@@ -79,9 +79,22 @@
         {
             "path": "pages/cart-page/cart-page",
             "style": {
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                "navigationStyle": "custom",
+                // #endif
+                // #ifndef MP-ALIPAY
+                "navigationBarTitleText": "购物车",
+                // #endif
+                // #ifdef MP-ALIPAY
+                "transparentTitle": "always",
+                "titlePenetrate": "YES",
+                "navigationBarTitleText": "",
+                // 该页不显示滚动条
+                "scrollIndicator": "none",
+                // #endif
                 "enablePullDownRefresh": false,
-                "disableScroll": true,
-                "navigationBarTitleText": "购物车"
+                // 禁止页面下拉
+                "disableScroll": true
             }
         },
         {

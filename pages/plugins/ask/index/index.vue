@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propFixed="false" propClass="bg-white" propColor="#333">
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
