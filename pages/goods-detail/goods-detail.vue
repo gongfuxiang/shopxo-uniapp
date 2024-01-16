@@ -441,7 +441,7 @@
                             <component-badge :propNumber="quick_nav_cart_count"></component-badge>
                         </view>
                         <image :src="common_static_url + 'cart-icon.png'" mode="scaleToFill"></image>
-                        <text class="dis-block text-size-xs cr-grey">{{$t('goods-detail.goods-detail.o1rnb5')}}</text>
+                        <text class="dis-block text-size-xs cr-grey">{{$t('common.cart')}}</text>
                     </view>
                 </view>
                 <!-- 右侧主操作 -->
@@ -668,7 +668,7 @@
                 nav_more_list: [],
                 // 导航首页按钮
                 nav_home_button_info: {
-                    text: this.$t('goods-detail.goods-detail.ihf2mk'),
+                    text: this.$t('common.home'),
                     icon: common_static_url + 'home-icon.png',
                     value: app.globalData.data.tabbar_pages[0],
                 },

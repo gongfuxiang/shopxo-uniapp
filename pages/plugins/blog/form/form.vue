@@ -14,7 +14,7 @@
                     <view class="bg-white border-radius-main pr oh spacing-mb">
                         <view class="form-gorup">
                             <view class="flex-row jc-sb align-c">
-                                <view class="form-gorup-title padding-right-main">{{$t('goods-search.goods-search.ne5k68')}}<text class="form-group-tips-must">*</text></view>
+                                <view class="form-gorup-title padding-right-main">{{$t('common.category')}}<text class="form-group-tips-must">*</text></view>
                                 <view class="flex-1 flex-width tr" @tap="popupOpen">
                                     <text :class="data.blog_category_name ? 'cr-black' : 'cr-grey-9'">{{ data.blog_category_name || $t('form.form.4cbom4') }}</text>
                                     <view class="pr top-sm margin-left-sm dis-inline-block">

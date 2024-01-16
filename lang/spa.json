@@ -1,0 +1,1544 @@
+{
+	"language": {
+		"zh-Hans": "Chino simplificado",
+		"zh-Hant": "Chino tradicional",
+		"en": "Inglés",
+		"es": "Español"
+	},
+	"common": {
+		"home": "Página de inicio",
+		"category": "Clasificación",
+		"cart": "Carrito de compras",
+		"my": "El mío",
+		"confirm": "Confirmación",
+		"cancel": "Cancelación",
+		"not_yet": "Por el momento no",
+		"save": "Guardar",
+		"add": "Nuevo",
+		"del": "Eliminar",
+		"edit": "Edición",
+		"more": "Más",
+		"more_null": "",
+		"search": "Buscar",
+		"num": "Cantidad",
+		"order": "Pedidos",
+		"service": "Servicios",
+		"please_input": "Por favor, introduzca",
+		"settlement": "Liquidación",
+		"confirm_sub": "Confirmación de la presentación",
+		"clear": "Vaciado",
+		"all": "Todo",
+		"share": "Compartir",
+		"return": "Volver",
+		"processing_in_text": "En proceso...",
+		"loading_in_text": "Cargado...",
+		"upload_in_text": "Subiendo...",
+		"auth_in_text": "En la autorización...",
+		"login_in_text": "Inicio de sesión...",
+		"sending_in_text": "Enviado en...",
+		"sending": "Enviado",
+		"warm_tips": "Consejos cálidos",
+		"no_relevant_data_tips": "No hay datos relevantes",
+		"internet_error_tips": "La red está un poco mal.",
+		"sub_error_retry_tips": "¡La presentación falló, ¡ por favor, vuelva a intentarlo!",
+		"not_more_list_data_tips": "No hay más datos de lista"
+	},
+	"login": {
+		"login": {
+			"725312": "Iniciar sesión con la contraseña de la cuenta",
+			"tfl656": "Confirmar la vinculación",
+			"483nho": "Volver a la página anterior",
+			"31r6p2": "Código de verificación del teléfono móvil",
+			"p3kxy2": "Obtenga el número de teléfono móvil para iniciar sesión con un solo clic",
+			"54l805": "Vincular cuentas existentes",
+			"q11t73": "Registrar la cuenta y vincular",
+			"s51ed9": "Se ha iniciado sesión con éxito, haga clic para volver a la página anterior",
+			"e77788": "La cuenta de inicio de sesión se vinculará automáticamente",
+			"1i4o86": "Usuarios",
+			"n2pv70": "Cuenta",
+			"1p7843": "Teléfono móvil",
+			"p54kf1": "Buzón",
+			"3i05ly": "Inicio de sesión cerrado temporalmente",
+			"nddg2x": "Leer y aceptar",
+			"2v11we": "Acuerdo de servicio",
+			"l3r4vr": "Con",
+			"myno2x": "Política de privacidad",
+			"i1deai": "Confirmar inicio de sesión",
+			"t75ee8": "Registro de nuevos usuarios",
+			"9d8gqi": "Recuperar la contraseña",
+			"tvl242": "Iniciar sesión automáticamente con autorización",
+			"9q27d8": "Otros métodos de inicio de sesión",
+			"t59dho": "Se cierra temporalmente el registro",
+			"hvunf8": "Confirmación del registro",
+			"zy8tc4": "Iniciar sesión ahora",
+			"b347k4": "Registrarse de inmediato",
+			"836o8e": "Confirme la autorización de inicio de sesión para brindarle un mejor servicio",
+			"pgyv78": "En la carga de datos básicos...",
+			"d76tgh": "¡Si no se carga automáticamente, ¡ haga clic manualmente para cargar!",
+			"6fe6ra": "Cargar datos básicos",
+			"28k91h": "Número de teléfono móvil",
+			"t3951j": "Código de verificación",
+			"qe8a37": "Nombre de usuario / teléfono móvil / buzón",
+			"08fchn": "Contraseña de inicio de sesión",
+			"db1rf4": "Correo electrónico",
+			"6yfr9g": "Nombre de usuario",
+			"d178m0": "Teléfono móvil / buzón",
+			"9wx3ch": "Establecer la contraseña de inicio de sesión",
+			"s665h5": "Obtener el Código de verificación",
+			"jw378f": "Información del usuario autorizado",
+			"np9177": "Vincular el teléfono móvil",
+			"158yg2": "Inicio de sesión del Código de verificación del teléfono móvil",
+			"r329eu": "Inicio de sesión del Código de verificación del buzón",
+			"39hn6v": "Registro de la contraseña de la cuenta",
+			"z13km0": "Registro del Código de verificación del teléfono móvil",
+			"jc0w0o": "Registro del Código de verificación del buzón",
+			"8tmyuc": "Recuperación de la contraseña",
+			"5p23c6": "Inicio de sesión exitoso",
+			"btu2c1": "Por favor, acepte el acuerdo primero.",
+			"no8ts6": "Para mejorar la información de los miembros",
+			"3nmrg2": "Falló la autorización",
+			"4c5n8o": "Por favor, rellene el número de teléfono móvil",
+			"xak8g1": "Por favor, rellene el correo electrónico.",
+			"ku05ty": "Por favor, rellene el teléfono móvil o el buzón.",
+			"7r5h37": "Introduzca un código de verificación válido",
+			"24mvbh": "Por favor, rellene la cuenta",
+			"n24i5u": "Excedente",
+			"4306xr": "Segundos",
+			"01xmab": "Por favor, rellene el Código de verificación.",
+			"prqvf1": "El ID de autorización no puede estar vacío",
+			"yvj88j": "Por favor, introduzca el número de teléfono móvil",
+			"yo6x3p": "Por favor, introduzca el correo electrónico",
+			"n7vh75": "Por favor, introduzca la cuenta",
+			"277w03": "Por favor, introduzca la contraseña",
+			"cesl5d": "Por favor, introduzca el Código de verificación",
+			"c5wa4u": "Inicio de sesión...",
+			"g30ew7": "En el registro...",
+			"h0515x": "Por favor, introduzca su teléfono móvil o buzón.",
+			"wysg7k": "Por favor, establezca la contraseña",
+			"4wc3hr": "El tipo de Protocolo es incorrecto",
+			"x0nxxf": "La Dirección de la URL del Protocolo es incorrecta",
+			"d9d11z": "¡¡ está seguro de cambiar el multilingüismo!",
+			"4835p5": "Falló la llamada para iniciar sesión en el SDK",
+			"li9573": "El método de inicio de sesión no se procesa"
+		}
+	},
+	"user-order-detail": {
+		"user-order-detail": {
+			"346376": "Servicio de envío",
+			"7lp6gw": "Ver ubicación",
+			"7f8p26": "Información sobre productos básicos",
+			"423rmr": "Total",
+			"41ty94": "Total de piezas",
+			"7xtnjt": "Datos no configurados",
+			"7dikfm": "Información de recogida",
+			"o38952": "Código de recogida:",
+			"0f26j2": "Información del pedido",
+			"ct34n5": "Datos ampliados",
+			"y9woor": "Información clave",
+			"hpq62x": "El Código de recogida no existe, Póngase en contacto con el Administrador",
+			"io6p5k": "Modo de pedido",
+			"n18sd2": "Número de pedido",
+			"yxwu8n": "Estado del pedido",
+			"23qj7m": "Estado de pago",
+			"vg4jb1": "Precio unitario del pedido",
+			"2y7l13": "Precio total del pedido",
+			"6ub2j0": "Importe preferencial",
+			"8b18q8": "Aumentar el monto",
+			"516tlr": "Importe pagado",
+			"0e1sfs": "Método de pago",
+			"12d445": "Empresa de mensajería",
+			"2byl8l": "Número de la lista de mensajería",
+			"2b5fc8": "Mensaje del usuario",
+			"h2c78h": "Tiempo de creación",
+			"9vivhl": "Tiempo de confirmación",
+			"wn83rn": "Tiempo de pago",
+			"1674dc": "Tiempo de envío",
+			"0i938r": "Tiempo de recepción",
+			"1jpv4n": "Hora de cancelación",
+			"8o2of3": "Tiempo de cierre",
+			"5k6k56": "Parámetros incorrectos",
+			"i876o3": "Dirección incorrecta"
+		}
+	},
+	"setup": {
+		"setup": {
+			"x81v6d": "Cambiar el teléfono",
+			"j6skqh": "Haga clic para cambiar",
+			"r7jz13": "Modificar el idioma",
+			"42mba7": "Gestión de direcciones",
+			"5eltza": "Gestión de clics",
+			"t60222": "Gestión de facturas",
+			"izg78g": "Haga clic para ir",
+			"377uwg": "Configuración de permisos",
+			"5493ui": "Borrar caché",
+			"f53166": "Haga clic para eliminar",
+			"656fv1": "Teléfono de servicio al cliente",
+			"f25wcx": "Haga clic para llamar",
+			"11k15d": "Cancelación de la cuenta",
+			"48r261": "No se puede recuperar después de la cancelación",
+			"07o10b": "Por favor, vincule el teléfono primero.",
+			"nwt4o1": "Por favor, inicie sesión primero",
+			"utnr7g": "El teléfono de servicio al cliente es incorrecto"
+		}
+	},
+	"article-category": {
+		"article-category": {
+			"gxra15": "Vistas"
+		}
+	},
+	"article-detail": {
+		"article-detail": {
+			"728374": "Tiempo:",
+			"j92ru0": "Navegación:",
+			"281s4a": "Artículo anterior:",
+			"uq5814": "Siguiente artículo:"
+		}
+	},
+	"buy": {
+		"buy": {
+			"186cxy": "Uno, disponible",
+			"70u2vy": "A",
+			"o7722q": "Ver el mapa",
+			"45ovhs": "Cupones preferenciales",
+			"58rs1a": "Tarjeta secundaria de la tienda",
+			"33fugm": "Uso",
+			"6e4181": "Intercambio de puntos por productos básicos",
+			"4di4i2": "Puntos individuales",
+			"q800ri": "Tienes puntos",
+			"w96878": "Uno",
+			"t04z1o": "Uno, no es suficiente para cambiar los productos actuales",
+			"q7jq76": "Entrada rápida",
+			"wx78ju": "Total:",
+			"4884hk": "Presentación de pedidos",
+			"2c3i88": "Sin cupones",
+			"8vqfp3": "No usar tarjetas secundarias",
+			"0pgsrm": "Veces",
+			"g2vt78": "Seleccionado",
+			"inyxpx": "Selección",
+			"l1c8q6": "El tipo de exhibición no permite la presentación de pedidos",
+			"6rk813": "Por favor, elija la dirección de recepción.",
+			"wq7gnb": "Por favor, elija la dirección de recogida",
+			"553mxo": "Por favor, elija el cupón",
+			"80y7sv": "Deducción",
+			"2rhko1": "Deje un mensaje",
+			"6424jr": "Correo expreso",
+			"8787ev": "Recoger la mercancía desde el punto de recogida",
+			"718tux": "Entra en mi pedido",
+			"p7e91u": "La información sobre los productos básicos es incorrecta",
+			"4is2ak": "Entrar en el pedido de la tienda",
+			"s7rr5s": "Tiempo",
+			"1fi842": "Elegir el tiempo",
+			"q8u066": "Por favor, elija la hora",
+			"hw4l5m": "Cupones opcionales",
+			"5iuqow": "Zhang",
+			"4rb08b": "No hay cupones disponibles por el momento",
+			"3740ur": "Por favor, elija la dirección",
+			"71kidy": "Por favor, elija el método de pago.",
+			"r79t77": "Presentado en...",
+			"31616e": "El modo actual no permite el uso de direcciones",
+			"g7dk3f": "Selección de tipos de tarjetas",
+			"0s1k23": "Inauguración inmediata",
+			"ntm2z5": "Todos los pedidos",
+			"b3dyo7": "De por vida",
+			"5lr84j": "La duración de la compra no está configurada",
+			"5x86n3": "No se ha configurado el nivel de membresía",
+			"bmueac": "Por favor, elija la duración de la apertura.",
+			"64ml60": "La duración de la apertura es incorrecta."
+		}
+	},
+	"agreement": {
+		"agreement": {
+			"w38e3v": "Estimado usuario, para brindarle un mejor servicio, en su uso",
+			"hjn568": "Antes del applet, debe hacer clic en [aceptar] y leer el siguiente contenido del acuerdo para indicar que conoce, entiende y está de acuerdo con las reglas del Acuerdo relevante de este cálido recordatorio, incluida la información de ubicación que abriremos para proporcionar una exhibición de página, productos o servicios más adecuados a sus necesidades, como la página de inicio para recomendarle productos o tiendas relacionadas e información de clasificación.",
+			"iy7863": "Protocolo de usuario de servicio",
+			"jwi8n1": "Política de privacidad",
+			"062co8": "Desacuerdo",
+			"60t34e": "De acuerdo"
+		}
+	},
+	"open-setting-location": {
+		"open-setting-location": {
+			"407106": "] permisos",
+			"61wezw": "Abrir el Servicio de permisos correspondiente",
+			"6vev38": "Acceso",
+			"lult41": "Información de ubicación",
+			"65q4b3": "Abrir la página de configuración",
+			"hwn386": "La selección de ubicación falló"
+		}
+	},
+	"customview": {
+		"customview": {
+			"726k7y": "Introduzca la búsqueda del nombre del producto"
+		}
+	},
+	"error": {
+		"error": {
+			"u697ih": "Error anormal"
+		}
+	},
+	"extraction-address": {
+		"extraction-address": {
+			"42v8tv": "Lejos de ti"
+		}
+	},
+	"goods-category": {
+		"goods-category": {
+			"ico62g": "Productos seleccionados",
+			"44f1ww": "Ir a liquidar",
+			"7e4m68": "No hay datos subclasificados",
+			"5pj8ip": "Por favor, compre los productos primero.",
+			"x69aow": "Integral",
+			"at5p35": "Ventas",
+			"283ot0": "Calor",
+			"g2u3lf": "Precio",
+			"5p4ksj": "Último",
+			"gy7y0w": "Los productos de diferentes especificaciones deben reducirse en el carrito de la compra.",
+			"x46kbv": "El ID del carrito de la compra es incorrecto",
+			"z1eh3v": "Restricción de compra",
+			"1ox23z": "El número no ha cambiado",
+			"o6i1w2": "¿Después de tanto tiempo, ¿ realmente quieres vaciarlo?"
+		}
+	},
+	"goods-comment": {
+		"goods-comment": {
+			"dfmjxd": "Puntuación integral",
+			"1qh8s8": "No hay puntuación por el momento"
+		}
+	},
+	"goods-detail": {
+		"goods-detail": {
+			"1s79t4": "Inventario",
+			"w3jma9": "Cupón",
+			"u401fi": "Especificaciones",
+			"317jp2": "Tiendas relacionadas",
+			"znz76d": "Evaluación de productos básicos",
+			"1rqkjt": "Tasa de elogios",
+			"6k7808": "Quiero evaluar",
+			"k5u755": "Preguntas y respuestas",
+			"q8e577": "Ver todas las respuestas",
+			"7ulh8b": "Quiero hacer una pregunta.",
+			"l7dzv2": "Parámetros de los productos básicos",
+			"2j44o2": "Detalles del producto",
+			"27wudx": "No hay datos detallados por el momento",
+			"v2974w": "Adivina que te gusta",
+			"0gx41x": "Datos sin parámetros",
+			"m3op38": "No hay información mayorista",
+			"96y691": "No hay información sobre cupones",
+			"gwwf19": "No hay información relevante sobre la tienda",
+			"8ej346": "No hay información de servicio relevante",
+			"775ppk": "Pico de tiempo limitado",
+			"35f378": "Suspensión de ventas",
+			"6brk57": "Por favor, elija las especificaciones",
+			"dco1sc": "Colección",
+			"bogx42": "Precio de venta",
+			"3kdgjl": "Precio de venta",
+			"by7052": "Ya",
+			"tq1976": "El evento URL está vacío",
+			"98v424": "Los datos de la tienda son incorrectos",
+			"721e2h": "El incidente no se maneja.."
+		}
+	},
+	"goods-search": {
+		"goods-search": {
+			"j8o278": "Selección",
+			"t9nikq": "Datos de barra",
+			"pxk051": "Eliminar",
+			"6n8316": "Marca",
+			"v6e5b7": "Atributos"
+		}
+	},
+	"index": {
+		"index": {
+			"443683": "Ha terminado",
+			"516559": "Reglas de actividad",
+			"t8bll8": "Último",
+			"t8bll9": "Información",
+			"s5r784": "Últimas compras",
+			"1c17n3": "Ha regresado",
+			"75l3l2": "No regresó",
+			"17vy72": "¡Faltan datos de tabulación!",
+			"i78v36": "Volver a la tienda",
+			"lkld04": "Comentarios:",
+			"r6vv25": "Me gusta:",
+			"6rsqp1": "Todos",
+			"pot64x": "Popular",
+			"8t4j95": "Productos recomendados",
+			"lk0i6c": "Mi cupón",
+			"p4872s": "Centro de recogida de cupones",
+			"tbo22p": "Unirse a la membresía",
+			"z88r5s": "Conocer los detalles de los puntos de membresía",
+			"b46kge": "Actualmente disponible",
+			"t26j9z": "Puntos",
+			"srd2ch": "Original",
+			"u5642g": "Reglas de puntos",
+			"qbi72m": "Lo Tengo.",
+			"i73nwk": "Detalles de los puntos",
+			"f3l1xt": "Cambio de mercancías",
+			"4v5nq5": "Cambio",
+			"t3d917": "Seleccionar ubicación",
+			"c5273j": "Introduzca el nombre de la tienda",
+			"1vf378": "La última tienda",
+			"1e582h": "Añadir Notas",
+			"7w75zb": "Determinar",
+			"6941e7": "Recaudación",
+			"t1o84g": "Por favor, introduzca el monto del consumo",
+			"872w3v": "A punto de abrir",
+			"399f6c": "Segundo precio",
+			"f69r4i": "La red está un poco mala, ~ 00home",
+			"slf50q": "Autorización para iniciar sesión",
+			"rmv185": "Si no opera por sí mismo, ignora la solicitud.",
+			"n0vnl6": "Se ha iniciado sesión con éxito",
+			"63g4m1": "La última transmisión en vivo"
+		}
+	},
+	"logout": {
+		"logout": {
+			"u10002": "Confirmación de la cancelación",
+			"9vfzz4": "¿La cuenta no se puede restaurar después de la cancelación, ¿ está seguro de continuar?"
+		}
+	},
+	"paytips": {
+		"paytips": {
+			"679rxu": "Pago exitoso",
+			"jifuu8": "Volver a la página de inicio",
+			"d8m853": "En proceso",
+			"6y488i": "Falló el pago",
+			"e732we": "Pagos cancelados",
+			"13v11t": "Error en la conexión a la red",
+			"u1153p": "Se desconocen los resultados del pago",
+			"6mpsl7": "El usuario cancela el pago",
+			"59u769": "Otros errores anormales"
+		}
+	},
+	"personal": {
+		"personal": {
+			"cw1d8p": "Avatar",
+			"gw8br3": "Apodo",
+			"jibx42": "Cumpleaños",
+			"6m33c4": "Dirección detallada",
+			"x2fofv": "Género",
+			"44112i": "Apodo de 1 a 16 caracteres",
+			"85404s": "Por favor, elija el cumpleaños",
+			"re674n": "Dirección detallada hasta 30 caracteres"
+		}
+	},
+	"detail": {
+		"detail": {
+			"324777": "Ir a shop.close Week name, ((()).",
+			"455787": "Recomendación",
+			"b4f3nw": "Productos del evento",
+			"ans2p4": "Más actividades",
+			"5knxg6": "No hay productos relacionados",
+			"kt41ki": "Tiempo de mensaje:",
+			"e6ga1y": "Navegar",
+			"ng628i": "Respuesta del Administrador",
+			"7rg4bb": "Tiempo de respuesta:",
+			"p7o522": "Mi pregunta",
+			"6026t4": "Ahorro",
+			"32171c": "Caducado",
+			"27pmj3": "Comprar de inmediato",
+			"9624hp": "Selección de especificaciones",
+			"8618mj": "Por favor, elija el número",
+			"09e3bx": "Especificaciones de productos individuales",
+			"40298g": "No.",
+			"5kbjoy": "Los productos individuales no están disponibles",
+			"jsj3u8": "Por favor, elija al menos",
+			"jksm81": "Productos individuales",
+			"1j6yxy": "Productos relacionados",
+			"e439j9": "Bowen",
+			"j5owf1": "No hay información logística por el momento",
+			"025362": "Comunión",
+			"0av5r9": "Artículo productos relacionados",
+			"53m44k": "Los datos de la etiqueta no existen",
+			"dor2v9": "Horario de apertura:",
+			"688i26": "Navegación",
+			"r4124d": "Servicio al cliente:",
+			"54k10s": "Consulta de Wechat de prensa larga",
+			"vj4nom": "Consulta por línea larga",
+			"q42ger": "Búsqueda de productos",
+			"8q6345": "Por favor, introduzca la palabra clave del producto",
+			"rdxjvh": "La gente firma, un total",
+			"15i191": "Puntos, total",
+			"8ua11k": "Formar un equipo",
+			"25x8ij": "Firmado",
+			"mvj266": "Firmar de inmediato",
+			"31lky7": "Mi firma",
+			"p07k62": "Hoy.",
+			"96bwp0": "Hoy",
+			"we522y": "No",
+			"mqmxbt": "Firmar, obtener",
+			"sx6u43": "Descripción de las reglas",
+			"6qk085": "Registro exitoso",
+			"ndp2k3": "Felicitaciones por obtener",
+			"7itw5w": "Usar de inmediato",
+			"6w8t3g": "Día",
+			"xtcy73": "Uno",
+			"w2p2d9": "Dos",
+			"xt8596": "Tres",
+			"13s18l": "Cuatro",
+			"n5rm3q": "Cinco",
+			"3d23mc": "Seis",
+			"73rb8q": "Año",
+			"zill36": "Mes",
+			"y2217b": "Firmar",
+			"4u64dg": "Estado de transmisión en vivo",
+			"y2639j": "Tiempo de lanzamiento",
+			"fa8h7j": "Cartel",
+			"eg25j9": "Entrar en la transmisión en vivo",
+			"86g7e1": "La aplicación Wechat no está instalada",
+			"9d3o6w": "Por favor, abra en el applet de Wechat",
+			"6xvl35": "En construcción..."
+		}
+	},
+	"form": {
+		"form": {
+			"s14osm": "Añadir imagen..",
+			"2f52v3": "Publicación anónima",
+			"4yd066": "Presentación",
+			"qt0q5u": "¡Por favor, describa las preguntas en detalle, ¡ y le responderemos lo antes posible!",
+			"bniyyt": "Manejo de errores",
+			"8l3ul5": "El usuario no está conectado",
+			"5v5bjs": "Por favor, rellene el contenido.",
+			"043a10": "Si habilitar",
+			"5hn8k3": "Imagen de la portada",
+			"xy87t8": "Descripción",
+			"kvr2i3": "Título seo",
+			"l87ju1": "Palabras clave seo",
+			"5487bt": "Descripción seo",
+			"4vku7u": "Clasificación de publicaciones",
+			"4cbom4": "Por favor, elija",
+			"4h814w": "Guardar más",
+			"lfwj0g": "Lanza más",
+			"2e5rv3": "Por favor, espere más tarde en la carga.",
+			"3h58hv": "Imagen",
+			"v19gg8": "Por favor, introduzca el título",
+			"gu3x97": "Por favor, elija la clasificación",
+			"adiq70": "Por favor, introduzca el contenido"
+		}
+	},
+	"goods-list": {
+		"goods-list": {
+			"27nkjm": "Preguntas",
+			"00n7i3": "Pregunta",
+			"rw12i7": "Respuesta",
+			"278qr1": "Ver todo",
+			"8y3cc7": "Respuesta individual",
+			"h3t0f1": "Ver más",
+			"aem3e6": "Guarde la respuesta",
+			"nr77jf": "No hay suministro por el momento"
+		}
+	},
+	"user-detail": {
+		"user-detail": {
+			"o92ral": "Detalles de la pregunta",
+			"k5867n": "Contactos",
+			"gfe703": "Número de teléfono de contacto",
+			"uy6lrz": "Título",
+			"7cufw6": "Contenido",
+			"u411r2": "Contenido de la respuesta",
+			"teo6qd": "Tiempo de respuesta"
+		}
+	},
+	"search": {
+		"search": {
+			"723rbx": "¡De hecho, la búsqueda es muy simple..!",
+			"e415ir": "Sin empezar",
+			"46g3i2": "En vivo",
+			"v60305": "En suspensión",
+			"660us5": "¡De hecho, la búsqueda es muy simple..!",
+			"ic9b89": "Por favor, introduzca la palabra clave de búsqueda"
+		}
+	},
+	"user-list": {
+		"user-list": {
+			"yhvl2q": "¿¿ estás seguro de que quieres eliminar esta publicación?",
+			"kpn3fp": "Eliminación exitosa",
+			"649j60": "Falló la eliminación"
+		}
+	},
+	"shop": {
+		"shop": {
+			"4q9oe2": "Recibido"
+		}
+	},
+	"user": {
+		"user": {
+			"981200": "Resumen del descuento",
+			"s3y4ji": "No utilizado",
+			"pggs6s": "Se ha utilizado",
+			"528t26": "Caducado",
+			"3ks1wi": "No tiene cupones por el momento.",
+			"b5cnj1": "Punto de recogida",
+			"4rj120": "Usuarios superiores",
+			"567lwz": "Modificación",
+			"67y36w": "Estadísticas básicas",
+			"rjye50": "Hombre",
+			"q822fj": "Estadísticas de devolución de Comisiones",
+			"xjxb2v": "Para promover",
+			"25f97u": "Consulta",
+			"iynkpl": "¡¡ por favor, introduzca la búsqueda de información del usuario primero!",
+			"2344s8": "Solicitud",
+			"nk3cpq": "Introduzca el ID de usuario / nombre / apodo / código de membresía / teléfono móvil / buzón",
+			"dcbt21": "Personalizado",
+			"4141u2": "En la consulta...",
+			"f5rny5": "Por favor, busque usuarios primero",
+			"n4orgk": "Abrir miembros",
+			"k614v7": "Miembros renovados",
+			"65cc6z": "Apertura continua",
+			"76dcx6": "Promover clientes",
+			"95s1ez": "¿De acuerdo con la duración original y la renovación de la tarifa, ¿ está seguro de continuar?",
+			"mgx9x4": "Congelación",
+			"424v6n": "Regalar",
+			"29f6n5": "Transferencias",
+			"8752a4": "Retiro de efectivo",
+			"91h03v": "Código de pago",
+			"ki1nor": "Contacto con el servicio al cliente",
+			"2k0227": "Cuenta de salida",
+			"3q4p8k": "Colección de productos básicos",
+			"57xw84": "Mis huellas",
+			"k78280": "Mis puntos",
+			"9u8e61": "Pendiente de pago",
+			"66714e": "Pendiente de envío",
+			"aa1ri3": "Reembolso / posventa"
+		}
+	},
+	"logistics": {
+		"logistics": {
+			"dxu6ql": "Tiempo de entrega:",
+			"5542tq": "Distribución no iniciada",
+			"895ug2": "Tiempo de entrega:",
+			"76q0ii": "Aún no se ha entregado"
+		}
+	},
+	"order": {
+		"order": {
+			"725882": "Introduzca el número de pedido / destinatario / teléfono de recepción",
+			"865029": "Causas anormales",
+			"71n22h": "Id único:",
+			"232ygr": "Número único:",
+			"u5p92y": "Nombre:",
+			"7dxbm5": "Teléfono:",
+			"ra8222": "Dirección:",
+			"26yki1": "No hay información de dirección",
+			"75ie9c": "Detalles",
+			"021438": "Comienza la distribución",
+			"ip4xo5": "Redistribución",
+			"51q275": "Completar la distribución",
+			"fb6dge": "Anomalías",
+			"46q2z7": "Subir fotos",
+			"o11d44": "Carga como máximo",
+			"9cvj96": "Presentación completada",
+			"eyir7g": "Presentación anormal",
+			"q4c8j0": "Descripción de hasta 200 caracteres",
+			"g23kyj": "Causa anormal hasta 200 caracteres",
+			"psi67g": "¿No se puede restaurar después de la eliminación, ¿ continuar?",
+			"s5cpq5": "¿¿ estás seguro de comenzar a distribuir pedidos?",
+			"13j20t": "En distribución",
+			"7ltibl": "Por favor, suba la foto",
+			"c69064": "Distribuido",
+			"hun5n3": "Por favor, rellene el motivo.",
+			"pjb15r": "Pendiente de pago",
+			"s8g966": "Pagado",
+			"q820hx": "A recibir",
+			"15lr5l": "Completado",
+			"330m76": "Terminal de origen",
+			"p3scy0": "La dirección del Avatar es incorrecta.",
+			"o411h6": "Facturación consolidada",
+			"i52cw1": "Total de pedidos",
+			"15k32o": "Por favor, seleccione los datos primero",
+			"3fr155": "El ID del parámetro del elemento es incorrecto",
+			"1i873j": "Pago",
+			"1k98tk": "Cancelado",
+			"6390gk": "Cerrado",
+			"vvxct1": "Número único de apertura",
+			"vjfki8": "Duración de la apertura",
+			"pn78ns": "¿No se puede restaurar después de la cancelación, ¿ está seguro de continuar?",
+			"93j3zq": "Datos sin formulario"
+		}
+	},
+	"order-detail": {
+		"order-detail": {
+			"9er1pc": "Información básica",
+			"36op8f": "Número de pedido",
+			"x3ge6c": "Importe del pedido",
+			"v52n5r": "Importe del reembolso",
+			"8n1f72": "Número de productos básicos",
+			"2443o1": "Estado de distribución",
+			"342sfz": "Tiempo de distribución",
+			"2dw4gd": "Tiempo de finalización",
+			"r3bg45": "Completar la descripción",
+			"521pp4": "Completar la foto",
+			"u745i8": "Tiempo anormal",
+			"5fq8pr": "Tiempo de envío",
+			"21ift9": "Tiempo de actualización",
+			"9153qn": "Tiempo de pedido",
+			"pyw6xg": "Avatar del usuario",
+			"2d766e": "Apodo del usuario",
+			"w78rgm": "Tiempo de pedido",
+			"rn4hhi": "Tipo"
+		}
+	},
+	"extraction": {
+		"extraction": {
+			"suna53": "Solicitar de inmediato",
+			"j0o47u": "La información de la solicitud está siendo revisada...",
+			"60601g": "Información del punto de recogida",
+			"48rp75": "Editar información",
+			"641gp7": "Estadísticas de pedidos de recogida",
+			"wcv68q": "Ver el pedido de recogida",
+			"53h4fj": "Pendiente de tramitación",
+			"wq25fk": "Procesado",
+			"864dtt": "El estado actual también se rescinde, y los datos se pueden volver a editar y enviar para su revisión.",
+			"11825x": "Falló la revisión de la información de la solicitud",
+			"w6hg74": "Razones:"
+		}
+	},
+	"extraction-apply": {
+		"extraction-apply": {
+			"u439pg": "Imagen del logotipo",
+			"bflosr": "Recomendación 300x300px",
+			"9t81k8": "Alias",
+			"cy87k6": "Provincias y municipios",
+			"liqbru": "Por favor, elija la provincia primero.",
+			"r4q86m": "Por favor, elija la ciudad primero.",
+			"47v7m0": "Ubicación geográfica",
+			"8831v6": "Por favor, elija la ubicación geográfica",
+			"5y2yzu": "Nota: la información editada se revisará nuevamente antes de que entre en vigor",
+			"wt1w0m": "Formato alias hasta 16 caracteres",
+			"73efnt": "Formato de contacto entre 2 y 16 caracteres",
+			"qixk24": "Teléfono fijo o móvil",
+			"gxo73a": "Formato de dirección detallado entre 1 y 80 caracteres",
+			"s3h5o3": "Por favor, elija la provincia",
+			"4s4s15": "Por favor, elija la ciudad",
+			"fk4gw5": "Por favor, elija distrito / Condado",
+			"4s229b": "Por favor, vincule primero el número de teléfono móvil",
+			"m3xdif": "Por favor, autorice primero la información del usuario",
+			"h8f437": "Falló la obtención de datos",
+			"fo7y6c": "La adquisición de la provincia fracasó",
+			"b6qg7b": "Falla en la adquisición de la ciudad",
+			"5s5734": "Falló la adquisición del distrito / Condado",
+			"q15b4n": "Por favor, rellene el contacto",
+			"3or25c": "Por favor, rellene el número de contacto.",
+			"m99d2g": "Por favor, elija la provincia",
+			"03587o": "Por favor, elija la ciudad",
+			"pt8436": "Por favor, elija un distrito y un condado.",
+			"v1g617": "Por favor, rellene la dirección detallada.",
+			"rm14pu": "Los datos deben ser revisados antes de que puedan entrar en vigor."
+		}
+	},
+	"extraction-order": {
+		"extraction-order": {
+			"2y7lq1": "Recogida",
+			"3m038g": "Código de recogida",
+			"xb4044": "Condiciones de búsqueda",
+			"suo4oz": "Por favor, introduzca el Código de recogida",
+			"kuqvlv": "Número de pedido / código de recogida",
+			"znufs8": "Por favor, introduzca el Código de recogida",
+			"hbj4y7": "Los datos operativos son incorrectos"
+		}
+	},
+	"extraction-switch": {
+		"extraction-switch": {
+			"w94x36": "Distancia",
+			"613b58": "Los datos son incorrectos"
+		}
+	},
+	"introduce": {
+		"introduce": {
+			"017d67": "Certificado de nivel",
+			"el4ib2": "Proporción de reembolso de Comisiones",
+			"syf66q": "Primer nivel",
+			"q4t9kl": "Segundo nivel",
+			"e5os6e": "Tercer nivel",
+			"d7kle4": "Reglas jerárquicas",
+			"5t5vzi": "Incondicionalmente"
+		}
+	},
+	"map": {
+		"map": {
+			"ivy154": "Número total de pedidos realizados",
+			"557z8x": "Ver pedidos"
+		}
+	},
+	"poster": {
+		"poster": {
+			"673605": "Haga clic para copiar la dirección del enlace",
+			"rbdj4b": "Compartir carteles",
+			"m54q3e": "¡Después de guardar el cartel, envíelo a Wechat Friends / group, QQ Friends / group, compartirlo en el círculo de amigos, weibo y así sucesivamente para promocionarlo, ¡ fácil de ganar descuentos!",
+			"b5i123": "Ver presionar para guardar durante mucho tiempo",
+			"hk8c9p": "Regeneración",
+			"9y4bwq": "Compartir código QR",
+			"h212v8": "¡Después de guardar el Código qr, envíelo a Wechat Friends / group, QQ Friends / group, compartirlo en el círculo de amigos, weibo y así sucesivamente para promocionarlo, ¡ fácil de ganar descuentos!",
+			"j3qv45": "Ver el Código QR largo y presionar guardar",
+			"r534xd": "Compartir enlaces",
+			"vn36y7": "¡Copiar los siguientes enlaces, enviarlos a amigos / grupos de wechat, amigos / grupos de qq, compartirlos en el círculo de amigos, weibo, etc., para promocionarlos, ¡ ganar descuentos fácilmente!",
+			"eu3j21": "La Dirección de la imagen promocional es incorrecta."
+		}
+	},
+	"profit": {
+		"profit": {
+			"3c7zmg": "Pendiente de entrada en vigor",
+			"67o785": "Pendiente de liquidación",
+			"l5knxu": "Liquidado",
+			"utg512": "Importe de los ingresos",
+			"6a7t71": "Nivel actual",
+			"19a8l6": "Detalles del pedido",
+			"4r88cp": "Liquidación inmediata",
+			"8jqr78": "En vigor",
+			"nk58v6": "Importe válido",
+			"vuvz6g": "Importe del reembolso",
+			"5c7sof": "El ID del pedido es incorrecto",
+			"7y47sb": "Importe de la devolución"
+		}
+	},
+	"profit-detail": {
+		"profit-detail": {
+			"kn8yye": "Estado de liquidación",
+			"x28rw5": "Estado de pago del pedido",
+			"b7v892": "Añadir tiempo",
+			"jkrvf3": "Tiempo de liquidación",
+			"3jg81h": "Reglas de devolución"
+		}
+	},
+	"promotion-order": {
+		"promotion-order": {
+			"6rs63v": "Total de nuevos clientes GMV",
+			"iwa646": "Total de pedidos",
+			"2p5215": "Total de pedidos GMV"
+		}
+	},
+	"promotion-user": {
+		"promotion-user": {
+			"62c8m1": "Teléfono",
+			"i2rf31": "Pedidos de usuarios",
+			"o6qi74": "Usuarios promocionales",
+			"kx7595": "Usuarios consumidos",
+			"2ey5t1": "Usuarios no consumidos",
+			"852zib": "Nuevos clientes",
+			"h8mx3e": "Nuevos clientes (válidos)",
+			"fvbq25": "Nuevos clientes (necesidad de recompra)",
+			"2g7enc": "Pedidos de consumo",
+			"32bf15": "Cantidad consumida",
+			"76748p": "Última Hora de pedido",
+			"u43380": "Pedidos inferiores",
+			"8n4tr3": "Consumo inferior",
+			"1gc3ny": "Hora final del pedido de los subordinados",
+			"3l1187": "Usuarios inferiores",
+			"g5332w": "No se ha hecho ningún pedido",
+			"8i641g": "Se ha hecho un pedido"
+		}
+	},
+	"recommend-detail": {
+		"recommend-detail": {
+			"265vyu": "Compra inicial",
+			"2sis3v": "Cantidad de inventario"
+		}
+	},
+	"recommend-form": {
+		"recommend-form": {
+			"57zrl5": "Iconos",
+			"3vk50b": "Recomendación 100 * 100 px",
+			"5ws7m3": "Productos relacionados",
+			"q536vp": "Eliminar",
+			"27goz3": "+ selección de productos",
+			"6rlju7": "Exhibición actual",
+			"q4qr64": "Formato de título de 1 a 60 caracteres",
+			"29au77": "El formato de descripción tiene un máximo de 200 caracteres",
+			"203itn": "Clasificación de mercancías",
+			"h5v45f": "Por favor, introduzca el nombre del producto.",
+			"20m5gj": "¡Por favor, busque los datos primero!",
+			"7gc30l": "Clasificación completa",
+			"yd3833": "Por favor, rellene el título",
+			"31k41l": "Por favor, elija el producto",
+			"e5k407": "En la búsqueda...",
+			"145ci4": "Selección exitosa",
+			"ocg49p": "Ya existe una lista de selección"
+		}
+	},
+	"recommend-list": {
+		"recommend-list": {
+			"x74z3o": "Productos Básicos",
+			"78n1ly": "Visitas",
+			"54d418": "¿No se puede restaurar después de la eliminación, ¿ está seguro de continuar?",
+			"w9460o": "No, No."
+		}
+	},
+	"team": {
+		"team": {
+			"784249": "Tiempo de registro:",
+			"i040fg": "Inversión",
+			"2ny6k1": "Tiempo de pedido:",
+			"2i4k79": "Si hacer un pedido:",
+			"3l538c": "Restablecer",
+			"pcaom3": "Hora de inicio",
+			"iee9bp": "Fin del tiempo",
+			"6h2l64": "Tiempo de adhesión"
+		}
+	},
+	"visit-form": {
+		"visit-form": {
+			"0su017": "Contenido de la visita",
+			"6l81lz": "Fotos de visita",
+			"e9r65a": "Contenido de la visita, hasta 230 caracteres",
+			"6f63it": "Por favor, elija un cliente",
+			"5k455y": "Por favor, rellene el contenido de la visita.",
+			"56vk4m": "Por favor, suba la foto de la visita"
+		}
+	},
+	"visit-list": {
+		"visit-list": {
+			"q76du4": "Descripción de la visita",
+			"4z367h": "Visita a la imagen"
+		}
+	},
+	"goods-comments": {
+		"goods-comments": {
+			"31ees6": "Puntuación de la mercancía",
+			"6p942c": "Introduzca su evaluación",
+			"pe5p52": "Por favor, elija la puntuación",
+			"1wut9j": "Por favor, introduzca la evaluación",
+			"s65197": "El Administrador responde:",
+			"1p1r2e": "Este producto aún no ha sido evaluado."
+		}
+	},
+	"invoice": {
+		"invoice": {
+			"p3dmd2": "Facturación de pedidos",
+			"l3832z": "Tipo de negocio",
+			"hoenw8": "Tipo de solicitud",
+			"j04kjc": "Tipo de factura",
+			"fvuc4p": "Importe de la factura",
+			"y724c7": "Título de la factura"
+		}
+	},
+	"invoice-detail": {
+		"invoice-detail": {
+			"s70kj4": "Información de la solicitud",
+			"0876xf": "Información de mensajería",
+			"1s2f0g": "Factura electrónica",
+			"4tu3v3": "Puede hacer clic en el nombre de la factura para copiar y abrir la dirección en el navegador para descargar la factura.",
+			"rrfex6": "Estado",
+			"p73963": "Contenido de la factura",
+			"e5n838": "Número de identificación fiscal",
+			"41qbu6": "Nombre del Banco de apertura de cuentas de la empresa",
+			"3a9459": "Cuenta de apertura de cuenta de la empresa",
+			"2g7t23": "Número de teléfono de contacto de la empresa",
+			"6k6sov": "Dirección registrada de la empresa",
+			"7159m0": "Nombre del destinatario",
+			"f2222p": "Teléfono del destinatario",
+			"q8l3zj": "Dirección del destinatario",
+			"rpdwd3": "Razones del rechazo",
+			"dt77rq": "Nota del usuario",
+			"2000a0": "Nombre de mensajería"
+		}
+	},
+	"invoice-saveinfo": {
+		"invoice-saveinfo": {
+			"x8hhiv": "Código de crédito social unificado de la empresa o número de identificación fiscal",
+			"tng0se": "Nota",
+			"t3i3e3": "Por favor, elija el tipo de factura",
+			"k31t2s": "Por favor, elija el tipo de solicitud",
+			"i73t3c": "Por favor, seleccione el contenido de la factura",
+			"x461e0": "Título de la factura, hasta 200 caracteres",
+			"924cag": "Código de crédito social unificado de la empresa o número de identificación fiscal, hasta 160 caracteres",
+			"ymvw6b": "Nombre del Banco de apertura de cuentas de la empresa, hasta 200 caracteres",
+			"664qc7": "Cuenta de apertura de cuenta corporativa, hasta 160 caracteres",
+			"bbseo1": "Número de teléfono de contacto de la empresa de 6 a 15 caracteres",
+			"85735j": "Dirección registrada de la empresa, hasta 230 caracteres",
+			"gsc7dy": "Formato del nombre del destinatario entre 2 y 30 caracteres",
+			"bp8822": "Teléfono del destinatario de 6 a 15 caracteres",
+			"u7h724": "Dirección del destinatario, hasta 230 caracteres",
+			"d3qbe1": "Correo electrónico, hasta 60 caracteres",
+			"vaw647": "Nota hasta 230 caracteres",
+			"89815t": "Facturación",
+			"004t56": "Añadir",
+			"dl11n1": "El importe de la factura debe ser superior a 0",
+			"r13p43": "Por favor, rellene el encabezamiento de la factura, hasta 200 caracteres",
+			"ws4wbb": "Rellene el Código de crédito social unificado de la empresa o el número de identificación fiscal, hasta 160 caracteres",
+			"87itn8": "Por favor, rellene el nombre del Banco de apertura de la cuenta de la empresa, hasta 200 caracteres",
+			"01lw93": "Por favor, rellene la cuenta de apertura de la empresa, hasta 160 caracteres",
+			"414ihr": "Por favor, rellene el número de teléfono de contacto de la empresa de 6 a 15 caracteres.",
+			"g3yh32": "Por favor, rellene la dirección de registro de la empresa, hasta 230 caracteres",
+			"4xy6xi": "Por favor, rellene entre 2 y 30 caracteres del formato del nombre del destinatario.",
+			"quhnk0": "Por favor, rellene el número de teléfono del destinatario de 6 a 15 caracteres.",
+			"kq77u3": "Por favor, rellene la dirección del destinatario, hasta 230 caracteres"
+		}
+	},
+	"member-code": {
+		"member-code": {
+			"oc4x18": "En caso de fallo en el escaneo del código, ajuste la pantalla al Código de escaneo más brillante.",
+			"26bu38": "Código de membresía",
+			"x58gqu": "Código de pago de la billetera",
+			"yj6g3a": "Ir a iniciar sesión",
+			"kx4yk8": "El Código de membresía está vacío."
+		}
+	},
+	"batchorder-list": {
+		"batchorder-list": {
+			"25sh5e": "En curso"
+		}
+	},
+	"frequencycard-list": {
+		"frequencycard-list": {
+			"cgy327": "Registro de uso",
+			"954ewh": "Efectivo",
+			"8x98g7": "Suspensión",
+			"5n3ums": "Fin",
+			"n36x3w": "Cierre",
+			"cx75t7": "Número de disponibles",
+			"3m1w12": "Número de veces usado",
+			"89t8am": "Hora de inicio"
+		}
+	},
+	"frequencycard-used": {
+		"frequencycard-used": {
+			"538686": "Número de deducciones",
+			"xjmepo": "Descripción descripción descripción",
+			"aod4pc": "Operadores",
+			"l4878i": "Tiempo de uso"
+		}
+	},
+	"orderallot-detail": {
+		"orderallot-detail": {
+			"81jvw1": "Tipo de pedido",
+			"du0120": "Tiempo de recepción",
+			"8z8ika": "Tiempo de servicio"
+		}
+	},
+	"orderallot-list": {
+		"orderallot-list": {
+			"w2w2w4": "Recepción",
+			"6m73j2": "Lote",
+			"b13k5r": "Tarjeta secundaria",
+			"w2t242": "Logística",
+			"285ir2": "En servicio",
+			"x5l17j": "Recibido",
+			"o3ouqv": "¿Por favor, confirme que la mercancía ha sido recibida o completada y que no se puede restaurar después de la operación, ¿ está seguro de continuar?"
+		}
+	},
+	"tips": {
+		"tips": {
+			"0azfc3": "Total de pagos",
+			"579u02": "Salir de la página"
+		}
+	},
+	"design": {
+		"design": {
+			"882220": "Ir a ('shop.close Week name'), '('shop.open time') - -",
+			"ay7m42": "Buscando toda la estación",
+			"21kak7": "Servicio al cliente en línea",
+			"745kx2": "Puntos",
+			"wtx1l8": "Ver la clasificación de los productos",
+			"83occ4": "No hay datos por el momento",
+			"ses9m2": "Introduzca la palabra clave del producto que busca",
+			"i7725u": "Buscando la tienda",
+			"gv16tj": "A"
+		}
+	},
+	"user-coming-list": {
+		"user-coming-list": {
+			"xkwnl8": "Puntos de recompensa",
+			"sq4379": "Hora de registro"
+		}
+	},
+	"user-qrcode-detail": {
+		"user-qrcode-detail": {
+			"b5ilz3": "Cielo, volcado",
+			"22zc5y": "- (...), recompensa adicional",
+			"18680z": "Doble recompensa de registro continuo",
+			"dupsnc": "Continuo",
+			"c8e5of": "Veces",
+			"37bh73": "Recompensas adicionales durante el período especificado",
+			"6l7r99": "Período",
+			"mjfygy": "Recompensa del invitado",
+			"pb2e32": "Recompensa del invitado",
+			"do23j6": "Nombre del contacto",
+			"5k2ibd": "Teléfono de contacto",
+			"911a61": "Dirección de contacto"
+		}
+	},
+	"user-qrcode-saveinfo": {
+		"user-qrcode-saveinfo": {
+			"xa2k42": "Formato de nombre de contacto entre 2 y 30 caracteres",
+			"e9ko33": "Número de teléfono de contacto de 6 a 15 caracteres",
+			"bbxaw6": "Dirección de contacto, hasta 230 caracteres",
+			"jw2h8l": "Código de registro",
+			"84g5t6": "Por favor, rellene el formato del nombre del contacto entre 2 y 30 caracteres.",
+			"1tilke": "Por favor, rellene el número de teléfono de contacto de 6 a 15 caracteres.",
+			"5m2752": "Por favor, rellene la dirección de contacto, hasta 230 caracteres"
+		}
+	},
+	"cash-auth": {
+		"cash-auth": {
+			"b39a25": "Elija el método de autenticación de identidad",
+			"582q6x": "Por favor, elija una cuenta de autenticación",
+			"d318op": "Por favor, introduzca el Código de verificación de Seguridad",
+			"0j8388": "Consejos de operación",
+			"59iipw": "1. por favor, elija '",
+			"8qcte7": "Buzón vinculado",
+			"t8y3r7": "'O'",
+			"5wbuuy": "'Uno de los métodos es la forma de obtener el Código de verificación de seguridad e introducirlo correctamente.",
+			"r569wz": "2. si no está vinculado al teléfono o el buzón ha fallado, puede completar la verificación recibiendo un mensaje de texto del teléfono después de vincular el teléfono.",
+			"35837l": "3. si no está vinculado al buzón o ha caducado, puede completar la verificación recibiendo el correo después de vincular el buzón.",
+			"q2a553": "4. introduzca correctamente el Código de verificación gráfica de abajo. si no puede ver claramente, puede hacer clic en la imagen para reemplazarla. después de completar la entrada, haga el siguiente paso.",
+			"lh6bjr": "5. después de recibir el Código de verificación de seguridad, complete la verificación en 10 minutos.",
+			"ob4gn0": "6. después de que la verificación de Seguridad sea exitosa, complete la solicitud de retiro de efectivo en un plazo de 30 minutos.",
+			"d2ng16": "Número de teléfono móvil vinculado",
+			"l2i4s8": "Importe vigente",
+			"27b4w5": "Importe mínimo de retiro",
+			"2hc312": "Formato de código de verificación 4 dígitos",
+			"5dcsbd": "Por favor, elija el método de autenticación"
+		}
+	},
+	"cash-create": {
+		"cash-create": {
+			"qg404q": "Importe del retiro",
+			"5o1q52": "El monto de la donación no se puede retirar en efectivo.",
+			"iaw845": "Cantidad que se puede retirar en efectivo",
+			"1dbkw2": "Importe disponible",
+			"162f7o": "Total de regalías",
+			"5mmir5": "Plataforma de cobro",
+			"14n20v": "Se recomienda encarecidamente dar prioridad a completar los nombres detallados de las sucursales de los cuatro principales bancos estatales (banco de china, Banco de construcción de china, Banco Industrial y comercial de China y Banco Agrícola de china), y las cuentas virtuales como alipay, tenpay y Wechat pueden completar directamente los nombres correspondientes.",
+			"36756z": "Cuenta de cobro",
+			"748r3i": "Cuenta bancaria o cuenta virtual (alipay, tenpay, wechat, etc.)",
+			"1xtff6": "Nombre del depositario",
+			"445m7n": "Nombre real del depositario de la cuenta de cobro",
+			"858o54": "La verificación de Seguridad se ha agotado, por favor vuelva a verificar antes de operar",
+			"ke15x5": "Volver a solicitar el retiro de efectivo",
+			"cymbdz": "Importe del retiro, mínimo",
+			"27ky42": ", máximo",
+			"u2rnlw": "Entre 1 y 60 caracteres en el formato de la Plataforma de cobro",
+			"s72t44": "Entre 1 y 60 caracteres en el formato de la cuenta de cobro",
+			"f4605e": "Entre 1 y 30 caracteres del formato del nombre del depositario",
+			"6t7x9u": "Por favor, rellene el monto del retiro.",
+			"vbr59h": "Por favor, rellene la Plataforma de cobro",
+			"0mn186": "Por favor, rellene la cuenta de cobro",
+			"c7h4mu": "Por favor, rellene el nombre de la persona que abrió la cuenta.",
+			"724kn8": "El retiro de efectivo no puede ser inferior a",
+			"duo0ts": "El retiro de efectivo no puede ser mayor que"
+		}
+	},
+	"payment-code": {
+		"payment-code": {
+			"b74qxe": ") actualiza automáticamente el Código de pago después de segundos"
+		}
+	},
+	"recharge": {
+		"recharge": {
+			"3shyx4": "Saldo de la cuenta",
+			"60k2v3": "Seleccionar el monto de recarga",
+			"qbw1x2": "Importe",
+			"x27b25": "Recargar de inmediato",
+			"4fm61g": "Instrucciones de recarga",
+			"otwkjn": "Recargar",
+			"23zwpz": "Otros",
+			"73f4v9": "Introduzca el monto de recarga"
+		}
+	},
+	"transfer": {
+		"transfer": {
+			"2q274j": "Importe de la transferencia",
+			"9xe2bl": "Mi saldo:",
+			"t53ary": "Introduzca el ID de usuario / nombre / código / teléfono móvil / buzón",
+			"g22y5v": "Por favor, introduzca el monto de la transferencia.",
+			"2bwh7h": "Por favor, introduzca la información de la nota de transferencia.",
+			"1aijp1": "Por favor, introduzca la cuenta de cobro",
+			"x4mzo9": "Introduzca la cuenta de cobro correcta",
+			"4g21cu": "Beneficiario",
+			"t36tk2": "Nota de transferencia"
+		}
+	},
+	"user-cash-detail": {
+		"user-cash-detail": {
+			"e8a3e8": "Número de retiro de efectivo",
+			"wyad6w": "Estado de retiro de efectivo",
+			"j5s3u6": "Plataforma de transferencia",
+			"53k647": "Nombre de la transferencia",
+			"m556tl": "Cuenta de transferencia",
+			"i308o1": "Monto del pago",
+			"451xxt": "Tiempo de pago",
+			"y96262": "Tiempo de solicitud"
+		}
+	},
+	"user-recharge-detail": {
+		"user-recharge-detail": {
+			"ch84a8": "Número de orden de recarga",
+			"dq5v2u": "Estado de recarga",
+			"7272ia": "Cantidad recargada"
+		}
+	},
+	"user-transfer-detail": {
+		"user-transfer-detail": {
+			"stj2eh": "Número de transferencia",
+			"x17599": "Tiempo de transferencia"
+		}
+	},
+	"wallet-log-detail": {
+		"wallet-log-detail": {
+			"tdf3wo": "Tipo de operación",
+			"744os7": "Tipo de cantidad",
+			"ruq60b": "Importe de la operación",
+			"4q7pfq": "Importe original",
+			"r814ne": "La última cantidad",
+			"0ghn6g": "Instrucciones de cambio",
+			"i2kze7": "Tiempo de operación"
+		}
+	},
+	"user-address": {
+		"user-address": {
+			"e8qg73": "Predeterminado",
+			"3i4x2r": "Añadir nueva dirección",
+			"1rwt3l": "Importar la dirección del sistema",
+			"7r29v8": "Destinatario:",
+			"2nmsi1": "Número de contacto:",
+			"s150l6": "Dirección de recepción:"
+		}
+	},
+	"user-address-save": {
+		"user-address-save": {
+			"231435": "Etiquetas",
+			"620370": "El ID de la dirección es incorrecto",
+			"5yhgps": "Nombre",
+			"h8f148": "Región",
+			"13rpdw": "Haga clic para elegir la ubicación geográfica",
+			"mb7cjx": "Recuperación",
+			"4rc269": "Dirección",
+			"s3o1p5": "Identificación",
+			"42l857": "Tablero de pegado de dirección",
+			"g43klm": "Establecer como dirección predeterminada",
+			"3w7r14": "Nombre de la tarjeta de identificación",
+			"0y1vl6": "Número de identificación",
+			"761ek6": "Foto de la tarjeta de identificación",
+			"c811s5": "Por favor, rellene y use el documento de identidad original para tomar la foto, la imagen es clara.",
+			"wii4sp": "Contacto de 2 a 16 caracteres",
+			"65507o": "Teléfono fijo o móvil",
+			"he685s": "Número de dirección",
+			"vdkv32": "Dirección detallada de 1 a 80 caracteres",
+			"b32r6v": "Pegar todo el párrafo de la dirección y dividir automáticamente el nombre, el teléfono y la dirección",
+			"l6vjlm": "Introduzca el nombre de la etiqueta",
+			"c73v42": "Por favor, rellene su nombre real.",
+			"c742c8": "Por favor, rellene el número de identificación.",
+			"t1loj5": "Casa",
+			"6t396c": "Empresa",
+			"34rqp8": "Fuente de sabiduria",
+			"2pey0m": "La información de la provincia falla",
+			"7w01kd": "El tipo de nombre del formulario es incorrecto",
+			"z687lv": "Por favor, introduzca la información de la dirección primero.",
+			"lrlmxf": "Por favor, rellene el nombre de su tarjeta de identificación.",
+			"0x8i97": "Por favor, rellene el número de identificación.",
+			"224l36": "Por favor, suba la foto frontal de su tarjeta de identificación.",
+			"glf52g": "Por favor, suba la foto en la parte posterior de su tarjeta de identificación.",
+			"wkfi45": "Por favor, introduzca los datos"
+		}
+	},
+	"user-goods-browse": {
+		"user-goods-browse": {
+			"rx8t1v": "¿ no se puede restaurar después de la eliminación?, ¿Seguro que continúa?"
+		}
+	},
+	"user-order": {
+		"user-order": {
+			"twc3r7": "Comentarios",
+			"lp1v28": "Instar",
+			"ht65c9": "Submenú",
+			"9l47b6": "Formulario",
+			"3l2jr5": "Recompra",
+			"7571p2": "Pagos consolidados",
+			"hp123x": "A recoger",
+			"f5qqhu": "Instar al éxito",
+			"a3c81d": "Más carritos de compras",
+			"5o756f": "Compra directa"
+		}
+	},
+	"user-order-comments": {
+		"user-order-comments": {
+			"uboc44": "Anonimato",
+			"r9r3h0": "¿¿ el bebé satisface tus expectativas? Hablemos de sus ventajas y deficiencias en la belleza.",
+			"si255j": "Muy pobre",
+			"42b0x1": "Pobre",
+			"72mov3": "General",
+			"16cmv6": "Está bien.",
+			"e4i88f": "Muy bien.",
+			"021i2d": "Los comentarios que escribes se mostrarán en forma anónima.",
+			"h2ci83": "Los comentarios que escribes se mostrarán en forma de apodo.",
+			"34ne4c": "Por favor, marque primero",
+			"x6fwbf": "Todavía no hay puntuación",
+			"8f303u": "Por favor, rellene el contenido del comentario.",
+			"39y6ym": "Contenido del comentario entre 6 y 230 caracteres",
+			"488j15": "Cada imagen de comentario no puede exceder de 3"
+		}
+	},
+	"user-orderaftersale": {
+		"user-orderaftersale": {
+			"10c251": "Devolución",
+			"3wggcu": "Pendiente de confirmación",
+			"1kcn16": "Pendiente de devolución",
+			"2kzi0t": "Pendiente de revisión",
+			"1p5456": "Rechazada"
+		}
+	},
+	"user-orderaftersale-detail": {
+		"user-orderaftersale-detail": {
+			"uuhf62": "Devolución inmediata",
+			"00je4f": "Dirección de devolución:",
+			"4y2c1l": "Comprobante",
+			"bprwq9": "Razones del reembolso",
+			"85pnkf": "Número de productos básicos",
+			"84upo4": "La cantidad no puede ser mayor que",
+			"1252if": "No puede ser mayor que",
+			"9p6b1y": "Instrucciones de reembolso",
+			"4y9355": "Cargar comprobantes",
+			"1l42ms": "Subir hasta 3 imágenes",
+			"21icul": "Por favor, elija la razón",
+			"9kvu52": "Por favor, introduzca el monto del reembolso.",
+			"4f8u0c": "Instrucciones de reembolso de hasta 200 caracteres",
+			"6d14hq": "Por favor, introduzca el nombre del mensajero.",
+			"8tt862": "Por favor, introduzca el número de la lista de mensajería.",
+			"50cm8m": "Tipo de reembolso",
+			"17j4cy": "Estado actual",
+			"r2oy43": "Razones de la solicitud",
+			"c53k23": "Número de devoluciones",
+			"5t586p": "Método de reembolso",
+			"bifwmx": "Tiempo de devolución",
+			"8n414b": "Tiempo de revisión",
+			"23v6rp": "Por favor, elija el tipo de operación",
+			"dn3423": "Por favor, elija el número de devoluciones.",
+			"c9e2ms": "Por favor, rellene el nombre del mensajero.",
+			"ld10pm": "Por favor, rellene el número de formulario de mensajería."
+		}
+	},
+	"ask-comments": {
+		"ask-comments": {
+			"2zlnb5": "Comentarios..",
+			"du7rcv": "Me gusta..",
+			"6l6vz7": "Palabra",
+			"3fcnme": "Respuesta..",
+			"ymmd24": "Respuesta",
+			"dfhg54": "Ver más respuestas",
+			"5401r1": "Comentarios",
+			"4l77wt": "Ver más comentarios",
+			"8sjar6": "Respuesta @",
+			"m67961": "Espero con interés su discurso...",
+			"3o1rq6": "Se ha superado el límite máximo de caracteres de entrada"
+		}
+	},
+	"ask-comments-goods": {
+		"ask-comments-goods": {
+			"xl51n6": "Respuesta",
+			"g6mc44": "Si tienes alguna pregunta, Pregúntale a otros estudiantes."
+		}
+	},
+	"binding-list": {
+		"binding-list": {
+			"kh7951": "Compra",
+			"2u4v35": "Guardar",
+			"91d60h": "Desplegar"
+		}
+	},
+	"bottom-line": {
+		"bottom-line": {
+			"44bct2": "Tengo una línea de fondo."
+		}
+	},
+	"cart": {
+		"cart": {
+			"v37ow8": "Centro Comercial",
+			"09gl3g": "Tienda",
+			"wb5465": "Ve a pasear",
+			"pxjwv8": "Selección completa",
+			"3kr74b": "Ofertas:",
+			"n76213": "Aumento:",
+			"4tbj4s": "Ver detalles",
+			"7gdej1": "Tiendas cercanas",
+			"h63814": "No hay información de la tienda",
+			"t41i4x": "Detalles de la cantidad",
+			"miti3i": "Artículo",
+			"9s0l57": "Reducción total",
+			"qh35gz": "Suma total",
+			"j8on74": "El carrito de la compra estaba vacío.",
+			"31h34v": "Consulta inmediata",
+			"2wfu7o": "Por favor, vincule el número de teléfono móvil",
+			"3v6ulk": "¿Después de tanto tiempo de selección, ¿ realmente quieres eliminarlo?",
+			"8q2yej": "Deslice primero los datos a operar",
+			"9g81jk": "Los datos no existen",
+			"346c25": "Colección exitosa",
+			"21051p": "La colección falló",
+			"3sy0mp": "Por favor, elija el producto primero."
+		}
+	},
+	"coupon-card": {
+		"coupon-card": {
+			"j318xx": "No hay parámetros de tipo por el momento",
+			"m9316y": "Para usar"
+		}
+	},
+	"goods-batch-buy": {
+		"goods-batch-buy": {
+			"9ectyf": "Especie",
+			"geq82x": "Importe:",
+			"ypby1k": "No hay información relevante",
+			"7tp1tc": "El tipo de evento de operación es incorrecto"
+		}
+	},
+	"goods-buy": {
+		"goods-buy": {
+			"ufdm25": "Los datos de las especificaciones son incorrectos",
+			"737wzz": "Número de compras",
+			"4maexq": "El tipo de evento de operación es incorrecto.."
+		}
+	},
+	"nav-more": {
+		"nav-more": {
+			"h9g4b1": "Haga clic para guardar"
+		}
+	},
+	"no-data": {
+		"no-data": {
+			"1u202v": "No hay conexión de red por el momento",
+			"imw8f1": "Por favor, verifique si la configuración del sistema - > Si está permitida en la red móvil móvil móvil móvil móvil móvil celular [4]",
+			"q87572": "] app utiliza redes móviles celulares o redes inalámbricas de área local"
+		}
+	},
+	"online-service": {
+		"online-service": {
+			"4l6k22": "Servicio al cliente"
+		}
+	},
+	"payment": {
+		"payment": {
+			"973g2e": "No hay información de pago",
+			"z3y296": "Intenta hacer clic para pagar",
+			"iu792d": "Detalles del pago",
+			"25r53g": "Pago inmediato",
+			"058a46": "No hay método de pago",
+			"x6d585": "Por favor, elija el método de pago primero.",
+			"011cj4": "¿¿ se deducirán las tasas de pago y se confirmará la continuación de la operación inmediatamente después de la operación?",
+			"7ihx9u": "El método de pago es incorrecto",
+			"e1f54e": "En la solicitud...",
+			"vhx5dv": "El tipo de pago es incorrecto",
+			"597s8b": "La interfaz del componente de pago no puede estar vacía",
+			"bv637f": "Pago no definido",
+			"4dszme": "¡¡ por favor, use la máquina real para operar o la versión básica del applet es demasiado baja!",
+			"k2i010": "Después de que el pago sea exitoso, no repita el pago, si el Estado del pedido no es exitoso, Póngase en contacto con el servicio al cliente para procesarlo.",
+			"2rw3qh": "El método de pago aún no se ha adaptado"
+		}
+	},
+	"realstore-cart": {
+		"realstore-cart": {
+			"v437n6": "¿¿ no hay productos comprados?",
+			"6bmc34": "Cambio..",
+			"d1kk7x": "Por favor, elija el tipo de pedido",
+			"2dc65q": "Por favor, agregue productos primero.",
+			"50lf68": "En carga",
+			"b27ln3": "Añadir al carrito de la compra",
+			"47h2a0": "¡La solicitud falló, ¡ por favor, vuelva a intentarlo!",
+			"3qmxs7": "Sin comprar",
+			"miv944": "Inicio",
+			"20epzm": "Los datos de los productos básicos son incorrectos",
+			"8tzr7l": "La información de la tienda es incorrecta"
+		}
+	},
+	"share-popup": {
+		"share-popup": {
+			"h04xiy": "Compartir con un solo clic a amigos y charlas grupales",
+			"rhs2c5": "Compartir con un solo clic con amigos de Wechat y chat grupal",
+			"mv9l10": "Compartir con un solo clic en el círculo de Amigos de Wechat",
+			"f08y38": "Compartir con un solo clic en la colección de Wechat",
+			"1242w9": "Compartir con un solo clic a amigos y espacios de QQ",
+			"1oh013": "Haga clic para copiar la dirección y compartirla con amigos y charlas grupales.",
+			"dcp2qu": "Generar carteles y compartirlos con el círculo de amigos, amigos y charlas grupales"
+		}
+	},
+	"user-qrcode": {
+		"user-qrcode": {
+			"8p57v3": "Equipo para firmar"
+		}
+	},
+	"switch": {
+		"switch": {
+			"924s7v": "Abrir",
+			"g142o6": "Guan",
+			"447u86": "Consejos",
+			"8w5ok6": "¿¿ está seguro de que quiere ajustarlo a (...)?"
+		}
+	},
+	"time-select": {
+		"time-select": {
+			"8k5rr7": "Domingo",
+			"17353c": "Lunes",
+			"40rmq4": "Martes",
+			"q35g41": "Miércoles",
+			"v213l8": "Jueves",
+			"8q3q2x": "Viernes",
+			"9605m5": "Sábado",
+			"h7l2xj": "Japón..",
+			"cq522p": "Hoy..",
+			"ub264m": "Mañana.."
+		}
+	},
+	"upload": {
+		"upload": {
+			"b33f08": "Subir imágenes"
+		}
+	},
+	"user-base": {
+		"user-base": {
+			"g5663y": "Obtenga su apodo, avatar",
+			"913g4e": "Obtener avatares y apodos de usuario para mejorar los datos personales se utiliza principalmente para proporcionar a los usuarios una interfaz de centro de usuario con reconocimiento.",
+			"o19lj3": "Introduzca el apodo de 1 a 16 caracteres",
+			"8u9on2": "Usuarios de Alipay",
+			"t8i9l4": "Usuarios de baidu",
+			"0imw74": "Usuarios de titulares",
+			"27q5af": "Usuarios de QQ",
+			"211pk4": "Usuarios de manos rápidas",
+			"5x8o43": "Usuarios de Wechat",
+			"gzc3y4": "Por favor, suba el avatar",
+			"lro9u7": "Por favor, rellene el apodo"
+		}
+	},
+	"user-cash": {
+		"user-cash": {
+			"3v1gzc": "No pagado",
+			"t7gtu0": "Se ha pagado",
+			"x47iu3": "Falló el pago"
+		}
+	},
+	"user-recharge": {
+		"user-recharge": {
+			"8y9dki": "Ir a pagar"
+		}
+	},
+	"wallet-log": {
+		"wallet-log": {
+			"9p865e": "Reducción",
+			"1nm6c2": "Aumentar"
+		}
+	},
+	"shopxo-uniapp": {
+		"app": {
+			"5a7r0v": "El número de esta máquina se inicia sesión con un solo clic",
+			"33k281": "He leído y estoy de acuerdo",
+			"8l688n": "Y inicie sesión con el número local",
+			"28r5dr": "Acuerdo de servicio",
+			"lb493k": "Política de privacidad",
+			"ch1pd2": "Falló la activación del componente de número local",
+			"n67w8p": "Por favor, inicie sesión o registre primero",
+			"5y1c52": "El formato del valor del evento es incorrecto",
+			"t754n6": "El mensaje de alerta está vacío Alert",
+			"iq66pg": "¡¡ por favor, copie la dirección al mapa de la página web para verla!",
+			"v2j475": "Coordenadas incorrectas",
+			"3m1gbe": "Falló la caché uuid",
+			"1244fe": "Datos desconocidos..",
+			"r5ts62": "Copia exitosa",
+			"r539kf": "El contenido copiado está vacío",
+			"qm8548": "La Dirección de la imagen está vacía",
+			"gbiac6": "Por favor, abra la autorización",
+			"3eqv71": "Por favor, vaya al Applet para usar el servicio completo",
+			"08cg8y": "La dirección del servicio al cliente es incorrecta.",
+			"0gwt7z": "Eliminación exitosa",
+			"di6v5t": "Por favor, obtenga la autorización primero.",
+			"nu5058": "¡¡ no se admite la selección de ubicación geográfica!",
+			"4v6q86": "No se ha seleccionado la ubicación"
+		}
+	}
+}

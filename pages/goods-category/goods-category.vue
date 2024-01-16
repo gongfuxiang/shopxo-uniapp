@@ -79,7 +79,7 @@
                                             <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
                                                 <view class="left-content-actual-list ht-auto">
                                                     <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                        <text>{{$t('common.all')}}</text>
+                                                        <text>{{ $t('common.all') }}</text>
                                                     </view>
                                                     <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
                                                         <block v-for="(item, index) in data_content.items" :key="index">
@@ -95,14 +95,14 @@
                                     <!-- 商品列表 -->
                                     <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view :class="'padding-left-sm '+((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
+                                            <view :class="'padding-left-sm ' + ((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
                                                 <!-- 操作导航 -->
                                                 <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
                                                     <view class="nav-sort-content oh">
                                                         <block v-for="(item, index) in search_nav_sort_list" :key="index">
                                                             <view class="sort-item tc fl cp" :data-index="index" @tap="nav_sort_event">
-                                                                <text class="cr-base va-m text-size-sm">{{item.name}}</text>
+                                                                <text class="cr-base va-m text-size-sm">{{ item.name }}</text>
                                                                 <image v-if="(item.icon || null) != null" class="sort-icon va-m" :src="common_static_url + 'sort-' + item.icon + '-icon.png'" mode="aspectFill"></image>
                                                             </view>
                                                         </block>
@@ -110,7 +110,7 @@
                                                     <!-- 三级导航 -->
                                                     <view v-if="(data_three_content || null) != null && (data_three_content.items || null) != null && data_three_content.items.length > 0" class="word-list scroll-view-horizontal padding-bottom-main">
                                                         <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'three-nav-item-' + nav_active_item_three_index">
-                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
+                                                            <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == -1 ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="-1" @tap="nav_event">{{ $t('common.all') }}</view>
                                                             <block v-for="(item, index) in data_three_content.items" :key="index">
                                                                 <view :class="'word-icon dis-inline-block text-size-xs round padding-top-xs padding-bottom-xs padding-left padding-right ' + (nav_active_item_three_index == index ? 'bg-main-light br-main-light cr-main' : 'br-grey cr-grey')" :id="'three-nav-item-' + index" :data-index="nav_active_index" :data-itemtwoindex="nav_active_item_two_index" :data-itemthreeindex="index" @tap="nav_event">{{ item.name }}</view>
                                                             </block>
@@ -194,12 +194,12 @@
                                                 <view class="padding-top-main padding-horizontal-main">
                                                     <!-- 一级基础信息 -->
                                                     <block v-if="(data_content.banner_images || null) !== null">
-                                                        <view :class="'one-content border-radius-main cp '+(category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
+                                                        <view :class="'one-content border-radius-main cp ' + (category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
                                                             <image :src="data_content.banner_images" mode="scaleToFill" class="wh-auto radius"></image>
                                                         </view>
                                                     </block>
                                                     <block v-else>
-                                                        <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" :class="'one-content border-radius-main cp pr '+(category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
+                                                        <view v-if="(data_content.vice_name || null) != null || (data_content.describe || null) != null" :class="'one-content border-radius-main cp pr ' + (category_show_level == 3 ? 'spacing-mb' : '')" :data-value="data_content.id" @tap="category_event">
                                                             <image :src="theme_static_url + 'level2-content-bg.png'" mode="scaleToFill" class="wh-auto ht-auto radius pa top-0 left-0"></image>
                                                             <view class="pr padding-main">
                                                                 <view v-if="(data_content.vice_name || null) != null" class="text-size-md fw-b" :style="'color:' + data_content.bg_color + ';'">
@@ -232,7 +232,7 @@
                                                                         <text class="text-wrapper text-size-md">{{ v.name }}</text>
                                                                         <text v-if="(v.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ v.describe }}</text>
                                                                     </view>
-                                                                    <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</view>
+                                                                    <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">{{ $t('common.more') }}</view>
                                                                 </view>
                                                                 <view v-if="(v.items || null) != null && v.items.length > 0" class="oh border-radius-main spacing-mb flex-row flex-warp">
                                                                     <block v-for="(vs, index2) in v.items" :key="index2">
@@ -276,12 +276,12 @@
                                 <view class="cart-content bg-white border-radius-main pa oh">
                                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                                         <view class="oh br-b padding-vertical-main padding-horizontal-main">
-                                            <text class="va-m text-size-xs cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
+                                            <text class="va-m text-size-xs cr-base">{{ $t('goods-category.goods-category.ico62g') }}</text>
                                             <view class="fr cp" @tap="cart_all_delete_event">
                                                 <view class="dis-inline-block va-m pr top-xs">
                                                     <uni-icons type="trash" size="16" color="#f00"></uni-icons>
                                                 </view>
-                                                <text class="cr-red va-m text-size-xs">{{$t('common.clear')}}</text>
+                                                <text class="cr-red va-m text-size-xs">{{ $t('common.clear') }}</text>
                                             </view>
                                         </view>
                                         <scroll-view :scroll-y="true" class="cart-list goods-list" :show-scrollbar="false">
@@ -341,7 +341,7 @@
                                         <text class="text-size-lg">{{ (cart || null) == null ? 0 : cart.total_price || 0 }}</text>
                                     </view>
                                 </view>
-                                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" class="text-size-md radius-0 bg-main cr-white">{{$t('goods-category.goods-category.44f1ww')}}</button>
+                                <button type="default" size="mini" hover-class="none" @tap="buy_submit_event" class="text-size-md radius-0 bg-main cr-white">{{ $t('goods-category.goods-category.44f1ww') }}</button>
                             </view>
                         </block>
                     </view>
@@ -424,37 +424,7 @@
                 category_show_level: 0,
                 // 排序导航
                 search_nav_sort_index: 0,
-                search_nav_sort_list: [{
-                		name: this.$t('goods-category.goods-category.x69aow'),
-                		field: 'default',
-                		sort: 'asc',
-                		icon: null
-                	},
-                	{
-                		name: this.$t('goods-category.goods-category.at5p35'),
-                		field: 'sales_count',
-                		sort: 'asc',
-                		icon: 'default'
-                	},
-                	{
-                		name: this.$t('goods-category.goods-category.283ot0'),
-                		field: 'access_count',
-                		sort: 'asc',
-                		icon: 'default'
-                	},
-                	{
-                		name: this.$t('goods-category.goods-category.g2u3lf'),
-                		field: 'min_price',
-                		sort: 'asc',
-                		icon: 'default'
-                	},
-                	{
-                		name: this.$t('goods-category.goods-category.5p4ksj'),
-                		field: 'id',
-                		sort: 'asc',
-                		icon: 'default'
-                	}
-                ],
+                search_nav_sort_list: [],
                 // 自定义分享信息
                 share_info: {},
                 // 是否单页预览
@@ -505,6 +475,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 资源设置
+            this.set_resources_data();
+
             // 基础参数
             this.setData({
                 user: app.globalData.get_user_cache_info(),
@@ -532,6 +505,44 @@
         },
 
         methods: {
+            // 资源设置
+            set_resources_data() {
+                var search_nav_sort_list = [
+                    {
+                        name: this.$t('goods-category.goods-category.x69aow'),
+                        field: 'default',
+                        sort: 'asc',
+                        icon: null,
+                    },
+                    {
+                        name: this.$t('goods-category.goods-category.at5p35'),
+                        field: 'sales_count',
+                        sort: 'asc',
+                        icon: 'default',
+                    },
+                    {
+                        name: this.$t('goods-category.goods-category.283ot0'),
+                        field: 'access_count',
+                        sort: 'asc',
+                        icon: 'default',
+                    },
+                    {
+                        name: this.$t('goods-category.goods-category.g2u3lf'),
+                        field: 'min_price',
+                        sort: 'asc',
+                        icon: 'default',
+                    },
+                    {
+                        name: this.$t('goods-category.goods-category.5p4ksj'),
+                        field: 'id',
+                        sort: 'asc',
+                        icon: 'default',
+                    },
+                ];
+                this.setData({
+                    search_nav_sort_list,
+                });
+            },
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
@@ -548,7 +559,7 @@
             // 获取数据
             init(params = {}) {
                 // 网络检查
-                if((params || null) == null || (params.loading || 0) == 0) {
+                if ((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'init');
                     return false;
                 }
@@ -1300,42 +1311,45 @@
             // 计算搜索框的高度
             search_height_computer() {
                 const query = uni.createSelectorQuery();
-                query.select('.nav-search').boundingClientRect((res) => {
-                    if ((res || null) != null) {
-                        // 获取搜索框高度
-                        this.setData({
-                            search_height: res.height,
-                        });
-                    }
-                }).exec();
+                query
+                    .select('.nav-search')
+                    .boundingClientRect((res) => {
+                        if ((res || null) != null) {
+                            // 获取搜索框高度
+                            this.setData({
+                                search_height: res.height,
+                            });
+                        }
+                    })
+                    .exec();
             },
 
             // 排序事件
             nav_sort_event(e) {
-            	var index = e.currentTarget.dataset.index || 0;
-            	var temp_search_nav_sort = this.search_nav_sort_list;
-            	var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
-            	for (var i in temp_search_nav_sort) {
-            		if (i != index) {
-            			if (temp_search_nav_sort[i]['icon'] != null) {
-            				temp_search_nav_sort[i]['icon'] = 'default';
-            			}
-            			temp_search_nav_sort[i]['sort'] = 'desc';
-            		}
-            	}
-            	temp_search_nav_sort[index]['sort'] = temp_sort;
-            	if (temp_search_nav_sort[index]['icon'] != null) {
-            		temp_search_nav_sort[index]['icon'] = temp_sort;
-            	}
+                var index = e.currentTarget.dataset.index || 0;
+                var temp_search_nav_sort = this.search_nav_sort_list;
+                var temp_sort = temp_search_nav_sort[index]['sort'] == 'desc' ? 'asc' : 'desc';
+                for (var i in temp_search_nav_sort) {
+                    if (i != index) {
+                        if (temp_search_nav_sort[i]['icon'] != null) {
+                            temp_search_nav_sort[i]['icon'] = 'default';
+                        }
+                        temp_search_nav_sort[i]['sort'] = 'desc';
+                    }
+                }
+                temp_search_nav_sort[index]['sort'] = temp_sort;
+                if (temp_search_nav_sort[index]['icon'] != null) {
+                    temp_search_nav_sort[index]['icon'] = temp_sort;
+                }
 
-            	this.setData({
-            		search_nav_sort_index: index,
-            		search_nav_sort_list: temp_search_nav_sort,
-            		data_page: 1
-            	});
+                this.setData({
+                    search_nav_sort_index: index,
+                    search_nav_sort_list: temp_search_nav_sort,
+                    data_page: 1,
+                });
                 this.reset_scroll();
-            	this.get_goods_list(1);
-            }
+                this.get_goods_list(1);
+            },
         },
     };
 </script>

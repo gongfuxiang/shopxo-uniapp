@@ -139,6 +139,8 @@
 
             // 初始化配置
             this.init_config();
+
+            console.log(uni.getLocale());
         },
 
         methods: {
@@ -186,9 +188,6 @@
             url_event(e) {
                 app.globalData.url_event(e);
             },
-
-            // 修改语言
-            language() {},
 
             // 打开小程序权限中心
             open_setting_event() {

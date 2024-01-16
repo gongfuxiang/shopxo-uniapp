@@ -46,7 +46,7 @@
                     <!-- 分类 -->
                     <view v-if="(search_map_list.category_list || null) != null && search_map_list.category_list.length > 0" class="map-item padding-horizontal-main padding-top-main border-radius-main bg-white spacing-mt">
                         <view class="map-nav pr br-b">
-                            <text>{{$t('goods-search.goods-search.ne5k68')}}</text>
+                            <text>{{$t('common.category')}}</text>
                             <text class="arrow-bottom pa cr-grey" v-if="search_map_list.category_list.length > 3" @tap="more_event" data-value="category_list">{{$t('common.more')}}</text>
                         </view>
                         <view class="map-content map-text-item map-category-container oh margin-top-lg" :style="'height:' + map_fields_list.category_list.height + ';'">

@@ -47,14 +47,13 @@
                     <view v-if="(payment_page_url || null) !== null || (membership_page_url || null) !== null" class="qrcode padding-horizontal-main pr oh">
                         <view class="qrcode-content flex-row align-c text-size-md" :style="'background-image: url(' + static_url + 'qrcode-bg.png)'" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'jc-sb' : 'jc-sa divider-r'">
                             <view v-if="(membership_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="membership_page_url" @tap="url_event">
-                                <view class="item pr top-lg dis-inline-block">
-                                    <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image>
-                                </view>{{$t('member-code.member-code.26bu38')}}</view>
-                            <view v-if="(payment_page_url || null) != null"  class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
+                                <view class="item pr top-lg dis-inline-block"> <image class="icon" :src="static_url + 'membership-code.png'" mode="widthFix"></image> </view>{{ $t('member-code.member-code.26bu38') }}</view
+                            >
+                            <view v-if="(payment_page_url || null) != null" class="padding-horizontal-lg pr z-i ht-auto" :class="(payment_page_url || null) == null || (membership_page_url || null) == null ? 'wh-auto' : 'tc flex-width-half'" :data-value="payment_page_url" @tap="url_event">
                                 <view class="item pr top-lg dis-inline-block">
                                     <image class="icon" :src="static_url + 'payment-code.png'" mode="widthFix"></image>
                                 </view>
-                                <text>{{$t('user.user.91h03v')}}</text>
+                                <text>{{ $t('user.user.91h03v') }}</text>
                             </view>
                         </view>
                         <iconfont v-if="(payment_page_url || null) == null || (membership_page_url || null) == null" name="icon-arrow-right" propClass="iconfont pa" color="#FEF6CF"></iconfont>
@@ -62,7 +61,7 @@
                 </view>
 
                 <!-- 中间导航 -->
-                <view :class="'user-bottom padding-horizontal-main '+((payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow' : '')">
+                <view :class="'user-bottom padding-horizontal-main ' + ((payment_page_url || null) !== null || (membership_page_url || null) !== null ? 'box-shadow' : '')">
                     <!-- 主要的订单+副导航 -->
                     <block v-if="(main_navigation_data || null) != null && main_navigation_data.length > 0">
                         <block v-for="(item, index) in main_navigation_data" :key="index">
@@ -120,7 +119,7 @@
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item br-t cp padding-main" @tap="call_event">
                                 <view class="arrow-right">
                                     <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon va-m" mode="widthFix"></image>
-                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{$t('user.user.ki1nor')}}</text>
+                                    <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ $t('user.user.ki1nor') }}</text>
                                 </view>
                             </view>
                         </view>
@@ -143,7 +142,7 @@
                             <!-- 联系客服 -->
                             <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
                                 <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
-                                <view class="item-name single-text cr-base text-size-sm">{{$t('user.user.ki1nor')}}</view>
+                                <view class="item-name single-text cr-base text-size-sm">{{ $t('user.user.ki1nor') }}</view>
                             </view>
                         </view>
                     </view>
@@ -188,35 +187,11 @@
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
                 user_id: '',
-                nickname: this.$t('login.login.6yfr9g'),
+                nickname: '',
                 message_total: 0,
-                nav_logout_data: {
-                    name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
-                    icon: client_value == 'mp' ? 'cache' : 'logout',
-                },
+                nav_logout_data: {},
                 // 头部小导航
-                head_nav_list: [
-                    {
-                        name: this.$t('promotion-order.promotion-order.iwa646'),
-                        url: 'user-order',
-                        count: 0,
-                    },
-                    {
-                        name: this.$t('user.user.3q4p8k'),
-                        url: 'user-favor',
-                        count: 0,
-                    },
-                    {
-                        name: this.$t('user.user.57xw84'),
-                        url: 'user-goods-browse',
-                        count: 0,
-                    },
-                    {
-                        name: this.$t('user.user.k78280'),
-                        url: 'user-integral',
-                        count: 0,
-                    },
-                ],
+                head_nav_list: [],
                 // 主要的订单+副导航
                 main_navigation_data: [],
                 // 远程自定义导航
@@ -253,6 +228,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
 
+            // 资源设置
+            this.set_resources_data();
+
             // 初始化配置
             this.init_config();
 
@@ -266,6 +244,42 @@
         },
 
         methods: {
+            // 资源设置
+            set_resources_data() {
+                var head_nav_list = [
+                    {
+                        name: this.$t('promotion-order.promotion-order.iwa646'),
+                        url: 'user-order',
+                        count: 0,
+                    },
+                    {
+                        name: this.$t('user.user.3q4p8k'),
+                        url: 'user-favor',
+                        count: 0,
+                    },
+                    {
+                        name: this.$t('user.user.57xw84'),
+                        url: 'user-goods-browse',
+                        count: 0,
+                    },
+                    {
+                        name: this.$t('user.user.k78280'),
+                        url: 'user-integral',
+                        count: 0,
+                    },
+                ];
+                var nav_logout_data = {
+                    name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
+                    icon: client_value == 'mp' ? 'cache' : 'logout',
+                };
+                var nickname = this.$t('login.login.6yfr9g');
+                this.setData({
+                    head_nav_list,
+                    nav_logout_data,
+                    nickname
+                });
+            },
+
             // 初始化配置
             init_config(status) {
                 if ((status || false) == true) {
