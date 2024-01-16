@@ -1,16 +1,16 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(info || null) != null">
+        <view v-if="(info || null) != null" :class="(data_base.is_user_add_blog || 0) == 1 ? 'page-bottom-fixed' : ''">
             <view class="padding-main bg-white spacing-mb">
                 <view class="spacing-mb">
                     <view class="fw-b text-size-xl">{{ info.title }}</view>
                     <view class="cr-grey-9 margin-top-lg oh br-t padding-top-main text-size-xs">
                         <view class="fl">
-                            <text>{{$t('article-detail.article-detail.728374')}}</text>
+                            <text>{{ $t('article-detail.article-detail.728374') }}</text>
                             <text>{{ info.add_time }}</text>
                         </view>
                         <view class="fr">
-                            <text class="margin-left-xxxl">{{$t('article-detail.article-detail.j92ru0')}}</text>
+                            <text class="margin-left-xxxl">{{ $t('article-detail.article-detail.j92ru0') }}</text>
                             <text>{{ info.access_count }}</text>
                         </view>
                     </view>
@@ -29,19 +29,19 @@
                 <!-- 上一篇、下一篇 -->
                 <view v-if="(last_next || null) != null" class="last-next-data spacing-mt margin-bottom-xxxl cr-grey-9">
                     <view v-if="(last_next.last || null) != null" class="flex-row">
-                        <text>{{$t('article-detail.article-detail.281s4a')}}</text>
+                        <text>{{ $t('article-detail.article-detail.281s4a') }}</text>
                         <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.last.title }}</navigator>
                     </view>
                     <view v-if="(last_next.next || null) != null" class="margin-top flex-row cr-main">
-                        <text>{{$t('article-detail.article-detail.uq5814')}}</text>
+                        <text>{{ $t('article-detail.article-detail.uq5814') }}</text>
                         <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block flex-row flex-width single-text">{{ last_next.next.title }}</navigator>
                     </view>
                 </view>
                 <!-- 推荐博文 -->
                 <view v-if="right_list.length > 0" class="plugins-blog-list">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.455787')}}{{ blog_main_name }}</text>
-                        <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.455787') }}{{ blog_main_name }}</text>
+                        <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                     </view>
                     <view v-for="(item, index) in right_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
                         <navigator :url="item.url" hover-class="none">
@@ -58,10 +58,21 @@
                 <!-- 相关商品 -->
                 <view v-if="(info.goods_list || null) != null && info.goods_list.length > 0">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.1j6yxy')}}</text>
-                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                        <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.1j6yxy') }}</text>
+                        <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: info.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
+                </view>
+            </view>
+
+            <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
+                <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
+                    <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
+                    </navigator>
+                    <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
+                    </navigator>
                 </view>
             </view>
         </view>
@@ -177,10 +188,10 @@
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
                                 emoji_list: data.emoji_list || [],
-                                blog_main_name: (info == null) ? (base == null ? this.$t('detail.detail.e439j9') : (base.blog_main_name || this.$t('detail.detail.e439j9'))) : info.title,
+                                blog_main_name: info == null ? (base == null ? this.$t('detail.detail.e439j9') : base.blog_main_name || this.$t('detail.detail.e439j9')) : info.title,
                             });
 
-                            if(info != null) {
+                            if (info != null) {
                                 // 基础自定义分享
                                 this.setData({
                                     share_info: {
@@ -189,7 +200,7 @@
                                         path: '/pages/plugins/blog/detail/detail',
                                         query: 'id=' + info.id,
                                         img: info.cover,
-                                    }
+                                    },
                                 });
 
                                 // 标题

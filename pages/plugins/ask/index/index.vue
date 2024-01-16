@@ -13,7 +13,7 @@
             </template>
         </component-nav-back>
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view class="page-bottom-fixed">
+            <view :class="(data_base.is_user_add_ask || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                     <block v-for="(item, index) in data_list" :key="index">
                         <navigator :url="'/pages/plugins/ask/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
@@ -28,7 +28,8 @@
                                     <view class="num cr-grey-9 flex-row self-c">
                                         {{ item.add_time_date }}
                                         <view class="fw-b padding-horizontal-xs">·</view>
-                                        {{ item.access_count || '0' }}{{$t('detail.detail.e6ga1y')}}</view>
+                                        {{ item.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}</view
+                                    >
                                 </view>
                             </view>
                         </navigator>
@@ -42,15 +43,13 @@
                 </view>
             </view>
         </scroll-view>
-        <view class="bottom-fixed ask-btn-content">
+        <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed btn-content">
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
                 <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
-                    <view class="divider-r-d wh-auto">
-                        <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{$t('goods-detail.goods-detail.7ulh8b')}}</view>
+                    <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
                 </navigator>
                 <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
-                    <view class="wh-auto">
-                        <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{$t('detail.detail.p7o522')}}</view>
+                    <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
                 </navigator>
             </view>
         </view>

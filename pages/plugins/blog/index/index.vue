@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data_base || null) != null">
+        <view v-if="(data_base || null) != null" :class="(data_base.is_user_add_blog || 0) == 1 ? 'page-bottom-fixed' : ''">
             <!-- 搜索框 -->
             <view class="nav-search padding-main">
                 <component-search propBrColor="#efefef" propBgColor="#fff" propUrl="/pages/plugins/blog/search/search"></component-search>
@@ -24,8 +24,8 @@
                             </view>
                             <view v-if="(item.blog_data || null) != null" class="single-text cr-grey text-size-xs">
                                 <text>{{ blog_main_name }}: {{ item.blog_data.blog_count }}</text>
-                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">{{$t('index.index.lkld04')}}{{ item.blog_data.comments_count }}</text>
-                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">{{$t('index.index.r6vv25')}}{{ item.blog_data.give_thumbs_count }}</text>
+                                <text v-if="(data_base.is_blog_comments_show || 0) == 1" class="margin-left">{{ $t('index.index.lkld04') }}{{ item.blog_data.comments_count }}</text>
+                                <text v-if="(data_base.is_blog_give_thumbs || 0) == 1" class="margin-left">{{ $t('index.index.r6vv25') }}{{ item.blog_data.give_thumbs_count }}</text>
                             </view>
                         </view>
                     </view>
@@ -35,8 +35,8 @@
             <!-- 分类 -->
             <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.6rsqp1')}}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.6rsqp1') }}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                 </view>
             </view>
 
@@ -57,8 +57,8 @@
             <!-- 热门博文-滚动 -->
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.pot64x')}}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.pot64x') }}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">
                     <view class="plugins-blog-rolling-list scroll-view-horizontal">
@@ -81,15 +81,15 @@
             <!-- 推荐博文 -->
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('detail.detail.455787')}}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.455787') }}{{ blog_main_name }}</text>
+                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
                     <block v-for="(item, index) in right_list" :key="index">
                         <view :class="'item padding-vertical-main oh ' + (index > 0 ? 'br-t' : '')">
                             <navigator :url="item.url" hover-class="none">
                                 <view class="blog-title single-text fl">{{ item.title }}</view>
-                                <text class="cr-grey fr">{{$t('detail.detail.e6ga1y')}}{{ item.access_count }}{{$t('buy.buy.0pgsrm')}}</text>
+                                <text class="cr-grey fr">{{ $t('detail.detail.e6ga1y') }}{{ item.access_count }}{{ $t('buy.buy.0pgsrm') }}</text>
                             </navigator>
                         </view>
                     </block>
@@ -99,14 +99,25 @@
             <!-- 推荐商品 -->
             <view v-if="goods_list.length > 0" class="goods-list oh padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
-                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.8t4j95')}}</text>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                    <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.8t4j95') }}</text>
+                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
+                <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
+                    <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
+                    </navigator>
+                    <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                        <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
+                    </navigator>
+                </view>
+            </view>
         </view>
         <view v-else>
             <!-- 提示信息 -->
