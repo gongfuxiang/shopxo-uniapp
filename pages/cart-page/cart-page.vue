@@ -9,8 +9,8 @@
 </template>
 <script>
     const app = getApp();
-    import componentQuickNav from "../../components/quick-nav/quick-nav";
-    import componentCart from "../../components/cart/cart";
+    import componentQuickNav from '../../components/quick-nav/quick-nav';
+    import componentCart from '../../components/cart/cart';
     export default {
         data() {
             return {
@@ -19,7 +19,7 @@
         },
         components: {
             componentQuickNav,
-            componentCart
+            componentCart,
         },
 
         onLoad(params) {
@@ -32,13 +32,13 @@
             app.globalData.page_event_onshow_handle();
 
             // 数据加载
-            if((this.$refs.cart || null) != null) {
+            if ((this.$refs.cart || null) != null) {
                 this.$refs.cart.init();
+                this.$refs.cart.cart_nav_back(true);
             }
         },
 
-        methods: {}
+        methods: {},
     };
 </script>
-<style>
-</style>
+<style></style>
