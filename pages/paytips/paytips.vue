@@ -30,61 +30,58 @@
             };
         },
 
-        components: {},
-
-        props: {},
-
         /**
          * 页面加载初始化
          */
-        onLoad(options) {
-            if (options) {
-                let url_params = JSON.parse(base64.decode(decodeURIComponent(options.params)));
-                var msg = null;
-                switch (url_params.code) {
-                    // 支付成功
-                    case '9000':
-                        msg = this.$t('paytips.paytips.679rxu');
-                        break;
-                    // 正在处理中
-                    case '8000':
-                        msg = this.$t('paytips.paytips.d8m853');
-                        break;
-                    // 支付失败
-                    case '4000':
-                        msg = this.$t('paytips.paytips.6y488i');
-                        break;
-                    // 用户中途取消
-                    case '6001':
-                        msg = this.$t('paytips.paytips.e732we');
-                        break;
-                    // 网络连接出错
-                    case '6002':
-                        msg = this.$t('paytips.paytips.13v11t');
-                        break;
-                    // 支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
-                    case '6004':
-                        msg = this.$t('paytips.paytips.u1153p');
-                        break;
-                    // 用户点击忘记密码导致快捷界面退出(only iOS)
-                    case '99':
-                        msg = this.$t('paytips.paytips.6mpsl7');
-                        break;
-                    // 默认错误
-                    default:
-                        msg = this.$t('paytips.paytips.59u769');
-                }
-                url_params['msg'] = msg;
-                this.setData({
-                    params: url_params,
-                    default_to_url: url_params.page || app.globalData.data.tabbar_pages[0],
-                });
-            }
-        },
-
         onLoad(params) {
+            // 参数处理
+            if((params || null) != null) {
+                params = JSON.parse(base64.decode(decodeURIComponent(params.params)));
+            }
+
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 根据状态处理
+            var msg = null;
+            switch (params.code) {
+                // 支付成功
+                case '9000':
+                    msg = this.$t('paytips.paytips.679rxu');
+                    break;
+                // 正在处理中
+                case '8000':
+                    msg = this.$t('paytips.paytips.d8m853');
+                    break;
+                // 支付失败
+                case '4000':
+                    msg = this.$t('paytips.paytips.6y488i');
+                    break;
+                // 用户中途取消
+                case '6001':
+                    msg = this.$t('paytips.paytips.e732we');
+                    break;
+                // 网络连接出错
+                case '6002':
+                    msg = this.$t('paytips.paytips.13v11t');
+                    break;
+                // 支付结果未知（有可能已经支付成功），请查询商户订单列表中订单的支付状态
+                case '6004':
+                    msg = this.$t('paytips.paytips.u1153p');
+                    break;
+                // 用户点击忘记密码导致快捷界面退出(only iOS)
+                case '99':
+                    msg = this.$t('paytips.paytips.6mpsl7');
+                    break;
+                // 默认错误
+                default:
+                    msg = this.$t('paytips.paytips.59u769');
+            }
+            params['msg'] = msg;
+            this.setData({
+                params: params,
+                default_to_url: params.page || app.globalData.data.tabbar_pages[0],
+            });
         },
 
         onShow() {
