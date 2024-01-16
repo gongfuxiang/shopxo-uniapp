@@ -301,8 +301,8 @@
                     fr: 'fra',
                     es: 'spa',
                 };
-                var lang = this.get_language_value();
-                if ((lang_list[lang] || null) == null) {
+                var lang = lang_list[this.get_language_value()] || null;
+                if (lang == null) {
                     lang = 'zh';
                 }
                 // 拼接标识
@@ -2188,7 +2188,7 @@
                     temp_network[page]['timer'] = setInterval(function () {
                         uni.getNetworkType({
                             success: function (res) {
-                                if (res.networkType != 'none') {
+                                if (res.networkType != 'none' && (temp_network[page] || null) != null) {
                                     // 已初始化则清除定时任务
                                     if ((temp_network[page]['timer'] || null) != null) {
                                         clearInterval(temp_network[page]['timer']);
