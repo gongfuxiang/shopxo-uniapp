@@ -6,7 +6,7 @@
                     <text v-if="(data.title || null) != null" class="text-wrapper" :class="data.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (data.color || '#333') + ';'">{{ data.title }}</text>
                     <text v-if="(data.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ data.vice_title }}</text>
                 </view>
-                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
             </view>
             <view class="wh-auto oh pr goods-list">
                 <!-- 默认图文 -->
@@ -72,7 +72,7 @@
                                                         <text class="va-m text-size-xsss va-b">{{ propCurrencySymbol }}</text>
                                                         <text class="va-m text-size-xs">{{ item[propPriceField] }}</text>
                                                     </view>
-                                                    <view class="cr-main text-size-xs"> {{ item.integral }}{{$t('index.index.t26j9z')}}</view>
+                                                    <view class="cr-main text-size-xs"> {{ item.integral }}{{ $t('index.index.t26j9z') }}</view>
                                                 </view>
                                             </block>
                                         </view>
@@ -323,15 +323,15 @@
             goods_cart_back_event(e) {
                 // 增加数量
                 var back = e.back_data;
-                var temp = this.data;
-                var goods = temp['goods_list'][back.index];
+                var new_data = this.data;
+                var goods = new_data['goods_list'][back.index];
                 goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
                 if (goods['user_cart_count'] > 99) {
                     goods['user_cart_count'] = '99+';
                 }
-                temp['goods_list'][back.index] = goods;
+                new_data['goods_list'][back.index] = goods;
                 this.setData({
-                    data: temp,
+                    data: new_data,
                 });
 
                 // 抛物线
@@ -340,7 +340,7 @@
                 }
 
                 // 导航购物车处理
-                if(this.propIsCartNumberTabBarBadgeSync) {
+                if (this.propIsCartNumberTabBarBadgeSync) {
                     var cart_total = e.cart_number || 0;
                     if (cart_total <= 0) {
                         app.globalData.set_tab_bar_badge(2, 0);
@@ -364,7 +364,7 @@
                         }
                         break;
                 }
-                this.$emit('CartSuccessEvent', e);
+                this.$emit('CartSuccessEvent', { ...e, ...{ goods_list: new_data.goods_list, goods: goods } });
             },
             // url事件
             url_event(e) {

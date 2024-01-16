@@ -8,8 +8,8 @@
                     <template slot="content">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss">
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{$t('cart.cart.v37ow8')}}</view>
-                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{$t('cart.cart.09gl3g')}}</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'shop' ? 'bg-white cr-main' : '')" data-type="shop" @tap="cart_type_event">{{ $t('cart.cart.v37ow8') }}</view>
+                                <view :class="'item dis-inline-block round cp ' + (cart_type_value == 'realstore' ? 'bg-white cr-main' : '')" data-type="realstore" @tap="cart_type_event">{{ $t('cart.cart.09gl3g') }}</view>
                             </view>
                         </view>
                     </template>
@@ -112,14 +112,14 @@
                         <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
                         <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('cart.cart.j8on74') }}</view>
                         <navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
-                            <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">{{$t('cart.cart.wb5465')}}</button>
+                            <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">{{ $t('cart.cart.wb5465') }}</button>
                         </navigator>
                     </view>
 
                     <!-- 猜你喜欢 -->
                     <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-main">
                         <view class="tc spacing-mb">
-                            <view class="guess-like fw-b text-size-md">{{$t('goods-detail.goods-detail.v2974w')}}</view>
+                            <view class="guess-like fw-b text-size-md">{{ $t('goods-detail.goods-detail.v2974w') }}</view>
                         </view>
                         <div class="spacing-mt">
                             <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propIsCartNumberTabBarBadgeSync="(plugins_realstore_info || null) == null" :propIsCartParaCurve="(plugins_realstore_info || null) == null" :propCurrencySymbol="currency_symbol" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
@@ -150,12 +150,12 @@
                             <view @tap="selected_event" data-type="all">
                                 <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
                             </view>
-                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{$t('common.del')}}</text>
-                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{$t('cart.cart.pxjwv8')}}</text>
+                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
+                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
                         </view>
                         <view class="price">
                             <view class="flex-row jc-s flex-nowrap align-c">
-                                <view>{{$t('buy.buy.wx78ju')}}</view>
+                                <view>{{ $t('buy.buy.wx78ju') }}</view>
                                 <view class="sales-price single-text fw-b">
                                     <text class="text-size-sm">{{ buy_currency_symbol }}</text>
                                     <text class="text-size-lg">{{ total_price }}</text>
@@ -164,20 +164,21 @@
                             <block v-if="total_num > 0">
                                 <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
                                     <block v-if="preferential_price > 0">
-                                        <view class="cr-base">{{$t('cart.cart.3kr74b')}}{{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
                                     </block>
                                     <block v-else>
                                         <block v-if="increase_price > 0">
-                                            <view class="cr-base">{{$t('cart.cart.n76213')}}{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
                                         </block>
                                     </block>
-                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{$t('cart.cart.4tbj4s')}}</view>
+                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
                                 </view>
                             </block>
                         </view>
                     </view>
                     <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">{{$t('goods-category.goods-category.44f1ww')}}<block v-if="total_num > 0">({{ total_num }})</block>
+                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                            {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
                         </button>
                     </view>
                 </view>
@@ -190,7 +191,7 @@
         <component-popup :propShow="plugins_realstore_choice_status" propPosition="bottom" @onclose="realstore_choice_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="oh tc">
-                    <text class="text-size">{{$t('cart.cart.7gdej1')}}</text>
+                    <text class="text-size">{{ $t('cart.cart.7gdej1') }}</text>
                     <view class="fr" @tap.stop="realstore_choice_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -210,7 +211,7 @@
                         </block>
                         <view class="padding-main tc">
                             <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
-                                <text class="cr-grey text-size-xs va-m">{{$t('goods-list.goods-list.h3t0f1')}}</text>
+                                <text class="cr-grey text-size-xs va-m">{{ $t('goods-list.goods-list.h3t0f1') }}</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
                                     <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>
@@ -218,7 +219,7 @@
                         </view>
                     </block>
                     <block v-else>
-                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('cart.cart.h63814')}}</view>
+                        <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{ $t('cart.cart.h63814') }}</view>
                     </block>
                 </view>
             </view>
@@ -227,7 +228,7 @@
         <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
             <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
                 <view class="oh tc discount_detail-popup-title">
-                    <text class="text-size">{{$t('cart.cart.t41i4x')}}</text>
+                    <text class="text-size">{{ $t('cart.cart.t41i4x') }}</text>
                     <view class="fr" @tap.stop="discount_detail_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
@@ -262,26 +263,26 @@
                         </view>
                     </scroll-view>
                     <view class="tc padding-top-sm" @tap="open_goods_list_event">
-                        <text class="cr-grey-9 text-size-xs">{{$t('buy.buy.g2vt78')}}{{ total_num }}{{$t('cart.cart.miti3i')}}</text>
+                        <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ total_num }}{{ $t('cart.cart.miti3i') }}</text>
                         <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                     </view>
                 </view>
 
                 <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
                     <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
-                        <view>{{$t('cart.cart.t41i4x')}}</view>
+                        <view>{{ $t('cart.cart.t41i4x') }}</view>
                         <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
                     </view>
                     <block v-if="preferential_price > 0">
                         <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                            <view class="fw-b">{{$t('cart.cart.9s0l57')}}</view>
+                            <view class="fw-b">{{ $t('cart.cart.9s0l57') }}</view>
                             <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
                         </view>
                     </block>
                     <block v-else>
                         <block v-if="increase_price > 0">
                             <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                <view class="fw-b">{{$t('cart.cart.qh35gz')}}</view>
+                                <view class="fw-b">{{ $t('cart.cart.qh35gz') }}</view>
                                 <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
                             </view>
                         </block>
@@ -554,9 +555,14 @@
                                 plugins_realstore_data: realstore,
                             });
                             // 门店为空、还没有初始门店信息，初始门店信息不在当前列表中则 赋值门店初始信息和门店购物车初始化
-                            if (realstore == null || this.plugins_realstore_info == null || !realstore.map(function (v) {
+                            if (
+                                realstore == null ||
+                                this.plugins_realstore_info == null ||
+                                !realstore
+                                    .map(function (v) {
                                         return v.id;
-                                    }).includes(this.plugins_realstore_info.id)
+                                    })
+                                    .includes(this.plugins_realstore_info.id)
                             ) {
                                 this.setData({
                                     plugins_realstore_info: realstore == null ? null : realstore[0],
@@ -835,7 +841,7 @@
                                     temp_list.push(temp_data_list[i]);
                                 } else {
                                     // 猜你喜欢商品处理
-                                    this.goods_change(temp_data_list[i]['goods_id'], 0, parseInt(temp_data_list[i]['stock']));
+                                    this.goods_change(temp_data_list[i]['goods_id'], 0, temp_data_list[i]['stock']);
                                 }
                             }
                             this.setData({
@@ -1116,8 +1122,10 @@
 
             // 猜你喜欢加入购物车回调
             cart_success_event(e) {
-                // 猜你喜欢商品处理
-                this.goods_change(e.goods_id, 1);
+                // 更新猜你喜欢列表数据
+                this.setData({
+                    goods_list: e.goods_list,
+                });
                 // 重新加载数据
                 this.get_data();
             },
@@ -1150,9 +1158,11 @@
                     this.setData({
                         data_list_loding_status: 1,
                         cart_type_value: e.currentTarget.dataset.type || 'shop',
+                        // goods_page: 1,
                     });
                     // 重新加载数据
                     this.get_data();
+                    // this.get_data_list();
                 }
             },
 
