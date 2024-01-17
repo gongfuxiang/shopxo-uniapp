@@ -250,22 +250,22 @@
                     {
                         name: this.$t('promotion-order.promotion-order.iwa646'),
                         url: 'user-order',
-                        count: 0,
+                        count: this.head_nav_list.length > 0 ? this.head_nav_list[0].count : 0,
                     },
                     {
                         name: this.$t('user.user.3q4p8k'),
                         url: 'user-favor',
-                        count: 0,
+                        count: this.head_nav_list.length > 0 ? this.head_nav_list[1].count : 0,
                     },
                     {
                         name: this.$t('user.user.57xw84'),
                         url: 'user-goods-browse',
-                        count: 0,
+                        count: this.head_nav_list.length > 0 ? this.head_nav_list[2].count : 0,
                     },
                     {
                         name: this.$t('user.user.k78280'),
                         url: 'user-integral',
-                        count: 0,
+                        count: this.head_nav_list.length > 0 ? this.head_nav_list[3].count : 0,
                     },
                 ];
                 var nav_logout_data = {
@@ -276,7 +276,7 @@
                 this.setData({
                     head_nav_list,
                     nav_logout_data,
-                    nickname
+                    nickname,
                 });
             },
 
