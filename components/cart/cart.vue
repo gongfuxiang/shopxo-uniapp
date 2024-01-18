@@ -436,7 +436,7 @@
                         common_site_type: app.globalData.get_config('config.common_site_type'),
                         common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
-                        is_cart_show_discount: app.globalData.get_config('plugins_base.thirdpartylogin.data.is_cart_show_discount'),
+                        is_cart_show_discount: app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
