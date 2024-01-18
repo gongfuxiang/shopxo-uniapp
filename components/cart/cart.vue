@@ -125,64 +125,137 @@
                             <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propIsCartNumberTabBarBadgeSync="(plugins_realstore_info || null) == null" :propIsCartParaCurve="(plugins_realstore_info || null) == null" :propCurrencySymbol="currency_symbol" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
                         </div>
                     </view>
+                    
+                    <!-- 操作导航 -->
+                    <!-- 展示型 -->
+                    <block v-if="data_list.length > 0">
+                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                            <view class="cart-exhibition-mode padding-horizontal-main">
+                                <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                                    <view class="dis-inline-block va-m margin-right-xl">
+                                        <uni-icons type="phone" size="14" color="#fff" />
+                                    </view>
+                                    <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
+                                </button>
+                            </view>
+                        </view>
+                        <!-- 销售,自提,虚拟销售 -->
+                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(source_type != 'cart' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
+                            <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
+                                <view class="cart-selected flex-row align-c">
+                                    <view @tap="selected_event" data-type="all">
+                                        <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
+                                    </view>
+                                    <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
+                                    <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
+                                </view>
+                                <view class="price">
+                                    <view class="flex-row jc-s flex-nowrap align-c">
+                                        <view>{{ $t('buy.buy.wx78ju') }}</view>
+                                        <view class="sales-price single-text fw-b">
+                                            <text class="text-size-sm">{{ buy_currency_symbol }}</text>
+                                            <text class="text-size-lg">{{ total_price }}</text>
+                                        </view>
+                                    </view>
+                                    <block v-if="total_num > 0">
+                                        <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
+                                            <block v-if="preferential_price > 0">
+                                                <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                            </block>
+                                            <block v-else>
+                                                <block v-if="increase_price > 0">
+                                                    <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
+                                                </block>
+                                            </block>
+                                            <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
+                                        </view>
+                                    </block>
+                                </view>
+                            </view>
+                            <view class="cart-nav-submit">
+                                <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                                    {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
+                                </button>
+                            </view>
+                        </view>
+                    </block>
+                    <!-- 优惠明细弹窗 -->
+                    <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
+                        <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
+                            <view class="oh tc discount_detail-popup-title">
+                                <text class="text-size">{{ $t('cart.cart.t41i4x') }}</text>
+                                <view class="fr" @tap.stop="discount_detail_close_event">
+                                    <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                                </view>
+                            </view>
+                            <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
+                                <!-- 购物车商品列表 -->
+                                <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
+                                    <view class="content flex-row flex-warp">
+                                        <!-- 数据列表 -->
+                                        <view v-for="(item, index) in data_list" :key="index" class="item">
+                                            <view class="padding-sm pr">
+                                                <!-- 选择 -->
+                                                <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
+                                                    <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
+                                                </view>
+                                                <view>
+                                                    <view class="cp">
+                                                        <!-- 图片 -->
+                                                        <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
+                                                        <!-- 错误 -->
+                                                        <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
+                                                            <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
+                                                        </view>
+                                                    </view>
+                                                    <view class="flex-row jc-sb align-c margin-top-xs">
+                                                        <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ currency_symbol }}{{ item.price }} </view>
+                                                        <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
+                                                    </view>
+                                                </view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </scroll-view>
+                                <view class="tc padding-top-sm" @tap="open_goods_list_event">
+                                    <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ total_num }}{{ $t('cart.cart.miti3i') }}</text>
+                                    <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
+                                </view>
+                            </view>
+
+                            <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
+                                <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
+                                    <view>{{ $t('cart.cart.t41i4x') }}</view>
+                                    <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
+                                </view>
+                                <block v-if="preferential_price > 0">
+                                    <view class="flex-row jc-sb align-c text-size-md margin-bottom">
+                                        <view class="fw-b">{{ $t('cart.cart.9s0l57') }}</view>
+                                        <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
+                                    </view>
+                                </block>
+                                <block v-else>
+                                    <block v-if="increase_price > 0">
+                                        <view class="flex-row jc-sb align-c text-size-md margin-bottom">
+                                            <view class="fw-b">{{ $t('cart.cart.qh35gz') }}</view>
+                                            <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
+                                        </view>
+                                    </block>
+                                </block>
+                                <view v-for="(items, indexs) in discount_detail_list" :key="indexs">
+                                    <view v-for="(item, index) in items.order_base.extension_data" :key="index" class="flex-row jc-sb align-c text-size-md margin-bottom">
+                                        <view>{{ item.name }}</view>
+                                        <view class="cr-red"> {{ item.tips }}</view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </component-popup>
 
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 操作导航 -->
-            <!-- 展示型 -->
-            <block v-if="data_list.length > 0">
-                <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
-                    <view class="cart-exhibition-mode padding-horizontal-main">
-                        <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
-                            <view class="dis-inline-block va-m margin-right-xl">
-                                <uni-icons type="phone" size="14" color="#fff" />
-                            </view>
-                            <text class="va-m">{{ common_is_exhibition_mode_btn_text }}</text>
-                        </button>
-                    </view>
-                </view>
-                <!-- 销售,自提,虚拟销售 -->
-                <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(source_type != 'cart' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
-                    <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
-                        <view class="cart-selected flex-row align-c">
-                            <view @tap="selected_event" data-type="all">
-                                <iconfont :name="'icon-zhifu-' + (is_selected_all ? 'yixuan' : 'weixuan')" size="34rpx" :color="is_selected_all ? theme_color : '#999'"></iconfont>
-                            </view>
-                            <text v-if="already_selected_status" @tap="cart_all_remove_event" class="margin-left-main cart-nav-remove-submit dis-inline-block va-m bg-white cr-red br-red round cp">{{ $t('common.del') }}</text>
-                            <text v-else class="va-m cr-base padding-left-main" @tap="selected_event" data-type="all">{{ $t('cart.cart.pxjwv8') }}</text>
-                        </view>
-                        <view class="price">
-                            <view class="flex-row jc-s flex-nowrap align-c">
-                                <view>{{ $t('buy.buy.wx78ju') }}</view>
-                                <view class="sales-price single-text fw-b">
-                                    <text class="text-size-sm">{{ buy_currency_symbol }}</text>
-                                    <text class="text-size-lg">{{ total_price }}</text>
-                                </view>
-                            </view>
-                            <block v-if="total_num > 0">
-                                <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
-                                    <block v-if="preferential_price > 0">
-                                        <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
-                                    </block>
-                                    <block v-else>
-                                        <block v-if="increase_price > 0">
-                                            <view class="cr-base">{{ $t('cart.cart.n76213') }}{{ buy_currency_symbol }}{{ increase_price }}</view>
-                                        </block>
-                                    </block>
-                                    <view v-if="preferential_price > 0 || increase_price > 0" class="discount-details" @tap="discount_detail_open_event">{{ $t('cart.cart.4tbj4s') }}</view>
-                                </view>
-                            </block>
-                        </view>
-                    </view>
-                    <view class="cart-nav-submit">
-                        <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
-                            {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
-                        </button>
-                    </view>
-                </view>
-            </block>
             <!-- 用户基础 -->
             <component-user-base ref="user_base"></component-user-base>
         </block>
@@ -221,78 +294,6 @@
                     <block v-else>
                         <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{ $t('cart.cart.h63814') }}</view>
                     </block>
-                </view>
-            </view>
-        </component-popup>
-        <!-- 优惠明细弹窗 -->
-        <component-popup :propShow="discount_detail_status" propPosition="bottom" propStyle="background: #F6F6F6;" @onclose="discount_detail_close_event">
-            <view v-if="data_list.length > 0" class="discount_detail-popup padding-main">
-                <view class="oh tc discount_detail-popup-title">
-                    <text class="text-size">{{ $t('cart.cart.t41i4x') }}</text>
-                    <view class="fr" @tap.stop="discount_detail_close_event">
-                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                    </view>
-                </view>
-                <view class="oh border-radius-main bg-white padding-sm discount_detail-popup-goods-list">
-                    <!-- 购物车商品列表 -->
-                    <scroll-view :scroll-y="discount_detail_goods_list_status" :class="'scroll-box-popup ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value + (!discount_detail_goods_list_status ? ' close' : '')" lower-threshold="60">
-                        <view class="content flex-row flex-warp">
-                            <!-- 数据列表 -->
-                            <view v-for="(item, index) in data_list" :key="index" class="item">
-                                <view class="padding-sm pr">
-                                    <!-- 选择 -->
-                                    <view v-if="common_site_type != 1" @tap="selected_event" data-type="node" :data-index="index" class="cart-selected pa top-xxxl right-xxxl z-i">
-                                        <iconfont :name="'icon-zhifu-' + (item.selected || false ? 'yixuan' : 'weixuan')" size="34rpx" :color="item.selected || false ? theme_color : '#999'"></iconfont>
-                                    </view>
-                                    <view>
-                                        <view class="cp">
-                                            <!-- 图片 -->
-                                            <image :class="'cart-goods-image radius br-e ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
-                                            <!-- 错误 -->
-                                            <view v-if="(item.is_error || 0) == 1" class="error-msg pa tc text-size-xs">
-                                                <text class="cr-red tc bg-white round">{{ item.error_msg }}</text>
-                                            </view>
-                                        </view>
-                                        <view class="flex-row jc-sb align-c margin-top-xs">
-                                            <view class="fw-b text-size-xs single-text flex-1 flex-width"> {{ currency_symbol }}{{ item.price }} </view>
-                                            <view class="text-size-xss cr-grey-9">x{{ item.stock }}</view>
-                                        </view>
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                    </scroll-view>
-                    <view class="tc padding-top-sm" @tap="open_goods_list_event">
-                        <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ total_num }}{{ $t('cart.cart.miti3i') }}</text>
-                        <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
-                    </view>
-                </view>
-
-                <view v-if="total_num > 0" class="padding bg-white border-radius-main margin-top">
-                    <view class="flex-row jc-sb align-c text-size fw-b margin-bottom">
-                        <view>{{ $t('cart.cart.t41i4x') }}</view>
-                        <view> {{ buy_currency_symbol }}{{ all_total_price }} </view>
-                    </view>
-                    <block v-if="preferential_price > 0">
-                        <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                            <view class="fw-b">{{ $t('cart.cart.9s0l57') }}</view>
-                            <view class="cr-red"> {{ buy_currency_symbol }}{{ preferential_price }}</view>
-                        </view>
-                    </block>
-                    <block v-else>
-                        <block v-if="increase_price > 0">
-                            <view class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                <view class="fw-b">{{ $t('cart.cart.qh35gz') }}</view>
-                                <view class="cr-red"> {{ buy_currency_symbol }}{{ increase_price }}</view>
-                            </view>
-                        </block>
-                    </block>
-                    <view v-for="(items, indexs) in discount_detail_list" :key="indexs">
-                        <view v-for="(item, index) in items.order_base.extension_data" :key="index" class="flex-row jc-sb align-c text-size-md margin-bottom">
-                            <view>{{ item.name }}</view>
-                            <view class="cr-red"> {{ item.tips }}</view>
-                        </view>
-                    </view>
                 </view>
             </view>
         </component-popup>
