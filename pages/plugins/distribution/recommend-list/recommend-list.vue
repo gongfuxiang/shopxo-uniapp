@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <!-- 列表 -->
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view v-if="data_list.length > 0" class="data-list padding-horizontal-main padding-top-main">
+            <view v-if="data_list.length > " class="data-list padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                     <view class="base oh br-b padding-bottom-main">
                         <text class="cr-base">{{ item.add_time }}</text>
