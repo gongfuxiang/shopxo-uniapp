@@ -4,7 +4,7 @@
         <block v-if="is_first == 0">
             <block v-if="(plugins_realstore_info || null) != null">
                 <!-- 顶部导航 -->
-                <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="is_nav_show_back">
+                <component-nav-back propClass="bg-white" propColor="#333" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true">
                     <template slot="right" class="flex-1 cart-right-title">
                         <view class="cart-top-nav tc auto">
                             <view class="cart-top-nav-content bg-grey-f7 round padding-xss cr-black">
@@ -36,7 +36,7 @@
             </block>
             <block v-else>
                 <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP -->
-                <component-nav-back propClass="bg-white" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="false" :propIsRightSlot="false"></component-nav-back>
+                <component-nav-back propClass="bg-white" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
         </block>
@@ -47,10 +47,10 @@
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->
-            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60">
+            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + (cart_type_value == 'realstore' ? ' - 140rpx' : '') + ' - ' + (status_bar_height + 5) + 'px);'">
                 <view class="content">
                     <!-- 数据列表 -->
-                    <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (source_type != 'cart' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
+                    <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (propSourceType == 'page' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
                         <uni-swipe-action>
                             <view v-for="(item, index) in data_list" :key="index" class="oh border-radius-main bg-white spacing-mb">
                                 <uni-swipe-action-item :right-options="swipe_options" @click="swipe_opt_event" @change="swipe_change($event, index)">
@@ -129,7 +129,7 @@
                     <!-- 操作导航 -->
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
-                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (source_type != 'cart' ? 'bottom-line-exclude' : '')">
+                        <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')">
                             <view class="cart-exhibition-mode padding-horizontal-main">
                                 <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
@@ -140,7 +140,7 @@
                             </view>
                         </view>
                         <!-- 销售,自提,虚拟销售 -->
-                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(source_type != 'cart' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
+                        <view v-else class="flex-row jc-sb align-c cart-buy-nav oh wh-auto br-top-shadow bg-white" :class="(propSourceType == 'page' ? ' bottom-line-exclude' : '') + (discount_detail_status ? ' discount-detail-popup-z-index' : '')">
                             <view class="cart-nav-base single-text padding-left flex-row jc-sb align-c">
                                 <view class="cart-selected flex-row align-c">
                                     <view @tap="selected_event" data-type="all">
@@ -157,7 +157,7 @@
                                             <text class="text-size-lg">{{ total_price }}</text>
                                         </view>
                                     </view>
-                                    <block v-if="total_num > 0">
+                                    <block v-if="is_cart_show_discount == 1 && total_num > 0">
                                         <view v-if="data_list.length > 0" class="flex-row jc-s flex-nowrap align-c text-size-xss">
                                             <block v-if="preferential_price > 0">
                                                 <view class="cr-base">{{ $t('cart.cart.3kr74b') }}{{ buy_currency_symbol }}{{ preferential_price }}</view>
@@ -314,9 +314,18 @@
     import componentPopup from '../../components/popup/popup';
 
     var common_static_url = app.globalData.get_static_url('common');
+    var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     export default {
+        props: {
+            // 来源类型
+            propSourceType: {
+                type: String,
+                default: '', // 默认主页面。当传入page时为子页面
+            },
+        },
         data() {
             return {
+                status_bar_height: status_bar_height,
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
@@ -336,7 +345,6 @@
                 is_selected_all: false,
                 already_selected_status: false,
                 already_valid_selected_status: false,
-                source_type: null,
                 // 基础配置
                 currency_symbol: app.globalData.currency_symbol(),
                 common_site_type: 0,
@@ -382,9 +390,13 @@
                 // 优惠明细弹窗内商品列表显示隐藏更多
                 discount_detail_goods_list_status: false,
                 // 预下单计算开关
-                pre_order_status: 1,
-                // 商城门户切换开关
-                is_nav_show_back: false,
+                is_cart_show_discount: 0,
+                window_bottom: '0rpx',
+                window_top: '40px',
+                // #ifdef H5
+                window_bottom: '100rpx',
+                window_top: '100rpx',
+                // #endif
             };
         },
 
@@ -424,6 +436,7 @@
                         common_site_type: app.globalData.get_config('config.common_site_type'),
                         common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                        is_cart_show_discount: app.globalData.get_config('plugins_base.thirdpartylogin.data.is_cart_show_discount'),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -437,11 +450,6 @@
                     app.globalData.network_type_handle(this, 'init');
                     return false;
                 }
-
-                // 请求数据
-                this.setData({
-                    source_type: params.source_type || null,
-                });
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
@@ -493,12 +501,6 @@
                     // 分享菜单处理
                     app.globalData.page_share_handle();
                 }
-            },
-            cart_nav_back(status) {
-                // 请求数据
-                this.setData({
-                    is_nav_show_back: status || false,
-                });
             },
 
             // 获取数据
@@ -949,7 +951,7 @@
                 });
 
                 // 预下单计算开关 0
-                if (this.pre_order_status === 0) {
+                if (this.is_cart_show_discount === 0) {
                     this.setData({
                         total_price: total_price.toFixed(2),
                         total_num: total_num,
@@ -1177,11 +1179,9 @@
                     this.setData({
                         data_list_loding_status: 1,
                         cart_type_value: e.currentTarget.dataset.type || 'shop',
-                        // goods_page: 1,
                     });
                     // 重新加载数据
                     this.get_data();
-                    // this.get_data_list();
                 }
             },
 
@@ -1276,16 +1276,6 @@
     .scroll-box .content {
         padding-bottom: 160rpx;
     }
-    .scroll-box.cart .content {
-        padding-bottom: 290rpx;
-    }
-    .scroll-box.realstore .content {
-        padding-bottom: 320rpx;
-    }
-    .scroll-box.cart.realstore .content {
-        padding-bottom: 420rpx;
-    }
-    /* #ifdef H5 */
     .scroll-box .content,
     .scroll-box.realstore .content {
         padding-bottom: 40rpx;
@@ -1294,7 +1284,6 @@
     .scroll-box.cart.realstore .content {
         padding-bottom: 120rpx;
     }
-    /* #endif */
     .cart-goods-title {
         line-height: 44rpx;
         min-height: 86rpx;
@@ -1464,6 +1453,7 @@
         line-height: 54rpx;
     }
     .realstore-nav {
+        height: 92rpx;
         background: linear-gradient(180deg, #fffaf1 0%, #ffffff 100%);
     }
 
