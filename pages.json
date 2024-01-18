@@ -192,6 +192,20 @@
             }
         },
         {
+            "path": "pages/user-goods-comments/user-goods-comments",
+            "style": {
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": "商品评论"
+            }
+        },
+        {
+            "path": "pages/user-goods-comments-form/user-goods-comments-form",
+            "style": {
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": "商品编辑"
+            }
+        },
+        {
             "path": "pages/message/message",
             "style": {
                 "enablePullDownRefresh": true,

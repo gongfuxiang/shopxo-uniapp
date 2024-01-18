@@ -1,11 +1,11 @@
 <template>
     <view :class="theme_view">
         <view v-if="goods_id" class="padding-main">
-            <form v-if="data_list_loding_status == 0" @submit="formSubmit" class="form-container">
+            <form v-if="data_list_loding_status == 3" @submit="formSubmit" class="form-container">
                 <view class="bg-white border-radius-main padding-main flex-row align-c spacing-mb">
-                    <image v-if="data.url" class="avatar dis-block margin-right-xs" :src="data.url" mode="aspectFit"></image>
+                    <image v-if="data.images" class="avatar dis-block margin-right-xs br-f5 padding-xs radius" :src="data.images" mode="aspectFit"></image>
                     <view class="flex-1 flex-width flex-row align-c">
-                        <view class="margin-right-sm">{{$t('goods-comments.goods-comments.31ees6')}}</view>
+                        <view class="margin-right-sm">{{ $t('goods-comments.goods-comments.31ees6') }}</view>
                         <uni-rate :value="rate_value" @change="rate_change_event" />
                     </view>
                 </view>
@@ -13,20 +13,20 @@
                     <textarea name="content" @input="text_input_event" maxlength="230" auto-height :placeholder="$t('goods-comments.goods-comments.6p942c')" placeholder-class="cr-grey-9" class="wh-auto input-height" />
                     <view class="tr text-size-xs cr-grey-c">{{ text_num }}/230</view>
                     <view class="spacing-mt">
-                        <view class="margin-bottom-main">{{$t('form.form.s14osm')}}{{ image_list.length }}/3)</view>
+                        <view class="margin-bottom-main">{{ $t('form.form.s14osm') }}{{ image_list.length }}/3)</view>
                         <component-upload :propData="image_list" :propPathType="editor_path_type" @call-back="retrun_image_event"></component-upload>
                     </view>
                     <view class="tr">
                         <checkbox-group @change="is_anonymous_change_event">
                             <label class="cr-grey-9 text-size-xs">
                                 <checkbox value="1" :checked="false" :color="theme_color" style="transform: scale(0.5)" />
-                                <text class="pr top-xs">{{$t('form.form.2f52v3')}}</text>
+                                <text class="pr top-xs">{{ $t('form.form.2f52v3') }}</text>
                             </label>
                         </checkbox-group>
                     </view>
                 </view>
                 <view class="sub-btn">
-                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
+                    <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('form.form.4yd066') }}</button>
                 </view>
             </form>
             <view v-else>
@@ -114,14 +114,21 @@
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
                                 this.setData({
-                                    data: res.data.data.data || {},
+                                    data: res.data.data.goods || {},
                                     editor_path_type: res.data.data.editor_path_type || '',
+                                    data_list_loding_status: 3,
+                                });
+                            } else {
+                                this.setData({
                                     data_list_loding_status: 0,
                                 });
                             }
                         },
                         fail: () => {
                             uni.stopPullDownRefresh();
+                            this.setData({
+                                data_list_loding_status: 2,
+                            });
                             app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });
