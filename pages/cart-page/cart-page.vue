@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 购物车 -->
-        <component-cart ref="cart"></component-cart>
+        <component-cart ref="cart" propSourceType="page"></component-cart>
 
         <!-- 快捷导航 -->
         <component-quick-nav :propIsBar="true"></component-quick-nav>
@@ -30,12 +30,6 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
-
-            // 数据加载
-            if ((this.$refs.cart || null) != null) {
-                this.$refs.cart.init();
-                this.$refs.cart.cart_nav_back(true);
-            }
         },
 
         methods: {},

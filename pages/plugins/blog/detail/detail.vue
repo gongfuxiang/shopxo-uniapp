@@ -188,7 +188,7 @@
                                 right_list: data.right_list || [],
                                 last_next: data.last_next || null,
                                 emoji_list: data.emoji_list || [],
-                                blog_main_name: info == null ? (base == null ? this.$t('detail.detail.e439j9') : base.blog_main_name || this.$t('detail.detail.e439j9')) : info.title,
+                                blog_main_name: base == null ? this.$t('detail.detail.e439j9') : (base.blog_main_name || this.$t('detail.detail.e439j9')),
                             });
 
                             if (info != null) {
