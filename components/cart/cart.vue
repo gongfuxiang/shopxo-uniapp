@@ -125,7 +125,7 @@
                             <component-goods-list :propData="{ style_type: 1, goods_list: goods_list, random: random_value }" :propIsCartNumberTabBarBadgeSync="(plugins_realstore_info || null) == null" :propIsCartParaCurve="(plugins_realstore_info || null) == null" :propCurrencySymbol="currency_symbol" propSource="index" @CartSuccessEvent="cart_success_event"></component-goods-list>
                         </div>
                     </view>
-                    
+
                     <!-- 操作导航 -->
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
@@ -217,8 +217,8 @@
                                         </view>
                                     </view>
                                 </scroll-view>
-                                <view class="tc padding-top-sm" @tap="open_goods_list_event">
-                                    <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ total_num }}{{ $t('cart.cart.miti3i') }}</text>
+                                <view v-if="data_list.length > 4" class="tc padding-top-sm" @tap="open_goods_list_event">
+                                    <text class="cr-grey-9 text-size-xs">{{ $t('buy.buy.g2vt78') }}{{ goods_count }}{{ $t('cart.cart.miti3i') }}</text>
                                     <iconfont :name="!discount_detail_goods_list_status ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="28rpx" propClass="pr top-xs margin-left-xs"></iconfont>
                                 </view>
                             </view>
@@ -330,6 +330,7 @@
                 preferential_price: 0,
                 increase_price: 0,
                 all_total_price: 0,
+                goods_count: 0,
                 discount_detail_list: [],
                 buy_currency_symbol: app.globalData.currency_symbol(),
                 is_selected_all: false,
@@ -493,7 +494,7 @@
                     app.globalData.page_share_handle();
                 }
             },
-            cart_nav_back(status){
+            cart_nav_back(status) {
                 // 请求数据
                 this.setData({
                     is_nav_show_back: status || false,
@@ -981,6 +982,7 @@
                                 this.setData({
                                     total_price: data.base.actual_price,
                                     total_num: data.base.buy_count,
+                                    goods_count: data.base.goods_count,
                                     preferential_price: data.base.preferential_price,
                                     increase_price: data.base.increase_price,
                                     all_total_price: data.base.total_price,
@@ -1450,9 +1452,9 @@
     /**
      * 顶部导航
      */
-     .cart-right-title {
+    .cart-right-title {
         padding-right: 40rpx;
-     }
+    }
     .cart-top-nav {
         width: 260rpx;
     }
