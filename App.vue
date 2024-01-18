@@ -7,12 +7,12 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'https://new.shopxo.vip/',
                 // request_url: 'https://xiaotao8888.com/',
                 // request_url: 'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'https://new.shopxo.vip/',
                 // static_url: 'https://xiaotao8888.com/',
                 // static_url: 'http://shopxo.com/',
 
