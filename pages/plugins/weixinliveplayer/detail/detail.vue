@@ -199,7 +199,7 @@
 
                 // #ifdef APP
                 // APP则直接打开微信小程序直播
-                var weixin_original_id = app.globalData.get_config('config.common_app_mini_share_weixin_original_id', null);
+                var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
                 if(weixin_original_id != null) {
                     plus.share.getServices(res => {
                         let sweixin = null;

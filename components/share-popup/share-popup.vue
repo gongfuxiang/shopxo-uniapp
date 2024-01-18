@@ -221,7 +221,7 @@
                 // #ifdef APP
                 // 分享到好友，是否走微信小程序，则获取微信小程序原始id
                 if (scene == 'WXSceneSession') {
-                    var weixin_original_id = app.globalData.get_config('config.common_app_mini_share_weixin_original_id', null);
+                    var weixin_original_id = app.globalData.get_config('config.common_app_mini_weixin_share_original_id', null);
                     if (weixin_original_id != null) {
                         type = 5;
                         miniProgram = {
