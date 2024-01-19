@@ -903,7 +903,7 @@
                                 nav_more_list: data.nav_more_list || [],
                                 goods_content_app: goods.content_app || [],
                                 nav_favor_button_info: {
-                                    text: (goods.is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052')+ ' ' : '') + this.$t('goods-detail.goods-detail.dco1sc'),
+                                    text: (goods.is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
                                     status: goods.is_favor,
                                 },
                                 buy_button: data.buy_button || null,
