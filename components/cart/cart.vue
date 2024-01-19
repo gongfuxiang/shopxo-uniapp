@@ -242,9 +242,13 @@
                                         </view>
                                     </block>
                                 </block>
-                                <view v-for="(items, indexs) in discount_detail_list" :key="indexs">
-                                    <view v-for="(item, index) in items.order_base.extension_data" :key="index" class="flex-row jc-sb align-c text-size-md margin-bottom">
-                                        <view>{{ item.name }}</view>
+                                <view v-for="(items, indexs) in discount_detail_list" :key="indexs" :class="discount_detail_list.length > indexs + 1 ? 'br-b-f5 margin-bottom' : ''">
+                                    <view class="flex-row align-c margin-bottom-sm">
+                                        <view class="">{{ items.name }}</view>
+                                        <view v-if="(items.alias || null) !== null" class="alias">{{ items.alias }}</view>
+                                    </view>
+                                    <view v-for="(item, index) in items.order_base.extension_data" :key="index" class="flex-row jc-sb align-c text-size-sm margin-bottom-sm">
+                                        <view class="cr-grey-9">{{ item.name }}</view>
                                         <view class="cr-red"> {{ item.tips }}</view>
                                     </view>
                                 </view>
@@ -1502,5 +1506,14 @@
     }
     .scroll-box-popup .content .item .cart-goods-image {
         width: 100%;
+    }
+    .alias {
+        margin-left: 20rpx;
+        padding: 0 12rpx;
+        line-height: 40rpx;
+        height: 40rpx;
+        font-size: 20rpx;
+        background: #eee;
+        border-radius: 20rpx;
     }
 </style>
