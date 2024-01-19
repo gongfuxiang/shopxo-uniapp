@@ -5,7 +5,7 @@
                 <view class="flex-col jc-sb dom-content">
                     <view>
                         <!-- 多语言切换 -->
-                        <view class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
+                        <view v-if="home_use_multilingual_status == 1" class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
                             <view class="flex-1 cr-base text-size" @tap="open_language_event">
                                 <view class="pr top-sm margin-right-sm dis-inline-block">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
@@ -16,6 +16,7 @@
                                 </view>
                             </view>
                         </view>
+
                         <!-- 绑定手机 -->
                         <view v-if="current_opt_form == 'bind_verify'" class="form-content">
                             <form @submit="formBind">
@@ -396,6 +397,7 @@
                 language_key: '',
                 // 实际提交的语言字段
                 language: '',
+                home_use_multilingual_status: 0,
 
                 theme_view: app.globalData.get_theme_value_view(),
                 login_static_url: login_static_url,
@@ -613,6 +615,7 @@
                         home_user_login_img_verify_state: app.globalData.get_config('config.home_user_login_img_verify_state'),
                         home_user_register_img_verify_state: app.globalData.get_config('config.home_user_register_img_verify_state'),
                         common_img_verify_state: app.globalData.get_config('config.common_img_verify_state'),
+                        home_use_multilingual_status: app.globalData.get_config('config.home_use_multilingual_status'),
                         plugins_thirdpartylogin_config: app.globalData.get_config('plugins_base.thirdpartylogin.data'),
                         plugins_thirdpartylogin_data: app.globalData.get_config('plugins_thirdpartylogin_data'),
                     });

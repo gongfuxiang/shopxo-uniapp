@@ -105,9 +105,7 @@
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
 
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
+            <!-- 发布博文、我的博文入口 -->
             <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
                     <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
@@ -118,6 +116,9 @@
                     </navigator>
                 </view>
             </view>
+
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->

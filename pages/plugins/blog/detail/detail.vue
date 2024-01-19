@@ -65,24 +65,25 @@
                 </view>
             </view>
 
-            <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
-                <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
-                        <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
-                    </navigator>
-                    <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
-                        <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
-                    </navigator>
-                </view>
-            </view>
+            <!-- 结尾 -->
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </view>
         <view v-else>
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
 
-        <!-- 结尾 -->
-        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+        <!-- 发布博文、我的博文入口 -->
+        <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
+            <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
+                <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
+                </navigator>
+                <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
+                </navigator>
+            </view>
+        </view>
     </view>
 </template>
 <script>

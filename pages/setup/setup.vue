@@ -14,7 +14,7 @@
                         <text>{{ $t('setup.setup.x81v6d') }}</text>
                         <text class="fr cr-grey">{{ user.mobile_security || '' }} {{ $t('setup.setup.j6skqh') }}</text>
                     </view>
-                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="open_language_event">
+                    <view v-if="home_use_multilingual_status == 1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="open_language_event">
                         <text>{{ $t('setup.setup.r7jz13') }}</text>
                         <text class="fr cr-grey">{{ language }}</text>
                     </view>
@@ -96,6 +96,7 @@
                 system_locale: '',
                 application_locale: '',
                 is_android: '',
+                home_use_multilingual_status: 0,
                 // 语言选择
                 popup_language_status: false,
                 language_list: '',
@@ -149,6 +150,7 @@
                 if ((status || false) == true) {
                     this.setData({
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                        home_use_multilingual_status: app.globalData.get_config('config.home_use_multilingual_status'),
                         plugins_invoice: app.globalData.get_config('plugins_base.invoice', null),
                     });
                 } else {
