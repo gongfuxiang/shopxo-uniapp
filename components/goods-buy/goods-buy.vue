@@ -91,10 +91,11 @@ export default {
             opt_button: [],
             is_direct_cart: 0,
             is_success_tips: 1,
+            // 选中规格临时定时变量
+            spec_selected_timer: null,
+            spec_selected_timerout: null,
             // 智能工具插件
             plugins_intellectstools_config: app.globalData.get_config("plugins_base.intellectstools.data"),
-            plugins_intellectstools_timer: null,
-            plugins_intellectstools_timerout: null,
         };
     },
 
@@ -102,6 +103,10 @@ export default {
         componentPopup,
     },
     props: {
+        propParams: {
+            type: [String, Object],
+            default: {},
+        },
         propCurrencySymbol: {
             type: String,
             default: app.globalData.currency_symbol(),
@@ -182,8 +187,8 @@ export default {
                 this.get_spec_detail();
             }
 
-            // 是否默认选中第一个规格
-            this.plugins_intellectstools_selected_spec_handle();
+            // 规格选中处理
+            this.selected_spec_handle();
 
             // 是否直接操作加入购物车
             if (is_direct_cart) {
@@ -191,15 +196,15 @@ export default {
             }
         },
 
-        // 默认选中第一个规格
-        plugins_intellectstools_selected_spec_handle() {
-            // 是否已选择
-            var temp_data = this.goods_spec_choose;
-            if (temp_data.length > 0) {
+        // 规格选中处理
+        selected_spec_handle() {
+            var temp_spec_choose = this.goods_spec_choose;
+            if (temp_spec_choose.length > 0) {
+                // 是否已选择
                 var active_count = 0;
-                for (var i in temp_data) {
-                    for (var k in temp_data[i]["value"]) {
-                        if ((temp_data[i]["value"][k]["is_active"] || null) != null) {
+                for (var i in temp_spec_choose) {
+                    for (var k in temp_spec_choose[i]["value"]) {
+                        if ((temp_spec_choose[i]["value"][k]["is_active"] || null) != null) {
                             active_count++;
                         }
                     }
@@ -208,61 +213,132 @@ export default {
                     return false;
                 }
 
+                // 是否指定规格初始化
+                var spec = (((this.propParams || null) != null) && (this.propParams.spec || null) != null) ? this.propParams.spec : null;
+                if(spec != null) {
+                    this.appoint_selected_spec_handle(temp_spec_choose, spec);
+                } else {
+                    // 是否默认选中第一个规格、、已存在指定规格初始化则不走默认选择第一个规格
+                    this.plugins_intellectstools_selected_spec_handle(temp_spec_choose);
+                }
+            }
+        },
+
+        // 指定规格初始化
+        appoint_selected_spec_handle(spec_choose, spec) {
+            spec = decodeURIComponent(spec).split('|');
+            if(spec.length == spec_choose.length) {
                 // 选择处理
                 var self = this;
                 // 销毁之前的任务
-                clearInterval(self.plugins_intellectstools_timer);
-                clearInterval(self.plugins_intellectstools_timerout);
-                // 读取智能工具插件配置、是否开启
-                var config = self.plugins_intellectstools_config || null;
-                if (config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
-                    // 必须存在购买和加入购物车任意一个、规格必须多个
-                    var sku_count = app.globalData.get_length(temp_data);
-                    // 先清除价格展示信息
-                    self.setData({
-                        goods_spec_base_price: "...",
-                        goods_spec_base_original_price: "...",
-                    });
-                    var num = 0;
-                    var timer = setInterval(function () {
-                        for (var i in temp_data) {
-                            // 清除价格展示信息、避免获取价格类型赋值
-                            self.setData({
-                                goods_spec_base_price: "...",
-                                goods_spec_base_original_price: "...",
-                            });
-                            // 必须不存在已选择项
-                            var active = temp_data[i]["value"].map(function (v) {
-                                    return v.is_active;
-                                }).join("") || null;
-                            if (active == null) {
-                                // 不能选择规格处理
-                                self.spec_handle_dont(i);
-
-                                // 规格选择处理
-                                var status = false;
-                                for (var k in temp_data[i]["value"]) {
-                                    // 必须是可选和未选
-                                    if (!status && (temp_data[i]["value"][k]["is_disabled"] || null) == null && (temp_data[i]["value"][k]["is_dont"] || null) == null) {
-                                        self.goods_spec_choice_handle(i, k);
-                                        status = true;
-                                        num++;
-                                    }
+                clearInterval(self.spec_selected_timer);
+                clearInterval(self.spec_selected_timerout);
+                // 必须存在购买和加入购物车任意一个、规格必须多个
+                var sku_count = app.globalData.get_length(spec_choose);
+                // 先清除价格展示信息
+                self.setData({
+                    goods_spec_base_price: "...",
+                    goods_spec_base_original_price: "...",
+                });
+                var num = 0;
+                var timer = setInterval(function () {
+                    for (var i in spec_choose) {
+                        // 清除价格展示信息、避免获取价格类型赋值
+                        self.setData({
+                            goods_spec_base_price: "...",
+                            goods_spec_base_original_price: "...",
+                        });
+                        // 必须不存在已选择项
+                        var active = spec_choose[i]["value"].map(function (v) {
+                                return v.is_active;
+                            }).join("") || null;
+                        if (active == null) {
+                            // 不能选择规格处理
+                            self.spec_handle_dont(i);
+            
+                            // 规格选择处理
+                            var temp_spec = spec[i];
+                            var status = false;
+                            for (var k in spec_choose[i]["value"]) {
+                                // 必须是可选和未选
+                                if (!status && (spec_choose[i]["value"][k]["is_disabled"] || null) == null && (spec_choose[i]["value"][k]["is_dont"] || null) == null && temp_spec == spec_choose[i]["value"][k]["name"]) {
+                                    self.goods_spec_choice_handle(i, k);
+                                    status = true;
+                                    num++;
                                 }
                             }
                         }
-                        if (num >= sku_count) {
-                            clearInterval(self.plugins_intellectstools_timer);
+                    }
+                    if (num >= sku_count) {
+                        clearInterval(self.spec_selected_timer);
+                    }
+                }, 100);
+                var timerout = setTimeout(function () {
+                    clearInterval(self.spec_selected_timerout);
+                }, 20000);
+                self.setData({
+                    spec_selected_timer: timer,
+                    spec_selected_timerout: timerout,
+                });
+            }
+        },
+
+        // 默认选中第一个规格 - 智能工具箱插件
+        plugins_intellectstools_selected_spec_handle(spec_choose) {
+            // 选择处理
+            var self = this;
+            // 销毁之前的任务
+            clearInterval(self.spec_selected_timer);
+            clearInterval(self.spec_selected_timerout);
+            // 读取智能工具插件配置、是否开启
+            var config = self.plugins_intellectstools_config || null;
+            if (config != null && (config.is_goods_detail_selected_first_spec || 0) == 1) {
+                // 必须存在购买和加入购物车任意一个、规格必须多个
+                var sku_count = app.globalData.get_length(spec_choose);
+                // 先清除价格展示信息
+                self.setData({
+                    goods_spec_base_price: "...",
+                    goods_spec_base_original_price: "...",
+                });
+                var num = 0;
+                var timer = setInterval(function () {
+                    for (var i in spec_choose) {
+                        // 清除价格展示信息、避免获取价格类型赋值
+                        self.setData({
+                            goods_spec_base_price: "...",
+                            goods_spec_base_original_price: "...",
+                        });
+                        // 必须不存在已选择项
+                        var active = spec_choose[i]["value"].map(function (v) {
+                                return v.is_active;
+                            }).join("") || null;
+                        if (active == null) {
+                            // 不能选择规格处理
+                            self.spec_handle_dont(i);
+
+                            // 规格选择处理
+                            var status = false;
+                            for (var k in spec_choose[i]["value"]) {
+                                // 必须是可选和未选
+                                if (!status && (spec_choose[i]["value"][k]["is_disabled"] || null) == null && (spec_choose[i]["value"][k]["is_dont"] || null) == null) {
+                                    self.goods_spec_choice_handle(i, k);
+                                    status = true;
+                                    num++;
+                                }
+                            }
                         }
-                    }, 100);
-                    var timerout = setTimeout(function () {
-                        clearInterval(self.plugins_intellectstools_timerout);
-                    }, 20000);
-                    self.setData({
-                        plugins_intellectstools_timer: timer,
-                        plugins_intellectstools_timerout: timerout,
-                    });
-                }
+                    }
+                    if (num >= sku_count) {
+                        clearInterval(self.spec_selected_timer);
+                    }
+                }, 100);
+                var timerout = setTimeout(function () {
+                    clearInterval(self.spec_selected_timerout);
+                }, 20000);
+                self.setData({
+                    spec_selected_timer: timer,
+                    spec_selected_timerout: timerout,
+                });
             }
         },
 

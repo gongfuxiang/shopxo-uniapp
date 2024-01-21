@@ -596,7 +596,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
+        <component-goods-buy ref="goods_buy" :propParams="params" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
