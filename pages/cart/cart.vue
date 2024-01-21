@@ -24,19 +24,9 @@ export default {
     onShow() {
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
-
-        // 加载购物车页面
-        this.loading_cart();
     },
 
-    methods: {
-        // 加载购物车
-        loading_cart() {
-            if ((this.$refs.cart || null) != null) {
-                this.$refs.cart.init('cart');
-            }
-        }
-    },
+    methods: {},
 };
 </script>
 <style>
