@@ -2572,13 +2572,14 @@
                         if (index == 0) {
                             new_key += item + '.';
                         } else {
-                            new_key += item + '-';
+                            if (keyList.length == index + 2) {
+                                new_key += item;
+                            } else {
+                                new_key += item + '-';
+                            }
                         }
-                    } else {
-                        new_key += item;
                     }
                 });
-                console.log(new_key);
                 uni.setNavigationBarTitle({
                     title: i18n.t(new_key),
                 });
