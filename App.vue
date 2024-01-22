@@ -2552,6 +2552,18 @@
                 clearInterval(this.data.weixin_privacy_setting_timer);
             },
 
+            // 页面导航标题处理
+            set_pages_navigation_bar_title() {
+                var url = this.current_page(false);
+                var arr = url.split('/');
+                    arr = arr.slice(1);
+                    arr = arr.slice(0, -1);
+                var key = 'pages.'+arr.join('-');
+                uni.setNavigationBarTitle({
+                    title: i18n.t(key),
+                });
+            },
+
             // 页面加载事件处理
             page_event_onload_handle(params) {
                 // 设置底部菜单
@@ -2562,27 +2574,9 @@
             page_event_onshow_handle() {
                 // 设置底部菜单
                 this.set_tabbar();
-                // 获取当前页面路径
-                var url = this.current_page(false);
-                var keyList = url.split('/');
-                var new_key = '';
-                keyList.forEach((item, index) => {
-                    // new_key += item;
-                    if (keyList.length > index + 1) {
-                        if (index == 0) {
-                            new_key += item + '.';
-                        } else {
-                            if (keyList.length == index + 2) {
-                                new_key += item;
-                            } else {
-                                new_key += item + '-';
-                            }
-                        }
-                    }
-                });
-                uni.setNavigationBarTitle({
-                    title: i18n.t(new_key),
-                });
+
+                // 页面顶部导航标题设置
+                this.set_pages_navigation_bar_title();
             },
         },
 

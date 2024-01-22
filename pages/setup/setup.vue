@@ -240,6 +240,8 @@
                     language: language_list[this.language_key],
                     popup_language_status: false,
                 });
+                // 重新设置当前页面导航标题
+                app.globalData.set_pages_navigation_bar_title();
             },
 
             // 多语言切换
