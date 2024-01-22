@@ -242,6 +242,7 @@
                 // #endif
 
                 // 获取地址授权信息
+                var self = this;
                 uni.chooseAddress({
                     success(res) {
                         var data = {
@@ -255,7 +256,7 @@
 
                         // 加载获取数据
                         uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
+                            title: self.$t('common.processing_in_text'),
                         });
                         uni.request({
                             url: app.globalData.get_request_url('outsystemadd', 'useraddress'),
@@ -265,18 +266,18 @@
                             success: (res) => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    this.get_data_list();
+                                    self.get_data_list();
                                 } else {
                                     if (app.globalData.is_login_check(res.data)) {
                                         app.globalData.showToast(res.data.msg);
                                     } else {
-                                        app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                        app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
                                     }
                                 }
                             },
                             fail: () => {
                                 uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                app.globalData.showToast(self.$t('common.internet_error_tips'));
                             },
                         });
                     },
