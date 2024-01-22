@@ -43,6 +43,12 @@
 		"sub_error_retry_tips": "提交失败，请重试！",
 		"not_more_list_data_tips": "无更多列表数据"
 	},
+	"pages": {
+		"index-index": "ShopXO",
+		"goods-category-goods-category": "商品分类",
+		"cart-cart": "购物车",
+		"user-user": "用户中心"
+	},
 	"login": {
 		"login": {
 			"725312": "账号密码登录",

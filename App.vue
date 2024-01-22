@@ -2562,6 +2562,26 @@
             page_event_onshow_handle() {
                 // 设置底部菜单
                 this.set_tabbar();
+                // 获取当前页面路径
+                var url = this.current_page(false);
+                var keyList = url.split('/');
+                var new_key = '';
+                keyList.forEach((item, index) => {
+                    // new_key += item;
+                    if (keyList.length > index + 1) {
+                        if (index == 0) {
+                            new_key += item + '.';
+                        } else {
+                            new_key += item + '-';
+                        }
+                    } else {
+                        new_key += item;
+                    }
+                });
+                console.log(new_key);
+                uni.setNavigationBarTitle({
+                    title: i18n.t(new_key),
+                });
             },
         },
 

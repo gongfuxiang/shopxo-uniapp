@@ -1540,5 +1540,11 @@
 			"nu5058": "不支持地理位置選擇！",
 			"4v6q86": "未選擇位置"
 		}
+	},
+	"pages": {
+		"index-index": "ShopXO",
+		"goods-category-goods-category": "商品分類",
+		"cart-cart": "購物車",
+		"user-user": "用戶中心"
 	}
 }

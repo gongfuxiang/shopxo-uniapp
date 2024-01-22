@@ -10,13 +10,13 @@ let i18nConfig = {
     locale: uni.getLocale(),
     silentTranslationWarn: true,
     messages: {
-        "zh-Hans": zhHans, 
+        "zh-Hans": zhHans,
         "zh-Hant": zhHant,
-        en,
-       "es": spa
+        "en": en,
+        "es": spa
     }
 }
 Vue.use(VueI18n)
 const i18n = new VueI18n(i18nConfig)
-
+Vue.prototype._i18n = i18n
 export default i18n
