@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <!-- 是否有网络 -->
-        <view v-if="network_type_value == 'none'" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
+        <view v-if="network_type_value == 'none' && not_network_await_status == 0" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
             <view class="cr-base text-size">{{$t('no-data.no-data.1u202v')}}</view>
             <view class="cr-grey margin-top-sm">{{$t('no-data.no-data.imw8f1')}}{{title}}{{$t('no-data.no-data.q87572')}}</view>
         </view>
@@ -36,7 +36,8 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 static_dir: '/static/images/common/',
                 title: app.globalData.get_application_title(),
-                network_type_value: 0,
+                network_type_value: '',
+                not_network_await_status: 0,
             };
         },
         components: {},
@@ -57,17 +58,75 @@
                 type: Boolean,
                 default: true,
             },
+            propNetworkTimeNum: {
+                type: Number,
+                default: 40,
+            },
         },
         // 页面被展示
         created: function () {
             self = this;
             uni.getNetworkType({
                 success: function (res) {
+                    // 当前网络
                     self.network_type_value = res.networkType;
+                    // 无网络进入等待网络中
+                    if(self.network_type_value == 'none') {
+                        self.not_network_await_status = 1;
+                    }
+
+                    // 定时处理
+                    self.countdown(self);
                 }
             });
         },
+        // #ifndef VUE2
+        destroyed() {
+            clearInterval(this.timer);
+        },
+        // #endif
+        // #ifdef VUE3
+        unmounted() {
+            clearInterval(this.timer);
+        },
+        // #endif
         methods: {
+            // 定时任务
+            countdown(self) {
+                // 销毁之前的任务
+                clearInterval(self.timer);
+
+                // 没有网络则启动定时任务
+                if(self.network_type_value == 'none') {
+                    var temp_num = self.propNetworkTimeNum;
+                    self.timer = setInterval(function () {
+                        // 读取网络状态
+                        uni.getNetworkType({
+                            success: function (res) {
+                                self.network_type_value = res.networkType;
+                                // 已经有网络了则结束定时任务、并正常继续等待走加载过程
+                                if(self.network_type_value != 'none') {
+                                    clearInterval(self.timer);
+                                    
+                                    console.log(self.network_type_value)
+                                }
+                            }
+                        });
+
+                        // 每次减1
+                        temp_num--;
+
+                        // 0则结束
+                        if(temp_num <= 0) {
+                            // 销毁任务
+                            clearInterval(self.timer);
+                            // 无需等待网络
+                            self.not_network_await_status = 0;
+                        }
+                    }, 500);
+                }
+            },
+
             // 返回事件
             back_event(e) {
                 app.globalData.page_back_prev_event();

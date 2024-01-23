@@ -458,20 +458,21 @@
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
+                        var self = this;
                         uni.showModal({
-                            title: this.$t('common.warm_tips'),
-                            content: this.$t('cash-auth.cash-auth.d2ng16'),
-                            confirmText: this.$t('common.confirm'),
-                            cancelText: this.$t('common.not_yet'),
+                            title: self.$t('common.warm_tips'),
+                            content: self.$t('cash-auth.cash-auth.d2ng16'),
+                            confirmText: self.$t('common.confirm'),
+                            cancelText: self.$t('common.not_yet'),
                             success: (result) => {
                                 if (result.confirm) {
                                     uni.navigateTo({
                                         url: '/pages/login/login?event_callback=init',
                                     });
                                 } else {
-                                    this.setData({
+                                    self.setData({
                                         data_list_loding_status: 0,
-                                        data_list_loding_msg: this.$t('cart.cart.2wfu7o'),
+                                        data_list_loding_msg: self.$t('cart.cart.2wfu7o'),
                                     });
                                 }
                             },
@@ -640,16 +641,18 @@
                 var buy_number = type == 0 ? temp_number - 1 : temp_number + 1;
                 this.goods_buy_number_func(index, buy_number, type);
             },
+
             // 删除弹窗
             model_tips(id) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('cart.cart.3v6ulk'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('cart.cart.3v6ulk'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
-                            this.cart_delete(id, 'delete');
+                            self.cart_delete(id, 'delete');
                         }
                     },
                 });
@@ -783,25 +786,26 @@
 
             // 批量删除操作
             cart_all_remove_event(e) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('cart.cart.3v6ulk'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('cart.cart.3v6ulk'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             var data = [];
-                            var temp_data_list = this.data_list || [];
+                            var temp_data_list = self.data_list || [];
                             for (var i in temp_data_list) {
                                 if ((temp_data_list[i]['selected'] || false) == true) {
                                     data.push(temp_data_list[i]['id']);
                                 }
                             }
                             if (data.length <= 0) {
-                                app.globalData.showToast(this.$t('order.order.15k32o'));
+                                app.globalData.showToast(self.$t('order.order.15k32o'));
                                 return false;
                             }
-                            this.cart_delete(data.join(','), 'delete');
+                            self.cart_delete(data.join(','), 'delete');
                         }
                     },
                 });

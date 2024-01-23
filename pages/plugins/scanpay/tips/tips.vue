@@ -11,7 +11,7 @@
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
                         <view class="cr-base">{{$t('user-order-detail.user-order-detail.yxwu8n')}}</view>
-                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('paytips.paytips.679rxu') : $t('paytips.paytips.6y488i') }}</view>
+                        <view class="flex-1 flex-width tr" :class="data.order_info.status == 1 ? 'cr-green' : 'cr-red'">{{ data.order_info.status == 1 ? $t('paytips.paytips.679rxu') : $t('paytips.paytips.6y488i')+pay_fail_msg }}</view>
                     </view>
                     <view class="flex-row jc-sb align-c spacing-mb">
                         <view class="cr-base">{{$t('user-order-detail.user-order-detail.n18sd2')}}</view>
@@ -27,7 +27,7 @@
                         <view class="cr-grey-c">
                             <iconfont name="icon-payment-fail" size="120rpx"></iconfont>
                         </view>
-                        <view class="margin-top-lg">{{$t('paytips.paytips.6y488i')}}</view>
+                        <view class="margin-top-lg">{{$t('paytips.paytips.6y488i')}}{{ pay_fail_msg }}</view>
                     </view>
                 </block>
             </view>
@@ -62,6 +62,7 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 params: {},
+                pay_fail_msg: '',
             };
         },
 
@@ -74,8 +75,10 @@
             app.globalData.page_event_onload_handle(params);
 
             // 设置参数
+            var params = params || {};
             this.setData({
-                params: params || {},
+                params: params,
+                pay_fail_msg: (params.msg || null) == null ? '' : '('+params.msg+')',
             });
             this.init();
         },
