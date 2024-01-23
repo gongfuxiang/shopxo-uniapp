@@ -107,8 +107,6 @@
                                 // 已经有网络了则结束定时任务、并正常继续等待走加载过程
                                 if(self.network_type_value != 'none') {
                                     clearInterval(self.timer);
-                                    
-                                    console.log(self.network_type_value)
                                 }
                             }
                         });
