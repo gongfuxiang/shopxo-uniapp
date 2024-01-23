@@ -507,19 +507,14 @@
                             this.init_config(true);
                         }
 
+                        var data = res.data.data;
+                        var theme_view = app.globalData.get_theme_value_view();
+                        var theme_color = app.globalData.get_theme_color();
+                        var common_static_url = app.globalData.get_static_url('common');
+                        var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
+                        var static_url = app.globalData.get_static_url('home');
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            var theme_view = app.globalData.get_theme_value_view();
-                            var theme_color = app.globalData.get_theme_color();
-                            var common_static_url = app.globalData.get_static_url('common');
-                            var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
-                            var static_url = app.globalData.get_static_url('home');
                             this.setData({
-                                theme_view: theme_view,
-                                theme_color: theme_color,
-                                common_static_url: common_static_url,
-                                seckill_static_url: seckill_static_url,
-                                static_url: static_url,
                                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
@@ -545,12 +540,6 @@
                                 plugins_magic_data: data.plugins_magic_data || null,
                             });
 
-                            // 轮播数据处理
-                            if (this.load_status == 0) {
-                                var color = (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) ? data.banner_list[0].bg_color : theme_color;
-                                this.change_banner(color);
-                            }
-
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
 
@@ -569,8 +558,19 @@
                             app.globalData.showToast(res.data.msg);
                         }
 
-                        // 设置首次加载状态
+                        // 轮播数据处理
+                        if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
+                            var color = (this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null) ? this.banner_list[0]['bg_color'] : theme_color;
+                            this.change_banner(color);
+                        }
+
+                        // 公共数据
                         this.setData({
+                            theme_view: theme_view,
+                            theme_color: theme_color,
+                            common_static_url: common_static_url,
+                            seckill_static_url: seckill_static_url,
+                            static_url: static_url,
                             load_status: 1,
                         });
 
@@ -580,6 +580,11 @@
                         }, 3000);
                     },
                     fail: () => {
+                        // 轮播数据处理
+                        if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
+                            this.change_banner(app.globalData.get_theme_color());
+                        }
+
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

@@ -1698,11 +1698,8 @@
 
             // url协议地址处理
             page_url_protocol(url) {
-                if ((url || null) != null) {
-                    var http_arr = ['https:', 'http:/'];
-                    if (http_arr.indexOf(url.substr(0, 6)) == -1) {
-                        url = this.get_config('config.common_app_h5_url') + url;
-                    }
+                if ((url || null) != null && !this.is_url(url)) {
+                    url = this.get_config('config.common_app_h5_url', '') + url;
                 }
                 return url;
             },
@@ -1822,7 +1819,10 @@
                 };
                 result['url'] = this.get_page_url();
                 // #ifdef H5 || APP
-                result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                // 是有效的url地址则通过#号分割处理参数
+                if(this.is_url(result['url'])) {
+                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                }
                 // #endif
                 return result;
             },
