@@ -422,41 +422,37 @@
                 uni.getProvider({
                     service: 'payment',
                     success: function (res) {
-                        switch(data.payment.payment) {
-                            // 支付宝
-                            case 'Alipay' :
-                                if(~res.provider.indexOf('alipay')) {
-                                    uni.requestPayment({
-                                        provider: 'alipay',
-                                        orderInfo: data.data,
-                                        success: function (res) {
-                                            self.order_item_pay_success_handle(data, order_id);
-                                        },
-                                        fail: function (err) {
-                                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                        var arr = {
+                            Alipay: 'alipay',
+                            Weixin: 'wxpay',
+                            PayPal: 'paypal'
+                        }
+                        var pay_value = arr[data.payment.payment] || null;
+                        if(pay_value != null) {
+                            if(~res.provider.indexOf(pay_value)) {
+                                var pay_data = ((data.data.pay_data || null) == null) ? data.data : data.data.pay_data;
+                                uni.requestPayment({
+                                    provider: pay_value,
+                                    orderInfo: pay_data,
+                                    success: function (res) {
+                                        // 是否需要回调捕获
+                                        var call_back_url = data.data.call_back_url || null;
+                                        if(call_back_url != null) {
+                                            uni.request({url: call_back_url, method: 'GET'});
                                         }
-                                    });
-                                }
-                                break;
 
-                            // 微信
-                            case 'Weixin' :
-                                if(~res.provider.indexOf('wxpay')) {
-                                    uni.requestPayment({
-                                        provider: 'wxpay',
-                                        orderInfo: data.data,
-                                        success: function (res) {
-                                            self.order_item_pay_success_handle(data, order_id);
-                                        },
-                                        fail: function (err) {
-                                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
-                                        }
-                                    });
-                                }
-                                break;
-
-                            default :
-                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
+                                        // 成功处理数据
+                                        self.order_item_pay_success_handle(data, order_id);
+                                    },
+                                    fail: function (err) {
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                    }
+                                });
+                            } else {
+                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.t4d687'));
+                            }
+                        } else {
+                            app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
                         }
                     }
                 });

@@ -1568,6 +1568,7 @@
 			"e1f54e": "Requesting",
 			"vhx5dv": "Wrong payment type",
 			"597s8b": "The payment component interface cannot be empty",
+            "t4d687": "Payment service not configured",
 			"bv637f": "Payment undefined",
 			"4dszme": "Please use real machine operation, or the basic version of the mini program is too low!",
 			"k2i010": "After successful payment, please do not make duplicate payments. If the order status is not successful, please contact customer service for assistance",

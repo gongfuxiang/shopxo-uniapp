@@ -1555,6 +1555,7 @@
 			"e1f54e": "En la solicitud...",
 			"vhx5dv": "El tipo de pago es incorrecto",
 			"597s8b": "La interfaz del componente de pago no puede estar vacía",
+            "t4d687": "El Servicio de pago no está configurado",
 			"bv637f": "Pago no definido",
 			"4dszme": "¡¡ por favor, use la máquina real para operar o la versión básica del applet es demasiado baja!",
 			"k2i010": "Después de que el pago sea exitoso, no repita el pago, si el Estado del pedido no es exitoso, Póngase en contacto con el servicio al cliente para procesarlo.",

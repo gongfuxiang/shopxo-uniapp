@@ -426,23 +426,27 @@
                                 }
                             }
 
-                            // 是否存在主要的订单+副导航
+                            // 导航处理，是否存在主要的订单+副导航
                             var main_navigation_data = [];
+                            var temp_navigation = [];
                             if (navigation.length > 0) {
                                 for (var i in navigation) {
                                     // 去除参数
                                     var url = app.globalData.get_url_main_part(navigation[i]['event_value']);
                                     // 系统订单
+                                    var status = true;
                                     if (url == '/pages/user-order/user-order') {
                                         var temp = navigation[i];
                                         temp['extension_data'] = user_order_status_list;
                                         main_navigation_data.push(temp);
-                                        navigation.splice(i, 1);
-                                    }
-                                    // 门店订单
-                                    if (url == '/pages/plugins/realstore/orderallot-list/orderallot-list' && (navigation[i]['extension_data'] || null) != null && navigation[i]['extension_data'].length > 0) {
+                                        status = false;
+                                    // 是否存在扩展副导航数据
+                                    } else if((navigation[i]['extension_data'] || null) != null && navigation[i]['extension_data'].length > 0) {
                                         main_navigation_data.push(navigation[i]);
-                                        navigation.splice(i, 1);
+                                        status = false;
+                                    }
+                                    if(status) {
+                                        temp_navigation.push(navigation[i]);
                                     }
                                 }
                             }
@@ -451,7 +455,7 @@
                             var upd_data = {
                                 message_total: parseInt(data.message_total || 0),
                                 head_nav_list: temp_head_nav_list,
-                                navigation: navigation,
+                                navigation: temp_navigation,
                                 main_navigation_data: main_navigation_data,
                             };
 
