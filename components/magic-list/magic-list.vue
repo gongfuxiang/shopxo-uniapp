@@ -45,6 +45,12 @@
     const app = getApp();
     export default {
         name: 'recommend-hot',
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_goods_list: [],
+            };
+        },
         props: {
             propCurrencySymbol: {
                 type: String,
@@ -65,11 +71,12 @@
                 default: 1000,
             },
         },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-                data_goods_list: [],
-            };
+        // 属性值改变监听
+        watch: {
+            // 数据
+            propData(value, old_value) {
+                this.set_data(value);
+            }
         },
         mounted() {
             this.set_data(this.propData);

@@ -162,7 +162,7 @@
 
                         <!-- 魔方 - 插件 -->
                         <view v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
-                            <component-magic-list :propData="plugins_magic_data" :propCurrencySymbol="currency_symbol"></component-magic-list>
+                            <component-magic-list :propData="{...plugins_magic_data, ...{random: random_value}}" :propCurrencySymbol="currency_symbol"></component-magic-list>
                         </view>
                     </block>
                 </block>
@@ -328,6 +328,8 @@
                 cart_total: 0,
                 message_total: 0,
                 right_icon_list: [],
+                // 增加随机数，避免无法监听数据列表内部数据更新
+                random_value: 0,
                 // 基础配置
                 common_shop_notice: null,
                 home_index_floor_data_type: 0,
@@ -524,6 +526,7 @@
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
+                                random_value: Math.random(),
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
