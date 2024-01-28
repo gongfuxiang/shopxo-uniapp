@@ -5,6 +5,11 @@ page {
 /**
  * 头部内容
  */
+.top-nav-search {
+    /* #ifdef MP-ALIPAY */
+    padding-left: 60rpx;
+    /* #endif */
+}
 .header-content {
     margin-top: 20rpx;
     /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */

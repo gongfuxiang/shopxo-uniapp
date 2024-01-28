@@ -1699,7 +1699,16 @@
             // url协议地址处理
             page_url_protocol(url) {
                 if ((url || null) != null && !this.is_url(url)) {
-                    url = this.get_config('config.common_app_h5_url', '') + url;
+                    // 拼接H5地址
+                    var host = this.get_config('config.common_app_h5_url', '');
+                    // #ifdef H5
+                    if(host == '') {
+                        // H5模式下、未指定H5地址则获取当前host
+                        host = window.location.href.split('#')[0]+'#/';
+                    }
+                    // #endif
+                    // 处理中间拼接的斜杠是否重复
+                    url = (host + url).replace('#//', '#/');
                 }
                 return url;
             },
@@ -2529,14 +2538,25 @@
 
             // 页面导航标题处理
             set_pages_navigation_bar_title() {
+                var arr = [
+                    'pages/index/index',
+                    'pages/goods-category/goods-category',
+                    'pages/cart/cart',
+                    'pages/user/user',
+                    'pages/plugins/realstore/detail/detail'
+                ];
+                // 当前页面地址
                 var url = this.current_page(false);
-                var arr = url.split('/');
-                    arr = arr.slice(1);
-                    arr = arr.slice(0, -1);
-                var key = 'pages.'+arr.join('-');
-                uni.setNavigationBarTitle({
-                    title: i18n.t(key),
-                });
+                // 不增加标题的页面
+                if(arr.indexOf(url) == -1) {
+                    var arr = url.split('/');
+                        arr = arr.slice(1);
+                        arr = arr.slice(0, -1);
+                    var key = 'pages.'+arr.join('-');
+                    uni.setNavigationBarTitle({
+                        title: i18n.t(key),
+                    });
+                }
             },
 
             // 页面加载事件处理

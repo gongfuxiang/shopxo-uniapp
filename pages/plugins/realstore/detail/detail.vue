@@ -8,7 +8,7 @@
                 <view class="header pr z-i">
                     <component-nav-back :propIsShowBack="is_realstore_top_nav_back == 1" :propFixed="false" propColor="#333">
                         <template slot="right" :class="is_mp_env ? 'top-search-width' : 'flex-1 flex-width'">
-                            <view :class="'va-m wh-auto '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
+                            <view :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
                                 <!-- #ifndef H5 -->
                                 <component-search
                                     @onsearch="search_button_event"
@@ -431,10 +431,12 @@
                                     },
                                 });
 
+                                // #ifdef APP
                                 // 标题名称
                                 uni.setNavigationBarTitle({
                                     title: this.info.name,
                                 });
+                                // #endif
 
                                 // 基础自定义分享
                                 this.setData({

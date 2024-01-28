@@ -113,11 +113,6 @@
                 type: [Number, String],
                 default: 0,
             },
-            // 跳转第三方链接的重定向
-            propNavStatusIndex: {
-                type: Number,
-                default: 0,
-            },
             // 付款金额
             propPayPrice: {
                 type: [Number, String],
@@ -312,9 +307,11 @@
                 };
                 // h5自定义重定向地址
                 // #ifdef H5
-                post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false) + (this.propNavStatusIndex > 0 ? '?status=' + this.propNavStatusIndex : '')));
-                // paypal支付方式使用respond_url返回地址、移除重定向地址
-                if (payment.payment == 'PayPal') {
+                var redirect_url = app.globalData.page_url_protocol(this.propToAppointPage || app.globalData.get_page_url(false));
+                post_data['redirect_url'] = encodeURIComponent(base64.encode(redirect_url));
+                // 指定支付方式使用respond_url返回地址、移除重定向地址
+                var respond_arr = ['PayPal', 'UniPayment'];
+                if (respond_arr.indexOf(payment.payment) != -1) {
                     post_data['respond_url'] = post_data['redirect_url'];
                     delete post_data['redirect_url'];
                 }
