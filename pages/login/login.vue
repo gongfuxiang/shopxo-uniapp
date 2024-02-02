@@ -389,7 +389,6 @@
                 // 多语言
                 system_locale: '',
                 application_locale: '',
-                is_android: '',
 
                 // 语言选择
                 popup_language_status: false,
@@ -469,7 +468,6 @@
             let system_info = uni.getSystemInfoSync();
             this.system_locale = system_info.language;
             this.application_locale = app.globalData.get_language_value();
-            this.is_android = system_info.platform.toLowerCase() === 'android';
             uni.onLocaleChange((e) => {
                 this.application_locale = e.locale;
             });
@@ -1611,19 +1609,8 @@
 
             // 多语言切换
             language_change(key) {
-                if (this.is_android) {
-                    uni.showModal({
-                        content: this.$t('login.login.d9d11z'),
-                        success: (res) => {
-                            if (res.confirm) {
-                                uni.setLocale(key);
-                            }
-                        },
-                    });
-                } else {
-                    uni.setLocale(key);
-                    this.$i18n.locale = key;
-                }
+                uni.setLocale(key);
+                this.$i18n.locale = key;
             },
 
             // 打开登录方式弹层
