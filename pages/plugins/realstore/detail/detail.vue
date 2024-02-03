@@ -89,7 +89,7 @@
                         </view>
 
                         <!-- 在线客服 -->
-                        <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
+                        <view v-if="header_service_status && (((data_base.is_service_info || 0) == 1 && (info.service_data || null) != null) || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
                             <view v-if="(info.chat_info || null) != null" class="item padding-main br-t single-text">
                                 <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                                 <view class="dis-inline-block chat-info cp" @tap="chat_event">
@@ -97,24 +97,26 @@
                                     <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
                                 </view>
                             </view>
-                            <view v-if="(info.service_qq || null) != null" class="item padding-main br-t single-text">
-                                <text>Q Q：</text>
-                                <text class="cp" @tap="text_copy_event" :data-value="info.service_qq">{{ info.service_qq }}</text>
-                            </view>
-                            <view v-if="(info.service_tel || null) != null" class="item padding-main br-t single-text">
-                                <text>{{$t('order.order.7dxbm5')}}</text>
-                                <text class="cp" @tap="tel_event" :data-value="info.service_tel">{{ info.service_tel }}</text>
-                            </view>
-                            <view v-if="(info.service_weixin_qrcode || null) != null || (info.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
-                                <view v-if="(info.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                    <image class="radius cp" :src="info.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_weixin_qrcode"></image>
-                                    <view>{{$t('detail.detail.54k10s')}}</view>
+                            <block v-if="(info.service_data || null) != null">
+                                <view v-if="(info.service_data.service_qq || null) != null" class="item padding-main br-t single-text">
+                                    <text>Q Q：</text>
+                                    <text class="cp" @tap="text_copy_event" :data-value="info.service_data.service_qq">{{ info.service_data.service_qq }}</text>
                                 </view>
-                                <view v-if="(info.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                    <image class="radius cp" :src="info.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_line_qrcode"></image>
-                                    <view>{{$t('detail.detail.vj4nom')}}</view>
+                                <view v-if="(info.service_data.service_tel || null) != null" class="item padding-main br-t single-text">
+                                    <text>{{$t('order.order.7dxbm5')}}</text>
+                                    <text class="cp" @tap="tel_event" :data-value="info.service_data.service_tel">{{ info.service_data.service_tel }}</text>
                                 </view>
-                            </view>
+                                <view v-if="(info.service_data.service_weixin_qrcode || null) != null || (info.service_data.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
+                                    <view v-if="(info.service_data.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                        <image class="radius cp" :src="info.service_data.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_weixin_qrcode"></image>
+                                        <view>{{$t('detail.detail.54k10s')}}</view>
+                                    </view>
+                                    <view v-if="(info.service_data.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                        <image class="radius cp" :src="info.service_data.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_line_qrcode"></image>
+                                        <view>{{$t('detail.detail.vj4nom')}}</view>
+                                    </view>
+                                </view>
+                            </block>
                         </view>
                     </view>
 

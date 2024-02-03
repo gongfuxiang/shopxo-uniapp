@@ -81,43 +81,55 @@
             </view>
 
             <!-- 价格信息 -->
-            <view :class="'goods-base-price bg-white oh spacing-mb ' + ((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : '')">
+            <view class="goods-base-price bg-white oh spacing-mb" :class="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : ''">
                 <!-- 价格 -->
-                <view class="price-content padding-lg bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
-                    <view class="single-text">
-                        <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
+                <view class="price-content padding-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                    <!-- 图标 -->
+                    <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
+                    <!-- 售价 -->
+                    <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
                         <text class="sales-price va-m">{{ currency_symbol }}{{ goods_spec_base_price }}</text>
                     </view>
-                    <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm single-text">{{ currency_symbol }}{{ goods_spec_base_original_price }}</view>
-                </view>
-                <!-- 秒杀 -->
-                <view v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1" class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
-                    <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || $t('goods-detail.goods-detail.775ppk') }}</view>
-                    <component-countdown
-                        :propHour="plugins_seckill_data.time.hours"
-                        :propMinute="plugins_seckill_data.time.minutes"
-                        :propSecond="plugins_seckill_data.time.seconds"
-                        :propMsecShow="true"
-                        propTimeSize="32"
-                        propTimePadding="0"
-                        propTimeWeight="bold"
-                        propTimeBackgroundColor="transparent"
-                        propTimeColor="#ffe500"
-                        propDsColor="#fff"
-                    ></component-countdown>
-                </view>
-                <view v-else class="goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-main fr oh">
-                    <!-- 收藏 -->
-                    <view class="collect tc cp fr margin-left" @tap="goods_favor_event">
-                        <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                        <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
-                    </view>
-                    <!-- 分享 -->
-                    <view class="goods-share tc cp fr" @tap="popup_share_event">
-                        <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
-                        <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
+                    <!-- 原价 -->
+                    <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ currency_symbol }}{{ goods_spec_base_original_price }}</view>
+                    <!-- 积分兑换 -->
+                    <view v-if="(goods.plugins_points_data || null) != null" class="item">
+                        <text class="sales-price va-m margin-left-sm">{{ goods.plugins_points_data.points_value }}</text>
+                        <text v-if="(goods.plugins_points_data.points_value_last_unit || null) != null" class="unit text-size-xs cr-grey-c va-m margin-left-xs">{{goods.plugins_points_data.points_value_last_unit}}</text>
                     </view>
                 </view>
+                <block v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1">
+                    <view class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
+                        <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || $t('goods-detail.goods-detail.775ppk') }}</view>
+                        <component-countdown
+                            :propHour="plugins_seckill_data.time.hours"
+                            :propMinute="plugins_seckill_data.time.minutes"
+                            :propSecond="plugins_seckill_data.time.seconds"
+                            :propMsecShow="true"
+                            propTimeSize="32"
+                            propTimePadding="0"
+                            propTimeWeight="bold"
+                            propTimeBackgroundColor="transparent"
+                            propTimeColor="#ffe500"
+                            propDsColor="#fff"
+                        ></component-countdown>
+                    </view>
+                </block>
+                <block v-else>
+                    <!-- 右侧操作 -->
+                    <view class="goods-base-right-opt padding-top-lg padding-bottom-lg padding-left-xs padding-right-main fr oh">
+                        <!-- 收藏 -->
+                        <view class="collect tc cp fr margin-left" @tap="goods_favor_event">
+                            <image :src="common_static_url + 'favor' + (nav_favor_button_info.status == 1 ? '-active' : '') + '-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                            <view :class="'cr-grey text-size-xs ' + (nav_favor_button_info.status == 1 ? 'cr-main' : 'cr-grey')">{{ nav_favor_button_info.text }}</view>
+                        </view>
+                        <!-- 分享 -->
+                        <view class="goods-share tc cp fr" @tap="popup_share_event">
+                            <image :src="common_static_url + 'share-icon.png'" mode="scaleToFill" class="dis-block auto"></image>
+                            <view class="cr-grey text-size-xs">{{$t('common.share')}}</view>
+                        </view>
+                    </view>
+                </block>
             </view>
 
             <view class="padding-horizontal-main">
@@ -454,7 +466,7 @@
                         </block>
                     </block>
                     <block v-else>
-                        <button class="item bg-grey round tc" type="default" disabled>{{ buy_button.error || $t('goods-detail.goods-detail.35f378') }}</button>
+                        <button class="item bg-grey round tc text-size-md" type="default" disabled>{{ buy_button.error || $t('goods-detail.goods-detail.35f378') }}</button>
                     </block>
                 </view>
             </view>
@@ -842,16 +854,20 @@
                     query.select(data[i]['ent']).boundingClientRect();
                 }
                 query.exec(function (res) {
-                    var bar_h = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
-                    var nav_h = self.top_nav_height;
-                    var length = res.length - 1;
-                    for (var i = length; i >= 0; i--) {
-                        var temp = res[i]['top'] - bar_h - nav_h;
-                        if (temp <= 0) {
-                            if (self.top_nav_title_index != i) {
-                                self.top_nav_title_index = i;
+                    if((res || null) != null) {
+                        var bar_h = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+                        var nav_h = self.top_nav_height;
+                        var length = res.length - 1;
+                        for (var i = length; i >= 0; i--) {
+                            if((res[i] || null) != null) {
+                                var temp = res[i]['top'] - bar_h - nav_h;
+                                if (temp <= 0) {
+                                    if (self.top_nav_title_index != i) {
+                                        self.top_nav_title_index = i;
+                                    }
+                                    break;
+                                }
                             }
-                            break;
                         }
                     }
                 });

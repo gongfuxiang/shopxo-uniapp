@@ -130,8 +130,13 @@
                                     <text class="va-m">{{$t('buy.buy.4di4i2')}}</text>
                                 </view>
                                 <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
-                                <view @tap="points_event" class="fr cp">
-                                    <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
+                                <view class="fr cp">
+                                    <block v-if="(plugins_points_data.is_pure_exchange_modal || 0) == 1 && plugins_points_data.discount_type == 1">
+                                        <iconfont name="icon-zhifu-yixuan" size="34rpx" color="#999"></iconfont>
+                                    </block>
+                                    <view v-else @tap="points_event">
+                                        <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
+                                    </view>
                                 </view>
                             </view>
                             <view class="desc margin-top-xs">
