@@ -22,7 +22,7 @@
                                                 <view class="base fr">
                                                     <view class="single-text text-size">{{ item.title }}</view>
                                                     <view class="cr-grey-9 margin-top-sm text-size-xs">{{ item.add_time_date_cn }}</view>
-                                                    <view class="cr-base multi-text margin-top-sm text-size-xs">{{ item.describe }}</view>
+                                                    <view v-if="(item.describe || null) != null" class="cr-base multi-text margin-top-sm text-size-xs">{{item.describe}}</view>
                                                 </view>
                                             </navigator>
                                         </view>

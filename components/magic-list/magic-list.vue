@@ -22,7 +22,7 @@
                                                 <view v-for="(gv, gi) in swiper_item" :key="gi" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
                                                     <view class="padding-horizontal-main tc" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="url_event">
                                                         <image :src="(gv.images || null) !== null ? gv.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
-                                                        <view class="price tc single-text">
+                                                        <view v-if="(gv.show_field_price_status || 0) == 1" class="price tc single-text">
                                                             <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                             <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
                                                             <text class="cr-grey va-m text-size-xss">{{ gv.show_price_unit }}</text>

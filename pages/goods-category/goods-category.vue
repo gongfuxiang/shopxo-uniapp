@@ -128,12 +128,15 @@
                                                                     <view class="goods-title multi-text">{{ item.title }}</view>
                                                                     <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-sm single-text">{{ item.simple_desc }}</view>
                                                                 </view>
-                                                                <view class="oh flex-row jc-sb align-c">
-                                                                    <view class="single-text sales-price va-b va-m">
-                                                                        <text class="text-size-xss">{{ currency_symbol }}</text>
-                                                                        <text class="text-size-lg">{{ item.min_price }}</text>
+                                                                <view v-if="(item.show_field_price_status || 0) == 1" class="oh flex-row jc-sb align-c">
+                                                                    <view class="single-text va-m">
+                                                                        <text class="sales-price">
+                                                                            <text class="text-size-xss">{{ item.show_price_symbol }}</text>
+                                                                            <text class="text-size-lg">{{ item.min_price }}</text>
+                                                                        </text>
+                                                                        <text class="text-size-xs cr-grey">{{ item.show_price_unit }}</text>
                                                                     </view>
-                                                                    <view v-if="common_site_type != 1" class="buy-opt tc flex-row align-c">
+                                                                    <view v-if="common_site_type != 1" class="buy-opt">
                                                                         <block v-if="(item.is_error || 0) == 0">
                                                                             <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                                 <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>

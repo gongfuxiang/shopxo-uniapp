@@ -87,7 +87,7 @@
                                                 <!-- 底部内容 -->
                                                 <view class="goods-bottom pr margin-top-sm flex-row jc-sb align-c">
                                                     <!-- 价格 -->
-                                                    <view>
+                                                    <view v-if="(item.show_field_price_status || 0) == 1">
                                                         <text class="sales-price fw-b va-m">
                                                             <text class="text-size-sm">{{ item.show_price_symbol }}</text>
                                                             <text class="text-size-lg">{{ item.price }}</text>

@@ -19,7 +19,7 @@
                                 <view class="base fr">
                                     <view class="multi-text">{{ item.title }}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm text-size-sm">{{ item.simple_desc }}</view>
-                                    <view class="flex-row jc-sb align-c margin-top-main pr">
+                                    <view  v-if="(item.show_field_price_status || 0) == 1"class="flex-row jc-sb align-c margin-top-main pr">
                                         <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
                                             <view class="base-bottom">
                                                 <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
@@ -62,7 +62,7 @@
                                 <image class="goods-img dis-block wh-auto" :src="item.images" mode="widthFix"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{ item.title }}</view>
-                                    <view class="margin-top-sm flex-row jc-sb align-c pr">
+                                    <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-sm flex-row jc-sb align-c pr">
                                         <view :class="propIsOpenGridBtnSet ? 'open-grid-btn' : ''">
                                             <block v-if="!propIntegral">
                                                 <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
@@ -129,7 +129,7 @@
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
-                                                <view class="margin-top-xs flex-row align-c">
+                                                <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-xs flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                                         <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                             <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color" propClass="pr top-xs margin-right-xs"></iconfont>

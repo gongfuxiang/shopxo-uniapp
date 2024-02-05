@@ -12,11 +12,11 @@
                     <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                     <view class="goods-spec-base-content">
                         <view class="goods-price">
-                            <view>
+                            <view v-if="(goods.show_field_price_status || 0) == 1">
                                 <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
                                 <text class="cr-grey text-size-xs va-m">{{ goods.show_price_unit }}</text>
-                            </view> 
-                            <view v-if="(goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
+                            </view>
+                            <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
                         </view>
                         <view class="inventory text-size-xs margin-top">
                             <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>

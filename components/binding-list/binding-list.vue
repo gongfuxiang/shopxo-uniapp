@@ -30,7 +30,7 @@
                                     <image :src="gv.images" mode="aspectFit" class="goods-images fl dis-block radius"></image>
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>
-                                        <view class="single-text">
+                                        <view v-if="(gv.show_field_price_status || 0) == 1" class="single-text">
                                             <text class="sales-price va-m text-size-xss">{{ gv.show_price_symbol }}{{ gv.price }}</text>
                                             <text class="cr-grey va-m text-size-xsss">{{ gv.show_price_unit }}</text>
                                         </view>
