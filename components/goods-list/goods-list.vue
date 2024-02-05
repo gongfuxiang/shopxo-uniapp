@@ -20,11 +20,14 @@
                                     <view class="multi-text">{{ item.title }}</view>
                                     <view v-if="(item.simple_desc || null) != null" class="cr-grey single-text margin-top-sm text-size-sm">{{ item.simple_desc }}</view>
                                     <view class="flex-row jc-sb align-c margin-top-main pr">
-                                        <view class="base-bottom">
-                                            <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                            <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
-                                            <text class="sales-price va-m">{{ item[propPriceField] }}</text>
-                                        </view>
+                                        <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
+                                            <view class="base-bottom">
+                                                <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
+                                                <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
+                                                <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
+                                            </view>
+                                        </block>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
                                             <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
                                                 <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
@@ -59,25 +62,31 @@
                                 <image class="goods-img dis-block wh-auto" :src="item.images" mode="widthFix"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{ item.title }}</view>
-                                    <view class="margin-top-sm flex-row jc-sb align-c">
-                                        <view>
+                                    <view class="margin-top-sm flex-row jc-sb align-c pr">
+                                        <view :class="propIsOpenGridBtnSet ? 'open-grid-btn' : ''">
                                             <block v-if="!propIntegral">
-                                                <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
-                                                <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
+                                                    <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
+                                                    <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
+                                                    <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                    <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
+                                                </block>
                                             </block>
                                             <block v-else>
                                                 <view class="flex-col">
-                                                    <view class="original-price">
-                                                        <text class="va-m text-size-xsss va-b">{{ propCurrencySymbol }}</text>
-                                                        <text class="va-m text-size-xs">{{ item[propPriceField] }}</text>
-                                                    </view>
+                                                    <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
+                                                        <view class="original-price single-text">
+                                                            <text class="text-size-xsss va-m">{{ item.show_price_symbol }}</text>
+                                                            <text class="text-size-xs va-m">{{ item[propPriceField] }}</text>
+                                                            <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
+                                                        </view>
+                                                    </block>
                                                     <view class="cr-main text-size-xs"> {{ item.integral }}{{ $t('index.index.t26j9z') }}</view>
                                                 </view>
                                             </block>
                                         </view>
                                         <block v-if="propIsOpenGridBtnSet">
-                                            <view :disabled="grid_btn_config.disabled" @tap="url_event" :style="[{ color: grid_btn_config.color }, { 'background-color': grid_btn_config.bg_color }, { padding: grid_btn_config.padding }, { 'border-radius': grid_btn_config.border_radius }, { 'font-size': grid_btn_config.font_size }]">
+                                            <view class="pa bottom-0 right-0" :disabled="grid_btn_config.disabled" @tap="url_event" :style="[{ color: grid_btn_config.color }, { 'background-color': grid_btn_config.bg_color }, { padding: grid_btn_config.padding }, { 'border-radius': grid_btn_config.border_radius }, { 'font-size': grid_btn_config.font_size }]">
                                                 {{ grid_btn_config.name }}
                                             </view>
                                         </block>
@@ -129,11 +138,14 @@
                                                             </view>
                                                         </view>
                                                     </block>
-                                                    <view class="flex-1 flex-width">
-                                                        <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
-                                                        <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
-                                                        <text class="sales-price va-m">{{ item[propPriceField] }}</text>
-                                                    </view>
+                                                    <block v-if="(propPriceField || null) != null && item[propPriceField] != undefined">
+                                                        <view class="flex-1 flex-width">
+                                                            <text v-if="propIsShowPriceIcon && (item.price_icon || null) != null" class="bg-red br-red cr-white text-size-xs padding-left-sm padding-right-sm round va-m margin-right-xs">{{ item.price_icon }}</text>
+                                                            <text class="sales-price va-m text-size-xss va-m">{{ item.show_price_symbol }}</text>
+                                                            <text class="sales-price va-m">{{ item[propPriceField] }}</text>
+                                                            <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
+                                                        </view>
+                                                    </block>
                                                 </view>
                                             </view>
                                         </view>

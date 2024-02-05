@@ -9,22 +9,14 @@
                             <view class="base-right bs-bb padding-left-main">
                                 <view class="fw-b text-size-lg cr-base single-text">{{ item.title }}</view>
                                 <view class="sales-price margin-top-main single-text">
-                                    <text class="text-size-xs">
-                                        {{ propCurrencySymbol }}
-                                    </text>
-                                    <text class="text-size-lg fw-b">
-                                        {{ item.estimate_price }}
-                                    </text>
+                                    <text class="text-size-xs">{{ propCurrencySymbol }}</text>
+                                    <text class="text-size-lg fw-b">{{ item.estimate_price }}</text>
                                 </view>
                                 <view v-if="(item.estimate_discount_price || 0) != 0" class="margin-top-sm single-text flex-row align-c">
                                     <text class="discount-icon cr-white text-size-xs">{{$t('detail.detail.6026t4')}}</text>
                                     <view class="cr-green single-text">
-                                        <text class="text-size-xs">
-                                            {{ propCurrencySymbol }}
-                                        </text>
-                                        <text class="text-size">
-                                            {{ item.estimate_discount_price }}
-                                        </text>
+                                        <text class="text-size-xs">{{ propCurrencySymbol }}</text>
+                                        <text class="text-size">{{ item.estimate_discount_price }}</text>
                                     </view>
                                 </view>
                             </view>
@@ -38,8 +30,11 @@
                                     <image :src="gv.images" mode="aspectFit" class="goods-images fl dis-block radius"></image>
                                     <view class="goods-right fr bs-bb">
                                         <view class="single-text text-size-sm">{{ gv.title }}</view>
-                                        <view class="single-text sales-price text-size-xss">{{ propCurrencySymbol }}{{ gv.price }}</view>
-                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">{{$t('detail.detail.6026t4')}}{{ propCurrencySymbol }}{{ gv.discount_price }}</view>
+                                        <view class="single-text">
+                                            <text class="sales-price va-m text-size-xss">{{ gv.show_price_symbol }}{{ gv.price }}</text>
+                                            <text class="cr-grey va-m text-size-xsss">{{ gv.show_price_unit }}</text>
+                                        </view>
+                                        <view v-if="(gv.discount_price || null) != null" class="single-text cr-green text-size-xss">{{$t('detail.detail.6026t4')}}{{ gv.show_price_symbol }}{{ gv.discount_price }}</view>
                                     </view>
                                 </view>
                             </block>

@@ -66,8 +66,13 @@
                                             </block>
                                         </view>
                                         <view class="oh pr margin-top-xs">
-                                            <text class="fw-b">{{ currency_symbol }}{{ item.price }}</text>
-                                            <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{ currency_symbol }}{{ item.original_price }}</text>
+                                            <block v-if="item.show_field_price_status == 1">
+                                                <text class="fw-b va-m">{{ item.show_price_symbol }}{{ item.price }}</text>
+                                                <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
+                                            </block>
+                                            <block v-if="item.show_field_original_price_status == 1">
+                                                <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{ item.show_original_price_symbol }}{{ item.original_price }}{{ item.show_original_price_unit }}</text>
+                                            </block>
                                             <text class="buy-number pa cr-grey">x{{ item.stock }}</text>
                                         </view>
                                     </view>
@@ -106,14 +111,15 @@
                         </view>
                         <!-- 扩展数据展示 -->
                         <view v-if="group.order_base.extension_data.length > 0" class="extension-list radius margin-top-lg">
-                            <view v-for="(item, index2) in group.order_base.extension_data" :key="index2" class="item oh padding-vertical-xs padding-main">
-                                <text class="cr-base fl">{{ item.name }}</text>
-                                <text class="text-tips fr">{{ item.tips }}</text>
+                            <view v-for="(item, index2) in group.order_base.extension_data" :key="index2">
+                                <view class="item oh padding-vertical-xs padding-main">
+                                    <text class="cr-base fl">{{ item.name }}</text>
+                                    <text class="text-tips fr">{{ item.tips }}</text>
+                                </view>
                             </view>
                         </view>
                         <!-- 小计 -->
                         <view class="oh tr wh-auto goods-group-footer padding-top-xl">
-                            <text v-if="group.order_base.total_price != group.order_base.actual_price" class="original-price margin-right-sm">{{ currency_symbol }}{{ group.order_base.total_price }}</text>
                             <text class="sales-price">{{ currency_symbol }}{{ group.order_base.actual_price }}</text>
                         </view>
                     </view>
@@ -129,15 +135,12 @@
                                     <button type="default" size="mini" class="bg-grey-e cr-gray cr-base text-size-xs radius va-m margin-right-xs plugins-points-use-submit" @tap="points_use_value_confirm_event">{{$t('common.confirm')}}</button>
                                     <text class="va-m">{{$t('buy.buy.4di4i2')}}</text>
                                 </view>
-                                <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
-                                <view class="fr cp">
-                                    <block v-if="(plugins_points_data.is_pure_exchange_modal || 0) == 1 && plugins_points_data.discount_type == 1">
-                                        <iconfont name="icon-zhifu-yixuan" size="34rpx" color="#999"></iconfont>
-                                    </block>
-                                    <view v-else @tap="points_event">
+                                <block v-if="plugins_points_data.is_pure_exchange_modal == undefined || plugins_points_data.is_pure_exchange_modal != 1 || plugins_points_data.discount_type != 1">
+                                    <text class="sales-price va-m">-{{ currency_symbol }}{{ plugins_points_data.discount_price }}</text>
+                                    <view class="fr cp" @tap="points_event">
                                         <iconfont :name="'icon-zhifu-' + (plugins_points_status ? 'yixuan' : 'weixuan')" size="34rpx" :color="plugins_points_status ? theme_color : '#999'"></iconfont>
                                     </view>
-                                </view>
+                                </block>
                             </view>
                             <view class="desc margin-top-xs">
                                 <text v-if="plugins_points_data.discount_type == 1">{{$t('buy.buy.q800ri')}}{{ plugins_points_data.user_integral }}{{$t('buy.buy.w96878')}}</text>
@@ -313,7 +316,6 @@
                 user_note_value: '',
                 user_note_status: false,
                 is_first: 1,
-                extension_data: [],
                 common_site_type: 0,
                 extraction_address: [],
                 site_model: 0,
@@ -532,12 +534,27 @@
                                     // 未选择错误提示
                                     error_msg: temp_dt.error_msg || this.$t('buy.buy.q8u066'),
                                 };
+                                
+                                // 商品数据处理
+                                var goods_list = data.goods_list;
+                                for(var i in goods_list) {
+                                    // 扩展数据处理，
+                                    var temp_extension_data = [];
+                                    if((goods_list[i]['order_base'] || null) != null && (goods_list[i]['order_base']['extension_data'] || null) != null) {
+                                        var temp_ext = goods_list[i]['order_base']['extension_data'];
+                                        for(var t in temp_ext) {
+                                            if(temp_ext[t]['is_buy_show'] == undefined || temp_ext[t]['is_buy_show'] == 1) {
+                                                temp_extension_data.push(temp_ext[t]);
+                                            }
+                                        }
+                                    }
+                                    goods_list[i]['order_base']['extension_data'] = temp_extension_data;
+                                }
 
                                 // 设置数据
                                 this.setData({
-                                    goods_list: data.goods_list,
+                                    goods_list: goods_list,
                                     total_price: data.base.actual_price,
-                                    extension_data: data.extension_data || [],
                                     data_list_loding_status: 3,
                                     common_site_type: data.common_site_type || 0,
                                     extraction_address: data.base.extraction_address || [],

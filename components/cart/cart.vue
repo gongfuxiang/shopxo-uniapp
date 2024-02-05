@@ -87,9 +87,12 @@
                                                 <!-- 底部内容 -->
                                                 <view class="goods-bottom pr margin-top-sm flex-row jc-sb align-c">
                                                     <!-- 价格 -->
-                                                    <view class="sales-price fw-b">
-                                                        <text class="text-size-sm">{{ currency_symbol }}</text>
-                                                        <text class="text-size-lg">{{ item.price }}</text>
+                                                    <view>
+                                                        <text class="sales-price fw-b va-m">
+                                                            <text class="text-size-sm">{{ item.show_price_symbol }}</text>
+                                                            <text class="text-size-lg">{{ item.price }}</text>
+                                                        </text>
+                                                        <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                                     </view>
 
                                                     <!-- 数量 -->

@@ -1024,6 +1024,11 @@ button[disabled].bg-grey {
 .goods-data-grid-list .item .error-msg {
     line-height: 341rpx;
 }
+.goods-data-grid-list .item .open-grid-btn {
+    width: calc(100% - 80rpx);
+    min-height: 50rpx;
+    line-height: 50rpx;
+}
 
 /**
  * 头部客服信息弹窗

@@ -71,9 +71,7 @@
                 <view v-if="(plugins_label_data || null) != null && plugins_label_data.data.length > 0" :class="'plugins-label oh pa plugins-label-' + ((plugins_label_data.base.is_user_goods_label_icon || 0) == 0 ? 'text' : 'img') + ' plugins-label-' + (plugins_label_data.base.user_goods_show_style || 'top-left')">
                     <block v-for="(lv, li) in plugins_label_data.data" :key="li">
                         <view class="lv dis-inline-block va-m" :data-value="(plugins_label_data.base.is_user_goods_label_url || 0) == 1 ? lv.url || '' : ''" @tap="url_event">
-                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">{{
-                                lv.name
-                            }}</view>
+                            <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">{{ lv.name }}</view>
                             <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
                         </view>
                     </block>
@@ -88,14 +86,15 @@
                     <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
                     <!-- 售价 -->
                     <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
-                        <text class="sales-price va-m">{{ currency_symbol }}{{ goods_spec_base_price }}</text>
+                        <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
+                        <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
                     </view>
                     <!-- 原价 -->
-                    <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ currency_symbol }}{{ goods_spec_base_original_price }}</view>
+                    <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
                     <!-- 积分兑换 -->
-                    <view v-if="(goods.plugins_points_data || null) != null" class="item">
-                        <text class="sales-price va-m margin-left-sm">{{ goods.plugins_points_data.points_value }}</text>
-                        <text v-if="(goods.plugins_points_data.points_value_last_unit || null) != null" class="unit text-size-xs cr-grey-c va-m margin-left-xs">{{goods.plugins_points_data.points_value_last_unit}}</text>
+                    <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
+                        <text class="text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
+                        <text class="text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
                     </view>
                 </view>
                 <block v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1">

@@ -19,9 +19,12 @@
                                     </label>
                                 </view>
                                 <view class="single-text margin-top-sm flex-row align-c">
-                                    <view class="sales-price">
-                                        <text class="text-size-xs">{{ currency_symbol }}</text>
-                                        <text class="text-size-lg fw-b">{{ item.price }}</text>
+                                    <view>
+                                        <text class="sales-price va-m">
+                                            <text class="text-size-xs">{{ item.show_price_symbol }}</text>
+                                            <text class="text-size-lg fw-b">{{ item.price }}</text>
+                                        </text>
+                                        <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                     </view>
                                     <view v-if="(item.discount_price || 0) != 0" class="cr-green margin-left-lg text-size-xs">{{$t('detail.detail.6026t4')}}<text class="text-size-xs">{{ currency_symbol }}</text>
                                         {{ item.discount_price }}
