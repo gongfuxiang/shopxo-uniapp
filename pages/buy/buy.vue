@@ -83,8 +83,22 @@
                                 </view>
                             </view>
                         </view>
+                        <!-- 运费 -->
+                        <view v-if="(group.plugins_freightfee_data || null) != null && (group.plugins_freightfee_data.default || null) != null && (group.plugins_freightfee_data.fee_list || null) != null && group.plugins_freightfee_data.fee_list.length > 0" class="buy-data-item oh">
+                            <text class="cr-base">{{$t('buy.buy.876tgh')}}</text>
+                            <view class="fr cp">
+                                <view class="dis-inline-block va-m">
+                                    <picker :data-wid="group.id" @change="plugins_freightfee_change_event" :value="group.plugins_freightfee_data.default.key" :range="group.plugins_freightfee_data.fee_list" range-key="fee_name">
+                                        <view class="cr-grey">{{ group.plugins_freightfee_data.default.fee_name }}</view>
+                                    </picker>
+                                </view>
+                                <view class="dis-inline-block va-m lh-xs">
+                                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                                </view>
+                            </view>
+                        </view>
                         <!-- 优惠劵 -->
-                        <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item" :data-index="index" @tap="plugins_coupon_open_event">
+                        <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item oh" :data-index="index" @tap="plugins_coupon_open_event">
                             <text class="cr-base">{{$t('buy.buy.45ovhs')}}</text>
                             <view class="fr cp">
                                 <text class="cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : $t('buy.buy.553mxo') }}</text>
@@ -96,7 +110,7 @@
                         <!-- 门店次卡 -->
                         <view v-if="(plugins_realstore_data || null) != null && (plugins_realstore_data[group.id] || null) != null" class="plugins-realstore-container-view">
                             <block v-for="(item, index2) in plugins_realstore_data[group.id]['data']" :key="index2">
-                                <view class="buy-data-item oh wh-auto">
+                                <view class="buy-data-item oh oh wh-auto">
                                     <text class="cr-base va-m">{{$t('buy.buy.58rs1a')}}</text>
                                     <image class="image circle br va-m margin-left-lg" :src="item.images" mode="aspectFill"></image>
                                     <text class="cr-grey va-m margin-left-xs text-size-xs">x{{ item.stock }}</text>
@@ -155,7 +169,7 @@
                     </view>
 
                     <!-- 时间选择 -->
-                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item padding-horizontal-main bg-white border-radius-main spacing-mb">
+                    <view v-if="(buy_datetime_info || null) != null && (buy_datetime_info.is_select || false) == true" class="buy-data-item oh padding-horizontal-main bg-white border-radius-main spacing-mb">
                         <text class="cr-base">{{ buy_datetime_info.title }}</text>
                         <view class="right-value single-text dis-inline-block fr tr">
                             <component-time-select :propTitle="buy_datetime_info.title" :propPlaceholder="buy_datetime_info.placeholder" :propRangeDay="buy_datetime_info.range_day || 2" :propRangeStartTime="buy_datetime_info.time_start" :propRangeEndTime="buy_datetime_info.time_end" :propDisabled="buy_datetime_info.disabled" :propIsShow="buy_datetime_info.status" @selectEvent="buy_datetime_event">
@@ -347,6 +361,8 @@
                 popup_plugins_realstore_card_index: 0,
                 // 智能工具箱
                 plugins_intellectstools_data: null,
+                // 运费
+                plugins_freightfee_choice_data: {},
 
                 // 支付弹窗参数
                 pay_url: '',
@@ -630,6 +646,14 @@
 
             // 请求参数合并
             request_data_ext_params_merge(data) {
+                // 运费
+                var fee = this.plugins_freightfee_choice_data || null;
+                if(fee != null) {
+                    for (var i in fee) {
+                        data['freightfee_id_' + i] = fee[i];
+                    }
+                }
+
                 // 优惠券
                 var coupon_ids = this.plugins_use_coupon_ids;
                 if ((coupon_ids || null) != null && coupon_ids.length > 0) {
@@ -897,6 +921,16 @@
                     });
                     this.init();
                 }
+            },
+            
+            // 运费选择事件
+            plugins_freightfee_change_event(e) {
+                var temp = this.plugins_freightfee_choice_data;
+                temp[e.currentTarget.dataset.wid] = parseInt(e.detail.value);
+                this.setData({
+                    plugins_freightfee_choice_data: temp,
+                });
+                this.init();
             },
 
             // 地址选择事件
