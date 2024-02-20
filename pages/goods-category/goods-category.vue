@@ -12,7 +12,7 @@
                             <view class="goods-top-search-bg pa top-0 left-0 right-0 bottom-0 wh-auto oh">
                                 <image :src="theme_static_url + 'top-bg.png'" mode="widthFix" class="wh-auto"></image>
                             </view>
-                            <block v-if="is_goods_category_search_alone == 1">
+                            <block v-if="category_goods_is_search_alone == 1">
                                 <component-search :propPlaceholder="$t('customview.customview.726k7y')"></component-search>
                             </block>
                             <block v-else>
@@ -76,26 +76,24 @@
                                     <!-- 二级导航 -->
                                     <view v-if="category_one_subset_count > 0" class="left-nav bg-white ht-auto">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
-                                            <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
-                                                <view class="left-content-actual-list ht-auto">
-                                                    <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                        <text>{{ $t('common.all') }}</text>
-                                                    </view>
-                                                    <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
-                                                        <block v-for="(item, index) in data_content.items" :key="index">
-                                                            <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
-                                                                <text>{{ item.name }}</text>
-                                                            </view>
-                                                        </block>
-                                                    </block>
+                                            <view :class="'left-content-actual ht-auto '+(category_goods_is_show_cart_nav == 1 ? 'left-content-actual-list' : '')">
+                                                <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                                    <text>{{ $t('common.all') }}</text>
                                                 </view>
+                                                <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
+                                                    <block v-for="(item, index) in data_content.items" :key="index">
+                                                        <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
+                                                            <text>{{ item.name }}</text>
+                                                        </view>
+                                                    </block>
+                                                </block>
                                             </view>
                                         </scroll-view>
                                     </view>
                                     <!-- 商品列表 -->
                                     <view :class="'goods-right-content bg-white pa bs-bb ' + (category_one_subset_count > 0 ? '' : 'category-one-subset-content')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto goods-list" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                            <view :class="'padding-left-sm ' + ((common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
+                                            <view :class="'padding-left-sm ' + ((category_goods_is_show_cart_nav == 1 && common_site_type != 1 ? 'right-content-actual' : '') + ' pr')">
                                                 <!-- 操作导航 -->
                                                 <view class="goods-list-top-nav bg-white">
                                                     <!-- 排序 -->
@@ -136,7 +134,7 @@
                                                                         </text>
                                                                         <text class="text-size-xs cr-grey">{{ item.show_price_unit }}</text>
                                                                     </view>
-                                                                    <view v-if="common_site_type != 1" class="buy-opt">
+                                                                    <view v-if="common_site_type != 1" class="buy-opt flex-row align-c tc">
                                                                         <block v-if="(item.is_error || 0) == 0">
                                                                             <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                                 <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
@@ -272,7 +270,7 @@
                         </view>
 
                         <!-- 仅商品模式展示购物车和规格选择 -->
-                        <block v-if="common_site_type != 1 && category_show_level == 0">
+                        <block v-if="category_goods_is_show_cart_nav == 1 && common_site_type != 1 && category_show_level == 0">
                             <!-- 购物车列表 -->
                             <block v-if="cart_status">
                                 <view class="cart-mask wh-auto ht-auto pf" @tap="cart_event"></view>
@@ -435,7 +433,9 @@
                 // 商品列表模式一级分类图标类型
                 category_goods_model_icon_field: icon_type == 0 ? 'realistic_images' : icon_type == 1 ? 'icon' : 'big_images',
                 // 商品分类页面搜索进入独立搜索页面
-                is_goods_category_search_alone: app.globalData.data.is_goods_category_search_alone,
+                category_goods_is_search_alone: app.globalData.data.category_goods_is_search_alone,
+                // 商品分类页面开启购物车导航
+                category_goods_is_show_cart_nav: app.globalData.data.category_goods_is_show_cart_nav,
                 // 临时操作数据
                 temp_opt_data: null,
                 // 标签插件
@@ -630,11 +630,6 @@
                                 // 获取商品列表、仅首次请求商品列表
                                 if (this.is_first == 1) {
                                     this.get_goods_list(1);
-                                }
-                            } else {
-                                // 分类模式下、仅首次请求购物车接口和商品模式下
-                                if (this.is_first == 1 && this.category_show_level == 0) {
-                                    this.get_cart_data();
                                 }
                             }
 
@@ -1191,7 +1186,7 @@
 
             // 获取购物车数据
             get_cart_data() {
-                if (this.user != null) {
+                if (this.user != 2) {
                     uni.request({
                         url: app.globalData.get_request_url('index', 'cart'),
                         method: 'POST',
