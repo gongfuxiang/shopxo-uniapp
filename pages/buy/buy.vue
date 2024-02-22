@@ -29,7 +29,7 @@
                                     <view class="text fr"> {{ address.province_name || '' }}{{ address.city_name || '' }}{{ address.county_name || '' }}{{ address.address || '' }} </view>
                                 </view>
                             </view>
-                            <view v-if="address == null" class="padding-top-xl padding-bottom-xxxl cr-grey">
+                            <view v-else class="padding-top-xl padding-bottom-xxxl cr-grey">
                                 {{ common_site_type == 0 || (common_site_type == 4 && site_model == 0) ? $t('buy.buy.6rk813') : $t('buy.buy.wq7gnb') }}
                             </view>
                         </view>
@@ -86,8 +86,8 @@
                         <!-- 运费 -->
                         <view v-if="(group.plugins_freightfee_data || null) != null && (group.plugins_freightfee_data.default || null) != null && (group.plugins_freightfee_data.fee_list || null) != null && group.plugins_freightfee_data.fee_list.length > 0" class="buy-data-item oh">
                             <text class="cr-base">{{$t('buy.buy.876tgh')}}</text>
-                            <view class="fr cp">
-                                <view class="dis-inline-block va-m">
+                            <view class="right-value fr cp tr">
+                                <view class="right-value-content single-text dis-inline-block va-m">
                                     <picker :data-wid="group.id" @change="plugins_freightfee_change_event" :value="group.plugins_freightfee_data.default.key" :range="group.plugins_freightfee_data.fee_list" range-key="fee_name">
                                         <view class="cr-grey">{{ group.plugins_freightfee_data.default.fee_name }}</view>
                                     </picker>
@@ -100,8 +100,8 @@
                         <!-- 优惠劵 -->
                         <view v-if="(plugins_coupon_data || null) != null && (plugins_coupon_data[index] || null) != null && (plugins_coupon_data[index].coupon_data || null) != null && (plugins_coupon_data[index].coupon_data.coupon_list || null) != null && plugins_coupon_data[index].coupon_data.coupon_list.length > 0" class="buy-data-item oh" :data-index="index" @tap="plugins_coupon_open_event">
                             <text class="cr-base">{{$t('buy.buy.45ovhs')}}</text>
-                            <view class="fr cp">
-                                <text class="cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : $t('buy.buy.553mxo') }}</text>
+                            <view class="right-value fr cp tr">
+                                <text class="right-value-content single-text cr-grey va-m">{{ (plugins_choice_coupon_value || null) != null && (plugins_choice_coupon_value[group.id] || null) != null ? plugins_choice_coupon_value[group.id] : $t('buy.buy.553mxo') }}</text>
                                 <view class="dis-inline-block va-m lh-xs">
                                     <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                 </view>
@@ -112,10 +112,10 @@
                             <block v-for="(item, index2) in plugins_realstore_data[group.id]['data']" :key="index2">
                                 <view class="buy-data-item oh oh wh-auto">
                                     <text class="cr-base va-m">{{$t('buy.buy.58rs1a')}}</text>
-                                    <image class="image circle br va-m margin-left-lg" :src="item.images" mode="aspectFill"></image>
-                                    <text class="cr-grey va-m margin-left-xs text-size-xs">x{{ item.stock }}</text>
-                                    <view class="fr cp tr right-value single-text" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
-                                        <text class="cr-grey va-m">{{ item.tips_msg }}</text>
+                                    <image class="image circle br va-m margin-left-xs" :src="item.images" mode="aspectFill"></image>
+                                    <text class="cr-grey va-m margin-left-xss text-size-xs">x{{ item.stock }}</text>
+                                    <view class="right-value fr cp tr" :data-index="index2" :data-groupid="group.id" @tap="plugins_realstore_open_event">
+                                        <text class="right-value-content single-text cr-grey va-m">{{ item.tips_msg }}</text>
                                         <view class="dis-inline-block va-m lh-xs">
                                             <iconfont name="icon-arrow-right" color="#999"></iconfont>
                                         </view>

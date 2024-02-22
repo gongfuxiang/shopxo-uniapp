@@ -133,8 +133,8 @@
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
                         <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')">
-                            <view class="cart-exhibition-mode padding-horizontal-main">
-                                <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                            <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
+                                <button class="bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
                                         <uni-icons type="phone" size="14" color="#fff" />
                                     </view>
@@ -176,7 +176,7 @@
                                 </view>
                             </view>
                             <view class="cart-nav-submit">
-                                <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                                <button class="bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
                                     {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
                                 </button>
                             </view>

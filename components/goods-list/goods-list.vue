@@ -81,7 +81,7 @@
                                                             <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                                         </view>
                                                     </block>
-                                                    <view class="cr-main text-size-xs"> {{ item.integral }}{{ $t('index.index.t26j9z') }}</view>
+                                                    <view class="cr-main text-size-xs"> {{ item.plugins_points_exchange_integral }}{{ $t('index.index.t26j9z') }}</view>
                                                 </view>
                                             </block>
                                         </view>
