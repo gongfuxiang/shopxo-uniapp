@@ -137,6 +137,7 @@
     	"plugins-signin-user-qrcode-saveinfo": "Edición del Código de registro",
     	"plugins-signin-user-coming-list": "Registro de usuarios",
     	"plugins-points-index": "Centro Comercial de puntos",
+        "plugins-points-scan": "Escanear el Código para obtener puntos",
     	"plugins-brand-index": "Marca",
     	"plugins-shop-index": "Todas las tiendas",
     	"plugins-shop-detail": "Página de inicio de la tienda",

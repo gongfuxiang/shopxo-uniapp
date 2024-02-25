@@ -137,6 +137,7 @@
     	"plugins-signin-user-qrcode-saveinfo": "Sign in code editing",
     	"plugins-signin-user-coming-list": "User check-in",
     	"plugins-points-index": "Points Mall",
+        "plugins-points-scan": "Scan the QR code to claim points",
     	"plugins-brand-index": "brand",
     	"plugins-shop-index": "All stores",
     	"plugins-shop-detail": "Store homepage",

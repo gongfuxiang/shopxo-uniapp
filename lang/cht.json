@@ -137,6 +137,7 @@
     	"plugins-signin-user-qrcode-saveinfo": "簽到碼編輯",
     	"plugins-signin-user-coming-list": "用戶簽到",
     	"plugins-points-index": "積分商城",
+        "plugins-points-scan": "掃碼領積分",
     	"plugins-brand-index": "品牌",
     	"plugins-shop-index": "所有店鋪",
     	"plugins-shop-detail": "店鋪首頁",

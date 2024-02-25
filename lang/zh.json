@@ -140,6 +140,7 @@
         "plugins-signin-user-qrcode-saveinfo": "签到码编辑",
         "plugins-signin-user-coming-list": "用户签到",
         "plugins-points-index": "积分商城",
+        "plugins-points-scan": "扫码领积分",
         "plugins-brand-index": "品牌",
         "plugins-shop-index": "所有店铺",
         "plugins-shop-detail": "店铺首页",

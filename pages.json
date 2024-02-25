@@ -831,6 +831,13 @@
                     "enablePullDownRefresh": true,
                     "navigationBarTitleText": ""
                 }
+            },
+            {
+                "path": "scan/scan",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
             }]
         },
         {
