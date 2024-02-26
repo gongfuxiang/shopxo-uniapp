@@ -118,7 +118,7 @@
                             </view>
                             <!-- #ifndef H5 -->
                             <view v-if="item.index == 0" class="scan-item border-radius-main tc pa right-0 top-0" :data-index="index" @tap="search_icon_event">
-                                <iconfont name="icon-mendian-sousuosm" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
+                                <iconfont name="icon-scan" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
                             </view>
                             <!-- #endif -->
                         </view>

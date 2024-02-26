@@ -1,11 +1,22 @@
 <template>
     <view :class="theme_view">
-        <view v-if="(data || null) != null" :class="(user == null ? 'page-bottom-fixed' : '')">
+        <view v-if="(data || null) != null" :class="'page-content min-ht '+((user == null || data.status == -10000) ? 'page-bottom-fixed' : '')">
             <block v-if="data.status == -10000">
                 <!-- 顶部banner -->
                 <image v-if="(data_base.scan_top_banner || null) != null" :src="data_base.scan_top_banner" mode="widthFix" class="dis-block wh-auto auto"></image>
                 <!-- 底部图片 -->
                 <image v-if="(data_base.scan_bottom_images || null) != null" :src="data_base.scan_bottom_images" mode="widthFix" class="dis-block wh-auto auto"></image>
+                <!-- 扫码 -->
+                <view v-if="user != null" class="pf left-0 bottom-xxxxl wh-auto tc padding-horizontal-main bs-bb">
+                    <view class="bottom-line-exclude">
+                        <button type="default" class="scan-button text-size-sm round" @tap="scan_event">
+                            <view class="va-m dis-inline-block margin-right-xs">
+                                <iconfont name="icon-scan" size="28rpx" propClass="lh-il va-m" color="#CC2121"></iconfont>
+                            </view>
+                            <text class="va-m">扫一扫</text>
+                        </button>
+                    </view>
+                </view>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </block>
@@ -151,6 +162,27 @@
                 }
                 this.setData({
                     user: user || null,
+                });
+            },
+
+            // 扫码事件
+            scan_event() {
+                var self = this;
+                uni.scanCode({
+                    success: function (res) {
+                        if (res.result !== '') {
+                            var arr = ['/points-scan-index-id-', 'plugins/index/pluginsname/points/pluginscontrol/scan/pluginsaction/index/id/'];
+                            var ret = app.globalData.web_url_value_mate(res.result, arr);
+                            if (ret.status == 1 && ret.value != null) {
+                                var temp = self.params;
+                                temp['id'] = ret.value;
+                                self.setData({
+                                    params: temp
+                                });
+                                self.get_data();
+                            }
+                        }
+                    }
                 });
             }
         }

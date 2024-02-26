@@ -162,6 +162,18 @@ button:before {
 .fr {
     float: right;
 }
+.min-wh {
+    min-width: 100vw !important;
+}
+.min-ht {
+    min-height: 100vh !important;
+}
+.wh {
+    width: 100vw !important;
+}
+.ht {
+    height: 100vh !important;
+}
 .wh-auto {
     width: 100% !important;
 }
@@ -894,7 +906,7 @@ button[disabled].bg-grey {
 }
 
 /**
- * 滚动标签高度
+ * 滚动页面高度
  */
 .scroll-box {
     height: 100vh;

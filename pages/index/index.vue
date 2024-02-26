@@ -53,7 +53,7 @@
                             <block v-if="is_home_search_scan == 1">
                                 <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                     <!-- #ifndef H5 -->
-                                    @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
+                                    @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
                                     <!-- #endif -->
                                 ></component-search>
                             </block>

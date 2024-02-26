@@ -16,7 +16,7 @@
                                     :propIsIconOnEvent="is_realstore_top_search_scan == 1"
                                     :propIsOnEvent="true"
                                     :propIsRequired="false"
-                                    :propIcon="is_realstore_top_search_scan == 1 ? 'icon-mendian-sousuosm' : 'icon-qiandao-dqxz'"
+                                    :propIcon="is_realstore_top_search_scan == 1 ? 'icon-scan' : 'icon-qiandao-dqxz'"
                                     propPlaceholderClass="cr-grey-c"
                                     propBgColor="#fff"
                                     propIconColor="#333"
