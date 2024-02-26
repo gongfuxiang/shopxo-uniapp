@@ -13,7 +13,7 @@
                             <view class="va-m dis-inline-block margin-right-xs">
                                 <iconfont name="icon-scan" size="28rpx" propClass="lh-il va-m" color="#CC2121"></iconfont>
                             </view>
-                            <text class="va-m">扫一扫</text>
+                            <text class="va-m">{{$t('common.scan_name')}}</text>
                         </button>
                     </view>
                 </view>

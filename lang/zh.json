@@ -41,7 +41,8 @@
         "no_relevant_data_tips": "没有相关数据",
         "internet_error_tips": "网络开小差了哦~",
         "sub_error_retry_tips": "提交失败，请重试！",
-        "not_more_list_data_tips": "无更多列表数据"
+        "not_more_list_data_tips": "无更多列表数据",
+        "scan_name": "扫一扫"
     },
     "pages": {
         "index": "ShopXO",

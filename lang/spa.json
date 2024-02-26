@@ -41,7 +41,8 @@
 		"no_relevant_data_tips": "No hay datos relevantes",
 		"internet_error_tips": "La red está un poco mal.",
 		"sub_error_retry_tips": "¡La presentación falló, ¡ por favor, vuelva a intentarlo!",
-		"not_more_list_data_tips": "No hay más datos de lista"
+		"not_more_list_data_tips": "No hay más datos de lista",
+        "scan_name": "Barrer"
 	},
     "pages": {
     	"index": "Shopxo",

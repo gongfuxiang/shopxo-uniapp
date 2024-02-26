@@ -58,7 +58,7 @@
                     <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                         <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
                             <block v-for="(item, index) in opt_button" :key="index">
-                                <view v-if="(item.name || null) != null && (item.type || null) != null && (item.type == 'cart' || item.type == 'buy')" class="item fl bs-bb padding-horizontal-main">
+                                <view v-if="(item.name || null) != null && (item.type || null) != null && (item.type == 'cart' || item.type == 'buy' || item.type == 'show')" class="item fl bs-bb padding-horizontal-main">
                                     <button :class="'cr-white round text-size-sm bg-' + ((item.color || 'main') == 'main' ? 'main' : 'main-pair')" type="default" @tap="spec_confirm_event" :data-value="item.value" :data-type="item.type" hover-class="none">{{ item.name }}</button>
                                 </view>
                             </block>
@@ -156,7 +156,7 @@
                 var opt_button = [];
                 var buy_button = params.buy_button || null;
                 if (buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
-                    var arr = ['buy', 'cart'];
+                    var arr = ['buy', 'cart', 'show'];
                     for (var i in buy_button.data) {
                         if (arr.indexOf(buy_button.data[i]['type']) != -1) {
                             opt_button.push(buy_button.data[i]);
@@ -748,6 +748,13 @@
                         var type = e == null ? this.buy_event_type : e.currentTarget.dataset.type || this.buy_event_type;
                         var value = e == null ? null : e.currentTarget.dataset.value || null;
                         switch (type) {
+                            // 展示型、商品页面规格选择展示型 拨打电话操作
+                            case 'show':
+                            case 'spec-show':
+                                app.globalData.call_tel(value || app.globalData.get_config('config.common_app_customer_service_tel'));
+                                break;
+
+                            // 购买
                             case 'buy':
                                 // 进入订单确认页面
                                 var data = {

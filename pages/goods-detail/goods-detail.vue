@@ -242,9 +242,12 @@
                 </view>
 
                 <!-- 规格选择 -->
-                <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white arrow-right text-size-xs spacing-mb">
+                <view v-if="!plugins_realstore_cart_nav_status && goods.is_exist_many_spec == 1 && (buy_button || null) != null && (buy_button.is_buy || 0) + (buy_button.is_cart || 0) + (buy_button.is_show || 0) > 0" class="spec-container-view oh padding-horizontal-main padding-main border-radius-main bg-white text-size-xs spacing-mb">
                     <view class="fl item-title">{{$t('goods-detail.goods-detail.u401fi')}}</view>
-                    <view class="fr column-right-view border-radius-main cr-base single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'show'">{{ goods_spec_selected_text }}</view>
+                    <view class="fr column-right-view border-radius-main single-text cp" @tap="nav_buy_submit_event" :data-type="(buy_button.is_buy || 0) == 1 ? 'buy' : (buy_button.is_cart || 0) == 1 ? 'cart' : 'spec-show'">
+                        <text class="text-size-xs cr-grey-9">{{ goods_spec_selected_text }}</text>
+                        <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
+                    </view>
                 </view>
             </view>
 
@@ -270,7 +273,7 @@
                             </text>
                         </block>
                     </view>
-                    <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                    <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
                 </view>
 
                 <!-- 组合搭配 -->
@@ -1109,7 +1112,8 @@
                     case 'show':
                         app.globalData.call_tel(value || this.common_app_customer_service_tel);
                         break;
-                    // 购买、加入购物车
+                    // 规格选择(展示模式)、购买、加入购物车
+                    case 'spec-show':
                     case 'buy':
                     case 'cart':
                         this.setData({ buy_event_type: type });

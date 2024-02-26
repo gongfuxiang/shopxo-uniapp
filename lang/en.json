@@ -41,7 +41,8 @@
 		"not_more_list_data_tips": "No more list data available",
 		"login_in_text": "Logging in",
 		"sending_in_text": "Sending",
-		"sending": "Sending"
+		"sending": "Sending",
+        "scan_name": "Scan it"
 	},
     "pages": {
     	"index": "ShopXO",

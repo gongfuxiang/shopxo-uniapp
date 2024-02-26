@@ -535,10 +535,10 @@
     overflow-x: hidden;
     margin-top: 20rpx;
 }
-.plugins-wholesale-container .item>view:nth-child(2n) {
+.plugins-wholesale-container .item:nth-child(2n)>view {
     margin-left: 10rpx;
 }
-.plugins-wholesale-container .item>view:nth-child(2n+1) {
+.plugins-wholesale-container .item:nth-child(2n+1)>view {
     margin-right: 10rpx;
 }
 .plugins-wholesale-container .spec-tips {
