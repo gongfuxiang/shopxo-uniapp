@@ -211,6 +211,9 @@
                 submit_disabled_status: true,
                 order_id: 0,
                 popup_view_pay_html_is_show: false,
+                // 打开url地址定时任务和状态
+                open_pay_url_timer: null,
+                open_pay_url_status: true,
             };
         },
         methods: {
@@ -416,16 +419,16 @@
             },
             // APP支付
             app_pay_handle(self, data, order_id) {
-                uni.getProvider({
-                    service: 'payment',
-                    success: function (res) {
-                        var arr = {
-                            Alipay: 'alipay',
-                            Weixin: 'wxpay',
-                            PayPal: 'paypal'
-                        }
-                        var pay_value = arr[data.payment.payment] || null;
-                        if(pay_value != null) {
+                var arr = {
+                    Alipay: 'alipay',
+                    Weixin: 'wxpay',
+                    PayPal: 'paypal'
+                }
+                var pay_value = arr[data.payment.payment] || null;
+                if(pay_value != null) {
+                    uni.getProvider({
+                        service: 'payment',
+                        success: function (res) {
                             if(~res.provider.indexOf(pay_value)) {
                                 var pay_data = ((data.data.pay_data || null) == null) ? data.data : data.data.pay_data;
                                 uni.requestPayment({
@@ -437,7 +440,7 @@
                                         if(call_back_url != null) {
                                             uni.request({url: call_back_url, method: 'GET'});
                                         }
-
+                    
                                         // 成功处理数据
                                         self.order_item_pay_success_handle(data, order_id);
                                     },
@@ -446,13 +449,53 @@
                                     }
                                 });
                             } else {
-                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.t4d687'));
+                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
                             }
-                        } else {
-                            app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
                         }
+                    });
+                } else {
+                    // 先清除定时任务
+                    if(self.open_pay_url_timer != null) {
+                        clearTimeout(self.open_pay_url_timer);
                     }
-                });
+                    // 显示加载层
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                        mask: true
+                    });
+                    // 设置打开url状态
+                    self.setData({
+                        open_pay_url_status: true
+                    });
+                    // 打开url
+                    plus.runtime.openURL(data.data, function(error) {
+                        uni.hideLoading();
+                        // 打开url失败、并进入提示失败环节
+                        self.setData({
+                            open_pay_url_status: false
+                        });
+                        self.order_item_pay_fail_handle(data, order_id, error);
+                    });
+                    // 定时3秒后提示用户确认支付状态
+                    self.open_pay_url_timer = setTimeout(function() {
+                        if(self.open_pay_url_status) {
+                            uni.hideLoading();
+                            uni.showModal({
+                                content: self.$t('payment.payment.sdfs31'),
+                                showCancel: true,
+                                cancelText: self.$t('common.not_have_name'),
+                                confirmText: self.$t('order.order.s8g966'),
+                                success(res) {
+                                    if (res.confirm) {
+                                        self.order_item_pay_success_handle(data, order_id);
+                                    } else {
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                    }
+                                },
+                            });
+                        }
+                    }, 3000);
+                }
             },
             // 快手小程序
             kuaishou_pay_handle(self, data, order_id) {

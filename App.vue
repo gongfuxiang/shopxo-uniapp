@@ -2541,25 +2541,29 @@
 
             // 页面导航标题处理
             set_pages_navigation_bar_title() {
-                var arr = [
-                    'pages/index/index',
-                    'pages/goods-category/goods-category',
-                    'pages/cart/cart',
-                    'pages/user/user',
-                    'pages/plugins/realstore/detail/detail'
-                ];
+                // 当前平台
+                var client_value = this.application_client_type();
                 // 当前页面地址
                 var url = this.current_page(false);
-                // 不增加标题的页面
-                if(arr.indexOf(url) == -1) {
-                    var arr = url.split('/');
-                        arr = arr.slice(1);
-                        arr = arr.slice(0, -1);
-                    var key = 'pages.'+arr.join('-');
-                    uni.setNavigationBarTitle({
-                        title: i18n.t(key),
-                    });
+                // 支付宝平台当前tab页面不增加标题
+                if(client_value == 'alipay' && this.data.tabbar_pages.indexOf('/'+url) == -1) {
+                    return false;
                 }
+                // 解析处理key
+                var arr = url.split('/');
+                    arr = arr.slice(1);
+                    arr = arr.slice(0, -1);
+                var key = 'pages.'+arr.join('-');
+                // 读取语言
+                var value = i18n.t(key);
+                // 首页则读取当前应用名称
+                if(this.data.tabbar_pages[0] == '/'+url) {
+                    value = this.get_application_title();
+                }
+                // 设置标题
+                uni.setNavigationBarTitle({
+                    title: value
+                });
             },
 
             // 页面加载事件处理

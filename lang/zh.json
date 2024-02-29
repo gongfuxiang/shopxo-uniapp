@@ -42,10 +42,10 @@
         "internet_error_tips": "网络开小差了哦~",
         "sub_error_retry_tips": "提交失败，请重试！",
         "not_more_list_data_tips": "无更多列表数据",
-        "scan_name": "扫一扫"
+        "scan_name": "扫一扫",
+        "not_have_name": "没有"
     },
     "pages": {
-        "index": "ShopXO",
         "goods-category": "商品分类",
         "cart": "购物车",
         "user": "用户中心",
@@ -1565,7 +1565,8 @@
             "bv637f": "支付未定义",
             "4dszme": "请使用真机操作、或小程序基础版本太低！",
             "k2i010": "支付成功后、请不要重复支付、如果订单状态未成功请联系客服处理",
-            "2rw3qh": "支付方式还未适配"
+            "2rw3qh": "支付方式还未适配",
+            "sdfs31": "是否已完成支付？"
         }
     },
     "realstore-cart": {

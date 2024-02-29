@@ -42,10 +42,10 @@
 		"login_in_text": "Logging in",
 		"sending_in_text": "Sending",
 		"sending": "Sending",
-        "scan_name": "Scan it"
+        "scan_name": "Scan it",
+        "not_have_name": "not have"
 	},
     "pages": {
-    	"index": "ShopXO",
     	"goods-category": "Product classification",
     	"cart": "shopping cart",
     	"user": "User Center",
@@ -1574,7 +1574,8 @@
 			"bv637f": "Payment undefined",
 			"4dszme": "Please use real machine operation, or the basic version of the mini program is too low!",
 			"k2i010": "After successful payment, please do not make duplicate payments. If the order status is not successful, please contact customer service for assistance",
-			"2rw3qh": "The payment method has not been adapted yet"
+			"2rw3qh": "The payment method has not been adapted yet",
+            "sdfs31": "Has the payment been completed?"
 		}
 	},
 	"realstore-cart": {

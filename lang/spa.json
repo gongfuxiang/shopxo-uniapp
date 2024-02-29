@@ -42,10 +42,10 @@
 		"internet_error_tips": "La red está un poco mal.",
 		"sub_error_retry_tips": "¡La presentación falló, ¡ por favor, vuelva a intentarlo!",
 		"not_more_list_data_tips": "No hay más datos de lista",
-        "scan_name": "Barrer"
+        "scan_name": "Barrer",
+        "not_have_name": "No, No."
 	},
     "pages": {
-    	"index": "Shopxo",
     	"goods-category": "Clasificación de mercancías",
     	"cart": "Carrito de compras",
     	"user": "Centro de usuarios",
@@ -1561,7 +1561,8 @@
 			"bv637f": "Pago no definido",
 			"4dszme": "¡¡ por favor, use la máquina real para operar o la versión básica del applet es demasiado baja!",
 			"k2i010": "Después de que el pago sea exitoso, no repita el pago, si el Estado del pedido no es exitoso, Póngase en contacto con el servicio al cliente para procesarlo.",
-			"2rw3qh": "El método de pago aún no se ha adaptado"
+			"2rw3qh": "El método de pago aún no se ha adaptado",
+            "sdfs31": "¿¿ se ha completado el pago?"
 		}
 	},
 	"realstore-cart": {
