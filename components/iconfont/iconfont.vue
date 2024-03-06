@@ -31,7 +31,7 @@
     /* iconfont.css全局注册需要将src切换成绝对路径 */
     /* @/static/icon/ */
     @import url('@/static/icon/iconfont.css');
-    /* @import url('https://at.alicdn.com/t/c/font_4227145_r2jv37yqfec.css'); */
+    /* @import url('https://at.alicdn.com/t/c/font_4227145_kbr2f9jt68b.css'); */
 
     .iconfont {
         display: inline-block;

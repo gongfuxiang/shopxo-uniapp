@@ -1232,6 +1232,80 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/coin",
+            "pages": [{
+                    "path": "user/user",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "虚拟币"
+                    }
+                },
+                {
+                    "path": "recharge/recharge",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "充值"
+                    }
+                },
+                {
+                    "path": "convert/convert",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "转换"
+                    }
+                },
+                {
+                    "path": "withdrawal/withdrawal",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "提现"
+                    }
+                },
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": "明细"
+                    }
+                }
+            ]
         }
     ],
     "globalStyle": {

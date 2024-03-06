@@ -225,6 +225,9 @@ button:before {
 .radius {
     border-radius: 10rpx !important;
 }
+.radius-lg {
+    border-radius: 32rpx !important;
+}
 .round {
     border-radius: 50rpx !important;
 }

@@ -1,0 +1,25 @@
+.coin-title {
+    background-size: 100% auto;
+    padding-top: 130rpx;
+    /* #ifndef H5  */
+    padding-top: calc(var(--status-bar-height) + 5px + 130rpx);
+    /* #endif */
+    border-bottom-left-radius: 60rpx;
+    border-bottom-right-radius: 60rpx;
+}
+
+.coin-oprate-list {
+    --size: 96rpx;
+    width: var(--size);
+    height: var(--size);
+    border-radius: 32rpx;
+}
+
+.coin-content {
+
+}
+.coin-content-list-img {
+    --size: 80rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}

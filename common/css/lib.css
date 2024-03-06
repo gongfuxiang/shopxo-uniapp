@@ -534,6 +534,10 @@
 	font-size: 84rpx !important;
 }
 
+.text-size-40 {
+	font-size: 80rpx !important;
+}
+
 /**
  * 行间距
  */
