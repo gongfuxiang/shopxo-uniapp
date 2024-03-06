@@ -3,7 +3,7 @@
         <component-nav-back></component-nav-back>
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'title-bg.png)'">
+                <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
                     <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
                         <view>
                             <view class="cr-base text-size-md">总数量</view>
@@ -23,15 +23,17 @@
                     </view>
                 </view>
                 <view class="coin-content padding-lg">
-                    <view class="bg-white radius-lg padding-lg">
-                        <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'">
-                            <view class="flex-1 flex-width flex-row align-c padding-right-main">
-                                <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
-                                <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
-                            </view>
-                            <view class="flex-col">
-                                <view class="margin-bottom-xss">{{ item.num }}</view>
-                                <view class="cr-grey-9">{{ item.price }}</view>
+                    <view class="bg-white radius-lg padding-sm">
+                        <view class="coin-item padding-main">
+                            <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'">
+                                <view class="flex-1 flex-width flex-row align-c padding-right-main">
+                                    <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
+                                </view>
+                                <view class="flex-col align-e">
+                                    <view class="margin-bottom-xss text-size">{{ item.num }}</view>
+                                    <view class="cr-grey-9">{{ item.price }}</view>
+                                </view>
                             </view>
                         </view>
                     </view>

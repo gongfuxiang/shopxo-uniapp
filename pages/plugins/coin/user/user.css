@@ -15,9 +15,14 @@
     border-radius: 32rpx;
 }
 
-.coin-content {
-
+.coin-content .coin-item {
+    max-height: calc(100vh - 688rpx);
+    /* #ifndef H5  */
+    max-height: calc(100vh - 688rpx - var(--status-bar-height) - 5px);
+    /* #endif */
+    overflow-y: auto;
 }
+
 .coin-content-list-img {
     --size: 80rpx;
     width: var(--size);

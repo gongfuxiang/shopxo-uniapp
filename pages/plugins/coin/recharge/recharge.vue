@@ -3,30 +3,25 @@
         <component-nav-back></component-nav-back>
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'title-bg.png)'">
+                <view class="recharge-title flex-col padding-lg">
                     <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
-                        <view>
-                            <view class="cr-base text-size-md">总数量</view>
-                            <view class="text-size-40 fw-b">{{ is_price_show ? '5410.00' : '***' }}</view>
+                        <view class="cr-white">
+                            <view class="text-size-md">
+                                <text>BTC</text>
+                                <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
+                            </view>
+                            <view class="text-size-40 fw-b">38000</view>
                         </view>
                         <view @tap="price_change">
                             <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
                         </view>
                     </view>
-                    <view class="flex-row jc-sb padding-bottom-main">
-                        <view v-for="(item, index) in coin_oprate_list" class="tc text-size-xs" :key="index" :data-value="item.url" @tap="url_event">
-                            <view class="coin-oprate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont :name="item.icon" size="44rpx" color="#635BFF"></iconfont>
-                            </view>
-                            <view>{{ item.name }}</view>
-                        </view>
-                    </view>
                 </view>
-                <view class="coin-content padding-lg">
+                <view class="recharge-content padding-lg">
                     <view class="bg-white radius-lg padding-lg">
                         <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'">
                             <view class="flex-1 flex-width flex-row align-c padding-right-main">
-                                <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
+                                <image :src="item.img" mode="widthFix" class="recharge-content-list-img round" />
                                 <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
                             </view>
                             <view class="flex-col">
