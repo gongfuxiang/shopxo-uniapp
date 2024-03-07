@@ -88,8 +88,7 @@
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
 
-                // 是否显示虚拟币
-                is_unit_arrow: false,
+                // 虚拟币状态
                 coin_index: 0,
                 coin_list: [
                     {
@@ -181,13 +180,13 @@
             price_change() {
                 this.setData({});
             },
-            //
+            // 虚拟币切换
             coin_event(e) {
                 this.setData({
                     coin_index: parseInt(e.detail.value || 0),
                 });
             },
-            // 充币网络
+            // 充币网络切换
             recharge_event(e) {
                 this.setData({
                     recharge_web_index: parseInt(e.detail.value || 0),

@@ -86,83 +86,11 @@
                 ],
                 coin_data: [
                     {
-                        img: wallet_static_url + 'title-bg.png',
+                        img: wallet_static_url + 'user-head-bg.png',
                         name: 'BTC',
                         price: '¥20000',
                         num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
+                    }
                 ],
             };
         },

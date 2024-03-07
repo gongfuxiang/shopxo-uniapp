@@ -19,16 +19,17 @@
     border-radius: 12px;
 }
 
+.coin-dropdown-icon {
+    right: -36rpx;
+    top: 2rpx;
+    padding: 0;
+}
+
 .recharge-qrcode {
     background-color: #fff;
     border-radius: 40rpx;
     text-align: center;
     padding: 30rpx 38rpx;
-}
-.coin-dropdown-icon {
-    right: -36rpx;
-    top: 2rpx;
-    padding: 0;
 }
 
 /* 
@@ -71,7 +72,13 @@
 
 .recharge-btn {
     background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
+    transition: all 0.3s ease-in-out;
 }
+
+.recharge-btn:active {
+    background: linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
+}
+
 .recharge-content-tips .item::before {
     content: '';
     width: 12rpx;
