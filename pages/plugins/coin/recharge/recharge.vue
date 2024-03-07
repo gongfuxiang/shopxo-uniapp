@@ -4,30 +4,66 @@
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="recharge-title flex-col padding-lg">
-                    <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
+                    <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
                         <view class="cr-white">
-                            <view class="text-size-md">
-                                <text>BTC</text>
-                                <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
-                            </view>
+                            <picker class="coin-dropdown text-size-md pr margin-bottom-main" @change="coin_event" :value="coin_index" :range="coin_list" range-key="name">
+                                <view class="picker pr">
+                                    <text>{{ coin_list[coin_index]['name'] }}</text>
+                                    <view class="coin-dropdown-icon pa padding-left-xxl">
+                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
+                                    </view>
+                                </view>
+                            </picker>
                             <view class="text-size-40 fw-b">38000</view>
                         </view>
-                        <view @tap="price_change">
-                            <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
+                        <view class="recharge-qrcode">
+                            <iconfont name="icon-qrcode" size="160rpx"></iconfont>
                         </view>
                     </view>
                 </view>
-                <view class="recharge-content padding-lg">
-                    <view class="bg-white radius-lg padding-lg">
-                        <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'">
-                            <view class="flex-1 flex-width flex-row align-c padding-right-main">
-                                <image :src="item.img" mode="widthFix" class="recharge-content-list-img round" />
-                                <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
+                <view class="recharge-content padding-xxl bg-white">
+                    <view class="margin-bottom-xxxl">
+                        <view class="margin-bottom-main">充币地址</view>
+                        <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
+                            <view class="single-text padding-right-sm flex-1 flex-width">4gfgefg33445fghfghh4bfbfghebdfb34fgdfg44gfgefg33445fghfghh4bfbfghebdfb34fgdfg4</view>
+                            <view @tap.stop="text_copy_event">
+                                <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
                             </view>
-                            <view class="flex-col">
-                                <view class="margin-bottom-xss">{{ item.num }}</view>
-                                <view class="cr-grey-9">{{ item.price }}</view>
+                        </view>
+                    </view>
+                    <view class="margin-bottom-xxxl">
+                        <view class="margin-bottom-main">充币网络</view>
+                        <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="recharge_web_index" :range="recharge_web_list" range-key="name">
+                            <view class="picker arrow-bottom">
+                                {{ recharge_web_list[recharge_web_index]['name'] }}
                             </view>
+                        </picker>
+                    </view>
+                    <view class="margin-bottom-xxxl">
+                        <view class="margin-bottom-xs">选择充值金额</view>
+                        <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
+                            <view v-for="(item, index) in recharge_price_list" :key="index" class="recharge-price-list flex-col align-c jc-c">
+                                <view class="flex-row align-c jc-c">
+                                    <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
+                                    <view>{{ item.name }}</view>
+                                </view>
+                                <view>{{ item.price }}</view>
+                            </view>
+                        </view>
+                        <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
+                            <text>其他数量</text>
+                            <view class="padding-left-lg">
+                                <input type="digit" class="" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入充值数量" />
+                            </view>
+                        </view>
+                        <button type="default" class="recharge-btn cr-white round" @tap="popup_goods_search_event">立即充值</button>
+                    </view>
+                    <view class="margin-bottom-xxxl">
+                        <view class="margin-bottom-main">充值说明：</view>
+                        <view class="recharge-content-tips">
+                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
+                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
+                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
                         </view>
                     </view>
                 </view>
@@ -53,108 +89,47 @@
                 status_bar_height: bar_height,
 
                 // 是否显示虚拟币
-                is_price_show: false,
-                // 虚拟币操作列表
-                coin_oprate_list: [
+                is_unit_arrow: false,
+                coin_index: 0,
+                coin_list: [
                     {
-                        name: '充值',
-                        icon: 'icon-recharge',
-                        url: '/pages/plugins/coin/recharge/recharge',
+                        name: 'BTC',
                     },
                     {
-                        name: '转换',
-                        icon: 'icon-convert',
-                        url: '/pages/plugins/coin/convert/convert',
-                    },
-                    {
-                        name: '提现',
-                        icon: 'icon-withdrawal',
-                        url: '/pages/plugins/coin/withdrawal/withdrawal',
-                    },
-                    {
-                        name: '明细',
-                        icon: 'icon-detail',
-                        url: '/pages/plugins/coin/detail/detail',
+                        name: 'USDT-polygon',
                     },
                 ],
-                coin_data: [
+                // 充币网络
+                recharge_web_index: 0,
+                recharge_web_list: [
                     {
-                        img: wallet_static_url + 'title-bg.png',
                         name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
                     },
                     {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
+                        name: 'USDT-polygon',
+                    },
+                ],
+                // 充值金额
+                recharge_price_list: [
+                    {
+                        name: '100',
+                        price: '100',
                     },
                     {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
+                        name: '400',
+                        price: '400',
                     },
                     {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
+                        name: '400',
+                        price: '400',
                     },
                     {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
+                        name: '400',
+                        price: '400',
                     },
                     {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
+                        name: '400',
+                        price: '400',
                     },
                 ],
             };
@@ -204,8 +179,18 @@
 
             // 显示隐藏虚拟币
             price_change() {
+                this.setData({});
+            },
+            //
+            coin_event(e) {
                 this.setData({
-                    is_price_show: !this.is_price_show,
+                    coin_index: parseInt(e.detail.value || 0),
+                });
+            },
+            // 充币网络
+            recharge_event(e) {
+                this.setData({
+                    recharge_web_index: parseInt(e.detail.value || 0),
                 });
             },
             // 页面滚动监听
@@ -216,6 +201,10 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+            // 复制文本
+            text_copy_event(e) {
+                app.globalData.text_copy_event(e);
             },
         },
     };

@@ -47,7 +47,7 @@
                             <!-- 已开通会员 -->
                             <view class="pa vip-btn flex-row align-c">
                                 <navigator url="/pages/plugins/membershiplevelvip/member-code/member-code" hover-class="none">
-                                    <iconfont name="icon-wdhy-erweima" size="44rpx" color="#fff" propClass="padding-right-main pr bottom-md"></iconfont>
+                                    <iconfont name="icon-qrcode" size="44rpx" color="#fff" propClass="padding-right-main pr bottom-md"></iconfont>
                                 </navigator>
                                 <block v-if="(user_vip || null) != null">
                                     <!-- 判断会员永久 -->

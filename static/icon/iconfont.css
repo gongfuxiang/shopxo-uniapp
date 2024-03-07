@@ -14,6 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-copy:before {
+  content: "\e71e";
+}
+
 .icon-zhuanzhang:before {
   content: "\e71b";
 }
@@ -154,7 +158,7 @@
   content: "\e6d8";
 }
 
-.icon-wdhy-erweima:before {
+.icon-qrcode:before {
   content: "\e6d7";
 }
 

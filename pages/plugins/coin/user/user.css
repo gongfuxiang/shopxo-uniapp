@@ -1,3 +1,6 @@
+/* 
+ * 顶部
+*/
 .coin-title {
     background-size: 100% auto;
     padding-top: 130rpx;
@@ -14,7 +17,9 @@
     height: var(--size);
     border-radius: 32rpx;
 }
-
+/* 
+ * 内容
+*/
 .coin-content .coin-item {
     max-height: calc(100vh - 688rpx);
     /* #ifndef H5  */
