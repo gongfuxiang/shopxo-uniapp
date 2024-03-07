@@ -70,7 +70,10 @@
                 client_value: app.globalData.application_client_type(),
                 data_list: [],
                 params: null,
+                // 当前默认地址id
                 is_default: 0,
+                // 自动导入系统地址并选择
+                is_auto_import_system_address_choose: 0,
             };
         },
 
@@ -164,26 +167,37 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            if (data.data.length > 0) {
+                            var data_list = data.data || [];
+                            if (data_list.length > 0) {
                                 // 获取当前默认地址
                                 var is_default = 0;
-                                for (var i in data.data) {
-                                    if (data.data[i]['is_default'] == 1) {
-                                        is_default = data.data[i]['id'];
+                                for (var i in data_list) {
+                                    if (data_list[i]['is_default'] == 1) {
+                                        is_default = data_list[i]['id'];
                                     }
                                 }
 
                                 // 设置数据
                                 this.setData({
-                                    data_list: data.data,
+                                    data_list: data_list,
                                     is_default: is_default,
                                     data_list_loding_status: 3,
                                     data_bottom_line_status: true,
                                 });
                             } else {
                                 this.setData({
+                                    data_list: [],
                                     data_list_loding_status: 0,
+                                    data_bottom_line_status: false,
                                 });
+
+                                // 没有地址：当前不是选择地址自动返回模式下、是否下单选择地址、并且开启了系统地址选择则导入系统地址
+                                if(this.is_auto_import_system_address_choose == 0 && (this.params.is_back || 0) == 1 && this.common_user_address_platform_import_list.length > 0 && this.common_user_address_platform_import_list.indexOf(this.client_value) != -1) {
+                                    this.setData({
+                                        is_auto_import_system_address_choose: 1,
+                                    });
+                                    this.choose_system_address_event();
+                                }
                             }
                         } else {
                             this.setData({
@@ -217,17 +231,22 @@
                         app.globalData.showToast(data.address_disable_msg);
                     } else {
                         // 存储缓存并返回
-                        uni.setStorage({
-                            key: app.globalData.data.cache_buy_user_address_select_key,
-                            data: data,
-                        });
-                        uni.navigateBack();
+                        this.address_choose_cache_save_back(data);
                     }
                 } else {
                     // 点击复制地址
                     var copy_val = this.$t('user-address.user-address.7r29v8') + data.name + '\n' + this.$t('user-address.user-address.2nmsi1') + data.tel + '\n' + this.$t('user-address.user-address.s150l6') + data.province_name + data.city_name + data.county_name + data.address;
                     app.globalData.text_copy_event(copy_val);
                 }
+            },
+
+            // 地址选择存储并返回
+            address_choose_cache_save_back(address) {
+                uni.setStorage({
+                    key: app.globalData.data.cache_buy_user_address_select_key,
+                    data: address,
+                });
+                uni.navigateBack();
             },
 
             // 获取系统地址事件
@@ -242,6 +261,7 @@
                 // #endif
 
                 // 获取地址授权信息
+                var self = this;
                 uni.chooseAddress({
                     success(res) {
                         var data = {
@@ -252,33 +272,40 @@
                             county: res.countyName || '',
                             address: res.detailInfo || '',
                         };
-
-                        // 加载获取数据
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('outsystemadd', 'useraddress'),
-                            method: 'POST',
-                            data: data,
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.get_data_list();
-                                } else {
-                                    if (app.globalData.is_login_check(res.data)) {
-                                        app.globalData.showToast(res.data.msg);
+                        if((Object.values(data).join('') || null) != null) {
+                            uni.showLoading({
+                                title: self.$t('common.processing_in_text'),
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('outsystemadd', 'useraddress'),
+                                method: 'POST',
+                                data: data,
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        // 是否自动选择地址并返回
+                                        if(self.is_auto_import_system_address_choose == 1) {
+                                            // 存储缓存并返回
+                                            self.address_choose_cache_save_back(res.data.data);
+                                        } else {
+                                            // 重新拉取列表数据
+                                            self.get_data_list();
+                                        }
                                     } else {
-                                        app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                        if (app.globalData.is_login_check(res.data)) {
+                                            app.globalData.showToast(res.data.msg);
+                                        } else {
+                                            app.globalData.showToast(self.$t('common.sub_error_retry_tips'));
+                                        }
                                     }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(self.$t('common.internet_error_tips'));
+                                },
+                            });
+                        }
                     },
                 });
             },

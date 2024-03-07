@@ -7,12 +7,9 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                // request_url: 'https://d1.shopxo.vip/',
                 request_url: 'http://shopxo.com/',
-                
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                // static_url: 'https://d1.shopxo.vip/',
                 static_url: 'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
@@ -52,32 +49,35 @@
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
 
                 // 公共配置
-                // 分享及转发使用页面设置的默认图片及系统默认图片（0 否, 1 是）
+                // 分享及转发使用页面设置的默认图片及系统默认图片（0否, 1是）
                 is_share_use_image: 1,
 
-                // 商品详情页底部导航是否开启购物车功能（0 否, 1 是）
+                // 商品详情页底部导航是否开启购物车功能（0否, 1是）
                 is_goods_bottom_opt_cart: 1,
 
-                // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0 否, 1 是）
+                // 商品详情页底部导航存在指定返回参数[is_opt_back=1]展示返回按钮（0否, 1是）
                 is_goods_bottom_opt_back: 1,
 
-                // 全站阻止打开商品详情页面（0 否, 1 是）
+                // 全站阻止打开商品详情页面（0否, 1是）
                 is_forbid_to_goods_detail: 0,
 
-                // 开启浮动客服、前提是后台需要开启客服功能（0 否, 1 是）
+                // 开启浮动客服、前提是后台需要开启客服功能（0否, 1是）
                 is_online_service_fixed: 1,
 
                 // 分类页面商品列表模式一级分类使用图标类型（0 实景图, 1 icon图标, 2 大图片）
                 category_goods_model_icon_type: 0,
+
+                // 商品分类页面搜索进入独立搜索页面（0否, 1是）
+                category_goods_is_search_alone: 0,
+
+                // 商品分类页面开启购物车导航（0否, 1是）
+                category_goods_is_show_cart_nav: 1,
 
                 // 用户中心菜单默认展示模式（0 九宫格, 1 列表）
                 user_center_nav_show_model_type: 0,
 
                 // 商品列表是否展示购物车（0否, 1是）
                 is_goods_list_show_cart_opt: 1,
-
-                // 商品分类页面搜索进入独立搜索页面（0否, 1是）
-                is_goods_category_search_alone: 0,
 
                 // 分销页面地图分布是否强制获取当前位置（0否, 1是）
                 is_distribution_map_force_location: 0,
@@ -98,7 +98,7 @@
                 // 首页开启地理位置选择（0否, 1是）优先级高于logo展示
                 is_home_location_choice: 0,
 
-                // 门店详情顶部导航返回按钮（0 否, 1 是）
+                // 门店详情顶部导航返回按钮（0否, 1是）
                 is_realstore_top_nav_back: 1,
 
                 // 门店详情搜索框内扫码加购（0否, 1是）
@@ -1701,11 +1701,17 @@
 
             // url协议地址处理
             page_url_protocol(url) {
-                if ((url || null) != null) {
-                    var http_arr = ['https:', 'http:/'];
-                    if (http_arr.indexOf(url.substr(0, 6)) == -1) {
-                        url = this.get_config('config.common_app_h5_url') + url;
+                if ((url || null) != null && !this.is_url(url)) {
+                    // 拼接H5地址
+                    var host = this.get_config('config.common_app_h5_url', '');
+                    // #ifdef H5
+                    if(host == '') {
+                        // H5模式下、未指定H5地址则获取当前host
+                        host = window.location.href.split('#')[0]+'#/';
                     }
+                    // #endif
+                    // 处理中间拼接的斜杠是否重复
+                    url = (host + url).replace('#//', '#/');
                 }
                 return url;
             },
@@ -1825,7 +1831,10 @@
                 };
                 result['url'] = this.get_page_url();
                 // #ifdef H5 || APP
-                result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                // 是有效的url地址则通过#号分割处理参数
+                if(this.is_url(result['url'])) {
+                    result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
+                }
                 // #endif
                 return result;
             },
@@ -1979,31 +1988,6 @@
                         url: url,
                     });
                 }, 1500);
-            },
-
-            // 是否站点变灰
-            is_app_mourning() {
-                var is_app = parseInt(this.get_config('plugins_base.mourning.data.is_app', 0));
-                if (is_app == 1) {
-                    // 当前时间戳
-                    var time_current = Date.parse(new Date());
-                    // 开始时间
-                    var time_start = this.get_config('plugins_base.mourning.data.time_start') || null;
-                    if (time_start != null) {
-                        if (Date.parse(new Date(time_start)) > time_current) {
-                            return false;
-                        }
-                    }
-                    // 结束时间
-                    var time_end = this.get_config('plugins_base.mourning.data.time_end') || null;
-                    if (time_end != null) {
-                        if (Date.parse(new Date(time_end)) < time_current) {
-                            return false;
-                        }
-                    }
-                    return true;
-                }
-                return false;
             },
 
             // 是否站点变灰
@@ -2555,6 +2539,33 @@
                 clearInterval(this.data.weixin_privacy_setting_timer);
             },
 
+            // 页面导航标题处理
+            set_pages_navigation_bar_title() {
+                // 当前平台
+                var client_value = this.application_client_type();
+                // 当前页面地址
+                var url = this.current_page(false);
+                // 支付宝平台当前tab页面不增加标题
+                if(client_value == 'alipay' && this.data.tabbar_pages.indexOf('/'+url) == -1) {
+                    return false;
+                }
+                // 解析处理key
+                var arr = url.split('/');
+                    arr = arr.slice(1);
+                    arr = arr.slice(0, -1);
+                var key = 'pages.'+arr.join('-');
+                // 读取语言
+                var value = i18n.t(key);
+                // 首页则读取当前应用名称
+                if(this.data.tabbar_pages[0] == '/'+url) {
+                    value = this.get_application_title();
+                }
+                // 设置标题
+                uni.setNavigationBarTitle({
+                    title: value
+                });
+            },
+
             // 页面加载事件处理
             page_event_onload_handle(params) {
                 // 设置底部菜单
@@ -2565,27 +2576,9 @@
             page_event_onshow_handle() {
                 // 设置底部菜单
                 this.set_tabbar();
-                // 获取当前页面路径
-                var url = this.current_page(false);
-                var keyList = url.split('/');
-                var new_key = '';
-                keyList.forEach((item, index) => {
-                    // new_key += item;
-                    if (keyList.length > index + 1) {
-                        if (index == 0) {
-                            new_key += item + '.';
-                        } else {
-                            if (keyList.length == index + 2) {
-                                new_key += item;
-                            } else {
-                                new_key += item + '-';
-                            }
-                        }
-                    }
-                });
-                uni.setNavigationBarTitle({
-                    title: i18n.t(new_key),
-                });
+
+                // 页面顶部导航标题设置
+                this.set_pages_navigation_bar_title();
             },
         },
 

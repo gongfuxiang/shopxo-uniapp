@@ -109,7 +109,7 @@
                                 </view>
                             </block>
                             <!-- 清除缓存 -->
-                            <view class="nav-item br-t cp padding-main" @tap="remove_user_cache_event">
+                            <view v-if="(nav_logout_data || null) != null" class="nav-item br-t cp padding-main" @tap="remove_user_cache_event">
                                 <view class="arrow-right">
                                     <image :src="common_static_url + nav_logout_data.icon + '-icon.png'" class="item-icon va-m" mode="widthFix"></image>
                                     <text class="item-name va-m cr-base margin-left-sm text-size-sm">{{ nav_logout_data.name }}</text>
@@ -135,7 +135,7 @@
                                 </block>
                             </block>
                             <!-- 清除缓存 -->
-                            <view class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
+                            <view v-if="(nav_logout_data || null) != null" class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
                                 <image :src="common_static_url + nav_logout_data.icon + '-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ nav_logout_data.name }}</view>
                             </view>
@@ -189,7 +189,7 @@
                 user_id: '',
                 nickname: '',
                 message_total: 0,
-                nav_logout_data: {},
+                nav_logout_data: null,
                 // 头部小导航
                 head_nav_list: [],
                 // 主要的订单+副导航
@@ -246,26 +246,27 @@
         methods: {
             // 资源设置
             set_resources_data() {
+                var old_nav = this.head_nav_list;
                 var head_nav_list = [
                     {
                         name: this.$t('promotion-order.promotion-order.iwa646'),
                         url: 'user-order',
-                        count: this.head_nav_list.length > 0 ? this.head_nav_list[0].count : 0,
+                        count: old_nav.length > 0 ? old_nav[0].count : 0,
                     },
                     {
                         name: this.$t('user.user.3q4p8k'),
                         url: 'user-favor',
-                        count: this.head_nav_list.length > 0 ? this.head_nav_list[1].count : 0,
+                        count: old_nav.length > 0 ? old_nav[1].count : 0,
                     },
                     {
                         name: this.$t('user.user.57xw84'),
                         url: 'user-goods-browse',
-                        count: this.head_nav_list.length > 0 ? this.head_nav_list[2].count : 0,
+                        count: old_nav.length > 0 ? old_nav[2].count : 0,
                     },
                     {
                         name: this.$t('user.user.k78280'),
                         url: 'user-integral',
-                        count: this.head_nav_list.length > 0 ? this.head_nav_list[3].count : 0,
+                        count: old_nav.length > 0 ? old_nav[3].count : 0,
                     },
                 ];
                 var nav_logout_data = {
@@ -274,9 +275,9 @@
                 };
                 var nickname = this.$t('login.login.6yfr9g');
                 this.setData({
-                    head_nav_list,
-                    nav_logout_data,
-                    nickname,
+                    head_nav_list: head_nav_list,
+                    nav_logout_data: nav_logout_data,
+                    nickname: nickname,
                 });
             },
 
@@ -426,23 +427,27 @@
                                 }
                             }
 
-                            // 是否存在主要的订单+副导航
+                            // 导航处理，是否存在主要的订单+副导航
                             var main_navigation_data = [];
+                            var temp_navigation = [];
                             if (navigation.length > 0) {
                                 for (var i in navigation) {
                                     // 去除参数
                                     var url = app.globalData.get_url_main_part(navigation[i]['event_value']);
                                     // 系统订单
+                                    var status = true;
                                     if (url == '/pages/user-order/user-order') {
                                         var temp = navigation[i];
                                         temp['extension_data'] = user_order_status_list;
                                         main_navigation_data.push(temp);
-                                        navigation.splice(i, 1);
-                                    }
-                                    // 门店订单
-                                    if (url == '/pages/plugins/realstore/orderallot-list/orderallot-list' && (navigation[i]['extension_data'] || null) != null && navigation[i]['extension_data'].length > 0) {
+                                        status = false;
+                                    // 是否存在扩展副导航数据
+                                    } else if((navigation[i]['extension_data'] || null) != null && navigation[i]['extension_data'].length > 0) {
                                         main_navigation_data.push(navigation[i]);
-                                        navigation.splice(i, 1);
+                                        status = false;
+                                    }
+                                    if(status) {
+                                        temp_navigation.push(navigation[i]);
                                     }
                                 }
                             }
@@ -451,7 +456,7 @@
                             var upd_data = {
                                 message_total: parseInt(data.message_total || 0),
                                 head_nav_list: temp_head_nav_list,
-                                navigation: navigation,
+                                navigation: temp_navigation,
                                 main_navigation_data: main_navigation_data,
                             };
 

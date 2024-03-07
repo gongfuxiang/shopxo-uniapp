@@ -389,7 +389,6 @@
                 // 多语言
                 system_locale: '',
                 application_locale: '',
-                is_android: '',
 
                 // 语言选择
                 popup_language_status: false,
@@ -417,6 +416,7 @@
                 agreement_status: false,
                 verify_image_url: null,
                 popup_image_verify_status: false,
+                navigation_bar_title_key: '',
                 // 基础配置
                 is_refreshed_base_data: 0,
                 is_exist_base_data: 0,
@@ -433,18 +433,7 @@
                 // 当前操作方式
                 current_opt_form: 'auth',
                 current_opt_type: 'auth',
-                current_opt_type_title: {
-                    auth: this.$t('login.login.jw378f'),
-                    bind: this.$t('login.login.np9177'),
-                    login_username: this.$t('login.login.725312'),
-                    login_sms: this.$t('login.login.158yg2'),
-                    login_email: this.$t('login.login.r329eu'),
-                    reg_username: this.$t('login.login.39hn6v'),
-                    reg_sms: this.$t('login.login.z13km0'),
-                    reg_email: this.$t('login.login.jc0w0o'),
-                    forget: this.$t('login.login.8tmyuc'),
-                    success: this.$t('login.login.5p23c6'),
-                },
+                current_opt_type_title: {},
                 // 第三方登录
                 plugins_thirdpartylogin_data: null,
                 plugins_thirdpartylogin_user: null,
@@ -467,6 +456,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
+            // 资源设置
+            this.set_resources_data();
+
             // #ifdef APP
             // 获取app第三方登录通道设置
             this.provider_action()
@@ -476,7 +468,6 @@
             let system_info = uni.getSystemInfoSync();
             this.system_locale = system_info.language;
             this.application_locale = app.globalData.get_language_value();
-            this.is_android = system_info.platform.toLowerCase() === 'android';
             uni.onLocaleChange((e) => {
                 this.application_locale = e.locale;
             });
@@ -532,6 +523,24 @@
         },
 
         methods: {
+            // 资源设置
+            set_resources_data() {
+                this.setData({
+                    current_opt_type_title: {
+                        auth: this.$t('login.login.jw378f'),
+                        bind: this.$t('login.login.np9177'),
+                        login_username: this.$t('login.login.725312'),
+                        login_sms: this.$t('login.login.158yg2'),
+                        login_email: this.$t('login.login.r329eu'),
+                        reg_username: this.$t('login.login.39hn6v'),
+                        reg_sms: this.$t('login.login.z13km0'),
+                        reg_email: this.$t('login.login.jc0w0o'),
+                        forget: this.$t('login.login.8tmyuc'),
+                        success: this.$t('login.login.5p23c6'),
+                    }
+                });
+            },
+
             // 数据初始化
             init() {
                 // 缓存初始化配置
@@ -567,9 +576,10 @@
                     }
                 }
                 // #endif
-                uni.setNavigationBarTitle({
-                    title: this.current_opt_type_title[type],
+                this.setData({
+                    navigation_bar_title_key: type,
                 });
+                this.set_navigation_bar_title();
 
                 // 是否参数指定类型和表单
                 if ((this.params.opt_type || null) != null) {
@@ -1364,9 +1374,10 @@
 
                 // 标题
                 if ((data.current_opt_type || null) != null) {
-                    uni.setNavigationBarTitle({
-                        title: this.current_opt_type_title[data.current_opt_type],
+                    this.setData({
+                        navigation_bar_title_key: data.current_opt_type,
                     });
+                    this.set_navigation_bar_title();
                 }
             },
 
@@ -1393,10 +1404,21 @@
                     }
 
                     // 标题
-                    uni.setNavigationBarTitle({
-                        title: this.current_opt_type_title[value],
+                    this.setData({
+                        navigation_bar_title_key: value,
                     });
+                    this.set_navigation_bar_title();
                 }
+            },
+
+            // 导航名称设置
+            set_navigation_bar_title() {
+                // 重新设置静态资源
+                this.set_resources_data();
+                // 设置这标题
+                uni.setNavigationBarTitle({
+                    title: this.current_opt_type_title[this.navigation_bar_title_key],
+                });
             },
 
             // 图片验证码事件
@@ -1581,23 +1603,14 @@
                     language: language_list[this.language_key],
                     popup_language_status: false,
                 });
+                // 重新设置当前页面标题
+                this.set_navigation_bar_title();
             },
 
             // 多语言切换
             language_change(key) {
-                if (this.is_android) {
-                    uni.showModal({
-                        content: this.$t('login.login.d9d11z'),
-                        success: (res) => {
-                            if (res.confirm) {
-                                uni.setLocale(key);
-                            }
-                        },
-                    });
-                } else {
-                    uni.setLocale(key);
-                    this.$i18n.locale = key;
-                }
+                uni.setLocale(key);
+                this.$i18n.locale = key;
             },
 
             // 打开登录方式弹层

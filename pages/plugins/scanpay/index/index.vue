@@ -152,7 +152,6 @@
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
-                // payment_list: [],
                 temp_pay_value: '',
                 is_show_payment_popup: false,
                 pay_price: 0,
@@ -230,14 +229,14 @@
                         uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            var new_form = this.form;
+                            var temp_form = this.form;
                             var data = res.data.data || null;
-                            if (data != null) {
-                                new_form.payment_id = data.payment_list[0].id;
+                            if (data != null && (data.payment_list || null) != null && data.payment_list.length > 0) {
+                                temp_form.payment_id = data.payment_list[0]['id'];
                             }
                             this.setData({
                                 data: res.data.data,
-                                form: new_form,
+                                form: temp_form,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
@@ -378,12 +377,14 @@
                             uni.hideLoading();
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
+                                var data = res.data.data;
+                                console.log(data.id, this.form.payment_id, this.data.payment_list);
                                 this.setData({
-                                    to_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
-                                    to_appoint_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
-                                    to_fail_page: '/pages/plugins/scanpay/tips/tips?id=' + res.data.data.id,
+                                    to_page: '/pages/plugins/scanpay/tips/tips?id=' + data.id,
+                                    to_appoint_page: '/pages/plugins/scanpay/tips/tips?id=' + data.id,
+                                    to_fail_page: '/pages/plugins/scanpay/tips/tips?id=' + data.id,
                                 });
-                                this.$refs.payment.pay_handle(res.data.data.id, this.form.payment_id);
+                                this.$refs.payment.pay_handle(data.id, this.form.payment_id, this.data.payment_list);
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
                                     app.globalData.showToast(res.data.msg);
@@ -407,7 +408,7 @@
             },
 
             // 支付成功失败回调
-            pay_back_event() {
+            pay_back_event(params) {
                 this.setData({
                     form_submit_loading: false
                 });

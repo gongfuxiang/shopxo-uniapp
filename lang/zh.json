@@ -41,10 +41,11 @@
         "no_relevant_data_tips": "没有相关数据",
         "internet_error_tips": "网络开小差了哦~",
         "sub_error_retry_tips": "提交失败，请重试！",
-        "not_more_list_data_tips": "无更多列表数据"
+        "not_more_list_data_tips": "无更多列表数据",
+        "scan_name": "扫一扫",
+        "not_have_name": "没有"
     },
     "pages": {
-        "index": "ShopXO",
         "goods-category": "商品分类",
         "cart": "购物车",
         "user": "用户中心",
@@ -140,6 +141,7 @@
         "plugins-signin-user-qrcode-saveinfo": "签到码编辑",
         "plugins-signin-user-coming-list": "用户签到",
         "plugins-points-index": "积分商城",
+        "plugins-points-scan": "扫码领积分",
         "plugins-brand-index": "品牌",
         "plugins-shop-index": "所有店铺",
         "plugins-shop-detail": "店铺首页",
@@ -259,7 +261,6 @@
             "wysg7k": "请设置密码",
             "4wc3hr": "协议类型有误",
             "x0nxxf": "协议url地址有误",
-            "d9d11z": "是否确定切换多语言！",
             "4835p5": "调用登录SDK失败",
             "li9573": "登录方式未处理"
         }
@@ -341,6 +342,7 @@
             "186cxy": "个，可用",
             "70u2vy": " 至 ",
             "o7722q": "查看地图",
+            "876tgh": "运送方式",
             "45ovhs": "优惠劵",
             "58rs1a": "门店次卡",
             "33fugm": "使用",
@@ -1559,10 +1561,12 @@
             "e1f54e": "请求中...",
             "vhx5dv": "支付类型有误",
             "597s8b": "支付组件接口不能为空",
+            "t4d687": "支付服务未配置",
             "bv637f": "支付未定义",
             "4dszme": "请使用真机操作、或小程序基础版本太低！",
             "k2i010": "支付成功后、请不要重复支付、如果订单状态未成功请联系客服处理",
-            "2rw3qh": "支付方式还未适配"
+            "2rw3qh": "支付方式还未适配",
+            "sdfs31": "是否已完成支付？"
         }
     },
     "realstore-cart": {

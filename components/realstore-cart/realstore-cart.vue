@@ -118,7 +118,7 @@
                             </view>
                             <!-- #ifndef H5 -->
                             <view v-if="item.index == 0" class="scan-item border-radius-main tc pa right-0 top-0" :data-index="index" @tap="search_icon_event">
-                                <iconfont name="icon-mendian-sousuosm" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
+                                <iconfont name="icon-scan" size="36rpx" propClass="lh-il va-m" color="#02b3c2"></iconfont>
                             </view>
                             <!-- #endif -->
                         </view>
@@ -469,23 +469,24 @@
 
             // 批量删除操作
             cart_all_delete_event(e) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('goods-category.goods-category.o6i1w2'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('goods-category.goods-category.o6i1w2'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('common.not_yet'),
                     success: (result) => {
                         if(result.confirm) {
-                            this.setData({
+                            self.setData({
                                 temp_opt_data: null,
                             });
                             var ids = [];
-                            var temp_data = this.cart.data;
+                            var temp_data = self.cart.data;
                             for (var i in temp_data) {
                                 ids.push(temp_data[i]['id']);
                             }
-                            this.cart_delete(ids.join(','));
-                            this.cart_event(false);
+                            self.cart_delete(ids.join(','));
+                            self.cart_event(false);
                         }
                     },
                 });

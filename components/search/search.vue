@@ -202,6 +202,7 @@
         padding: 0 32rpx 0 64rpx;
         height: 56rpx;
         line-height: 56rpx;
+        background: transparent;
     }
     .search-content .search-btn {
         width: 106rpx;

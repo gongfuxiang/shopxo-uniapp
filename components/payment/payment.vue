@@ -113,11 +113,6 @@
                 type: [Number, String],
                 default: 0,
             },
-            // 跳转第三方链接的重定向
-            propNavStatusIndex: {
-                type: Number,
-                default: 0,
-            },
             // 付款金额
             propPayPrice: {
                 type: [Number, String],
@@ -216,6 +211,9 @@
                 submit_disabled_status: true,
                 order_id: 0,
                 popup_view_pay_html_is_show: false,
+                // 打开url地址定时任务和状态
+                open_pay_url_timer: null,
+                open_pay_url_status: true,
             };
         },
         methods: {
@@ -232,6 +230,7 @@
                     popup_view_pay_qrcode_is_show: false,
                 });
             },
+
             // 选择支付方式
             checked_payment(e) {
                 this.setData({
@@ -239,6 +238,7 @@
                     submit_disabled_status: false,
                 });
             },
+
             // 支付弹窗发起支付
             popup_payment_event() {
                 if (this.submit_disabled_status) {
@@ -265,15 +265,15 @@
                         if (item.payment === 'WalletPay') {
                             var self = this;
                             uni.showModal({
-                                title: this.$t('common.warm_tips'),
-                                content: this.$t('payment.payment.011cj4'),
-                                confirmText: this.$t('common.confirm'),
-                                cancelText: this.$t('common.not_yet'),
+                                title: self.$t('common.warm_tips'),
+                                content: self.$t('payment.payment.011cj4'),
+                                confirmText: self.$t('common.confirm'),
+                                cancelText: self.$t('common.not_yet'),
                                 success(res) {
                                     if (res.confirm) {
                                         self.pay_handle_event(order_id, payment_id);
                                     } else {
-                                        self.order_item_pay_fail_handle(null, order_id, this.$t('paytips.paytips.6mpsl7'));
+                                        self.order_item_pay_fail_handle(null, order_id, self.$t('paytips.paytips.6mpsl7'));
                                     }
                                 },
                             });
@@ -283,6 +283,7 @@
                     }
                 });
             },
+
             // 支付处理
             pay_handle_event(order_id, payment_id) {
                 // #ifdef H5
@@ -309,9 +310,11 @@
                 };
                 // h5自定义重定向地址
                 // #ifdef H5
-                post_data['redirect_url'] = encodeURIComponent(base64.encode(app.globalData.get_page_url(false) + (this.propNavStatusIndex > 0 ? '?status=' + this.propNavStatusIndex : '')));
-                // paypal支付方式使用respond_url返回地址、移除重定向地址
-                if (payment.payment == 'PayPal') {
+                var redirect_url = app.globalData.page_url_protocol(this.propToAppointPage || app.globalData.get_page_url(false));
+                post_data['redirect_url'] = encodeURIComponent(base64.encode(redirect_url));
+                // 指定支付方式使用respond_url返回地址、移除重定向地址
+                var respond_arr = ['PayPal', 'UniPayment'];
+                if (respond_arr.indexOf(payment.payment) != -1) {
                     post_data['respond_url'] = post_data['redirect_url'];
                     delete post_data['redirect_url'];
                 }
@@ -370,8 +373,8 @@
                                             break;
                                         // 线下支付
                                         case 1:
-                                            let self = this;
                                             // 现金支付
+                                            let self = this;
                                             uni.showModal({
                                                 content: res.data.msg,
                                                 showCancel: false,
@@ -379,7 +382,7 @@
                                                     if (res.confirm) {
                                                         self.to_other(order_id);
                                                     } else {
-                                                        self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6mpsl7'));
+                                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6mpsl7'));
                                                     }
                                                 },
                                             });
@@ -416,47 +419,83 @@
             },
             // APP支付
             app_pay_handle(self, data, order_id) {
-                uni.getProvider({
-                    service: 'payment',
-                    success: function (res) {
-                        switch(data.payment.payment) {
-                            // 支付宝
-                            case 'Alipay' :
-                                if(~res.provider.indexOf('alipay')) {
-                                    uni.requestPayment({
-                                        provider: 'alipay',
-                                        orderInfo: data.data,
-                                        success: function (res) {
-                                            self.order_item_pay_success_handle(data, order_id);
-                                        },
-                                        fail: function (err) {
-                                            self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                var arr = {
+                    Alipay: 'alipay',
+                    Weixin: 'wxpay',
+                    PayPal: 'paypal'
+                }
+                var pay_value = arr[data.payment.payment] || null;
+                if(pay_value != null) {
+                    uni.getProvider({
+                        service: 'payment',
+                        success: function (res) {
+                            if(~res.provider.indexOf(pay_value)) {
+                                var pay_data = ((data.data.pay_data || null) == null) ? data.data : data.data.pay_data;
+                                uni.requestPayment({
+                                    provider: pay_value,
+                                    orderInfo: pay_data,
+                                    success: function (res) {
+                                        // 是否需要回调捕获
+                                        var call_back_url = data.data.call_back_url || null;
+                                        if(call_back_url != null) {
+                                            uni.request({url: call_back_url, method: 'GET'});
                                         }
-                                    });
-                                }
-                                break;
-
-                            // 微信
-                            case 'Weixin' :
-                                if(~res.provider.indexOf('wxpay')) {
-                                    uni.requestPayment({
-                                        provider: 'wxpay',
-                                        orderInfo: data.data,
-                                        success: function (res) {
-                                            self.order_item_pay_success_handle(data, order_id);
-                                        },
-                                        fail: function (err) {
-                                            self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
-                                        }
-                                    });
-                                }
-                                break;
-
-                            default :
-                                app.globalData.showToast(data.payment.payment+this.$t('payment.payment.bv637f'));
+                    
+                                        // 成功处理数据
+                                        self.order_item_pay_success_handle(data, order_id);
+                                    },
+                                    fail: function (err) {
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                    }
+                                });
+                            } else {
+                                app.globalData.showToast(data.payment.payment+self.$t('payment.payment.bv637f'));
+                            }
                         }
+                    });
+                } else {
+                    // 先清除定时任务
+                    if(self.open_pay_url_timer != null) {
+                        clearTimeout(self.open_pay_url_timer);
                     }
-                });
+                    // 显示加载层
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                        mask: true
+                    });
+                    // 设置打开url状态
+                    self.setData({
+                        open_pay_url_status: true
+                    });
+                    // 打开url
+                    plus.runtime.openURL(data.data, function(error) {
+                        uni.hideLoading();
+                        // 打开url失败、并进入提示失败环节
+                        self.setData({
+                            open_pay_url_status: false
+                        });
+                        self.order_item_pay_fail_handle(data, order_id, error);
+                    });
+                    // 定时3秒后提示用户确认支付状态
+                    self.open_pay_url_timer = setTimeout(function() {
+                        if(self.open_pay_url_status) {
+                            uni.hideLoading();
+                            uni.showModal({
+                                content: self.$t('payment.payment.sdfs31'),
+                                showCancel: true,
+                                cancelText: self.$t('common.not_have_name'),
+                                confirmText: self.$t('order.order.s8g966'),
+                                success(res) {
+                                    if (res.confirm) {
+                                        self.order_item_pay_success_handle(data, order_id);
+                                    } else {
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
+                                    }
+                                },
+                            });
+                        }
+                    }, 3000);
+                }
             },
             // 快手小程序
             kuaishou_pay_handle(self, data, order_id) {
@@ -468,14 +507,14 @@
                         self.order_item_pay_success_handle(data, order_id);
                     },
                     fail: (res) => {
-                        self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                     },
                 });
             },
             // 头条小程序非普通交易支付处理
             toutiao_transaction_pay_handle(self, data, order_id) {
                 if(!uni.canIUse('requestOrder') || !uni.canIUse('getOrderPayment')) {
-                    app.globalData.showToast(this.$t('payment.payment.4dszme'));
+                    app.globalData.showToast(self.$t('payment.payment.4dszme'));
                     return false;
                 }
                 uni.requestOrder({
@@ -489,7 +528,7 @@
                                 self.order_item_pay_success_handle(data, order_id);
                             },
                             fail: (res) => {
-                                self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                                self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                             }
                         });
                     },
@@ -520,13 +559,13 @@
                     success: (res) => {
                         // #ifdef MP-ALIPAY
                         if (res.resultCode != 9000) {
-                            self.order_item_pay_fail_handle(data, order_id, res.memo || this.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, res.memo || self.$t('paytips.paytips.6y488i'));
                             return false;
                         }
                         // #endif
                         // #ifdef MP-TOUTIAO
                         if (res.code != 0) {
-                            self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                             return false;
                         }
                         // #endif
@@ -534,7 +573,7 @@
                         self.order_item_pay_success_handle(data, order_id);
                     },
                     fail: (res) => {
-                        self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                        self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                     },
                 });
             },
@@ -547,14 +586,14 @@
                         referer: app.globalData.data.request_url,
                         success: function (res) {
                             app.globalData.alert({
-                                msg: this.$t('payment.payment.k2i010'),
+                                msg: self.$t('payment.payment.k2i010'),
                                 is_show_cancel: 0,
                             });
                             // 支付接口调用成功，但是不知道是否支付成功，所以需要重新获取列表数据
-                            this.$emit('reset-event');
+                            self.$emit('reset-event');
                         },
                         fail: function (res) {
-                            self.order_item_pay_fail_handle(data, order_id, this.$t('paytips.paytips.6y488i'));
+                            self.order_item_pay_fail_handle(data, order_id, self.$t('paytips.paytips.6y488i'));
                         },
                     });
                 } else {
@@ -608,15 +647,15 @@
                     if ((data.data.qrcode_url || null) != null && (data.data.name || null) != null && (data.data.check_url || null) != null && (data.data.order_no || null) != null) {
                         status = true;
                         // 显示支付窗口
-                        this.setData({
+                        self.setData({
                             popup_view_pay_data: data.data,
                             popup_view_pay_qrcode_is_show: true,
                         });
-                        if (this.propQrcodeUrl) {
+                        if (self.propQrcodeUrl) {
                             // 定时校验支付状态
                             var timer = setInterval(function () {
                                 uni.request({
-                                    url: this.propQrcodeUrl,
+                                    url: self.propQrcodeUrl,
                                     method: 'POST',
                                     data: {
                                         order_no: self.popup_view_pay_data.order_no,
@@ -643,7 +682,7 @@
                                     },
                                     fail: () => {
                                         clearInterval(self.popup_view_pay_timer);
-                                        self.order_item_pay_fail_handle(data, order_id, this.$t('common.internet_error_tips'));
+                                        self.order_item_pay_fail_handle(data, order_id, self.$t('common.internet_error_tips'));
                                     },
                                 });
                             }, 3000);
@@ -666,31 +705,32 @@
                     }
                     // 未匹配到的支付处理方式
                     if (!status) {
-                        app.globalData.showToast(data.payment.name + this.$t('payment.payment.2rw3qh'));
+                        app.globalData.showToast(data.payment.name + self.$t('payment.payment.2rw3qh'));
                     }
                 }
             },
+
             // 支付成功数据设置 data:后台返回的参数， order_id: 订单id，is_to_page，是否需要跳转页面的参数控制
             order_item_pay_success_handle(data, order_id, is_to_page = true) {
-                let newData = {
+                let back_data = {
                     data: data,
                     order_id: order_id,
                     is_to_page: is_to_page,
                 };
-                this.$emit('pay-success', newData, this.propTempPayIndex, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
+                this.$emit('pay-success', back_data, this.propTempPayIndex, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
                 if (is_to_page) {
                     this.to_success_page_event();
                 }
             },
             // 支付失败数据设置 data:后台返回的参数， order_id: 订单id, msg: 错误提示信息
             order_item_pay_fail_handle(data, order_id, msg) {
-                let newData = {
+                let back_data = {
                     data: data,
                     order_id: order_id,
                     temp_pay_index: this.propTempPayIndex,
                     payment_id: this.payment_id,
                 };
-                this.$emit('pay-fail', newData);
+                this.$emit('pay-fail', back_data);
                 this.to_fail_page_event(msg);
             },
             // 成功跳转
@@ -720,8 +760,10 @@
             },
             // 失败跳转
             to_fail_page_event(msg) {
-                let to_fail_page = this.propToFailPage;
-                if (to_fail_page) {
+                let to_fail_page = this.propToFailPage || null;
+                if (to_fail_page != null) {
+                    let join = (to_fail_page.indexOf('?') == -1) ? '?' : '&';
+                    to_fail_page += join+'msg='+msg;
                     if (this.propIsFailAlert) {
                         // 现金支付
                         uni.showModal({

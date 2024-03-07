@@ -29,8 +29,7 @@
                                         <image class="avatar dis-block circle" @tap="preview_event" :src="user.avatar || avatar_default" mode="widthFix"></image>
                                         <view class="padding-left-main">
                                             <view class="text-size fw-b">{{ user.user_name_view }}</view>
-                                            <view class="desc margin-top-sm cr-grey"
-                                                >{{$t('index.index.b46kge')}}<text class="cr-black fw-b padding-horizontal-xs">
+                                            <view class="desc margin-top-sm cr-grey">{{$t('index.index.b46kge')}}<text class="cr-black fw-b padding-horizontal-xs">
                                                     {{ user_integral.integral || 0 }}
                                                 </text>{{$t('index.index.t26j9z')}}</view>
                                         </view>
@@ -69,7 +68,7 @@
 
                         <!-- 商品兑换 -->
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
-                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" propPriceField="price" propIntegral></component-goods-list>
+                            <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" :propPriceField="(data_base.is_pure_exchange_modal || 0) == 1 ? '' : 'price'" propIntegral></component-goods-list>
                         </view>
                     </view>
 

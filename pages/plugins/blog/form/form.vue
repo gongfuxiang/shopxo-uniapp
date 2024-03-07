@@ -305,7 +305,6 @@
 
             // 回调富文本内容
             rich_text_event(e) {
-                // console.log('==== input :', e);
                 var new_data = this.data;
                 new_data.content = e.html;
                 this.setData({
@@ -321,10 +320,11 @@
 
             // 上传图片
             up_in_image_event(tempFiles, editorCtx) {
+                var self = this;
                 // 使用 uniCloud.uploadFile 上传图片的示例方法（可适用多选上传）
                 tempFiles.forEach(async (item) => {
                     uni.showLoading({
-                        title: this.$t('form.form.2e5rv3'),
+                        title: self.$t('form.form.2e5rv3'),
                         mask: true,
                     });
                     await uni.uploadFile({
@@ -341,14 +341,13 @@
                             path_type: 'common', // 路径类型，默认common
                         },
                         success: function (res) {
-                            console.log(res);
                             let data = JSON.parse(res.data);
                             if (res.statusCode == 200) {
                                 // 上传完成后处理
                                 editorCtx.insertImage({
                                     src: data.data.url, // 此处需要将图片地址切换成服务器返回的真实图片地址
                                     // width: '50%',
-                                    alt: this.$t('form.form.3h58hv'),
+                                    alt: self.$t('form.form.3h58hv'),
                                     success: function (e) {},
                                 });
                                 uni.hideLoading();

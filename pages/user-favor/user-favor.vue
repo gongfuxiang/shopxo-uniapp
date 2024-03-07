@@ -8,8 +8,11 @@
                         <view class="goods-base">
                             <view class="goods-title multi-text">{{item.title}}</view>
                             <view class="oh margin-top-sm">
-                                <text class="sales-price">{{currency_symbol}}{{item.price}}</text>
-                                <text v-if="item.original_price > 0" class="original-price margin-left-sm">{{currency_symbol}}{{item.original_price}}</text>
+                                <block v-if="(item.show_field_price_status || 0) == 1">
+                                    <text class="sales-price">{{item.show_price_symbol}}{{item.price}}</text>
+                                    <text class="cr-grey text-size-xs">{{item.show_price_unit}}</text>
+                                </block>
+                                <text v-if="(item.show_field_original_price_status || 0) == 1 && item.original_price > 0" class="original-price margin-left">{{item.show_price_symbol}}{{item.original_price}}{{item.show_original_price_unit}}</text>
                             </view>
                         </view>
                     </view>

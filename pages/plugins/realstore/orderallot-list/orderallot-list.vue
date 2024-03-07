@@ -55,11 +55,7 @@
                         <button v-if="item.operate_data.is_collect == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="collect_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('orderallot-list.orderallot-list.w2w2w4')}}</button>
                         <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
                         <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
-                        <block v-if="(item.express_data || null) != null && item.express_data.length > 0">
-                            <block v-for="(ev, ei) in item.express_data" :key="ei">
-                                <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&eid=' + ev.id + '&action_type=realstore'" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}{{ ei + 1 }}</button>
-                            </block>
-                        </block>
+                        <button v-if="(item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                     </view>
                 </view>
             </view>

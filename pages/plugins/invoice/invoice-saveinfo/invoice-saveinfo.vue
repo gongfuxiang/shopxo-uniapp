@@ -125,7 +125,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                params: null,
+                params: {},
                 form_submit_loading: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -135,7 +135,7 @@
                 can_invoice_type_list: [],
                 invoice_content_list: [],
                 save_base_data: null,
-                data: null,
+                data: {},
                 form_invoice_type_index: 0,
                 form_apply_type_index: 0,
                 form_invoice_content_index: 0,
@@ -158,7 +158,7 @@
 
             // 设置参数
             this.setData({
-                params: params,
+                params: params || {},
             });
 
             // 标题设置
@@ -207,7 +207,7 @@
                                 can_invoice_type_list: data.can_invoice_type_list || [],
                                 invoice_content_list: data.invoice_content_list || [],
                                 save_base_data: data.save_base_data,
-                                data: (data.data || null) == null || data.data.length == 0 ? null : data.data,
+                                data: (data.data || null) == null || data.data.length == 0 ? {} : data.data,
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: data.save_base_data.total_price <= 0 ? this.$t('invoice-saveinfo.invoice-saveinfo.dl11n1') : '',

@@ -35,7 +35,7 @@
                 </view>
             </block>
             <block v-else>
-                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP -->
+                <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP -->
                 <component-nav-back propClass="bg-white" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
@@ -87,9 +87,12 @@
                                                 <!-- 底部内容 -->
                                                 <view class="goods-bottom pr margin-top-sm flex-row jc-sb align-c">
                                                     <!-- 价格 -->
-                                                    <view class="sales-price fw-b">
-                                                        <text class="text-size-sm">{{ currency_symbol }}</text>
-                                                        <text class="text-size-lg">{{ item.price }}</text>
+                                                    <view v-if="(item.show_field_price_status || 0) == 1">
+                                                        <text class="sales-price fw-b va-m">
+                                                            <text class="text-size-sm">{{ item.show_price_symbol }}</text>
+                                                            <text class="text-size-lg">{{ item.price }}</text>
+                                                        </text>
+                                                        <text class="cr-grey text-size-xs va-m">{{ item.show_price_unit }}</text>
                                                     </view>
 
                                                     <!-- 数量 -->
@@ -130,8 +133,8 @@
                     <!-- 展示型 -->
                     <block v-if="data_list.length > 0">
                         <view v-if="common_site_type == 1" :class="'cart-buy-nav oh wh-auto ' + (propSourceType == 'page' ? 'bottom-line-exclude' : '')">
-                            <view class="cart-exhibition-mode padding-horizontal-main">
-                                <button class="bg-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
+                            <view class="cart-exhibition-mode padding-horizontal-main padding-bottom-main">
+                                <button class="bg-main br-main cr-white round wh-auto text-size-sm" type="default" @tap="exhibition_submit_event" hover-class="none">
                                     <view class="dis-inline-block va-m margin-right-xl">
                                         <uni-icons type="phone" size="14" color="#fff" />
                                     </view>
@@ -173,7 +176,7 @@
                                 </view>
                             </view>
                             <view class="cart-nav-submit">
-                                <button class="bg-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
+                                <button class="bg-main br-main cr-white round text-size-md" type="default" @tap="buy_submit_event" :disabled="!already_valid_selected_status" hover-class="none">
                                     {{ $t('goods-category.goods-category.44f1ww') }}<block v-if="total_num > 0">({{ total_num }})</block>
                                 </button>
                             </view>
@@ -458,20 +461,21 @@
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
+                        var self = this;
                         uni.showModal({
-                            title: this.$t('common.warm_tips'),
-                            content: this.$t('cash-auth.cash-auth.d2ng16'),
-                            confirmText: this.$t('common.confirm'),
-                            cancelText: this.$t('common.not_yet'),
+                            title: self.$t('common.warm_tips'),
+                            content: self.$t('cash-auth.cash-auth.d2ng16'),
+                            confirmText: self.$t('common.confirm'),
+                            cancelText: self.$t('common.not_yet'),
                             success: (result) => {
                                 if (result.confirm) {
                                     uni.navigateTo({
                                         url: '/pages/login/login?event_callback=init',
                                     });
                                 } else {
-                                    this.setData({
+                                    self.setData({
                                         data_list_loding_status: 0,
-                                        data_list_loding_msg: this.$t('cart.cart.2wfu7o'),
+                                        data_list_loding_msg: self.$t('cart.cart.2wfu7o'),
                                     });
                                 }
                             },
@@ -640,16 +644,18 @@
                 var buy_number = type == 0 ? temp_number - 1 : temp_number + 1;
                 this.goods_buy_number_func(index, buy_number, type);
             },
+
             // 删除弹窗
             model_tips(id) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('cart.cart.3v6ulk'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('cart.cart.3v6ulk'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
-                            this.cart_delete(id, 'delete');
+                            self.cart_delete(id, 'delete');
                         }
                     },
                 });
@@ -783,25 +789,26 @@
 
             // 批量删除操作
             cart_all_remove_event(e) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('cart.cart.3v6ulk'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('common.not_yet'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('cart.cart.3v6ulk'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('common.not_yet'),
                     success: (result) => {
                         if (result.confirm) {
                             var data = [];
-                            var temp_data_list = this.data_list || [];
+                            var temp_data_list = self.data_list || [];
                             for (var i in temp_data_list) {
                                 if ((temp_data_list[i]['selected'] || false) == true) {
                                     data.push(temp_data_list[i]['id']);
                                 }
                             }
                             if (data.length <= 0) {
-                                app.globalData.showToast(this.$t('order.order.15k32o'));
+                                app.globalData.showToast(self.$t('order.order.15k32o'));
                                 return false;
                             }
-                            this.cart_delete(data.join(','), 'delete');
+                            self.cart_delete(data.join(','), 'delete');
                         }
                     },
                 });
@@ -1401,7 +1408,7 @@
         margin-left: 18rpx;
     }
     .cart-nav-remove-submit {
-        padding: 0rpx 20rpx;
+        padding: 0rpx 18rpx;
     }
 
     /*

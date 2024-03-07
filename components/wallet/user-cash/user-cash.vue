@@ -11,7 +11,7 @@
         <view v-if="data_list.length > 0" class="data-list">
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
+                    <text class="cr-grey-9">{{ item.add_time }}</text>
                     <text :class="item.status === 0 ? 'cr-black' : item.status === 1 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
                 </view>
                 <view class="content margin-top">

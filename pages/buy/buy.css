@@ -141,11 +141,14 @@
  * 数据列表项
  */
 .buy-data-item,
-.buy-data-item .right-value{
+.buy-data-item .right-value {
     line-height: 80rpx;
 }
 .buy-data-item .right-value {
-    width: calc(100% - 300rpx);
+    width: calc(100% - 260rpx);
+}
+.buy-data-item .right-value .right-value-content {
+    width: calc(100% - 32rpx);
 }
 
 /*
@@ -209,8 +212,8 @@
  * 门店次卡-页面选择
  */
 .plugins-realstore-container-view .image {
-    width: 40rpx;
-    height: 40rpx !important;
+    width: 34rpx;
+    height: 34rpx !important;
 }
 
 /*

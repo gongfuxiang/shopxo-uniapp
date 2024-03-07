@@ -8,6 +8,9 @@
 }
 .home-top-nav {
     min-height: 56rpx;
+    /* #ifdef MP-ALIPAY */
+    padding-left: 60rpx;
+    /* #endif */
 }
 .home-top-nav-location {
     max-width: calc(100% - 200rpx);
@@ -60,11 +63,6 @@
     top: 0;
     z-index: 11;
     width: 100%;
-}
-.search-content-input {
-    /* #ifdef MP-ALIPAY */
-    padding-left: 60rpx;
-    /* #endif */
 }
 .search-content-fixed-content {
     background-repeat: no-repeat;

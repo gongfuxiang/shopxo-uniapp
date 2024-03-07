@@ -12,7 +12,7 @@
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
                     <text>{{ item.status_name }}</text>
-                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
+                    <text class="cr-grey-9">{{ item.add_time }}</text>
                 </view>
                 <view class="content margin-top-main">
                     <navigator :url="'/pages/plugins/wallet/wallet-log-detail/wallet-log-detail?id=' + item.id" hover-class="none">

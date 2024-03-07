@@ -14,7 +14,7 @@
                             :propIsBtn="true"
                             :propDefaultValue="search_input_keywords_value"
                             <!-- #ifdef MP || APP -->
-                            propIcon="icon-mendian-sousuosm"
+                            propIcon="icon-scan"
                             propIconColor="#333"
                             @onicon="search_icon_event"
                             :propIsIconOnEvent="true"

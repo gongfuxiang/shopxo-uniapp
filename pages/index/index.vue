@@ -53,7 +53,7 @@
                             <block v-if="is_home_search_scan == 1">
                                 <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
                                     <!-- #ifndef H5 -->
-                                    @onicon="search_icon_event" propIcon="icon-mendian-sousuosm" :propIsIconOnEvent="true"
+                                    @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
                                     <!-- #endif -->
                                 ></component-search>
                             </block>
@@ -162,7 +162,7 @@
 
                         <!-- 魔方 - 插件 -->
                         <view v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
-                            <component-magic-list :propData="plugins_magic_data" :propCurrencySymbol="currency_symbol"></component-magic-list>
+                            <component-magic-list :propData="{...plugins_magic_data, ...{random: random_value}}" :propCurrencySymbol="currency_symbol"></component-magic-list>
                         </view>
                     </block>
                 </block>
@@ -328,6 +328,8 @@
                 cart_total: 0,
                 message_total: 0,
                 right_icon_list: [],
+                // 增加随机数，避免无法监听数据列表内部数据更新
+                random_value: 0,
                 // 基础配置
                 common_shop_notice: null,
                 home_index_floor_data_type: 0,
@@ -507,19 +509,14 @@
                             this.init_config(true);
                         }
 
+                        var data = res.data.data;
+                        var theme_view = app.globalData.get_theme_value_view();
+                        var theme_color = app.globalData.get_theme_color();
+                        var common_static_url = app.globalData.get_static_url('common');
+                        var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
+                        var static_url = app.globalData.get_static_url('home');
                         if (res.data.code == 0) {
-                            var data = res.data.data;
-                            var theme_view = app.globalData.get_theme_value_view();
-                            var theme_color = app.globalData.get_theme_color();
-                            var common_static_url = app.globalData.get_static_url('common');
-                            var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
-                            var static_url = app.globalData.get_static_url('home');
                             this.setData({
-                                theme_view: theme_view,
-                                theme_color: theme_color,
-                                common_static_url: common_static_url,
-                                seckill_static_url: seckill_static_url,
-                                static_url: static_url,
                                 top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
@@ -529,6 +526,7 @@
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
+                                random_value: Math.random(),
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
@@ -544,12 +542,6 @@
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_magic_data: data.plugins_magic_data || null,
                             });
-
-                            // 轮播数据处理
-                            if (this.load_status == 0) {
-                                var color = (data.banner_list && data.banner_list.length > 0 && (data.banner_list[0]['bg_color'] || null) != null) ? data.banner_list[0].bg_color : theme_color;
-                                this.change_banner(color);
-                            }
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
@@ -569,8 +561,19 @@
                             app.globalData.showToast(res.data.msg);
                         }
 
-                        // 设置首次加载状态
+                        // 轮播数据处理
+                        if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
+                            var color = (this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null) ? this.banner_list[0]['bg_color'] : theme_color;
+                            this.change_banner(color);
+                        }
+
+                        // 公共数据
                         this.setData({
+                            theme_view: theme_view,
+                            theme_color: theme_color,
+                            common_static_url: common_static_url,
+                            seckill_static_url: seckill_static_url,
+                            static_url: static_url,
                             load_status: 1,
                         });
 
@@ -580,6 +583,11 @@
                         }, 3000);
                     },
                     fail: () => {
+                        // 轮播数据处理
+                        if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
+                            this.change_banner(app.globalData.get_theme_color());
+                        }
+
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

@@ -16,15 +16,16 @@
                                 </view>
                                 <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ item.describe }}</view>
                                 <swiper :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === index + 1 ? 'swiper-1' : 'swiper-2'" circular :autoplay="(item.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(item.rolling_time || null) !== null ? Number(item.rolling_time) * 1000 : '6000'" :duration="propDuration">
-                                    <swiper-item v-for="(swiperItem, swiperIndex) in item.data" :key="swiperIndex">
+                                    <swiper-item v-for="(swiper_item, swiper_index) in item.data" :key="swiper_index">
                                         <view class="swiper-item">
                                             <view class="flex-row">
-                                                <view v-for="(listItem, listIndex) in swiperItem" :key="listIndex" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
-                                                    <view class="padding-horizontal-main tc" :data-value="(listItem.goods_url || null) !== null ? listItem.goods_url : ''" @tap="url_event">
-                                                        <image :src="(listItem.images || null) !== null ? listItem.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
-                                                        <view class="price tc single-text">
-                                                            <text class="sales-price va-m text-size-xss va-b">{{ propCurrencySymbol }}</text>
-                                                            <text class="sales-price va-m text-size-xs">{{ listItem.min_price }}</text>
+                                                <view v-for="(gv, gi) in swiper_item" :key="gi" :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === index + 1 ? 'flex-width-half-2' : 'flex-width-half'">
+                                                    <view class="padding-horizontal-main tc" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="url_event">
+                                                        <image :src="(gv.images || null) !== null ? gv.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
+                                                        <view v-if="(gv.show_field_price_status || 0) == 1" class="price tc single-text">
+                                                            <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
+                                                            <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
+                                                            <text class="cr-grey va-m text-size-xss">{{ gv.show_price_unit }}</text>
                                                         </view>
                                                     </view>
                                                 </view>
@@ -45,6 +46,12 @@
     const app = getApp();
     export default {
         name: 'recommend-hot',
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                data_goods_list: [],
+            };
+        },
         props: {
             propCurrencySymbol: {
                 type: String,
@@ -65,11 +72,12 @@
                 default: 1000,
             },
         },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-                data_goods_list: [],
-            };
+        // 属性值改变监听
+        watch: {
+            // 数据
+            propData(value, old_value) {
+                this.set_data(value);
+            }
         },
         mounted() {
             this.set_data(this.propData);

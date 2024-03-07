@@ -89,14 +89,15 @@
                 if (this.propIsShowModal) {
                     let index = isSwitch ? 0 : 1;
                     let text = this.propSwitchList[index];
+                    let self = this;
                     uni.showModal({
-                        title: this.$t('switch.switch.447u86'),
-                        content: this.$t('switch.switch.8w5ok6', [text]),
+                        title: self.$t('switch.switch.447u86'),
+                        content: self.$t('switch.switch.8w5ok6', [text]),
                         success: (res) => {
                             if (res.confirm) {
-                                this.isSwitch = isSwitch;
-                                this.changeAnimation();
-                                this.callParentEvent(isSwitch);
+                                self.isSwitch = isSwitch;
+                                self.changeAnimation();
+                                self.callParentEvent(isSwitch);
                             }
                         },
                     });

@@ -218,7 +218,7 @@
                                                     :propIsBtn="true"
                                                     :propDefaultValue="modify_superior_search_input_keywords_value"
                                                     <!-- #ifdef MP || APP -->
-                                                    propIcon="icon-mendian-sousuosm"
+                                                    propIcon="icon-scan"
                                                     propIconColor="#333"
                                                     @onicon="modify_superior_search_icon_event"
                                                     :propIsIconOnEvent="true"

@@ -24,6 +24,11 @@ export default {
     onShow() {
         // 调用公共事件方法
         app.globalData.page_event_onshow_handle();
+
+        // 数据加载
+        if ((this.$refs.cart || null) != null) {
+            this.$refs.cart.init();
+        }
     },
 
     methods: {},

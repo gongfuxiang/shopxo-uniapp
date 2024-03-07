@@ -11,7 +11,7 @@
         <view v-if="data_list.length > 0" class="data-list">
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text class="cr-grey-9">{{ item.add_time_time }}</text>
+                    <text class="cr-grey-9">{{ item.add_time }}</text>
                     <text :class="item.status == 0 ? 'cr-main' : 'cr-grey-c'">{{ item.status_name }}</text>
                 </view>
                 <view class="content margin-top">
@@ -310,11 +310,12 @@
 
             // 删除
             delete_event(e) {
+                var self = this;
                 uni.showModal({
-                    title: this.$t('common.warm_tips'),
-                    content: this.$t('recommend-list.recommend-list.54d418'),
-                    confirmText: this.$t('common.confirm'),
-                    cancelText: this.$t('recommend-list.recommend-list.w9460o'),
+                    title: self.$t('common.warm_tips'),
+                    content: self.$t('recommend-list.recommend-list.54d418'),
+                    confirmText: self.$t('common.confirm'),
+                    cancelText: self.$t('recommend-list.recommend-list.w9460o'),
                     success: (result) => {
                         if (result.confirm) {
                             // 参数
@@ -323,7 +324,7 @@
 
                             // 加载loding
                             uni.showLoading({
-                                title: this.$t('common.processing_in_text'),
+                                title: self.$t('common.processing_in_text'),
                             });
                             uni.request({
                                 url: app.globalData.get_request_url('delete', 'recharge', 'wallet'),
@@ -335,13 +336,13 @@
                                 success: (res) => {
                                     uni.hideLoading();
                                     if (res.data.code == 0) {
-                                        var temp_data_list = this.data_list;
+                                        var temp_data_list = self.data_list;
                                         temp_data_list.splice(index, 1);
-                                        this.setData({
+                                        self.setData({
                                             data_list: temp_data_list,
                                         });
                                         if (temp_data_list.length == 0) {
-                                            this.setData({
+                                            self.setData({
                                                 data_list_loding_status: 0,
                                                 data_bottom_line_status: false,
                                             });
@@ -353,7 +354,7 @@
                                 },
                                 fail: () => {
                                     uni.hideLoading();
-                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                    app.globalData.showToast(self.$t('common.internet_error_tips'));
                                 },
                             });
                         }
