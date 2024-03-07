@@ -2,14 +2,13 @@
     <view :class="theme_view">
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                
+                123
             </scroll-view>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
@@ -22,118 +21,10 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
-                status_bar_height: bar_height,
-
-                // 是否显示虚拟币
-                is_price_show: false,
-                // 虚拟币操作列表
-                coin_oprate_list: [
-                    {
-                        name: '充值',
-                        icon: 'icon-recharge',
-                        url: '/pages/plugins/coin/recharge/recharge',
-                    },
-                    {
-                        name: '转换',
-                        icon: 'icon-convert',
-                        url: '/pages/plugins/coin/convert/convert',
-                    },
-                    {
-                        name: '提现',
-                        icon: 'icon-withdrawal',
-                        url: '/pages/plugins/coin/withdrawal/withdrawal',
-                    },
-                    {
-                        name: '明细',
-                        icon: 'icon-detail',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                ],
-                coin_data: [
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                    {
-                        img: wallet_static_url + 'title-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                    },
-                ],
             };
         },
 
         components: {
-            componentNavBack,
             componentNoData,
         },
         props: {},
@@ -174,20 +65,9 @@
             // 获取数据
             get_data() {},
 
-            // 显示隐藏虚拟币
-            price_change() {
-                this.setData({
-                    is_price_show: !this.is_price_show,
-                });
-            },
             // 页面滚动监听
             scroll_event(e) {
                 uni.$emit('onPageScroll', e.detail);
-            },
-
-            // url事件
-            url_event(e) {
-                app.globalData.url_event(e);
             },
         },
     };

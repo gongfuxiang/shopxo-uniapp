@@ -185,7 +185,12 @@
         "plugins-scanpay-tips": "支付结果",
         "plugins-thirdpartylogin-index": "授权登录",
         "plugins-magic-detail": "详情",
-        "plugins-ordergoodsform-order": "商品表单"
+        "plugins-ordergoodsform-order": "商品表单",
+        "plugins-coin-user": "虚拟币",
+        "plugins-coin-recharge": "充值",
+        "plugins-coin-convert": "转换",
+        "plugins-coin-withdrawal": "提现",
+        "plugins-coin-detail": "明细"
     },
     "login": {
         "login": {

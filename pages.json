@@ -1238,7 +1238,7 @@
                         "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "虚拟币"
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1252,14 +1252,14 @@
                         "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "充值"
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
                     "path": "convert/convert",
                     "style": {
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "转换"
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1273,7 +1273,7 @@
                         "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "提现"
+                        "navigationBarTitleText": ""
                     }
                 },
                 {
@@ -1287,7 +1287,7 @@
                         "titlePenetrate":"YES",
                         // #endif
                         "enablePullDownRefresh": true,
-                        "navigationBarTitleText": "明细"
+                        "navigationBarTitleText": ""
                     }
                 }
             ]
