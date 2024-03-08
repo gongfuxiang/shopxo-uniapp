@@ -26,7 +26,7 @@
                         <view class="margin-bottom-main">充币地址</view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
                             <view class="single-text padding-right-sm flex-1 flex-width">4gfgefg33445fghfghh4bfbfghebdfb34fgdfg44gfgefg33445fghfghh4bfbfghebdfb34fgdfg4</view>
-                            <view @tap.stop="text_copy_event">
+                            <view @tap.stop="text_copy_event" data-value="123">
                                 <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
                             </view>
                         </view>
@@ -53,7 +53,7 @@
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
                             <text>其他数量</text>
                             <view class="padding-left-lg">
-                                <input type="digit" class="" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入充值数量" />
+                                <input type="digit" class="" placeholder-class="text-size-md cr-grey-9" placeholder="请输入充值数量" />
                             </view>
                         </view>
                         <button type="default" class="recharge-btn cr-white round" @tap="popup_goods_search_event">立即充值</button>

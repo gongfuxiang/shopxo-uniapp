@@ -78,12 +78,12 @@
     height: var(--size) !important;
 }
 
-.withdrawal .btn {
+.withdrawal-btn {
     background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
     transition: all 0.3s ease-in-out;
 }
 
-.withdrawal .btn:active {
+.withdrawal-btn:active {
     background: linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
 }
 

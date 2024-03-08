@@ -1277,15 +1277,29 @@
                     }
                 },
                 {
-                    "path": "detail/detail",
+                    "path": "transfer-accounts-detail/transfer-accounts-detail",
                     "style": {
-                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
-                        "navigationStyle": "custom",
-                        // #endif
-                        // #ifdef MP-ALIPAY
-                        "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
-                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "transaction-detail/transaction-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "withdrawal-detail/withdrawal-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "convert-detail/convert-detail",
+                    "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }

@@ -1146,6 +1146,9 @@ button[disabled].bg-grey {
 .flex-width-half {
     width: 50%;
 }
+.flex-width-half-half {
+    width: 25%;
+}
 
 /**
  * css伪类文本之间的分割线 ｜ ——

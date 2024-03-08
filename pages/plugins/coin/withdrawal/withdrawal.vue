@@ -26,11 +26,11 @@
                     </view>
                 </view>
                 <view class="content padding-main">
-                    <view class="padding-xxxl bg-white radius-md">
+                    <view class="padding-xxxl bg-white radius-md margin-bottom-main">
                         <view class="margin-bottom-xxxl">
                             <view class="margin-bottom-main fw-b">提现数量</view>
                             <view class="padding-vertical-main br-b-e flex-row align-c">
-                                <input type="digit" :value="input_coin_num" class="flex-1 flex-width" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" />
+                                <input type="digit" :value="input_coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入" />
                                 <view @tap.stop="all_withdrawal_event">全部提现</view>
                             </view>
                         </view>
@@ -38,39 +38,33 @@
                             <view class="margin-bottom-main">提币地址</view>
                             <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
                                 <view class="single-text padding-right-sm flex-1 flex-width">4gfgefg33445fghfghh4bfbfghebdfb34fgdfg44gfgefg33445fghfghh4bfbfghebdfb34fgdfg4</view>
-                                <view @tap.stop="text_copy_event">
+                                <view @tap.stop="text_copy_event" data-value="123">
                                     <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
                                 </view>
                             </view>
                         </view>
-                        <view class="margin-bottom-xxxl">
+                        <view>
                             <view class="margin-bottom-main">提币网络</view>
                             <picker class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="withdrawal_event" :value="withdrawal_web_index" :range="withdrawal_web_list" range-key="name">
                                 <view class="picker arrow-bottom">
                                     {{ withdrawal_web_list[withdrawal_web_index]['name'] }}
                                 </view>
                             </picker>
-                            <input type="text" class="" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入提现备注信息" />
-                        </view>
-                        <view class="margin-bottom-xxxl">
-                            <view class="margin-bottom-xs">选择充值金额</view>
-                            <view class="flex-row flex-warp price-item margin-bottom-xs">
-                                <view v-for="(item, index) in withdrawal_price_list" :key="index" class="price-list flex-col align-c jc-c">
-                                    <view class="flex-row align-c jc-c">
-                                        <image :src="wallet_static_url + 'withdrawal-price.png'" mode="widthFix" class="price-img round" />
-                                        <view>{{ item.name }}</view>
-                                    </view>
-                                    <view>{{ item.price }}</view>
-                                </view>
+                            <view class="content-input-bg padding-main border-radius-sm">
+                                <input type="text" class="" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提现备注信息" />
                             </view>
-                            <view class="content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
-                                <text>其他数量</text>
-                                <view class="padding-left-lg">
-                                    <input type="digit" class="" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入充值数量" />
-                                </view>
-                            </view>
-                            <button type="default" class="withdrawal-btn cr-white round" @tap="popup_goods_search_event">立即充值</button>
                         </view>
+                    </view>
+                    <view class="padding-main bg-white radius-md">
+                        <view class="padding-vertical-sm border-radius-sm flex-row align-c">
+                            <text class="text-size fw-b">支付密码</text>
+                            <view class="padding-left-lg">
+                                <input type="digit" class="" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                            </view>
+                        </view>
+                    </view>
+                    <view class="padding-xxxl">
+                        <button type="default" class="withdrawal-btn cr-white round" @tap="apply_for_withdrawal_event">申请提现</button>
                     </view>
                 </view>
             </scroll-view>
@@ -190,21 +184,19 @@
             price_change() {
                 this.setData({});
             },
+
             // 虚拟币切换
             coin_event(e) {
                 this.setData({
                     coin_index: parseInt(e.detail.value || 0),
                 });
             },
+
             // 充币网络切换
             withdrawal_event(e) {
                 this.setData({
                     withdrawal_web_index: parseInt(e.detail.value || 0),
                 });
-            },
-            // 页面滚动监听
-            scroll_event(e) {
-                uni.$emit('onPageScroll', e.detail);
             },
 
             // 全部提现
@@ -212,6 +204,21 @@
                 this.setData({
                     input_coin_num: this.coin_num,
                 });
+            },
+
+            // 申请提现
+            apply_for_withdrawal_event() {
+                console.log('申请提现');
+            },
+
+            // 页面滚动监听
+            scroll_event(e) {
+                uni.$emit('onPageScroll', e.detail);
+            },
+
+            // 复制文本
+            text_copy_event(e) {
+                app.globalData.text_copy_event(e);
             },
         },
     };

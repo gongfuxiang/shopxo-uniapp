@@ -14,7 +14,7 @@
                         </view>
                     </view>
                     <view class="flex-row jc-sb padding-bottom-main">
-                        <view v-for="(item, index) in coin_oprate_list" class="tc text-size-xs" :key="index" :data-value="item.url" @tap="url_event">
+                        <view v-for="(item, index) in coin_oprate_list" class="tc text-size-xs" :key="index" :data-value="item.url" :data-method="item.method" @tap="url_event">
                             <view class="coin-oprate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont :name="item.icon" size="44rpx" color="#635BFF"></iconfont>
                             </view>
@@ -26,7 +26,7 @@
                     <view class="bg-white radius-lg padding-sm">
                         <view class="coin-item padding-main">
                             <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'">
-                                <view class="flex-1 flex-width flex-row align-c padding-right-main">
+                                <view class="flex-width flex-row align-c padding-right-main">
                                     <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
                                 </view>
@@ -39,6 +39,31 @@
                     </view>
                 </view>
             </scroll-view>
+            <!-- 明细 -->
+            <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="oh">
+                        <text class="text-size">明细</text>
+                        <view class="fr" @tap.stop="popup_user_detail_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
+                        <view class="flex-width-half">
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-accounts-detail/transfer-accounts-detail" @tap="url_event">转账明细</view>
+                        </view>
+                        <view class="flex-width-half">
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-detail/transaction-detail" @tap="url_event">交易明细</view>
+                        </view>
+                        <view class="flex-width-half">
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
+                        </view>
+                        <view class="flex-width-half">
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-detail/convert-detail" @tap="url_event">转换明细</view>
+                        </view>
+                    </view>
+                </view>
+            </component-popup>
         </view>
     </view>
 </template>
@@ -46,6 +71,7 @@
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -81,7 +107,7 @@
                     {
                         name: '明细',
                         icon: 'icon-detail',
-                        url: '/pages/plugins/coin/detail/detail',
+                        method: true,
                     },
                 ],
                 coin_data: [
@@ -90,14 +116,17 @@
                         name: 'BTC',
                         price: '¥20000',
                         num: '200000',
-                    }
+                    },
                 ],
+                // 明细弹窗
+                popup_user_detail_status: false,
             };
         },
 
         components: {
             componentNavBack,
             componentNoData,
+            componentPopup,
         },
         props: {},
 
@@ -143,6 +172,20 @@
                     is_price_show: !this.is_price_show,
                 });
             },
+
+            // 明细弹窗打开
+            popup_user_detail_open_event() {
+                this.setData({
+                    popup_user_detail_status: true,
+                });
+            },
+            // 明细弹窗关闭
+            popup_user_detail_close_event(e) {
+                this.setData({
+                    popup_user_detail_status: false,
+                });
+            },
+
             // 页面滚动监听
             scroll_event(e) {
                 uni.$emit('onPageScroll', e.detail);
@@ -150,7 +193,12 @@
 
             // url事件
             url_event(e) {
-                app.globalData.url_event(e);
+                console.log(e);
+                if (e.currentTarget.dataset.method) {
+                    this.popup_user_detail_open_event();
+                } else {
+                    app.globalData.url_event(e);
+                }
             },
         },
     };

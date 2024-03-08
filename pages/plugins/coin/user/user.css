@@ -17,6 +17,7 @@
     height: var(--size);
     border-radius: 32rpx;
 }
+
 /* 
  * 内容
 */
@@ -32,4 +33,11 @@
     --size: 80rpx;
     width: var(--size);
     height: var(--size) !important;
+}
+
+/* 
+ * 明细弹窗
+*/
+.popup_user_detail_container .item {
+    background: #EFF0F1;
 }

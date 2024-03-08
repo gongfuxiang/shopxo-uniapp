@@ -1,3 +1,4 @@
+
 <template>
     <view :class="theme_view">
         <view>
@@ -181,5 +182,5 @@
     };
 </script>
 <style>
-    @import './convert.css';
+    @import './convert-detail.css';
 </style>
