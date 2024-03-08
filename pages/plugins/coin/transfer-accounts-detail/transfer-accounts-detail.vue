@@ -21,15 +21,15 @@
                         <view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">收款人：</text>
-                                <text>李晓丽</text>
+                                <text class="fw-b">李晓丽</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">转账金额：</text>
-                                <text>2190.00</text>
+                                <text class="fw-b">2190.00</text>
                             </view>
-                            <view class="margin-bottom-sm flex-row">
+                            <view class="flex-row">
                                 <text class="cr-grey-9">转账备注：</text>
-                                <text>收款后请尽快联系</text>
+                                <text class="fw-b">收款后请尽快联系</text>
                             </view>
                         </view>
                     </view>

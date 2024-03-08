@@ -1,0 +1,11 @@
+.convert .nav {
+    z-index: 102;
+}
+
+/* 
+ * 钱包弹窗
+*/
+.popup_wallet_container .item {
+    background-color: #f4f4f4;
+    border-radius: 30rpx;
+}

@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="transfer-accounts">
+        <view class="withdrawal">
             <view class="padding-main bg-white pr nav flex-row">
                 <view class="flex-row align-c margin-right-main" @tap="popup_wallet_open_event">
                     <view>钱包</view>
@@ -15,21 +15,17 @@
                 <view class="padding-main">
                     <view class="padding-main bg-white radius-md">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>转账时间</view>
                             <view class="cr-grey-9">2023-09-20 15:12:35</view>
+                            <view>未打款</view>
                         </view>
                         <view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">收款人：</text>
-                                <text>李晓丽</text>
+                                <text class="cr-grey-9">提现单号：</text>
+                                <text class="fw-b">202330303030303030</text>
                             </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">转账金额：</text>
-                                <text>2190.00</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">转账备注：</text>
-                                <text>收款后请尽快联系</text>
+                            <view class="flex-row">
+                                <text class="cr-grey-9">提现金额：</text>
+                                <text class="fw-b">2190.00</text>
                             </view>
                         </view>
                     </view>
@@ -248,5 +244,5 @@
     };
 </script>
 <style>
-    @import './transfer-accounts-detail.css';
+    @import './withdrawal-detail.css';
 </style>

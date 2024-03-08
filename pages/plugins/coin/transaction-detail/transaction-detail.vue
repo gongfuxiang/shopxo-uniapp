@@ -21,19 +21,19 @@
                         <view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">金额类型：</text>
-                                <text>有效</text>
+                                <text class="fw-b">有效</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">操作金额：</text>
-                                <text>2190.00</text>
+                                <text class="fw-b">2190.00</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">原始金额：</text>
-                                <text>1500.00</text>
+                                <text class="fw-b">1500.00</text>
                             </view>
-                            <view class="margin-bottom-sm flex-row">
+                            <view class="flex-row">
                                 <text class="cr-grey-9">最新金额：</text>
-                                <text>1500.00</text>
+                                <text class="fw-b">1500.00</text>
                             </view>
                         </view>
                     </view>

@@ -1,39 +1,61 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back></component-nav-back>
+        <component-nav-back propName="BTC详情"></component-nav-back>
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
-                    <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
-                        <view>
-                            <view class="cr-base text-size-md">总数量</view>
-                            <view class="text-size-40 fw-b">{{ is_price_show ? '5410.00' : '***' }}</view>
+                <view class="coin-title flex-col padding-lg">
+                    <view class="margin-bottom-xxxxl margin-top-xl padding-bottom-main flex-row jc-sb align-c">
+                        <view class="flex-row">
+                            <image :src="coin_list[coin_index]['img']" mode="widthFix" class="coin-content-list-img round" />
+                            <view class="padding-left-main">
+                                <picker class="coin-dropdown text-size-md pr margin-bottom-xs" @change="coin_event" :value="coin_index" :range="coin_list" range-key="name">
+                                    <view class="picker flex-row">
+                                        <text class="cr-666">{{ coin_list[coin_index]['name'] }}</text>
+                                        <view class="padding-left-sm">
+                                            <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
+                                        </view>
+                                    </view>
+                                </picker>
+                                <view class="fw-b text-size">{{ is_price_show ? '5410.00' : '***' }}</view>
+                            </view>
                         </view>
                         <view @tap="price_change">
                             <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
                         </view>
                     </view>
-                    <view class="flex-row jc-sb padding-bottom-main">
-                        <view v-for="(item, index) in coin_oprate_list" class="tc text-size-xs" :key="index" :data-value="item.url" :data-method="item.method" @tap="url_event">
-                            <view class="coin-oprate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont :name="item.icon" size="44rpx" color="#635BFF"></iconfont>
+                    <view class="flex-row jc-sb">
+                        <view v-for="(item, index) in coin_oprate_list" class="flex-1 padding-sm tc text-size-md" :key="index" :data-value="item.url" :data-method="item.method" @tap="url_event">
+                            <view class="coin-oprate-list bg-white flex-row align-c jc-c">
+                                <view class="pr top-xs">
+                                    <iconfont :name="item.icon" size="28rpx" color="#635BFF"></iconfont>
+                                </view>
+                                <view class="margin-left-sm fw-b">{{ item.name }}</view>
                             </view>
-                            <view>{{ item.name }}</view>
                         </view>
                     </view>
                 </view>
                 <view class="coin-content padding-lg">
-                    <view class="bg-white radius-lg padding-sm">
-                        <view class="coin-item padding-main">
-                            <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'" :data-value="item.url + '?id=' + item.id" @tap="url_event">
-                                <view class="flex-width flex-row align-c padding-right-main">
-                                    <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
-                                </view>
-                                <view class="flex-col align-e">
-                                    <view class="margin-bottom-xss text-size">{{ item.num }}</view>
-                                    <view class="cr-grey-9">{{ item.price }}</view>
-                                </view>
+                    <view v-for="(item, index) in coin_data" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
+                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
+                            <view>消费</view>
+                            <view class="cr-grey-9">2023-09-20 15:12:35</view>
+                        </view>
+                        <view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9">金额类型：</text>
+                                <text class="fw-b">有效</text>
+                            </view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9">操作金额：</text>
+                                <text class="fw-b">2190.00</text>
+                            </view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9">原始金额：</text>
+                                <text class="fw-b">1500.00</text>
+                            </view>
+                            <view class="flex-row">
+                                <text class="cr-grey-9">最新金额：</text>
+                                <text class="fw-b">1500.00</text>
                             </view>
                         </view>
                     </view>
@@ -91,33 +113,40 @@
                 coin_oprate_list: [
                     {
                         name: '充值',
-                        icon: 'icon-recharge',
+                        icon: 'icon-transfer-count',
                         url: '/pages/plugins/coin/recharge/recharge',
                     },
                     {
-                        name: '转换',
-                        icon: 'icon-convert',
+                        name: '收款',
+                        icon: 'icon-collection',
                         url: '/pages/plugins/coin/convert/convert',
-                    },
-                    {
-                        name: '提现',
-                        icon: 'icon-withdrawal',
-                        url: '/pages/plugins/coin/withdrawal/withdrawal',
                     },
                     {
                         name: '明细',
                         icon: 'icon-detail',
+                        url: '',
                         method: true,
                     },
                 ],
                 coin_data: [
                     {
-                        id: 0,
                         img: wallet_static_url + 'user-head-bg.png',
                         name: 'BTC',
                         price: '¥20000',
                         num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
+                    },
+                ],
+
+                // 虚拟币
+                coin_index: 0,
+                coin_list: [
+                    {
+                        name: 'BTC',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
                     },
                 ],
                 // 明细弹窗
@@ -175,6 +204,18 @@
                 });
             },
 
+            // 页面滚动监听
+            scroll_event(e) {
+                uni.$emit('onPageScroll', e.detail);
+            },
+
+            // 虚拟币切换
+            coin_event(e) {
+                this.setData({
+                    coin_index: parseInt(e.detail.value || 0),
+                });
+            },
+
             // 明细弹窗打开
             popup_user_detail_open_event() {
                 this.setData({
@@ -186,11 +227,6 @@
                 this.setData({
                     popup_user_detail_status: false,
                 });
-            },
-
-            // 页面滚动监听
-            scroll_event(e) {
-                uni.$emit('onPageScroll', e.detail);
             },
 
             // url事件
@@ -206,5 +242,5 @@
     };
 </script>
 <style>
-    @import './user.css';
+    @import './detail.css';
 </style>

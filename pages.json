@@ -1277,6 +1277,20 @@
                     }
                 },
                 {
+                    "path": "detail/detail",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate":"YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "transfer-accounts-detail/transfer-accounts-detail",
                     "style": {
                         "enablePullDownRefresh": true,
