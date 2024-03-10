@@ -6,14 +6,15 @@
                 <view class="recharge-title flex-col padding-lg">
                     <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
                         <view class="cr-white">
-                            <picker class="coin-dropdown text-size-md pr margin-bottom-main" @change="coin_event" :value="coin_index" :range="coin_list" range-key="name">
-                                <view class="picker pr">
-                                    <text>{{ coin_list[coin_index]['name'] }}</text>
+                            <view class="coin-dropdown">
+                                <view class="flex-row align-c pr" @tap="popup_coin_status = !popup_coin_status">
+                                    <image :src="coin_list[coin_index]['img']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-xs">{{ coin_list[coin_index]['name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                     </view>
                                 </view>
-                            </picker>
+                            </view>
                             <view class="text-size-40 fw-b">38000</view>
                         </view>
                         <view class="recharge-qrcode">
@@ -45,9 +46,9 @@
                             <view v-for="(item, index) in recharge_price_list" :key="index" class="recharge-price-list flex-col align-c jc-c">
                                 <view class="flex-row align-c jc-c">
                                     <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
-                                    <view>{{ item.name }}</view>
+                                    <view class="margin-left-xs recharge-price-name">{{ item.name }}</view>
                                 </view>
-                                <view>{{ item.price }}</view>
+                                <view class="margin-top-sm cr-grey-9 text-size-xs">{{ item.price }}</view>
                             </view>
                         </view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
@@ -68,6 +69,29 @@
                     </view>
                 </view>
             </scroll-view>
+            <!-- 虚拟币下拉框 -->
+            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="oh">
+                        <view class="fr" @tap.stop="popup_coin_status_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
+                        <view class="scroll-y">
+                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                                <view class="flex-row align-c">
+                                    <image :src="item.img" mode="widthFix" class="coin-list-img round" />
+                                    <view class="margin-left-sm text-size-md single-text">{{ item.name }}</view>
+                                </view>
+                                <view>
+                                    <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </component-popup>
         </view>
     </view>
 </template>
@@ -75,6 +99,7 @@
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -88,14 +113,71 @@
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
 
-                // 虚拟币状态
+                // 虚拟币下拉框探弹窗状态
+                popup_coin_status: false,
+                // 虚拟币下标
                 coin_index: 0,
+                // 虚拟币下拉框list
                 coin_list: [
                     {
                         name: 'BTC',
+                        img: wallet_static_url + 'recharge-price.png',
                     },
                     {
                         name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
+                    },
+                    {
+                        name: 'USDT-polygon',
+                        img: wallet_static_url + 'recharge-price.png',
                     },
                 ],
                 // 充币网络
@@ -137,6 +219,7 @@
         components: {
             componentNavBack,
             componentNoData,
+            componentPopup,
         },
         props: {},
 
@@ -181,9 +264,15 @@
                 this.setData({});
             },
             // 虚拟币切换
-            coin_event(e) {
+            coin_checked_event(e) {
                 this.setData({
-                    coin_index: parseInt(e.detail.value || 0),
+                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
+                    popup_coin_status: false,
+                });
+            },
+            popup_coin_status_close_event() {
+                this.setData({
+                    popup_coin_status: false,
                 });
             },
             // 充币网络切换

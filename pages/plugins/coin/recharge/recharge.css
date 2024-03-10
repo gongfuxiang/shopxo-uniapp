@@ -64,6 +64,10 @@
     width: calc((100% / 3) - 24rpx);
 }
 
+.recharge-price-name {
+    font-size: 44rpx;
+}
+
 .recharge-price-img {
     --size: 36rpx;
     width: var(--size);
@@ -88,4 +92,24 @@
     position: absolute;
     left: 0;
     top: 12rpx;
+}
+
+.coin-content-list-img {
+    --size: 28rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+/* 
+ * 虚拟币弹窗
+*/
+.popup_coin_status_container .scroll-y {
+    height: 40vh;
+    overflow-y: auto;
+}
+
+.coin-list-img {
+    --size: 40rpx;
+    width: var(--size);
+    height: var(--size) !important;
 }

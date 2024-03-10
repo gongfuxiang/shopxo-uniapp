@@ -13,27 +13,27 @@
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
-                    <view class="padding-main bg-white radius-md">
+                    <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>消费</view>
-                            <view class="cr-grey-9">2023-09-20 15:12:35</view>
+                            <view>{{ item.status }}</view>
+                            <view class="cr-grey-9">{{ item.date }}</view>
                         </view>
                         <view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">金额类型：</text>
-                                <text class="fw-b">有效</text>
+                                <text class="fw-b">{{ item.price_type }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">操作金额：</text>
-                                <text class="fw-b">2190.00</text>
+                                <text class="fw-b">{{ item.price }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">原始金额：</text>
-                                <text class="fw-b">1500.00</text>
+                                <text class="fw-b">{{ item.init_price }}</text>
                             </view>
                             <view class="flex-row">
                                 <text class="cr-grey-9">最新金额：</text>
-                                <text class="fw-b">1500.00</text>
+                                <text class="fw-b">{{ item.new_price }}</text>
                             </view>
                         </view>
                     </view>
@@ -44,7 +44,7 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">钱包种类</view>
                     <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in wallet_list" class="flex-width-half-half">
+                        <view v-for="(item, index) in wallet_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="wallet_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="wallet_event">{{ item.name }}</view>
                         </view>
                     </view>
@@ -59,7 +59,7 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in type_list" class="flex-width-half-half">
+                        <view v-for="(item, index) in type_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="type_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="type_event">{{ item.name }}</view>
                         </view>
                     </view>
@@ -126,6 +126,137 @@
                     },
                     {
                         name: '打款失败',
+                    },
+                ],
+
+                data: [
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '消费',
+                        price_type: '有效',
+                        price: '20000',
+                        init_price: '20000',
+                        new_price: '收款后请尽快联系',
                     },
                 ],
             };

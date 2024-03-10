@@ -6,17 +6,13 @@
                     <view class="padding-lg bg-white radius-md margin-bottom-main">
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
-                                <picker class="coin-dropdown text-size-md pr" @change="coin_event_old" :value="coin_index_old" :range="coin_list_old" range-key="name">
-                                    <view class="picker pr">
-                                        <view class="flex-row align-c">
-                                            <image :src="coin_list_old[coin_index_old]['img']" mode="widthFix" class="coin-list-img round" />
-                                            <span class="padding-left-sm flex-1 flex-width single-text">{{ coin_list_old[coin_index_old]['name'] }}</span>
-                                        </view>
-                                        <view class="coin-dropdown-icon pa padding-left-xxl">
-                                            <iconfont name="icon-arrow-bottom" size="24rpx" color="#000"></iconfont>
-                                        </view>
+                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
+                                    <image :src="coin_list[coin_index_old]['img']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[coin_index_old]['name'] }}</text>
+                                    <view class="coin-dropdown-icon pa padding-left-xxl">
+                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
-                                </picker>
+                                </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c"> <text class="margin-right-sm">余额:</text><text class="cr-blue">23.234</text> </view>
                             </view>
                             <view class="coin-num pr flex-col">
@@ -24,22 +20,18 @@
                                 <view class="margin-top-main tr text-size-xs">$21.00</view>
                             </view>
                         </view>
-                        <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event">
+                        <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
                             <iconfont name="icon-convert2" class="pa convert-icon" :class="convert_bool ? 'convert_true' : 'convert_false'" color="#1D7DEF" size="36rpx"></iconfont>
                         </view>
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
-                                <picker class="coin-dropdown text-size-md pr" @change="coin_event_new" :value="coin_index_new" :range="coin_list_new" range-key="name">
-                                    <view class="picker pr">
-                                        <view class="flex-row align-c">
-                                            <image :src="coin_list_new[coin_index_new]['img']" mode="widthFix" class="coin-list-img round" />
-                                            <span class="padding-left-sm flex-1 flex-width single-text">{{ coin_list_new[coin_index_new]['name'] }}</span>
-                                        </view>
-                                        <view class="coin-dropdown-icon pa padding-left-xxl">
-                                            <iconfont name="icon-arrow-bottom" size="24rpx" color="#000"></iconfont>
-                                        </view>
+                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
+                                    <image :src="coin_list[coin_index_new]['img']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[coin_index_new]['name'] }}</text>
+                                    <view class="coin-dropdown-icon pa padding-left-xxl">
+                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
-                                </picker>
+                                </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c"> <text class="margin-right-sm">余额:</text><text class="cr-blue">23.234</text> </view>
                             </view>
                             <view class="coin-num pr flex-col">
@@ -57,16 +49,40 @@
                         <input type="number" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
                     </view>
                     <view class="padding-main radius-md margin-bottom-main">
-                        <button type="default" class="convert-btn cr-white round" @tap="popup_goods_search_event">立即转换</button>
+                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">立即转换</button>
                     </view>
                 </view>
             </scroll-view>
+            <!-- 虚拟币下拉框 -->
+            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
+                <view class="padding-horizontal-main padding-top-main bg-white">
+                    <view class="oh">
+                        <view class="fr" @tap.stop="popup_coin_status_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
+                        <view class="scroll-y">
+                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                                <view class="flex-row align-c">
+                                    <image :src="item.img" mode="widthFix" class="coin-list-img round" />
+                                    <view class="margin-left-sm text-size-md single-text">{{ item.name }}</view>
+                                </view>
+                                <view>
+                                    <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </component-popup>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -80,19 +96,12 @@
                 wallet_static_url: wallet_static_url,
 
                 // 虚拟币状态
+                coin_type: 1,
+                coin_index: 0,
                 coin_index_old: 0,
-                coin_list_old: [
-                    {
-                        name: 'BTC',
-                        img: wallet_static_url + 'user-head-bg.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'user-head-bg.png',
-                    },
-                ],
                 coin_index_new: 0,
-                coin_list_new: [
+                popup_coin_status: false,
+                coin_list: [
                     {
                         name: 'BTC',
                         img: wallet_static_url + 'user-head-bg.png',
@@ -109,6 +118,7 @@
 
         components: {
             componentNoData,
+            componentPopup,
         },
         props: {},
 
@@ -148,17 +158,32 @@
             // 获取数据
             get_data() {},
 
-            // 虚拟币切换1
-            coin_event_old(e) {
+            // 虚拟币切换
+            popup_coin_status_event(type) {
                 this.setData({
-                    coin_index_old: parseInt(e.detail.value || 0),
+                    coin_type: type,
+                    coin_index: type == 1 ? this.coin_index_old : this.coin_index_new,
+                    popup_coin_status: true,
                 });
             },
-
-            // 虚拟币切换2
-            coin_event_new(e) {
+            coin_checked_event(e) {
+                if (this.coin_type == 1) {
+                    this.setData({
+                        coin_index_old: parseInt(e.currentTarget.dataset.index || 0),
+                    });
+                } else {
+                    this.setData({
+                        coin_index_new: parseInt(e.currentTarget.dataset.index || 0),
+                    });
+                }
                 this.setData({
-                    coin_index_new: parseInt(e.detail.value || 0),
+                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
+                    popup_coin_status: false,
+                });
+            },
+            popup_coin_status_close_event() {
+                this.setData({
+                    popup_coin_status: false,
                 });
             },
 
@@ -172,6 +197,9 @@
                     convert_bool: !this.convert_bool,
                 });
             },
+
+            // 立即转换
+            convert_submit() {},
 
             // 页面滚动监听
             scroll_event(e) {

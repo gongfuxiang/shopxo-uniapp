@@ -1,6 +1,5 @@
 .coin-dropdown {
     --height: 72rpx;
-    display: inline-block;
     height: var(--height);
     line-height: var(--height);
     padding: 0 52rpx 0 20rpx;
@@ -10,7 +9,7 @@
 }
 
 .coin-dropdown-icon {
-    right: -36rpx;
+    right: 24rpx;
     top: 2rpx;
     padding: 0;
 }
@@ -69,4 +68,10 @@
 
 .convert-btn:active {
     background: linear-gradient( 107deg, #FC6F31 0%, #E22C08 100%);
+}
+
+.coin-content-list-img {
+    --size: 36rpx;
+    width: var(--size);
+    height: var(--size) !important;
 }

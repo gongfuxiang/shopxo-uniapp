@@ -16,6 +16,7 @@
     height: var(--size);
     border-radius: 32rpx;
 }
+
 /* 
  * 内容
 */
@@ -29,6 +30,20 @@
 
 .coin-content-list-img {
     --size: 80rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+/* 
+ * 虚拟币弹窗
+*/
+.popup_coin_status_container .scroll-y {
+    height: 40vh;
+    overflow-y: auto;
+}
+
+.coin-list-img {
+    --size: 40rpx;
     width: var(--size);
     height: var(--size) !important;
 }

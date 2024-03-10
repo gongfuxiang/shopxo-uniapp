@@ -1,6 +1,9 @@
 .transfer-accounts .nav {
     z-index: 102;
 }
+.scroll-box {
+    height: calc(100vh - 88rpx);
+}
 
 /* 
  * 钱包弹窗

@@ -12,7 +12,6 @@
 
 .coin-dropdown {
     --height: 48rpx;
-    display: inline-block;
     height: var(--height);
     line-height: var(--height);
     padding: 0 64rpx 0 32rpx;
@@ -21,7 +20,7 @@
 }
 
 .coin-dropdown-icon {
-    right: -36rpx;
+    right: 36rpx;
     top: 2rpx;
     padding: 0;
 }
@@ -96,4 +95,24 @@
     position: absolute;
     left: 0;
     top: 12rpx;
+}
+
+.coin-content-list-img {
+    --size: 28rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}
+
+/* 
+ * 虚拟币弹窗
+*/
+.popup_coin_status_container .scroll-y {
+    height: 40vh;
+    overflow-y: auto;
+}
+
+.coin-list-img {
+    --size: 40rpx;
+    width: var(--size);
+    height: var(--size) !important;
 }

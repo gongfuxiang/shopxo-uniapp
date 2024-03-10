@@ -13,19 +13,19 @@
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
-                    <view class="padding-main bg-white radius-md">
+                    <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view class="cr-grey-9">2023-09-20 15:12:35</view>
-                            <view>未打款</view>
+                            <view class="cr-grey-9">{{ item.date }}</view>
+                            <view :class="item.status_type == 0 ? 'cr-red' : item.status_type == 1 ? 'cr-black' : 'cr-grey-9'">{{ item.status }}</view>
                         </view>
                         <view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9">提现单号：</text>
-                                <text class="fw-b">202330303030303030</text>
+                                <text class="fw-b">{{ item.no }}</text>
                             </view>
                             <view class="flex-row">
                                 <text class="cr-grey-9">提现金额：</text>
-                                <text class="fw-b">2190.00</text>
+                                <text class="fw-b">{{ item.price }}</text>
                             </view>
                         </view>
                     </view>
@@ -36,7 +36,7 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">钱包种类</view>
                     <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in wallet_list" class="flex-width-half-half">
+                        <view v-for="(item, index) in wallet_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="wallet_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="wallet_event">{{ item.name }}</view>
                         </view>
                     </view>
@@ -51,7 +51,7 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in type_list" class="flex-width-half-half">
+                        <view v-for="(item, index) in type_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="type_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="type_event">{{ item.name }}</view>
                         </view>
                     </view>
@@ -118,6 +118,169 @@
                     },
                     {
                         name: '打款失败',
+                    },
+                ],
+                data: [
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '已打款',
+                        status_type: '2',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '打款失败',
+                        status_type: '0',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
+                    },
+                    {
+                        date: '2023-12-12',
+                        status: '未打款',
+                        status_type: '1',
+                        no: '2023343534553436645',
+                        price: '2198.00',
                     },
                 ],
             };

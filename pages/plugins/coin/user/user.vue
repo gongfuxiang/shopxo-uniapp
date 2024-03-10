@@ -379,7 +379,6 @@
 
             // url事件
             url_event(e) {
-                console.log(e);
                 if (e.currentTarget.dataset.method) {
                     this.popup_user_detail_open_event();
                 } else {
