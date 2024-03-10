@@ -186,7 +186,13 @@
 		"plugins-coin-recharge": "Recargar",
 		"plugins-coin-convert": "Conversión",
 		"plugins-coin-withdrawal": "Retiro de efectivo",
-		"plugins-coin-detail": "Detalles"
+		"plugins-coin-detail": "Detalles",
+		"plugins-coin-transfer-accounts-detail": "Detalles de la transferencia",
+		"plugins-coin-transaction-detail": "Detalles de la transacción",
+		"plugins-coin-withdrawal-detail": "Detalles del retiro de efectivo",
+		"plugins-coin-convert-detail": "Detalles de conversión",
+		"plugins-coin-collection": "Recaudación",
+		"plugins-coin-order-confirm": "Confirmación del pedido"
 	},
 	"login": {
 		"login": {

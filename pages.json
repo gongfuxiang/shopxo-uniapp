@@ -1317,6 +1317,20 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "collection/collection",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "order-confirm/order-confirm",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         }

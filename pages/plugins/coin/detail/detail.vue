@@ -119,7 +119,7 @@
                     {
                         name: '收款',
                         icon: 'icon-collection',
-                        url: '/pages/plugins/coin/convert/convert',
+                        url: '/pages/plugins/coin/collection/collection',
                     },
                     {
                         name: '明细',

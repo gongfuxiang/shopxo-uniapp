@@ -186,7 +186,13 @@
 		"plugins-coin-recharge": "充值",
 		"plugins-coin-convert": "轉換",
 		"plugins-coin-withdrawal": "提現",
-		"plugins-coin-detail": "明細"
+		"plugins-coin-detail": "明細",
+		"plugins-coin-transfer-accounts-detail": "轉帳明細",
+		"plugins-coin-transaction-detail": "交易明細",
+		"plugins-coin-withdrawal-detail": "提現明細",
+		"plugins-coin-convert-detail": "轉換明細",
+		"plugins-coin-collection": "收款",
+		"plugins-coin-order-confirm": "訂單確認"
 	},
 	"login": {
 		"login": {
