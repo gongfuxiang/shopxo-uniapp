@@ -506,6 +506,22 @@ button:before {
 .br-r-e {
     border-right: 1px solid #eeeeee !important;
 }
+.br-c {
+    border: solid 1px #cccccc !important;
+}
+.br-b-c {
+    border-bottom: 1px solid #cccccc !important;
+}
+.br-t-c {
+    border-top: 1px solid #cccccc !important;
+}
+.br-l-c {
+    border-left: 1px solid #cccccc !important;
+}
+.br-r-c {
+    border-right: 1px solid #cccccc !important;
+}
+
 .br-white {
     border: 1px solid #FFF !important;
 }
@@ -532,9 +548,6 @@ button:before {
 }
 .br-grey-9 {
     border: solid 1px #999999 !important;
-}
-.br-grey-c {
-    border: solid 1px #cccccc !important;
 }
 .br-blue {
     border: solid 1px #2196F3 !important;

@@ -2,8 +2,18 @@
     <view :class="theme_view">
         <view class="collection">
             <view class="padding-main pr">
-                <view class="padding-lg bg-white radius-md margin-bottom-main">
+                <view class="padding-lg bg-white radius-md margin-bottom-main tc">
                     <image :src="wallet_static_url + 'user-head-bg.png'" mode="widthFix" class="img" />
+                    <view class="code br-c radius flex-row">
+                        <view class="num flex-1 flex-width flex-row align-c text-size-md">{{ code }}</view>
+                        <view class="copy br-l-c text-size fw-b" :data-value="code" @tap.stop="text_copy_event">复制</view>
+                    </view>
+                </view>
+                <view class="cr-grey-9 margin-top-xxl flex-row">
+                    <view class="pr top-xs">
+                        <iconfont name="icon-sigh-o" size="32rpx"></iconfont>
+                    </view>
+                    <text class="margin-left-sm text-size-xs">说出来的是你想的，做出来的是你说的，交出来的是你做的</text>
                 </view>
             </view>
         </view>
@@ -23,6 +33,8 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
+
+                code: '3453sdfsdf3254233453sdfsdf325423',
             };
         },
 
@@ -66,9 +78,14 @@
 
             // 获取数据
             get_data() {},
+
+            // 复制文本
+            text_copy_event(e) {
+                app.globalData.text_copy_event(e);
+            },
         },
     };
 </script>
 <style>
-    @import './convert.css';
+    @import './collection.css';
 </style>
