@@ -1324,13 +1324,6 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
-                },
-                {
-                    "path": "order-confirm/order-confirm",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
-                    }
                 }
             ]
         }

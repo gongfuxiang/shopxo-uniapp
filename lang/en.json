@@ -191,8 +191,7 @@
 		"plugins-coin-transaction-detail": "Transaction details",
 		"plugins-coin-withdrawal-detail": "Withdrawal details",
 		"plugins-coin-convert-detail": "Conversion details",
-		"plugins-coin-collection": "Collection",
-		"plugins-coin-order-confirm": "acknowledgement of order"
+		"plugins-coin-collection": "Collection"
 	},
 	"login": {
 		"login": {

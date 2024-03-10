@@ -191,8 +191,7 @@
 		"plugins-coin-transaction-detail": "Detalles de la transacción",
 		"plugins-coin-withdrawal-detail": "Detalles del retiro de efectivo",
 		"plugins-coin-convert-detail": "Detalles de conversión",
-		"plugins-coin-collection": "Recaudación",
-		"plugins-coin-order-confirm": "Confirmación del pedido"
+		"plugins-coin-collection": "Recaudación"
 	},
 	"login": {
 		"login": {

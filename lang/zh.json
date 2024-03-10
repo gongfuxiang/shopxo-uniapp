@@ -195,8 +195,7 @@
 		"plugins-coin-transaction-detail": "交易明细",
 		"plugins-coin-withdrawal-detail": "提现明细",
 		"plugins-coin-convert-detail": "转换明细",
-		"plugins-coin-collection": "收款",
-		"plugins-coin-order-confirm": "订单确认"
+		"plugins-coin-collection": "收款"
 	},
 	"login": {
 		"login": {
