@@ -69,21 +69,10 @@
 /**
 * 支付方式
 */
-.payment-list .item {
-    width: calc(50% - 10rpx);
-}
-.payment-list .item:nth-child(2n) {
-    float: right;
-}
-.payment-list .item:nth-child(2n+1) {
-    float: left;
-}
 .payment-list .item-content {
-    padding: 0 10rpx;
-    height: 80rpx;
-    line-height: 80rpx;
+    padding: 40rpx 0;
 }
-.payment-list .item-content image {
+.payment-list .item-content .icon {
     width: 50rpx;
     height: 50rpx !important;
 }
@@ -92,8 +81,7 @@
     line-height: 32rpx;
     display: inline-block;
     position: absolute;
-    top: -16rpx;
-    right: 0;
+    top: 12rpx;
     color: #fff;
     padding: 0 12rpx;
     border-radius: 16rpx 0 16rpx 0;
