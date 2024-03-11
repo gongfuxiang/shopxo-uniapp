@@ -126,10 +126,12 @@
                             this.setData({
                                 form_submit_loading: false,
                             });
-                            app.globalData.showToast(res.data.msg);
+                            app.globalData.showToast(res.data.msg, 'success');
                             if (res.data.code == 0) {
-                                // 默认返回上一页
-                                uni.navigateBack();
+                                setTimeout(() => {
+                                    // 默认返回上一页
+                                    uni.navigateBack();
+                                }, 1500);
                             }
                         },
                         fail: () => {
