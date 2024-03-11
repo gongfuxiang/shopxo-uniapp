@@ -21,7 +21,7 @@
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
-    import componentPopup from "../../components/popup/popup";
+    import componentPopup from "@/components/popup/popup";
     export default {
         data() {
             return {

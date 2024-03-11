@@ -372,7 +372,7 @@
     import componentGoodsBuy from '../../components/goods-buy/goods-buy';
     import componentSearch from '../../components/search/search';
     import componentNoData from '../../components/no-data/no-data';
-    import componentPopup from '../../components/popup/popup';
+    import componentPopup from '@/components/popup/popup';
     import componentBadge from '../../components/badge/badge';
     import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
     import componentUserBase from '../../components/user-base/user-base';

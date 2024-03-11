@@ -225,7 +225,7 @@
 </template>
 <script>
 const app = getApp();
-import componentPopup from "../../components/popup/popup";
+import componentPopup from "@/components/popup/popup";
 import componentNoData from "../../components/no-data/no-data";
 import componentBottomLine from "../../components/bottom-line/bottom-line";
 

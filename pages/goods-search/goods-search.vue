@@ -167,7 +167,7 @@
 <script>
 	const app = getApp();
 	import componentQuickNav from "../../components/quick-nav/quick-nav";
-	import componentPopup from "../../components/popup/popup";
+	import componentPopup from "@/components/popup/popup";
 	import componentNoData from "../../components/no-data/no-data";
 	import componentBottomLine from "../../components/bottom-line/bottom-line";
 	import componentGoodsList from "../../components/goods-list/goods-list";

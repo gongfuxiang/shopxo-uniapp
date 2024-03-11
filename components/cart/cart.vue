@@ -318,7 +318,7 @@
     import componentNavBack from '../../components/nav-back/nav-back';
     import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
     import componentBottomLine from '../../components/bottom-line/bottom-line';
-    import componentPopup from '../../components/popup/popup';
+    import componentPopup from '@/components/popup/popup';
 
     var common_static_url = app.globalData.get_static_url('common');
     var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));

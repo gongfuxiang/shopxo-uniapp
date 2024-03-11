@@ -380,7 +380,7 @@
 <script>
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
-    import componentPopup from '../../components/popup/popup';
+    import componentPopup from '@/components/popup/popup';
     let login_static_url = app.globalData.get_static_url('thirdpartylogin', true) + 'icon/';
 
     export default {

@@ -73,7 +73,7 @@
 <script>
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
-    import componentPopup from '../../components/popup/popup';
+    import componentPopup from '@/components/popup/popup';
     export default {
         data() {
             return {

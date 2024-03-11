@@ -79,7 +79,7 @@
 <script>
     const app = getApp();
     import componentNoData from '../../components/no-data/no-data';
-    import componentPopup from '../../components/popup/popup';
+    import componentPopup from '@/components/popup/popup';
 
     export default {
         data() {

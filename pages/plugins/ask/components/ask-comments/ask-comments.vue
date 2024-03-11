@@ -143,9 +143,9 @@
 <script>
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
-    import componentPopup from '../../components/popup/popup';
-    import componentSharePopup from '../../components/share-popup/share-popup';
-    import componentEmojiPopup from '../../components/emoji-popup/emoji-popup';
+    import componentPopup from '@/components/popup/popup';
+    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentEmojiPopup from '@/components/emoji-popup/emoji-popup';
     export default {
         data() {
             return {

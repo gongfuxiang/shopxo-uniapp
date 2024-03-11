@@ -30,7 +30,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentPopup from "../../components/popup/popup";
+    import componentPopup from "@/components/popup/popup";
 
     export default {
         data() {
