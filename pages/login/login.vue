@@ -37,6 +37,25 @@
                                 </view>
                             </form>
                         </view>
+                        <view v-if="current_opt_form == 'bind_email'" class="form-content">
+                            <form @submit="formBindEmail">
+                                <view class="tc">
+                                    <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                </view>
+                                <view class="margin-top-xxxl padding-top-xxxl">
+                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
+                                    <view class="code pr margin-vertical-main">
+                                        <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
+                                        <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
+                                    </view>
+                                    <button class="bg-main br-main cr-white round text-size margin-top-xxxl" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{ $t('login.login.tfl656') }}</button>
+                                </view>
+                                <view class="margin-top-xxxl padding-top-xxxl padding-horizontal-main padding-bottom-xxxl tc">
+                                    <text class="cr-blue" data-value="bind" @tap="opt_form_event">{{ $t('login.login.483nho') }}</text>
+                                </view>
+                            </form>
+                        </view>
 
                         <!-- 存在用户信息 -->
                         <block v-if="user != null">
@@ -71,7 +90,7 @@
                         </block>
 
                         <!-- 站点logo -->
-                        <image v-if="(home_site_logo_square || null) != null && current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                        <image v-if="(home_site_logo_square || null) != null && current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'bind_email' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
 
                         <!-- 非登录成功则需要展示的数据 -->
                         <block v-if="current_opt_form != 'success'">
@@ -461,7 +480,7 @@
 
             // #ifdef APP
             // 获取app第三方登录通道设置
-            this.provider_action()
+            this.provider_action();
             //#endif
 
             // 多语言
@@ -537,7 +556,7 @@
                         reg_email: this.$t('login.login.jc0w0o'),
                         forget: this.$t('login.login.8tmyuc'),
                         success: this.$t('login.login.5p23c6'),
-                    }
+                    },
                 });
             },
 
@@ -633,9 +652,9 @@
                     // #ifdef APP
                     // app第三方登录通道隔离
                     var thirdpartylogin = this.plugins_thirdpartylogin_data || {};
-                    if(Object.keys(thirdpartylogin).length) {
+                    if (Object.keys(thirdpartylogin).length) {
                         var temp_thirdpartylogin = Object.keys(thirdpartylogin).reduce((pre, cur) => {
-                            if(this.app_login_provider_list.includes(cur)) {
+                            if (this.app_login_provider_list.includes(cur)) {
                                 pre[cur] = thirdpartylogin[cur];
                             }
                             return pre;
@@ -788,7 +807,7 @@
                     }
                 }
                 // 邮箱验证：邮箱登录、邮箱注册
-                if (this.current_opt_type == 'login_email' || this.current_opt_type == 'reg_email') {
+                if (this.current_opt_type == 'login_email' || this.current_opt_type == 'reg_email' || this.current_opt_type == 'bind_email') {
                     if ((this.form_input_email_value || null) == null) {
                         app.globalData.showToast(this.$t('login.login.xak8g1'));
                         return false;
@@ -800,7 +819,7 @@
                     return false;
                 }
                 // 是否开启图片验证码、绑定操作不使用图片验证码
-                if (this.current_opt_form != 'bind' && this.current_opt_form != 'bind_verify') {
+                if (this.current_opt_form != 'bind' && this.current_opt_form != 'bind_verify' && this.current_opt_form != 'bind_email') {
                     if (this.common_img_verify_state == 1) {
                         this.setData({
                             popup_image_verify_status: true,
@@ -816,7 +835,7 @@
             // 短信验证码发送处理
             verify_send_handle() {
                 // 是否开启图片验证码
-                if (this.current_opt_form != 'bind' && this.current_opt_form != 'bind_verify') {
+                if (this.current_opt_form != 'bind' && this.current_opt_form != 'bind_verify' && this.current_opt_form != 'bind_email') {
                     if (this.common_img_verify_state == 1) {
                         if ((this.form_input_image_verify_value || null) == null || this.form_input_image_verify_value.length < 4) {
                             app.globalData.showToast(this.$t('login.login.7r5h37'));
@@ -828,15 +847,26 @@
                 // 请求数据
                 var action = '';
                 var image_verify_type = '';
-                if (this.current_opt_form == 'bind' || this.current_opt_form == 'bind_verify') {
-                    action = 'appmobilebindverifysend';
+                if (this.current_opt_form == 'bind' || this.current_opt_form == 'bind_email' || this.current_opt_form == 'bind_verify') {
                     image_verify_type = 'user_bind';
-                    var post_data = {
-                        mobile: this.form_input_mobile_value || '',
-                    };
-                    if ((post_data.mobile || null) == null) {
-                        app.globalData.showToast(this.$t('login.login.4c5n8o'));
-                        return false;
+                    if (this.current_opt_form == 'bind_email') {
+                        action = 'appemailbindverifysend';
+                        var post_data = {
+                            email: this.form_input_email_value || '',
+                        };
+                        if ((post_data.email || null) == null) {
+                            app.globalData.showToast(this.$t('login.login.xak8g1'));
+                            return false;
+                        }
+                    } else if (this.current_opt_form == 'bind_verify') {
+                        action = 'appmobilebindverifysend';
+                        var post_data = {
+                            mobile: this.form_input_mobile_value || '',
+                        };
+                        if ((post_data.mobile || null) == null) {
+                            app.globalData.showToast(this.$t('login.login.4c5n8o'));
+                            return false;
+                        }
                     }
                 } else {
                     if (this.current_opt_form == 'login') {
@@ -929,9 +959,25 @@
                     },
                 });
             },
-
+            formBindMobile(e) {
+                // 数据验证
+                var validation = [
+                    { fields: 'mobile', msg: this.$t('login.login.4c5n8o') },
+                    { fields: 'verify', msg: this.$t('login.login.01xmab') },
+                ];
+                this.formBind(e, validation, app.globalData.get_request_url('appmobilebind', 'user'));
+            },
             // 绑定手机表单提交
-            formBind(e) {
+            formBindEmail(e) {
+                // 数据验证
+                var validation = [
+                    { fields: 'email', msg: this.$t('login.login.xak8g1') },
+                    { fields: 'verify', msg: this.$t('login.login.01xmab') },
+                ];
+                this.formBind(e, validation, app.globalData.get_request_url('appemailbind', 'user'));
+            },
+            // 绑定表单提交
+            formBind(e, validation, url) {
                 // 其他数据
                 var client_type = app.globalData.application_client_type();
                 var user = this.user || this.plugins_thirdpartylogin_user || app.globalData.get_login_cache_info() || {};
@@ -967,7 +1013,7 @@
 
                     // 网络请求
                     uni.request({
-                        url: app.globalData.get_request_url('appmobilebind', 'user'),
+                        url: url,
                         method: 'POST',
                         data: e.detail.value,
                         dataType: 'json',
@@ -1465,20 +1511,26 @@
 
                 // #ifdef APP
                 let self = this;
-                switch(type) {
+                switch (type) {
                     // 微信、QQ、谷歌
-                    case 'weixin' :
-                    case 'qq' :
-                    case 'google' :
+                    case 'weixin':
+                    case 'qq':
+                    case 'google':
                         uni.login({
                             provider: type,
-                            success: function(res) {
+                            success: function (res) {
                                 let auth_result = res.authResult;
-                                self.app_login_bind_handle({...auth_result, ...{
-                                    platform: type,
-                                    openid: auth_result.openid,
-                                    access_token: auth_result.access_token,
-                                }}, auth_result);
+                                self.app_login_bind_handle(
+                                    {
+                                        ...auth_result,
+                                        ...{
+                                            platform: type,
+                                            openid: auth_result.openid,
+                                            access_token: auth_result.access_token,
+                                        },
+                                    },
+                                    auth_result
+                                );
                             },
                             fail: function (error) {
                                 app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
@@ -1487,16 +1539,22 @@
                         break;
 
                     // 苹果
-                    case 'apple' :
+                    case 'apple':
                         uni.login({
                             provider: type,
-                            success: function(res) {
+                            success: function (res) {
                                 let auth_result = res.appleInfo || res.userInfo;
-                                self.app_login_bind_handle({...auth_result, ...{
-                                    platform: type,
-                                    openid: auth_result.openId || auth_result.user,
-                                    access_token: auth_result.access_token || ''
-                                }}, auth_result);
+                                self.app_login_bind_handle(
+                                    {
+                                        ...auth_result,
+                                        ...{
+                                            platform: type,
+                                            openid: auth_result.openId || auth_result.user,
+                                            access_token: auth_result.access_token || '',
+                                        },
+                                    },
+                                    auth_result
+                                );
                             },
                             fail: function (error) {
                                 app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
@@ -1504,8 +1562,8 @@
                         });
                         break;
 
-                    default :
-                        app.globalData.showToast(type+this.$t('login.login.li9573'));
+                    default:
+                        app.globalData.showToast(type + this.$t('login.login.li9573'));
                 }
                 // #endif
             },
@@ -1523,16 +1581,16 @@
                     success: (res) => {
                         uni.hideLoading();
                         if (res.data.code == 0) {
-                            var user = {...auth_result, ...res.data.data};
+                            var user = { ...auth_result, ...res.data.data };
                             // 设置当前第三方登录用户数据
                             this.setData({
-                                plugins_thirdpartylogin_user: user
+                                plugins_thirdpartylogin_user: user,
                             });
 
                             // 不需要绑定账号、则成功
                             if ((user.is_force_bind_user || 0) != 1) {
                                 this.setData({
-                                    user: user
+                                    user: user,
                                 });
 
                                 // 缓存当前用户数据
@@ -1631,7 +1689,7 @@
                     popup_login_status: false,
                 });
             },
-            
+
             // 获取app第三方登录通道
             provider_action() {
                 uni.getProvider({
@@ -1641,9 +1699,9 @@
                             app_login_provider_list: result.provider || [],
                         });
                     },
-                    fail: (error) => {}
+                    fail: (error) => {},
                 });
-            }
+            },
         },
     };
 </script>

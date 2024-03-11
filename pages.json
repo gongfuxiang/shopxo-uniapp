@@ -306,6 +306,13 @@
                 "enablePullDownRefresh": false,
                 "navigationBarTitleText": ""
             }
+        },
+        {
+            "path": "pages/password/password",
+            "style": {
+                "enablePullDownRefresh": true,
+                "navigationBarTitleText": ""
+            }
         }
     ],
     "subPackages": [{
