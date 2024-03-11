@@ -1,0 +1,134 @@
+.scanpay-logo {
+    width: 92rpx;
+    height: 92rpx !important;
+}
+
+.badge {
+    min-width: 50rpx;
+    height: 32rpx;
+    line-height: 32rpx;
+    background: #D5D5D5;
+    border-radius: 4rpx;
+    padding: 0 12rpx;
+    font-size: 22rpx;
+}
+
+.unit {
+    font-size: 42rpx;
+}
+
+.img-pay {
+    width: 40rpx;
+}
+
+.pay-scroll {
+    max-height: calc(100vh - 1102rpx);
+    min-height: 140rpx;
+    overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+    display: none;
+    ;
+}
+
+.sub-key {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+
+.title-padding {
+    padding: 16rpx;
+}
+
+/**
+ * 页面底部浮动、增加底部边距
+ */
+.page-pay-fixed {
+    padding-bottom: calc(536rpx + env(safe-area-inset-bottom) - 40rpx);
+    /* #ifdef H5 */
+    padding-bottom: 536rpx !important;
+    /* #endif */
+}
+
+.edit-width {
+    min-width: 50rpx;
+}
+
+.key-1 {
+    padding: 26rpx 0;
+}
+
+.repair {
+    margin-left: -2rpx;
+}
+
+.fw-n {
+    font-weight: 400;
+}
+
+.sub-key-content .key-num {
+    transition: all 0.15s ease-in-out;
+}
+
+.sub-key-content .key-num:active {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.sub-key-content .key-num.sub:active {
+    background-color: rgba(230, 67, 64, 0.85) !important;
+}
+
+/* 弹框 */
+.dialog-container {
+    width: 600rpx;
+    border-radius: 22rpx;
+    background-color: #fff;
+}
+
+.dialog-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding-top: 30rpx;
+    font-size: 32rpx;
+    text-align: center;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 40rpx;
+}
+
+.dialog-input {
+    flex: 1;
+    font-size: 28rpx;
+    border: 2rpx #eee solid;
+    height: 80rpx;
+    line-height: 80rpx;
+    min-height: 80rpx;
+    padding: 0 20rpx;
+    border-radius: 10rpx;
+    color: #555;
+    background: #F1F1F1;
+    box-sizing: unset !important;
+}
+
+.dialog-btn-group {
+    display: flex;
+    flex-direction: row;
+}
+
+.dialog-btn {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 90rpx;
+    font-size: 32rpx;
+}

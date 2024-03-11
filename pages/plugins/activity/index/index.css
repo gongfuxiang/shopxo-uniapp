@@ -1,0 +1,12 @@
+/**
+* 数据列表
+*/
+.data-list {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+
+.data-list .item {
+    width: calc(50% - 10rpx);
+}

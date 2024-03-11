@@ -1,0 +1,32 @@
+/**
+ * 基础信息
+ */
+.label-info {
+    height: 40rpx;
+}
+
+/**
+* 排序导航
+*/
+.nav-sort-content .item {
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 16%;
+}
+.nav-sort-content .item .icon {
+    width: 30rpx;
+    height: 30rpx !important;
+}
+.show-type-submit {
+    width: 50rpx;
+    height: 50rpx !important;
+    top: 15rpx;
+    right: 16rpx;
+}
+
+/**
+* 商品列表
+*/
+.scroll-box {
+    height: calc(100vh - 150rpx);
+}

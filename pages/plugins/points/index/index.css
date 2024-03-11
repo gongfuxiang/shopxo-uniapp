@@ -1,0 +1,85 @@
+/**
+* 顶部
+*/
+.points-content {
+    padding-top: 350rpx;
+}
+
+.points-user {
+    padding: 28rpx;
+}
+
+.points-user .avatar {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+.points-user .share-submit {
+    width: 112rpx;
+    height: 52rpx;
+    line-height: 52rpx;
+    padding: 0;
+    background: #D8D8D8 linear-gradient(93deg, #FF9747 0%, #FF6E01 100%);
+    border-radius: 200rpx 0 0 200rpx;
+    top: 54rpx;
+    right: 0;
+}
+
+.points-integral {
+    padding: 28rpx 28rpx 0 28rpx;
+}
+
+.points-integral .item .list {
+    border-bottom: 2rpx solid #eee;
+    padding: 30rpx 0;
+}
+
+.points-integral .item .list:last-of-type {
+    border: 0;
+}
+
+/**
+ * 积分规则
+ */
+.rule-btn {
+    top: 140rpx;
+    width: 148rpx;
+    height: 52rpx;
+    padding: 0;
+    line-height: 52rpx;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 200rpx 0 0 200rpx;
+}
+
+.rule {
+    padding: 56rpx 24rpx;
+    max-height: 50vh;
+}
+
+.rule .item {
+    padding-bottom: 100rpx;
+    max-height: calc(50vh - 164rpx);
+}
+
+.rule button {
+    margin: 20rpx 70rpx 42rpx 70rpx;
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .points-content {
+        /* #ifdef H5 */
+        padding-top: 51%;
+        /* #endif */
+    }
+
+    .rule-btn {
+        /* #ifdef H5 */
+        top: 11%;
+        /* #endif */
+    }
+}

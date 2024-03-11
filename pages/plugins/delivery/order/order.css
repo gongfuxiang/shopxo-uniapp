@@ -1,0 +1,62 @@
+/*
+* 头部
+*/
+.header {
+    height: 160rpx;
+}
+.nav-base .item {
+    width: 20%;
+}
+.nav-base .item .badge-icon {
+    top: -18rpx;
+    left: calc(50% + 52rpx);
+    z-index: 1;
+}
+.nav-search .search-keywords {
+    margin-right: 80rpx;
+}
+.nav-search .map-submit {
+    top: 0;
+    right: 20rpx;
+}
+
+/**
+ * 数据列表
+ */
+.scroll-box {
+    height: calc(100vh - 160rpx);
+}
+.data-list .address-info {
+    width: calc(100% - 158rpx);
+    word-wrap: break-word;
+    word-break: break-all;
+}
+.data-list .address-info .icon-item {
+    right: 0;
+    top: 0;
+    line-height: 54rpx;
+    height: 54rpx;
+    width: 54rpx;
+}
+
+/**
+ * 地图
+ */
+.map-container {
+    height: calc(100vh - 160rpx);
+}
+.map-container .map-markers-active-data {
+    background-color: rgb(255 255 255 / 0.85);
+    width: calc(100% - 40rpx);
+    left: 20rpx;
+    bottom: 20rpx;
+    line-height: 58rpx;
+    box-shadow: 0 0 20rpx rgba(50,55,58,0.2);
+}
+.map-container .map-markers-active-data .map-send-icon {
+    right: 0;
+    top: calc(50% - 22rpx);
+    line-height: 54rpx;
+    height: 54rpx;
+    width: 54rpx;
+}

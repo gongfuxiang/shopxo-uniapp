@@ -1,0 +1,47 @@
+/*
+* 分类
+*/
+.nav-list {
+    height: 38rpx;
+    line-height: 38rpx;
+    width: calc(100% - 155rpx);
+}
+
+/**
+ * 推荐博文
+ */
+.right-list .item .blog-title {
+    width: calc(100% - 210rpx);
+}
+
+/**
+ * 分类导航
+ */
+.nav-blog-category .item {
+    width: calc(50% - 10rpx);
+}
+.nav-blog-category .item:nth-child(odd) {
+    float: left;
+}
+.nav-blog-category .item:nth-child(even) {
+    float: right;
+}
+.nav-blog-category .item .icon,
+.nav-blog-category .item .icon-text {
+    width: 74rpx;
+    height: 74rpx !important;
+}
+.nav-blog-category .item .icon-text {
+    line-height: 72rpx;
+    font-size: 48rpx;
+    background: #e6f2f8;
+    color: #3f51b5;
+}
+.nav-blog-category .item .right-base {
+    width: calc(100% - 84rpx);
+}
+
+.btn-content {
+    padding-top: 54rpx;
+    padding-bottom: 54rpx;
+}

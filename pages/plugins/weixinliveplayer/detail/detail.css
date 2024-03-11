@@ -1,0 +1,49 @@
+/**
+* 内容
+*/
+.base .item .item-icon {
+    width: 35rpx;
+    height: 35rpx !important;
+}
+
+.base .item .status {
+    color: #999;
+}
+
+.base .item .status-0 {
+    color: #0e90d2;
+}
+
+.base .item .status-1 {
+    color: #5eb95e;
+}
+
+.base .item .status-2 {
+    color: #F37B1D;
+}
+
+/**
+* 导航
+*/
+.nav button image {
+    width: 32rpx;
+    height: 32rpx !important;
+}
+
+.nav button.share-friend-submit,
+.nav button.share-poster-submit {
+    width: calc(30% - 20rpx);
+}
+
+.nav button.share-friend-submit {
+    background: #1bad18;
+}
+
+.nav button.share-poster-submit {
+    background: #6367f0;
+}
+
+.nav button.player-submit {
+    width: calc(40% - 40rpx);
+    background: #d2364c;
+}

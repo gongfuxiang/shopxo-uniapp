@@ -1,0 +1,15 @@
+.data-list .item {
+    height: 104rpx;
+    line-height: 104rpx;
+}
+.data-list .item .icon {
+    width: 100rpx !important;
+    height: 100rpx !important;
+}
+.data-list .item .checked {
+    top: 0;
+    right: 0;
+    width: 50rpx;
+    height: 38rpx;
+    border-bottom-left-radius: 100rpx;
+}

@@ -1,0 +1,157 @@
+page {
+    background: #fff;
+}
+
+/**
+ * 头部内容
+ */
+.top-nav-search {
+    /* #ifdef MP-ALIPAY */
+    padding-left: 60rpx;
+    /* #endif */
+}
+.header-content {
+    margin-top: 20rpx;
+    /* #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU */
+    margin-top: 20rpx;
+    /* #endif */
+    box-shadow: 0 0 8px rgb(0 0 0 / 6%);
+    min-height: 242rpx;
+}
+.header-content .address-content {
+    max-width: calc(100% - 100rpx);
+}
+.header-content .navigation {
+    width: 68rpx;
+    height: 28rpx;
+    line-height: 28rpx;
+    border: 2rpx solid #52C41A;
+}
+.header-content .icon-list {
+    right: 20rpx;
+    bottom: 20rpx;
+}
+.header-content .icon-list .icon-item {
+    width: 50rpx;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+.header-content .icon-list .icon-item.red {
+    background-color: rgba(226, 44, 8, 0.08);
+}
+.header-content .icon-list .icon-item.green {
+    background-color: #EEF9E9;
+}
+.header-content .icon-item .badge-icon {
+    top: -10px;
+    right: 2px;
+}
+.header-content .icon-list .icon-item:not(:last-child) {
+    margin-right: 15rpx;
+}
+.header-content .logo {
+    width: 100rpx;
+}
+.header-content .base-right {
+    padding-left: 14rpx;
+}
+.header-content .base-right .title-length-limit {
+    width: calc(100% - 110rpx);
+}
+.header-content .base-right .use-type-icon {
+    border-top-left-radius: 8rpx;
+    border-bottom-left-radius: 8rpx;
+    right: 0;
+    padding: 5rpx 10rpx 5rpx 20rpx;
+}
+
+/**
+ * 桌码
+ */
+.tablecode {
+    background: rgb(255 255 255 / 60%);
+    padding: 2rpx 20rpx;
+    /* #ifdef MP-ALIPAY || MP-TOUTIAO */
+    margin-top: 15rpx;
+    /* #endif */
+}
+
+/**
+* 左侧导航
+*/
+.left-content-actual {
+    padding-bottom: 120rpx;
+}
+.left-content {
+    width: 186rpx;
+}
+.left-content .item {
+    height: 80rpx;
+    line-height: 80rpx;
+    padding: 0 10rpx;
+    overflow: hidden;
+}
+.left-content .badge-icon {
+    top: -16rpx;
+    right: 26rpx;
+}
+
+/**
+*  右侧内容
+*/
+.right-content-actual {
+    padding-bottom: calc(105rpx + env(safe-area-inset-bottom));
+}
+.goods-list-top-nav {
+    position: sticky;
+    top: 0;
+    right: 0;
+    z-index: 3;
+}
+.nav-sort-content .sort-item {
+    height: 80rpx;
+    line-height: 80rpx;
+    width: 20%;
+}
+.nav-sort-content .sort-item .sort-icon {
+    width: 26rpx;
+    height: 26rpx !important;
+}
+.goods-list .goods-img {
+    width: 160rpx;
+    height: 160rpx !important;
+}
+.goods-list .goods-base-content {
+    min-height: 100rpx;
+}
+.goods-list .goods-base .simple-desc {
+    line-height: 30rpx;
+    min-height: 30rpx;
+    max-height: 58rpx;
+}
+.goods-list .goods-base .sales-price {
+    width: calc(100% - 160rpx);
+}
+.goods-list .goods-base .buy-number {
+    min-width: 32rpx;
+}
+.goods-list .goods-item.item-highlight {
+    box-shadow: 0rpx 8rpx 12rpx 0px rgba(0, 0, 0, 0.06);
+    background: #F7FBF6 !important;
+}
+
+/**
+ * 客服弹窗
+ */
+.header-service {
+    left: auto;
+    right: 24rpx;
+    top: 382rpx;
+}
+
+/**
+ * 阴影效果
+ */
+.box-shadow {
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+}

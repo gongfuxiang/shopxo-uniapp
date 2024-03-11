@@ -1,0 +1,73 @@
+/*
+* 地址信息
+*/
+.address-base,
+.address-detail {
+    padding: 10rpx 0;
+}
+.address-detail .icon {
+    width: 30rpx;
+    height: 35rpx !important;
+}
+.address-detail .text {
+    width: calc(100% - 40rpx);
+}
+.address-detail .text {
+    line-height: 36rpx;
+}
+.no-address {
+    height: 85rpx;
+    line-height: 85rpx;
+}
+.address-alias,
+.address-map-submit {
+    padding: 0 15rpx;
+    line-height: 40rpx;
+}
+.address-map-submit {
+    
+}
+
+/*
+* 商品信息
+*/
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods .goods-item:last-child {
+    border-bottom: 0;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}
+.orderaftersale-btn-text {
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+/*
+* 虚拟销售信息
+*/
+.site-fictitious .panel-content .tips-value {
+    color: #f37b1d;
+    background-color: #fff2e9;
+    border-color: #ffebdb;
+}
+.site-fictitious .panel-content .left-image {
+    width: 80rpx;
+    height: 80rpx;
+}
+.site-fictitious .panel-content .right-value {
+    width: calc(100% - 100rpx);
+}
+
+/*
+* 自提信息
+*/
+.site-extraction .panel-content .qrcode {
+    width: 260rpx;
+    height: 260rpx;
+}

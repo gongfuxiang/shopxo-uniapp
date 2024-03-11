@@ -1,0 +1,36 @@
+/**
+ * 商品列表
+ */
+.view-goods-list image {
+    width: 130rpx;
+    height: 130rpx;
+}
+.view-goods-list .base {
+    width: calc(100% - 150rpx);
+}
+.view-goods-list .operate-submit {
+    right: 0;
+    bottom: 0;
+}
+
+/**
+ * 商品选择弹窗
+ */
+.popup-goods-choice-container .nav-search {
+    height: 90rpx;
+}
+.popup-goods-choice-container .nav-search .item {
+    width: calc(50% - 124rpx);
+    height: 60rpx;
+    line-height: 60rpx;
+}
+.popup-goods-choice-container .nav-search input.item,
+.popup-goods-choice-container .nav-search button {
+    height: 64rpx;
+    line-height: 64rpx;
+}
+.popup-goods-choice-container .view-goods-list {
+    height: 80vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

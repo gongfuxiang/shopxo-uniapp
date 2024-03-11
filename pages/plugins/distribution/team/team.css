@@ -1,0 +1,32 @@
+/**
+ * 搜索导航
+ */
+.nav-search .multiple-picker {
+    width: calc(100% - 240rpx);
+}
+.nav-search .multiple-picker .item {
+    width: calc(50% - 24rpx);
+}
+.nav-search .multiple-picker .uni-date .uni-date__x-input {
+    font-size: 24rpx;
+    height: 55rpx;
+    line-height: 55rpx;
+}
+.nav-search .search-submit-list {
+    right: 20rpx;
+    bottom: 15rpx;
+}
+.nav-search .search-submit-list button {
+    line-height: 42rpx !important;
+}
+
+/*
+* 列表
+*/
+.scroll-box {
+    height: calc(100vh - 228rpx);
+}
+.data-list .item .base .avatar {
+    width: 40rpx;
+    height: 40rpx !important;
+}

@@ -1,0 +1,17 @@
+/**
+* 基础
+*/
+.base-container {
+    height: 280rpx;
+    background-size: cover;
+    background-position: center;
+}
+.base-container .text {
+    top: 0;
+    left: 0;
+    background: rgb(0 0 0 / 35%);
+    padding: 100rpx 20rpx 20rpx 20rpx;
+}
+.word-content .word-icon:not(:last-child) {
+    margin-right: 20rpx;
+}

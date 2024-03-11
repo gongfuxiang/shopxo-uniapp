@@ -1,0 +1,15 @@
+/**
+* 位置和搜索
+*/
+.nav-location {
+    max-width: 260rpx;
+    height: 60rpx;
+    line-height: 60rpx;
+}
+
+/**
+* 数据列表
+*/
+.scroll-box {
+    height: calc(100vh - 180rpx);
+}

@@ -1,0 +1,38 @@
+.map-container {
+    height: 60vh;
+}
+.map-container .map-center-icon {
+    top: calc(50% - 30rpx);
+    left: calc(50% - 30rpx);
+    width: 60rpx;
+    height: 60rpx;
+}
+
+.user-container {
+    height: 40vh;
+    padding-bottom: calc(env(safe-area-inset-bottom) - 20rpx);
+}
+.user-container .item.active {
+    background: #f2f2f2;
+}
+.user-container .item .avatar {
+    width: 140rpx;
+    height: 140rpx;
+}
+.user-container .item .base {
+    width: calc(100% - 160rpx);
+    height: 140rpx;
+}
+.user-container .item .base-top .view-name {
+    width: calc(100% - 200rpx);
+}
+.user-container .item .base-bottom .address {
+    width: calc(100% - 110rpx);
+}
+.user-container .item .base-top-icon .dis-inline-block:not(:last-child) {
+    margin-right: 30rpx;
+}
+.user-container .item .order-submit {
+    padding: 0rpx 20rpx !important;
+    line-height: 40rpx !important;
+}

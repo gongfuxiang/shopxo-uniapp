@@ -1,0 +1,69 @@
+/** 
+ * 充值头部
+ */
+.wallet-price {
+    padding: 104rpx 40rpx 0 40rpx;
+}
+
+.wallet-price .unit {
+    font-size: 42rpx;
+}
+
+.wallet-price .price {
+    font-size: 80rpx;
+}
+
+/** 
+ * 充值内容
+ */
+.recharge-content {
+    border-radius: 32rpx 32rpx 0 0;
+    padding: 48rpx 28rpx;
+}
+
+.recharge-price-list {
+    width: calc(100% / 3 - 24rpx);
+    height: 140rpx;
+    line-height: 140rpx;
+    padding: 18rpx 12rpx;
+}
+
+.recharge-price-content {
+    background: #F5F7F9;
+    border: 1px solid #F5F7F9;
+    transition: all 0.3s ease-in-out;
+}
+
+.recharge-price-content.active {
+    background: rgba(226, 44, 8, 0.06);
+    color: #E22C08;
+    border: 1px solid #E22C08;
+}
+
+.recharge-price-content .tips {
+    height: 32rpx;
+    line-height: 32rpx;
+    padding: 0 20rpx;
+    background: #D8D8D8 linear-gradient(107deg, #FC6F31 0%, #E22C08 100%);
+    border-radius: 16rpx 0 16rpx 0;
+    top: -16rpx;
+}
+
+.form-container .custom-price {
+    background: #F5F7F9 !important;
+}
+
+.form-container input {
+    height: 80rpx !important;
+    line-height: 80rpx !important;
+}
+
+.circle-poiont {
+    width: 6px;
+    height: 6px;
+}
+
+.recharge-desc-title,
+.recharge-desc-content {
+    padding-bottom: 16rpx;
+}

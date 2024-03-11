@@ -1,0 +1,5 @@
+.data-list .base .custom-avatar,
+.data-list .content .item-images {
+    width: 50rpx;
+    height: 50rpx;
+}

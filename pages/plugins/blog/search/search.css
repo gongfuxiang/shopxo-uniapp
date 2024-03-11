@@ -1,0 +1,31 @@
+/**
+ * 搜索
+ */
+.search-keywords icon {
+    left: 30rpx;
+    top: calc(50% - 6px);
+    z-index: 1;
+}
+.search-keywords input {
+    font-size: 26rpx;
+    padding: 0 30rpx 0 76rpx;
+    box-sizing: border-box;
+    height: 30px;
+    line-height: 30px;
+    background: #f0f0f0;
+}
+
+/**
+* 分类导航
+*/
+.nav-list {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+* 数据列表
+*/
+.scroll-box {
+    height: calc(100vh - 110rpx - 30px);
+}

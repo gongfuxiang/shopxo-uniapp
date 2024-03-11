@@ -1,0 +1,66 @@
+/**
+* 基础
+*/
+.base-container .icon {
+    width: 50rpx;
+    height: 50rpx;
+}
+.base-container .title {
+    width: calc(100% - 240rpx);
+}
+.base-container .share-submit {
+    line-height: 50rpx;
+    height: 50rpx;
+}
+
+/**
+* 商品列表
+*/
+.data-list .item .goods-img {
+    width:170rpx;
+    height: 170rpx !important;
+}
+.data-list .item .right-base {
+    width: calc(100% - 190rpx);
+}
+.data-list .item .spec-text {
+    width: calc(100% - 240rpx);
+}
+
+/**
+ * 数量操作
+ */
+.data-list .item .number-content {
+    right: 20rpx;
+    bottom: 20rpx;
+    border: 1px solid #f0f0f0;
+}
+.data-list .item .number-content .number-submit {
+    width: 60rpx;
+    font-weight: bold;
+}
+.data-list .item .number-content input {
+    width: 50px;
+    border-width: 0 1px 0 1px;
+    border-style: solid;
+    border-color: #f0f0f0;
+}
+.data-list .item .number-content .number-submit,
+.data-list .item .number-content input {
+    padding: 0;
+    height: 50rpx;
+    line-height: 50rpx;
+}
+
+/**
+ * 导航
+ */
+.nav-button {
+    box-shadow: 0 -2px 6px #e2e2e2;
+}
+.nav-button .left-price {
+    width: calc(100% - 270rpx);
+}
+.nav-button .right-button {
+    width: 250rpx;
+}

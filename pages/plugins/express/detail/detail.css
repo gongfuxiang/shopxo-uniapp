@@ -1,0 +1,10 @@
+.express-icon {
+    width: 85rpx;
+    height: 85rpx !important;
+}
+.express-data .i {
+    top: -15rpx;
+    left: -15rpx;
+    border: 6rpx solid #fff;
+    padding: 10rpx;
+}

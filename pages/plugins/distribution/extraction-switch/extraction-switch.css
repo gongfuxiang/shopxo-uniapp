@@ -1,0 +1,15 @@
+.address-logo {
+    width: 140rpx;
+    height: 140rpx !important;
+}
+.address .item-icon {
+    width: 30rpx;
+    height: 35rpx !important;
+}
+.address-alias {
+    padding: 0 10rpx;
+}
+.address .text {
+    line-height: 44rpx;
+    width: calc(100% - 40rpx);
+}

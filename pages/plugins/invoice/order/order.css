@@ -1,0 +1,19 @@
+/*
+* 列表
+*/
+.select-scroll-box {
+    height: calc(100vh - 186rpx);
+}
+
+.data-list .item .select-icon {
+    width: 35rpx;
+    height: 35rpx !important;
+}
+
+/*
+* 合并按钮
+*/
+.invoice-merge-submit button {
+    height: 88rpx;
+    line-height: 88rpx;
+}

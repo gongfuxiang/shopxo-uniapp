@@ -1,0 +1,18 @@
+/*
+* 导航
+*/
+.nav-base .item {
+    width: 16.66%;
+}
+
+/*
+* 列表
+*/
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}

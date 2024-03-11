@@ -1,0 +1,7 @@
+.alias {
+    padding: 2rpx 10rpx;
+}
+.statistics .item {
+    width: 50%;
+    box-sizing: border-box;
+}

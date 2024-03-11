@@ -1,0 +1,25 @@
+/**
+ * 基础
+ */
+.page-content {
+    background: #fff;
+}
+.scan-button {
+    background: linear-gradient( 270deg, #F1E6C1 0%, #DBC583 100%);
+    max-width: 300rpx;
+}
+.scan-button text {
+    color: #CC2121;
+}
+/**
+ * 扫码提示页面则使用黄色背景
+ */
+.page-content.page-bottom-fixed {
+    background: #FEEEC8;
+}
+/**
+ * 登录和扫码按钮增加页面底部间距
+ */
+.page-bottom-fixed {
+    padding-bottom: 100rpx !important;
+}

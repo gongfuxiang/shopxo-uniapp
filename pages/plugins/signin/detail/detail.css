@@ -1,0 +1,197 @@
+/**
+* 签到
+*/
+.signin-container {
+    min-height: 100vh;
+    background-color: rgb(255 209 133);
+}
+
+.signin-opration-group {
+    top: calc(156rpx + var(--status-bar-height) + 5px);
+    right: -2rpx;
+}
+
+.share,
+.team {
+    margin-bottom: 36rpx;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 100%);
+    box-shadow: 0 4rpx 8rpx 0 rgba(0, 61, 196, 0.51);
+    border-radius: 32rpx 0 0 32rpx;
+}
+
+.signin-opration-group .content {
+    margin: 2rpx;
+    padding: 12rpx 12rpx 12rpx 36rpx;
+    background: #2A82E1;
+    border-radius: 32rpx 0 0 32rpx;
+    color: #fff;
+    font-size: 28rpx;
+    line-height: normal;
+}
+
+.content .iconfont {
+    margin-right: 4rpx;
+}
+
+.signin-btn {
+    margin: -120rpx;
+}
+
+.signin-btn .content {
+    min-width: 216rpx;
+    padding: 12rpx 48rpx;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(98deg, #FF9734 0%, #FF1304 100%);
+    box-shadow: 0 4rpx 8rpx 0 rgba(185, 110, 22, 0.66);
+    border-radius: 44rpx;
+    border: 4rpx solid #FFE99B;
+    font-size: 40rpx;
+}
+
+.calendar-title {
+    color: #C48746;
+    padding: 24rpx;
+    background: #FEEBAF;
+    border-radius: 24rpx 24rpx 0 0;
+}
+
+.calendar-week {
+    line-height: 76rpx;
+    height: 76rpx;
+    background: #FEF6F8;
+}
+
+.calendar-days {
+    padding-bottom: 52rpx;
+    border-radius: 0 0 24rpx 24rpx;
+}
+
+.calendar-days .list {
+    width: calc(100% / 7);
+    height: 84rpx;
+    line-height: 84rpx;
+}
+
+.calendar-link-left,
+.calendar-link-right {
+    position: absolute;
+    top: -52rpx;
+    width: 24rpx;
+}
+
+.calendar-link-left {
+    left: 28rpx;
+}
+
+.calendar-link-right {
+    right: 28rpx;
+}
+
+.calendar-foot .content {
+    padding: 30rpx 40rpx;
+    border-radius: 24rpx;
+    color: #C48746;
+}
+
+.notice-content {
+    padding: 18rpx 24rpx;
+    color: #C48746;
+    background-color: #FEE6BC;
+}
+
+.notice-content .title {
+    height: 40rpx;
+}
+
+.notice-content .content {
+    line-height: 40rpx;
+}
+
+/**
+* 签到成功提示
+*/
+.coming-tips-container {
+    width: 100%;
+    height: 100%;
+    z-index: 1050;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgb(0 0 0 / 0.6);
+}
+
+.coming-content {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.coming-item {
+    width: 572rpx;
+    height: 446rpx;
+    margin: 0 auto;
+    position: relative;
+    background: linear-gradient(135deg, #EBE7F8 0%, #FEE3D0 51%, #FFEBE7 100%);
+    border-radius: 20px;
+    border: 1px solid #FCF7CC;
+}
+
+.coming-content image {
+    width: 292rpx;
+    left: 50%;
+    top: -90rpx;
+    transform: translateX(-50%);
+}
+
+.coming-content .title {
+    font-size: 42rpx;
+    color: #8D2407;
+    padding-top: 136rpx;
+}
+
+.coming-content .desc {
+    font-size: 28rpx;
+    margin-top: 18rpx;
+    color: #BC7059;
+    margin-bottom: 52rpx;
+}
+
+.coming-content .use-btn {
+    background: linear-gradient(180deg, #FF956B 0%, #FF2D0A 100%);
+    border-radius: 48rpx;
+    border: 2rpx solid #ffac78;
+    width: 294rpx;
+    height: 96rpx;
+    line-height: 96rpx;
+    margin: 0 auto;
+}
+
+.coming-content .close-sub {
+    bottom: -150rpx;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .signin-btn .content {
+        /* #ifdef H5 */
+        font-size: 64rpx;
+        border-radius: 128rpx;
+        padding: 24rpx 168rpx;
+        /* #endif */
+    }
+
+    .signin-btn {
+        /* #ifdef H5 */
+        margin: -240rpx;
+        /* #endif */
+    }
+}

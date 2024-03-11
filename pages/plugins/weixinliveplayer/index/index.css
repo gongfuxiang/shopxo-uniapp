@@ -1,0 +1,93 @@
+/**
+ * 标题
+ */
+.player-title-icon {
+	width: 46rpx;
+	height: 44rpx;
+}
+
+/**
+* 数据列表
+*/
+.data-list .item image {
+	width: 208rpx;
+	height: 210rpx !important;
+}
+
+.live-content {
+	background: rgba(0, 0, 0, 0.2);
+	width: 40rpx;
+	height: 40rpx;
+	z-index: 1;
+}
+
+.live-action {
+	height: calc(100% - 20rpx);
+	padding: 10rpx 8rpx;
+}
+
+.live-1,
+.live-2,
+.live-3 {
+	width: 0;
+	border: 2rpx solid #fff;
+	height: 4rpx;
+	background-color: #fff;
+	border-radius: 6rpx 6rpx 0 0;
+}
+
+.live-1 {
+	animation: move 1s ease-in-out 0s infinite alternate;
+}
+
+.live-2 {
+	animation: move 1s ease-in-out 0.8s infinite alternate;
+}
+
+.live-3 {
+	animation: move 1s ease-in-out 0.4s infinite alternate;
+}
+
+@keyframes move {
+	0% {
+		height: 4rpx;
+	}
+
+	50% {
+		height: 20rpx;
+	}
+
+	100% {
+		height: 10rpx;
+	}
+}
+
+.data-list .item .expire {
+	opacity: 0.7;
+}
+
+.data-list .item .base {
+	padding: 24rpx 24rpx 24rpx 16rpx;
+}
+
+.data-list .ite .status-0 {
+	color: #FFCACA;
+}
+
+.data-list .item .status-1 {
+	color: #FF6E51;
+}
+
+.data-list .item .status-2 {
+	color: #999999;
+}
+
+.data-list .item .status-3 {
+	color: #DDDDDD;
+}
+
+.data-list .item .status-4,
+.data-list .item .status-5,
+.data-list .item .status-6 {
+	color: #DDDDDD;
+}

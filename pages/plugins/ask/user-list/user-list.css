@@ -1,0 +1,17 @@
+.ask-status {
+    padding: 4rpx 10rpx;
+}
+
+.ask-bg-green {
+    background-color: #5FB95E;
+}
+
+.ask-bg-yellow {
+    background-color: #FAAD14;
+}
+
+.question-btn button {
+    height: 88rpx;
+    line-height: 88rpx;
+    padding: 0;
+}

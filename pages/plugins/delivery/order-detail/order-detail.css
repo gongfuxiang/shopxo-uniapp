@@ -1,0 +1,48 @@
+/*
+* 商品信息
+*/
+.goods-base {
+    min-height: 160rpx;
+    margin-left: 180rpx;
+}
+.goods .goods-item:last-child {
+    border-bottom: 0;
+}
+.goods-image {
+    width: 160rpx;
+    height: 160rpx;
+}
+
+/*
+* 地址信息
+*/
+.address-base,
+.address-detail {
+    padding: 10rpx 0;
+}
+.address-detail .icon {
+    width: 30rpx;
+    height: 35rpx !important;
+}
+.address-detail .text {
+    width: calc(100% - 40rpx);
+}
+.address-detail .text {
+    line-height: 36rpx;
+}
+.address-alias,
+.address-map-submit {
+    padding: 0 15rpx;
+    line-height: 40rpx;
+}
+
+/**
+ * 图片列表
+ */
+.images-list .item-images {
+    width: 80rpx;
+    height: 80rpx;
+}
+.images-list .item-images:not(:last-child) {
+    margin-right: 10rpx;
+}

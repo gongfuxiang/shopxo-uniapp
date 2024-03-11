@@ -1,0 +1,121 @@
+/**
+* 搜索
+*/
+.search input {
+    width: calc(100% - 328rpx);
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    height: 52rpx;
+    line-height: 52rpx;
+    border-width: 1px;
+    border-style: solid;
+}
+.header-shop-whole-search input {
+    width: calc(100% - 168rpx);
+}
+.search-btn {
+    top: 20rpx;
+    right: 20rpx;
+}
+.search-btn button {
+    width: 150rpx;
+    padding: 0;
+    height: 57rpx;
+    line-height: 57rpx;
+}
+.search-btn button:first-child {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    background: #ff8c00;
+    border: 1px solid #ff8c00;
+}
+.search-btn button:last-child {
+    background: #483E39;
+    border: 1px solid #483E39;
+    margin-left: 20rpx;
+}
+
+/**
+* 头部
+*/
+.header {
+    padding: 20rpx 10rpx;
+    font-size: 24rpx;
+}
+.shop-logo {
+    width: 90rpx;
+}
+.base-bottom image {
+    width: 28rpx;
+    height: 28rpx;
+}
+.header .base {
+    width: calc(100% - 110rpx);
+}
+.shop-title {
+    line-height: 40rpx;
+}
+
+/**
+* 导航
+*/
+.nav {
+    height: 70rpx;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+}
+.nav .nav-scroll {
+    float: right;
+    width: calc(100% - 230rpx);
+}
+.nav .item {
+    padding: 0 20rpx;
+}
+.nav-shop-category {
+    padding-right: 38rpx !important;
+    background-size: 14px 14px;
+}
+.nav .nav-items {
+    width: 380rpx;
+    left: calc(50% - 190rpx);
+    top: 300rpx;
+    z-index: 1;
+    -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
+    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
+}
+
+/**
+* 导航商品分类
+*/
+.nav-category {
+    width: 220rpx;
+    z-index: 1;
+    margin-top: 12rpx;
+    box-shadow: 0 6px 6px rgb(0 0 0 / 10%);
+    border-bottom-right-radius: 20rpx;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: #efefef;
+}
+.nav-category .category-scroll {
+    max-height: 600rpx;
+}
+.nav-category .item {
+    padding: 20rpx;
+}
+.nav-category .item:not(:last-child) {
+    border-bottom: 1px dashed #f7f7f7;
+}
+
+/**
+* 商品分类切换
+*/
+.shop-category-list .item {
+    margin: 20rpx 0;
+}
+.shop-category-list .item  {
+    margin-left: 20rpx;
+}
+.shop-category-list .item:last-child {
+    margin-right: 20rpx;
+}

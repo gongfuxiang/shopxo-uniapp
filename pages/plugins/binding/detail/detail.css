@@ -1,0 +1,91 @@
+/**
+* 商品列表
+*/
+.data-list .item .goods-img {
+    width: 160rpx;
+    height: 160rpx !important;
+}
+
+.data-list .item .binding-check {
+    width: 40rpx;
+}
+
+.data-list .item .spec-choice {
+    height: 40rpx;
+    line-height: 40rpx;
+    padding: 0 34rpx 0 20rpx;
+}
+
+.data-list .item .cart-badge-icon {
+    top: -16rpx;
+    right: 0;
+}
+
+.lose-efficacy {
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.lose-efficacy .rotate {
+    width: 130rpx;
+    transform: rotate(-30deg);
+}
+
+.lose-efficacy .rotate-img {
+    width: 100%;
+    transform: rotate(30deg);
+}
+
+.lose-efficacy .rotate-text {
+    margin-left: 18rpx;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.7;
+}
+
+/**
+ * 导航
+ */
+.nav-button.bottom-fixed {
+    padding: 24rpx !important;
+}
+
+.nav-button .left-price {
+    width: calc(100% - 270rpx);
+}
+
+.nav-button .right-button {
+    width: 240rpx;
+}
+
+.nav-button .right-button button {
+    height: 80rpx;
+    line-height: 78rpx;
+}
+
+.nav-button .left-price .discount-icon {
+    border-top-right-radius: 30rpx;
+    border-bottom-left-radius: 30rpx;
+    background-image: linear-gradient(45deg, #a3f9a3, #248828, #8bc34a, #d2374c, #9c27b0);
+    background-size: 400%;
+    animation: gradient 5s ease infinite;
+    padding: 0 16rpx;
+}
+
+.sales-price .price {
+    font-size: 40rpx;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}

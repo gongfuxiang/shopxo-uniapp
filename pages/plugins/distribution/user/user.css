@@ -1,0 +1,118 @@
+/*
+* 头部
+*/
+.head-img {
+    width: 116rpx;
+    height: 116rpx;
+}
+
+.head-item .level-item {
+    padding: 0 20rpx;
+    height: 48rpx;
+    line-height: 48rpx;
+    background-color: #FF8AA1;
+}
+
+.head-item .level-icon {
+    width: 26rpx;
+    height: 26rpx !important;
+}
+
+.head-base {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.head-base button {
+    height: 52rpx;
+    line-height: 52rpx;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 200rpx 0 0 200rpx;
+    padding: 0 40rpx 0 26rpx;
+    margin: 0;
+}
+
+/**
+ * 上级用户
+ */
+.superior {
+    padding: 0 54rpx;
+}
+
+.superior-item {
+    background: rgba(255, 72, 110, 0.51);
+    height: 90rpx;
+    line-height: 90rpx;
+    padding: 0 24rpx;
+}
+
+.superior .superior-content image {
+    width: 56rpx !important;
+    height: 56rpx !important;
+}
+
+/**
+ * 统计数据
+ */
+.stats-container-4 .item {
+    width: 25%;
+}
+
+.stats-container .stats-switch-submit {
+    height: 52rpx;
+    line-height: 52rpx;
+    padding: 0 44rpx 0 22rpx;
+}
+
+.popup-time-container .quit-time .item {
+    width: 25%;
+}
+
+.count-img {
+    width: 60rpx;
+    height: 60rpx !important;
+}
+
+.anti-mercenary-count {
+    padding: 20rpx 40rpx;
+}
+
+.promotion-size {
+    font-size: 44rpx;
+}
+
+/*
+* 导航
+*/
+.nav.nav-bottom {
+    padding-bottom: 170rpx;
+}
+
+.nav .item {
+    padding: 32rpx 20rpx;
+}
+
+.nav .item image {
+    width: 100rpx;
+    height: 100rpx;
+}
+
+/*
+* 推广按钮
+*/
+.promotion-btn {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+/**
+ * 修改用户上级
+ */
+.user-search .custom-info {
+    height: 58rpx;
+}
+.user-search .custom-info .custom-avatar {
+    width: 50rpx;
+    height: 50rpx;
+}

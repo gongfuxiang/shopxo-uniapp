@@ -1,0 +1,59 @@
+/**
+* 头部
+*/
+page {
+    background-color: #F7EDE1;
+}
+
+/**
+* 位置和搜索
+*/
+.nav-location {
+    line-height: 95rpx;
+}
+.nav-location .icon-arrow-down {
+    top: 34rpx;
+}
+.nav-search {
+    margin-top: 80rpx;
+}
+
+/**
+* 位置选择提示
+*/
+.choice-location-tips {
+    background: rgba(0, 0, 0, 0.6);
+    top: 0;
+    left: 0;
+    z-index: 2;
+}
+
+.choice-location-tips .content {
+    margin-top: 30%;
+    width: 520rpx;
+}
+
+.choice-location-tips .content .close {
+    top: 20rpx;
+    right: 20rpx;
+}
+
+
+/**
+* 媒体查询
+*/
+@media only screen and (min-width:960px) {
+    .realstore-nav-bg {
+        /* #ifdef H5 */
+        background-size: cover;
+        /* #endif */
+    }
+}
+
+@media only screen and (max-width:960px) {
+    .realstore-nav-bg {
+        /* #ifdef H5 */
+        background-size: auto 100%;
+        /* #endif */
+    }
+}

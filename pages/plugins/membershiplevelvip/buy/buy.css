@@ -1,0 +1,72 @@
+/**
+* 导航
+*/
+.nav {
+    height: 80rpx;
+    line-height: 80rpx;
+}
+
+.nav.average-1 .item {
+    width: calc(100% - 80rpx);
+}
+
+.nav.average-2 .item {
+    width: calc(50% - 80rpx);
+}
+
+.nav.average-3 .item {
+    width: calc((100% / 3) - 80rpx);
+}
+
+/**
+ * 分割线
+ */
+.divider::before,
+.divider::after {
+    content: '';
+    width: 100rpx;
+    height: 2rpx;
+    background: #333333;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.divider::before {
+    left: -120rpx;
+}
+
+.divider::after {
+    right: -120rpx;
+}
+
+/**
+* 内容
+*/
+.data-list .list {
+    width: calc((100% / 3) - 24rpx);
+}
+
+.data-list .item {
+    background: #F7F7F7;
+    border-radius: 8px 40px 8px 8px;
+    padding: 50rpx 32rpx 20rpx 32rpx;
+    border: 1px solid #F7F7F7;
+}
+
+.data-list .item.active {
+    border-color: #F1513C;
+    background-color: #FEF0E8;
+}
+
+.data-list .item .price {
+    margin-top: 16rpx;
+}
+
+/**
+ * 开通支付
+ */
+.sub-pay button {
+    height: 88rpx;
+    line-height: 88rpx;
+}

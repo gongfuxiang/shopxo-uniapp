@@ -1,0 +1,64 @@
+/**
+* 分类导航
+*/
+
+.nav-list {
+	width: calc(100% - 70rpx);
+}
+
+.nav-list .item:first-of-type {
+	margin-left: 16rpx;
+}
+
+.nav-list .item {
+	padding: 20rpx 4rpx;
+}
+
+.nav-list image {
+	width: 92rpx;
+	height: 92rpx;
+	margin: 0 15rpx;
+	border-radius: 50%;
+	margin-bottom: 10rpx;
+}
+
+.nav-list-more {
+	width: 100%;
+	max-height: 550rpx;
+	overflow-y: auto;
+}
+
+.nav-list-more image {
+	width: 92rpx;
+	height: 92rpx;
+	border-radius: 50%;
+	margin-bottom: 10rpx;
+}
+
+.nav-list-more .item {
+	width: 20%;
+	padding: 20rpx 0;
+}
+
+/**
+* 数据列表
+*/
+.data-list .item {
+	width: calc(50% - 10rpx);
+	margin-bottom: 20rpx;
+	text-align: center;
+}
+
+.data-list .item:nth-child(2n) {
+	float: right;
+}
+
+.data-list .item:nth-child(2n+1) {
+	float: left;
+}
+
+.data-list .item image {
+	padding-top: 24rpx;
+	width: calc(100% - 48rpx);
+	height: 160rpx !important;
+}
