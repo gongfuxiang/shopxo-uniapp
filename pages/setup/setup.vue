@@ -14,13 +14,13 @@
                         <text>{{ $t('setup.setup.x81v6d') }}</text>
                         <text class="fr cr-grey">{{ user.mobile_security || '' }} {{ $t('setup.setup.j6skqh') }}</text>
                     </view>
-                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/password/password" @tap="url_event">
-                        <text>更换密码</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
-                    </view>
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">
                         <text>更换邮箱</text>
                         <text class="fr cr-grey">{{ user.email_security || '' }} {{ $t('setup.setup.j6skqh') }}</text>
+                    </view>
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/password/password" @tap="url_event">
+                        <text>更换密码</text>
+                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
                     </view>
                     <view v-if="home_use_multilingual_status == 1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="open_language_event">
                         <text>{{ $t('setup.setup.r7jz13') }}</text>

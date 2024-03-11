@@ -19,7 +19,7 @@
 
                         <!-- 绑定手机 -->
                         <view v-if="current_opt_form == 'bind_verify'" class="form-content">
-                            <form @submit="formBind">
+                            <form @submit="formBindMobile">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
                                     <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
@@ -44,7 +44,7 @@
                                     <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
-                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="accounts" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
+                                    <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="email" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
                                     <view class="code pr margin-vertical-main">
                                         <input type="number" :placeholder="$t('login.login.t3951j')" name="verify" maxlength="4" />
                                         <button :class="'verify-submit pa round br text-size-sm cr-base ' + (verify_disabled ? 'sub-disabled' : '')" type="default" hover-class="none" size="mini" :loading="verify_loading" :disabled="verify_disabled" @tap="verify_send_event">{{ verify_submit_text }}</button>
@@ -994,12 +994,6 @@
                 e.detail.value[field_openid] = user[field_openid] || '';
                 e.detail.value[field_unionid] = user[field_unionid] || '';
                 // #endif
-
-                // 数据验证
-                var validation = [
-                    { fields: 'mobile', msg: this.$t('login.login.4c5n8o') },
-                    { fields: 'verify', msg: this.$t('login.login.01xmab') },
-                ];
                 // #ifdef MP
                 validation.push({ fields: field_openid, msg: this.$t('login.login.prqvf1') });
                 // #endif

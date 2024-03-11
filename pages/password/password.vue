@@ -6,9 +6,18 @@
                 <view class="padding-main">
                     <form @submit="formBindPwd">
                         <view class="margin-top-xxxl">
-                            <input type="text" placeholder="请输入当前密码" minlength="6" maxlength="18" name="pwd_old" password="true" class="form-item wh-auto margin-bottom-main" />
-                            <input type="text" placeholder="请输入新密码" minlength="6" maxlength="18" name="pwd_new" password="true" class="form-item wh-auto margin-bottom-main" />
-                            <input type="text" placeholder="请确认新密码" minlength="6" maxlength="18" name="pwd_renew" password="true" class="form-item wh-auto margin-bottom-main" />
+                            <view class="pr">
+                                <input type="text" placeholder="请输入当前密码" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item wh-auto margin-bottom-main" />
+                                <view class="eyes pa" @tap="eyes1 = !eyes1"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                            </view>
+                            <view class="pr">
+                                <input type="text" placeholder="请输入新密码" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item wh-auto margin-bottom-main" />
+                                <view class="eyes pa" @tap="eyes2 = !eyes2"><iconfont :name="eyes2 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                            </view>
+                            <view class="pr">
+                                <input type="text" placeholder="请确认新密码" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item wh-auto margin-bottom-main" />
+                                <view class="eyes pa" @tap="eyes3 = !eyes3"><iconfont :name="eyes3 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
+                            </view>
                         </view>
                         <view class="margin-top-xxxxl tc">
                             <button class="bg-main br-main cr-white round text-size" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认修改</button>
@@ -34,6 +43,10 @@
                 data_list_loding_msg: '',
 
                 form_submit_loading: false,
+                // 是否显示密码
+                eyes1: false,
+                eyes2: false,
+                eyes3: false,
             };
         },
         onLoad(params) {
@@ -76,7 +89,7 @@
                 }
             },
 
-            formBindPwd() {
+            formBindPwd(e) {
                 // 小程序数据
                 // #ifdef MP
                 var field_openid = client_type + '_openid';
@@ -87,9 +100,9 @@
 
                 // 数据验证
                 var validation = [
-                    { fields: 'pwd_old', msg: '请输入密码' },
-                    { fields: 'pwd_new', msg: '请输入新密码' },
-                    { fields: 'pwd_renew', msg: '确认新密码' },
+                    { fields: 'my_pwd', msg: '请输入密码' },
+                    { fields: 'new_pwd', msg: '请输入新密码' },
+                    { fields: 'confirm_new_pwd', msg: '确认新密码' },
                 ];
                 // #ifdef MP
                 validation.push({ fields: field_openid, msg: this.$t('login.login.prqvf1') });
@@ -104,7 +117,7 @@
 
                     // 网络请求
                     uni.request({
-                        url: app.globalData.get_request_url('apppwdbind', 'user'),
+                        url: app.globalData.get_request_url('loginpwdupdate', 'safety'),
                         method: 'POST',
                         data: e.detail.value,
                         dataType: 'json',
@@ -114,7 +127,7 @@
                                 form_submit_loading: false,
                             });
                             app.globalData.showToast(res.data.msg);
-                            if (res.data.code == 0 && (res.data.data || null) != null) {
+                            if (res.data.code == 0) {
                                 // 默认返回上一页
                                 uni.navigateBack();
                             }
