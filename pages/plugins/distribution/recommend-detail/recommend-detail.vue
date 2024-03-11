@@ -78,10 +78,10 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../../../common/js/lib/base64.js';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentSharePopup from '../../../../components/share-popup/share-popup';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentSharePopup from '@/components/share-popup/share-popup';
 
     export default {
         data() {

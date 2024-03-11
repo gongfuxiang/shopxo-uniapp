@@ -41,8 +41,8 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
     var coupon_static_url = app.globalData.get_static_url('coupon', true);
     export default {

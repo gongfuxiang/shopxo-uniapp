@@ -167,7 +167,7 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '../../../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
     var membershiplevelvip_static_url = app.globalData.get_static_url('membershiplevelvip', true) + 'app/';
 
     export default {

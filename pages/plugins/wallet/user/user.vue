@@ -110,10 +110,10 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import componentWalletLog from '@/components/wallet/wallet-log/wallet-log';
-    import componentUserRecharge from '@/components/wallet/user-recharge/user-recharge';
-    import componentUserCash from '@/components/wallet/user-cash/user-cash';
-    import componentTransfer from '@/components/wallet/transfer/transfer';
+    import componentWalletLog from '../components/wallet-log/wallet-log';
+    import componentUserRecharge from '../components/user-recharge/user-recharge';
+    import componentUserCash from '../components/user-cash/user-cash';
+    import componentTransfer from '../components/transfer/transfer';
     var wallet_static_url = app.globalData.get_static_url('wallet', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));

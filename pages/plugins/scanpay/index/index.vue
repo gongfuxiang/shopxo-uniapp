@@ -128,7 +128,7 @@
 
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
     export default {
         data() {

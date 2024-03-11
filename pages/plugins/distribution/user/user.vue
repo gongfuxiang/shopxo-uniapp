@@ -259,9 +259,9 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentPopup from '../../../../components/popup/popup';
-    import componentSearch from '../../../../components/search/search';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
+    import componentSearch from '@/components/search/search';
     var currency_symbol = app.globalData.currency_symbol();
     var distribution_static_url = app.globalData.get_static_url('distribution', true) + 'app/';
     export default {

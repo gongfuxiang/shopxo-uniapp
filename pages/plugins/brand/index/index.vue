@@ -55,9 +55,9 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentNavMore from '../../../../components/nav-more/nav-more';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentNavMore from '@/components/nav-more/nav-more';
 
     export default {
         data() {

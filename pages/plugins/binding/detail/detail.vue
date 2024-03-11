@@ -112,13 +112,13 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../../../common/js/lib/base64.js';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentGoodsSpecChoice from '../../../../components/goods-spec-choice/goods-spec-choice';
-    import componentGoodsBuy from '../../../../components/goods-buy/goods-buy';
-    import componentBadge from '../../../../components/badge/badge';
-    import componentSharePopup from '../../../../components/share-popup/share-popup';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentBadge from '@/components/badge/badge';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     let binding_static_url = app.globalData.get_static_url('binding', true);
 
     export default {

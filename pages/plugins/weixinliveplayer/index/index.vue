@@ -73,9 +73,9 @@
 </template>
 <script>
 	const app = getApp();
-	import componentBanner from "../../../../components/slider/slider";
-	import componentNoData from "../../../../components/no-data/no-data";
-	import componentBottomLine from "../../../../components/bottom-line/bottom-line";
+	import componentBanner from "@/components/slider/slider";
+	import componentNoData from "@/components/no-data/no-data";
+	import componentBottomLine from "@/components/bottom-line/bottom-line";
 	var weixinliveplayer_static_url = app.globalData.get_static_url('weixinliveplayer', true);
 
 	export default {

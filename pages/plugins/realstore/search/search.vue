@@ -42,10 +42,10 @@
 </template>
 <script>
 const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentSearch from "../../../../components/search/search";
-import componentRealstoreList from "../../../../components/realstore-list/realstore-list";
+import componentNoData from "@/components/no-data/no-data";
+import componentBottomLine from "@/components/bottom-line/bottom-line";
+import componentSearch from "@/components/search/search";
+import componentRealstoreList from "@/components/realstore-list/realstore-list";
 
 export default {
     data() {

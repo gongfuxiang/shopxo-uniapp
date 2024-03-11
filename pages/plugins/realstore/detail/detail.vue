@@ -226,12 +226,12 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentGoodsBuy from '../../../../components/goods-buy/goods-buy';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentSearch from '../../../../components/search/search';
-    import componentBadge from '../../../../components/badge/badge';
-    import componentPopup from '../../../../components/popup/popup';
-    import componentRealstoreCart from '../../../../components/realstore-cart/realstore-cart';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentSearch from '@/components/search/search';
+    import componentBadge from '@/components/badge/badge';
+    import componentPopup from '@/components/popup/popup';
+    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
 
     var common_static_url = app.globalData.get_static_url('common');
     var status_bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));

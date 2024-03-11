@@ -208,11 +208,11 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
-    import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-    import componentBadge from "../../../../components/badge/badge";
-    import componentPopup from "../../../../components/popup/popup";
-    import componentSearch from '../../../../components/search/search';
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentBadge from "@/components/badge/badge";
+    import componentPopup from "@/components/popup/popup";
+    import componentSearch from '@/components/search/search';
 
     var common_static_url = app.globalData.get_static_url("common");
     var plugins_static_url = app.globalData.get_static_url('delivery', true);

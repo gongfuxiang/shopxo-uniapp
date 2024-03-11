@@ -14,9 +14,9 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentBlogComments from '../../../../components/blog-comments/blog-comments';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentBlogComments from '../components/blog-comments/blog-comments';
     export default {
         data() {
             return {

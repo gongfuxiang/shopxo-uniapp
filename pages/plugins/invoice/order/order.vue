@@ -49,8 +49,8 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
 
     export default {
         data() {

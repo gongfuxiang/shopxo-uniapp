@@ -37,9 +37,9 @@
 </template>
 <script>
 const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentBuyOrdergoodsform from '../../../../components/buy-ordergoodsform/buy-ordergoodsform';
+import componentNoData from "@/components/no-data/no-data";
+import componentBottomLine from "@/components/bottom-line/bottom-line";
+import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
 
 var common_static_url = app.globalData.get_static_url("common");
 export default {

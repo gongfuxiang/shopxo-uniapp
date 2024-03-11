@@ -69,13 +69,13 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentSearch from '../../../../components/search/search';
-    import componentBanner from '../../../../components/slider/slider';
-    import componentIconNav from '../../../../components/icon-nav/icon-nav';
-    import componentRealstoreList from '../../../../components/realstore-list/realstore-list';
-    import componentTitle from '../../../../components/title/title';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentSearch from '@/components/search/search';
+    import componentBanner from '@/components/slider/slider';
+    import componentIconNav from '@/components/icon-nav/icon-nav';
+    import componentRealstoreList from '@/components/realstore-list/realstore-list';
+    import componentTitle from '@/components/title/title';
 
     var realstore_static_url = app.globalData.get_static_url('realstore', true);
     export default {

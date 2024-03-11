@@ -44,9 +44,9 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsList from '@/components/goods-list/goods-list';
 
     export default {
         data() {

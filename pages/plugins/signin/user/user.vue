@@ -36,8 +36,8 @@
 <script>
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
-    import componentUserSignin from '@/components/signin/user-signin/user-signin';
-    import componentUserQrcode from '@/components/signin/user-qrcode/user-qrcode';
+    import componentUserSignin from '../components/user-signin/user-signin';
+    import componentUserQrcode from '../components/user-qrcode/user-qrcode';
 
     export default {
         data() {

@@ -99,12 +99,12 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
-    import componentPopup from '../../../../components/popup/popup';
-    import componentTitle from '../../../../components/title/title';
-    import componentSharePopup from '../../../../components/share-popup/share-popup';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentPopup from '@/components/popup/popup';
+    import componentTitle from '@/components/title/title';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     var points_static_url = app.globalData.get_static_url('points', true);
     export default {
         data() {

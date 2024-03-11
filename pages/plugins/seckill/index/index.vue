@@ -67,11 +67,11 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentCountdown from '../../../../components/countdown/countdown';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
-    import componentPopup from '../../../../components/popup/popup';
+    import componentCountdown from '@/components/countdown/countdown';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentPopup from '@/components/popup/popup';
     var seckill_static_url = app.globalData.get_static_url('seckill', true);
     export default {
         data() {

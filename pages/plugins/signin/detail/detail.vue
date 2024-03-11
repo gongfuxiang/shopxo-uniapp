@@ -125,9 +125,9 @@
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentSharePopup from '../../../../components/share-popup/share-popup';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentGoodsList from '@/components/goods-list/goods-list';
     var signin_static_url = app.globalData.get_static_url('signin', true) + 'app/';
     export default {
         data() {

@@ -78,7 +78,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentGoodsList from '@/components/goods-list/goods-list';
-    import componentAskComments from '@/components/ask-comments/ask-comments';
+    import componentAskComments from '../components/ask-comments/ask-comments';
 
     export default {
         data() {

@@ -52,7 +52,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
 
     export default {
         data() {

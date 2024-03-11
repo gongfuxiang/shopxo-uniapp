@@ -68,7 +68,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from "../../../../components/no-data/no-data";
+    import componentNoData from "@/components/no-data/no-data";
 
     var plugins_static_url = app.globalData.get_static_url('distribution', true);
     export default {

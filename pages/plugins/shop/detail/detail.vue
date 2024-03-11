@@ -184,11 +184,11 @@
 </template>
 <script>
     const app = getApp();
-    import componentLayout from '../../../../components/layout/layout';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentBanner from '../../../../components/slider/slider';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
+    import componentLayout from '@/components/layout/layout';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentBanner from '@/components/slider/slider';
+    import componentGoodsList from '@/components/goods-list/goods-list';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {

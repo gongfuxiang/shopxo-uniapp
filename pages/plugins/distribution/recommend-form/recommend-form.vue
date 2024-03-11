@@ -122,10 +122,10 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../../../common/js/lib/base64.js';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentPopup from '../../../../components/popup/popup';
-    import componentGoodsSpecChoice from '../../../../components/goods-spec-choice/goods-spec-choice';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentPopup from '@/components/popup/popup';
+    import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
     var common_static_url = app.globalData.get_static_url('common');
     export default {
         data() {

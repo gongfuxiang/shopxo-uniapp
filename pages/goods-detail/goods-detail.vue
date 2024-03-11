@@ -621,24 +621,24 @@
 </template>
 <script>
     const app = getApp();
-    import componentGoodsBuy from '../../components/goods-buy/goods-buy';
-    import componentGoodsBatchBuy from '../../components/goods-batch-buy/goods-batch-buy';
-    import componentPopup from '../../components/popup/popup';
-    import componentBadge from '../../components/badge/badge';
-    import componentTrnNav from '../../components/trn-nav/trn-nav';
-    import componentCountdown from '../../components/countdown/countdown';
-    import componentNoData from '../../components/no-data/no-data';
-    import componentBottomLine from '../../components/bottom-line/bottom-line';
-    import componentOnlineService from '../../components/online-service/online-service';
-    import componentRealstoreList from '../../components/realstore-list/realstore-list';
-    import componentShopList from '../../components/shop-list/shop-list';
-    import componentBindingDetailList from '../../components/binding-detail-list/binding-detail-list';
-    import componentSharePopup from '../../components/share-popup/share-popup';
-    import componentGoodsComments from '../../components/goods-comments/goods-comments';
-    import componentAskCommentsGoods from '../../components/ask-comments-goods/ask-comments-goods';
-    import componentCouponCard from '../../components/coupon-card/coupon-card';
-    import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
-    import componentGoodsList from '../../components/goods-list/goods-list';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentGoodsBatchBuy from '@/components/goods-batch-buy/goods-batch-buy';
+    import componentPopup from '@/components/popup/popup';
+    import componentBadge from '@/components/badge/badge';
+    import componentTrnNav from '@/components/trn-nav/trn-nav';
+    import componentCountdown from '@/components/countdown/countdown';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentOnlineService from '@/components/online-service/online-service';
+    import componentRealstoreList from '@/components/realstore-list/realstore-list';
+    import componentShopList from '@/components/shop-list/shop-list';
+    import componentBindingDetailList from '@/components/binding-detail-list/binding-detail-list';
+    import componentSharePopup from '@/components/share-popup/share-popup';
+    import componentGoodsComments from '@/components/goods-comments/goods-comments';
+    import componentAskCommentsGoods from '@/components/ask-comments-goods/ask-comments-goods';
+    import componentCouponCard from '@/components/coupon-card/coupon-card';
+    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentGoodsList from '@/components/goods-list/goods-list';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';

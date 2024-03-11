@@ -128,12 +128,12 @@
 </template>
 <script>
     const app = getApp();
-    import componentSearch from '../../../../components/search/search';
-    import componentBanner from '../../../../components/slider/slider';
-    import componentCountdown from '../../../../components/countdown/countdown';
-    import componentNoData from '../../../../components/no-data/no-data';
-    import componentBottomLine from '../../../../components/bottom-line/bottom-line';
-    import componentGoodsList from '../../../../components/goods-list/goods-list';
+    import componentSearch from '@/components/search/search';
+    import componentBanner from '@/components/slider/slider';
+    import componentCountdown from '@/components/countdown/countdown';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentGoodsList from '@/components/goods-list/goods-list';
 
     export default {
         data() {

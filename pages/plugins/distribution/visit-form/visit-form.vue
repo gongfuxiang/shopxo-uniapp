@@ -64,8 +64,8 @@
 
 <script>
 const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentSearch from '../../../../components/search/search';
+import componentNoData from "@/components/no-data/no-data";
+import componentSearch from '@/components/search/search';
 
 var common_static_url = app.globalData.get_static_url("common");
 export default {

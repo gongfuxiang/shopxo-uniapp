@@ -47,9 +47,9 @@
 </template>
 <script>
 const app = getApp();
-import componentNoData from "../../../../components/no-data/no-data";
-import componentBottomLine from "../../../../components/bottom-line/bottom-line";
-import componentSharePopup from "../../../../components/share-popup/share-popup";
+import componentNoData from "@/components/no-data/no-data";
+import componentBottomLine from "@/components/bottom-line/bottom-line";
+import componentSharePopup from "@/components/share-popup/share-popup";
 
 export default {
     data() {
