@@ -7,7 +7,7 @@
                     <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
                         <view class="cr-white">
                             <view class="flex-row align-e margin-bottom-main">
-                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status = !popup_coin_status">
+                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_open_event">
                                     <image :src="coin_list[coin_index]['img']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-xs">{{ coin_list[coin_index]['name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
@@ -271,6 +271,11 @@
                 this.setData({
                     coin_index: parseInt(e.currentTarget.dataset.index || 0),
                     popup_coin_status: false,
+                });
+            },
+            popup_coin_status_open_event() {
+                this.setData({
+                    popup_coin_status: !this.popup_coin_status,
                 });
             },
             popup_coin_status_close_event() {
