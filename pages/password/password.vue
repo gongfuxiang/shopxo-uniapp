@@ -41,7 +41,6 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-
                 form_submit_loading: false,
                 // 是否显示密码
                 eyes1: false,
@@ -90,23 +89,12 @@
             },
 
             formBindPwd(e) {
-                // 小程序数据
-                // #ifdef MP
-                var field_openid = client_type + '_openid';
-                var field_unionid = client_type + '_unionid';
-                e.detail.value[field_openid] = user[field_openid] || '';
-                e.detail.value[field_unionid] = user[field_unionid] || '';
-                // #endif
-
                 // 数据验证
                 var validation = [
                     { fields: 'my_pwd', msg: '请输入密码' },
                     { fields: 'new_pwd', msg: '请输入新密码' },
                     { fields: 'confirm_new_pwd', msg: '确认新密码' },
                 ];
-                // #ifdef MP
-                validation.push({ fields: field_openid, msg: this.$t('login.login.prqvf1') });
-                // #endif
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),

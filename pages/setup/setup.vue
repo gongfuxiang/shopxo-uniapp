@@ -22,7 +22,7 @@
                         <text>更换密码</text>
                         <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
                     </view>
-                    <view v-if="home_use_multilingual_status == 1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_form=bind_verify" @tap="open_language_event">
+                    <view v-if="home_use_multilingual_status == 1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" @tap="open_language_event">
                         <text>{{ $t('setup.setup.r7jz13') }}</text>
                         <text class="fr cr-grey">{{ language }}</text>
                     </view>

@@ -524,9 +524,6 @@
                     uni.setStorageSync(app.globalData.data.cache_user_info_key, user);
                 }
             }
-
-            // 数据初始化
-            this.init();
         },
 
         // 页面显示
@@ -536,6 +533,9 @@
 
             // 异步初始化配置
             this.init_config();
+
+            // 数据初始化
+            this.init();
 
             // 分享菜单处理
             app.globalData.page_share_handle();
@@ -548,6 +548,7 @@
                     current_opt_type_title: {
                         auth: this.$t('login.login.jw378f'),
                         bind: this.$t('login.login.np9177'),
+                        bind_email: this.$t('login.login.tgsa4d'),
                         login_username: this.$t('login.login.725312'),
                         login_sms: this.$t('login.login.158yg2'),
                         login_email: this.$t('login.login.r329eu'),
@@ -595,10 +596,6 @@
                     }
                 }
                 // #endif
-                this.setData({
-                    navigation_bar_title_key: type,
-                });
-                this.set_navigation_bar_title();
 
                 // 是否参数指定类型和表单
                 if ((this.params.opt_type || null) != null) {
@@ -619,7 +616,9 @@
                     current_opt_form: form,
                     is_exist_base_data: is_base,
                     is_refreshed_base_data: 1,
+                    navigation_bar_title_key: type
                 });
+                this.set_navigation_bar_title();
 
                 // 登录成功
                 if (this.current_opt_form == 'success') {
@@ -1369,8 +1368,8 @@
             // 表单类型事件
             opt_form_event(e) {
                 var value = e.currentTarget.dataset.value;
-                // 手机更换绑定来源则直接返回
-                if (value == 'bind' && (this.params.opt_form || null) != null && this.params.opt_form == 'bind_verify') {
+                // 手机或邮箱更换绑定来源则直接返回
+                if (value == 'bind' && (this.params.opt_form || null) != null && (this.params.opt_form == 'bind_verify' || this.params.opt_form == 'bind_email')) {
                     uni.navigateBack();
                 }
 
