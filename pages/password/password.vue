@@ -7,15 +7,15 @@
                     <form @submit="formBindPwd">
                         <view class="margin-top-xxxl">
                             <view class="pr">
-                                <input type="text" placeholder="请输入当前密码" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item wh-auto margin-bottom-main" />
+                                <input type="text" placeholder="请输入当前密码" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" @tap="eyes1 = !eyes1"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" placeholder="请输入新密码" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item wh-auto margin-bottom-main" />
+                                <input type="text" placeholder="请输入新密码" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" @tap="eyes2 = !eyes2"><iconfont :name="eyes2 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" placeholder="请确认新密码" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item wh-auto margin-bottom-main" />
+                                <input type="text" placeholder="请确认新密码" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" @tap="eyes3 = !eyes3"><iconfont :name="eyes3 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                         </view>
