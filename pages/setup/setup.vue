@@ -147,8 +147,6 @@
 
             // 初始化配置
             this.init_config();
-
-            console.log(uni.getLocale());
         },
 
         methods: {

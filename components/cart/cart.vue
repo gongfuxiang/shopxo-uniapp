@@ -1272,9 +1272,8 @@
             },
             // 无购物车数据按钮事件
             no_cart_data_btn_event(e) {
-                uni.navigateTo({
-                    url: ((this.user || null) == null) ? '/pages/login/login?event_callback=init' : this.home_page_url
-                });
+                var url = ((this.user || null) == null) ? '/pages/login/login?event_callback=init' : this.home_page_url;
+                app.globalData.url_open(url);
             }
         },
     };
