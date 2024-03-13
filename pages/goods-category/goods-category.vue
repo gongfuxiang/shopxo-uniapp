@@ -885,7 +885,7 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var user = app.globalData.get_user_info(this);
+                var user = app.globalData.get_user_info(this, 'buy_number_event', e);
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
@@ -999,7 +999,7 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var user = app.globalData.get_user_info(this);
+                var user = app.globalData.get_user_info(this, 'cart_buy_number_event', e);
                 if (user != false) {
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {

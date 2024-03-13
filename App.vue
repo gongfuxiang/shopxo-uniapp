@@ -351,7 +351,7 @@
 
                                 // #ifdef H5
                                 // h5登录注册
-                                self.login_confirm_tips_modal();
+                                self.login_confirm_tips_modal(self, object, method, params);
                                 // #endif
                             }
                         },
@@ -470,37 +470,30 @@
                                         });
                                     },
                                     fail(res) {
-                                        self.login_confirm_tips_modal();
+                                        self.login_confirm_tips_modal(self, object, method, params);
                                     },
                                 });
                             } else {
-                                self.login_confirm_tips_modal();
+                                self.login_confirm_tips_modal(self, object, method, params);
                             }
                         },
                         fail(res) {
-                            self.login_confirm_tips_modal();
+                            self.login_confirm_tips_modal(self, object, method, params);
                         },
                     });
                 } else {
-                    self.login_confirm_tips_modal();
+                    self.login_confirm_tips_modal(self, object, method, params);
                 }
             },
 
-            // 确认提示登录弹窗
-            login_confirm_tips_modal() {
-                uni.showModal({
-                    title: i18n.t('common.warm_tips'),
-                    content: i18n.t('shopxo-uniapp.app.n67w8p'),
-                    confirmText: i18n.t('common.confirm'),
-                    cancelText: i18n.t('common.not_yet'),
-                    success: (result) => {
-                        if (result.confirm) {
-                            uni.navigateTo({
-                                url: '/pages/login/login',
-                            });
-                        }
-                    },
-                });
+            // 未登录确认处理
+            login_confirm_tips_modal(self, object, method, params) {
+                // 非init初始化调用  或者  非tabbar页面则直接跳转到登录页面
+                if(method != 'init' || !self.is_tabbar_pages('/'+self.current_page(false))) {
+                    uni.navigateTo({
+                        url: '/pages/login/login',
+                    });
+                }
             },
 
             /**
@@ -1978,12 +1971,14 @@
 
             // 清除用户缓存
             remove_user_cache_event() {
+                // 当前平台
+                var client_value = this.application_client();
                 // 用户登录缓存
                 uni.removeStorageSync(this.data.cache_user_login_key);
                 // 用户信息缓存
                 uni.removeStorageSync(this.data.cache_user_info_key);
                 // 非小程序则两秒后回到首页
-                this.showToast(i18n.t('shopxo-uniapp.app.0gwt7z'), 'success');
+                this.showToast(i18n.t('shopxo-uniapp.app.'+(client_value == 'mp' ? '0gwt7z' : '87yghj')), 'success');
                 var url = this.data.tabbar_pages[0];
                 setTimeout(function () {
                     uni.switchTab({

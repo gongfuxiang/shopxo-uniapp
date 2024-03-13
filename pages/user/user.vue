@@ -12,9 +12,9 @@
                             <view class="va-m dis-inline-block margin-left-lg">
                                 <view class="flex-col align-b" data-value="/pages/personal/personal" @tap="url_event">
                                     <text class="va-m fw-b text-size">{{ nickname }}</text>
-                                    <view v-if="(user_id || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
+                                    <view v-if="(user || null) != null && (user.number_code || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
                                         <text class="text-size-xs">ID </text>
-                                        <text class="text-size-xss padding-left-xs pr bottom-xs">{{ user_id }}</text>
+                                        <text class="text-size-xss padding-left-xs pr bottom-xs">{{ user.number_code }}</text>
                                     </view>
                                 </view>
                             </view>
@@ -35,12 +35,12 @@
                     <!-- 副导航 -->
                     <view v-if="common_app_is_head_vice_nav == 1 && head_nav_list.length > 0" class="head-nav oh padding-main flex-row align-c jc-sa tc">
                         <block v-for="(item, index) in head_nav_list" :key="index">
-                            <navigator :url="'/pages/' + item.url + '/' + item.url" hover-class="none" class="flex-1 flex-width">
+                            <view class="flex-1 flex-width cp" :data-value="'/pages/' + item.url + '/' + item.url" @tap="url_event">
                                 <view class="head-nav-item">
                                     <view class="nav-value fw-b text-size margin-bottom-sm">{{ item.count }}</view>
                                     <view class="nav-name text-size-sm">{{ item.name }}</view>
                                 </view>
-                            </navigator>
+                            </view>
                         </block>
                     </view>
                     <!-- 会员码 付款码 -->
@@ -71,7 +71,7 @@
                                         <!-- 副导航 -->
                                         <view class="nav-list-sub oh flex-row jc-sa align-c flex-1">
                                             <block v-for="(items, index2) in item.extension_data" :key="index2">
-                                                <navigator :url="items.url" hover-class="none" class="flex-1">
+                                                <view class="flex-1 cp" :data-value="items.url" @tap="url_event">
                                                     <view class="item pr tc">
                                                         <view class="badge-icon pa">
                                                             <component-badge :propNumber="items.count"></component-badge>
@@ -79,16 +79,16 @@
                                                         <image class="item-icon margin-bottom-xs" :src="items.icon" mode="aspectFill"></image>
                                                         <view class="item-name cr-base text-size-sm">{{ items.name }}</view>
                                                     </view>
-                                                </navigator>
+                                                </view>
                                             </block>
                                         </view>
                                         <!-- 主导航 -->
-                                        <navigator :url="item.url || item.event_value" hover-class="none" class="nav-all-order-goods pr">
+                                        <view class="nav-all-order-goods pr" :data-value="item.url || item.event_value" @tap="url_event">
                                             <view class="item pr tc">
                                                 <image class="item-icon margin-bottom-xs" :src="item.icon || item.images_url" mode="aspectFill"></image>
                                                 <view class="item-name cr-base text-size-sm">{{ item.name }}</view>
                                             </view>
-                                        </navigator>
+                                        </view>
                                     </view>
                                 </view>
                             </block>
@@ -186,7 +186,7 @@
                 common_static_url: common_static_url,
                 static_url: static_url,
                 avatar: app.globalData.data.default_user_head_src,
-                user_id: '',
+                user: null,
                 nickname: '',
                 message_total: 0,
                 nav_logout_data: null,
@@ -351,11 +351,9 @@
 
             // 设置用户基础信息
             set_user_base(user) {
-                if ((user.id || null) != null) {
-                    this.setData({
-                        user_id: user.number_code,
-                    });
-                }
+                this.setData({
+                    user: user || null,
+                });
                 if ((user.avatar || null) != null) {
                     this.setData({
                         avatar: user.avatar,
@@ -496,6 +494,17 @@
 
             // 清除缓存
             remove_user_cache_event(e) {
+                // 当前页面处理
+                this.setData({
+                    message_total: 0,
+                    navigation: [],
+                    main_navigation_data: [],
+                    user: null,
+                    avatar: app.globalData.data.default_user_head_src,
+                    nickname: this.$t('login.login.6yfr9g')
+                });
+
+                // 调用公共方法处理
                 app.globalData.remove_user_cache_event();
             },
 
@@ -517,13 +526,28 @@
 
             // 远程自定义导航事件
             navigation_event(e) {
-                app.globalData.operation_event(e);
+                if(this.is_login()) {
+                    app.globalData.operation_event(e);
+                }
             },
 
             // url事件
             url_event(e) {
-                app.globalData.url_event(e);
+                if(this.is_login()) {
+                    app.globalData.url_event(e);
+                }
             },
+
+            // 是否登录
+            is_login() {
+                if((this.user || null) == null) {
+                    uni.navigateTo({
+                        url: '/pages/login/login?event_callback=init',
+                    });
+                    return false;
+                }
+                return true;
+            }
         },
     };
 </script>

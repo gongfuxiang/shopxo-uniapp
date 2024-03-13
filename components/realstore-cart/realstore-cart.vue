@@ -141,6 +141,7 @@
     import componentGoodsBuy from '../../components/goods-buy/goods-buy';
     import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
     import componentBadge from '../../components/badge/badge';
+    import componentNoData from '../../components/no-data/no-data';
 
     var static_url = app.globalData.get_static_url('realstore', true);
     export default {
@@ -182,7 +183,8 @@
             componentPopup,
             componentGoodsBuy,
             componentCartParaCurve,
-            componentBadge
+            componentBadge,
+            componentNoData
         },
         props: {
             propCurrencySymbol: {

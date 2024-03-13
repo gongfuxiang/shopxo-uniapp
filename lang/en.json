@@ -1,9 +1,7 @@
 {
 	"language": {
 		"zh-Hans": "Simplified Chinese",
-		"zh-Hant": "Traditional Chinese",
-		"en": "English",
-		"es": "Spanish"
+		"en": "English"
 	},
 	"common": {
 		"home": "Home",
@@ -233,7 +231,7 @@
 			"qe8a37": "User name/phone/email",
 			"08fchn": "Login password",
 			"db1rf4": "E-mail",
-			"6yfr9g": "user name",
+			"6yfr9g": "login/register",
 			"d178m0": "Mobile/email",
 			"9wx3ch": "Set login password",
 			"s665h5": "Obtain verification code",
@@ -1690,7 +1688,6 @@
 			"28r5dr": "Service Agreement",
 			"lb493k": "Privacy Policy",
 			"ch1pd2": "Failed to call up the local phone number component",
-			"n67w8p": "Please log in or register first",
 			"5y1c52": "The event value format is incorrect",
 			"t754n6": "Prompt message is empty alert",
 			"iq66pg": "Please copy the address to the webpage map for viewing!",
@@ -1704,6 +1701,7 @@
 			"3eqv71": "Please go to the mini program to use the complete service",
 			"08cg8y": "The customer service address is incorrect",
 			"0gwt7z": "Clear successful",
+            "87yghj": "Logout successful",
 			"di6v5t": "Please obtain authorization first",
 			"nu5058": "Geographic location selection is not supported!",
 			"4v6q86": "No location selected"

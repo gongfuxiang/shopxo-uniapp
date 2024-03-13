@@ -114,9 +114,9 @@
                     <view v-if="data_list.length == 0 && data_list_loding_status == 0" class="cart-no-data-box tc">
                         <image :src="common_static_url + 'cart-empty.png'" mode="widthFix" class="margin-bottom-lg"></image>
                         <view class="cr-grey text-size-sm">{{ data_list_loding_msg || $t('cart.cart.j8on74') }}</view>
-                        <navigator class="dis-inline-block" :url="home_page_url" open-type="switchTab" hover-class="none">
-                            <button class="bg-main br-main cr-white text-size-md round margin-top-xxl" type="default" size="mini" hover-class="none">{{ $t('cart.cart.wb5465') }}</button>
-                        </navigator>
+                        <view class="margin-top-xxl">
+                            <button class="bg-main br-main cr-white text-size-md round" type="default" size="mini" hover-class="none" @tap="no_cart_data_btn_event">{{no_cart_data_btn_text}}</button>
+                        </view>
                     </view>
 
                     <!-- 猜你喜欢 -->
@@ -336,6 +336,8 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
                 common_static_url: common_static_url,
+                user: null,
+                no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
                 is_first: 1,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -484,6 +486,11 @@
                         // 分享菜单处理
                         app.globalData.page_share_handle();
                     } else {
+                        this.setData({
+                            user: user,
+                            no_cart_data_btn_text: this.$t('cart.cart.wb5465')
+                        });
+
                         // 获取数据
                         this.get_data();
 
@@ -502,6 +509,11 @@
                     }
                 } else {
                     this.setData({
+                        user: null,
+                        data_list: [],
+                        goods_list: [],
+                        plugins_realstore_info: null,
+                        no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
                         data_list_loding_status: 0,
                         data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
@@ -1274,6 +1286,12 @@
                     });
                 }
             },
+            // 无购物车数据按钮事件
+            no_cart_data_btn_event(e) {
+                uni.navigateTo({
+                    url: ((this.user || null) == null) ? '/pages/login/login?event_callback=init' : this.home_page_url
+                });
+            }
         },
     };
 </script>
