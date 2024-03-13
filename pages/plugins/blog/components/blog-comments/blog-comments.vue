@@ -247,26 +247,18 @@
                 }
                 var user = app.globalData.get_user_info(this, 'modal_open_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=favor_event',
-                        });
-                        return false;
-                    } else {
-                        var index = parseInt(e.currentTarget.dataset.index || 0);
-                        var username = e.currentTarget.dataset.username;
-                        var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-                        var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
-                        this.setData({
-                            input_comments_modal_status: true,
-                            input_comments_value: '',
-                            input_comments_modal_index: index,
-                            input_comments_modal_username: username,
-                            input_comments_modal_blog_comments_id: blog_comments_id,
-                            input_comments_modal_reply_comments_id: reply_comments_id,
-                        });
-                    }
+                    var index = parseInt(e.currentTarget.dataset.index || 0);
+                    var username = e.currentTarget.dataset.username;
+                    var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                    var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
+                    this.setData({
+                        input_comments_modal_status: true,
+                        input_comments_value: '',
+                        input_comments_modal_index: index,
+                        input_comments_modal_username: username,
+                        input_comments_modal_blog_comments_id: blog_comments_id,
+                        input_comments_modal_reply_comments_id: reply_comments_id,
+                    });
                 }
             },
 
@@ -386,74 +378,66 @@
                 }
                 var user = app.globalData.get_user_info(this, 'comments_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=favor_event',
-                        });
+                    if (this.input_comments_value == '') {
+                        app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
                         return false;
-                    } else {
-                        if (this.input_comments_value == '') {
-                            app.globalData.showToast(this.$t('user-order-comments.user-order-comments.8f303u'));
-                            return false;
-                        }
-                        uni.showLoading({
-                            title: this.$t('buy.buy.r79t77'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('comments', 'index', 'blog'),
-                            method: 'POST',
-                            data: {
-                                blog_id: this.data.id,
-                                content: this.input_comments_value,
-                                blog_comments_id: this.input_comments_modal_blog_comments_id,
-                                reply_comments_id: this.input_comments_modal_reply_comments_id,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    var temp_data = this.data;
-                                    if ((this.input_comments_modal_blog_comments_id || 0) == 0) {
-                                        var temp_list = temp_data.comments_list || [];
-                                        temp_list.splice(0, 0, res.data.data);
-                                        temp_data['comments_list'] = temp_list;
-                                        temp_data['comments_count'] = parseInt(temp_data['comments_count']) + 1;
-                                    } else {
-                                        var index = this.input_comments_modal_index;
-                                        var temp_list = temp_data.comments_list[index]['reply_comments_list'] || [];
-                                        temp_list.splice(0, 0, res.data.data);
-                                        if ((this.input_comments_modal_reply_comments_id || 0) != 0) {
-                                            for (var i in temp_list) {
-                                                if (temp_list[i]['id'] == this.input_comments_modal_reply_comments_id) {
-                                                    temp_list[i]['comments_count'] = parseInt(temp_list[i]['comments_count']) + 1;
-                                                    break;
-                                                }
+                    }
+                    uni.showLoading({
+                        title: this.$t('buy.buy.r79t77'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('comments', 'index', 'blog'),
+                        method: 'POST',
+                        data: {
+                            blog_id: this.data.id,
+                            content: this.input_comments_value,
+                            blog_comments_id: this.input_comments_modal_blog_comments_id,
+                            reply_comments_id: this.input_comments_modal_reply_comments_id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                var temp_data = this.data;
+                                if ((this.input_comments_modal_blog_comments_id || 0) == 0) {
+                                    var temp_list = temp_data.comments_list || [];
+                                    temp_list.splice(0, 0, res.data.data);
+                                    temp_data['comments_list'] = temp_list;
+                                    temp_data['comments_count'] = parseInt(temp_data['comments_count']) + 1;
+                                } else {
+                                    var index = this.input_comments_modal_index;
+                                    var temp_list = temp_data.comments_list[index]['reply_comments_list'] || [];
+                                    temp_list.splice(0, 0, res.data.data);
+                                    if ((this.input_comments_modal_reply_comments_id || 0) != 0) {
+                                        for (var i in temp_list) {
+                                            if (temp_list[i]['id'] == this.input_comments_modal_reply_comments_id) {
+                                                temp_list[i]['comments_count'] = parseInt(temp_list[i]['comments_count']) + 1;
+                                                break;
                                             }
                                         }
-                                        temp_data.comments_list[index]['reply_comments_list'] = temp_list;
-                                        temp_data.comments_list[index]['comments_count'] = parseInt(temp_data.comments_list[index]['comments_count']) + 1;
                                     }
-                                    this.setData({
-                                        data: temp_data,
-                                        input_comments_value: '',
-                                        input_comments_length_value: this.input_comments_length_max,
-                                        input_comments_modal_status: false,
-                                        input_comments_modal_index: 0,
-                                        input_comments_modal_username: '',
-                                        input_comments_modal_blog_comments_id: 0,
-                                        input_comments_modal_reply_comments_id: 0,
-                                    });
-                                } else {
-                                    app.globalData.showToast(res.data.msg);
+                                    temp_data.comments_list[index]['reply_comments_list'] = temp_list;
+                                    temp_data.comments_list[index]['comments_count'] = parseInt(temp_data.comments_list[index]['comments_count']) + 1;
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                                this.setData({
+                                    data: temp_data,
+                                    input_comments_value: '',
+                                    input_comments_length_value: this.input_comments_length_max,
+                                    input_comments_modal_status: false,
+                                    input_comments_modal_index: 0,
+                                    input_comments_modal_username: '',
+                                    input_comments_modal_blog_comments_id: 0,
+                                    input_comments_modal_reply_comments_id: 0,
+                                });
+                            } else {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 
@@ -464,62 +448,54 @@
                 }
                 var user = app.globalData.get_user_info(this, 'give_thumbs_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=favor_event',
-                        });
-                        return false;
-                    } else {
-                        var type = parseInt(e.currentTarget.dataset.type || 0);
-                        var blog_id = e.currentTarget.dataset.blogid;
-                        var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
-                        var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
-                        uni.request({
-                            url: app.globalData.get_request_url('givethumbs', 'index', 'blog'),
-                            method: 'POST',
-                            data: {
-                                blog_id: blog_id,
-                                blog_comments_id: blog_comments_id,
-                                reply_comments_id: reply_comments_id,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                if (res.data.code == 0) {
-                                    var data = res.data.data;
-                                    var temp_data = this.data;
-                                    switch (type) {
-                                        // 博客
-                                        case 0:
-                                            temp_data.is_give_thumbs = data.is_active;
-                                            temp_data.give_thumbs_count = data.count;
-                                            break;
-                                        // 博客评论
-                                        case 1:
-                                            var index = parseInt(e.currentTarget.dataset.index || 0);
-                                            temp_data['comments_list'][index]['is_give_thumbs'] = data.is_active;
-                                            temp_data['comments_list'][index]['give_thumbs_count'] = data.count;
-                                            break;
-                                        // 博客评论回复
-                                        case 2:
-                                            var index = parseInt(e.currentTarget.dataset.index || 0);
-                                            var indexs = parseInt(e.currentTarget.dataset.indexs || 0);
-                                            temp_data['comments_list'][index]['reply_comments_list'][indexs]['is_give_thumbs'] = data.is_active;
-                                            temp_data['comments_list'][index]['reply_comments_list'][indexs]['give_thumbs_count'] = data.count;
-                                            break;
-                                    }
-                                    this.setData({ data: temp_data });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data)) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    var type = parseInt(e.currentTarget.dataset.type || 0);
+                    var blog_id = e.currentTarget.dataset.blogid;
+                    var blog_comments_id = e.currentTarget.dataset.blogcommentsid || 0;
+                    var reply_comments_id = e.currentTarget.dataset.replycommentsid || 0;
+                    uni.request({
+                        url: app.globalData.get_request_url('givethumbs', 'index', 'blog'),
+                        method: 'POST',
+                        data: {
+                            blog_id: blog_id,
+                            blog_comments_id: blog_comments_id,
+                            reply_comments_id: reply_comments_id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            if (res.data.code == 0) {
+                                var data = res.data.data;
+                                var temp_data = this.data;
+                                switch (type) {
+                                    // 博客
+                                    case 0:
+                                        temp_data.is_give_thumbs = data.is_active;
+                                        temp_data.give_thumbs_count = data.count;
+                                        break;
+                                    // 博客评论
+                                    case 1:
+                                        var index = parseInt(e.currentTarget.dataset.index || 0);
+                                        temp_data['comments_list'][index]['is_give_thumbs'] = data.is_active;
+                                        temp_data['comments_list'][index]['give_thumbs_count'] = data.count;
+                                        break;
+                                    // 博客评论回复
+                                    case 2:
+                                        var index = parseInt(e.currentTarget.dataset.index || 0);
+                                        var indexs = parseInt(e.currentTarget.dataset.indexs || 0);
+                                        temp_data['comments_list'][index]['reply_comments_list'][indexs]['is_give_thumbs'] = data.is_active;
+                                        temp_data['comments_list'][index]['reply_comments_list'][indexs]['give_thumbs_count'] = data.count;
+                                        break;
                                 }
-                            },
-                            fail: () => {
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                                this.setData({ data: temp_data });
+                            } else {
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        },
+                        fail: () => {
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 

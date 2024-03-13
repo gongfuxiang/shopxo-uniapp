@@ -501,36 +501,28 @@
                 }
                 var user = app.globalData.get_user_info(this);
                 if(user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if(app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=cart_stock_event',
-                        });
+                    var index = e.currentTarget.dataset.index;
+                    var type = parseInt(e.currentTarget.dataset.type) || 0;
+                    var temp_data = this.cart.data;
+                    var temp_goods = temp_data[index];
+
+                    // 数据操作处理
+                    var opt_number = this.stock_handle(type, temp_goods, 'stock');
+                    if(opt_number === false) {
                         return false;
+                    }
+
+                    // 数据临时记录
+                    this.setData({
+                        temp_opt_data: null,
+                    });
+
+                    // 操作类型
+                    if(opt_number == 0) {
+                        this.cart_delete(temp_goods['id'], temp_goods.goods_id);
                     } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_data = this.cart.data;
-                        var temp_goods = temp_data[index];
-
-                        // 数据操作处理
-                        var opt_number = this.stock_handle(type, temp_goods, 'stock');
-                        if(opt_number === false) {
-                            return false;
-                        }
-
-                        // 数据临时记录
-                        this.setData({
-                            temp_opt_data: null,
-                        });
-
-                        // 操作类型
-                        if(opt_number == 0) {
-                            this.cart_delete(temp_goods['id'], temp_goods.goods_id);
-                        } else {
-                            var number = type == 0 ? parseInt(temp_goods['stock']) - opt_number : opt_number + parseInt(temp_goods['stock']);
-                            this.cart_update(temp_goods['id'], temp_goods['goods_id'], number);
-                        }
+                        var number = type == 0 ? parseInt(temp_goods['stock']) - opt_number : opt_number + parseInt(temp_goods['stock']);
+                        this.cart_update(temp_goods['id'], temp_goods['goods_id'], number);
                     }
                 }
             },
@@ -705,59 +697,51 @@
             search_icon_handle(e) {
                 var user = app.globalData.get_user_info(this, 'search_icon_handle');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=search_icon_handle',
-                        });
+                    // 门店状态
+                    if (!this.is_status_check()) {
                         return false;
-                    } else {
-                        // 门店状态
-                        if (!this.is_status_check()) {
-                            return false;
-                        }
-            
-                        // 调用扫码
-                        var self = this;
-                        uni.scanCode({
-                            success: function (res) {
-                                uni.showLoading({
-                                    title: this.$t('common.processing_in_text'),
-                                    mask: true,
-                                });
-                                uni.request({
-                                    url: app.globalData.get_request_url('scan', 'detail', 'realstore'),
-                                    method: 'POST',
-                                    data: self.request_params_merge(
-                                        {
-                                            value: res.result,
-                                        }, 'buy'),
-                                    dataType: 'json',
-                                    success: (res) => {
-                                        uni.hideLoading();
-                                        if (res.data.code == 0) {
-                                            if (res.data.data.is_error == 1) {
-                                                app.globalData.showToast(res.data.data.is_error_msg);
-                                            } else {
-                                                // 加入购物车
-                                                self.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
-                                            }
-                                        } else {
-                                            if (app.globalData.is_login_check(res.data)) {
-                                                app.globalData.showToast(res.data.msg);
-                                            } else {
-                                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
-                                            }
-                                        }
-                                    },
-                                    fail: () => {
-                                        uni.hideLoading();
-                                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                                    },
-                                });
-                            },
-                        });
                     }
+        
+                    // 调用扫码
+                    var self = this;
+                    uni.scanCode({
+                        success: function (res) {
+                            uni.showLoading({
+                                title: this.$t('common.processing_in_text'),
+                                mask: true,
+                            });
+                            uni.request({
+                                url: app.globalData.get_request_url('scan', 'detail', 'realstore'),
+                                method: 'POST',
+                                data: self.request_params_merge(
+                                    {
+                                        value: res.result,
+                                    }, 'buy'),
+                                dataType: 'json',
+                                success: (res) => {
+                                    uni.hideLoading();
+                                    if (res.data.code == 0) {
+                                        if (res.data.data.is_error == 1) {
+                                            app.globalData.showToast(res.data.data.is_error_msg);
+                                        } else {
+                                            // 加入购物车
+                                            self.cart_save(res.data.data.goods_id, 1, res.data.data.spec);
+                                        }
+                                    } else {
+                                        if (app.globalData.is_login_check(res.data)) {
+                                            app.globalData.showToast(res.data.msg);
+                                        } else {
+                                            app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    uni.hideLoading();
+                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
+                                },
+                            });
+                        },
+                    });
                 }
             },
 

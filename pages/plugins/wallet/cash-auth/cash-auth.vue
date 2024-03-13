@@ -118,16 +118,7 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: '/pages/login/login?event_callback=init',
-                        });
-                        return false;
-                    } else {
-                        // 获取数据
-                        this.get_data();
-                    }
+                    this.get_data();
                 } else {
                     this.setData({
                         data_list_loding_status: 0,
@@ -225,13 +216,13 @@
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: this.$t('login.login.s665h5'),
+                                        verify_submit_text: self.$t('login.login.s665h5'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: this.$t('login.login.n24i5u') + temp_time + this.$t('login.login.4306xr'),
+                                        verify_submit_text: self.$t('login.login.n24i5u') + temp_time + self.$t('login.login.4306xr'),
                                     });
                                 }
                             }, 1000);

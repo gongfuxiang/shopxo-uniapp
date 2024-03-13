@@ -461,51 +461,25 @@
                 }
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
+                    this.setData({
+                        user: user,
+                        no_cart_data_btn_text: this.$t('cart.cart.wb5465')
+                    });
+
+                    // 获取数据
+                    this.get_data();
+
+                    // 猜你喜欢、仅首次读取
+                    if (this.is_first == 1) {
+                        this.get_data_list(1);
+                    }
+
+                    // 用户头像和昵称设置提示
+                    if ((this.$refs.user_base || null) != null) {
                         var self = this;
-                        uni.showModal({
-                            title: self.$t('common.warm_tips'),
-                            content: self.$t('cash-auth.cash-auth.d2ng16'),
-                            confirmText: self.$t('common.confirm'),
-                            cancelText: self.$t('common.not_yet'),
-                            success: (result) => {
-                                if (result.confirm) {
-                                    uni.navigateTo({
-                                        url: '/pages/login/login?event_callback=init',
-                                    });
-                                } else {
-                                    self.setData({
-                                        data_list_loding_status: 0,
-                                        data_list_loding_msg: self.$t('cart.cart.2wfu7o'),
-                                    });
-                                }
-                            },
-                        });
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle();
-                    } else {
-                        this.setData({
-                            user: user,
-                            no_cart_data_btn_text: this.$t('cart.cart.wb5465')
-                        });
-
-                        // 获取数据
-                        this.get_data();
-
-                        // 猜你喜欢、仅首次读取
-                        if (this.is_first == 1) {
-                            this.get_data_list(1);
-                        }
-
-                        // 用户头像和昵称设置提示
-                        if ((this.$refs.user_base || null) != null) {
-                            var self = this;
-                            setTimeout(function () {
-                                self.$refs.user_base.init('cart');
-                            }, 10);
-                        }
+                        setTimeout(function () {
+                            self.$refs.user_base.init('cart');
+                        }, 10);
                     }
                 } else {
                     this.setData({
@@ -518,9 +492,19 @@
                         data_list_loding_msg: this.$t('extraction-apply.extraction-apply.m3xdif'),
                     });
 
-                    // 分享菜单处理
-                    app.globalData.page_share_handle();
+                    // 有用户信息，是否需要绑定手机
+                    if(this.user == null) {
+                        var cache_user = app.globalData.get_user_cache_info() || null;
+                        if(cache_user != null && app.globalData.user_is_bind_mobile(cache_user)) {
+                            this.setData({
+                                no_cart_data_btn_text: this.$t('login.login.np9177')
+                            });
+                        }
+                    }
                 }
+
+                // 分享菜单处理
+                app.globalData.page_share_handle();
             },
 
             // 获取数据

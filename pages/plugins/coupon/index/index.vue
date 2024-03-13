@@ -188,45 +188,37 @@
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=coupon_receive_event',
+                    var temp_list = this.data_list;
+                    if (temp_list[index]['is_operable'] != 0) {
+                        uni.showLoading({
+                            title: this.$t('common.processing_in_text'),
                         });
-                        return false;
-                    } else {
-                        var temp_list = this.data_list;
-                        if (temp_list[index]['is_operable'] != 0) {
-                            uni.showLoading({
-                                title: this.$t('common.processing_in_text'),
-                            });
-                            uni.request({
-                                url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
-                                method: 'POST',
-                                data: {
-                                    coupon_id: value,
-                                },
-                                dataType: 'json',
-                                success: (res) => {
-                                    uni.hideLoading();
-                                    if (res.data.code == 0) {
-                                        app.globalData.showToast(res.data.msg, 'success');
-                                        temp_list[index] = res.data.data.coupon;
-                                        this.setData({
-                                            data_list: temp_list,
-                                        });
-                                    } else {
-                                        if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
-                                            app.globalData.showToast(res.data.msg);
-                                        }
+                        uni.request({
+                            url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                            method: 'POST',
+                            data: {
+                                coupon_id: value,
+                            },
+                            dataType: 'json',
+                            success: (res) => {
+                                uni.hideLoading();
+                                if (res.data.code == 0) {
+                                    app.globalData.showToast(res.data.msg, 'success');
+                                    temp_list[index] = res.data.data.coupon;
+                                    this.setData({
+                                        data_list: temp_list,
+                                    });
+                                } else {
+                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
+                                        app.globalData.showToast(res.data.msg);
                                     }
-                                },
-                                fail: () => {
-                                    uni.hideLoading();
-                                    app.globalData.showToast(this.$t('common.internet_error_tips'));
-                                },
-                            });
-                        }
+                                }
+                            },
+                            fail: () => {
+                                uni.hideLoading();
+                                app.globalData.showToast(this.$t('common.internet_error_tips'));
+                            },
+                        });
                     }
                 }
             },

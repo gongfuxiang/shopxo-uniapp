@@ -195,21 +195,13 @@ export default {
         init() {
             var user = app.globalData.get_user_info(this, "init");
             if (user != false) {
-                // 用户未绑定手机则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.redirectTo({
-                        url: "/pages/login/login?event_callback=init",
-                    });
-                    return false;
-                } else {
-                    this.setData({
-                        pay_url: app.globalData.get_request_url('pay', 'order'),
-                        qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
-                    });
+                this.setData({
+                    pay_url: app.globalData.get_request_url('pay', 'order'),
+                    qrcode_url: app.globalData.get_request_url('paycheck', 'order'),
+                });
 
-                    // 获取数据
-                    this.get_data_list();
-                }
+                // 获取数据
+                this.get_data_list();
             } else {
                 this.setData({
                     data_list_loding_status: 0,

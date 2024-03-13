@@ -286,42 +286,34 @@
             shop_favor_event(e) {
                 var user = app.globalData.get_user_info(this, 'shop_favor_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: "/pages/login/login?event_callback=shop_favor_event"
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text')
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url("favor", "shopfavor", "shop"),
-                            method: 'POST',
-                            data: {
-                                "id": this.shop.id
-                            },
-                            dataType: 'json',
-                            success: res => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.setData({
-                                        shop_favor_info: res.data.data
-                                    });
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'shop_favor_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text')
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url("favor", "shopfavor", "shop"),
+                        method: 'POST',
+                        data: {
+                            "id": this.shop.id
+                        },
+                        dataType: 'json',
+                        success: res => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    shop_favor_info: res.data.data
+                                });
+                                app.globalData.showToast(res.data.msg, 'success');
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'shop_favor_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
                             }
-                        });
-                    }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        }
+                    });
                 }
             },
 

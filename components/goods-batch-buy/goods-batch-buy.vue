@@ -335,68 +335,60 @@ export default {
 
         // 确认事件
         confirm_event(e) {
-            var user = app.globalData.get_user_info(this, "confirm_event");
+            var user = app.globalData.get_user_info(this, "confirm_event", e);
             if (user != false) {
-                // 用户未绑定手机则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=confirm_event",
-                    });
-                    return false;
-                } else {
-                    // 获取数据
-                    var goods_data = [];
-                    var goods_id = this.goods.id;
-                    this.batchbuy_data.goods_spec_data.forEach((item) => {
-                        if (parseInt(this.batchbuy_data.is_only_level_one || 0) == 1) {
-                            var buy_number = parseInt(item.buy_number || 0);
+                // 获取数据
+                var goods_data = [];
+                var goods_id = this.goods.id;
+                this.batchbuy_data.goods_spec_data.forEach((item) => {
+                    if (parseInt(this.batchbuy_data.is_only_level_one || 0) == 1) {
+                        var buy_number = parseInt(item.buy_number || 0);
+                        if (buy_number > 0) {
+                            goods_data.push({
+                                goods_id: goods_id,
+                                stock: buy_number,
+                                spec: item.spec || "",
+                            });
+                        }
+                    } else {
+                        item.data.forEach((item2) => {
+                            var buy_number = parseInt(item2.buy_number || 0);
                             if (buy_number > 0) {
                                 goods_data.push({
                                     goods_id: goods_id,
                                     stock: buy_number,
-                                    spec: item.spec || "",
+                                    spec: item2.spec || "",
                                 });
                             }
-                        } else {
-                            item.data.forEach((item2) => {
-                                var buy_number = parseInt(item2.buy_number || 0);
-                                if (buy_number > 0) {
-                                    goods_data.push({
-                                        goods_id: goods_id,
-                                        stock: buy_number,
-                                        spec: item2.spec || "",
-                                    });
-                                }
-                            });
-                        }
-                    });
-                    if (goods_data.length <= 0) {
-                        app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
-                        return false;
+                        });
                     }
+                });
+                if (goods_data.length <= 0) {
+                    app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
+                    return false;
+                }
 
-                    // 操作类型
-                    switch (e.currentTarget.dataset.type) {
-                        case "plugins-batchbuy-button-buy":
-                            // 进入订单确认页面
-                            var data = {
-                                buy_type: "goods",
-                                goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
-                            };
-                            uni.navigateTo({
-                                url: "/pages/buy/buy?data=" + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                            });
-                            this.popup_close_event();
-                            break;
+                // 操作类型
+                switch (e.currentTarget.dataset.type) {
+                    case "plugins-batchbuy-button-buy":
+                        // 进入订单确认页面
+                        var data = {
+                            buy_type: "goods",
+                            goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
+                        };
+                        uni.navigateTo({
+                            url: "/pages/buy/buy?data=" + encodeURIComponent(base64.encode(JSON.stringify(data))),
+                        });
+                        this.popup_close_event();
+                        break;
 
-                        // 加入购物车
-                        case "plugins-batchbuy-button-cart":
-                            this.goods_cart_event(goods_data);
-                            break;
+                    // 加入购物车
+                    case "plugins-batchbuy-button-cart":
+                        this.goods_cart_event(goods_data);
+                        break;
 
-                        default:
-                            app.globalData.showToast(this.$t('goods-batch-buy.goods-batch-buy.7tp1tc'));
-                    }
+                    default:
+                        app.globalData.showToast(this.$t('goods-batch-buy.goods-batch-buy.7tp1tc'));
                 }
             }
         },

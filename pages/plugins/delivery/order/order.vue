@@ -287,16 +287,8 @@
             init() {
                 var user = app.globalData.get_user_info(this, "init");
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: "/pages/login/login?event_callback=init",
-                        });
-                        return false;
-                    } else {
-                        // 位置权限、回调并获取数据
-                        app.globalData.get_location_check("scope.userLocation", this, "location_back_handle");
-                    }
+                    // 位置权限、回调并获取数据
+                    app.globalData.get_location_check("scope.userLocation", this, "location_back_handle");
                 } else {
                     this.setData({
                         data_list_loding_status: 0,

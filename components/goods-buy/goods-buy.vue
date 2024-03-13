@@ -714,77 +714,69 @@
             spec_confirm_event(e = null) {
                 var user = app.globalData.get_user_info(this, 'spec_confirm_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=spec_confirm_event',
-                        });
-                        return false;
-                    } else {
-                        // 规格
-                        var temp_data = this.goods_spec_choose;
-                        var sku_count = temp_data.length;
-                        var active_count = 0;
-                        var spec = [];
-                        if (sku_count > 0) {
-                            for (var i in temp_data) {
-                                for (var k in temp_data[i]['value']) {
-                                    if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
-                                        active_count++;
-                                        spec.push({
-                                            type: temp_data[i]['name'],
-                                            value: temp_data[i]['value'][k]['name'],
-                                        });
-                                    }
+                    // 规格
+                    var temp_data = this.goods_spec_choose;
+                    var sku_count = temp_data.length;
+                    var active_count = 0;
+                    var spec = [];
+                    if (sku_count > 0) {
+                        for (var i in temp_data) {
+                            for (var k in temp_data[i]['value']) {
+                                if ((temp_data[i]['value'][k]['is_active'] || null) != null) {
+                                    active_count++;
+                                    spec.push({
+                                        type: temp_data[i]['name'],
+                                        value: temp_data[i]['value'][k]['name'],
+                                    });
                                 }
                             }
-                            if (active_count < sku_count) {
-                                app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
-                                return false;
-                            }
                         }
-
-                        // 操作类型
-                        var type = e == null ? this.buy_event_type : e.currentTarget.dataset.type || this.buy_event_type;
-                        var value = e == null ? null : e.currentTarget.dataset.value || null;
-                        switch (type) {
-                            // 展示型、商品页面规格选择展示型 拨打电话操作
-                            case 'show':
-                            case 'spec-show':
-                                app.globalData.call_tel(value || app.globalData.get_config('config.common_app_customer_service_tel'));
-                                break;
-
-                            // 购买
-                            case 'buy':
-                                // 进入订单确认页面
-                                var data = {
-                                    buy_type: 'goods',
-                                    goods_data: encodeURIComponent(
-                                        base64.encode(
-                                            JSON.stringify([
-                                                {
-                                                    goods_id: this.goods.id,
-                                                    stock: this.buy_number,
-                                                    spec: spec,
-                                                },
-                                            ])
-                                        )
-                                    ),
-                                };
-                                uni.navigateTo({
-                                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                                });
-                                this.popup_close_event();
-                                break;
-
-                            // 加入购物车
-                            case 'cart':
-                                this.goods_cart_event(spec);
-                                break;
-
-                            default:
-                                app.globalData.showToast(this.$t('goods-buy.goods-buy.4maexq') + type + ')');
+                        if (active_count < sku_count) {
+                            app.globalData.showToast(this.$t('goods-detail.goods-detail.6brk57'));
+                            return false;
                         }
+                    }
+
+                    // 操作类型
+                    var type = e == null ? this.buy_event_type : e.currentTarget.dataset.type || this.buy_event_type;
+                    var value = e == null ? null : e.currentTarget.dataset.value || null;
+                    switch (type) {
+                        // 展示型、商品页面规格选择展示型 拨打电话操作
+                        case 'show':
+                        case 'spec-show':
+                            app.globalData.call_tel(value || app.globalData.get_config('config.common_app_customer_service_tel'));
+                            break;
+
+                        // 购买
+                        case 'buy':
+                            // 进入订单确认页面
+                            var data = {
+                                buy_type: 'goods',
+                                goods_data: encodeURIComponent(
+                                    base64.encode(
+                                        JSON.stringify([
+                                            {
+                                                goods_id: this.goods.id,
+                                                stock: this.buy_number,
+                                                spec: spec,
+                                            },
+                                        ])
+                                    )
+                                ),
+                            };
+                            uni.navigateTo({
+                                url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
+                            });
+                            this.popup_close_event();
+                            break;
+
+                        // 加入购物车
+                        case 'cart':
+                            this.goods_cart_event(spec);
+                            break;
+
+                        default:
+                            app.globalData.showToast(this.$t('goods-buy.goods-buy.4maexq') + type + ')');
                     }
                 }
             },

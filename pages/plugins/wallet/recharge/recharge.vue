@@ -143,23 +143,11 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: '/pages/login/login?event_callback=init',
-                        });
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('extraction-apply.extraction-apply.4s229b'),
-                        });
-                        return false;
-                    } else {
-                        this.setData({
-                            pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
-                            qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
-                        });
-                        this.get_data();
-                    }
+                    this.setData({
+                        pay_url: app.globalData.get_request_url('pay', 'recharge', 'wallet'),
+                        qrcode_url: app.globalData.get_request_url('paycheck', 'recharge', 'wallet'),
+                    });
+                    this.get_data();
                 } else {
                     this.setData({
                         data_list_loding_status: 2,

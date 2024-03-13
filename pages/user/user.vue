@@ -310,43 +310,22 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.stopPullDownRefresh();
-                        uni.showModal({
-                            title: this.$t('common.warm_tips'),
-                            content: this.$t('cash-auth.cash-auth.d2ng16'),
-                            confirmText: this.$t('common.confirm'),
-                            cancelText: this.$t('common.not_yet'),
-                            success: (result) => {
-                                uni.stopPullDownRefresh();
-                                if (result.confirm) {
-                                    uni.navigateTo({
-                                        url: '/pages/login/login?event_callback=init',
-                                    });
-                                }
-                                this.set_user_base(user);
-                            },
-                        });
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle();
-                    } else {
-                        // 获取基础数据
-                        this.set_user_base(user);
-                        this.get_data();
-
-                        // 用户头像和昵称设置提示
-                        if ((this.$refs.user_base || null) != null) {
-                            this.$refs.user_base.init('user');
-                        }
-                    }
+                    // 获取数据
+                    this.get_data();
                 } else {
                     uni.stopPullDownRefresh();
-
-                    // 分享菜单处理
-                    app.globalData.page_share_handle();
                 }
+
+                // 获取基础数据
+                this.set_user_base(user);
+
+                // 用户头像和昵称设置提示
+                if ((this.$refs.user_base || null) != null) {
+                    this.$refs.user_base.init('user');
+                }
+
+                // 分享菜单处理
+                app.globalData.page_share_handle();
             },
 
             // 设置用户基础信息
@@ -363,6 +342,16 @@
                     this.setData({
                         nickname: user.user_name_view,
                     });
+                }
+
+                // 有用户信息，是否需要绑定手机
+                if(this.user == null) {
+                    var cache_user = app.globalData.get_user_cache_info() || null;
+                    if(cache_user != null && app.globalData.user_is_bind_mobile(cache_user)) {
+                        this.setData({
+                            nickname: this.$t('login.login.np9177')
+                        });
+                    }
                 }
             },
 

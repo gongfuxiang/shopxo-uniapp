@@ -590,9 +590,14 @@
                     }
                 } else {
                     // 是否需要绑定手机
-                    if (type == 'bind' && !app.globalData.user_is_need_login(user)) {
+                    if (type == 'bind' && app.globalData.user_is_bind_mobile(user)) {
                         type = 'bind';
-                        form = 'success';
+                        // 是否打开了一键获取手机、则直接展示验证码输入表单
+                        if(this.common_user_onekey_bind_mobile_list.length > 0 && this.common_user_onekey_bind_mobile_list.indexOf(this.client_value) != -1) {
+                            form = 'bind';
+                        } else {
+                            form = 'bind_verify';
+                        }
                     }
                 }
                 // #endif
@@ -748,7 +753,7 @@
                 });
 
                 // 是否需要绑定手机号码
-                if (app.globalData.user_is_need_login(user) == false) {
+                if (!app.globalData.user_is_bind_mobile(user)) {
                     uni.navigateBack();
                 }
 
@@ -924,13 +929,13 @@
                                 if (temp_time <= 1) {
                                     clearInterval(self.temp_clear_time);
                                     self.setData({
-                                        verify_submit_text: this.$t('login.login.s665h5'),
+                                        verify_submit_text: self.$t('login.login.s665h5'),
                                         verify_disabled: false,
                                     });
                                 } else {
                                     temp_time--;
                                     self.setData({
-                                        verify_submit_text: this.$t('login.login.n24i5u') + temp_time + this.$t('login.login.4306xr'),
+                                        verify_submit_text: self.$t('login.login.n24i5u') + temp_time + self.$t('login.login.4306xr'),
                                     });
                                 }
                             }, 1000);
@@ -1369,7 +1374,9 @@
             opt_form_event(e) {
                 var value = e.currentTarget.dataset.value;
                 // 手机或邮箱更换绑定来源则直接返回
-                if (value == 'bind' && (this.params.opt_form || null) != null && (this.params.opt_form == 'bind_verify' || this.params.opt_form == 'bind_email')) {
+                var is_verify = (this.params.opt_form || null) != null && (this.params.opt_form == 'bind_verify' || this.params.opt_form == 'bind_email');
+                var is_no_bind_mobile = this.common_user_onekey_bind_mobile_list.length == 0 || this.common_user_onekey_bind_mobile_list.indexOf(this.client_value) == -1;
+                if (value == 'bind' && (is_verify || is_no_bind_mobile)) {
                     uni.navigateBack();
                 }
 

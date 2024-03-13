@@ -100,13 +100,6 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: '/pages/login/login?event_callback=init',
-                        });
-                        return false;
-                    }
                     uni.request({
                         url: app.globalData.get_request_url('index', 'goodscomments', 'intellectstools'),
                         method: 'POST',

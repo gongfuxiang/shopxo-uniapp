@@ -1189,48 +1189,40 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                var user = app.globalData.get_user_info(this, 'goods_favor_event');
+                var user = app.globalData.get_user_info(this, 'goods_favor_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=goods_favor_event',
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('favor', 'goods'),
-                            method: 'POST',
-                            data: {
-                                id: this.goods.id,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.setData({
-                                        'goods.is_favor': res.data.data.status,
-                                        nav_favor_button_info: {
-                                            text: res.data.data.text,
-                                            status: res.data.data.status,
-                                        },
-                                    });
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'goods_favor_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('favor', 'goods'),
+                        method: 'POST',
+                        data: {
+                            id: this.goods.id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    'goods.is_favor': res.data.data.status,
+                                    nav_favor_button_info: {
+                                        text: res.data.data.text,
+                                        status: res.data.data.status,
+                                    },
+                                });
+                                app.globalData.showToast(res.data.msg, 'success');
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'goods_favor_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 
@@ -1317,57 +1309,49 @@
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=coupon_receive_event',
-                        });
-                        return false;
-                    } else {
-                        var temp_list = this.plugins_coupon_data.data;
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
-                            method: 'POST',
-                            data: {
-                                coupon_id: value,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                    temp_list[index] = res.data.data.coupon;
-                                    this.setData({
-                                        'plugins_coupon_data.data': temp_list,
-                                    });
-                                    // if ((res.data.data.is_repeat_receive = 1)) {
-                                    //     temp_list[index]['is_repeat_receive'] = 1;
-                                    //     temp_list[index]['already_receive_text'] = '已领取';
-                                    //     temp_list[index]['already_receive_text'] = '已领取';
-                                    //     if (temp_list[index].process_data.type !== 0) {
-                                    //         temp_list[index]['already_send_count'] = Number(temp_list[index]['already_send_count']) + 1;
-                                    //         temp_list[index]['process_data'].value = Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100);
-                                    //         temp_list[index]['process_data'].msg = '已领' + Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100) + '%';
-                                    //     }
-                                    //     this.setData({
-                                    //         'plugins_coupon_data.data': temp_list,
-                                    //     });
-                                    // }
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    var temp_list = this.plugins_coupon_data.data;
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                        method: 'POST',
+                        data: {
+                            coupon_id: value,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                                temp_list[index] = res.data.data.coupon;
+                                this.setData({
+                                    'plugins_coupon_data.data': temp_list,
+                                });
+                                // if ((res.data.data.is_repeat_receive = 1)) {
+                                //     temp_list[index]['is_repeat_receive'] = 1;
+                                //     temp_list[index]['already_receive_text'] = '已领取';
+                                //     temp_list[index]['already_receive_text'] = '已领取';
+                                //     if (temp_list[index].process_data.type !== 0) {
+                                //         temp_list[index]['already_send_count'] = Number(temp_list[index]['already_send_count']) + 1;
+                                //         temp_list[index]['process_data'].value = Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100);
+                                //         temp_list[index]['process_data'].msg = '已领' + Math.floor((Number(temp_list[index]['already_send_count']) / Number(temp_list[index]['limit_send_count'])) * 100) + '%';
+                                //     }
+                                //     this.setData({
+                                //         'plugins_coupon_data.data': temp_list,
+                                //     });
+                                // }
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 

@@ -887,41 +887,33 @@
                 }
                 var user = app.globalData.get_user_info(this, 'buy_number_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=buy_number_event',
-                        });
-                        return false;
-                    } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_goods = this.data_list[index];
-                        this.setData({
-                            goods_choose_data: temp_goods,
-                        });
+                    var index = e.currentTarget.dataset.index;
+                    var type = parseInt(e.currentTarget.dataset.type) || 0;
+                    var temp_goods = this.data_list[index];
+                    this.setData({
+                        goods_choose_data: temp_goods,
+                    });
 
-                        // 是否存在多规格
-                        if ((temp_goods.is_exist_many_spec || 0) != 0) {
-                            // 是否购物车中操作
-                            if (type == 0) {
-                                this.setData({
-                                    cart_status: true,
+                    // 是否存在多规格
+                    if ((temp_goods.is_exist_many_spec || 0) != 0) {
+                        // 是否购物车中操作
+                        if (type == 0) {
+                            this.setData({
+                                cart_status: true,
+                            });
+                            app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
+                        } else {
+                            if ((this.$refs.goods_buy || null) != null) {
+                                this.$refs.goods_buy.init(temp_goods, {
+                                    buy_event_type: 'cart',
                                 });
-                                app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
-                            } else {
-                                if ((this.$refs.goods_buy || null) != null) {
-                                    this.$refs.goods_buy.init(temp_goods, {
-                                        buy_event_type: 'cart',
-                                    });
-                                }
                             }
-                            return false;
                         }
-
-                        // 数据操作处理
-                        this.buy_number_event_handle(e, type, temp_goods);
+                        return false;
                     }
+
+                    // 数据操作处理
+                    this.buy_number_event_handle(e, type, temp_goods);
                 }
             },
 
@@ -1001,40 +993,32 @@
                 }
                 var user = app.globalData.get_user_info(this, 'cart_buy_number_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=cart_buy_number_event',
-                        });
+                    var index = e.currentTarget.dataset.index;
+                    var type = parseInt(e.currentTarget.dataset.type) || 0;
+                    var temp_data = this.cart.data;
+                    var temp_goods = temp_data[index];
+
+                    // 数据操作处理
+                    var res = this.buy_number_handle(type, temp_goods, 'stock');
+                    if (res === false) {
                         return false;
+                    }
+
+                    // 数据临时记录
+                    this.setData({
+                        temp_opt_data: {
+                            pos: e,
+                            goods: temp_goods,
+                            type: type,
+                        },
+                    });
+
+                    // 操作类型
+                    if (res == 0) {
+                        this.cart_delete(temp_goods['id']);
                     } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_data = this.cart.data;
-                        var temp_goods = temp_data[index];
-
-                        // 数据操作处理
-                        var res = this.buy_number_handle(type, temp_goods, 'stock');
-                        if (res === false) {
-                            return false;
-                        }
-
-                        // 数据临时记录
-                        this.setData({
-                            temp_opt_data: {
-                                pos: e,
-                                goods: temp_goods,
-                                type: type,
-                            },
-                        });
-
-                        // 操作类型
-                        if (res == 0) {
-                            this.cart_delete(temp_goods['id']);
-                        } else {
-                            var number = type == 0 ? parseInt(temp_goods['stock']) - res : res + parseInt(temp_goods['stock']);
-                            this.cart_update(temp_goods['id'], temp_goods['goods_id'], number);
-                        }
+                        var number = type == 0 ? parseInt(temp_goods['stock']) - res : res + parseInt(temp_goods['stock']);
+                        this.cart_update(temp_goods['id'], temp_goods['goods_id'], number);
                     }
                 }
             },

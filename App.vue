@@ -155,6 +155,9 @@
                 // 用户购物车选择记录key
                 cache_user_cart_not_use_data_key: 'cache_user_cart_not_use_data_key',
 
+                // 未登录页面缓存记录key
+                cache_user_no_login_page_status_data_key: 'cache_user_no_login_page_status_data_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 
@@ -326,6 +329,20 @@
             },
 
             /**
+             * 是否需要登录
+             * 是否需要绑定手机号码
+             */
+            user_is_bind_mobile(user, object, method, params, is_to_login = false) {
+                if ((user || null) != null && (user.mobile || null) == null && parseInt(user.is_mandatory_bind_mobile || 0) == 1) {
+                    if(is_to_login) {
+                        this.login_confirm_tips_modal(this, object, method, params);
+                    }
+                    return true;
+                }
+                return false;
+            },
+
+            /**
              * 获取用户信息,信息不存在则唤醒授权
              * object     回调操作对象
              * method     回调操作对象的函数
@@ -357,6 +374,11 @@
                         },
                     });
                     return false;
+                } else {
+                    // 是否需要绑定手机
+                    if(this.user_is_bind_mobile(user, object, method, params, true)) {
+                        return false;
+                    }
                 }
                 return user;
             },
@@ -488,11 +510,25 @@
 
             // 未登录确认处理
             login_confirm_tips_modal(self, object, method, params) {
+                // 是否tabbar页面
+                var page = self.current_page(false);
+                var is_tabbar = self.is_tabbar_pages('/'+page);
                 // 非初始化 并且 非tabbar页面则关闭当前页面并跳转登录页面
-                if(method == 'init' && !self.is_tabbar_pages('/'+self.current_page(false))) {
+                if(method == 'init' && !is_tabbar) {
                     uni.redirectTo({
                         url: '/pages/login/login'
                     });
+                // 初始化页面并且是tabbar页面
+                } else if(method == 'init' && is_tabbar) {
+                    var key = this.data.cache_user_no_login_page_status_data_key;
+                    var data = uni.getStorageSync(key) || [];
+                    if(data.indexOf(page) == -1) {
+                        data.push(page);
+                        uni.setStorageSync(key, data);
+                        uni.navigateTo({
+                            url: '/pages/login/login'
+                        });
+                    }
                 // 非初始化则直接跳转登录页面
                 } else if(method != 'init') {
                     uni.navigateTo({
@@ -966,24 +1002,6 @@
                 } else {
                     self.showToast(i18n.t('shopxo-uniapp.app.t754n6'));
                 }
-            },
-
-            /**
-             * 是否需要登录
-             * 是否需要绑定手机号码
-             */
-            user_is_need_login(user) {
-                // 用户信息是否正确
-                if ((user || null) == null) {
-                    return true;
-                }
-                // 是否需要绑定手机号码
-                if ((user.is_mandatory_bind_mobile || 0) == 1) {
-                    if ((user.mobile || null) == null) {
-                        return true;
-                    }
-                }
-                return false;
             },
 
             // url参数转json对象
@@ -1982,6 +2000,8 @@
                 uni.removeStorageSync(this.data.cache_user_login_key);
                 // 用户信息缓存
                 uni.removeStorageSync(this.data.cache_user_info_key);
+                // 未登录提示缓存记录
+                uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
                 // 非小程序则两秒后回到首页
                 this.showToast(i18n.t('shopxo-uniapp.app.'+(client_value == 'mp' ? '0gwt7z' : '87yghj')), 'success');
                 var url = this.data.tabbar_pages[0];

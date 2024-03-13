@@ -165,41 +165,33 @@
             poster_event() {
                 var user = app.globalData.get_user_info(this, 'poster_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=poster_event',
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: this.$t('detail.detail.6xvl35'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('goodsposter', 'distribution', 'distribution'),
-                            method: 'POST',
-                            data: { goods_id: this.goods_id },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
+                    uni.showLoading({
+                        title: this.$t('detail.detail.6xvl35'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('goodsposter', 'distribution', 'distribution'),
+                        method: 'POST',
+                        data: { goods_id: this.goods_id },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
 
-                                if (res.data.code == 0) {
-                                    uni.previewImage({
-                                        current: res.data.data,
-                                        urls: [res.data.data],
-                                    });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'poster_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                            if (res.data.code == 0) {
+                                uni.previewImage({
+                                    current: res.data.data,
+                                    urls: [res.data.data],
+                                });
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'poster_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 

@@ -64,22 +64,10 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.redirectTo({
-                            url: '/pages/login/login?event_callback=init',
-                        });
-                        this.setData({
-                            data_list_loding_status: 0,
-                            data_list_loding_msg: this.$t('setup.setup.07o10b'),
-                        });
-                        return false;
-                    } else {
-                        this.setData({
-                            data_list_loding_status: 3,
-                            user: user,
-                        });
-                    }
+                    this.setData({
+                        data_list_loding_status: 3,
+                        user: user,
+                    });
                 } else {
                     this.setData({
                         data_list_loding_status: 0,

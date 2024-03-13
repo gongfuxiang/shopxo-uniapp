@@ -603,42 +603,34 @@
                 }
                 var user = app.globalData.get_user_info(this, 'favor_event');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=favor_event',
-                        });
-                        return false;
-                    } else {
-                        uni.showLoading({
-                            title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('reversal', 'favor', 'realstore'),
-                            method: 'POST',
-                            data: {
-                                id: this.info.id,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    this.setData({
-                                        favor_info: res.data.data,
-                                    });
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('reversal', 'favor', 'realstore'),
+                        method: 'POST',
+                        data: {
+                            id: this.info.id,
+                        },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    favor_info: res.data.data,
+                                });
+                                app.globalData.showToast(res.data.msg, 'success');
+                            } else {
+                                if (app.globalData.is_login_check(res.data, this, 'favor_event')) {
+                                    app.globalData.showToast(res.data.msg);
                                 }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
-                        });
-                    }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
                 }
             },
 
@@ -649,37 +641,29 @@
                 }
                 var user = app.globalData.get_user_info(this, 'buy_number_event', e);
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=buy_number_event',
-                        });
-                        return false;
-                    } else {
-                        var index = e.currentTarget.dataset.index;
-                        var type = parseInt(e.currentTarget.dataset.type) || 0;
-                        var temp_goods = this.data_list[index];
-                        // 是否存在多规格
-                        if ((temp_goods.is_exist_many_spec || 0) != 0) {
-                            // 是否购物车中操作
-                            if (type == 0) {
-                                this.$refs.realstore_cart.cart_event(true);
-                                app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
-                            } else {
-                                if ((this.$refs.goods_buy || null) != null) {
-                                    var buy_params = this.params;
-                                    buy_params['buy_event_type'] = 'cart';
-                                    buy_params['buy_use_type_index'] = this.get_buy_use_type_index();
-                                    buy_params['realstore_id'] = this.info.id;
-                                    this.$refs.goods_buy.init(temp_goods, buy_params);
-                                }
+                    var index = e.currentTarget.dataset.index;
+                    var type = parseInt(e.currentTarget.dataset.type) || 0;
+                    var temp_goods = this.data_list[index];
+                    // 是否存在多规格
+                    if ((temp_goods.is_exist_many_spec || 0) != 0) {
+                        // 是否购物车中操作
+                        if (type == 0) {
+                            this.$refs.realstore_cart.cart_event(true);
+                            app.globalData.showToast(this.$t('goods-category.goods-category.gy7y0w'));
+                        } else {
+                            if ((this.$refs.goods_buy || null) != null) {
+                                var buy_params = this.params;
+                                buy_params['buy_event_type'] = 'cart';
+                                buy_params['buy_use_type_index'] = this.get_buy_use_type_index();
+                                buy_params['realstore_id'] = this.info.id;
+                                this.$refs.goods_buy.init(temp_goods, buy_params);
                             }
-                            return false;
                         }
-
-                        // 数据操作处理
-                        this.buy_number_event_handle(e, type, temp_goods);
+                        return false;
                     }
+
+                    // 数据操作处理
+                    this.buy_number_event_handle(e, type, temp_goods);
                 }
             },
 

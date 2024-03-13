@@ -114,57 +114,49 @@ export default {
             }
             var user = app.globalData.get_user_info(this, "favor_event");
             if (user != false) {
-                // 用户未绑定手机则转到登录页面
-                if (app.globalData.user_is_need_login(user)) {
-                    uni.navigateTo({
-                        url: "/pages/login/login?event_callback=favor_event",
-                    });
-                    return false;
-                } else {
-                    var index = e.currentTarget.dataset.index;
-                    var info = this.data_list[index];
-                    uni.showLoading({
-                        title: this.$t('common.processing_in_text'),
-                    });
-                    uni.request({
-                        url: app.globalData.get_request_url("reversal", "favor", "realstore"),
-                        method: "POST",
-                        data: {
-                            id: info.id,
-                        },
-                        dataType: "json",
-                        success: (res) => {
-                            uni.hideLoading();
-                            if (res.data.code == 0) {
-                                var temp_data = this.data_list;
-                                var temp_favor = this.favor_user;
-                                temp_data[index]["is_favor"] = res.data.data.status;
-                                if (res.data.data.status == 1) {
-                                    if (temp_favor.indexOf(info.id) == -1) {
-                                        temp_favor.push(info.id);
-                                    }
-                                } else {
-                                    if (temp_favor.indexOf(info.id) != -1) {
-                                        temp_favor.splice(index, 1);
-                                    }
+                var index = e.currentTarget.dataset.index;
+                var info = this.data_list[index];
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url("reversal", "favor", "realstore"),
+                    method: "POST",
+                    data: {
+                        id: info.id,
+                    },
+                    dataType: "json",
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp_data = this.data_list;
+                            var temp_favor = this.favor_user;
+                            temp_data[index]["is_favor"] = res.data.data.status;
+                            if (res.data.data.status == 1) {
+                                if (temp_favor.indexOf(info.id) == -1) {
+                                    temp_favor.push(info.id);
                                 }
-                                this.setData({
-                                    data_list: temp_data,
-                                    favor_user: temp_favor,
-                                });
-                                app.globalData.showToast(res.data.msg, "success");
                             } else {
-                                if (app.globalData.is_login_check(res.data, this, "favor_event")) {
-                                    app.globalData.showToast(res.data.msg);
+                                if (temp_favor.indexOf(info.id) != -1) {
+                                    temp_favor.splice(index, 1);
                                 }
                             }
-                        },
-                        fail: () => {
-                            uni.hideLoading();
-                            app.globalData.showToast(this.$t('common.internet_error_tips'));
-                        },
-                    });
-                }
+                            this.setData({
+                                data_list: temp_data,
+                                favor_user: temp_favor,
+                            });
+                            app.globalData.showToast(res.data.msg, "success");
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, "favor_event")) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
             }
         },
 

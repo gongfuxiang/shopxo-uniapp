@@ -321,15 +321,7 @@
             init() {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    // 用户未绑定手机则转到登录页面
-                    if (app.globalData.user_is_need_login(user)) {
-                        uni.stopPullDownRefresh();
-                        uni.navigateTo({
-                            url: '/pages/login/login?event_callback=init',
-                        });
-                    } else {
-                        return true;
-                    }
+                    return true;
                 }
                 return false;
             },
