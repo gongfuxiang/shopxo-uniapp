@@ -324,7 +324,6 @@
                     // 用户未绑定手机则转到登录页面
                     if (app.globalData.user_is_need_login(user)) {
                         uni.stopPullDownRefresh();
-
                         uni.navigateTo({
                             url: '/pages/login/login?event_callback=init',
                         });
@@ -339,7 +338,7 @@
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
-                if (this.is_already_coming != 1 && this.init()) {
+                if (this.is_already_coming != 1 && app.globalData.get_user_info(this, 'coming_event', e)) {
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
                     });

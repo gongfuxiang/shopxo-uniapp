@@ -488,10 +488,15 @@
 
             // 未登录确认处理
             login_confirm_tips_modal(self, object, method, params) {
-                // 非init初始化调用  或者  非tabbar页面则直接跳转到登录页面
-                if(method != 'init' || !self.is_tabbar_pages('/'+self.current_page(false))) {
+                // 非初始化 并且 非tabbar页面则关闭当前页面并跳转登录页面
+                if(method == 'init' && !self.is_tabbar_pages('/'+self.current_page(false))) {
+                    uni.redirectTo({
+                        url: '/pages/login/login'
+                    });
+                // 非初始化则直接跳转登录页面
+                } else if(method != 'init') {
                     uni.navigateTo({
-                        url: '/pages/login/login',
+                        url: '/pages/login/login'
                     });
                 }
             },
