@@ -674,14 +674,17 @@
                         });
                         if (res.data.code == 0) {
                             app.globalData.showToast(res.data.msg, 'success');
-                            var ads_data = res.data.data;
+                            var ads = res.data.data;
+                            var province = ads.province || {};
+                            var city = ads.city || {};
+                            var county = ads.county || {};
                             this.setData({
-                                province_id: ads_data.province_id || null,
-                                city_id: ads_data.city_id || null,
-                                county_id: ads_data.county_id || null,
-                                province_name: ads_data.province_name || null,
-                                city_name: ads_data.city_name || null,
-                                county_name: ads_data.county_name || null,
+                                province_id: province.id || null,
+                                city_id: city.id || null,
+                                county_id: county.id || null,
+                                province_name: province.name || null,
+                                city_name: city.name || null,
+                                county_name: county.name || null,
                             });
                             if (!this.province_id || !this.city_id) {
                                 this.setData({
