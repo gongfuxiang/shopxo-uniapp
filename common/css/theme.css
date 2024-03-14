@@ -72,14 +72,17 @@
 }
 .theme-red button[disabled].bg-main-pair {
 	background-color: #d0cbca !important;
+    border-color: #d0cbca !important;
 	color: #eaeaea !important;
 }
 .theme-red button[disabled].bg-main-light {
 	background-color: #ffe9ed !important;
+    border-color: #ffe9ed !important;
 	color: #ffa5b7 !important;
 }
 .theme-red button[disabled].bg-main {
 	background-color: #ffa7ba !important;
+    border-color: #ffa7ba !important;
 	color: #fff5f7 !important;
 }
 
@@ -174,14 +177,17 @@
 }
 .theme-yellow button[disabled].bg-main-pair {
     background-color: #b5a29c !important;
+    border-color: #b5a29c !important;
     color: #8c766f !important;
 }
 .theme-yellow button[disabled].bg-main-light {
     background-color: #fbebd6 !important;
+    border-color: #fbebd6 !important;
     color: #ffcc40 !important;
 }
 .theme-yellow button[disabled].bg-main {
     background-color: #fdd178 !important;
+    border-color: #fdd178 !important;
     color: #fff7e7 !important;
 }
 
@@ -277,14 +283,17 @@
 }
 .theme-black button[disabled].bg-main-pair {
 	background-color: #bdece8 !important;
+    border-color: #bdece8 !important;
 	color: #edfbf9 !important;
 }
 .theme-black button[disabled].bg-main-light {
 	background-color: #efefef !important;
+    border-color: #efefef !important;
 	color: #b7b7b7 !important;
 }
 .theme-black button[disabled].bg-main {
 	background-color: #c7c7c7 !important;
+    border-color: #c7c7c7 !important;
 	color: #e2e2e2 !important;
 }
 
@@ -380,14 +389,17 @@
 }
 .theme-green button[disabled].bg-main-pair {
 	background-color: #cfaae2 !important;
+    border-color: #cfaae2 !important;
 	color: #e6deea !important;
 }
 .theme-green button[disabled].bg-main-light {
 	background-color: #daeade !important;
+    border-color: #daeade !important;
 	color: #9dcaa6 !important;
 }
 .theme-green button[disabled].bg-main {
 	background-color: #a8c5ae !important;
+    border-color: #a8c5ae !important;
 	color: #d8eadc !important;
 }
 
@@ -482,14 +494,17 @@
 }
 .theme-orange button[disabled].bg-main-pair {
 	background-color: #b5a29c !important;
+    border-color: #b5a29c !important;
 	color: #8c766f !important;
 }
 .theme-orange button[disabled].bg-main-light {
 	background-color: #fbe9dc !important;
+    border-color: #fbe9dc !important;
 	color: #f7c49e !important;
 }
 .theme-orange button[disabled].bg-main {
 	background-color: #f7cdad !important;
+    border-color: #f7cdad !important;
 	color: #f7efea !important;
 }
 
@@ -584,14 +599,17 @@
 }
 .theme-blue button[disabled].bg-main-pair {
 	background-color: #efcbf5 !important;
+    border-color: #efcbf5 !important;
 	color: #faf1fb !important;
 }
 .theme-blue button[disabled].bg-main-light {
 	background-color: #e3eefd !important;
+    border-color: #e3eefd !important;
 	color: #b9d3f7 !important;
 }
 .theme-blue button[disabled].bg-main {
 	background-color: #bcd3f5 !important;
+    border-color: #bcd3f5 !important;
 	color: #eef4fd !important;
 }
 
@@ -686,14 +704,17 @@
 }
 .theme-brown button[disabled].bg-main-pair {
 	background-color: #a6ded9 !important;
+    border-color: #a6ded9 !important;
 	color: #dff1ef !important;
 }
 .theme-brown button[disabled].bg-main-light {
 	background-color: #f1e6de !important;
+    border-color: #f1e6de !important;
 	color: #d6bdad !important;
 }
 .theme-brown button[disabled].bg-main {
 	background-color: #e4cdbc !important;
+    border-color: #e4cdbc !important;
 	color: #f9f4f0 !important;
 }
 
@@ -788,14 +809,17 @@
 }
 .theme-purple button[disabled].bg-main-pair {
 	background-color: #d8aed8 !important;
+    border-color: #d8aed8 !important;
 	color: #efe4ef !important;
 }
 .theme-purple button[disabled].bg-main-light {
 	background-color: #dcd6f1 !important;
+    border-color: #dcd6f1 !important;
 	color: #b2a7dc !important;
 }
 .theme-purple button[disabled].bg-main {
 	background-color: #bdb0ef !important;
+    border-color: #bdb0ef !important;
 	color: #e7e4f1 !important;
 }
 
