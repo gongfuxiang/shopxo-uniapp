@@ -201,12 +201,12 @@
                     </view>
 
                     <!-- 支付方式 -->
-                    <view v-if="total_price > 0 && payment_list.length > 0 && common_order_is_booking != 1" class="payment-list border-radius-main bg-white oh">
-                        <view class="padding-horizontal-main padding-top-main br-b-f5">
-                            <view v-for="(item, index) in payment_list" :key="index" class="item flex-row jc-sb align-c" :class="payment_list.length === index + 1 ? '' : 'br-b-f5'" :data-value="item.id" :data-index="index" data-type="1" @tap="payment_event">
+                    <view v-if="total_price > 0 && common_order_is_booking != 1 && (payment_list.length > 0 || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0))" class="payment-list border-radius-main bg-white oh spacing-mb">
+                        <view v-if="payment_list.length > 0" class="padding-horizontal-main padding-top-main br-b-f9">
+                            <view v-for="(item, index) in payment_list" :key="index" class="item flex-row jc-sb align-c" :class="payment_list.length === index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" data-type="1" @tap="payment_event">
                                 <view class="item-content pr flex-1 flex-width">
                                     <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
-                                    <text>{{ item.name }}</text>
+                                    <text class="va-m">{{ item.name }}</text>
                                     <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                                 </view>
                                 <view>
@@ -214,10 +214,10 @@
                                 </view>
                             </view>
                         </view>
-                        <view class="padding-horizontal-main padding-bottom-main">
-                            <block v-for="(item, index) in payment_list">
-                                <block v-if="payment_list_control ? index < 3 : true">
-                                    <view :key="index" class="item flex-row jc-sb align-c br-b-f5" :data-value="item.id" :data-index="index" data-type="2" @tap="payment_event">
+                        <view v-if="(plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0" class="padding-horizontal-main padding-bottom-main">
+                            <block v-for="(item, index) in plugins_coin_data.accounts_list">
+                                <block v-if="plugins_coin_more_control ? index < 3 : true">
+                                    <view :key="index" class="item flex-row jc-sb align-c br-b-f9" :data-value="item.id" :data-index="index" data-type="2" @tap="coin_payment_event">
                                         <view class="item-content pr flex-row align-c">
                                             <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
                                             <view class="flex-col">
@@ -229,17 +229,24 @@
                                             </view>
                                         </view>
                                         <view>
-                                            <iconfont :name="payment_coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                            <iconfont :name="plugins_coin_choice_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                         </view>
                                     </view>
                                 </block>
                             </block>
                             <view class="padding-top-main flex-row align-c jc-c" @tap="change_coin_more_event">
-                                <text class="cr-base">{{ payment_list_control ? '展开更多' : '收起更多' }}</text>
+                                <text class="cr-base">{{ plugins_coin_more_control ? '展开更多' : '收起更多' }}</text>
                                 <view class="pr top-xs margin-left-xs">
-                                    <iconfont :name="payment_list_control ? 'icon-arrow-bottom' : 'icon-arrow-top'" color="#666"></iconfont>
+                                    <iconfont :name="plugins_coin_more_control ? 'icon-arrow-bottom' : 'icon-arrow-top'" color="#666"></iconfont>
                                 </view>
                             </view>
+                        </view>
+                    </view>
+
+                    <!-- 底部说明 - 智能工具箱插件 -->
+                    <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.bottom_desc || null) != null && plugins_intellectstools_data.bottom_desc.length > 0" class="border-radius-main padding-main bg-white oh cr-orange spacing-mb">
+                        <view v-for="(item, index) in plugins_intellectstools_data.bottom_desc" :key="index">
+                            <view :class="index > 0 ? 'margin-top' : ''">{{item}}</view>
                         </view>
                     </view>
                 </view>
@@ -255,8 +262,7 @@
                     </view>
                 </view>
             </view>
-
-            <view v-if="goods_list.length == 0">
+            <view v-else>
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
 
@@ -356,8 +362,6 @@
                 params: null,
                 payment_list: [],
                 payment_index: 0,
-                payment_coin_index: -1,
-                payment_list_control: true,
                 goods_list: [],
                 address: null,
                 address_id: null,
@@ -398,6 +402,10 @@
                 plugins_intellectstools_data: null,
                 // 运费
                 plugins_freightfee_choice_data: {},
+                // 虚拟币
+                plugins_coin_data: null,
+                plugins_coin_choice_index: -1,
+                plugins_coin_more_control: true,
 
                 // 支付弹窗参数
                 pay_url: '',
@@ -614,6 +622,7 @@
                                     plugins_points_data: data.plugins_points_data || null,
                                     plugins_realstore_data: data.plugins_realstore_data || null,
                                     plugins_intellectstools_data: data.plugins_intellectstools_data || null,
+                                    plugins_coin_data: data.plugins_coin_data || null,
                                 });
 
                                 // 可使用积分数量
@@ -881,12 +890,12 @@
                 if (e.currentTarget.dataset.type == '1') {
                     this.setData({
                         payment_index: e.currentTarget.dataset.index,
-                        payment_coin_index: -1,
+                        plugins_coin_choice_index: -1,
                     });
                 } else {
                     this.setData({
                         payment_index: -1,
-                        payment_coin_index: e.currentTarget.dataset.index,
+                        plugins_coin_choice_index: e.currentTarget.dataset.index,
                     });
                 }
                 this.setData({
@@ -897,7 +906,7 @@
             // 展开更多
             change_coin_more_event() {
                 this.setData({
-                    payment_list_control: !this.payment_list_control,
+                    plugins_coin_more_control: !this.plugins_coin_more_control,
                 });
             },
 

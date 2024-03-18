@@ -70,11 +70,11 @@
 * 支付方式
 */
 .payment-list .item-content {
-    padding: 40rpx 0;
+    padding: 20rpx 0;
 }
 .payment-list .item-content .icon {
-    width: 50rpx;
-    height: 50rpx !important;
+    width: 40rpx;
+    height: 40rpx !important;
 }
 .pay-tips {
     height: 32rpx;

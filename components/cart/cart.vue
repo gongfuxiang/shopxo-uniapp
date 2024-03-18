@@ -119,6 +119,15 @@
                         </view>
                     </view>
 
+                    <!-- 底部说明 - 智能工具箱插件 -->
+                    <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.bottom_desc || null) != null && plugins_intellectstools_data.bottom_desc.length > 0" class="padding-horizontal-main spacing-mb">
+                        <view class="border-radius-main padding-main bg-white oh cr-orange">
+                            <view v-for="(item, index) in plugins_intellectstools_data.bottom_desc" :key="index">
+                                <view :class="index > 0 ? 'margin-top' : ''">{{item}}</view>
+                            </view>
+                        </view>
+                    </view>
+
                     <!-- 猜你喜欢 -->
                     <view v-if="goods_list.length > 0" class="padding-horizontal-main margin-top-main">
                         <view class="tc spacing-mb">
@@ -394,6 +403,8 @@
                 plugins_realstore_info: null,
                 plugins_realstore_buy_use_type_index: 0,
                 plugins_realstore_choice_status: false,
+                // 智能工具箱插件
+                plugins_intellectstools_data: null,
                 // 优惠明细弹窗
                 discount_detail_status: false,
                 // 优惠明细弹窗内商品列表显示隐藏更多
@@ -445,7 +456,7 @@
                         common_site_type: app.globalData.get_config('config.common_site_type'),
                         common_is_exhibition_mode_btn_text: app.globalData.get_config('config.common_is_exhibition_mode_btn_text', this.$t('cart.cart.31h34v')),
                         common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
-                        is_cart_show_discount: app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount'),
+                        is_cart_show_discount: parseInt(app.globalData.get_config('plugins_base.intellectstools.data.is_cart_show_discount', 0)),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
@@ -563,6 +574,7 @@
                                 data_list: data_list,
                                 data_list_loding_status: data_list.length == 0 ? 0 : 3,
                                 data_list_loding_msg: this.$t('cart.cart.j8on74'),
+                                plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                             });
 
                             // 门店数据初始化
