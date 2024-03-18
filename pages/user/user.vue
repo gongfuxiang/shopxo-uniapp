@@ -483,10 +483,18 @@
 
             // 清除缓存
             remove_user_cache_event(e) {
+                // 副导航去除总数
+                var temp_head_nav = this.head_nav_list;
+                if(temp_head_nav.length > 0) {
+                    for(var i in temp_head_nav) {
+                        temp_head_nav[i]['count'] = 0;
+                    }
+                }
                 // 当前页面处理
                 this.setData({
                     message_total: 0,
                     navigation: [],
+                    head_nav_list: temp_head_nav,
                     main_navigation_data: [],
                     user: null,
                     avatar: app.globalData.data.default_user_head_src,
@@ -495,6 +503,9 @@
 
                 // 调用公共方法处理
                 app.globalData.remove_user_cache_event();
+
+                // 导航购物车处理
+                app.globalData.set_tab_bar_badge(2, 0);
             },
 
             // 客服电话
