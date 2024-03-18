@@ -47,7 +47,7 @@
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->
-            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + (cart_type_value == 'realstore' ? ' - 140rpx' : '') + ' - ' + (status_bar_height + 5) + 'px);'">
+            <scroll-view :scroll-y="true" :class="'scroll-box ' + (data_list.length > 0 ? 'cart ' : '') + cart_type_value" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - ' + window_top + ' - ' + window_bottom + (cart_type_value == 'realstore' ? ' - 140rpx' : '0rpx') + ' - ' + (status_bar_height + 5) + 'px);'">
                 <view class="content">
                     <!-- 数据列表 -->
                     <view v-if="data_list.length > 0" :class="'padding-horizontal-main padding-bottom-xsss ' + (propSourceType == 'page' ? 'bottom-line-exclude ' : '') + (cart_type_value == 'realstore' ? '' : 'padding-top-main')">
@@ -119,8 +119,8 @@
                         </view>
                     </view>
 
-                    <!-- 底部说明 - 智能工具箱插件 -->
-                    <view v-if="(plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.bottom_desc || null) != null && plugins_intellectstools_data.bottom_desc.length > 0" class="padding-horizontal-main spacing-mb">
+                    <!-- 底部说明 - 智能工具箱插件、存在购物车商品才展示 -->
+                    <view v-if="data_list.length > 0 && (plugins_intellectstools_data || null) != null && (plugins_intellectstools_data.bottom_desc || null) != null && plugins_intellectstools_data.bottom_desc.length > 0" class="padding-horizontal-main spacing-mb">
                         <view class="border-radius-main padding-main bg-white oh cr-orange">
                             <view v-for="(item, index) in plugins_intellectstools_data.bottom_desc" :key="index">
                                 <view :class="index > 0 ? 'margin-top' : ''">{{item}}</view>
@@ -480,8 +480,8 @@
                     // 获取数据
                     this.get_data();
 
-                    // 猜你喜欢、仅首次读取
-                    if (this.is_first == 1) {
+                    // 猜你喜欢、仅首次读取、还未加载过
+                    if (this.is_first == 1 && this.goods_is_loading == 0) {
                         this.get_data_list(1);
                     }
 
@@ -496,7 +496,6 @@
                     this.setData({
                         user: null,
                         data_list: [],
-                        goods_list: [],
                         plugins_realstore_info: null,
                         no_cart_data_btn_text: this.$t('login.login.6yfr9g'),
                         data_list_loding_status: 0,
@@ -512,6 +511,9 @@
                             });
                         }
                     }
+
+                    // 猜你喜欢
+                    this.get_data_list(1);
                 }
 
                 // 分享菜单处理
