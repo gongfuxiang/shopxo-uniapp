@@ -6,9 +6,15 @@
             <view class="cr-grey margin-top-sm">{{$t('no-data.no-data.imw8f1')}}{{title}}{{$t('no-data.no-data.q87572')}}</view>
         </view>
         <view v-else>
-            <!-- 1 加载中 -->
-            <view v-if="propStatus == 1" class="no-data-box tc no-data-loading loading-animation">
-                <text>{{title}}</text>
+            <!-- 1 加载中(0loog, 1名称) -->
+            <view v-if="propStatus == 1" class="no-data-box tc no-data-loading">
+                <view v-if="loading_content_type == 1" class="loading-title-animation">
+                    <text>{{title}}</text>
+                </view>
+                <view v-else class="loading-logo-content">
+                    <view class="loading-logo" :style="'background-image: url('+loading_logo+')'"></view>
+                    <view class="loading-border" :style="'background-image: url('+loading_logo_border+')'"></view>
+                </view>
             </view>
 
             <!-- 2 处理错误 -->
@@ -35,6 +41,9 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 static_dir: '/static/images/common/',
+                loading_logo_border: app.globalData.data.static_url+'static/common/svg/loading-border.svg',
+                loading_logo: app.globalData.data.static_url+'favicon.ico',
+                loading_content_type: app.globalData.data.loading_content_type,
                 title: app.globalData.get_application_title(),
                 network_type_value: '',
                 not_network_await_status: 0,
@@ -147,21 +156,25 @@
     .no-data-loading text {
         color: #999;
     }
-    .loading-animation,
+
+    /**
+     * 名称加载
+     */
+    .loading-title-animation,
     .network-type-tips {
         padding-top: 25%;
     }
-    .loading-animation {
+    .loading-title-animation {
         background: #e7e7e7 -webkit-linear-gradient(left, #c6c6c6 0%, #c6c6c6 90%) no-repeat 0 0;
         background-size: 20% 100%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         font-size: 60rpx;
         font-weight: bold;
-        -webkit-animation: loading-animation 2s linear infinite;
-        animation: loading-animation 2s linear infinite;
+        -webkit-animation: loading-text-animation 2s linear infinite;
+        animation: loading-text-animation 2s linear infinite;
     }
-    @-webkit-keyframes loading-animation {
+    @-webkit-keyframes loading-text-animation {
         0% {
             background-position: 0 0;
         }
@@ -169,12 +182,53 @@
             background-position: 100% 100%;
         }
     }
-    @keyframes loading-animation {
+    @keyframes loading-text-animation {
         0% {
             background-position: 0 0;
         }
         100% {
             background-position: 100% 100%;
         }
+    }
+
+    /**
+     * logo加载
+     */
+    .loading-logo-content {
+        position: absolute;
+        width: 4rem;
+        height: 4rem;
+        left: calc(50% - 2rem);
+        top: 0;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #fff;
+        margin-top: 50%;
+    }
+    .loading-logo-content .loading-logo {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0.7rem;
+        top: 0.7rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        opacity: 0.8;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .loading-logo-content .loading-border {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 4.8rem;
+        height: 4.8rem;
+        left: -0.4rem;
+        top: -0.4rem;
+        opacity: 0.8;
+        background-size: contain;
+        background-position: center center;
+        background-repeat: no-repeat;
     }
 </style>

@@ -9,8 +9,11 @@
                     <image :src="user_share_poster" class="wh-auto dis-block radius" mode="widthFix"></image>
                 </view>
                 <view class="submit-double oh margin-top-lg">
-                    <button class="fl bg-white cr-green br-green round" type="default" hover-class="none" size="mini" :data-value="user_share_poster" @tap="images_show_event">{{$t('poster.poster.b5i123')}}</button>
-                    <button class="fr bg-white cr-main br-main round" type="default" hover-class="none" size="mini" @tap="poster_refresh_event">{{$t('poster.poster.hk8c9p')}}</button>
+                    <button class="fl item bg-white cr-green br-green round" type="default" hover-class="none" size="mini" :data-value="user_share_poster" @tap="images_show_event">{{$t('poster.poster.b5i123')}}</button>
+                    <view class="fr item">
+                        <button class="bg-white cr-main br-main round" type="default" hover-class="none" size="mini" @tap="poster_refresh_event">{{$t('poster.poster.hk8c9p')}}</button>
+                        <button class="fr bg-white cr-base br-base round" type="default" hover-class="none" size="mini" @tap="share_event">{{$t('common.share')}}</button>
+                    </view>
                 </view>
             </view>
 
@@ -38,6 +41,9 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+
+            <!-- 分享弹窗 -->
+            <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -49,6 +55,7 @@
 const app = getApp();
 import componentNoData from "@/components/no-data/no-data";
 import componentBottomLine from "@/components/bottom-line/bottom-line";
+import componentSharePopup from "@/components/share-popup/share-popup";
 
 export default {
     data() {
@@ -66,6 +73,7 @@ export default {
     components: {
         componentNoData,
         componentBottomLine,
+        componentSharePopup
     },
     props: {},
 
@@ -195,6 +203,16 @@ export default {
         url_event(e) {
             app.globalData.text_copy_event(e);
         },
+
+        // 分享事件
+        share_event(e) {
+            if ((this.$refs.share || null) != null) {
+                this.$refs.share.init({
+                    type: 2,
+                    images: this.user_share_poster || this.user_share_qrode
+                });
+            }
+        }
     },
 };
 </script>

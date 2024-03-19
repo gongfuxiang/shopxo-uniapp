@@ -246,6 +246,7 @@
         methods: {
             // 资源设置
             set_resources_data() {
+                // 导航名称处理
                 var old_nav = this.head_nav_list;
                 var head_nav_list = [
                     {
@@ -273,11 +274,17 @@
                     name: client_value == 'mp' ? this.$t('setup.setup.5493ui') : this.$t('user.user.2k0227'),
                     icon: client_value == 'mp' ? 'cache' : 'logout',
                 };
-                var nickname = this.$t('login.login.6yfr9g');
+                // #ifdef APP || H5
+                // app和h5模式下未登录则不展示退出
+                if(app.globalData.get_user_cache_info() == null) {
+                    nav_logout_data = null;
+                }
+                // #endif
+
                 this.setData({
                     head_nav_list: head_nav_list,
                     nav_logout_data: nav_logout_data,
-                    nickname: nickname,
+                    nickname: this.$t('login.login.6yfr9g'),
                 });
             },
 
@@ -498,7 +505,10 @@
                     main_navigation_data: [],
                     user: null,
                     avatar: app.globalData.data.default_user_head_src,
-                    nickname: this.$t('login.login.6yfr9g')
+                    nickname: this.$t('login.login.6yfr9g'),
+                    // #ifdef APP || H5
+                    nav_logout_data: null,
+                    // #endif
                 });
 
                 // 调用公共方法处理
