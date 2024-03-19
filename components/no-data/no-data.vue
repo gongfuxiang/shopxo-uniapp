@@ -7,7 +7,7 @@
         </view>
         <view v-else>
             <!-- 1 加载中(0loog, 1名称) -->
-            <view v-if="propStatus == 1" class="no-data-box tc no-data-loading">
+            <view v-if="propStatus == 1 && network_type_value != 'none'" class="no-data-box tc no-data-loading">
                 <view v-if="loading_content_type == 1" class="loading-title-animation">
                     <text>{{title}}</text>
                 </view>
