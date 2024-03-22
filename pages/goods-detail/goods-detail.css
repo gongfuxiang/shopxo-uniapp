@@ -245,9 +245,6 @@
     color: #FF5722;
     border: 1px solid #FF5722;
     background: transparent;
-    position: absolute;
-    right: 20rpx;
-    bottom: 20rpx;
     font-size: 24rpx;
 }
 .price-content .sales-price {
@@ -269,6 +266,13 @@
 /**
  * 价格信息与秒杀结合
  */
+.countdown-content {
+    width: 38%;
+}
+.countdown-content .time-title {
+    font-size: 38rpx;
+    margin-bottom: 10rpx;
+}
 .goods-base-price-countdown {
     background: #e84742 !important;
 }
@@ -277,7 +281,7 @@
     background-repeat: no-repeat;
     background-size: 100% 100%;
     width: 60%;
-    min-height: 158rpx;
+    min-height: 164rpx;
 }
 .goods-base-price-countdown .price-icon {
     border-color: #fff;
@@ -290,9 +294,11 @@
 .goods-base-price-countdown .unit{
     color: #ffcece !important;
 }
-.countdown-content .time-title {
-    font-size: 38rpx;
-    margin-bottom: 10rpx;
+.price-content .price-icon.seckill {
+    position: absolute;
+    right: 20rpx;
+    bottom: 20rpx;
+    margin-right: 0;
 }
 
 /*

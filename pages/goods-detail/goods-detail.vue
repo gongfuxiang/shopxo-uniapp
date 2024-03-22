@@ -82,10 +82,11 @@
             <view class="goods-base-price bg-white oh spacing-mb" :class="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : ''">
                 <!-- 价格 -->
                 <view class="price-content padding-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
-                    <!-- 图标 -->
-                    <text v-if="(show_field_price_text || null) != null" class="price-icon round va-m">{{ show_field_price_text }}</text>
                     <!-- 售价 -->
                     <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
+                        <!-- 图标 -->
+                        <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+(((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1) ? 'seckill' : '')">{{ show_field_price_text }}</text>
+                        <!-- 售价 -->
                         <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
                         <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
                     </view>
