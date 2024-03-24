@@ -303,7 +303,7 @@
                             <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.znz76d')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count || 0 }})</text>
                         </view>
-                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ goods.comments_score.rate || 0 }}%</navigator>
+                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ (goods.comments_score || null) == null ? 0 : (goods.comments_score.rate || 0) }}%</navigator>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <!-- 商品数据 -->

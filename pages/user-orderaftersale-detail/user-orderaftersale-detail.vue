@@ -382,10 +382,6 @@ export default {
     methods: {
         // 获取数据
         init() {
-            var self = this;
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
             this.setData({
                 data_list_loding_status: 1,
             });
@@ -398,11 +394,10 @@ export default {
                 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
-                        self.setData({
+                        this.setData({
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,
                             data_list_loding_msg: "",
@@ -419,20 +414,19 @@ export default {
                             plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                         });
                     } else {
-                        self.setData({
+                        this.setData({
                             data_list_loding_status: 0,
                             data_bottom_line_status: false,
                             data_list_loding_msg: res.data.msg,
                         });
-                        if (app.globalData.is_login_check(res.data, self, "init")) {
+                        if (app.globalData.is_login_check(res.data, this, "init")) {
                             app.globalData.showToast(res.data.msg);
                         }
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
-                    self.setData({
+                    this.setData({
                         data_list_loding_status: 2,
                         data_bottom_line_status: false,
                         data_list_loding_msg: this.$t('common.internet_error_tips'),

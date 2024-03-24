@@ -147,10 +147,6 @@ export default {
 
         // 获取数据列表
         get_data_list() {
-            // 加载loding
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
             this.setData({
                 data_list_loding_status: 1,
             });
@@ -172,7 +168,6 @@ export default {
                 data: data,
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         if (res.data.data.length > 0) {
@@ -206,7 +201,6 @@ export default {
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,

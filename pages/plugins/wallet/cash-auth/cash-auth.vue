@@ -128,10 +128,6 @@
 
             // 获取数据
             get_data() {
-                // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 this.setData({
                     data_list_loding_status: 1,
                 });
@@ -143,7 +139,6 @@
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 0,
                         });
@@ -165,7 +160,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 2,
                         });

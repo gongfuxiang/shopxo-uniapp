@@ -165,10 +165,6 @@
         methods: {
             // 获取数据
             init() {
-                var self = this;
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 this.setData({
                     data_list_loding_status: 1,
                 });
@@ -180,11 +176,10 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
-                            self.setData({
+                            this.setData({
                                 detail: data.data,
                                 detail_list: [
                                     { name: this.$t('user-order-detail.user-order-detail.346376'), value: data.data.warehouse_name || '' },
@@ -216,18 +211,17 @@
                                 data_list_loding_msg: '',
                             });
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_list_loding_status: 2,
                                 data_bottom_line_status: false,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, self, 'init')) {
+                            if (app.globalData.is_login_check(res.data, this, 'init')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         self.setData({
                             data_list_loding_status: 2,

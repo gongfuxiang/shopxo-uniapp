@@ -1259,8 +1259,14 @@
                 return value;
             },
 
-            // 初始化 配置信息
-            init_config(status = 0) {
+            /**
+             * 初始化 配置信息
+             * status     读取状态、如果失败默认或者0则会再次读取一次
+             * object     回调操作对象
+             * method     回调操作对象的函数
+             * params     回调操请求参数
+             */
+            init_config(status = 0, object, method, params) {
                 var self = this;
                 uni.getNetworkType({
                     success: function (res) {
@@ -1272,44 +1278,47 @@
                                 self.init_config_result_handle(config, self);
                             }
 
-                            // 没有公共缓存，或者还未初始化则走接口
-                            if(config == null || self.data.common_data_init_status == 0) {
-                                uni.request({
-                                    url: self.get_request_url('common', 'base'),
-                                    method: 'POST',
-                                    data: {
-                                        is_key: 1,
-                                    },
-                                    dataType: 'json',
-                                    success: (res) => {
-                                        if (res.data.code == 0) {
-                                            // 配置存储
-                                            var data = res.data.data;
-                                            uni.setStorageSync(self.data.cache_config_info_key, data);
+                            // 读取远程配置
+                            uni.request({
+                                url: self.get_request_url('common', 'base'),
+                                method: 'POST',
+                                data: {
+                                    is_key: 1,
+                                },
+                                dataType: 'json',
+                                success: (res) => {
+                                    if (res.data.code == 0) {
+                                        // 配置存储
+                                        var data = res.data.data;
+                                        uni.setStorageSync(self.data.cache_config_info_key, data);
 
-                                            // 公共配置初始化返回处理
-                                            self.init_config_result_handle(data, self);
-                                        } else {
-                                            self.showToast(res.data.msg);
-                                            // 站点关闭状态则 记录已初始化公共数据状态
-                                            if (res.data.code == -10000) {
-                                                self.data.common_data_init_status = 1;
-                                            }
-                                
-                                            // 首次则再次初始化配置、站点关闭状态则不处理
-                                            if (status == 0 && self.data.common_data_init_status == 0) {
-                                                self.init_config(1);
-                                            }
+                                        // 公共配置初始化返回处理
+                                        self.init_config_result_handle(data, self);
+
+                                        // 回调
+                                        if (typeof object === 'object' && (method || null) != null) {
+                                            object[method](params);
                                         }
-                                    },
-                                    fail: () => {
-                                        // 首次则再次初始化配置
-                                        if (status == 0) {
-                                            self.init_config(1);
+                                    } else {
+                                        self.showToast(res.data.msg);
+                                        // 站点关闭状态则 记录已初始化公共数据状态
+                                        if (res.data.code == -10000) {
+                                            self.data.common_data_init_status = 1;
                                         }
-                                    },
-                                });
-                            }
+                            
+                                        // 首次则再次初始化配置、站点关闭状态则不处理
+                                        if ((status || 0) == 0 && self.data.common_data_init_status == 0) {
+                                            self.init_config(1, object, method, params);
+                                        }
+                                    }
+                                },
+                                fail: () => {
+                                    // 首次则再次初始化配置
+                                    if ((status || 0) == 0) {
+                                        self.init_config(1, object, method, params);
+                                    }
+                                },
+                            });
                         }
                     },
                 });

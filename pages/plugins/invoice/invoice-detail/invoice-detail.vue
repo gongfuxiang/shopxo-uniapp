@@ -95,9 +95,6 @@ export default {
 
     methods: {
         init() {
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
             this.setData({
                 data_list_loding_status: 1,
             });
@@ -109,7 +106,6 @@ export default {
                 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
@@ -157,7 +153,6 @@ export default {
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,

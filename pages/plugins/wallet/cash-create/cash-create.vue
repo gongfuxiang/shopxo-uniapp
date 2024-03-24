@@ -138,16 +138,12 @@
                 this.setData({
                     data_list_loding_status: 1,
                 });
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 uni.request({
                     url: app.globalData.get_request_url('createinit', 'cash', 'wallet'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data || null;
@@ -170,7 +166,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

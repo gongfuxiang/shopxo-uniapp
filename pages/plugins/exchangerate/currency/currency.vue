@@ -76,9 +76,6 @@
             // 获取数据
             get_data_list() {
                 var self = this;
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text')
-                });
                 if (self.data_list.length <= 0) {
                     self.setData({
                         data_list_loding_status: 1
@@ -90,7 +87,6 @@
                     data: {},
                     dataType: 'json',
                     success: res => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -113,7 +109,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         self.setData({
                             data_bottom_line_status: false,

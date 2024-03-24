@@ -125,9 +125,11 @@
                 });
 
                 // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
 
                 // 获取数据
                 uni.request({
@@ -138,7 +140,9 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
@@ -183,7 +187,9 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

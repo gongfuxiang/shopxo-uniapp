@@ -323,6 +323,7 @@
 		"setup": {
 			"x81v6d": "Replace phone",
 			"j6skqh": "Click to replace",
+            "dfg4wf": "Click to bind",
 			"r7jz13": "update language",
 			"42mba7": "Address",
 			"5eltza": "Click to manage",
@@ -337,7 +338,8 @@
 			"48r261": "Logout and can't recover.",
 			"07o10b": "Please bind your phone first",
 			"nwt4o1": "Please log in first",
-			"utnr7g": "Service phone"
+			"utnr7g": "Service phone",
+            "87ytgh": "Unbind"
 		}
 	},
 	"article-category": {

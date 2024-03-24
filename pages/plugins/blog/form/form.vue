@@ -183,7 +183,10 @@
         },
 
         // 下拉刷新
-        onPullDownRefresh() {},
+        onPullDownRefresh() {
+            // 数据加载
+            this.init();
+        },
 
         // 页面销毁时执行
         onUnload: function () {},
@@ -202,10 +205,6 @@
                 }
             },
             get_data_list() {
-                // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 this.setData({
                     data_list_loding_status: 1,
                 });
@@ -214,7 +213,7 @@
                     method: 'POST',
                     data: { id: this.blog_id },
                     success: (res) => {
-                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.data) {
                                 var img_list = [];
@@ -245,7 +244,7 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
                         });

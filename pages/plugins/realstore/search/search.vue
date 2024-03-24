@@ -131,16 +131,12 @@ export default {
     methods: {
         // 初始化
         get_data() {
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
             uni.request({
                 url: app.globalData.get_request_url("index", "search", "realstore"),
                 method: "POST",
                 data: {},
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
@@ -176,7 +172,6 @@ export default {
                     app.globalData.page_share_handle(this.share_info);
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
@@ -203,9 +198,11 @@ export default {
             this.setData({ data_is_loading: 1 });
 
             // 加载loding
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
+            if(this.data_page > 1) {
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                });
+            }
 
             // 用户位置
             var lng = 0;
@@ -228,7 +225,9 @@ export default {
                 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
+                    if(this.data_page > 1) {
+                        uni.hideLoading();
+                    }
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
@@ -277,7 +276,9 @@ export default {
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
+                    if(this.data_page > 1) {
+                        uni.hideLoading();
+                    }
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
