@@ -9,9 +9,9 @@
                         <!-- 左侧头像 -->
                         <view class="head-left">
                             <image data-value="/pages/personal/personal" @tap="url_event" @error="user_avatar_error" class="head-avatar circle bg-white va-m" :src="avatar" mode="widthFix"></image>
-                            <view class="va-m dis-inline-block margin-left-lg">
+                            <view class="va-m dis-inline-block margin-left-lg base-info">
                                 <view class="flex-col align-b" data-value="/pages/personal/personal" @tap="url_event">
-                                    <text class="va-m fw-b text-size">{{ nickname }}</text>
+                                    <view class="va-m fw-b text-size single-text">{{ nickname }}</view>
                                     <view v-if="(user || null) != null && (user.number_code || null) != null" class="head-id border-radius-sm padding-horizontal-sm margin-top-sm dis-inline-block fw-b">
                                         <text class="text-size-xs">ID </text>
                                         <text class="text-size-xss padding-left-xs pr bottom-xs">{{ user.number_code }}</text>

@@ -4,8 +4,8 @@
             <block v-if="(is_exist_base_data || 0) == 1">
                 <view class="flex-col jc-sb dom-content">
                     <view>
-                        <!-- 多语言切换 -->
-                        <view v-if="home_use_multilingual_status == 1" class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
+                        <!-- 多语言切换、绑定账户不展示语言切换 -->
+                        <view v-if="home_use_multilingual_status == 1 && current_opt_form != 'bind_platform'" class="flex-row tr padding-top-sm padding-horizontal-lg padding-bottom-lg margin-bottom-xl">
                             <view class="flex-1 cr-base text-size" @tap="open_language_event">
                                 <view class="pr top-sm margin-right-sm dis-inline-block">
                                     <iconfont name="icon-login-language" size="32rpx"></iconfont>
@@ -22,7 +22,7 @@
                             <form @submit="formBindMobile">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
                                     <input type="number" :placeholder="$t('login.login.28k91h')" maxlength="11" name="mobile" @input="form_input_mobile_event" class="form-item margin-vertical-main wh-auto" />
@@ -41,7 +41,7 @@
                             <form @submit="formBindEmail">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
                                 </view>
                                 <view class="margin-top-xxxl padding-top-xxxl">
                                     <input type="text" :placeholder="$t('login.login.db1rf4')" maxlength="60" name="email" @input="form_input_email_event" key="login_email_1" class="form-item margin-vertical-xl wh-auto" />
@@ -63,7 +63,7 @@
                             <view v-if="current_opt_form == 'bind' || current_opt_form == 'success'" class="form-content">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
-                                    <view v-if="(user.nickname || null) != null" class="cr-base">{{ user.nickname }}</view>
+                                    <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
                                 </view>
                                 <block v-if="current_opt_form == 'bind'">
                                     <view class="margin-top-xxxl padding-top-xxxl">
@@ -89,8 +89,14 @@
                             </view>
                         </block>
 
-                        <!-- 站点logo -->
-                        <image v-if="(home_site_logo_square || null) != null && current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'bind_email' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
+                        <!-- 账户绑定展示用户头像和名称 -->
+                        <view v-if="current_opt_form == 'bind_platform'" class="padding-top-xxxxl margin-top-xxxxl tc">
+                            <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
+                            <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
+                        </view>
+
+                        <!-- 默认站点logo -->
+                        <image v-if="(home_site_logo_square || null) != null && current_opt_form != 'bind' && current_opt_form != 'bind_verify' && current_opt_form != 'bind_email' && current_opt_form != 'bind_platform' && current_opt_form != 'success'" class="icon circle auto dis-block br" :src="home_site_logo_square" mode="widthFix"></image>
 
                         <!-- 非登录成功则需要展示的数据 -->
                         <block v-if="current_opt_form != 'success'">
@@ -319,7 +325,7 @@
                                 <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('login.login.9q27d8') }}</view>
                                 <view class="flex-row align-c jc-c">
                                     <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index < 3">
-                                        <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
+                                        <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" @tap="plugins_thirdpartylogin_event">
                                             <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
                                         </view>
                                     </block>
@@ -375,7 +381,7 @@
                     <view class="popup-login padding-sm">
                         <view class="bg-white border-radius-main content">
                             <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index > 2">
-                                <view class="item padding-lg flex-col jc-c align-c" :data-type="key" :data-url="item.login_url" @tap="plugins_thirdpartylogin_event">
+                                <view class="item padding-lg flex-col jc-c align-c" :data-type="key" @tap="plugins_thirdpartylogin_event">
                                     <view class="flex-row align-c login-width text-size-lg"> <image :src="item.icon" mode="aspectFit" class="margin-right-main"></image>{{ item.name }} </view>
                                 </view>
                             </block>
@@ -456,6 +462,7 @@
                 // 第三方登录
                 plugins_thirdpartylogin_data: null,
                 plugins_thirdpartylogin_user: null,
+                plugins_thirdpartylogin_is_call_app: 0,
                 // app第三方登录通道
                 app_login_provider_list: [],
                 // 错误提示信息
@@ -557,6 +564,7 @@
                         reg_email: this.$t('login.login.jc0w0o'),
                         forget: this.$t('login.login.8tmyuc'),
                         success: this.$t('login.login.5p23c6'),
+                        bind_platform: this.$t('login.login.876tdf'),
                     },
                 });
             },
@@ -598,6 +606,8 @@
                         } else {
                             form = 'bind_verify';
                         }
+                    } else {
+                        form = 'success';
                     }
                 }
                 // #endif
@@ -624,6 +634,15 @@
                     navigation_bar_title_key: type
                 });
                 this.set_navigation_bar_title();
+
+                // 调用登录处理
+                if(parseInt(this.plugins_thirdpartylogin_is_call_app || 0) == 0 && type == 'bind_platform' && form == 'bind_platform' && (this.params.platform_type || null) != null) {
+                    this.setData({
+                        plugins_thirdpartylogin_is_call_app: 1
+                    })
+                    this.plugins_thirdpartylogin_handle(this.params.platform_type);
+                    return false;
+                }
 
                 // 登录成功
                 if (this.current_opt_form == 'success') {
@@ -1323,7 +1342,8 @@
             // 成功后处理
             success_back_handle(res) {
                 var self = this;
-                app.globalData.showToast(res.data.msg, 'success');
+                var msg = (this.plugins_thirdpartylogin_is_call_app == 1) ? this.$t('login.login.87yui2') : res.data.msg;
+                app.globalData.showToast(msg, 'success');
                 var event_callback = this.params.event_callback || null;
                 setTimeout(function () {
                     var pages = getCurrentPages();
@@ -1502,11 +1522,20 @@
                 this.setData({
                     popup_login_status: false,
                 });
-                var type = e.currentTarget.dataset.type || null;
 
+                // 调用登录处理
+                this.plugins_thirdpartylogin_handle(e.currentTarget.dataset.type);
+            },
+            
+            // 第三方登录处理
+            plugins_thirdpartylogin_handle(type) {            
                 // #ifdef H5
                 // 直接跳转到登录地址、这里还可以根据终端类型进行处理业务逻辑
-                window.location.href = e.currentTarget.dataset.url;
+                for(var i in this.plugins_thirdpartylogin_data) {
+                    if(type == i) {
+                        window.location.href = this.plugins_thirdpartylogin_data[i]['login_url'];
+                    }
+                }
                 // #endif
 
                 // #ifdef APP
@@ -1537,7 +1566,7 @@
                             },
                         });
                         break;
-
+            
                     // 苹果
                     case 'apple':
                         uni.login({
@@ -1561,7 +1590,7 @@
                             },
                         });
                         break;
-
+            
                     default:
                         app.globalData.showToast(type + this.$t('login.login.li9573'));
                 }

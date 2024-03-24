@@ -119,7 +119,7 @@
                                                 <view v-if="(data_list || null) != null && data_list.length > 0" class="oh">
                                                     <view v-for="(item, index) in data_list" :key="index" class="item oh pr spacing-mb">
                                                         <!-- 商品主体内容 -->
-                                                        <view class="flex-row jc-sb" :data-value="item.goods_url + '&is_opt_back=1'" @tap="url_event">
+                                                        <view class="flex-row jc-sb" data-type="type" :data-index="index" :data-value="item.goods_url + '&is_opt_back=1'" @tap="goods_event">
                                                             <image :src="item.images" mode="widthFix" class="goods-img radius dis-block"></image>
                                                             <view class="goods-base flex-col jc-sb">
                                                                 <view class="goods-base-content">
@@ -287,7 +287,7 @@
                                         </view>
                                         <scroll-view :scroll-y="true" class="cart-list goods-list" :show-scrollbar="false">
                                             <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                                <view :data-value="goods.goods_url" @tap="url_event" class="cp flex-row jc-sb">
+                                                <view data-type="cart" :data-index="index" :data-value="goods.goods_url" @tap="goods_event" class="cp flex-row jc-sb">
                                                     <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
                                                     <view class="goods-base flex-1 flex-width flex-col jc-sb">
                                                         <view class="goods-base-content">
@@ -563,7 +563,7 @@
             init(params = {}) {
                 // 网络检查
                 if ((params || null) == null || (params.loading || 0) == 0) {
-                    app.globalData.network_type_handle(this, 'init');
+                    app.globalData.network_type_handle(this, 'init', params);
                     return false;
                 }
 
@@ -873,6 +873,22 @@
                         url: '/pages/goods-search/goods-search' + ((e || null) == null ? '' : '?keywords=' + e),
                     });
                 }
+            },
+
+            // 商品事件
+            goods_event(e) {
+                // 商品数据缓存处理
+                var index = e.currentTarget.dataset.index;
+                if(e.currentTarget.dataset.type == 'cart') {
+                    var goods = this.cart.data[index];
+                    goods['id'] = goods['goods_id'];
+                } else {
+                    var goods = this.data_list[index];
+                }
+                app.globalData.goods_data_cache_handle(goods.id, goods);
+console.log(goods)
+                // 调用公共打开url地址
+                app.globalData.url_event(e);
             },
 
             // url事件

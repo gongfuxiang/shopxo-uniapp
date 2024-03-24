@@ -22,6 +22,18 @@
                         <text>更换密码</text>
                         <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
                     </view>
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_type=bind_platform&opt_form=bind_platform&platform_type=weixin" @tap="url_event">
+                        <text>绑定微信</text>
+                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
+                    </view>
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_type=bind_platform&opt_form=bind_platform&platform_type=qq" @tap="url_event">
+                        <text>绑定QQ</text>
+                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
+                    </view>
+                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_type=bind_platform&opt_form=bind_platform&platform_type=apple" @tap="url_event">
+                        <text>绑定apple</text>
+                        <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
+                    </view>
                     <view v-if="home_use_multilingual_status == 1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" @tap="open_language_event">
                         <text>{{ $t('setup.setup.r7jz13') }}</text>
                         <text class="fr cr-grey">{{ language }}</text>
@@ -200,7 +212,7 @@
 
             // 清除缓存
             remove_user_cache_event(e) {
-                app.globalData.remove_user_cache_event();
+                app.globalData.remove_user_cache_event(false);
             },
 
             // 打开语言选择弹窗

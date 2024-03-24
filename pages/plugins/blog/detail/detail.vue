@@ -164,9 +164,6 @@
 
             // 初始化
             get_data() {
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'blog'),
                     method: 'POST',
@@ -175,7 +172,6 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         var data = res.data.data;
                         if (res.data.code == 0 && (data.data || null) != null) {
@@ -219,7 +215,6 @@
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,

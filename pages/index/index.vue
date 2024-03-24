@@ -487,37 +487,44 @@
 
             // 获取数据
             init(params = {}) {
+                // 本地缓存数据
+                var key = app.globalData.data.cache_index_data_key;
+                var upd_data = uni.getStorageSync(key) || null;
+                if(upd_data != null) {
+                    // 先使用缓存数据展示
+                    this.setData(upd_data);
+
+                    // 初始化返回公共处理
+                    this.init_result_common_handle();
+
+                    // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
+                    params['is_cache'] = 0;
+                }
+
                 // 网络检查
                 if((params || null) == null || (params.loading || 0) == 0) {
-                    app.globalData.network_type_handle(this, 'init');
+                    app.globalData.network_type_handle(this, 'init', params);
                     return false;
                 }
 
-                // 请求数据
-                this.setData({
-                    data_list_loding_status: 1,
-                });
+                // 没有缓存数据则开启加载层
+                if(upd_data == null) {
+                    this.setData({
+                        data_list_loding_status: 1,
+                    });
+                }
+                // 请求远程数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'index'),
                     method: 'POST',
-                    data: {},
+                    data: params,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        // 获取最新缓存
-                        if (this.load_status == 0) {
-                            this.init_config(true);
-                        }
-
+                        // 数据处理
                         var data = res.data.data;
-                        var theme_view = app.globalData.get_theme_value_view();
-                        var theme_color = app.globalData.get_theme_color();
-                        var common_static_url = app.globalData.get_static_url('common');
-                        var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
-                        var static_url = app.globalData.get_static_url('home');
                         if (res.data.code == 0) {
-                            this.setData({
-                                top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
+                            var upd_data = {
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
                                 navigation: data.navigation || [],
@@ -541,7 +548,11 @@
                                 plugins_shop_data: data.plugins_shop_data || null,
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_magic_data: data.plugins_magic_data || null,
-                            });
+                            };
+                            this.setData(upd_data);
+
+                            // 存储缓存
+                            uni.setStorageSync(key, upd_data);
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
@@ -552,6 +563,11 @@
                             } else {
                                 app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
                             }
+
+                            // 是否需要重新加载数据
+                            if(parseInt(data.is_result_data_cache || 0) == 1) {
+                                this.init({is_cache: 0});
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
@@ -561,26 +577,8 @@
                             app.globalData.showToast(res.data.msg);
                         }
 
-                        // 轮播数据处理
-                        if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
-                            var color = (this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null) ? this.banner_list[0]['bg_color'] : theme_color;
-                            this.change_banner(color);
-                        }
-
-                        // 公共数据
-                        this.setData({
-                            theme_view: theme_view,
-                            theme_color: theme_color,
-                            common_static_url: common_static_url,
-                            seckill_static_url: seckill_static_url,
-                            static_url: static_url,
-                            load_status: 1,
-                        });
-
-                        // 分享菜单处理、延时执行，确保基础数据已加载完成
-                        setTimeout(function () {
-                            app.globalData.page_share_handle();
-                        }, 3000);
+                        // 初始化返回公共处理
+                        this.init_result_common_handle();
                     },
                     fail: () => {
                         // 轮播数据处理
@@ -598,6 +596,37 @@
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
+            },
+
+            // 初始化返回公共处理
+            init_result_common_handle() {
+                var theme_view = app.globalData.get_theme_value_view();
+                var theme_color = app.globalData.get_theme_color();
+                var common_static_url = app.globalData.get_static_url('common');
+                var seckill_static_url = app.globalData.get_static_url('seckill', true) + 'app/';
+                var static_url = app.globalData.get_static_url('home');
+
+                // 轮播数据处理
+                if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
+                    var color = (this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null) ? this.banner_list[0]['bg_color'] : theme_color;
+                    this.change_banner(color);
+                }
+
+                // 公共数据
+                this.setData({
+                    top_content_search_content_style: 'background-image: url("' + static_url + 'nav-top.png");',
+                    theme_view: theme_view,
+                    theme_color: theme_color,
+                    common_static_url: common_static_url,
+                    seckill_static_url: seckill_static_url,
+                    static_url: static_url,
+                    load_status: 1,
+                });
+
+                // 分享菜单处理、延时执行，确保基础数据已加载完成
+                setTimeout(function () {
+                    app.globalData.page_share_handle();
+                }, 3000);
             },
 
             // 选择用户地理位置

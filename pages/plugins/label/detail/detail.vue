@@ -135,16 +135,12 @@ export default {
 
         // 获取数据
         get_data() {
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-            });
             uni.request({
                 url: app.globalData.get_request_url("detailinit", "index", "label"),
                 method: "POST",
                 data: { id: this.params.id || 0 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
@@ -189,7 +185,6 @@ export default {
                     app.globalData.page_share_handle(this.share_info);
                 },
                 fail: () => {
-                    uni.hideLoading();
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,
@@ -222,10 +217,12 @@ export default {
             this.setData({ data_is_loading: 1 });
 
             // 获取数据
-            uni.showLoading({
-                title: this.$t('common.loading_in_text'),
-                mask: true,
-            });
+            if(this.data_page > 1) {
+                uni.showLoading({
+                    title: this.$t('common.loading_in_text'),
+                    mask: true,
+                });
+            }
             uni.request({
                 url: app.globalData.get_request_url("detailgoodslist", "index", "label"),
                 method: "POST",
@@ -236,7 +233,9 @@ export default {
                 },
                 dataType: "json",
                 success: (res) => {
-                    uni.hideLoading();
+                    if(this.data_page > 1) {
+                        uni.hideLoading();
+                    }
                     uni.stopPullDownRefresh();
                     if (res.data.code == 0) {
                         var data = res.data.data;
@@ -285,7 +284,9 @@ export default {
                     }
                 },
                 fail: () => {
-                    uni.hideLoading();
+                    if(this.data_page > 1) {
+                        uni.hideLoading();
+                    }
                     uni.stopPullDownRefresh();
                     this.setData({
                         data_list_loding_status: 2,

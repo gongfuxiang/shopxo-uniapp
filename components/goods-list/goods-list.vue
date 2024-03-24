@@ -14,7 +14,7 @@
                     <view class="goods-data-list">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh padding-main border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
-                            <view class="cp" :data-value="item.goods_url" @tap="url_event">
+                            <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
                                 <image class="goods-img fl radius" :src="item.images" mode="aspectFit"></image>
                                 <view class="base fr">
                                     <view class="multi-text">{{ item.title }}</view>
@@ -58,7 +58,7 @@
                     <view class="goods-data-grid-list flex-row flex-warp">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
-                            <view class="cp" :data-value="item.goods_url" @tap="url_event">
+                            <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
                                 <image class="goods-img dis-block wh-auto" :src="item.images" mode="widthFix"></image>
                                 <view class="base padding-horizontal-main margin-top-sm">
                                     <view class="goods-title multi-text">{{ item.title }}</view>
@@ -125,7 +125,7 @@
                                 <swiper-item>
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                         <!-- 商品主体内容 -->
-                                        <view class="cp" :data-value="item.goods_url" @tap="url_event">
+                                        <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
                                             <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
@@ -331,6 +331,7 @@
                     );
                 }
             },
+
             // 加入购物车成功回调
             goods_cart_back_event(e) {
                 // 增加数量
@@ -378,10 +379,22 @@
                 }
                 this.$emit('CartSuccessEvent', { ...e, ...{ goods_list: new_data.goods_list, goods: goods } });
             },
+
+            // 商品事件
+            goods_event(e) {
+                // 商品数据缓存处理
+                var goods = this.data.goods_list[e.currentTarget.dataset.index];
+                app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                // 调用公共打开url地址
+                app.globalData.url_event(e);
+            },
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
             // 购物车角标变化回调
             goods_badge_change() {
                 this.$emit('goods_badge_change');

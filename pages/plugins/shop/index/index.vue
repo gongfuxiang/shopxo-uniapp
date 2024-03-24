@@ -127,7 +127,7 @@
             get_data(params = {}) {
                 // 网络检查
                 if((params || null) == null || (params.loading || 0) == 0) {
-                    app.globalData.network_type_handle(this, 'get_data');
+                    app.globalData.network_type_handle(this, 'get_data', params);
                     return false;
                 }
 

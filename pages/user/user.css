@@ -31,6 +31,9 @@
     width: 116rpx;
     height: 116rpx !important;
 }
+.head-base .base-info {
+    max-width: 340rpx;
+}
 
 /**
  * 头部右上角

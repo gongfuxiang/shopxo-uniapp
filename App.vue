@@ -161,6 +161,12 @@
                 // 未登录页面缓存记录key
                 cache_user_no_login_page_status_data_key: 'cache_user_no_login_page_status_data_key',
 
+                // 首页数据缓存key
+                cache_index_data_key: 'cache_index_data_key',
+
+                // 商品数据缓存key
+                cache_goods_data_key: 'cache_goods_data_key',
+
                 // 默认用户头像
                 default_user_head_src: '/static/images/common/user.png',
 
@@ -1212,8 +1218,14 @@
              * default_value    默认值
              */
             get_config(key, default_value) {
-                var value = null;
+                // 获取全部缓存
                 var config = uni.getStorageSync(this.data.cache_config_info_key) || null;
+                if((key || null) == null) {
+                    return config;
+                }
+
+                // key缓存获取
+                var value = null;
                 if (config != null) {
                     // 数据读取
                     var arr = key.split('.');
@@ -1253,53 +1265,69 @@
                 uni.getNetworkType({
                     success: function (res) {
                         if (res.networkType != 'none') {
-                            uni.request({
-                                url: self.get_request_url('common', 'base'),
-                                method: 'POST',
-                                data: {
-                                    is_key: 1,
-                                },
-                                dataType: 'json',
-                                success: (res) => {
-                                    if (res.data.code == 0) {
-                                        // 记录已初始化公共数据状态
-                                        self.data.common_data_init_status = 1;
+                            // 获取配置本地缓存
+                            var config = self.get_config();
+                            if(config != null) {
+                                // 公共配置初始化返回处理
+                                self.init_config_result_handle(config, self);
+                            }
 
-                                        // 配置存储
-                                        var data = res.data.data;
-                                        uni.setStorageSync(self.data.cache_config_info_key, data);
+                            // 没有公共缓存，或者还未初始化则走接口
+                            if(config == null || self.data.common_data_init_status == 0) {
+                                uni.request({
+                                    url: self.get_request_url('common', 'base'),
+                                    method: 'POST',
+                                    data: {
+                                        is_key: 1,
+                                    },
+                                    dataType: 'json',
+                                    success: (res) => {
+                                        if (res.data.code == 0) {
+                                            // 配置存储
+                                            var data = res.data.data;
+                                            uni.setStorageSync(self.data.cache_config_info_key, data);
 
-                                        // 主题设置
-                                        self.set_theme_value(data.plugins_themestyle_data);
-
-                                        // 设置底部菜单
-                                        self.set_tabbar(data.plugins_themestyle_data);
-
-                                        // 用户自动登录处理
-                                        self.user_auto_login_handle();
-                                    } else {
-                                        self.showToast(res.data.msg);
-                                        // 站点关闭状态则 记录已初始化公共数据状态
-                                        if (res.data.code == -10000) {
-                                            self.data.common_data_init_status = 1;
+                                            // 公共配置初始化返回处理
+                                            self.init_config_result_handle(data, self);
+                                        } else {
+                                            self.showToast(res.data.msg);
+                                            // 站点关闭状态则 记录已初始化公共数据状态
+                                            if (res.data.code == -10000) {
+                                                self.data.common_data_init_status = 1;
+                                            }
+                                
+                                            // 首次则再次初始化配置、站点关闭状态则不处理
+                                            if (status == 0 && self.data.common_data_init_status == 0) {
+                                                self.init_config(1);
+                                            }
                                         }
-
-                                        // 首次则再次初始化配置、站点关闭状态则不处理
-                                        if (status == 0 && self.data.common_data_init_status == 0) {
+                                    },
+                                    fail: () => {
+                                        // 首次则再次初始化配置
+                                        if (status == 0) {
                                             self.init_config(1);
                                         }
-                                    }
-                                },
-                                fail: () => {
-                                    // 首次则再次初始化配置
-                                    if (status == 0) {
-                                        self.init_config(1);
-                                    }
-                                },
-                            });
+                                    },
+                                });
+                            }
                         }
                     },
                 });
+            },
+
+            // 公共配置初始化返回处理
+            init_config_result_handle(data, self) {
+                // 记录已初始化公共数据状态
+                self.data.common_data_init_status = 1;
+
+                // 主题设置
+                self.set_theme_value(data.plugins_themestyle_data);
+
+                // 设置底部菜单
+                self.set_tabbar(data.plugins_themestyle_data);
+
+                // 用户自动登录处理
+                self.user_auto_login_handle();
             },
 
             /**
@@ -1996,23 +2024,20 @@
             },
 
             // 清除用户缓存
-            remove_user_cache_event() {
+            remove_user_cache_event(is_remove_user = true) {
                 // 当前平台
                 var client_value = this.application_client();
-                // 用户登录缓存
-                uni.removeStorageSync(this.data.cache_user_login_key);
-                // 用户信息缓存
-                uni.removeStorageSync(this.data.cache_user_info_key);
+                // 是否清除用户登录信息
+                if(is_remove_user) {
+                    // 用户登录缓存
+                    uni.removeStorageSync(this.data.cache_user_login_key);
+                    // 用户信息缓存
+                    uni.removeStorageSync(this.data.cache_user_info_key);
+                }
                 // 未登录提示缓存记录
                 uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
                 // 非小程序则两秒后回到首页
-                this.showToast(i18n.t('shopxo-uniapp.app.'+(client_value == 'mp' ? '0gwt7z' : '87yghj')), 'success');
-                var url = this.data.tabbar_pages[0];
-                setTimeout(function () {
-                    uni.switchTab({
-                        url: url,
-                    });
-                }, 1500);
+                this.showToast(i18n.t('shopxo-uniapp.app.'+((client_value == 'mp' || !is_remove_user) ? '0gwt7z' : '87yghj')), 'success');
             },
 
             // 是否站点变灰
@@ -2562,6 +2587,17 @@
                 this.data.network_type_page_record_timer = null;
                 // 清除微信隐私方法定时任务
                 clearInterval(this.data.weixin_privacy_setting_timer);
+            },
+
+            // 商品访问数据存储缓存
+            goods_data_cache_handle(goods_id, goods_data = null) {
+                var key = this.data.cache_goods_data_key;
+                if((goods_data || null) == null) {
+                    var res = uni.getStorageSync(key) || null;
+                    return (res != null && res.id == goods_id) ? res : null;
+                } else {
+                    uni.setStorageSync(key, goods_data);
+                }
             },
 
             // 页面导航标题处理

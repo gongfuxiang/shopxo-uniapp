@@ -156,10 +156,6 @@
                     goods_is_loading: 1,
                 });
                 // 获取数据
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                    mask: true,
-                });
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'index', 'ask'),
                     method: 'POST',
@@ -168,7 +164,6 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             let data = res.data.data;
@@ -208,7 +203,6 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 2,
                             goods_is_loading: 0,

@@ -61,7 +61,7 @@
                                         </view>
                                         <view class="items oh padding-left-main flex-1 flex-row">
                                             <view>
-                                                <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                                                <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
                                                     <!-- 图片 -->
                                                     <image :class="'cart-goods-image fl radius ' + ((item.is_error || 0) == 1 ? 'opacity' : '')" :src="item.images" mode="aspectFill"></image>
                                                     <!-- 错误 -->
@@ -74,7 +74,7 @@
                                             <!-- 基础 -->
                                             <view class="cart-goods-base padding-left-main flex-1">
                                                 <!-- 标题、规格 -->
-                                                <view :data-value="item.goods_url" @tap="url_event" class="cp">
+                                                <view :data-index="index" :data-value="item.goods_url" @tap="goods_event" class="cp">
                                                     <view :class="'cart-goods-title multi-text margin-bottom-sm fw-b ' + ((item.is_error || 0) == 1 ? 'cr-grey' : '')">{{ item.title }}</view>
                                                 </view>
                                                 <view v-if="item.spec != null" class="margin-bottom-sm">
@@ -1189,6 +1189,17 @@
                 }
             },
 
+            // 商品事件
+            goods_event(e) {
+                // 商品数据缓存处理
+                var goods = this.data_list[e.currentTarget.dataset.index];
+                goods['id'] = goods.goods_id;
+                app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                // 调用公共打开url地址
+                app.globalData.url_event(e);
+            },
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
@@ -1529,7 +1540,12 @@
     .scroll-box-popup .content .item .cart-goods-image {
         width: 100%;
     }
-    .alias {
+    .scroll-box-popup .cart-selected {
+        background-color: #fff;
+        height: 36rpx;
+        border-radius: 50%;
+    }
+    .scroll-box-popup .alias {
         margin-left: 20rpx;
         padding: 0 12rpx;
         line-height: 40rpx;
