@@ -12,14 +12,12 @@
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
-                    <view class="item padding-main border-radius-main bg-white oh spacing-mb">
-                        <navigator :url="item.url" hover-class="none">
-                            <view class="cr-base fw-b" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
-                            <view class="cr-grey oh margin-top-sm">
-                                <text class="fl">{{ item.add_time }}</text>
-                                <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
-                            </view>
-                        </navigator>
+                    <view :data-value="item.url" @tap="url_event" class="item padding-main border-radius-main bg-white oh cp spacing-mb">
+                        <view class="cr-base fw-b" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
+                        <view class="cr-grey oh margin-top-sm">
+                            <text class="fl">{{ item.add_time }}</text>
+                            <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                        </view>
                     </view>
                 </block>
             </view>
@@ -248,6 +246,11 @@ export default {
             });
             this.get_data_list(1);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

@@ -551,9 +551,7 @@
             // 是否登录
             is_login() {
                 if((this.user || null) == null) {
-                    uni.navigateTo({
-                        url: '/pages/login/login?event_callback=init',
-                    });
+                    app.globalData.url_open('/pages/login/login?event_callback=init');
                     return false;
                 }
                 return true;

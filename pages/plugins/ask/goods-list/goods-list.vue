@@ -8,7 +8,7 @@
                         <view class="date cr-grey-9">{{ item.add_time_date }}</view>
                     </view>
                     <view class="question spacing-mt">
-                        <navigator :url="item.url" hover-class="none" class="flex-row">
+                        <view :data-value="item.url" @tap="url_event" class="flex-row cp">
                             <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.00n7i3')}}</view>
                             <view class="flex-1 flex-width">
                                 <view class="fw-b">{{ item.content }}</view>
@@ -16,7 +16,7 @@
                                     <image v-for="(img, i) in item.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <block v-if="item.is_reply == 1 || item.comments_count > 0">
                         <view class="ask flex-row spacing-mt">
@@ -230,6 +230,7 @@
             scroll_lower(e) {
                 this.get_data_list();
             },
+
             // 评价图片预览
             comment_images_show_event(e) {
                 var index = e.currentTarget.dataset.index;
@@ -239,6 +240,7 @@
                     urls: this.data_list[index]['images'],
                 });
             },
+
             // 查看更多
             open_more(id, i) {
                 var new_data_list = this.data_list;
@@ -311,6 +313,7 @@
                     });
                 }
             },
+
             // 收起更多
             close_more(i) {
                 var new_data_list = this.data_list;
@@ -326,6 +329,11 @@
                     data_list: new_data_list,
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

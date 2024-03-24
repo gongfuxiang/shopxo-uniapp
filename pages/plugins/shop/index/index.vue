@@ -13,43 +13,41 @@
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav plugins-shop-data-list" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
-                    <view class="item border-radius-main bg-white oh spacing-mb">
-                        <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.id" hover-class="none">
-                            <image :src="item.logo_long" class="logo" mode="aspectFit"></image>
-                            <view class="tc">
-                                <view class="single-text padding-horizontal-main padding-top-main">
-                                    <!-- 标题 -->
-                                    <text class="fw-b text-size-md va-m">{{ item.name }}</text>
-                                    <!-- 认证信息 -->
-                                    <view v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon dis-inline-block margin-left-sm">
-                                        <!-- 实名认证 -->
-                                        <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
-                                            <block v-if="item.auth_type == 0">
-                                                <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
-                                            </block>
-                                            <block v-if="item.auth_type == 1">
-                                                <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
-                                            </block>
+                    <view :data-value="'/pages/plugins/shop/detail/detail?id=' + item.id" @tap="url_event" class="item border-radius-main bg-white oh cp spacing-mb">
+                        <image :src="item.logo_long" class="logo" mode="aspectFit"></image>
+                        <view class="tc">
+                            <view class="single-text padding-horizontal-main padding-top-main">
+                                <!-- 标题 -->
+                                <text class="fw-b text-size-md va-m">{{ item.name }}</text>
+                                <!-- 认证信息 -->
+                                <view v-if="(data_base.is_enable_auth || 0) == 1 && ((item.auth_type != -1 && (item.auth_type_msg || null) != null) || ((item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null))" class="auth-icon dis-inline-block margin-left-sm">
+                                    <!-- 实名认证 -->
+                                    <block v-if="item.auth_type != -1 && (item.auth_type_msg || null) != null">
+                                        <block v-if="item.auth_type == 0">
+                                            <image :src="data_base.shop_auth_personal_icon" class="icon va-m" mode="aspectFill"></image>
                                         </block>
-                                        <!-- 保证金认证 -->
-                                        <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
-                                            <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                        <block v-if="item.auth_type == 1">
+                                            <image :src="data_base.shop_auth_company_icon" class="icon va-m" mode="aspectFill"></image>
                                         </block>
-                                    </view>
-                                </view>
-                                <view class="cr-grey padding-main">
-                                    <text class="multi-text">{{ item.describe }}</text>
-                                </view>
-                                <view class="oh br-t-dashed padding-main">
-                                    <view class="fl cr-grey-9 single-text"
-                                        >{{$t('recommend-list.recommend-list.x74z3o')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
-                                    >
-                                    <view class="fr cr-grey-9 single-text"
-                                        >{{$t('goods-category.goods-category.at5p35')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
-                                    >
+                                    </block>
+                                    <!-- 保证金认证 -->
+                                    <block v-if="(item.bond_status || 0) == 1 && (item.bond_status_msg || null) != null">
+                                        <image :src="data_base.shop_auth_bond_icon" class="icon va-m" mode="aspectFill"></image>
+                                    </block>
                                 </view>
                             </view>
-                        </navigator>
+                            <view class="cr-grey padding-main">
+                                <text class="multi-text">{{ item.describe }}</text>
+                            </view>
+                            <view class="oh br-t-dashed padding-main">
+                                <view class="fl cr-grey-9 single-text"
+                                    >{{$t('recommend-list.recommend-list.x74z3o')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_count }}</text></view
+                                >
+                                <view class="fr cr-grey-9 single-text"
+                                    >{{$t('goods-category.goods-category.at5p35')}}<text class="cr-black fw-b padding-left-sm">{{ item.goods_sales_count }}</text></view
+                                >
+                            </view>
+                        </view>
                     </view>
                 </block>
             </view>
@@ -181,6 +179,7 @@
                     },
                 });
             },
+
             // 获取数据列表
             get_data_list(is_mandatory) {
                 // 分页是否还有数据
@@ -275,10 +274,12 @@
                     },
                 });
             },
+
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
             },
+
             // 导航事件
             nav_event(e) {
                 this.setData({
@@ -287,6 +288,11 @@
                 });
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

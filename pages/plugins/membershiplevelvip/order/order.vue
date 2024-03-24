@@ -14,17 +14,15 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view class="content margin-top">
-                        <navigator :url="'/pages/plugins/membershiplevelvip/order-detail/order-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
-                                    <text class="cr-base">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                    <text v-if="(item[fv.unit_field] || null) != null" class="cr-grey">{{ item[fv.unit_field] }}</text>
-                                </view>
-                            </block>
-                        </navigator>
+                    <view :data-value="'/pages/plugins/membershiplevelvip/order-detail/order-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                        <view v-for="(fv, fi) in content_list" :key="fi">
+                            <view class="single-text margin-top-xs">
+                                <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
+                                <text class="cr-base">{{ item[fv.field] }}</text>
+                                <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
+                                <text v-if="(item[fv.unit_field] || null) != null" class="cr-grey">{{ item[fv.unit_field] }}</text>
+                            </view>
+                        </view>
                     </view>
                     <view v-if="item.status == 0 || item.status == 2 || item.status == 3" class="item-operation tr br-t padding-top-main margin-top-main">
                         <button v-if="item.status == 0" class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('order.order.1i873j')}}</button>
@@ -282,10 +280,12 @@
                     },
                 });
             },
+
             // 滚动加载
             scroll_lower(e) {
                 this.get_data_list();
             },
+
             // 支付
             pay_event(e) {
                 this.setData({
@@ -296,16 +296,19 @@
                     payment_id: e.currentTarget.dataset.payment || '',
                 });
             },
+
             // 支付弹窗关闭
             payment_popup_event_close(e) {
                 this.setData({
                     is_show_payment_popup: false,
                 });
             },
+
             // 重置列表数据
             reset_event() {
                 this.get_data_list();
             },
+
             // 支付成功数据设置
             order_item_pay_success_handle(data, index) {
                 // 数据设置
@@ -317,6 +320,7 @@
                     data_list: temp_data_list,
                 });
             },
+
             // 取消
             cancel_event(e) {
                 uni.showModal({
@@ -363,6 +367,7 @@
                     },
                 });
             },
+
             // 删除
             delete_event(e) {
                 uni.showModal({
@@ -414,6 +419,7 @@
                     },
                 });
             },
+
             // 导航事件
             nav_event(e) {
                 this.setData({
@@ -422,6 +428,11 @@
                 });
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

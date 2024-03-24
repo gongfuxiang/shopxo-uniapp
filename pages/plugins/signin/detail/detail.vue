@@ -29,8 +29,8 @@
                                 {{ calendar }}
                             </view>
                             <view class="title-right text-size-md">
-                                <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
-                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</navigator>
+                                <text v-if="(data_base.is_user_menu || 0) == 1" data-value="/pages/plugins/signin/user/user" @tap="url_event" class="cp">
+                                    <iconfont name="icon-qiandao-wdqd" size="32rpx" propClass="margin-right-sm pr top-sm"></iconfont>{{$t('detail.detail.31lky7')}}</text>
                             </view>
                         </view>
                         <view class="calendar-week flex-row align-c jc-sa padding-horizontal-main">
@@ -67,16 +67,16 @@
                             <!-- 判断是组队签到还是个人签到 -->
                             <view v-if="(team_signin_data || null) != null && user.id == data.user_id" class="content bg-white flex-row jc-sb align-c">
                                 <text class="fw-b">{{$t('detail.detail.96bwp0')}}{{ team_signin_data.day }}{{$t('detail.detail.rdxjvh')}}{{ team_signin_data.total }}{{$t('user.user.rjye50')}}</text>
-                                <navigator v-if="(data_base.is_team_show_coming_user || 0) == 1" :url="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" hover-class="none">
+                                <text v-if="(data_base.is_team_show_coming_user || 0) == 1" :data-value="'/pages/plugins/signin/user-coming-list/user-coming-list?id=' + data.id" @tap="url_event" class="cp">
                                     <iconfont name="icon-arrow-right"></iconfont>
-                                </navigator>
+                                </text>
                             </view>
                             <view v-else class="content bg-white flex-row jc-sb align-c">
                                 <text class="fw-b">{{$t('detail.detail.96bwp0')}}<block v-if="user_signin_data.integral">{{$t('goods-detail.goods-detail.by7052')}}</block>
                                     <block v-else>{{$t('detail.detail.we522y')}}</block>{{$t('detail.detail.mqmxbt')}}{{ user_signin_data.integral || 0 }}{{$t('detail.detail.15i191')}}{{ user_signin_data.total || 0 }}{{$t('buy.buy.0pgsrm')}}</text>
-                                <navigator v-if="(data_base.is_user_menu || 0) == 1" url="/pages/plugins/signin/user/user" hover-class="none">
+                                <text v-if="(data_base.is_user_menu || 0) == 1" data-value="/pages/plugins/signin/user/user" @tap="url_event" class="cp">
                                     <iconfont name="icon-arrow-right"></iconfont>
-                                </navigator>
+                                </text>
                             </view>
                         </view>
                     </view>
@@ -93,7 +93,7 @@
                     <view v-if="(data.goods_list || null) != null && data.goods_list.length > 0" class="spacing-mt">
                         <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                             <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('index.index.8t4j95')}}</text>
-                            <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-base">{{$t('common.more')}}</navigator>
+                            <text data-value="/pages/goods-search/goods-search" @tap="url_event" class="arrow-right padding-right cr-base cp">{{$t('common.more')}}</text>
                         </view>
                         <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                     </view>
@@ -408,9 +408,7 @@
                                         break;
                                     // 需要填写联系人信息
                                     case 1:
-                                        uni.navigateTo({
-                                            url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + res.data.data.qrcode_id + '&is_team=1',
-                                        });
+                                        app.globalData.url_open('/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + res.data.data.qrcode_id + '&is_team=1');
                                         break;
                                 }
                             } else {

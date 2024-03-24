@@ -109,12 +109,6 @@
                 this.setData({
                     data_list_loding_status: 1,
                 });
-
-                // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
-
                 // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url("logistics", "order", "delivery"),
@@ -124,7 +118,6 @@
                     },
                     dataType: "json",
                     success: (res) => {
-                        uni.hideLoading();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -148,7 +141,6 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         this.setData({
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips')

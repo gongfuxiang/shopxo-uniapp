@@ -981,7 +981,7 @@ button[disabled].bg-grey {
 /**
  * 上一篇、下一篇
  */
-.last-next-data navigator {
+.last-next-data .item {
     width: calc(100% - 120rpx);
 }
 

@@ -19,7 +19,7 @@
                         >
                     </view>
                     <view v-for="(detail, di) in item.items" :key="di" class="br-b-dashed oh padding-vertical-main">
-                        <navigator :url="'/pages/plugins/realstore/orderallot-detail/orderallot-detail?id=' + item.id" hover-class="none">
+                        <view :data-value="'/pages/plugins/realstore/orderallot-detail/orderallot-detail?id=' + item.id" @tap="url_event" class="cp">
                             <image class="goods-image fl radius" :src="detail.images" mode="aspectFill"></image>
                             <view class="goods-base pr">
                                 <view class="multi-text">{{ detail.title }}</view>
@@ -34,7 +34,7 @@
                                     <text class="margin-left-sm">x{{ detail.buy_number }}</text>
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                     <view class="padding-vertical-main tr cr-base text-size">
                         <text>{{$t('user-order-detail.user-order-detail.423rmr')}}<text class="fw-b">{{ item.buy_number_count }}</text>{{$t('user-order-detail.user-order-detail.41ty94')}}<text class="sales-price margin-right-xs">{{ item.currency_data.currency_symbol }}{{ item.total_price }}</text></text>

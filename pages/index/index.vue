@@ -118,7 +118,7 @@
                                         <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                     </view>
                                 </view>
-                                <navigator url="/pages/plugins/seckill/index/index" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</navigator>
+                                <text data-value="/pages/plugins/seckill/index/index" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{$t('common.more')}}</text>
                             </view>
                             <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                         </view>
@@ -132,7 +132,7 @@
                         <view v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
                             <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/realstore/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                                <text data-value="/pages/plugins/realstore/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
                             <component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
                         </view>
@@ -141,7 +141,7 @@
                         <view v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
                             <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/shop/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                                <text data-value="/pages/plugins/shop/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
                             <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
                         </view>
@@ -150,7 +150,7 @@
                         <view v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
                             <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
-                                <navigator url="/pages/plugins/binding/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                                <text data-value="/pages/plugins/binding/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
                             <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
                         </view>
@@ -182,7 +182,7 @@
                                     <text class="text-wrapper title-left-border" :style="'color:' + (floor.bg_color || '#333') + ';'">{{ floor.name }}</text>
                                     <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ floor.describe }}</text>
                                 </view>
-                                <navigator :url="'/pages/goods-search/goods-search?category_id=' + floor.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                                <text :data-value="'/pages/goods-search/goods-search?category_id=' + floor.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
                             <view class="floor-list wh-auto oh pr">
                                 <block v-if="floor.goods.length > 0">

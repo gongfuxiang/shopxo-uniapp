@@ -9,7 +9,7 @@
                         <text class="fr">{{ item.rating_text }}</text>
                     </view>
                     <view class="content margin-top">
-                        <navigator v-if="(item.goods || null) !== null" :url="item.goods.goods_url" hover-class="none">
+                        <view v-if="(item.goods || null) !== null" :data-value="item.goods.goods_url" @tap="url_event">
                             <view class="margin-top-xs flex-row align-c">
                                 <view class="cr-grey margin-right-xl">商品信息</view>
                                 <view class="cr-base flex-1 flex-width flex-row align-c">
@@ -17,7 +17,7 @@
                                     <text class="single-text flex-1 flex-width">{{ item.goods.title }}</text>
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                         <block v-for="(fv, fi) in content_list" :key="fi">
                             <view class="margin-top-xs flex-row align-c">
                                 <view class="cr-grey margin-right-xl">{{ fv.name }}</view>
@@ -26,9 +26,7 @@
                         </block>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
-                        <navigator :url="'/pages/user-goods-comments-form/user-goods-comments-form?id=' + item.id" hover-class="none" class="dis-inline-block margin-left-lg">
-                            <button class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none">{{ $t('common.edit') }}</button>
-                        </navigator>
+                        <button :data-value="'/pages/user-goods-comments-form/user-goods-comments-form?id=' + item.id" @tap="url_event" class="round bg-white br-main cr-main margin-left-lg" type="default" size="mini" hover-class="none">{{ $t('common.edit') }}</button>
                         <button class="round bg-white br-red cr-red margin-left-lg" type="default" size="mini" hover-class="none" @tap="delete_event" :data-index="index">{{ $t('common.del') }}</button>
                     </view>
                 </view>
@@ -261,6 +259,11 @@
                     },
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

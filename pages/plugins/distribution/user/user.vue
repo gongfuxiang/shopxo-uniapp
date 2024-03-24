@@ -24,11 +24,9 @@
                                 </view>
                                 <view class="head-base pa">
                                     <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
-                                        <navigator url="/pages/plugins/distribution/extraction/extraction" hover-class="none">
-                                            <button class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                                {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
-                                            </button>
-                                        </navigator>
+                                        <button data-value="/pages/plugins/distribution/extraction/extraction" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
+                                            {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
+                                        </button>
                                     </block>
                                 </view>
                             </view>
@@ -130,10 +128,10 @@
                             <block v-for="(item, index) in nav_list" :key="index">
                                 <view class="flex-width-half">
                                     <view class="item bg-white border-radius-main margin-sm">
-                                        <navigator :url="item.url" hover-class="none" class="flex-row align-c">
+                                        <view :data-value="item.url" @tap="url_event" class="flex-row align-c">
                                             <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
                                             <view class="padding-left-main text-size fw-b flex-1 flex-width single-text">{{ item.title }}</view>
-                                        </navigator>
+                                        </view>
                                     </view>
                                 </view>
                             </block>
@@ -149,7 +147,7 @@
                             <view class="padding-main">
                                 <view class="flex-row jc-sb align-c bottom-line-exclude">
                                     <text class="cr-base">{{ profit_ladder.msg }}</text>
-                                    <navigator url="/pages/plugins/distribution/poster/poster" hover-class="none" class="text-size bg-main cr-white dis-inline-block round padding-horizontal-xxxl promotion-btn">{{$t('user.user.xjxb2v')}}</navigator>
+                                    <text data-value="/pages/plugins/distribution/poster/poster" @tap="url_event" class="text-size bg-main cr-white dis-inline-block round cp padding-horizontal-xxxl promotion-btn">{{$t('user.user.xjxb2v')}}</text>
                                 </view>
                             </view>
                         </view>

@@ -25,9 +25,7 @@
                 </view>
                 <view class="popup-bottom bottom-fixed bg-white">
                     <view class="bottom-line-exclude">
-                        <view class="popup-btn tc">
-                            <navigator url="/pages/plugins/coupon/user/user" hover-class="none">{{$t('index.index.lk0i6c')}}</navigator>
-                        </view>
+                        <view data-value="/pages/plugins/coupon/user/user" @tap="url_event" class="popup-btn tc cp">{{$t('index.index.lk0i6c')}}</view>
                     </view>
                 </view>
             </view>
@@ -107,9 +105,6 @@
             },
             // 获取数据
             get_data_list() {
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 if (this.data_list.length <= 0) {
                     this.setData({
                         data_list_loding_status: 1,
@@ -121,7 +116,6 @@
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -160,7 +154,6 @@
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_bottom_line_status: false,

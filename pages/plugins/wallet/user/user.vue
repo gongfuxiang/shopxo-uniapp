@@ -86,12 +86,12 @@
                             </view>
                             <view class="bottom-fixed submit-container">
                                 <view class="bottom-line-exclude flex-row jc-sb align-c">
-                                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" url="/pages/plugins/wallet/recharge/recharge" hover-class="none" class="sub-btn">
+                                    <view v-if="(data_base || null) != null && (data_base.is_enable_recharge || 0) == 1" data-value="/pages/plugins/wallet/recharge/recharge" @tap="url_event" class="sub-btn cp">
                                         <button class="round cr-white bg-main br-main text-size wh-auto" type="default" hover-class="none">{{$t('recharge.recharge.otwkjn')}}</button>
-                                    </navigator>
-                                    <navigator v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" url="/pages/plugins/wallet/cash-auth/cash-auth" hover-class="none" class="sub-btn">
+                                    </view>
+                                    <view v-if="(data_base || null) != null && (data_base.is_enable_cash || 0) == 1" data-value="/pages/plugins/wallet/cash-auth/cash-auth" @tap="url_event" class="sub-btn cp">
                                         <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">{{$t('user.user.8752a4')}}</button>
-                                    </navigator>
+                                    </view>
                                 </view>
                             </view>
                         </view>

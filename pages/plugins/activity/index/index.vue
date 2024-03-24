@@ -17,10 +17,8 @@
         <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="30" :style="slider_list.length > 0 ? 'height:calc(100vh - 320rpx);' : ''">
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
-                    <view class="item oh spacing-mb">
-                        <navigator :url="'/pages/plugins/activity/detail/detail?id=' + item.id" hover-class="none">
-                            <image :src="item.cover" mode="widthFix" class="wh-auto border-radius-main"></image>
-                        </navigator>
+                    <view :data-value="'/pages/plugins/activity/detail/detail?id=' + item.id" @tap="url_event" class="item oh cp spacing-mb">
+                        <image :src="item.cover" mode="widthFix" class="wh-auto border-radius-main"></image>
                     </view>
                 </block>
             </view>
@@ -265,6 +263,11 @@
                 });
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

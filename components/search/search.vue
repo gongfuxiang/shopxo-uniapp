@@ -171,9 +171,7 @@
                     this.$emit('onsearch', this.input_value);
                 } else {
                     // 进入搜索页面
-                    uni.navigateTo({
-                        url: this.propUrl + '?' + this.propFormName + '=' + this.input_value,
-                    });
+                    app.globalData.url_open(this.propUrl + '?' + this.propFormName + '=' + this.input_value);
                 }
             },
 

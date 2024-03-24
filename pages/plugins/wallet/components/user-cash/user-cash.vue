@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-child flex-row align-c margin-bottom-lg">
-            <block v-for="(item, index) in nav_status_list" :key="index">
+            <view v-for="(item, index) in nav_status_list" :key="index">
                 <view class="item dis-inline-block round margin-right-main tc" :class="nav_status_index == index ? 'cr-main bg-main-light' : 'cr-grey bg-grey-e'" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
+            </view>
         </view>
 
         <!-- 列表 -->
@@ -14,16 +14,14 @@
                     <text class="cr-grey-9">{{ item.add_time }}</text>
                     <text :class="item.status === 0 ? 'cr-black' : item.status === 1 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
                 </view>
-                <view class="content margin-top">
-                    <navigator :url="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" hover-class="none">
-                        <block v-for="(fv, fi) in content_list" :key="fi">
-                            <view class="single-text margin-top-sm cash">
-                                <text class="name cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                <text class="fw-b">{{ item[fv.field] }}</text>
-                                <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
-                            </view>
-                        </block>
-                    </navigator>
+                <view :data-value="'/pages/plugins/wallet/user-cash-detail/user-cash-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                    <view v-for="(fv, fi) in content_list" :key="fi">
+                        <view class="single-text margin-top-sm cash">
+                            <text class="name cr-grey-9 margin-right-main">{{ fv.name }}:</text>
+                            <text class="fw-b">{{ item[fv.field] }}</text>
+                            <text v-if="(fv.unit || null) != null" class="fw-b">{{ fv.unit }}</text>
+                        </view>
+                    </view>
                 </view>
             </view>
         </view>
@@ -225,6 +223,11 @@
                 });
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

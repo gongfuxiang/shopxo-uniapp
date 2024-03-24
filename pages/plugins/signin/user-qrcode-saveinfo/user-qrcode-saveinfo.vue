@@ -187,9 +187,7 @@
                                             setTimeout(function () {
                                                 // 是否签到也组队
                                                 if (is_temp) {
-                                                    uni.redirectTo({
-                                                        url: '/pages/plugins/signin/detail/detail?id=' + data.data,
-                                                    });
+                                                    app.globalData.url_open('/pages/plugins/signin/detail/detail?id=' + data.data, true);
                                                 } else {
                                                     uni.navigateBack();
                                                 }

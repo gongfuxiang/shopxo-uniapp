@@ -11,7 +11,7 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="data-list padding-main">
                 <view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white oh pr spacing-mb">
-                    <navigator class="flex-row jc-sb" :class="Number(item.status) > 3 ? 'expire' : ''" :url="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" hover-class="none">
+                    <view class="flex-row jc-sb cp" :class="Number(item.status) > 3 ? 'expire' : ''" :data-value="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" @tap="url_event">
                         <image class="radius" :src="item.share_img" mode="aspectFill"></image>
                         <view v-if="item.status === '1'" class="pa bottom-0 left-0 live-content circle">
                             <view class="live-action flex-row jc-sa align-e">
@@ -46,7 +46,7 @@
                                 {{ item.status_name }}
                             </view>
                         </view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
             <view v-else>
@@ -275,6 +275,11 @@ export default {
             });
             this.get_data_list(1);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

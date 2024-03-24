@@ -8,21 +8,19 @@
                             <text class="cr-grey-9">{{ item.add_time }}</text>
                             <text>{{ item.is_enable_name }}</text>
                         </view>
-                        <view class="content margin-top">
-                            <navigator :url="'/pages/plugins/signin/user-qrcode-detail/user-qrcode-detail?id=' + item.id" hover-class="none">
-                                <block v-for="(fv, fi) in content_list" :key="fi">
-                                    <view class="single-text margin-top-xs">
-                                        <text class="cr-grey-9 margin-right-xl">{{ fv.name }}:</text>
-                                        <text class="cr-base">{{ item[fv.field] }}</text>
-                                        <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                    </view>
-                                </block>
-                            </navigator>
+                        <view :data-value="'/pages/plugins/signin/user-qrcode-detail/user-qrcode-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                            <view v-for="(fv, fi) in content_list" :key="fi">
+                                <view class="single-text margin-top-xs">
+                                    <text class="cr-grey-9 margin-right-xl">{{ fv.name }}:</text>
+                                    <text class="cr-base">{{ item[fv.field] }}</text>
+                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
+                                </view>
+                            </view>
                         </view>
                         <view class="item-operation tr margin-top-main">
-                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="show_event">{{ $t('detail.detail.y2217b') }}</button>
-                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="coming_event">{{ $t('login.login.1i4o86') }}</button>
-                            <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="item.id" @tap="edit_event">{{ $t('common.edit') }}</button>
+                            <button class="round bg-white br-grey-9 text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/detail/detail?id='+item.id" @tap="url_event">{{ $t('detail.detail.y2217b') }}</button>
+                            <button v-if="(data_base.is_team_show_coming_user || 0) == 1" class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/user-coming-list/user-coming-list?id='+item.id" @tap="url_event">{{ $t('login.login.1i4o86') }}</button>
+                            <button class="round bg-white cr-main br-main text-size-md" type="default" size="mini" hover-class="none" :data-value="'/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id='+item.id" @tap="url_event">{{ $t('common.edit') }}</button>
                         </view>
                     </view>
                 </view>
@@ -32,7 +30,7 @@
                     <!-- 组队 -->
                     <view v-if="(data_base || null) != null && (data_base.is_team || 0) == 1" class="bottom-fixed user-team-container">
                         <view class="bottom-line-exclude">
-                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" @tap="team_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
+                            <button class="cr-white bg-green br-green text-size auto round" type="default" hover-class="none" data-value="/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo" @tap="url_event">{{ $t('user-qrcode.user-qrcode.8p57v3') }}</button>
                         </view>
                     </view>
                 </view>
@@ -212,36 +210,11 @@
                     },
                 });
             },
-            // 查看详情
-            show_event(e) {
-                var value = e.currentTarget.dataset.value;
-                uni.navigateTo({
-                    url: '/pages/plugins/signin/detail/detail?id=' + value,
-                });
-            },
 
-            // 签到用户
-            coming_event(e) {
-                var value = e.currentTarget.dataset.value;
-                uni.navigateTo({
-                    url: '/pages/plugins/signin/user-coming-list/user-coming-list?id=' + value,
-                });
-            },
-
-            // 编辑
-            edit_event(e) {
-                var value = e.currentTarget.dataset.value;
-                uni.navigateTo({
-                    url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo?id=' + value,
-                });
-            },
-
-            // 组队签到
-            team_event(e) {
-                uni.navigateTo({
-                    url: '/pages/plugins/signin/user-qrcode-saveinfo/user-qrcode-saveinfo',
-                });
-            },
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

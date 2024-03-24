@@ -181,9 +181,7 @@
                             success: (res) => {
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
-                                    uni.redirectTo({
-                                        url: '/pages/plugins/wallet/user/user?type=3',
-                                    });
+                                    app.globalData.url_open('/pages/plugins/wallet/user/user?type=3', true);
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
                                         app.globalData.showToast(res.data.msg);

@@ -8,21 +8,17 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text :class="'fr ' + (item.is_enable == 1 ? 'cr-green' : 'cr-grey')">{{ item.is_enable_text }}</text>
                     </view>
-                    <view class="content margin-top">
-                        <navigator :url="'/pages/plugins/distribution/recommend-detail/recommend-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
-                                    <text class="cr-base">{{ item[fv.field] }}</text>
-                                </view>
-                            </block>
-                        </navigator>
+                    <view :data-value="'/pages/plugins/distribution/recommend-detail/recommend-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                        <view v-for="(fv, fi) in content_list" :key="fi">
+                            <view class="single-text margin-top-xs">
+                                <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
+                                <text class="cr-base">{{ item[fv.field] }}</text>
+                            </view>
+                        </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white br-green cr-green" type="default" size="mini" hover-class="none" @tap="popup_share_event" :data-index="index">{{$t('common.share')}}</button>
-                        <navigator :url="'/pages/plugins/distribution/recommend-form/recommend-form?id=' + item.id" hover-class="none" class="dis-inline-block margin-left-lg">
-                            <button class="round bg-white br-main cr-main" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
-                        </navigator>
+                        <button :data-value="'/pages/plugins/distribution/recommend-form/recommend-form?id=' + item.id" @tap="url_event" class="round bg-white br-main cr-main margin-left-lg" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                         <button class="round bg-white br-red cr-red margin-left-lg" type="default" size="mini" hover-class="none" @tap="delete_event" :data-index="index">{{$t('common.del')}}</button>
                     </view>
                 </view>
@@ -37,9 +33,7 @@
         </scroll-view>
 
         <!-- 新增入口 -->
-        <navigator url="/pages/plugins/distribution/recommend-form/recommend-form" hover-class="none">
-            <view class="buttom-right-submit bg-main cr-white round tc">+</view>
-        </navigator>
+        <view data-value="/pages/plugins/distribution/recommend-form/recommend-form" @tap="url_event" class="buttom-right-submit bg-main cr-white round tc cp">+</view>
 
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
@@ -294,6 +288,11 @@ export default {
                 },
             });
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

@@ -286,7 +286,7 @@
                 <view v-if="plugins_realstore_data != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.goods-detail.317jp2')}}</text>
-                        <navigator url="/pages/plugins/realstore/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                        <text data-value="/pages/plugins/realstore/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                     </view>
                     <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                 </view>
@@ -303,17 +303,17 @@
                             <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.znz76d')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count || 0 }})</text>
                         </view>
-                        <navigator :url="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ (goods.comments_score || null) == null ? 0 : (goods.comments_score.rate || 0) }}%</navigator>
+                        <text :data-value="'/pages/goods-comment/goods-comment?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.goods-detail.1rqkjt')}}{{ (goods.comments_score || null) == null ? 0 : (goods.comments_score.rate || 0) }}%</text>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <!-- 商品数据 -->
                         <component-goods-comments :propData="goods.comments_data"></component-goods-comments>
                         <!-- 是否开启评论入口 -->
                         <view v-if="(plugins_intellectstools_data || null) !== null && (plugins_intellectstools_data.is_comments_add || 0) == 1">
-                            <navigator url="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" hover-class="none">
+                            <view data-value="/pages/plugins/intellectstools/goods-comments/goods-comments?goods_id=' + goods.id" @tap="url_event" class="cp">
                                 <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.6k7808')}}<iconfont name="icon-arrow-right" color="#666" propClass="margin-left-sm pr top-xs"></iconfont>
                                 </view>
-                            </navigator>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -324,14 +324,14 @@
                             <text class="text-wrapper title-left-border">{{$t('goods-detail.goods-detail.k5u755')}}</text>
                             <text class="vice-name cr-grey">({{ goods.comments_count }})</text>
                         </view>
-                        <navigator :url="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('goods-detail.goods-detail.q8e577')}}</navigator>
+                        <text :data-value="'/pages/plugins/ask/goods-list/goods-list?goods_id=' + goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('goods-detail.goods-detail.q8e577')}}</text>
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-ask-comments-goods :propData="plugins_ask_data.ask_data"></component-ask-comments-goods>
-                        <navigator url="/pages/plugins/ask/form/form" hover-class="none">
+                        <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="cp">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.7ulh8b')}}<iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
                             </view>
-                        </navigator>
+                        </view>
                     </view>
                 </view>
 

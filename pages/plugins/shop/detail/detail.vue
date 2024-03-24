@@ -393,9 +393,7 @@
             // 搜索事件
             search_button_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-                uni.navigateTo({
-                    url: value + 'keywords=' + this.search_keywords_value || '',
-                });
+                app.globalData.url_open(value + 'keywords=' + this.search_keywords_value || '');
             },
             // 导航分类事件
             header_service_event(e) {
@@ -417,9 +415,7 @@
             // 导航分类事件
             shop_category_event(e) {
                 var value = e.currentTarget.dataset.value || null;
-                uni.navigateTo({
-                    url: '/pages/plugins/shop/search/search?shop_id=' + this.shop.id + '&category_id=' + value,
-                });
+                app.globalData.url_open('/pages/plugins/shop/search/search?shop_id=' + this.shop.id + '&category_id=' + value);
             },
             // 导航事件
             nav_event(e) {

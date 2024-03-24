@@ -186,8 +186,8 @@ export default {
         // url事件
         url_event(e) {
             app.globalData.url_event(e);
-        },
-    },
+        }
+    }
 };
 </script>
 <style></style>

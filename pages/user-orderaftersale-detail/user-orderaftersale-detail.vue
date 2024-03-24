@@ -751,9 +751,7 @@ export default {
 
         // 查看售后数据
         show_aftersale_event(e) {
-            uni.navigateTo({
-                url: "/pages/user-orderaftersale/user-orderaftersale?keywords=" + this.new_aftersale_data.order_no,
-            });
+            app.globalData.url_open('/pages/user-orderaftersale/user-orderaftersale?keywords=' + this.new_aftersale_data.order_no);
         },
 
         // 客服事件

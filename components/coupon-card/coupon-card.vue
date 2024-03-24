@@ -30,11 +30,11 @@
                         <view v-if="propStatusType == 0" class="card-btn dis-inline-block cr-white" @tap="receive">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <view v-else-if="propStatusType == 1" class="card-btn dis-inline-block cr-red br-red received">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
                         <view v-else-if="propStatusType == 2" class="card-btn dis-inline-block cr-white robbed">{{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}</view>
-                        <navigator v-else-if="propStatusType == 3" :url="home_page_url" open-type="switchTab" hover-class="none">
+                        <view v-else-if="propStatusType == 3" :data-value="home_page_url" @tap="url_event" class="cp">
                             <view class="card-btn dis-inline-block cr-white">
                                 {{ propStatusOperableName || this.$t('coupon-card.coupon-card.m9316y') }}
                             </view>
-                        </navigator>
+                        </view>
                         <view v-else-if="propStatusType == 4" class="card-image pa top-0 right-0">
                             <image :src="coupon_static_url + 'coupon-used.png'" mode="scaleToFill"></image>
                         </view>
@@ -139,9 +139,15 @@
             };
         },
         methods: {
+            // 领取
             receive(e) {
                 this.$emit('call-back', this.propIndex, this.propData.id);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

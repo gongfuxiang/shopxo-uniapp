@@ -243,9 +243,7 @@
                 }
 
                 // 进入售后页面
-                uni.navigateTo({
-                    url: '/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did,
-                });
+                app.globalData.url_open('/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did);
             },
 
             // 地图查看

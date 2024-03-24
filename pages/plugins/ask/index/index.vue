@@ -16,7 +16,7 @@
             <view :class="(data_base.is_user_add_ask || 0) == 1 ? 'page-bottom-fixed' : ''">
                 <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                     <block v-for="(item, index) in data_list" :key="index">
-                        <navigator :url="'/pages/plugins/ask/detail/detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb flex-row">
+                        <view :data-value="'/pages/plugins/ask/detail/detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb flex-row">
                             <view v-if="nav_index === 1">
                                 <view class="ask-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
                             </view>
@@ -32,7 +32,7 @@
                                     >
                                 </view>
                             </view>
-                        </navigator>
+                        </view>
                     </block>
                     <!-- 结尾 -->
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -45,12 +45,12 @@
         </scroll-view>
         <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed btn-content">
             <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                     <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
-                </navigator>
-                <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                </view>
+                <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                     <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
-                </navigator>
+                </view>
             </view>
         </view>
     </view>
@@ -276,6 +276,11 @@
                 this.reset_scroll();
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

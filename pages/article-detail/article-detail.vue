@@ -22,11 +22,11 @@
             <view v-if="(last_next || null) != null" class="last-next-data spacing-mb">
                 <view v-if="(last_next.last || null) != null">
                     <text class="cr-grey va-m">{{$t('article-detail.article-detail.281s4a')}}</text>
-                    <navigator :url="last_next.last.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{ last_next.last.title }}</navigator>
+                    <text :data-value="last_next.last.url" @tap="url_event" class="dis-inline-block va-m cr-blue cp item">{{ last_next.last.title }}</text>
                 </view>
                 <view v-if="(last_next.next || null) != null" class="margin-top-sm">
                     <text class="cr-grey va-m">{{$t('article-detail.article-detail.uq5814')}}</text>
-                    <navigator :url="last_next.next.url" open-type="redirect" hover-class="none" class="dis-inline-block va-m cr-blue">{{ last_next.next.title }}</navigator>
+                    <text :data-value="last_next.next.url" @tap="url_event" class="dis-inline-block va-m cr-blue cp item">{{ last_next.next.title }}</text>
                 </view>
             </view>
         </view>
@@ -139,6 +139,11 @@ export default {
                 },
             });
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

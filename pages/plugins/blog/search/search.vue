@@ -21,15 +21,15 @@
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view :class="(data_base.is_user_add_blog || 0) == 1 ? 'page-bottom-fixed' : ''">
                     <view v-if="(data_list || null) != null && data_list.length > 0" class="plugins-blog-list padding-horizontal-main padding-top-main oh">
-                        <view v-for="(item, index) in data_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
-                            <navigator :url="item.url" hover-class="none">
+                        <view v-for="(item, index) in data_list" :key="index">
+                            <view :data-value="item.url" @tap="url_event" class="item oh cp padding-main border-radius-main bg-white spacing-mb">
                                 <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
                                 <view class="base fr">
                                     <view class="single-text text-size">{{ item.title }}</view>
                                     <view class="cr-grey margin-top-sm">{{ item.add_time_date_cn }}</view>
                                     <view class="cr-base text-size-sm multi-text margin-top-sm">{{ item.describe }}</view>
                                 </view>
-                            </navigator>
+                            </view>
                         </view>
                         <!-- 结尾 -->
                         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -44,12 +44,12 @@
             <!-- 发布博文、我的博文入口 -->
             <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
-                    </navigator>
-                    <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    </view>
+                    <view data-value="/pages/plugins/blog/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
         </view>
@@ -301,6 +301,11 @@
                 });
                 this.get_data_list(1);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

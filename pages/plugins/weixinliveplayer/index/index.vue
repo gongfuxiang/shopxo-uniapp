@@ -13,13 +13,13 @@
 						<image :src="weixinliveplayer_static_url + 'player-title-icon.png'" mode="scaleToFill" class="player-title-icon margin-right-xs"></image>
 						<text class="text-wrapper">{{$t('index.index.63g4m1')}}</text>
 					</view>
-					<navigator url="/pages/plugins/weixinliveplayer/search/search" hover-class="none" class="arrow-right padding-right cr-grey text-size-xs">{{$t('common.more')}}</navigator>
+					<text data-value="/pages/plugins/weixinliveplayer/search/search" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{$t('common.more')}}</text>
 				</view>
 
 				<!-- 数据列表 -->
 				<view class="data-list">
 					<view v-for="(item, index) in data_list" :key="index" class="item border-radius-main bg-white oh pr spacing-mb">
-						<navigator class="flex-row jc-sb" :class="Number(item.status) > 3 ? 'expire' : '' " :url="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" hover-class="none">
+						<view class="flex-row jc-sb cp" :class="Number(item.status) > 3 ? 'expire' : '' " :data-value="'/pages/plugins/weixinliveplayer/detail/detail?id=' + item.id" @tap="url_event">
 							<!-- <view class="pr"> -->
 							<image class="radius" :src="item.share_img" mode="aspectFill"></image>
 							<view v-if="item.status==='1'" class="pa bottom-0 left-0 live-content circle">
@@ -58,7 +58,7 @@
 									{{item.status_name}}
 								</view>
 							</view>
-						</navigator>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -185,7 +185,12 @@
 						});
 					}
 				});
-			}
+			},
+
+			// url事件
+	        url_event(e) {
+	            app.globalData.url_event(e);
+	        }
 		}
 	};
 </script>

@@ -9,7 +9,7 @@
                                 <text class="text-wrapper" :class="floor.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (floor.color || '#333') + ';'">{{ floor.title }}</text>
                                 <text v-if="(floor.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ floor.vice_title }}</text>
                             </view>
-                            <navigator :url="floor.more_url" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('common.more')}}</navigator>
+                            <text :data-value="floor.more_url" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                         </view>
                         <view class="wh-auto oh pr">
                             <block v-if="floor.blog_list.length > 0">
@@ -17,14 +17,14 @@
                                 <block v-if="(floor.style_type || 0) == 0">
                                     <view class="plugins-blog-list">
                                         <view v-for="(item, index) in floor.blog_list" :key="index" class="item oh padding-main border-radius-main bg-white spacing-mb">
-                                            <navigator :url="item.url" hover-class="none">
+                                            <view :data-value="item.url" @tap="url_event" class="cp">
                                                 <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
                                                 <view class="base fr">
                                                     <view class="single-text text-size">{{ item.title }}</view>
                                                     <view class="cr-grey-9 margin-top-sm text-size-xs">{{ item.add_time_date_cn }}</view>
                                                     <view v-if="(item.describe || null) != null" class="cr-base multi-text margin-top-sm text-size-xs">{{item.describe}}</view>
                                                 </view>
-                                            </navigator>
+                                            </view>
                                         </view>
                                     </view>
                                 </block>
@@ -32,13 +32,13 @@
                                 <block v-else-if="floor.style_type == 1">
                                     <view class="plugins-blog-grid-list">
                                         <view v-for="(item, index) in floor.blog_list" :key="index" class="item oh border-radius-main bg-white spacing-mb">
-                                            <navigator :url="item.url" hover-class="none">
+                                            <view :data-value="item.url" @tap="url_event" class="cp">
                                                 <image class="blog-img dis-block" :src="item.cover" mode="widthFix"></image>
                                                 <view class="base padding-horizontal-sm margin-top-sm">
                                                     <view class="goods-title multi-text margin-bottom-sm text-size-xs">{{ item.title }}</view>
                                                     <view class="cr-grey text-size-xs">{{ item.add_time_date_cn }}</view>
                                                 </view>
-                                            </navigator>
+                                            </view>
                                         </view>
                                     </view>
                                 </block>
@@ -48,11 +48,9 @@
                                         <swiper :vertical="false" :autoplay="(propConfig.is_home_hot_auto_play || 0) == 1" :circular="false" :display-multiple-items="floor.blog_list.length < 3 ? floor.blog_list.length : 3" interval="3000">
                                             <block v-for="(item, index) in floor.blog_list" :key="index">
                                                 <swiper-item>
-                                                    <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
-                                                        <navigator :url="item.url" hover-class="none">
-                                                            <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
-                                                            <view class="blog-title pa single-text cr-white padding-sm text-size-xs">{{ item.title }}</view>
-                                                        </navigator>
+                                                    <view :data-value="item.url" @tap="url_event" class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr cp">
+                                                        <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
+                                                        <view class="blog-title pa single-text cr-white padding-sm text-size-xs">{{ item.title }}</view>
                                                     </view>
                                                 </swiper-item>
                                             </block>
@@ -90,7 +88,12 @@
                 default: [],
             },
         },
-        methods: {},
+        methods: {
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
+        }
     };
 </script>
 <style></style>

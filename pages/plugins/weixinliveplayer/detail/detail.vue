@@ -219,9 +219,7 @@
                 // #endif
 
                 // #ifdef MP-WEIXIN
-                uni.navigateTo({
-                    url: url
-                });
+                app.globalData.url_open(url);
                 return false;
                 // #endif
 

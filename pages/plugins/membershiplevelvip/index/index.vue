@@ -10,11 +10,9 @@
                         <!-- 标题 -->
                         <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
                         <!-- 购买按钮 -->
-                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none" class="dis-inline">
-                            <button class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
-                                {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
-                            </button>
-                        </navigator>
+                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
+                            {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
+                        </button>
                     </view>
                 </view>
                 <!-- 介绍列表 -->
@@ -158,6 +156,11 @@
             onPageScroll(res) {
                 uni.$emit('onPageScroll', res);
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

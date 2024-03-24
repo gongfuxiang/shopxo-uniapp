@@ -300,9 +300,7 @@
                 var temp_params = this.params;
                 temp_params['id'] = 0;
                 var query = app.globalData.json_to_url_params(temp_params);
-                uni.navigateTo({
-                    url: '/pages/user-address-save/user-address-save?' + query,
-                });
+                app.globalData.url_open('/pages/user-address-save/user-address-save?' + query);
             },
 
             // 地址编辑
@@ -318,9 +316,7 @@
                 var temp_params = this.params;
                 temp_params['id'] = data.id;
                 var query = app.globalData.json_to_url_params(temp_params);
-                uni.navigateTo({
-                    url: '/pages/user-address-save/user-address-save?' + query,
-                });
+                app.globalData.url_open('/pages/user-address-save/user-address-save?' + query);
             },
 
             // 地图查看

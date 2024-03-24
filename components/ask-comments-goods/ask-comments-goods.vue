@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <block v-if="(propData || null) != null && propData.length > 0">
             <view v-for="(item, index) in propData" :key="index" class="ask-comment-item">
-                <navigator :url="item.url" hover-class="none" class="flex-row">
+                <view :data-value="item.url" @tap="url_event" class="flex-row cp">
                     <view class="title cr-white tc">{{$t('goods-list.goods-list.00n7i3')}}</view>
                     <view class="base-nav flex-1 flex-width margin-left-sm">
                         <view class="oh nav padding-bottom-sm">
@@ -17,7 +17,7 @@
                             </view>
                         </view>
                     </view>
-                </navigator>
+                </view>
             </view>
         </block>
         <block v-else>
@@ -57,6 +57,11 @@
                     urls: this.propData[index]["images"],
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

@@ -16,23 +16,21 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-red">{{ item.status_text }}</text>
                     </view>
-                    <view class="goods-item oh">
-                        <navigator :url="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" hover-class="none">
-                            <image class="goods-image fl radius" :src="item.order_data.items.images" mode="aspectFill"></image>
-                            <view class="goods-base pr">
-                                <view class="multi-text">{{ item.order_data.items.title }}</view>
-                                <view v-if="item.order_data.items.spec != null" class="margin-top-sm">
-                                    <block v-for="(sv, si) in item.order_data.items.spec" :key="si">
-                                        <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
-                                        <text class="cr-grey">{{ sv.value }}</text>
-                                    </block>
-                                </view>
-                                <view class="margin-top-sm">
-                                    <text class="fw-b">{{ item.order_data.currency_data.currency_symbol }}{{ item.order_data.items.price }}</text>
-                                    <text class="margin-left-sm">x{{ item.order_data.items.buy_number }}</text>
-                                </view>
+                    <view :url="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" @tap="url_event" class="goods-item oh cp">
+                        <image class="goods-image fl radius" :src="item.order_data.items.images" mode="aspectFill"></image>
+                        <view class="goods-base pr">
+                            <view class="multi-text">{{ item.order_data.items.title }}</view>
+                            <view v-if="item.order_data.items.spec != null" class="margin-top-sm">
+                                <block v-for="(sv, si) in item.order_data.items.spec" :key="si">
+                                    <text v-if="si > 0" class="cr-grey padding-left-xs padding-right-xs">;</text>
+                                    <text class="cr-grey">{{ sv.value }}</text>
+                                </block>
                             </view>
-                        </navigator>
+                            <view class="margin-top-sm">
+                                <text class="fw-b">{{ item.order_data.currency_data.currency_symbol }}{{ item.order_data.items.price }}</text>
+                                <text class="margin-left-sm">x{{ item.order_data.items.buy_number }}</text>
+                            </view>
+                        </view>
                     </view>
                     <view class="item-describe padding-vertical-main">
                         <text class="cr-base">{{ item.type_text }}</text>
@@ -344,10 +342,13 @@ export default {
             }
 
             // 进入售后页面
-            uni.navigateTo({
-                url: "/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=" + oid + "&did=" + did + "&is_delivery_popup=1",
-            });
+            app.globalData.url_open('/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did + '&is_delivery_popup=1');
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

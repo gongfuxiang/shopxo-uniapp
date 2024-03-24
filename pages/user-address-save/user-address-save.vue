@@ -823,9 +823,7 @@
                     }, 1000);
                 } else {
                     setTimeout(function () {
-                        uni.redirectTo({
-                            url: '/pages/user-address/user-address',
-                        });
+                        app.globalData.url_open('/pages/user-address/user-address', true);
                     }, 1000);
                 }
             },

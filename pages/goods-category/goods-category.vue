@@ -851,9 +851,7 @@
 
             // 分类事件
             category_event(e) {
-                uni.navigateTo({
-                    url: '/pages/goods-search/goods-search?category_id=' + e.currentTarget.dataset.value,
-                });
+                app.globalData.url_open('/pages/goods-search/goods-search?category_id=' + e.currentTarget.dataset.value);
             },
 
             // 搜索事件
@@ -869,9 +867,7 @@
                     this.get_goods_list(1);
                 } else {
                     // 进入搜索页面
-                    uni.navigateTo({
-                        url: '/pages/goods-search/goods-search' + ((e || null) == null ? '' : '?keywords=' + e),
-                    });
+                    app.globalData.url_open('/pages/goods-search/goods-search' + ((e || null) == null ? '' : '?keywords=' + e));
                 }
             },
 
@@ -886,7 +882,7 @@
                     var goods = this.data_list[index];
                 }
                 app.globalData.goods_data_cache_handle(goods.id, goods);
-console.log(goods)
+
                 // 调用公共打开url地址
                 app.globalData.url_event(e);
             },
@@ -1301,9 +1297,7 @@ console.log(goods)
                     buy_type: 'cart',
                     ids: ids.join(','),
                 };
-                uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                });
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
             },
 
             // 计算搜索框的高度

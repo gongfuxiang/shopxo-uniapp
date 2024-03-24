@@ -10,9 +10,7 @@
                         </view>
                     </view>
                     <view class="margin-top-xxxl">
-                        <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                            <button class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('extraction.extraction.suna53')}}</button>
-                        </navigator>
+                        <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-main br-main cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('extraction.extraction.suna53')}}</button>
                     </view>
                 </view>
 
@@ -25,9 +23,7 @@
                             <view class="cr-red tc text-size-lg">{{$t('extraction.extraction.j0o47u')}}</view>
                         </view>
                         <view class="margin-top-xxxl">
-                            <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
-                            </navigator>
+                            <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
 
@@ -37,9 +33,7 @@
                             <!-- 导航 -->
                             <view class="padding-bottom-main br-b">
                                 <text class="fw-b">{{$t('extraction.extraction.60601g')}}</text>
-                                <view class="fr cr-blue">
-                                    <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">{{$t('extraction.extraction.48rp75')}}</navigator>
-                                </view>
+                                <view data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.extraction.48rp75')}}</view>
                             </view>
                             <!-- 地址信息 -->
                             <view class="margin-top-lg" @tap="address_map_event">
@@ -52,9 +46,7 @@
                                 <!-- 导航 -->
                                 <view class="padding-bottom-main br-b">
                                     <text class="fw-b">{{$t('extraction.extraction.641gp7')}}</text>
-                                    <view class="fr cr-blue">
-                                        <navigator url="/pages/plugins/distribution/extraction-order/extraction-order" hover-class="none">{{$t('extraction.extraction.wcv68q')}}</navigator>
-                                    </view>
+                                    <view data-value="/pages/plugins/distribution/extraction-order/extraction-order" @tap="url_event" class="fr cr-blue cp">{{$t('extraction.extraction.wcv68q')}}</view>
                                 </view>
                                 <!-- 自提地点统计 -->
                                 <view class="statistics oh padding-top-main">
@@ -92,9 +84,7 @@
                             </view>
                         </view>
                         <view class="margin-top-xxxl">
-                            <navigator url="/pages/plugins/distribution/extraction-apply/extraction-apply" hover-class="none">
-                                <button class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
-                            </navigator>
+                            <button data-value="/pages/plugins/distribution/extraction-apply/extraction-apply" @tap="url_event" class="bg-green br-green cr-white round wh-auto" type="default" size="mini" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
                 </view>
@@ -227,10 +217,13 @@ export default {
         // 进入取货订单管理
         order_event(e) {
             var value = e.currentTarget.dataset.value || 0;
-            uni.navigateTo({
-                url: "/pages/plugins/distribution/extraction-order/extraction-order?status=" + value,
-            });
+            app.globalData.url_open('/pages/plugins/distribution/extraction-order/extraction-order?status=' + value);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

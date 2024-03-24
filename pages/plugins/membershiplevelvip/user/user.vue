@@ -46,18 +46,15 @@
                             </view>
                             <!-- 已开通会员 -->
                             <view class="pa vip-btn flex-row align-c">
-                                <navigator url="/pages/plugins/membershiplevelvip/member-code/member-code" hover-class="none">
+                                <text data-value="/pages/plugins/membershiplevelvip/member-code/member-code" @tap="url_event" class="cp">
                                     <iconfont name="icon-qrcode" size="44rpx" color="#fff" propClass="padding-right-main pr bottom-md"></iconfont>
-                                </navigator>
+                                </text>
                                 <block v-if="(user_vip || null) != null">
                                     <!-- 判断会员永久 -->
                                     <block v-if="(user_vip.is_permanent || 0) !== 1">
                                         <!-- 会员已过期或未开通 -->
                                         <block v-if="(user_vip.surplus_time_number || 0) == 0">
-                                            <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                                <button v-if="(data_base.is_user_buy || null) == 1" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
-                                                </button>
-                                            </navigator>
+                                            <button v-if="(data_base.is_user_buy || null) == 1" data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
                                         </block>
                                         <block v-else>
                                             <block v-if="(user_vip.is_supported_renew || null) == null || user_vip.is_supported_renew != 1">
@@ -67,10 +64,7 @@
                                                 </block>
                                                 <block v-else>
                                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
-                                                            </button>
-                                                        </navigator>
+                                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.65cc6z')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
                                                     </block>
                                                 </block>
                                             </block>
@@ -80,10 +74,7 @@
                                 <!-- 未开通会员 -->
                                 <block v-else>
                                     <block v-if="(data_base || null) != null && (data_base.is_user_buy || 0) == 1">
-                                        <navigator url="/pages/plugins/membershiplevelvip/buy/buy" hover-class="none">
-                                            <button class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont>
-                                            </button>
-                                        </navigator>
+                                        <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="submit-buy cr-white pr" type="default" size="mini" hover-class="none">{{$t('user.user.n4orgk')}}<iconfont name="icon-arrow-right" size="18rpx" propClass="pa right-icon"></iconfont></button>
                                     </block>
                                 </block>
                             </view>
@@ -143,10 +134,10 @@
                         <block v-for="(item, index) in nav_list" :key="index">
                             <view class="flex-width-half">
                                 <view class="item bg-white border-radius-main margin-sm">
-                                    <navigator :url="item.url" hover-class="none" class="flex-row align-c">
+                                    <view :data-value="item.url" @tap="url_event" class="flex-row align-c cp">
                                         <image :src="item.icon" mode="scaleToFill" class="dis-block"></image>
                                         <view class="padding-left-main text-size fw-b flex-1 flex-width single-text">{{ item.title }}</view>
-                                    </navigator>
+                                    </view>
                                 </view>
                             </view>
                         </block>
@@ -322,9 +313,7 @@
                                     });
                                     if (res.data.code == 0) {
                                         uni.setStorageSync(app.globalData.data.cache_page_pay_key, res.data.data.id);
-                                        uni.redirectTo({
-                                            url: '/pages/plugins/membershiplevelvip/order/order',
-                                        });
+                                        app.globalData.url_open('/pages/plugins/membershiplevelvip/order/order', true);
                                     } else {
                                         if (app.globalData.is_login_check(res.data, self, 'uservip_renew_event')) {
                                             app.globalData.showToast(res.data.msg);
@@ -342,6 +331,11 @@
                         }
                     },
                 });
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             },
 
             // 页面滚动监听

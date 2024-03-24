@@ -3,7 +3,7 @@
         <view class="page-bottom-fixed">
             <view v-if="data_list.length > 0" class="padding-main">
                 <view v-for="(item, index) in data_list" :key="index">
-                    <navigator :url="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" hover-class="none" class="padding-main border-radius-main bg-white oh spacing-mb">
+                    <view :data-value="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb">
                         <view class="margin-bottom-xs flex-row jc-sb align-c">
                             <text class="cr-base text-size">{{ item.add_time_time }}</text>
                             <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</text>
@@ -16,7 +16,7 @@
                                 {{ item.content }}
                             </view>
                         </view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
             <view v-else>
@@ -27,10 +27,8 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <view class="bottom-fixed question-btn bg-white">
-                <view class="bottom-line-exclude">
-                    <navigator url="/pages/plugins/ask/form/form" hover-class="none">
-                        <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
-                    </navigator>
+                <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="bottom-line-exclude cp">
+                    <button class="bg-white br-main cr-main round text-size" type="default" form-type="submit" hover-class="none">{{$t('goods-detail.goods-detail.7ulh8b')}}</button>
                 </view>
             </view>
         </view>
@@ -185,6 +183,11 @@
             scroll_lower(e) {
                 this.get_data_list();
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

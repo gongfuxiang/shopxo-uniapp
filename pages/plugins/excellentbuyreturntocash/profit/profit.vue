@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <!-- 导航 -->
         <view class="nav-base bg-white">
-            <block v-for="(item, index) in nav_status_list" :key="index">
+            <view v-for="(item, index) in nav_status_list" :key="index">
                 <view :class="'item fl tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
-            </block>
+            </view>
         </view>
 
         <!-- 列表 -->
@@ -15,16 +15,14 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view class="content margin-top">
-                        <navigator :url="'/pages/plugins/excellentbuyreturntocash/profit-detail/profit-detail?id=' + item.id" hover-class="none">
-                            <block v-for="(fv, fi) in content_list" :key="fi">
-                                <view class="single-text margin-top-xs">
-                                    <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
-                                    <text class="cr-base">{{ item[fv.field] }}</text>
-                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                </view>
-                            </block>
-                        </navigator>
+                    <view :data-value="'/pages/plugins/excellentbuyreturntocash/profit-detail/profit-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
+                        <view v-for="(fv, fi) in content_list" :key="fi">
+                            <view class="single-text margin-top-xs">
+                                <text class="cr-grey margin-right-xl">{{ fv.name }}</text>
+                                <text class="cr-base">{{ item[fv.field] }}</text>
+                                <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
+                            </view>
+                        </view>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white br cr-base br" type="default" size="mini" hover-class="none" :data-oid="item.order_id" @tap="list_submit_order_event">{{$t('profit.profit.19a8l6')}}</button>
@@ -239,9 +237,7 @@ export default {
         list_submit_order_event(e) {
             var oid = e.currentTarget.dataset.oid || null;
             if (oid != null) {
-                uni.navigateTo({
-                    url: "/pages/user-order-detail/user-order-detail?id=" + oid,
-                });
+                app.globalData.url_open('/pages/user-order-detail/user-order-detail?id=' + oid);
             } else {
                 app.globalData.showToast(this.$t('profit.profit.5c7sof'));
             }
@@ -297,6 +293,11 @@ export default {
             });
             this.get_data_list(1);
         },
+
+        // url事件
+        url_event(e) {
+            app.globalData.url_event(e);
+        }
     },
 };
 </script>

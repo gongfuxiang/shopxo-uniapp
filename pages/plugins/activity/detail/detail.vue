@@ -11,7 +11,7 @@
                 <view v-if="data.keywords_arr.length > 0" class="word-content scroll-view-horizontal margin-bottom-sm">
                     <scroll-view scroll-x>
                         <block v-for="(kv, ki) in data.keywords_arr" :key="ki">
-                            <navigator :url="'/pages/goods-search/goods-search?keywords=' + kv" hover-class="none" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right">{{ kv }}</navigator>
+                            <text :data-value="'/pages/goods-search/goods-search?keywords=' + kv" @tap="url_event" class="word-icon dis-inline-block bg-main-light text-size-xs cr-main round padding-top-xs padding-bottom-xs padding-left padding-right cp">{{ kv }}</text>
                         </block>
                     </scroll-view>
                 </view>
@@ -23,7 +23,7 @@
                             <text class="text-wrapper title-left-border">{{$t('detail.detail.b4f3nw')}}</text>
                             <text class="vice-name margin-left-lg cr-grey">{{ data.vice_title }}</text>
                         </view>
-                        <navigator url="'/pages/plugins/activity/index/index" hover-class="none" class="arrow-right padding-right cr-grey">{{$t('detail.detail.ans2p4')}}</navigator>
+                        <text data-value="'/pages/plugins/activity/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('detail.detail.ans2p4')}}</text>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>
@@ -172,6 +172,11 @@
                     },
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

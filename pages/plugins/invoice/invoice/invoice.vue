@@ -19,21 +19,19 @@
                             <text class="cr-grey-9">{{ item.add_time }}</text>
                             <text class="cr-black" :class="item.status == 0 || item.status == 1 ? 'cr-black' : item.status == 2 ? 'cr-grey-c' : 'cr-red'">{{ item.status_name }}</text>
                         </view>
-                        <view class="content margin-top-main">
-                            <navigator :url="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" hover-class="none">
-                                <block v-for="(fv, fi) in content_list" :key="fi">
-                                    <view class="single-text margin-top-xs">
-                                        <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
-                                        <text class="cr-black">{{ item[fv.field] }}</text>
-                                        <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
-                                    </view>
-                                </block>
-                            </navigator>
+                        <view :data-value="'/pages/plugins/invoice/invoice-detail/invoice-detail?id=' + item.id" @tap="url_event" class="content margin-top-main cp">
+                            <view v-for="(fv, fi) in content_list" :key="fi">
+                                <view class="single-text margin-top-xs">
+                                    <text class="cr-grey-9 margin-right-main">{{ fv.name }}:</text>
+                                    <text class="cr-black">{{ item[fv.field] }}</text>
+                                    <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
+                                </view>
+                            </view>
                         </view>
                         <!-- 0待审核、1待开票、2已开票、3已拒绝, 4已关闭） -->
                         <view v-if="item.status == 0 || item.status == 3 || item.status == 4" class="item-operation tr margin-top-main">
                             <button class="round br-grey-9 bg-white text-size-md" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
-                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" @tap="edit_event" :data-value="item.id" hover-class="none">{{$t('common.edit')}}</button>
+                            <button v-if="item.status == 0 || item.status == 3" class="round cr-main br-main bg-white text-size-md" type="default" size="mini" :data-value="'/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id='+item.id" @tap="url_event" hover-class="none">{{$t('common.edit')}}</button>
                         </view>
                     </view>
 
@@ -48,9 +46,7 @@
                 <!-- 添加发票 -->
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <navigator url="/pages/plugins/invoice/order/order" hover-class="none" class="sub-btn">
-                            <button class="round cr-main bg-white br-main text-size wh-auto" type="default" hover-class="none">{{$t('invoice.invoice.p3dmd2')}}</button>
-                        </navigator>
+                        <button data-value="/pages/plugins/invoice/order/order" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('invoice.invoice.p3dmd2')}}</button>
                     </view>
                 </view>
             </view>
@@ -286,27 +282,6 @@
                 });
             },
 
-            // 滚动加载
-            scroll_lower(e) {
-                this.get_data_list();
-            },
-
-            // 导航事件
-            nav_event(e) {
-                this.setData({
-                    nav_status_index: e.currentTarget.dataset.index || 0,
-                    data_page: 1,
-                });
-                this.get_data_list(1);
-            },
-
-            // 编辑事件
-            edit_event(e) {
-                uni.navigateTo({
-                    url: '/pages/plugins/invoice/invoice-saveinfo/invoice-saveinfo?id=' + e.currentTarget.dataset.value,
-                });
-            },
-
             // 删除
             delete_event(e) {
                 uni.showModal({
@@ -359,6 +334,25 @@
                     },
                 });
             },
+
+            // 滚动加载
+            scroll_lower(e) {
+                this.get_data_list();
+            },
+
+            // 导航事件
+            nav_event(e) {
+                this.setData({
+                    nav_status_index: e.currentTarget.dataset.index || 0,
+                    data_page: 1,
+                });
+                this.get_data_list(1);
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

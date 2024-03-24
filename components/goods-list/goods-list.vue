@@ -6,7 +6,7 @@
                     <text v-if="(data.title || null) != null" class="text-wrapper" :class="data.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (data.color || '#333') + ';'">{{ data.title }}</text>
                     <text v-if="(data.vice_title || null) != null" class="vice-name margin-left-sm cr-grey-9">{{ data.vice_title }}</text>
                 </view>
-                <navigator v-if="(data[propMoreUrlKey] || null) != null" :url="data[propMoreUrlKey]" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
+                <text v-if="(data[propMoreUrlKey] || null) != null" :data-value="data[propMoreUrlKey]" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
             </view>
             <view class="wh-auto oh pr goods-list">
                 <!-- 默认图文 -->

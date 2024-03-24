@@ -119,12 +119,8 @@
 
             // 获取数据
             get_data_list() {
-                var self = this;
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
-                if (self.data_list.length <= 0) {
-                    self.setData({
+                if (this.data_list.length <= 0) {
+                    this.setData({
                         data_list_loding_status: 1,
                     });
                 }
@@ -134,7 +130,6 @@
                     data: this.params,
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
@@ -166,7 +161,7 @@
                                 }
                             }
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
@@ -178,9 +173,8 @@
                         app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),

@@ -36,21 +36,21 @@
             <view class="padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.6rsqp1') }}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
+                    <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
             </view>
 
             <!-- 博文列表 -->
             <view v-if="data_list.length > 0" class="plugins-blog-list padding-horizontal-main">
-                <view v-for="(item, index) in data_list" class="item oh padding-main border-radius-main bg-white spacing-mb">
-                    <navigator :url="item.url" hover-class="none">
+                <view v-for="(item, index) in data_list" :key="index">
+                    <view :data-value="item.url" @tap="url_event" class="item oh padding-main border-radius-main bg-white cp spacing-mb">
                         <image class="blog-img fl radius" :src="item.cover" mode="aspectFill"></image>
                         <view class="base fr">
                             <view class="single-text text-size">{{ item.title }}</view>
                             <view class="cr-grey margin-top-sm">{{ item.add_time_date_cn }}</view>
                             <view class="cr-base text-size-sm multi-text margin-top-sm">{{ item.describe }}</view>
                         </view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
 
@@ -58,18 +58,16 @@
             <view v-if="hot_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.pot64x') }}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
+                    <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <view class="rolling-horizontal border-radius-main oh">
                     <view class="plugins-blog-rolling-list scroll-view-horizontal">
                         <swiper :vertical="false" :autoplay="(data_base.is_home_hot_auto_play || 0) == 1" :circular="false" :display-multiple-items="hot_list.length < 3 ? hot_list.length : 3" interval="3000">
                             <block v-for="(item, index) in hot_list" :key="index">
                                 <swiper-item>
-                                    <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
-                                        <navigator :url="item.url" hover-class="none">
-                                            <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
-                                            <view class="blog-title pa single-text cr-white padding-horizontal-main padding-top-sm padding-bottom-sm">{{ item.title }}</view>
-                                        </navigator>
+                                    <view :data-value="item.url" @tap="url_event" class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr cp">
+                                        <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
+                                        <view class="blog-title pa single-text cr-white padding-horizontal-main padding-top-sm padding-bottom-sm">{{ item.title }}</view>
                                     </view>
                                 </swiper-item>
                             </block>
@@ -82,15 +80,13 @@
             <view v-if="right_list.length > 0" class="padding-horizontal-main spacing-mb">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('detail.detail.455787') }}{{ blog_main_name }}</text>
-                    <navigator url="/pages/plugins/blog/search/search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
+                    <text data-value="/pages/plugins/blog/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <view class="right-list padding-horizontal-main border-radius-main bg-white">
                     <block v-for="(item, index) in right_list" :key="index">
-                        <view :class="'item padding-vertical-main oh ' + (index > 0 ? 'br-t' : '')">
-                            <navigator :url="item.url" hover-class="none">
-                                <view class="blog-title single-text fl">{{ item.title }}</view>
-                                <text class="cr-grey fr">{{ $t('detail.detail.e6ga1y') }}{{ item.access_count }}{{ $t('buy.buy.0pgsrm') }}</text>
-                            </navigator>
+                        <view :data-value="item.url" @tap="url_event" :class="'item padding-vertical-main oh cp ' + (index > 0 ? 'br-t' : '')">
+                            <view class="blog-title single-text fl">{{ item.title }}</view>
+                            <text class="cr-grey fr">{{ $t('detail.detail.e6ga1y') }}{{ item.access_count }}{{ $t('buy.buy.0pgsrm') }}</text>
                         </view>
                     </block>
                 </view>
@@ -100,7 +96,7 @@
             <view v-if="goods_list.length > 0" class="goods-list oh padding-horizontal-main">
                 <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ $t('index.index.8t4j95') }}</text>
-                    <navigator url="/pages/goods-search/goods-search" hover-class="none" class="arrow-right padding-right cr-grey">{{ $t('common.more') }}</navigator>
+                    <text data-value="/pages/goods-search/goods-search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                 </view>
                 <component-goods-list :propData="{ style_type: 1, goods_list: goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
             </view>
@@ -108,12 +104,12 @@
             <!-- 发布博文、我的博文入口 -->
             <view v-if="(data_base.is_user_add_blog || 0) == 1" class="bottom-fixed btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/plugins/blog/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <view data-value="/pages/plugins/blog/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>发布{{ blog_main_name }}</view>
-                    </navigator>
-                    <navigator url="/pages/plugins/blog/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    </view>
+                    <view data-value="/pages/plugins/blog/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>我的{{ blog_main_name }}</view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
 

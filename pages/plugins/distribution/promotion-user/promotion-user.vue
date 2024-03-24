@@ -268,9 +268,7 @@ export default {
         // 用户订单事件
         user_order_event(e) {
             var value = e.currentTarget.dataset.value;
-            uni.navigateTo({
-                url: "/pages/plugins/distribution/order/order?uid=" + value,
-            });
+            app.globalData.url_open('/pages/plugins/distribution/order/order?uid=' + value);
         },
 
         // 导航事件

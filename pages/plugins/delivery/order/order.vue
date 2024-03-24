@@ -341,9 +341,7 @@
                     });
                 } else {
                     if (app.globalData.data.is_distribution_map_force_location == 1) {
-                        uni.navigateTo({
-                            url: "/pages/common/open-setting-location/open-setting-location?is_check_success_back=1",
-                        });
+                        app.globalData.url_open('/pages/common/open-setting-location/open-setting-location?is_check_success_back=1');
                     } else {
                         // 获取数据
                         self.get_data_list();
@@ -370,9 +368,11 @@
                 });
 
                 // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
 
                 // 参数
                 var type = (this.nav_type_list[this.nav_type_index] || null) == null ? -1 : this.nav_type_list[this.nav_type_index]["value"];
@@ -389,7 +389,9 @@
                     },
                     dataType: "json",
                     success: (res) => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         if (res.data.code == 0) {
                             // 数据列表
                             var data = res.data.data;
@@ -446,7 +448,9 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         this.setData({
                             data_list_loding_status: 2,
                             data_is_loading: 0,

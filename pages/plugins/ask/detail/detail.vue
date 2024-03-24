@@ -59,12 +59,12 @@
             </view>
             <view v-if="(data_base.is_user_add_ask || 0) == 1" class="bottom-fixed btn-content">
                 <view class="flex-row jc-sa align-c text-size fw-b bottom-line-exclude">
-                    <navigator url="/pages/plugins/ask/form/form" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="divider-r-d wh-auto"> <iconfont name="icon-wenda-wytw" size="30rpx" color="#333" propClass="margin-right-sm"></iconfont>{{ $t('goods-detail.goods-detail.7ulh8b') }}</view>
-                    </navigator>
-                    <navigator url="/pages/plugins/ask/user-list/user-list" hover-class="none" class="flex-1 tc flex-col jc-c align-c">
+                    </view>
+                    <view data-value="/pages/plugins/ask/user-list/user-list" @tap="url_event" class="flex-1 tc flex-col jc-c align-c cp">
                         <view class="wh-auto"> <iconfont name="icon-wenda-wdtw" size="32rpx" color="#333" propClass="margin-right-sm pr top-xs"></iconfont>{{ $t('detail.detail.p7o522') }}</view>
-                    </navigator>
+                    </view>
                 </view>
             </view>
         </view>
@@ -221,7 +221,7 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
-            },
+            }
         },
     };
 </script>

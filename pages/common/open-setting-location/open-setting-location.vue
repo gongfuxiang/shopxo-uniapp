@@ -132,7 +132,7 @@ export default {
                     }
                 }
             });
-        },
+        }
     },
 };
 </script>

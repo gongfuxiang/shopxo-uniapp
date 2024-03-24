@@ -1644,9 +1644,7 @@
 
             // 第三方登录绑定账号取消
             plugins_thirdpartylogin_cancel_event(e) {
-                uni.redirectTo({
-                    url: '/pages/login/login',
-                });
+                app.globalData.url_open('/pages/login/login', true);
             },
 
             // 成功返回

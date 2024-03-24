@@ -40,9 +40,7 @@
         </scroll-view>
 
         <!-- 新增入口 -->
-        <navigator url="/pages/plugins/distribution/visit-form/visit-form" hover-class="none">
-            <view class="buttom-right-submit bg-main cr-white round tc">+</view>
-        </navigator>
+        <view data-value="/pages/plugins/distribution/visit-form/visit-form" @tap="url_event" class="buttom-right-submit bg-main cr-white round tc">+</view>
     </view>
 </template>
 <script>

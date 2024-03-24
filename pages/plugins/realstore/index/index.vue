@@ -250,9 +250,7 @@
             // 搜索事件
             search_button_event(e) {
                 var params = (e || null) == null ? '' : '?keywords=' + e;
-                uni.navigateTo({
-                    url: '/pages/plugins/realstore/search/search' + params,
-                });
+                app.globalData.url_open('/pages/plugins/realstore/search/search' + params);
             },
 
             // 选择地理位置

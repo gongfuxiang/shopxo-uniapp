@@ -5,7 +5,7 @@
                 <text class="text-wrapper" :class="propTitleLeftBorder ? 'title-left-border' : ''" :style="'color:' + propTitleColor + ';'">{{propTitle}}</text>
                 <text class="vice-name margin-left-sm" :style="'color:' + propViceTitleColor + ';'">{{propViceTitle}}</text>
             </view>
-            <navigator :url="propMoreUrl" hover-class="none" class="arrow-right padding-right cr-grey">{{propMore || this.$t('common.more')}}</navigator>
+            <text :data-value="propMoreUrl" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{propMore || this.$t('common.more')}}</text>
         </view>
     </view>
 </template>
@@ -13,6 +13,11 @@
 <script>
     const app = getApp();
     export default {
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+            };
+        },
         props: {
             propTitle: {
                 type: String,
@@ -43,10 +48,11 @@
                 default: true
             },
         },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-            };
+        methods: {
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         }
     }
 </script>

@@ -450,9 +450,7 @@
                         buy_type: 'cart',
                         ids: ids.join(','),
                     }, 'buy');
-                uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                });
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
             },
 
             // 门店状态判断

@@ -218,9 +218,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    uni.redirectTo({
-                                        url: '/pages/plugins/wallet/user/user?type=2',
-                                    });
+                                    app.globalData.url_open('/pages/plugins/wallet/user/user?type=2', true);
                                 }, 1000);
                             } else {
                                 this.setData({

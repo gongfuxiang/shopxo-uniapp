@@ -639,16 +639,12 @@
                 }
 
                 // 进入售后页面
-                uni.navigateTo({
-                    url: '/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did,
-                });
+                app.globalData.url_open('/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + oid + '&did=' + did);
             },
 
             // 订单评论
             comments_event(e) {
-                uni.navigateTo({
-                    url: '/pages/user-order-comments/user-order-comments?id=' + e.currentTarget.dataset.value,
-                });
+                app.globalData.url_open('/pages/user-order-comments/user-order-comments?id=' + e.currentTarget.dataset.value);
             },
 
             // 选中处理
@@ -745,9 +741,7 @@
                     buy_type: 'goods',
                     goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
                 };
-                uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                });
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
             },
 
             // 订单商品加入购物车处理
@@ -765,9 +759,7 @@
                         if (res.data.code == 0) {
                             app.globalData.showToast(res.data.msg, "success");
                             setTimeout(function() {
-                                uni.navigateTo({
-                                    url: '/pages/cart-page/cart-page'
-                                });
+                                app.globalData.url_open('/pages/cart-page/cart-page');
                             }, 1000);
                         } else {
                             if (app.globalData.is_login_check(res.data, self, "continue_order_goods_cart_handle", goods_data)) {

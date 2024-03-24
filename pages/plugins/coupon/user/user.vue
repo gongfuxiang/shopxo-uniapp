@@ -135,10 +135,6 @@
 
             // 获取数据
             get_data_list() {
-                var self = this;
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
                 if (this.data_list == null || (this.data_list[this.nav_tabs_value] || null) == null || this.data_list[this.nav_tabs_value].length <= 0) {
                     this.setData({
                         data_list_loding_status: 1,
@@ -150,29 +146,27 @@
                     data: {},
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            self.setData({
+                            this.setData({
                                 data_list: res.data.data || null,
                                 data_list_loding_msg: this.$t('user.user.3ks1wi'),
                             });
-                            self.data_view_handle();
+                            this.data_view_handle();
                         } else {
-                            self.setData({
+                            this.setData({
                                 data_bottom_line_status: false,
                                 data_list_loding_status: 2,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, self, 'get_data_list')) {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
                         uni.stopPullDownRefresh();
-                        self.setData({
+                        this.setData({
                             data_bottom_line_status: false,
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),

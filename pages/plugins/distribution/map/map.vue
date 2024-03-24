@@ -208,9 +208,7 @@
                     });
                 } else {
                     if(app.globalData.data.is_distribution_map_force_location == 1) {
-                        uni.navigateTo({
-                            url: '/pages/common/open-setting-location/open-setting-location?is_check_success_back=1'
-                        });
+                        app.globalData.url_open('/pages/common/open-setting-location/open-setting-location?is_check_success_back=1');
                     } else {
                         // 获取数据
                         self.get_data();
@@ -297,9 +295,7 @@
             // 用户订单事件
             user_order_event(e) {
                 var value = e.currentTarget.dataset.value;
-                uni.navigateTo({
-                    url: '/pages/plugins/distribution/order/order?uid='+value
-                });
+                app.globalData.url_open('/pages/plugins/distribution/order/order?uid='+value);
             }
         }
     };

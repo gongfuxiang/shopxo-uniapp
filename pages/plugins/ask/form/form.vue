@@ -121,9 +121,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    uni.redirectTo({
-                                        url: '/pages/plugins/ask/user-list/user-list',
-                                    });
+                                    app.globalData.url_open('/pages/plugins/ask/user-list/user-list', true);
                                 }, 2000);
                             } else {
                                 this.setData({

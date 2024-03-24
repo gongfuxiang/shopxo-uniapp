@@ -271,9 +271,7 @@
                     buy_type: 'goods',
                     goods_data: encodeURIComponent(base64.encode(JSON.stringify(goods_data))),
                 };
-                uni.navigateTo({
-                    url: '/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))),
-                });
+                app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
             },
 
             // 数量输入事件

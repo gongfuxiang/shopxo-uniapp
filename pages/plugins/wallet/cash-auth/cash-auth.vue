@@ -43,9 +43,7 @@
                 </view>
 
                 <view v-if="check_account_list.length == 0" class="margin-top-xxxl">
-                    <navigator url="/pages/login/login?opt_form=bind_verify" hover-class="none">
-                        <button class="bg-main br-main cr-white text-size round" type="default">{{$t('cash-auth.cash-auth.d2ng16')}}</button>
-                    </navigator>
+                    <button data-value="/pages/login/login?opt_form=bind_verify" @tap="url_event" class="bg-main br-main cr-white text-size round" type="default">{{$t('cash-auth.cash-auth.d2ng16')}}</button>
                 </view>
             </view>
             <view v-else>
@@ -272,9 +270,7 @@
                                 form_submit_disabled_status: false,
                             });
                             if (res.data.code == 0) {
-                                uni.redirectTo({
-                                    url: '/pages/plugins/wallet/cash-create/cash-create',
-                                });
+                                app.globalData.url_open('/pages/plugins/wallet/cash-create/cash-create', true);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
@@ -293,6 +289,11 @@
                     });
                 }
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

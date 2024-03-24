@@ -3,13 +3,13 @@
         <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
             <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
                 <view v-for="(item, index) in data_list" :key="index" class="padding-main border-radius-main oh bg-white spacing-mb">
-                    <navigator :url="'/pages/plugins/shop/detail/detail?id=' + item.shop_info.id" hover-class="none">
+                    <view :data-value="'/pages/plugins/shop/detail/detail?id=' + item.shop_info.id" @tap="url_event" class="cp">
                         <image class="logo fl radius" :src="item.shop_info.logo" mode="aspectFill"></image>
                         <view class="base">
                             <view class="single-text fw-b">{{item.shop_info.name}}</view>
                             <view class="multi-text cr-grey margin-top-sm">{{item.shop_info.describe}}</view>
                         </view>
-                    </navigator>
+                    </view>
                     <button class="br-yellow cr-yellow bg-white fr round" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                 </view>
             </view>
@@ -239,6 +239,11 @@
                         }
                     }
                 });
+            },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
             }
         }
     };

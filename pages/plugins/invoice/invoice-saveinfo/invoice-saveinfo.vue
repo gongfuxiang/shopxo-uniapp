@@ -394,9 +394,7 @@
                                     setTimeout(function () {
                                         // 是否关闭页面进入我的发票、适合从订单开票中过来提交成功直接进入我的发票列表
                                         if (is_to) {
-                                            uni.redirectTo({
-                                                url: '/pages/plugins/invoice/invoice/invoice',
-                                            });
+                                            app.globalData.url_open('/pages/plugins/invoice/invoice/invoice', true);
                                         } else {
                                             uni.navigateBack();
                                         }

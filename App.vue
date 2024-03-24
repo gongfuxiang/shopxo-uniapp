@@ -941,12 +941,20 @@
 
             /**
              * 打开 webview页面
-             * value    [string]  url地址
+             * value       [string]  url地址
+             * is_redirect [boolean] 是否关闭当前页面
              */
-            open_web_view(value) {
-                uni.navigateTo({
-                    url: '/pages/web-view/web-view?url=' + encodeURIComponent(value),
-                });
+            open_web_view(value, is_redirect = false) {
+                var url = '/pages/web-view/web-view?url=' + encodeURIComponent(value);
+                if(is_redirect) {
+                    uni.redirectTo({
+                        url: url,
+                    });
+                } else {
+                    uni.navigateTo({
+                        url: url,
+                    });
+                }
             },
 
             /**
@@ -1511,9 +1519,17 @@
             // url打开
             url_open(value, is_redirect = false) {
                 if ((value || null) != null) {
+                    // #ifdef MP
+                    // 小程序最多打开10层页面
+                    var pages = getCurrentPages();
+                    if(pages.length >= 10) {
+                        is_redirect = true;
+                    }
+                    // #endif
+
                     // web地址
                     if (this.is_url(value)) {
-                        this.open_web_view(value);
+                        this.open_web_view(value, is_redirect);
                         // 打开外部小程序协议
                     } else if (value.substr(0, 8) == 'appid://') {
                         uni.navigateToMiniProgram({

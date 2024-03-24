@@ -866,14 +866,10 @@
                         confirmText: this.$t('common.confirm'),
                         showCancel: false,
                         success(res) {
-                            uni.redirectTo({
-                                url: self.to_appoint_page,
-                            });
+                            app.globalData.url_open(self.to_appoint_page, true);
                         },
                         fail(res) {
-                            uni.redirectTo({
-                                url: this.to_appoint_page,
-                            });
+                            app.globalData.url_open(this.to_appoint_page, true);
                         },
                     });
                 } else {
@@ -1013,13 +1009,9 @@
 
                 // 仅自提和快递需要选择地址
                 if (this.common_site_type == 0 || (this.common_site_type == 4 && this.site_model == 0)) {
-                    uni.navigateTo({
-                        url: '/pages/user-address/user-address?is_back=1' + params,
-                    });
+                    app.globalData.url_open('/pages/user-address/user-address?is_back=1' + params);
                 } else if (this.common_site_type == 2 || (this.common_site_type == 4 && this.site_model == 2)) {
-                    uni.navigateTo({
-                        url: '/pages/extraction-address/extraction-address?is_back=1&is_buy=1' + params,
-                    });
+                    app.globalData.url_open('/pages/extraction-address/extraction-address?is_back=1&is_buy=1' + params);
                 } else {
                     app.globalData.showToast(this.$t('buy.buy.31616e'));
                 }

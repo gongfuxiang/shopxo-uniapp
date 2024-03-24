@@ -737,9 +737,7 @@
             to_success_page_event() {
                 if (this.propToPage) {
                     // 跳转支付页面
-                    uni.redirectTo({
-                        url: this.propToPage,
-                    });
+                    app.globalData.url_open(this.propToPage, true);
                 } else {
                     let url_data = {
                         code: '9000',
@@ -747,14 +745,10 @@
                     url_data = Object.assign({}, url_data, this.propToPageBack);
                     if (this.propIsRedirectTo) {
                         // 跳转支付页面
-                        uni.redirectTo({
-                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                        });
+                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))), true);
                     } else {
                         // 跳转支付页面
-                        uni.navigateTo({
-                            url: '/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))),
-                        });
+                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))));
                     }
                 }
             },
@@ -772,17 +766,13 @@
                             success(res) {
                                 if (res.confirm) {
                                     // 跳转支付页面
-                                    uni.redirectTo({
-                                        url: to_fail_page,
-                                    });
+                                    app.globalData.url_open(to_fail_page, true);
                                 }
                             },
                         });
                     } else {
                         // 跳转支付页面
-                        uni.redirectTo({
-                            url: to_fail_page,
-                        });
+                        app.globalData.url_open(to_fail_page, true);
                     }
                 } else {
                     if (msg) {
@@ -793,9 +783,7 @@
             to_other(order_id) {
                 if (this.propToAppointPage) {
                     // 跳转订单列表页
-                    uni.redirectTo({
-                        url: this.propToAppointPage,
-                    });
+                    app.globalData.url_open(this.propToAppointPage, true);
                 }
             },
             // 页面卸载

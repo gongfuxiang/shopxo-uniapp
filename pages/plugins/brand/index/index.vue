@@ -34,13 +34,11 @@
             <!-- 列表 -->
             <view v-if="(brand_list || null) != null && brand_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in brand_list" :key="index">
-                    <view v-if="(item.is_not_show || 0) == 0" class="item border-radius-main bg-white oh spacing-mb">
-                        <navigator :url="'/pages/goods-search/goods-search?brand=' + item.id" hover-class="none">
-                            <image :src="item.logo" mode="aspectFit"></image>
-                            <view class="padding-main tc">
-                                <view class="single-text fw-b cr-base">{{ item.name }}</view>
-                            </view>
-                        </navigator>
+                    <view v-if="(item.is_not_show || 0) == 0" :data-value="'/pages/goods-search/goods-search?brand=' + item.id" @tap="url_event" class="item border-radius-main bg-white oh cp spacing-mb">
+                        <image :src="item.logo" mode="aspectFit"></image>
+                        <view class="padding-main tc">
+                            <view class="single-text fw-b cr-base">{{ item.name }}</view>
+                        </view>
                     </view>
                 </block>
             </view>
@@ -204,6 +202,11 @@
                     data_bottom_line_status: count > 0,
                 });
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>
