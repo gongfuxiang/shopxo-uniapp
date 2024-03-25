@@ -166,7 +166,7 @@
                                 <block v-if="(data_list || null) != null && data_list.length > 0">
                                     <block v-for="(item, index) in data_list" :key="index">
                                         <view :class="'goods-item bg-white padding-main border-radius-main oh spacing-mb '+((item.is_highlight || 0) == 1 ? 'item-highlight' : '')">
-                                            <view :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
+                                            <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + item.id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
                                                 <view class="flex-row jc-sb">
                                                     <image :src="item.images" mode="widthFix" class="goods-img radius fl br"></image>
                                                     <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -883,9 +883,15 @@
                 return this.$refs.realstore_cart.get_buy_use_type_index();
             },
 
-            // 商品url事件
-            goods_url_event(e) {
+            // 商品事件
+            goods_event(e) {
+                // 是否可以打开商品页面
                 if(app.globalData.data.is_realstore_forbid_to_goods_detail != 1) {
+                    // 商品数据缓存处理
+                    var goods = this.data_list[e.currentTarget.dataset.index];
+                    app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                    // 调用公共打开url地址
                     app.globalData.url_event(e);
                 }
             },

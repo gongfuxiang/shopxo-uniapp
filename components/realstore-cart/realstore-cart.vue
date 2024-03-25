@@ -27,7 +27,7 @@
                         </view>
                         <scroll-view :scroll-y="true" class="cart-list goods-list">
                             <view v-for="(goods, index) in cart.data" :key="index" class="item padding-main oh spacing-mb">
-                                <view :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_url_event">
+                                <view :data-index="index" :data-value="'/pages/goods-detail/goods-detail?id=' + goods.goods_id + '&is_opt_back=1&buy_use_type_index=' + buy_use_type_index + '&realstore_id=' + info.id" @tap="goods_event">
                                     <view class="flex-row jc-sb">
                                         <image :src="goods.images" mode="widthFix" class="goods-img radius br"></image>
                                         <view class="goods-base flex-1 flex-width padding-left-main flex-col jc-sb">
@@ -952,9 +952,16 @@
                 this.get_cart_data();
             },
 
-            // 商品url事件
-            goods_url_event(e) {
+            // 商品事件
+            goods_event(e) {
+                // 是否可以打开商品页面
                 if(app.globalData.data.is_realstore_forbid_to_goods_detail != 1) {
+                    // 商品数据缓存处理
+                    var goods = this.cart.data[e.currentTarget.dataset.index];
+                    goods['id'] = goods.goods_id;
+                    app.globalData.goods_data_cache_handle(goods.id, goods);
+
+                    // 调用公共打开url地址
                     app.globalData.url_event(e);
                 }
             }
