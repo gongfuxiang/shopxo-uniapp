@@ -40,14 +40,10 @@
 /**
 * 左侧导航
 */
-.left-content-actual-list {
-    padding-bottom: 120rpx;
-    background-color: #f5f5f5;
-}
-
-
 .left-nav {
     width: 200rpx;
+    background-color: #f5f5f5;
+    height: 100%;
 }
 .left-nav .item {
     height: 80rpx;
@@ -58,6 +54,9 @@
 .left-nav .nav-active {
     background: #fff;
     font-weight: 500;
+}
+.left-content-actual-list {
+    height: calc(100% - 100rpx);
 }
 
 /**

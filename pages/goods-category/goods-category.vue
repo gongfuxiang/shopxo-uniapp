@@ -74,20 +74,18 @@
                                         </component-nav-more>
                                     </view>
                                     <!-- 二级导航 -->
-                                    <view v-if="category_one_subset_count > 0" class="left-nav bg-white ht-auto">
+                                    <view v-if="category_one_subset_count > 0" :class="'left-nav '+(category_goods_is_show_cart_nav == 1 ? 'left-content-actual-list' : '')">
                                         <scroll-view :scroll-y="true" :show-scrollbar="false" class="ht-auto">
-                                            <view :class="'left-content-actual ht-auto '+(category_goods_is_show_cart_nav == 1 ? 'left-content-actual-list' : '')">
-                                                <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
-                                                    <text>{{ $t('common.all') }}</text>
-                                                </view>
-                                                <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
-                                                    <block v-for="(item, index) in data_content.items" :key="index">
-                                                        <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
-                                                            <text>{{ item.name }}</text>
-                                                        </view>
-                                                    </block>
-                                                </block>
+                                            <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == -1 ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
+                                                <text>{{ $t('common.all') }}</text>
                                             </view>
+                                            <block v-if="(data_content || null) != null && (data_content.items || null) != null && data_content.items.length > 0">
+                                                <block v-for="(item, index) in data_content.items" :key="index">
+                                                    <view :class="'text-size-sm item tc cr-base cp oh ' + (nav_active_item_two_index == index ? 'nav-active cr-main nav-left-border' : '')" :data-index="nav_active_index" :data-itemtwoindex="index" :data-itemthreeindex="-1" @tap="nav_event">
+                                                        <text>{{ item.name }}</text>
+                                                    </view>
+                                                </block>
+                                            </block>
                                         </scroll-view>
                                     </view>
                                     <!-- 商品列表 -->
