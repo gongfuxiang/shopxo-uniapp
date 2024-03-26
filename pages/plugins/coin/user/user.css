@@ -11,7 +11,7 @@
     border-bottom-right-radius: 60rpx;
 }
 
-.coin-oprate-list {
+.coin-operate-list {
     --size: 96rpx;
     width: var(--size);
     height: var(--size);

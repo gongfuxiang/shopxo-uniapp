@@ -1,23 +1,25 @@
 <template>
     <view :class="theme_view">
-        <view>
+        <view v-if="coin_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main pr">
                     <view class="padding-lg bg-white radius-md margin-bottom-main">
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
-                                    <image :src="coin_list[coin_index_old]['img']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[coin_index_old]['name'] }}</text>
+                                    <image :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[send_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
-                                <view class="margin-top-main text-size-xs flex-row align-c"> <text class="margin-right-sm">余额:</text><text class="cr-blue">23.234</text> </view>
+                                <view class="margin-top-main text-size-xs flex-row align-c">
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['normal_coin'] }}</text>
+                                </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="金额" />
-                                <view class="margin-top-main tr text-size-xs">$21.00</view>
+                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="金额" @input="default_value_change" />
+                                <view class="margin-top-main tr text-size-xs">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
@@ -26,17 +28,19 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
-                                    <image :src="coin_list[coin_index_new]['img']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[coin_index_new]['name'] }}</text>
+                                    <image :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[receive_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
-                                <view class="margin-top-main text-size-xs flex-row align-c"> <text class="margin-right-sm">余额:</text><text class="cr-blue">23.234</text> </view>
+                                <view class="margin-top-main text-size-xs flex-row align-c">
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['normal_coin'] }}</text>
+                                </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled placeholder="金额" />
-                                <view class="margin-top-main tr text-size-xs">$21.00</view>
+                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled placeholder="金额" />
+                                <view class="margin-top-main tr text-size-xs">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="flex-row align-c">
@@ -46,7 +50,7 @@
                     </view>
                     <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
                         <text class="padding-right">支付密码</text>
-                        <input type="number" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                        <input type="number" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
                     </view>
                     <view class="padding-main radius-md margin-bottom-main">
                         <button type="default" class="convert-btn cr-white round" @tap="convert_submit">立即转换</button>
@@ -63,10 +67,10 @@
                     </view>
                     <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
                         <view class="scroll-y">
-                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
                                 <view class="flex-row align-c">
-                                    <image :src="item.img" mode="widthFix" class="coin-list-img round" />
-                                    <view class="margin-left-sm text-size-md single-text">{{ item.name }}</view>
+                                    <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                    <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
                                     <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
@@ -98,21 +102,31 @@
                 // 虚拟币状态
                 coin_type: 1,
                 coin_index: 0,
-                coin_index_old: 0,
-                coin_index_new: 0,
+                // 下标
+                send_accounts_id_index: 0,
+                receive_accounts_id_index: 0,
+                // id
+                send_accounts_id: 0,
+                receive_accounts_id: 0,
                 popup_coin_status: false,
                 coin_list: [
-                    {
-                        name: 'BTC',
-                        img: wallet_static_url + 'user-head-bg.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'user-head-bg.png',
-                    },
+                    // {
+                    //     name: 'BTC',
+                    //     img: wallet_static_url + 'user-head-bg.png',
+                    // },
+                    // {
+                    //     name: 'USDT-polygon',
+                    //     img: wallet_static_url + 'user-head-bg.png',
+                    // },
                 ],
                 // 是否转换
                 convert_bool: false,
+                // 输入默认金额
+                default_value: '',
+                // 转换金额
+                convert_value: '0.00',
+                // 支付密码
+                pay_pwd: '',
             };
         },
 
@@ -149,24 +163,64 @@
             },
 
             // 获取数据
-            get_data() {},
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('createinfo', 'convert', 'coin'),
+                    method: 'POST',
+                    data: { send_accounts_id: this.send_accounts_id, receive_accounts_id: this.receive_accounts_id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                coin_list: data.accounts_list || [],
+                                convert_value: data.convert_value || '0',
+                                send_accounts_id: data.send_accounts.id,
+                                receive_accounts_id: data.receive_accounts.id,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
             // 虚拟币切换
             popup_coin_status_event(type) {
                 this.setData({
                     coin_type: type,
-                    coin_index: type == 1 ? this.coin_index_old : this.coin_index_new,
+                    coin_index: type == 1 ? this.send_accounts_id_index : this.receive_accounts_id_index,
                     popup_coin_status: true,
                 });
             },
             coin_checked_event(e) {
                 if (this.coin_type == 1) {
                     this.setData({
-                        coin_index_old: parseInt(e.currentTarget.dataset.index || 0),
+                        send_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
+                        send_accounts_id: e.currentTarget.dataset.value,
                     });
                 } else {
                     this.setData({
-                        coin_index_new: parseInt(e.currentTarget.dataset.index || 0),
+                        receive_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
+                        receive_accounts_id: e.currentTarget.dataset.value,
                     });
                 }
                 this.setData({
@@ -182,17 +236,77 @@
 
             // 虚拟货币调换
             coin_center_convert_event() {
-                var old_index = this.coin_index_old;
-                var new_index = this.coin_index_new;
+                var send_index = this.send_accounts_id_index;
+                var receive_index = this.receive_accounts_id_index;
+                var send_id = this.send_accounts_id;
+                var receive_id = this.receive_accounts_id;
                 this.setData({
-                    coin_index_new: old_index,
-                    coin_index_old: new_index,
+                    receive_accounts_id_index: send_index,
+                    send_accounts_id_index: receive_index,
+                    receive_accounts_id: send_id,
+                    send_accounts_id: receive_id,
                     convert_bool: !this.convert_bool,
+                });
+            },
+            default_value_change(e) {
+                this.setData({
+                    default_value: e.detail.value,
                 });
             },
 
             // 立即转换
-            convert_submit() {},
+            convert_submit() {
+                var new_data = {
+                    send_accounts_id: this.send_accounts_id,
+                    receive_accounts_id: this.receive_accounts_id,
+                    coin: this.default_value,
+                };
+
+                // 数据校验
+                var validation = [{ fields: 'coin', msg: '请输入转换金额' }];
+
+                // 验证提交表单
+                if (app.globalData.fields_check(new_data, validation)) {
+                    // 远程请求
+                    this.setData({
+                        form_submit_loading: true,
+                    });
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('create', 'convert', 'coin'),
+                        method: 'POST',
+                        data: new_data,
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                                setTimeout(function () {
+                                    app.globalData.url_open('/pages/plugins/coin/convert-detail/convert-detail', true);
+                                }, 1000);
+                            } else {
+                                this.setData({
+                                    form_submit_loading: false,
+                                });
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(res.data.msg);
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
+                            }
+                        },
+                        fail: () => {
+                            this.setData({
+                                form_submit_loading: false,
+                            });
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
+            },
 
             // 页面滚动监听
             scroll_event(e) {
