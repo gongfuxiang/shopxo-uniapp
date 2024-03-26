@@ -324,11 +324,13 @@
                             <view v-if="(plugins_thirdpartylogin_data || null) != null && (plugins_thirdpartylogin_config || null) != null" class="plugins-thirdpartylogin tc">
                                 <view class="text-size-xs cr-grey-c margin-bottom-main">{{ $t('login.login.9q27d8') }}</view>
                                 <view class="flex-row align-c jc-c">
-                                    <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index < 3">
-                                        <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" @tap="plugins_thirdpartylogin_event">
-                                            <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
-                                        </view>
-                                    </block>
+                                    <view v-for="(item, key, index) in plugins_thirdpartylogin_data" :key="index">
+                                        <block v-if="index < 3">
+                                            <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" @tap="plugins_thirdpartylogin_event">
+                                                <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
+                                            </view>
+                                        </block>
+                                    </view>
                                     <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round more-submit" @tap="popup_login_open_event">
                                         <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
                                     </view>
@@ -380,11 +382,13 @@
                 <component-popup :propShow="popup_login_status" propMostClass="z-i-deep pr" propPosition="bottom" :propIsRadius="false" propStyle="background-color:transparent;" @onclose="popup_login_close_event">
                     <view class="popup-login padding-sm">
                         <view class="bg-white border-radius-main content">
-                            <block v-for="(item, key, index) in plugins_thirdpartylogin_data" v-if="index > 2">
-                                <view class="item padding-lg flex-col jc-c align-c" :data-type="key" @tap="plugins_thirdpartylogin_event">
-                                    <view class="flex-row align-c login-width text-size-lg"> <image :src="item.icon" mode="aspectFit" class="margin-right-main"></image>{{ item.name }} </view>
-                                </view>
-                            </block>
+                            <view v-for="(item, key, index) in plugins_thirdpartylogin_data" :key="index">
+                                <block v-if="index > 2">
+                                    <view class="item padding-lg flex-col jc-c align-c" :data-type="key" @tap="plugins_thirdpartylogin_event">
+                                        <view class="flex-row align-c login-width text-size-lg"> <image :src="item.icon" mode="aspectFit" class="margin-right-main"></image>{{ item.name }} </view>
+                                    </view>
+                                </block>
+                            </view>
                         </view>
                         <view class="margin-top-main tc footer">
                             <view class="padding-main text-size-lg fw-b bg-white cancel-btn" @tap="popup_login_close_event">{{ $t('common.cancel') }}</view>
