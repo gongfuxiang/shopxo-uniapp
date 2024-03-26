@@ -582,7 +582,7 @@
                             var data = res.data.data;
                             var active_index = this.nav_active_index;
                             var temp_category = data.category || [];
-                            // 全部分类子集数量
+                            // 全部分类子级数量
                             var category_one_subset_count = 0;
                             // 是否指定分类
                             if (temp_category.length > 0) {

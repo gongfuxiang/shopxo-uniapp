@@ -1,5 +1,6 @@
 {
-    "pages": [{
+    "pages": [
+        {
             "path": "pages/index/index",
             "style": {
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
@@ -63,259 +64,358 @@
                 "enablePullDownRefresh": true,
                 "navigationBarTitleText": ""
             }
-        },
-        {
-            "path": "pages/cart-page/cart-page",
-            "style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                "navigationStyle": "custom",
-                // #endif
-                // #ifdef MP-ALIPAY
-                "transparentTitle": "always",
-                "titlePenetrate": "YES",
-                // 该页不显示滚动条
-                "scrollIndicator": "none",
-                // #endif
-                "enablePullDownRefresh": false,
-                // 禁止页面下拉
-                "disableScroll": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/buy/buy",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/web-view/web-view",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/login/login",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/paytips/paytips",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/goods-search/goods-search",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/goods-detail/goods-detail",
-            "style": {
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                "navigationStyle": "custom",
-                // #endif
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/goods-comment/goods-comment",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-address/user-address",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-address-save/user-address-save",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-order/user-order",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-order-detail/user-order-detail",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-order-comments/user-order-comments",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-favor/user-favor",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-goods-comments/user-goods-comments",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-goods-comments-form/user-goods-comments-form",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/message/message",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-integral/user-integral",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-goods-browse/user-goods-browse",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-orderaftersale/user-orderaftersale",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/user-orderaftersale-detail/user-orderaftersale-detail",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-
-            }
-        },
-        {
-            "path": "pages/extraction-address/extraction-address",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/common/open-setting-location/open-setting-location",
-            "style": {
-                // #ifndef MP-TOUTIAO
-                "navigationStyle": "custom",
-                // #endif
-                "enablePullDownRefresh": false
-            }
-        },
-        {
-            "path": "pages/common/agreement/agreement",
-            "style": {
-                // #ifndef MP-TOUTIAO
-                "navigationStyle": "custom",
-                // #endif
-                "enablePullDownRefresh": false
-            }
-        },
-        {
-            "path": "pages/customview/customview",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/design/design",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/error/error",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/article-category/article-category",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/article-detail/article-detail",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/setup/setup",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/personal/personal",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/logout/logout",
-            "style": {
-                "enablePullDownRefresh": false,
-                "navigationBarTitleText": ""
-            }
-        },
-        {
-            "path": "pages/password/password",
-            "style": {
-                "enablePullDownRefresh": true,
-                "navigationBarTitleText": ""
-            }
         }
     ],
-    "subPackages": [{
+    "subPackages": [
+        {
+            "root": "pages/goods-detail",
+            "pages": [{
+                "path": "goods-detail",
+                "style": {
+                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                    "navigationStyle": "custom",
+                    // #endif
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/login",
+            "pages": [{
+                "path": "login",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/cart-page",
+            "pages": [{
+                "path": "cart-page",
+                "style": {
+                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                    "navigationStyle": "custom",
+                    // #endif
+                    // #ifdef MP-ALIPAY
+                    "transparentTitle": "always",
+                    "titlePenetrate": "YES",
+                    // 该页不显示滚动条
+                    "scrollIndicator": "none",
+                    // #endif
+                    "enablePullDownRefresh": false,
+                    // 禁止页面下拉
+                    "disableScroll": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/buy",
+            "pages": [{
+                "path": "buy",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/goods-search",
+            "pages": [{
+                "path": "goods-search",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/goods-comment",
+            "pages": [{
+                "path": "goods-comment",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-address",
+            "pages": [{
+                "path": "user-address",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-address-save",
+            "pages": [{
+                "path": "user-address-save",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-order",
+            "pages": [{
+                "path": "user-order",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-order-detail",
+            "pages": [{
+                "path": "user-order-detail",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-order-comments",
+            "pages": [{
+                "path": "user-order-comments",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-favor",
+            "pages": [{
+                "path": "user-favor",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-goods-comments",
+            "pages": [{
+                "path": "user-goods-comments",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-goods-comments-form",
+            "pages": [{
+                "path": "user-goods-comments-form",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/message",
+            "pages": [{
+                "path": "message",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-integral",
+            "pages": [{
+                "path": "user-integral",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-goods-browse",
+            "pages": [{
+                "path": "user-goods-browse",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-orderaftersale",
+            "pages": [{
+                "path": "user-orderaftersale",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/user-orderaftersale-detail",
+            "pages": [{
+                "path": "user-orderaftersale-detail",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/extraction-address",
+            "pages": [{
+                "path": "extraction-address",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/common/open-setting-location",
+            "pages": [{
+                "path": "open-setting-location",
+                "style": {
+                    // #ifndef MP-TOUTIAO
+                    "navigationStyle": "custom",
+                    // #endif
+                    "enablePullDownRefresh": false
+                }
+            }]
+        },
+        {
+            "root": "pages/common/agreement",
+            "pages": [{
+                "path": "agreement",
+                "style": {
+                    // #ifndef MP-TOUTIAO
+                    "navigationStyle": "custom",
+                    // #endif
+                    "enablePullDownRefresh": false
+                }
+            }]
+        },
+        {
+            "root": "pages/customview",
+            "pages": [{
+                "path": "customview",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/design",
+            "pages": [{
+                "path": "design",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/web-view",
+            "pages": [{
+                "path": "web-view",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/paytips",
+            "pages": [{
+                "path": "paytips",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/error",
+            "pages": [{
+                "path": "error",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/article-category",
+            "pages": [{
+                "path": "article-category",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/article-detail",
+            "pages": [{
+                "path": "article-detail",
+                "style": {
+                    "enablePullDownRefresh": true,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/setup",
+            "pages": [{
+                "path": "setup",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/personal",
+            "pages": [{
+                "path": "personal",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/logout",
+            "pages": [{
+                "path": "logout",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
+            "root": "pages/password",
+            "pages": [{
+                "path": "password",
+                "style": {
+                    "enablePullDownRefresh": false,
+                    "navigationBarTitleText": ""
+                }
+            }]
+        },
+        {
             "root": "pages/plugins/seckill",
             "pages": [{
                 "path": "index/index",

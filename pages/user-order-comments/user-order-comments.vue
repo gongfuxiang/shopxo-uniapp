@@ -6,13 +6,13 @@
                     <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh">
                         <view class="oh">
                             <view :data-value="item.goods_url" @tap="url_event" class="cp">
-                                <image class="goods-image fl radius br margin-right-lg" :src="item.images" mode="aspectFill"></image>
+                                <image class="goods-image fl radius br margin-right-sm" :src="item.images" mode="aspectFill"></image>
                             </view>
                             <view class="item-base fl margin-top-sm">
                                 <block v-for="(tv, ti) in [1, 2, 3, 4, 5]" :key="ti">
                                     <image class="xingxing-icon va-m" :src="common_static_url + 'stars' + (form_rating_list[index] != undefined && form_rating_list[index] >= tv ? '-active' : '') + '-icon.png'" mode="aspectFill" @tap="rating_event" :data-index="index" :data-value="tv"></image>
                                 </block>
-                                <text v-if="form_rating_list[index] != undefined" class="cr-grey va-m margin-left-lg">{{ rating_msg[form_rating_list[index] - 1] }}</text>
+                                <text v-if="form_rating_list[index] != undefined" class="cr-grey va-m margin-left-xs">{{ rating_msg[form_rating_list[index] - 1] }}</text>
                             </view>
                         </view>
                         <view class="margin-top-main br-t">
@@ -34,7 +34,7 @@
                     <view class="form-gorup anonymous">
                         <switch class="va-m" name="is_anonymous" @change="anonymous_event"></switch>
                         <text class="cr-base va-m">{{$t('user-order-comments.user-order-comments.uboc44')}}</text>
-                        <text class="fr cr-grey margin-top-lg">{{ anonymous_msg_list[anonymous_value] }}</text>
+                        <text class="fr cr-grey margin-top-sm">{{ anonymous_msg_list[anonymous_value] }}</text>
                     </view>
 
                     <view class="form-gorup form-gorup-submit">
