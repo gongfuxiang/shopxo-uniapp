@@ -4,17 +4,17 @@
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
-                    <view class="margin-bottom-xxxxl margin-top-xl padding-bottom-main flex-row jc-sb align-c">
+                    <view v-if="accounts_list.length > 0" class="margin-bottom-xxxxl margin-top-xl padding-bottom-main flex-row jc-sb align-c">
                         <view class="flex-row">
-                            <image :src="coin_list[coin_index]['img']" mode="widthFix" class="coin-content-list-img round" />
+                            <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                             <view class="padding-left-main">
                                 <view class="coin-dropdown text-size-md pr margin-bottom-xs flex-row" @tap="popup_coin_status_open_event">
-                                    <text class="cr-666">{{ coin_list[coin_index]['name'] }}</text>
+                                    <text class="cr-666">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
                                     <view class="padding-left-sm">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
-                                <view class="fw-b text-size">{{ is_price_show ? '5410.00' : '***' }}</view>
+                                <view class="fw-b text-size">{{ is_price_show ? accounts_list[accounts_list_index]['normal_coin'] : '***' }}</view>
                             </view>
                         </view>
                         <view @tap="price_change">
@@ -33,7 +33,7 @@
                     </view>
                 </view>
                 <view class="coin-content padding-lg">
-                    <view v-for="(item, index) in data" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
+                    <view v-for="(item, index) in log_list" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
                             <view>{{ item.type }}</view>
                             <view class="cr-grey-9">{{ item.date }}</view>
@@ -59,55 +59,55 @@
                     </view>
                 </view>
             </scroll-view>
-            <!-- 虚拟币下拉框 -->
-            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="oh">
-                        <view class="fr" @tap.stop="popup_coin_status_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                        </view>
+        </view>
+        <!-- 虚拟币下拉框 -->
+        <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="oh">
+                    <view class="fr" @tap.stop="popup_coin_status_close_event">
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
-                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
-                        <view class="scroll-y">
-                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
-                                <view class="flex-row align-c">
-                                    <image :src="item.img" mode="widthFix" class="coin-list-img round" />
-                                    <view class="margin-left-sm text-size-md single-text">{{ item.name }}</view>
-                                </view>
-                                <view>
-                                    <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
-                                </view>
+                </view>
+                <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
+                    <view class="scroll-y">
+                        <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                            <view class="flex-row align-c">
+                                <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
+                            </view>
+                            <view>
+                                <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                             </view>
                         </view>
                     </view>
                 </view>
-            </component-popup>
-            <!-- 明细 -->
-            <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="oh">
-                        <text class="text-size">明细</text>
-                        <view class="fr" @tap.stop="popup_user_detail_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
-                        <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-accounts-detail/transfer-accounts-detail" @tap="url_event">转账明细</view>
-                        </view>
-                        <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-detail/transaction-detail" @tap="url_event">交易明细</view>
-                        </view>
-                        <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
-                        </view>
-                        <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-detail/convert-detail" @tap="url_event">转换明细</view>
-                        </view>
+            </view>
+        </component-popup>
+        <!-- 明细 -->
+        <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="oh">
+                    <text class="text-size">明细</text>
+                    <view class="fr" @tap.stop="popup_user_detail_close_event">
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-            </component-popup>
-        </view>
+                <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
+                    <view class="flex-width-half">
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-accounts-detail/transfer-accounts-detail" @tap="url_event">转账明细</view>
+                    </view>
+                    <view class="flex-width-half">
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-detail/transaction-detail" @tap="url_event">交易明细</view>
+                    </view>
+                    <view class="flex-width-half">
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
+                    </view>
+                    <view class="flex-width-half">
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-detail/convert-detail" @tap="url_event">转换明细</view>
+                    </view>
+                </view>
+            </view>
+        </component-popup>
     </view>
 </template>
 <script>
@@ -127,74 +127,14 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
+                params: null,
 
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
                 // 虚拟币下标
-                coin_index: 0,
+                accounts_list_index: 0,
                 // 虚拟币下拉框list
-                coin_list: [
-                    {
-                        name: 'BTC',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                ],
+                accounts_list: [],
 
                 // 是否显示虚拟币
                 is_price_show: false,
@@ -221,112 +161,7 @@
                 // 明细弹窗
                 popup_user_detail_status: false,
 
-                data: [
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        type: '消费',
-                        price: '-20000',
-                        price_type: '有效',
-                        init_price: '22198.00',
-                        new_price: '200000.00',
-                    },
-                ],
+                log_list: [],
             };
         },
 
@@ -340,6 +175,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                params: params,
+            });
             this.init();
         },
 
@@ -364,7 +203,45 @@
             },
 
             // 获取数据
-            get_data() {},
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('detail', 'accounts', 'coin'),
+                    method: 'POST',
+                    data: { id: this.params.id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res);
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                accounts_list: data.accounts_list || [],
+                                log_list: data.log_list || [],
+                                accounts_summary: data.accounts_summary || 0,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
             // 显示隐藏虚拟币
             price_change() {
@@ -381,7 +258,7 @@
             // 虚拟币切换
             coin_checked_event(e) {
                 this.setData({
-                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
+                    accounts_list_index: parseInt(e.currentTarget.dataset.index || 0),
                     popup_coin_status: false,
                 });
             },

@@ -1,40 +1,60 @@
 <template>
     <view :class="theme_view">
         <component-nav-back></component-nav-back>
-        <view>
+        <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
                     <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
                         <view>
                             <view class="cr-base text-size-md">总数量</view>
-                            <view class="text-size-40 fw-b">{{ is_price_show ? '5410.00' : '***' }}</view>
+                            <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>
                         </view>
                         <view @tap="price_change">
                             <iconfont :name="is_price_show ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" size="44rpx"></iconfont>
                         </view>
                     </view>
                     <view class="flex-row jc-sb padding-bottom-main">
-                        <view v-for="(item, index) in coin_oprate_list" class="tc text-size-xs" :key="index" :data-value="item.url" :data-method="item.method" @tap="url_event">
-                            <view class="coin-oprate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont :name="item.icon" size="44rpx" color="#635BFF"></iconfont>
+                        <view v-if="data_base.is_enable_recharge == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/recharge/recharge" @tap="url_event">
+                            <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
+                                <iconfont name="icon-recharge" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>{{ item.name }}</view>
+                            <view>充值</view>
+                        </view>
+                        <view v-if="data_base.is_enable_convert == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
+                            <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
+                                <iconfont name="icon-convert" size="44rpx" color="#635BFF"></iconfont>
+                            </view>
+                            <view>转换</view>
+                        </view>
+                        <view v-if="data_base.is_enable_cash == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/withdrawal/withdrawal" @tap="url_event">
+                            <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
+                                <iconfont name="icon-withdrawal" size="44rpx" color="#635BFF"></iconfont>
+                            </view>
+                            <view>提现</view>
+                        </view>
+                        <view class="tc text-size-xs" data-value="/pages/plugins/coin/detail/detail" data-method="true" @tap="url_event">
+                            <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
+                                <iconfont name="icon-detail" size="44rpx" color="#635BFF"></iconfont>
+                            </view>
+                            <view>明细</view>
                         </view>
                     </view>
                 </view>
-                <view class="coin-content padding-lg">
+                <view v-if="accounts_list.length > 0" class="coin-content padding-lg">
                     <view class="bg-white radius-lg padding-sm">
                         <view class="coin-item padding-main">
-                            <view v-for="(item, index) in coin_data" :key="index" class="flex-row jc-sb align-c" :class="coin_data.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'" :data-value="item.url + '?id=' + item.id" @tap="url_event">
-                                <view class="flex-width flex-row align-c padding-right-main">
-                                    <image :src="item.img" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="fw-b single-text margin-left-main">{{ item.name }}</text>
+                            <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c" :class="accounts_list.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'" :data-value="'/pages/plugins/coin/detail/detail?id=' + item.id" @tap="url_event">
+                                <view class="flex-1 flex-width flex-row align-c padding-right-main">
+                                    <image :src="item.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="fw-b single-text margin-left-main">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="flex-col align-e">
-                                    <view class="margin-bottom-xss text-size">{{ item.num }}</view>
-                                    <view class="cr-grey-9">{{ item.price }}</view>
+                                    <view class="margin-bottom-xss text-size">{{ item.default_coin }}</view>
+                                    <view class="cr-grey-9">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
                                 </view>
                             </view>
+                            <!-- 结尾 -->
+                            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                         </view>
                     </view>
                 </view>
@@ -65,6 +85,10 @@
                 </view>
             </component-popup>
         </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </view>
     </view>
 </template>
 <script>
@@ -72,6 +96,7 @@
     import componentNavBack from '@/components/nav-back/nav-back';
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -84,226 +109,16 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
 
                 // 是否显示虚拟币
                 is_price_show: false,
-                // 虚拟币操作列表
-                coin_oprate_list: [
-                    {
-                        name: '充值',
-                        icon: 'icon-recharge',
-                        url: '/pages/plugins/coin/recharge/recharge',
-                    },
-                    {
-                        name: '转换',
-                        icon: 'icon-convert',
-                        url: '/pages/plugins/coin/convert/convert',
-                    },
-                    {
-                        name: '提现',
-                        icon: 'icon-withdrawal',
-                        url: '/pages/plugins/coin/withdrawal/withdrawal',
-                    },
-                    {
-                        name: '明细',
-                        icon: 'icon-detail',
-                        method: true,
-                    },
-                ],
-                coin_data: [
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                    {
-                        id: 0,
-                        img: wallet_static_url + 'user-head-bg.png',
-                        name: 'BTC',
-                        price: '¥20000',
-                        num: '200000',
-                        url: '/pages/plugins/coin/detail/detail',
-                    },
-                ],
+                data_base: null,
+                // 虚拟币数量
+                accounts_summary: 0,
+                accounts_list: [],
                 // 明细弹窗
                 popup_user_detail_status: false,
             };
@@ -313,6 +128,7 @@
             componentNavBack,
             componentNoData,
             componentPopup,
+            componentBottomLine,
         },
         props: {},
 
@@ -343,7 +159,46 @@
             },
 
             // 获取数据
-            get_data() {},
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'user', 'coin'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                accounts_list: data.accounts_list || [],
+                                accounts_summary: data.accounts_summary || 0,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                                data_bottom_line_status: false,
+                            });
+                        } else {
+                            this.setData({
+                                data_bottom_line_status: false,
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_bottom_line_status: false,
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
             // 显示隐藏虚拟币
             price_change() {

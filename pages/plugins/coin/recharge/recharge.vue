@@ -18,7 +18,12 @@
                             <view class="text-size-40 fw-b">38000</view>
                         </view>
                         <view class="recharge-qrcode">
-                            <iconfont name="icon-qrcode" size="160rpx"></iconfont>
+                            <block v-if="recharge_qrcode">
+                                <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" />
+                            </block>
+                            <block v-else>
+                                <iconfont name="icon-qrcode" size="160rpx" color="#f6f6f6"></iconfont>
+                            </block>
                         </view>
                     </view>
                 </view>
@@ -112,7 +117,12 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
+                params: null,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
 
+                // 付款码
+                recharge_qrcode: '',
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
                 // 虚拟币下标
@@ -121,62 +131,6 @@
                 coin_list: [
                     {
                         name: 'BTC',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                    {
-                        name: 'USDT-polygon',
                         img: wallet_static_url + 'recharge-price.png',
                     },
                 ],
@@ -226,6 +180,11 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
+            });
             this.init();
         },
 
@@ -245,12 +204,89 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
+                    this.init_data();
                     this.get_data();
                 }
             },
+            init_data(){
+                uni.request({
+                    url: app.globalData.get_request_url('createinfo', 'recharge', 'coin'),
+                    method: 'POST',
+                    data: { accounts_id: this.params.id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log('1');
+                        console.log(res);
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                accounts_list: data.accounts_list || [],
+                                accounts_summary: data.accounts_summary || 0,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
             // 获取数据
-            get_data() {},
+            get_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'recharge', 'coin'),
+                    method: 'POST',
+                    data: { accounts_id: this.params.id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res);
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                data_base: data.base || null,
+                                accounts_list: data.accounts_list || [],
+                                accounts_summary: data.accounts_summary || 0,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
+                            });
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
             // 显示隐藏虚拟币
             price_change() {
