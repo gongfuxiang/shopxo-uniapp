@@ -91,10 +91,10 @@
                 </view>
             </view>
             <!-- 导航 -->
-            <view v-if="shop_goods_category.length > 0 || shop_navigation.length > 0" class="nav scroll-view-horizontal bg-white padding-top-main">
+            <view v-if="shop_goods_category.length > 0 || shop_navigation.length > 0" class="nav bg-white padding-sm flex-row">
                 <view v-if="shop_goods_category.length > 0" class="item padding-main arrow-bottom nav-shop-category dis-inline-block cp" @tap="nav_shop_category_event">{{$t('recommend-form.recommend-form.203itn')}}</view>
                 <scroll-view scroll-x class="nav-scroll">
-                    <view class="padding-bottom-sm pr">
+                    <view class="pr flex-row">
                         <block v-if="shop_navigation.length > 0">
                             <block v-for="(item, index) in shop_navigation" :key="index">
                                 <block v-if="(item.items || null) == null || item.items.length == 0">

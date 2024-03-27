@@ -74,7 +74,7 @@
 		"article-category": "All articles",
 		"article-detail": "Article details",
 		"setup": "set up",
-        "password": "password modify",
+		"password": "password modify",
 		"personal": "personal data",
 		"logout": "Account cancellation",
 		"plugins-seckill-index": "Limited time flash sale",
@@ -190,7 +190,9 @@
 		"plugins-coin-transaction-detail": "Transaction details",
 		"plugins-coin-withdrawal-detail": "Withdrawal details",
 		"plugins-coin-convert-detail": "Conversion details",
-		"plugins-coin-collection": "Collection"
+		"plugins-coin-collection": "Collection",
+		"plugins-coin-recharge-pay": "Recharge payment",
+		"plugins-coin-recharge-detail": "Recharge details"
 	},
 	"login": {
 		"login": {
@@ -237,9 +239,9 @@
 			"s665h5": "Obtain verification code",
 			"jw378f": "Authorized User Information",
 			"np9177": "Bind phone",
-            "tgsa4d": "Bind email",
-            "876tdf": "Bind account",
-            "87yui2": "Bind successful",
+			"tgsa4d": "Bind email",
+			"876tdf": "Bind account",
+			"87yui2": "Bind successful",
 			"158yg2": "Login with mobile verification code",
 			"r329eu": "Email verification code login",
 			"39hn6v": "Account password registration",
@@ -323,7 +325,7 @@
 		"setup": {
 			"x81v6d": "Replace phone",
 			"j6skqh": "Click to replace",
-            "dfg4wf": "Click to bind",
+			"dfg4wf": "Click to bind",
 			"r7jz13": "update language",
 			"42mba7": "Address",
 			"5eltza": "Click to manage",
@@ -339,7 +341,7 @@
 			"07o10b": "Please bind your phone first",
 			"nwt4o1": "Please log in first",
 			"utnr7g": "Service phone",
-            "87ytgh": "Unbind"
+			"87ytgh": "Unbind"
 		}
 	},
 	"article-category": {
@@ -1705,7 +1707,7 @@
 			"3eqv71": "Please go to the mini program to use the complete service",
 			"08cg8y": "The customer service address is incorrect",
 			"0gwt7z": "Clear successful",
-            "87yghj": "Logout successful",
+			"87yghj": "Logout successful",
 			"di6v5t": "Please obtain authorization first",
 			"nu5058": "Geographic location selection is not supported!",
 			"4v6q86": "No location selected"

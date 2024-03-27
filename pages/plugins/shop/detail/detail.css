@@ -57,10 +57,6 @@
 /**
 * 导航
 */
-.nav {
-    height: 80rpx;
-}
-
 .nav .nav-scroll {
     float: right;
     width: calc(100% - 172rpx);
@@ -69,6 +65,7 @@
 .nav .nav-scroll .item.par {
     height: 56rpx;
     line-height: 56rpx;
+    white-space: nowrap;
 }
 
 .nav .item {
@@ -101,6 +98,7 @@
     z-index: 1;
     box-shadow: 0 12rpx 12rpx rgb(0 0 0 / 10%);
     border-bottom-right-radius: 8rpx;
+    margin-top: 70rpx;
 }
 
 .nav-category .category-scroll {

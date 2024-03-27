@@ -69,372 +69,422 @@
     "subPackages": [
         {
             "root": "pages/goods-detail",
-            "pages": [{
-                "path": "goods-detail",
-                "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                    "navigationStyle": "custom",
-                    // #endif
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "goods-detail",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/login",
-            "pages": [{
-                "path": "login",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "login",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/cart-page",
-            "pages": [{
-                "path": "cart-page",
-                "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
-                    "navigationStyle": "custom",
-                    // #endif
-                    // #ifdef MP-ALIPAY
-                    "transparentTitle": "always",
-                    "titlePenetrate": "YES",
-                    // 该页不显示滚动条
-                    "scrollIndicator": "none",
-                    // #endif
-                    "enablePullDownRefresh": false,
-                    // 禁止页面下拉
-                    "disableScroll": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "cart-page",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || H5 || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "always",
+                        "titlePenetrate": "YES",
+                        // 该页不显示滚动条
+                        "scrollIndicator": "none",
+                        // #endif
+                        "enablePullDownRefresh": false,
+                        // 禁止页面下拉
+                        "disableScroll": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/buy",
-            "pages": [{
-                "path": "buy",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "buy",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/goods-search",
-            "pages": [{
-                "path": "goods-search",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "goods-search",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/goods-comment",
-            "pages": [{
-                "path": "goods-comment",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "goods-comment",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-address",
-            "pages": [{
-                "path": "user-address",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-address",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-address-save",
-            "pages": [{
-                "path": "user-address-save",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-address-save",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-order",
-            "pages": [{
-                "path": "user-order",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-order",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-order-detail",
-            "pages": [{
-                "path": "user-order-detail",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-order-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-order-comments",
-            "pages": [{
-                "path": "user-order-comments",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-order-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-favor",
-            "pages": [{
-                "path": "user-favor",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-favor",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-goods-comments",
-            "pages": [{
-                "path": "user-goods-comments",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-goods-comments",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-goods-comments-form",
-            "pages": [{
-                "path": "user-goods-comments-form",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-goods-comments-form",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/message",
-            "pages": [{
-                "path": "message",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "message",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-integral",
-            "pages": [{
-                "path": "user-integral",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-integral",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-goods-browse",
-            "pages": [{
-                "path": "user-goods-browse",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-goods-browse",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-orderaftersale",
-            "pages": [{
-                "path": "user-orderaftersale",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-orderaftersale",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/user-orderaftersale-detail",
-            "pages": [{
-                "path": "user-orderaftersale-detail",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "user-orderaftersale-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/extraction-address",
-            "pages": [{
-                "path": "extraction-address",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "extraction-address",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/common/open-setting-location",
-            "pages": [{
-                "path": "open-setting-location",
-                "style": {
-                    // #ifndef MP-TOUTIAO
-                    "navigationStyle": "custom",
-                    // #endif
-                    "enablePullDownRefresh": false
+            "pages": [
+                {
+                    "path": "open-setting-location",
+                    "style": {
+                        // #ifndef MP-TOUTIAO
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/common/agreement",
-            "pages": [{
-                "path": "agreement",
-                "style": {
-                    // #ifndef MP-TOUTIAO
-                    "navigationStyle": "custom",
-                    // #endif
-                    "enablePullDownRefresh": false
+            "pages": [
+                {
+                    "path": "agreement",
+                    "style": {
+                        // #ifndef MP-TOUTIAO
+                        "navigationStyle": "custom",
+                        // #endif
+                        "enablePullDownRefresh": false
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/customview",
-            "pages": [{
-                "path": "customview",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "customview",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/design",
-            "pages": [{
-                "path": "design",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "design",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/web-view",
-            "pages": [{
-                "path": "web-view",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "web-view",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/paytips",
-            "pages": [{
-                "path": "paytips",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "paytips",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/error",
-            "pages": [{
-                "path": "error",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "error",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/article-category",
-            "pages": [{
-                "path": "article-category",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "article-category",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/article-detail",
-            "pages": [{
-                "path": "article-detail",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "article-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/setup",
-            "pages": [{
-                "path": "setup",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "setup",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/personal",
-            "pages": [{
-                "path": "personal",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "personal",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/logout",
-            "pages": [{
-                "path": "logout",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "logout",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/password",
-            "pages": [{
-                "path": "password",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "password",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/seckill",
-            "pages": [{
-                "path": "index/index",
-                "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
-                    "navigationStyle": "custom",
-                    // #endif
-                    // #ifdef MP-ALIPAY
-                    "transparentTitle": "auto",
-                    "titlePenetrate":"YES",
-                    // #endif
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
-                }
-            }]
-        },
-        {
-            "root": "pages/plugins/coupon",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -442,7 +492,26 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
+            "root": "pages/plugins/coupon",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -466,7 +535,8 @@
         },
         {
             "root": "pages/plugins/membershiplevelvip",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -474,7 +544,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -495,7 +565,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -554,7 +624,8 @@
         },
         {
             "root": "pages/plugins/distribution",
-            "pages": [{
+            "pages": [
+                {
                     "path": "user/user",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -562,7 +633,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -705,7 +776,8 @@
         },
         {
             "root": "pages/plugins/wallet",
-            "pages": [{
+            "pages": [
+                {
                     "path": "user/user",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -713,7 +785,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -727,7 +799,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
@@ -793,7 +865,8 @@
         },
         {
             "root": "pages/plugins/excellentbuyreturntocash",
-            "pages": [{
+            "pages": [
+                {
                     "path": "profit/profit",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -811,7 +884,8 @@
         },
         {
             "root": "pages/plugins/weixinliveplayer",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -836,13 +910,15 @@
         },
         {
             "root": "pages/plugins/exchangerate",
-            "pages": [{
-                "path": "currency/currency",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "currency/currency",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/invoice",
@@ -879,7 +955,8 @@
         },
         {
             "root": "pages/plugins/signin",
-            "pages": [{
+            "pages": [
+                {
                     "path": "user/user",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -894,7 +971,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -925,41 +1002,46 @@
         },
         {
             "root": "pages/plugins/points",
-            "pages": [{
-                "path": "index/index",
-                "style": {
-                    // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
-                    "navigationStyle": "custom",
-                    // #endif
-                    // #ifdef MP-ALIPAY
-                    "transparentTitle": "auto",
-                    "titlePenetrate":"YES",
-                    // #endif
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                        "navigationStyle": "custom",
+                        // #endif
+                        // #ifdef MP-ALIPAY
+                        "transparentTitle": "auto",
+                        "titlePenetrate": "YES",
+                        // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "scan/scan",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            },
-            {
-                "path": "scan/scan",
-                "style": {
-                    "enablePullDownRefresh": false,
-                    "navigationBarTitleText": ""
-                }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/brand",
-            "pages": [{
-                "path": "index/index",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/shop",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1003,7 +1085,8 @@
         },
         {
             "root": "pages/plugins/activity",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1021,17 +1104,20 @@
         },
         {
             "root": "pages/plugins/label",
-            "pages": [{
-                "path": "detail/detail",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/blog",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1077,17 +1163,20 @@
         },
         {
             "root": "pages/plugins/express",
-            "pages": [{
-                "path": "detail/detail",
-                "style": {
-                    "enablePullDownRefresh": true,
-                    "navigationBarTitleText": ""
+            "pages": [
+                {
+                    "path": "detail/detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
                 }
-            }]
+            ]
         },
         {
             "root": "pages/plugins/realstore",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1109,7 +1198,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1161,7 +1250,8 @@
         },
         {
             "root": "pages/plugins/binding",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1179,7 +1269,8 @@
         },
         {
             "root": "pages/plugins/delivery",
-            "pages": [{
+            "pages": [
+                {
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": false,
@@ -1204,7 +1295,8 @@
         },
         {
             "root": "pages/plugins/ask",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -1212,7 +1304,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1240,7 +1332,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1271,7 +1363,8 @@
         },
         {
             "root": "pages/plugins/intellectstools",
-            "pages": [{
+            "pages": [
+                {
                     "path": "goods-comments/goods-comments",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1282,7 +1375,8 @@
         },
         {
             "root": "pages/plugins/scanpay",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1300,7 +1394,8 @@
         },
         {
             "root": "pages/plugins/thirdpartylogin",
-            "pages": [{
+            "pages": [
+                {
                     "path": "index/index",
                     "style": {
                         "disableScroll": true,
@@ -1312,7 +1407,8 @@
         },
         {
             "root": "pages/plugins/magic",
-            "pages": [{
+            "pages": [
+                {
                     "path": "detail/detail",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1323,7 +1419,8 @@
         },
         {
             "root": "pages/plugins/ordergoodsform",
-            "pages": [{
+            "pages": [
+                {
                     "path": "order/order",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1334,7 +1431,8 @@
         },
         {
             "root": "pages/plugins/coin",
-            "pages": [{
+            "pages": [
+                {
                     "path": "user/user",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
@@ -1342,7 +1440,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1356,8 +1454,15 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "recharge-pay/recharge-pay",
+                    "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
@@ -1377,7 +1482,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1391,7 +1496,7 @@
                         // #endif
                         // #ifdef MP-ALIPAY
                         "transparentTitle": "auto",
-                        "titlePenetrate":"YES",
+                        "titlePenetrate": "YES",
                         // #endif
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
@@ -1426,6 +1531,13 @@
                     }
                 },
                 {
+                    "path": "recharge-detail/recharge-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
                     "path": "collection/collection",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1452,7 +1564,8 @@
         "color": "#333",
         "selectedColor": "#333",
         "backgroundColor": "#fff",
-        "list": [{
+        "list": [
+            {
                 "pagePath": "pages/index/index",
                 "iconPath": "static/images/common/tabbar/home.png",
                 "selectedIconPath": "static/images/common/tabbar/home.png",

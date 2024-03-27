@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back propName="BTC详情"></component-nav-back>
+        <component-nav-back propName="账户详情"></component-nav-back>
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
@@ -35,25 +35,25 @@
                 <view class="coin-content padding-lg">
                     <view v-for="(item, index) in log_list" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>{{ item.type }}</view>
-                            <view class="cr-grey-9">{{ item.date }}</view>
+                            <view>{{ item.coin_type_name }}</view>
+                            <view class="cr-grey-9">{{ item.add_time }}</view>
                         </view>
                         <view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">金额类型：</text>
-                                <text class="fw-b">{{ item.price_type }}</text>
+                                <text class="cr-grey-9">操作类型：</text>
+                                <text class="fw-b">{{ item.operate_type_name }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">操作金额：</text>
-                                <text class="fw-b">{{ item.price }}</text>
+                                <text class="cr-grey-9">操作数量：</text>
+                                <text class="fw-b">{{ item.operate_coin }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">原始金额：</text>
-                                <text class="fw-b">{{ item.init_price }}</text>
+                                <text class="cr-grey-9">原始数量：</text>
+                                <text class="fw-b">{{ item.original_coin }}</text>
                             </view>
                             <view class="flex-row">
-                                <text class="cr-grey-9">最新金额：</text>
-                                <text class="fw-b">{{ item.new_price }}</text>
+                                <text class="cr-grey-9">最新数量：</text>
+                                <text class="fw-b">{{ item.latest_coin }}</text>
                             </view>
                         </view>
                     </view>
@@ -211,7 +211,7 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res);
+                        console.log( res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -222,6 +222,13 @@
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
+                            for (var i = 0; i < data.accounts_list.length; i++) {
+                                if (data.accounts_list[i].id === this.params.id) {
+                                    this.setData({
+                                        accounts_list_index: i,
+                                    });
+                                }
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
