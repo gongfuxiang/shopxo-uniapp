@@ -55,7 +55,15 @@
                 ]
             },
             "ios" : {
-                "dSYMs" : false
+                "dSYMs" : false,
+                "privacyDescription" : {
+                    "NSPhotoLibraryUsageDescription" : "获取用户手机相册用于提供相册图片素材",
+                    "NSPhotoLibraryAddUsageDescription" : "将图片保存至手机相册",
+                    "NSCameraUsageDescription" : "获取用户手机相册用于快捷拍照功能",
+                    "NSLocationWhenInUseUsageDescription" : "该应用需要您的地理位置，以便为你提供当前位置信息",
+                    "NSLocationAlwaysUsageDescription" : "该应用需要您的地理位置，以便为你提供当前位置信息",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription" : "该应用需要持续获取用户地理位置，以便为您提供实时的位置信息"
+                }
             },
             "sdkConfigs" : {
                 "payment" : {
