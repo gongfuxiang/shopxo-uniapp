@@ -1,109 +1,105 @@
 <template>
     <view :class="theme_view">
         <component-nav-back></component-nav-back>
-        <view>
-            <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="recharge-title flex-col padding-lg">
-                    <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
-                        <view class="cr-white">
-                            <view class="coin-dropdown">
-                                <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
-                                    <image :src="coin_list[coin_index]['img']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-xs">{{ coin_list[coin_index]['name'] }}</text>
-                                    <view class="coin-dropdown-icon pa padding-left-xxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
-                                    </view>
+        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
+            <view class="recharge-title flex-col padding-lg">
+                <view v-if="accounts_list.length > 0" class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
+                    <view class="cr-white flex-1 flex-width">
+                        <view class="coin-dropdown margin-bottom-main">
+                            <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
+                                <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
+                                <view class="coin-dropdown-icon pa padding-left-xxl">
+                                    <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                 </view>
                             </view>
-                            <view class="text-size-40 fw-b">38000</view>
                         </view>
-                        <view class="recharge-qrcode">
-                            <block v-if="recharge_qrcode">
-                                <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" />
-                            </block>
-                            <block v-else>
-                                <iconfont name="icon-qrcode" size="160rpx" color="#f6f6f6"></iconfont>
-                            </block>
+                        <view class="text-size-xl fw-b single-text">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
+                    </view>
+                    <view class="recharge-qrcode">
+                        <block v-if="recharge_qrcode">
+                            <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" />
+                        </block>
+                        <block v-else>
+                            <iconfont name="icon-qrcode" size="160rpx" color="#f6f6f6"></iconfont>
+                        </block>
+                    </view>
+                </view>
+            </view>
+            <view class="recharge-content padding-xxl bg-white">
+                <view class="margin-bottom-xxxl">
+                    <view class="margin-bottom-main">充币地址</view>
+                    <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
+                        <view class="single-text padding-right-sm flex-1 flex-width">{{ recharge_address }}</view>
+                        <view @tap.stop="text_copy_event" :data-value="recharge_address">
+                            <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
                         </view>
                     </view>
                 </view>
-                <view class="recharge-content padding-xxl bg-white">
-                    <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充币地址</view>
-                        <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
-                            <view class="single-text padding-right-sm flex-1 flex-width">4gfgefg33445fghfghh4bfbfghebdfb34fgdfg44gfgefg33445fghfghh4bfbfghebdfb34fgdfg4</view>
-                            <view @tap.stop="text_copy_event" data-value="123">
-                                <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
+                <view v-if="network_list.length > 0" class="margin-bottom-xxxl">
+                    <view class="margin-bottom-main">充币网络</view>
+                    <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="network_list_index" :range="network_list" range-key="name">
+                        <view class="picker arrow-bottom">
+                            {{ network_list[network_list_index]['name'] }}
+                        </view>
+                    </picker>
+                </view>
+                <view class="margin-bottom-xxxl">
+                    <view class="margin-bottom-xs">选择充值金额</view>
+                    <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
+                        <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
+                            <view class="flex-row align-c jc-c">
+                                <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
+                                <view class="margin-left-xs recharge-price-name">{{ item.value }}</view>
                             </view>
+                            <view class="margin-top-sm cr-grey-9 text-size-xs">10000</view>
+                            <view v-if="item.tips" class="recharge-price-badge text-size-xss cr-white single-text">{{ item.tips }}</view>
                         </view>
                     </view>
-                    <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充币网络</view>
-                        <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="recharge_web_index" :range="recharge_web_list" range-key="name">
-                            <view class="picker arrow-bottom">
-                                {{ recharge_web_list[recharge_web_index]['name'] }}
-                            </view>
-                        </picker>
+                    <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
+                        <text>其他数量</text>
+                        <view class="padding-left-lg">
+                            <input type="digit" name="coin" :value="recharge_num" placeholder-class="text-size-md cr-grey-9" placeholder="请输入充值数量" @input="recharge_num_change" />
+                        </view>
                     </view>
-                    <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-xs">选择充值金额</view>
-                        <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
-                            <view v-for="(item, index) in recharge_price_list" :key="index" class="recharge-price-list flex-col align-c jc-c">
-                                <view class="flex-row align-c jc-c">
-                                    <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
-                                    <view class="margin-left-xs recharge-price-name">{{ item.name }}</view>
-                                </view>
-                                <view class="margin-top-sm cr-grey-9 text-size-xs">{{ item.price }}</view>
-                            </view>
-                        </view>
-                        <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
-                            <text>其他数量</text>
-                            <view class="padding-left-lg">
-                                <input type="digit" class="" placeholder-class="text-size-md cr-grey-9" placeholder="请输入充值数量" />
-                            </view>
-                        </view>
-                        <button type="default" class="recharge-btn cr-white round" @tap="popup_goods_search_event">立即充值</button>
-                    </view>
-                    <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充值说明：</view>
-                        <view class="recharge-content-tips">
-                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
-                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
-                            <view class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">充值只可选择以上固定档位金额</view>
-                        </view>
+                    <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">立即充值</button>
+                </view>
+                <view v-if="recharge_desc.length > 0" class="margin-bottom-xxxl">
+                    <view class="margin-bottom-main">充值说明：</view>
+                    <view class="recharge-content-tips">
+                        <view v-for="(item, index) in recharge_desc" :key="index" class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">{{ item }}</view>
                     </view>
                 </view>
-            </scroll-view>
-            <!-- 虚拟币下拉框 -->
-            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="oh">
-                        <view class="fr" @tap.stop="popup_coin_status_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                        </view>
+            </view>
+        </scroll-view>
+        <!-- 虚拟币下拉框 -->
+        <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
+            <view class="padding-horizontal-main padding-top-main bg-white">
+                <view class="oh">
+                    <view class="fr" @tap.stop="popup_coin_status_close_event">
+                        <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
-                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
-                        <view class="scroll-y">
-                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
-                                <view class="flex-row align-c">
-                                    <image :src="item.img" mode="widthFix" class="coin-list-img round" />
-                                    <view class="margin-left-sm text-size-md single-text">{{ item.name }}</view>
-                                </view>
-                                <view>
-                                    <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
-                                </view>
+                </view>
+                <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
+                    <view class="scroll-y">
+                        <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                            <view class="flex-row align-c">
+                                <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
+                            </view>
+                            <view>
+                                <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                             </view>
                         </view>
                     </view>
                 </view>
-            </component-popup>
-        </view>
+            </view>
+        </component-popup>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentNavBack from '@/components/nav-back/nav-back';
-    import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
@@ -117,62 +113,33 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
-                params: null,
-                data_list_loding_status: 1,
-                data_list_loding_msg: '',
 
                 // 付款码
                 recharge_qrcode: '',
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
                 // 虚拟币下标
-                coin_index: 0,
+                accounts_list_index: 0,
                 // 虚拟币下拉框list
-                coin_list: [
-                    {
-                        name: 'BTC',
-                        img: wallet_static_url + 'recharge-price.png',
-                    },
-                ],
+                accounts_list: [],
+                // 充币地址
+                recharge_address: '',
                 // 充币网络
-                recharge_web_index: 0,
-                recharge_web_list: [
-                    {
-                        name: 'BTC',
-                    },
-                    {
-                        name: 'USDT-polygon',
-                    },
-                ],
+                network_list_index: 0,
+                network_list: [],
+                // 充值选中下标
+                preset_data_index: null,
                 // 充值金额
-                recharge_price_list: [
-                    {
-                        name: '100',
-                        price: '100',
-                    },
-                    {
-                        name: '400',
-                        price: '400',
-                    },
-                    {
-                        name: '400',
-                        price: '400',
-                    },
-                    {
-                        name: '400',
-                        price: '400',
-                    },
-                    {
-                        name: '400',
-                        price: '400',
-                    },
-                ],
+                preset_data: [],
+                // 充值数量
+                recharge_num: '',
+                // 充值规则
+                recharge_desc: [],
             };
         },
 
         components: {
             componentNavBack,
-            componentNoData,
             componentPopup,
         },
         props: {},
@@ -181,10 +148,6 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
 
-            // 设置参数
-            this.setData({
-                params: params,
-            });
             this.init();
         },
 
@@ -204,74 +167,31 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.init_data();
                     this.get_data();
                 }
-            },
-            init_data(){
-                uni.request({
-                    url: app.globalData.get_request_url('createinfo', 'recharge', 'coin'),
-                    method: 'POST',
-                    data: { accounts_id: this.params.id },
-                    dataType: 'json',
-                    success: (res) => {
-                        uni.stopPullDownRefresh();
-                        console.log('1');
-                        console.log(res);
-                        if (res.data.code == 0) {
-                            var data = res.data.data;
-                            this.setData({
-                                data_base: data.base || null,
-                                accounts_list: data.accounts_list || [],
-                                accounts_summary: data.accounts_summary || 0,
-                                data_list_loding_msg: '',
-                                data_list_loding_status: 0,
-                            });
-                        } else {
-                            this.setData({
-                                data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg,
-                            });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        }
-                    },
-                    fail: () => {
-                        uni.stopPullDownRefresh();
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
-                        });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
             },
 
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'recharge', 'coin'),
+                    url: app.globalData.get_request_url('createinfo', 'recharge', 'coin'),
                     method: 'POST',
-                    data: { accounts_id: this.params.id },
+                    data: {},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res);
+                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base || null,
                                 accounts_list: data.accounts_list || [],
-                                accounts_summary: data.accounts_summary || 0,
-                                data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                network_list: data.network_list || [],
+                                recharge_qrcode: data.recharge_qrcode || '',
+                                recharge_address: data.recharge_address || '',
+                                recharge_desc: data.recharge_desc || [],
+                                preset_data: data.preset_data || [],
                             });
                         } else {
-                            this.setData({
-                                data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg,
-                            });
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
                             }
@@ -279,23 +199,15 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
-                        });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
 
-            // 显示隐藏虚拟币
-            price_change() {
-                this.setData({});
-            },
             // 虚拟币切换
             coin_checked_event(e) {
                 this.setData({
-                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
+                    accounts_list_index: parseInt(e.currentTarget.dataset.index || 0),
                     popup_coin_status: false,
                 });
             },
@@ -312,8 +224,64 @@
             // 充币网络切换
             recharge_event(e) {
                 this.setData({
-                    recharge_web_index: parseInt(e.detail.value || 0),
+                    network_list_index: parseInt(e.detail.value || 0),
                 });
+            },
+            // 充值金额选中
+            recharge_num_change(e) {
+                this.setData({
+                    recharge_num: e.detail.value,
+                });
+            },
+            // 其他充值数量
+            preset_data_change(e) {
+                this.setData({
+                    preset_data_index: parseInt(e.currentTarget.dataset.index || 0),
+                    recharge_num: parseInt(e.currentTarget.dataset.value || 0),
+                });
+            },
+            // 立即充值
+            recharge_submit() {
+                var new_data = {
+                    accounts_id: this.accounts_list[this.accounts_list_index].id,
+                    network_id: this.network_list[this.network_list_index].id,
+                    address: this.recharge_address,
+                    coin: this.recharge_num,
+                };
+                // 数据校验
+                var validation = [{ fields: 'coin', msg: '请选择或输入充值数量' }];
+
+                // 验证提交表单
+                if (app.globalData.fields_check(new_data, validation)) {
+                    uni.showLoading({
+                        title: this.$t('common.processing_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('create', 'recharge', 'coin'),
+                        method: 'POST',
+                        data: new_data,
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            if (res.data.code == 0) {
+                                app.globalData.showToast(res.data.msg, 'success');
+                                setTimeout(function () {
+                                    app.globalData.url_open('/pages/plugins/coin/recharge-detail/recharge-detail', true);
+                                }, 1000);
+                            } else {
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(res.data.msg);
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
+                            }
+                        },
+                        fail: () => {
+                            uni.stopPullDownRefresh();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
             // 页面滚动监听
             scroll_event(e) {

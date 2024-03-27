@@ -78,7 +78,7 @@
 		"article-detail": "文章详情",
 		"setup": "设置",
 		"personal": "个人资料",
-        "password": "密码修改",
+		"password": "密码修改",
 		"logout": "账号注销",
 		"plugins-seckill-index": "限时秒杀",
 		"plugins-coupon-index": "领券中心",
@@ -187,6 +187,7 @@
 		"plugins-ordergoodsform-order": "商品表单",
 		"plugins-coin-user": "虚拟币",
 		"plugins-coin-recharge": "充值",
+		"plugins-coin-recharge-pay": "充值支付",
 		"plugins-coin-convert": "转换",
 		"plugins-coin-withdrawal": "提现",
 		"plugins-coin-detail": "明细",
@@ -194,6 +195,7 @@
 		"plugins-coin-transaction-detail": "交易明细",
 		"plugins-coin-withdrawal-detail": "提现明细",
 		"plugins-coin-convert-detail": "转换明细",
+		"plugins-coin-recharge-detail": "充值明细",
 		"plugins-coin-collection": "收款"
 	},
 	"login": {
@@ -240,9 +242,9 @@
 			"s665h5": "获取验证码",
 			"jw378f": "授权用户信息",
 			"np9177": "绑定手机",
-            "tgsa4d": "绑定邮箱",
-            "876tdf": "绑定账户",
-            "87yui2": "绑定成功",
+			"tgsa4d": "绑定邮箱",
+			"876tdf": "绑定账户",
+			"87yui2": "绑定成功",
 			"158yg2": "手机验证码登录",
 			"r329eu": "邮箱验证码登录",
 			"39hn6v": "账号密码注册",
@@ -319,7 +321,7 @@
 		"setup": {
 			"x81v6d": "更换手机",
 			"j6skqh": "点击更换",
-            "dfg4wf": "点击绑定",
+			"dfg4wf": "点击绑定",
 			"r7jz13": "修改语言",
 			"42mba7": "地址管理",
 			"5eltza": "点击管理",
@@ -335,7 +337,7 @@
 			"07o10b": "请先绑定手机",
 			"nwt4o1": "请先登录",
 			"utnr7g": "客服电话有误",
-            "87ytgh": "解绑"
+			"87ytgh": "解绑"
 		}
 	},
 	"article-category": {
@@ -1695,7 +1697,7 @@
 			"3eqv71": "请前往小程序使用完整服务",
 			"08cg8y": "客服地址有误",
 			"0gwt7z": "清除成功",
-            "87yghj": "退出成功",
+			"87yghj": "退出成功",
 			"di6v5t": "请先获取授权",
 			"nu5058": "不支持地理位置选择！",
 			"4v6q86": "未选择位置"
