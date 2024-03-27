@@ -150,11 +150,11 @@
                         </view>
 
                         <!-- 商品列表 -->
-                        <block v-if="data.length > 0">
+                        <view v-if="data.length > 0" :class="((slider || null) == null || slider.length == 0) ? 'margin-top-main' : ''">
                             <block v-for="(item, index) in data" :key="index">
                                 <component-goods-list :propData="item" :propKeywordsUrl="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&keywords='" :propIsAutoPlay="true" :propCurrencySymbol="currency_symbol"></component-goods-list>
                             </block>
-                        </block>
+                        </view>
                     </view>
                 </block>
                 <block v-else>
