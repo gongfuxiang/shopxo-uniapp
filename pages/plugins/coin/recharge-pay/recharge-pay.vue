@@ -1,92 +1,61 @@
 <template>
     <view :class="theme_view">
-        <view v-if="coin_list.length > 0">
-            <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="padding-main pr">
-                    <view class="padding-lg bg-white radius-md margin-bottom-main">
-                        <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
-                            <view>
-                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
-                                    <image :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[send_accounts_id_index]['platform_name'] }}</text>
-                                    <view class="coin-dropdown-icon pa padding-left-xxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
-                                    </view>
-                                </view>
-                                <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['normal_coin'] }}</text>
-                                </view>
-                            </view>
-                            <view class="coin-num pr flex-col">
-                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="金额" @input="default_value_change" />
-                                <view class="margin-top-main tr text-size-xs">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['default_coin'] }}</view>
-                            </view>
+        <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
+            <view class="padding-main pr page-bottom-fixed">
+                <view class="padding-lg bg-white radius-md margin-bottom-main">
+                    <view class="convert-group-row">
+                        <view class="margin-bottom-sm flex-row">
+                            <text class="cr-grey-9 title">充值单号：</text>
+                            <text class="fw-b">{{ accounts.recharge_no }}</text>
                         </view>
-                        <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
-                            <iconfont name="icon-convert2" class="pa convert-icon" :class="convert_bool ? 'convert_true' : 'convert_false'" color="#1D7DEF" size="36rpx"></iconfont>
+                        <view class="margin-bottom-sm flex-row">
+                            <text class="cr-grey-9 title">充值地址：</text>
+                            <text class="fw-b">{{ accounts.address }}</text>
                         </view>
-                        <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
-                            <view>
-                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
-                                    <image :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[receive_accounts_id_index]['platform_name'] }}</text>
-                                    <view class="coin-dropdown-icon pa padding-left-xxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
-                                    </view>
-                                </view>
-                                <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['normal_coin'] }}</text>
-                                </view>
-                            </view>
-                            <view class="coin-num pr flex-col">
-                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled placeholder="金额" />
-                                <view class="margin-top-main tr text-size-xs">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['default_coin'] }}</view>
-                            </view>
+                        <view class="margin-bottom-sm flex-row">
+                            <text class="cr-grey-9 title">充值网络：</text>
+                            <text class="fw-b">{{ accounts.network_name }}</text>
                         </view>
-                        <view class="flex-row align-c">
-                            <iconfont name="icon-recharge" color="#333" size="32rpx"></iconfont>
-                            <view class="margin-left-sm">1XRP = 2.45546 <text class="cr-grey-9">($21.00)</text></view>
+                        <view class="margin-bottom-sm flex-row">
+                            <text class="cr-grey-9 title">充值币：</text>
+                            <text class="fw-b">{{ accounts.coin }}</text>
                         </view>
-                    </view>
-                    <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
-                        <text class="padding-right">支付密码</text>
-                        <input type="number" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
-                    </view>
-                    <view class="padding-main radius-md margin-bottom-main">
-                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">立即转换</button>
-                    </view>
-                </view>
-            </scroll-view>
-            <!-- 虚拟币下拉框 -->
-            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="oh">
-                        <view class="fr" @tap.stop="popup_coin_status_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        <view class="margin-bottom-sm flex-row">
+                            <text class="cr-grey-9 title">平台：</text>
+                            <text class="fw-b">{{ accounts.platform_name }}</text>
                         </view>
-                    </view>
-                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
-                        <view class="scroll-y">
-                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
-                                <view class="flex-row align-c">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
-                                    <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
-                                </view>
-                                <view>
-                                    <iconfont :name="coin_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
-                                </view>
-                            </view>
+                        <view class="flex-row">
+                            <text class="cr-grey-9 title">平台：</text>
+                            <text class="fw-b">{{ accounts.add_time }}</text>
                         </view>
                     </view>
                 </view>
-            </component-popup>
-        </view>
+                <view class="padding-main bg-white radius-md margin-bottom-main">
+                    <view class="flex-row align-e margin-bottom-main">
+                        <text class="fw-b">支付凭证</text>
+                        <text class="cr-grey-c text-size-xs">（最多上传10张图）</text>
+                    </view>
+                    <component-upload :propData="image_list" :propMaxNum="10" :propPathType="editor_path_type" @call-back="return_image_event"></component-upload>
+                </view>
+                <view class="padding-main bg-white radius-md margin-bottom-xxxxl">
+                    <view class="flex-row align-e margin-bottom-main">
+                        <text class="fw-b">支付备注</text>
+                    </view>
+                    <textarea placeholder="请输入备注" name="pay_note" placeholder-class="cr-base" class="wh-auto bg-white" :value="pay_note" :maxlength="pay_note_length_max" @input="pay_note_event"></textarea>
+                </view>
+                <view class="bottom-fixed flex-row align-c">
+                    <button type="default" class="cancel-btn round" @tap="cancel_event">取消</button>
+                    <button type="default" class="submit-btn round" @tap="submit_event">提交</button>
+                </view>
+            </view>
+        </scroll-view>
     </view>
 </template>
 <script>
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
+    import componentUpload from '@/components/upload/upload';
     var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -98,47 +67,32 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
-
-                // 虚拟币状态
-                coin_type: 1,
-                coin_index: 0,
-                // 下标
-                send_accounts_id_index: 0,
-                receive_accounts_id_index: 0,
-                // id
-                send_accounts_id: 0,
-                receive_accounts_id: 0,
-                popup_coin_status: false,
-                coin_list: [
-                    // {
-                    //     name: 'BTC',
-                    //     img: wallet_static_url + 'user-head-bg.png',
-                    // },
-                    // {
-                    //     name: 'USDT-polygon',
-                    //     img: wallet_static_url + 'user-head-bg.png',
-                    // },
-                ],
-                // 是否转换
-                convert_bool: false,
-                // 输入默认金额
-                default_value: '',
-                // 转换金额
-                convert_value: '0.00',
-                // 支付密码
-                pay_pwd: '',
+                params: null,
+                accounts: {},
+                image_list: [],
+                editor_path_type: 'common',
+                // 备注
+                pay_note: '',
+                pay_note_length_max: '500',
             };
         },
 
         components: {
             componentNoData,
             componentPopup,
+            componentUpload,
         },
         props: {},
 
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+
+            // 设置参数
+            this.setData({
+                params: params,
+            });
+
             this.init();
         },
 
@@ -165,20 +119,17 @@
             // 获取数据
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('createinfo', 'convert', 'coin'),
+                    url: app.globalData.get_request_url('detail', 'recharge', 'coin'),
                     method: 'POST',
-                    data: { send_accounts_id: this.send_accounts_id, receive_accounts_id: this.receive_accounts_id },
+                    data: this.params,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
+                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                data_base: data.base || null,
-                                coin_list: data.accounts_list || [],
-                                convert_value: data.convert_value || '0',
-                                send_accounts_id: data.send_accounts.id,
-                                receive_accounts_id: data.receive_accounts.id,
+                                accounts: data.data || {},
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
@@ -203,79 +154,43 @@
                 });
             },
 
-            // 虚拟币切换
-            popup_coin_status_event(type) {
+            // 上传图片回调
+            return_image_event(data) {
                 this.setData({
-                    coin_type: type,
-                    coin_index: type == 1 ? this.send_accounts_id_index : this.receive_accounts_id_index,
-                    popup_coin_status: true,
-                });
-            },
-            coin_checked_event(e) {
-                if (this.coin_type == 1) {
-                    this.setData({
-                        send_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
-                        send_accounts_id: e.currentTarget.dataset.value,
-                    });
-                } else {
-                    this.setData({
-                        receive_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
-                        receive_accounts_id: e.currentTarget.dataset.value,
-                    });
-                }
-                this.setData({
-                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
-                    popup_coin_status: false,
-                });
-            },
-            popup_coin_status_close_event() {
-                this.setData({
-                    popup_coin_status: false,
+                    image_list: data,
                 });
             },
 
-            // 虚拟货币调换
-            coin_center_convert_event() {
-                var send_index = this.send_accounts_id_index;
-                var receive_index = this.receive_accounts_id_index;
-                var send_id = this.send_accounts_id;
-                var receive_id = this.receive_accounts_id;
+            // 备注
+            pay_note_event(e) {
                 this.setData({
-                    receive_accounts_id_index: send_index,
-                    send_accounts_id_index: receive_index,
-                    receive_accounts_id: send_id,
-                    send_accounts_id: receive_id,
-                    convert_bool: !this.convert_bool,
-                });
-            },
-            default_value_change(e) {
-                this.setData({
-                    default_value: e.detail.value,
+                    pay_note: e.detail.value.trim(),
                 });
             },
 
-            // 立即转换
-            convert_submit() {
+            // 取消
+            cancel_event() {
+                app.globalData.page_back_prev_event();
+            },
+
+            // 提交
+            submit_event() {
                 var new_data = {
-                    send_accounts_id: this.send_accounts_id,
-                    receive_accounts_id: this.receive_accounts_id,
-                    coin: this.default_value,
+                    id: this.params.id,
+                    pay_voucher: this.image_list,
+                    pay_note: this.pay_note,
                 };
-
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: '请输入转换金额' }];
-
-                // 验证提交表单
+                var validation = [
+                    { fields: 'pay_voucher', msg: '请上传凭证' },
+                    { fields: 'pay_note', msg: '请输入备注' },
+                ];
                 if (app.globalData.fields_check(new_data, validation)) {
-                    // 远程请求
-                    this.setData({
-                        form_submit_loading: true,
-                    });
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
                     });
                     uni.request({
-                        url: app.globalData.get_request_url('create', 'convert', 'coin'),
+                        url: app.globalData.get_request_url('pay', 'recharge', 'coin'),
                         method: 'POST',
                         data: new_data,
                         dataType: 'json',
@@ -284,12 +199,9 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/convert-detail/convert-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/recharge-detail/recharge-detail', true);
                                 }, 1000);
                             } else {
-                                this.setData({
-                                    form_submit_loading: false,
-                                });
                                 if (app.globalData.is_login_check(res.data)) {
                                     app.globalData.showToast(res.data.msg);
                                 } else {
@@ -298,10 +210,7 @@
                             }
                         },
                         fail: () => {
-                            this.setData({
-                                form_submit_loading: false,
-                            });
-                            uni.hideLoading();
+                            uni.stopPullDownRefresh();
                             app.globalData.showToast(this.$t('common.internet_error_tips'));
                         },
                     });

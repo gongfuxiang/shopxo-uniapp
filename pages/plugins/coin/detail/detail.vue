@@ -94,6 +94,9 @@
                 </view>
                 <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                     <view class="flex-width-half">
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/recharge-detail/recharge-detail" @tap="url_event">充值明细</view>
+                    </view>
+                    <view class="flex-width-half">
                         <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-accounts-detail/transfer-accounts-detail" @tap="url_event">转账明细</view>
                     </view>
                     <view class="flex-width-half">
@@ -211,7 +214,7 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log( res.data.data);
+                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({

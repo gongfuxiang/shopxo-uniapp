@@ -2,64 +2,97 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main" @tap="popup_wallet_open_event">
-                    <view>钱包</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_wallet_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-row align-c margin-right-main" @tap="popup_accounts_open_event">
+                    <view>账户</view>
+                    <view class="padding-left-sm"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-left-sm" @tap="popup_type_open_event">
-                    <view>类型</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-row align-c margin-right-main" @tap="popup_recharge_status_open_event">
+                    <view>状态</view>
+                    <view class="padding-left-sm"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                </view>
+                <view class="flex-row align-c margin-right-main" @tap="popup_network_open_event">
+                    <view>网络</view>
+                    <view class="padding-left-sm"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
                     <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>{{ item.status }}</view>
-                            <view class="cr-grey-9">{{ item.date }}</view>
+                            <view>{{ item.status_name }}</view>
+                            <view class="cr-grey-9">{{ item.add_time }}</view>
                         </view>
-                        <view>
+                        <view class="convert-group-row">
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">转出余额：</text>
-                                <text class="fw-b">{{ item.tob }}</text>
+                                <text class="cr-grey-9 title">充值单号：</text>
+                                <text class="fw-b">{{ item.recharge_no }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">转换汇率：</text>
-                                <text class="fw-b">{{ item.convert_rate }}</text>
+                                <text class="cr-grey-9 title">平台：</text>
+                                <text class="fw-b">{{ item.platform_name }}</text>
+                            </view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9 title">充值网络：</text>
+                                <text class="fw-b">{{ item.network_name }}</text>
+                            </view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9 title">充值地址：</text>
+                                <text class="fw-b">{{ item.address }}</text>
                             </view>
                             <view class="flex-row">
-                                <text class="cr-grey-9">最新金额：</text>
-                                <text class="fw-b">{{ item.new_price }}</text>
+                                <text class="cr-grey-9 title">充值币：</text>
+                                <text class="fw-b">{{ item.coin }}</text>
                             </view>
                         </view>
+                        <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
+                            <button type="default" class="recharge-del-btn round" @tap="recharge_del_event(item.id)">删除</button>
+                            <button type="default" class="recharge-apy-btn round" @tap="recharge_pay_event(item.id)">支付</button>
+                        </div>
                     </view>
+                    <!-- 结尾 -->
+                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 钱包 -->
-            <component-popup :propShow="popup_wallet_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_wallet_close_event">
+            <!-- 账户 -->
+            <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">钱包种类</view>
-                    <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in wallet_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="wallet_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="wallet_event">{{ item.name }}</view>
+                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_wallet_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
             </component-popup>
             <!-- 类型 -->
-            <component-popup :propShow="popup_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_type_close_event">
+            <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
-                    <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view v-for="(item, index) in type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="type_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" @tap="type_event">{{ item.name }}</view>
+                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_type_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_recharge_status_close_event">
+                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
+                    </view>
+                </view>
+            </component-popup>
+            <!-- 网络 -->
+            <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
+                <view class="padding-vertical-lg">
+                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
+                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
+                        </view>
+                    </view>
+                    <view class="tc padding-top-lg br-t" @tap="popup_network_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
@@ -72,7 +105,8 @@
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
-    var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
+    var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO
@@ -82,204 +116,41 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                wallet_static_url: wallet_static_url,
+                accounts_static_url: accounts_static_url,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
 
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
-                // 钱包
-                popup_wallet_status: false,
-                wallet_list_index: 0,
-                wallet_list: [
-                    {
-                        name: '全部',
-                    },
-                    {
-                        name: 'BTC',
-                    },
-                    {
-                        name: 'ETH',
-                    },
-                    {
-                        name: 'XRP',
-                    },
-                    {
-                        name: 'DASH',
-                    },
-                ],
+                // 账户
+                popup_accounts_status: false,
+                accounts_id: null,
+                accounts_list_index: 0,
+                accounts_list: [],
                 // 类型
-                popup_type_status: false,
-                type_list_index: 0,
-                type_list: [
-                    {
-                        name: '全部',
-                    },
-                    {
-                        name: '未打款',
-                    },
-                    {
-                        name: '已打款',
-                    },
-                    {
-                        name: '打款失败',
-                    },
-                ],
+                popup_recharge_status_status: false,
+                status: null,
+                recharge_status_list_index: 0,
+                recharge_status_list: [],
+                // 网络
+                popup_network_status: false,
+                network_id: null,
+                network_list_index: 0,
+                network_list: [],
 
-                data: [
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                    {
-                        date: '2023-12-12',
-                        status: '转入',
-                        tob: '20000.00',
-                        convert_rate: '0.33',
-                        new_price: '2198.00',
-                    },
-                ],
+                data: [],
+                data_page_total: 0,
+                data_page: 1,
+                data_is_loading: 0,
             };
         },
 
         components: {
             componentNoData,
             componentPopup,
+            componentBottomLine,
         },
         props: {},
 
@@ -300,13 +171,17 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            this.get_data();
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
         },
         methods: {
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.get_data();
+                    this.init_data();
+                    this.get_data_list();
                     var self = this;
                     var timer = setInterval(function () {
                         if (self.popup_top_height == 0) {
@@ -318,53 +193,256 @@
                 }
             },
 
-            // 获取数据
-            get_data() {},
+            // 初始化数据
+            init_data() {
+                uni.request({
+                    url: app.globalData.get_request_url('init', 'user', 'coin'),
+                    method: 'POST',
+                    data: {},
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res.data.data);
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            this.setData({
+                                accounts_list: data.accounts_list || [],
+                                recharge_status_list: data.recharge_status_list || [],
+                                network_list: data.network_list || [],
+                            });
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
 
-            // 钱包打开
-            popup_wallet_open_event() {
-                if (!this.popup_type_status) {
+            // 获取数据
+            get_data_list(is_mandatory) {
+                // 分页是否还有数据
+                if ((is_mandatory || 0) == 0) {
+                    if (this.data_bottom_line_status == true) {
+                        uni.stopPullDownRefresh();
+                        return false;
+                    }
+                }
+                // 是否加载中
+                if (this.data_is_loading == 1) {
+                    return false;
+                }
+                this.setData({
+                    data_is_loading: 1,
+                    data_list_loding_status: 1,
+                });
+                // 加载loding
+                if (this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
+                var new_data = {
+                    accounts_id: this.accounts_id,
+                    network_id: this.network_id,
+                    status: this.status,
+                    page: this.data_page,
+                };
+                uni.request({
+                    url: app.globalData.get_request_url('index', 'recharge', 'coin'),
+                    method: 'POST',
+                    data: new_data,
+                    dataType: 'json',
+                    success: (res) => {
+                        if (this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        console.log(res.data.data);
+                        uni.stopPullDownRefresh();
+                        if (res.data.code == 0) {
+                            var data = res.data.data;
+                            if (data.data_list.length > 0) {
+                                if (this.data_page <= 1) {
+                                    var temp_data_list = data.data_list;
+                                } else {
+                                    var temp_data_list = this.data || [];
+                                    var temp_data = res.data.data.data;
+                                    for (var i in temp_data) {
+                                        temp_data_list.push(temp_data[i]);
+                                    }
+                                }
+                                this.setData({
+                                    data: temp_data_list,
+                                    data_page_total: data.page_total,
+                                    data_page: data.page + 1,
+                                    data_list_loding_msg: '',
+                                    data_list_loding_status: 3,
+                                    data_is_loading: 0,
+                                });
+
+                                // 是否还有数据
+                                this.setData({
+                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                                });
+                            } else {
+                                if (data.page <= 1) {
+                                    this.setData({
+                                        data: data.data_list,
+                                        data_page_total: data.page_total,
+                                        data_page: data.page + 1,
+                                        data_list_loding_msg: '',
+                                        data_list_loding_status: 3,
+                                        data_is_loading: 0,
+                                    });
+                                } else {
+                                    this.setData({
+                                        data_list_loding_status: 0,
+                                        data_is_loading: 0,
+                                    });
+                                }
+                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            }
+                        } else {
+                            this.setData({
+                                data_list_loding_status: 2,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        if (this.data_page > 1) {
+                            uni.hideLoading();
+                        }
+                        uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+
+            // 账户打开
+            popup_accounts_open_event() {
+                if (!this.popup_recharge_status_status && !this.popup_network_status) {
                     this.setData({
-                        popup_wallet_status: !this.popup_wallet_status,
+                        popup_accounts_status: !this.popup_accounts_status,
                     });
                 }
             },
 
-            // 钱包关闭
-            popup_wallet_close_event() {
+            // 账户关闭
+            popup_accounts_close_event() {
                 this.setData({
-                    popup_wallet_status: false,
+                    popup_accounts_status: false,
                 });
             },
 
-            // 钱包选择
-            wallet_event(e) {
+            // 账户选择
+            accounts_list_event(e) {
                 this.setData({
-                    wallet_list_index: e.currentTarget.dataset.index,
+                    accounts_list_index: e.currentTarget.dataset.index,
+                    accounts_id: e.currentTarget.dataset.value,
+                    popup_accounts_status: false,
+                    data_page: 1,
                 });
+                this.get_data_list(1);
             },
 
             // 类型打开
-            popup_type_open_event() {
-                if (!this.popup_wallet_status) {
+            popup_recharge_status_open_event() {
+                if (!this.popup_accounts_status && !this.popup_network_status) {
                     this.setData({
-                        popup_type_status: !this.popup_type_status,
+                        popup_recharge_status_status: !this.popup_recharge_status_status,
                     });
                 }
             },
 
             // 类型关闭
-            popup_type_close_event() {
+            popup_recharge_status_close_event() {
                 this.setData({
-                    popup_type_status: false,
+                    popup_recharge_status_status: false,
                 });
             },
 
             // 类型选择
-            type_event(e) {
+            recharge_status_list_event(e) {
                 this.setData({
-                    type_list_index: e.currentTarget.dataset.index,
+                    recharge_status_list_index: e.currentTarget.dataset.index,
+                    status: e.currentTarget.dataset.value,
+                    popup_recharge_status_status: false,
+                    data_page: 1,
                 });
+                this.get_data_list(1);
+            },
+
+            // 网络打开
+            popup_network_open_event() {
+                if (!this.popup_accounts_status && !this.popup_recharge_status_status) {
+                    this.setData({
+                        popup_network_status: !this.popup_network_status,
+                    });
+                }
+            },
+
+            // 网络关闭
+            popup_network_close_event() {
+                this.setData({
+                    popup_network_status: false,
+                });
+            },
+
+            // 网络选择
+            network_list_event(e) {
+                this.setData({
+                    network_list_index: e.currentTarget.dataset.index,
+                    network_id: e.currentTarget.dataset.value,
+                    popup_network_status: false,
+                    data_page: 1,
+                });
+                this.get_data_list(1);
+            },
+
+            // 删除
+            recharge_del_event(id) {
+                uni.request({
+                    url: app.globalData.get_request_url('delete', 'recharge', 'coin'),
+                    method: 'POST',
+                    data: { ids: id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res.data.data);
+                        if (res.data.code == 0) {
+                            this.setData({
+                                data_page: 1,
+                            });
+                            this.get_data_list(1);
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
+                });
+            },
+            // 支付
+            recharge_pay_event(id) {
+                app.globalData.url_open('/pages/plugins/coin/recharge-pay/recharge-pay?id=' + id);
             },
 
             // 计算搜索框的高度
