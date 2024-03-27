@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view class="transfer-accounts">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main" @tap="popup_wallet_open_event">
-                    <view>钱包</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_wallet_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-row align-c margin-right-main" @tap="popup_accounts_open_event">
+                    <view>账户</view>
+                    <view class="padding-left-sm"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event" @scrolltolower="scroll_lower">
@@ -12,20 +12,24 @@
                     <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                         <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
                             <view>转账时间</view>
-                            <view class="cr-grey-9">{{ item.date }}</view>
+                            <view class="cr-grey-9">{{ item.add_time }}</view>
                         </view>
-                        <view>
+                        <view class="convert-group-row">
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">收款人：</text>
-                                <text class="fw-b">{{ item.payee }}</text>
+                                <text class="cr-grey-9 title">转账单号：</text>
+                                <text class="fw-b">{{ item.transfer_no }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">转账金额：</text>
-                                <text class="fw-b">{{ item.transfer_amount }}</text>
+                                <text class="cr-grey-9 title">收款人：</text>
+                                <text class="fw-b">{{ item.receive_user.username }}</text>
+                            </view>
+                            <view class="margin-bottom-sm flex-row">
+                                <text class="cr-grey-9 title">转账币：</text>
+                                <text class="fw-b">{{ item.coin }}</text>
                             </view>
                             <view class="flex-row">
-                                <text class="cr-grey-9">转账备注：</text>
-                                <text class="fw-b">{{ item.transfer_note }}</text>
+                                <text class="cr-grey-9 title">转账备注：</text>
+                                <text class="fw-b">{{ item.note }}</text>
                             </view>
                         </view>
                     </view>
@@ -33,16 +37,16 @@
                     <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 钱包 -->
-            <component-popup :propShow="popup_wallet_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_wallet_close_event">
+            <!-- 账户 -->
+            <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">钱包种类</view>
-                    <view class="popup_wallet_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-index="index" :data-id="item.id" @tap="wallet_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_wallet_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
@@ -56,7 +60,7 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    var wallet_static_url = app.globalData.get_static_url('coin', true) + 'app/';
+    var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
     // #ifdef MP-TOUTIAO
@@ -66,7 +70,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                wallet_static_url: wallet_static_url,
+                accounts_static_url: accounts_static_url,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
@@ -74,11 +78,12 @@
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
-                // 钱包
-                popup_wallet_status: false,
+                // 账户
+                popup_accounts_status: false,
+                accounts_id: null,
                 accounts_list_index: 0,
                 accounts_list: [],
-                transfer_id: null,
+
                 data: [],
                 data_page_total: 0,
                 data_page: 1,
@@ -181,10 +186,14 @@
                         title: this.$t('common.loading_in_text'),
                     });
                 }
+                var new_data = {
+                    send_accounts_id: this.accounts_id,
+                    page: this.data_page,
+                };
                 uni.request({
                     url: app.globalData.get_request_url('index', 'transfer', 'coin'),
                     method: 'POST',
-                    data: { send_accounts_id: this.transfer_id, page: this.data_page },
+                    data: new_data,
                     dataType: 'json',
                     success: (res) => {
                         if (this.data_page > 1) {
@@ -206,7 +215,7 @@
                                 this.setData({
                                     data: temp_data_list,
                                     data_page_total: data.page_total,
-                                    data_page: this.page + 1,
+                                    data_page: data.page + 1,
                                     data_list_loding_msg: '',
                                     data_list_loding_status: 3,
                                 });
@@ -248,30 +257,29 @@
                 });
             },
 
-            // 钱包打开
-            popup_wallet_open_event() {
-                if (!this.popup_type_status) {
-                    this.setData({
-                        popup_wallet_status: !this.popup_wallet_status,
-                    });
-                }
-            },
-
-            // 钱包关闭
-            popup_wallet_close_event() {
+            // 账户打开
+            popup_accounts_open_event() {
                 this.setData({
-                    popup_wallet_status: false,
+                    popup_accounts_status: !this.popup_accounts_status,
                 });
             },
 
-            // 钱包选择
-            wallet_event(e) {
+            // 账户关闭
+            popup_accounts_close_event() {
+                this.setData({
+                    popup_accounts_status: false,
+                });
+            },
+
+            // 账户选择
+            accounts_list_event(e) {
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
-                    transfer_id: e.currentTarget.dataset.id,
-                    popup_wallet_status: false,
+                    accounts_id: e.currentTarget.dataset.value,
+                    popup_accounts_status: false,
+                    data_page: 1,
                 });
-                this.get_data_list();
+                this.get_data_list(1);
             },
 
             // 计算搜索框的高度
