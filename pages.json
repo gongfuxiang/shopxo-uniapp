@@ -1547,6 +1547,12 @@
             ]
         }
     ],
+    "preloadRule": {
+        "pages/index/index": {
+            "network": "all",
+            "packages": ["pages/goods-detail"]
+        }
+    },
     "globalStyle": {
         "navigationBarTitleText": "ShopXO",
         "navigationBarTextStyle": "black",
