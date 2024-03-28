@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                    <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
@@ -50,6 +50,9 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
@@ -79,6 +82,9 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 accounts_static_url: accounts_static_url,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
+                data_bottom_line_status: false,
 
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
@@ -86,7 +92,7 @@
                 // 账户
                 popup_accounts_status: false,
                 accounts_id: null,
-                accounts_list_index: 0,
+                accounts_list_index: null,
                 accounts_list: [],
 
                 data: [],

@@ -2,17 +2,17 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                    <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main" @tap="popup_recharge_status_open_event">
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_recharge_status_open_event">
                     <view>状态</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                    <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main" @tap="popup_network_open_event">
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_network_open_event">
                     <view>网络</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                    <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
@@ -58,6 +58,9 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
@@ -73,6 +76,9 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
                         </view>
@@ -88,6 +94,9 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
                         </view>
@@ -127,17 +136,17 @@
                 // 账户
                 popup_accounts_status: false,
                 accounts_id: null,
-                accounts_list_index: 0,
+                accounts_list_index: null,
                 accounts_list: [],
                 // 类型
                 popup_recharge_status_status: false,
                 status: null,
-                recharge_status_list_index: 0,
+                recharge_status_list_index: null,
                 recharge_status_list: [],
                 // 网络
                 popup_network_status: false,
                 network_id: null,
-                network_list_index: 0,
+                network_list_index: null,
                 network_list: [],
 
                 data: [],

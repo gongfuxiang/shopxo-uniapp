@@ -2,9 +2,9 @@
     <view :class="theme_view">
         <view class="transfer-accounts">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
-                    <view class="padding-left-sm"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                    <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event" @scrolltolower="scroll_lower">
@@ -81,7 +81,7 @@
                 // 账户
                 popup_accounts_status: false,
                 accounts_id: null,
-                accounts_list_index: 0,
+                accounts_list_index: null,
                 accounts_list: [],
 
                 data: [],
