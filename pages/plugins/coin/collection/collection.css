@@ -1,7 +1,4 @@
-.collection .img {
-    --size: 280rpx;
-    width: var(--size) !important;
-    height: var(--size) !important;
+.collection .qrcode {
     margin-bottom: 80rpx;
     margin-top: 52rpx;
 }

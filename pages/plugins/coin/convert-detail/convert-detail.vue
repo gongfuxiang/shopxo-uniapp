@@ -10,26 +10,25 @@
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
                     <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
-                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>{{ item.status }}</view>
+                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-e align-c">
                             <view class="cr-grey-9">{{ item.add_time }}</view>
                         </view>
                         <view class="convert-group-row">
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9 title">转换单号：</text>
-                                <text class="fw-b">{{ item.transfer_no }}</text>
+                                <text class="fw-b">{{ item.convert_no }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9 title">转出余额：</text>
-                                <text class="fw-b">{{ item.tob }}</text>
+                                <text class="fw-b">{{ item.convert_value }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9 title">转出账户：</text>
-                                <text class="fw-b">{{ item.send_user.username }}</text>
+                                <text class="fw-b">{{ item.send_accounts_id }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9 title">转入账户：</text>
-                                <text class="fw-b">{{ item.receive_user.username }}</text>
+                                <text class="fw-b">{{ item.receive_accounts_id }}</text>
                             </view>
                             <view class="margin-bottom-sm flex-row">
                                 <text class="cr-grey-9 title">最新币：</text>

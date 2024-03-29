@@ -182,6 +182,7 @@
             this.setData({
                 params: params,
             });
+            this.coin_oprate_list[1].url = this.coin_oprate_list[1].url + '?id=' + params.id;
             this.init();
         },
 
@@ -210,7 +211,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'accounts', 'coin'),
                     method: 'POST',
-                    data: { id: this.params.id },
+                    data: this.params.id,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
