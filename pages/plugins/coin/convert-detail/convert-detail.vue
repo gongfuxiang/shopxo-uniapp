@@ -9,39 +9,45 @@
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
-                    <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
-                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-e align-c">
-                            <view class="cr-grey-9">{{ item.add_time }}</view>
+                    <view v-if="data.length > 0">
+                        <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
+                            <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-e align-c">
+                                <view class="cr-grey-9">{{ item.add_time }}</view>
+                            </view>
+                            <view class="convert-group-row">
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转换单号：</text>
+                                    <text class="fw-b">{{ item.convert_no }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转出余额：</text>
+                                    <text class="fw-b">{{ item.convert_value }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转出账户：</text>
+                                    <text class="fw-b">{{ item.send_accounts_id }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转入账户：</text>
+                                    <text class="fw-b">{{ item.receive_accounts_id }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">最新币：</text>
+                                    <text class="fw-b">{{ item.coin }}</text>
+                                </view>
+                                <view class="flex-row">
+                                    <text class="cr-grey-9 title">备注：</text>
+                                    <text class="fw-b">{{ item.note }}</text>
+                                </view>
+                            </view>
                         </view>
-                        <view class="convert-group-row">
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">转换单号：</text>
-                                <text class="fw-b">{{ item.convert_no }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">转出余额：</text>
-                                <text class="fw-b">{{ item.convert_value }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">转出账户：</text>
-                                <text class="fw-b">{{ item.send_accounts_id }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">转入账户：</text>
-                                <text class="fw-b">{{ item.receive_accounts_id }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">最新币：</text>
-                                <text class="fw-b">{{ item.coin }}</text>
-                            </view>
-                            <view class="flex-row">
-                                <text class="cr-grey-9 title">备注：</text>
-                                <text class="fw-b">{{ item.note }}</text>
-                            </view>
-                        </view>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </view>
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                    </view>
                 </view>
             </scroll-view>
             <!-- 账户 -->
@@ -82,7 +88,6 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 accounts_static_url: accounts_static_url,
                 data_list_loding_status: 1,
-                data_list_loding_msg: '',
                 data_bottom_line_status: false,
 
                 // 弹窗距离顶部距离
@@ -134,7 +139,7 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.init_data();
+                    this.get_data();
                     this.get_data_list();
                     var self = this;
                     var timer = setInterval(function () {
@@ -148,7 +153,7 @@
             },
 
             // 初始化数据
-            init_data() {
+            get_data() {
                 uni.request({
                     url: app.globalData.get_request_url('init', 'user', 'coin'),
                     method: 'POST',
@@ -230,7 +235,6 @@
                                     data: temp_data_list,
                                     data_page_total: data.page_total,
                                     data_page: data.page + 1,
-                                    data_list_loding_msg: '',
                                     data_list_loding_status: 3,
                                     data_is_loading: 0,
                                 });
@@ -245,7 +249,6 @@
                                         data: data.data_list,
                                         data_page_total: data.page_total,
                                         data_page: data.page + 1,
-                                        data_list_loding_msg: '',
                                         data_list_loding_status: 3,
                                         data_is_loading: 0,
                                     });
@@ -255,18 +258,12 @@
                                         data_is_loading: 0,
                                     });
                                 }
-                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
                             }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg,
+                                data_is_loading: 0,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
                         }
                     },
                     fail: () => {
@@ -276,7 +273,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                            data_is_loading: 0,
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },

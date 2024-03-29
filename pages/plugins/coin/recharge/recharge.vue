@@ -7,7 +7,7 @@
                     <view class="cr-white flex-1 flex-width">
                         <view class="coin-dropdown margin-bottom-main">
                             <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
-                                <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                 <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
                                 <view class="coin-dropdown-icon pa padding-left-xxl">
                                     <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
@@ -84,7 +84,7 @@
                     <view class="scroll-y">
                         <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
                             <view class="flex-row align-c">
-                                <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                 <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                             </view>
                             <view>

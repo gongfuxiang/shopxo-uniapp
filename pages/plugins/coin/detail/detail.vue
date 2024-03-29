@@ -6,7 +6,7 @@
                 <view class="coin-title flex-col padding-lg">
                     <view v-if="accounts_list.length > 0" class="margin-bottom-xxxxl margin-top-xl padding-bottom-main flex-row jc-sb align-c">
                         <view class="flex-row">
-                            <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                            <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                             <view class="padding-left-main">
                                 <view class="coin-dropdown text-size-md pr margin-bottom-xs flex-row" @tap="popup_coin_status_open_event">
                                     <text class="cr-666">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
@@ -33,29 +33,35 @@
                     </view>
                 </view>
                 <view class="coin-content padding-lg">
-                    <view v-for="(item, index) in log_list" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
-                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>{{ item.coin_type_name }}</view>
-                            <view class="cr-grey-9">{{ item.add_time }}</view>
+                    <view v-if="log_list.length > 0">
+                        <view v-for="(item, index) in log_list" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
+                            <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
+                                <view>{{ item.coin_type_name }}</view>
+                                <view class="cr-grey-9">{{ item.add_time }}</view>
+                            </view>
+                            <view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9">操作类型：</text>
+                                    <text class="fw-b">{{ item.operate_type_name }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9">操作数量：</text>
+                                    <text class="fw-b">{{ item.operate_coin }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9">原始数量：</text>
+                                    <text class="fw-b">{{ item.original_coin }}</text>
+                                </view>
+                                <view class="flex-row">
+                                    <text class="cr-grey-9">最新数量：</text>
+                                    <text class="fw-b">{{ item.latest_coin }}</text>
+                                </view>
+                            </view>
                         </view>
-                        <view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">操作类型：</text>
-                                <text class="fw-b">{{ item.operate_type_name }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">操作数量：</text>
-                                <text class="fw-b">{{ item.operate_coin }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9">原始数量：</text>
-                                <text class="fw-b">{{ item.original_coin }}</text>
-                            </view>
-                            <view class="flex-row">
-                                <text class="cr-grey-9">最新数量：</text>
-                                <text class="fw-b">{{ item.latest_coin }}</text>
-                            </view>
-                        </view>
+                    </view>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
                     </view>
                 </view>
             </scroll-view>
@@ -72,7 +78,7 @@
                     <view class="scroll-y">
                         <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
                             <view class="flex-row align-c">
-                                <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                 <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                             </view>
                             <view>
@@ -131,6 +137,7 @@
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
                 params: null,
+				data_list_loding_status: 1,
 
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
@@ -211,11 +218,10 @@
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'accounts', 'coin'),
                     method: 'POST',
-                    data: this.params.id,
+                    data: this.params,
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({

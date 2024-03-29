@@ -45,7 +45,7 @@
                         <view class="coin-item padding-main">
                             <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c" :class="accounts_list.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'" :data-value="'/pages/plugins/coin/detail/detail?id=' + item.id" @tap="url_event">
                                 <view class="flex-1 flex-width flex-row align-c padding-right-main">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="fw-b single-text margin-left-main">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="flex-col align-e">

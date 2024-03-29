@@ -7,7 +7,7 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
-                                    <image :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="coin_list[send_accounts_id_index]['platform_icon']" :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-sm fw-b single-text">{{ coin_list[send_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
@@ -28,7 +28,7 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
-                                    <image :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="coin_list[receive_accounts_id_index]['platform_icon']" :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-sm fw-b single-text">{{ coin_list[receive_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
@@ -69,7 +69,7 @@
                         <view class="scroll-y">
                             <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
                                 <view class="flex-row align-c">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                    <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
