@@ -150,11 +150,11 @@
                         </view>
 
                         <!-- 商品列表 -->
-                        <block v-if="data.length > 0">
+                        <view v-if="data.length > 0" :class="((slider || null) == null || slider.length == 0) ? 'margin-top-main' : ''">
                             <block v-for="(item, index) in data" :key="index">
                                 <component-goods-list :propData="item" :propKeywordsUrl="'/pages/plugins/shop/search/search?shop_id=' + shop.id + '&keywords='" :propIsAutoPlay="true" :propCurrencySymbol="currency_symbol"></component-goods-list>
                             </block>
-                        </block>
+                        </view>
                     </view>
                 </block>
                 <block v-else>
@@ -239,6 +239,7 @@
                 user: app.globalData.get_user_cache_info(),
             });
         },
+
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
@@ -249,6 +250,7 @@
             // 初始化配置
             this.init_config();
         },
+
         // 下拉刷新
         onPullDownRefresh() {
             if(this.data_list_loding_status === 1) {
@@ -257,6 +259,7 @@
                 this.get_data();
             }
         },
+
         methods: {
             // 初始化配置
             init_config(status) {
@@ -350,6 +353,7 @@
                     },
                 });
             },
+
             // 店铺收藏事件
             shop_favor_event(e) {
                 var user = app.globalData.get_user_info(this, 'shop_favor_event');
@@ -384,23 +388,27 @@
                     });
                 }
             },
+
             // 搜索输入事件
             search_keywords_event(e) {
                 this.setData({
                     search_keywords_value: e.detail.value || '',
                 });
             },
+
             // 搜索事件
             search_button_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 app.globalData.url_open(value + 'keywords=' + this.search_keywords_value || '');
             },
+
             // 导航分类事件
             header_service_event(e) {
                 this.setData({
                     header_service_status: !this.header_service_status,
                 });
             },
+
             // 导航分类事件
             nav_shop_category_event(e) {
                 var temp_nav = this.shop_navigation;
@@ -412,11 +420,13 @@
                     nav_category_status: !this.nav_category_status,
                 });
             },
+
             // 导航分类事件
             shop_category_event(e) {
                 var value = e.currentTarget.dataset.value || null;
                 app.globalData.url_open('/pages/plugins/shop/search/search?shop_id=' + this.shop.id + '&category_id=' + value);
             },
+
             // 导航事件
             nav_event(e) {
                 // 存在子级则做子级显示隐藏处理
@@ -439,22 +449,27 @@
                     app.globalData.url_event(e);
                 }
             },
+
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
             // 剪切板
             text_copy_event(e) {
                 app.globalData.text_copy_event(e);
             },
+
             // 电话
             tel_event(e) {
                 app.globalData.call_tel(e.currentTarget.dataset.value || null);
             },
+
             // 图片预览
             image_show_event(e) {
                 app.globalData.image_show_event(e);
             },
+
             // 进入客服系统
             chat_event() {
                 app.globalData.chat_entry_handle(this.shop.chat_info.chat_url);
