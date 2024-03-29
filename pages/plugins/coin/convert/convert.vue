@@ -7,7 +7,7 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
-                                    <image :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="coin_list[send_accounts_id_index]['platform_icon']" :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-sm fw-b single-text">{{ coin_list[send_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
@@ -18,7 +18,7 @@
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="金额" @input="default_value_change" />
+                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_value_change" />
                                 <view class="margin-top-main tr text-size-xs">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -28,7 +28,7 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
-                                    <image :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="coin_list[receive_accounts_id_index]['platform_icon']" :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-sm fw-b single-text">{{ coin_list[receive_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
@@ -39,7 +39,7 @@
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled placeholder="金额" />
+                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled />
                                 <view class="margin-top-main tr text-size-xs">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -69,7 +69,7 @@
                         <view class="scroll-y">
                             <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
                                 <view class="flex-row align-c">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                    <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
@@ -121,9 +121,9 @@
                 ],
                 // 是否转换
                 convert_bool: false,
-                // 输入默认金额
+                // 输入默认币
                 default_value: '',
-                // 转换金额
+                // 转换币
                 convert_value: '0.00',
                 // 支付密码
                 pay_pwd: '',
@@ -263,7 +263,7 @@
                 };
 
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: '请输入转换金额' }];
+                var validation = [{ fields: 'coin', msg: '请输入转换币' }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {
@@ -284,7 +284,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/convert-detail/convert-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/convert-list/convert-list', true);
                                 }, 1000);
                             } else {
                                 this.setData({

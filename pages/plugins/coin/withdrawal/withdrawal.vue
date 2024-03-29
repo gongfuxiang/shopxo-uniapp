@@ -8,20 +8,20 @@
                         <view v-if="accounts_list.length > 0" class="cr-white">
                             <view class="flex-row align-e margin-bottom-main">
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_open_event">
-                                    <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                     </view>
                                 </view>
-                                <view class="text-size-xs fw-b padding-left-main text">可提现金额</view>
+                                <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
                             </view>
                             <view class="flex-row align-e">
                                 <view class="text-size-40 fw-b">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
                                 <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
                             </view>
                         </view>
-                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
+                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
                     </view>
                 </view>
                 <view class="content padding-main">
@@ -79,7 +79,7 @@
                         <view class="scroll-y">
                             <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
                                 <view class="flex-row align-c">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                    <image v-if="platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
@@ -284,7 +284,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/withdrawal-detail/withdrawal-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/withdrawal-list/withdrawal-list', true);
                                 }, 1000);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

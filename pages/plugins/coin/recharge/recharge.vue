@@ -7,7 +7,7 @@
                     <view class="cr-white flex-1 flex-width">
                         <view class="coin-dropdown margin-bottom-main">
                             <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
-                                <image :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                                 <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
                                 <view class="coin-dropdown-icon pa padding-left-xxl">
                                     <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
@@ -45,7 +45,7 @@
                     </picker>
                 </view>
                 <view class="margin-bottom-xxxl">
-                    <view class="margin-bottom-xs">选择充值金额</view>
+                    <view class="margin-bottom-xs">选择充值币</view>
                     <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
                         <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
                             <view class="flex-row align-c jc-c">
@@ -84,7 +84,7 @@
                     <view class="scroll-y">
                         <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
                             <view class="flex-row align-c">
-                                <image :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                 <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                             </view>
                             <view>
@@ -129,7 +129,7 @@
                 network_list: [],
                 // 充值选中下标
                 preset_data_index: null,
-                // 充值金额
+                // 充值币
                 preset_data: [],
                 // 充值数量
                 recharge_num: '',
@@ -227,7 +227,7 @@
                     network_list_index: parseInt(e.detail.value || 0),
                 });
             },
-            // 充值金额选中
+            // 充值币选中
             recharge_num_change(e) {
                 this.setData({
                     recharge_num: e.detail.value,
@@ -266,7 +266,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/recharge-detail/recharge-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/recharge-list/recharge-list', true);
                                 }, 1000);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

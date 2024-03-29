@@ -1503,35 +1503,35 @@
                     }
                 },
                 {
-                    "path": "transfer-accounts-detail/transfer-accounts-detail",
+                    "path": "transfer-list/transfer-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
-                    "path": "transaction-detail/transaction-detail",
+                    "path": "transaction-list/transaction-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
-                    "path": "withdrawal-detail/withdrawal-detail",
+                    "path": "withdrawal-list/withdrawal-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
-                    "path": "convert-detail/convert-detail",
+                    "path": "convert-list/convert-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
                 },
                 {
-                    "path": "recharge-detail/recharge-detail",
+                    "path": "recharge-list/recharge-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

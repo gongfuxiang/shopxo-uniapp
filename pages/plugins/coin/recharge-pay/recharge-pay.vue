@@ -199,7 +199,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/recharge-detail/recharge-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/recharge-list/recharge-list', true);
                                 }, 1000);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

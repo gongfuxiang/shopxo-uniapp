@@ -6,51 +6,48 @@
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_recharge_status_open_event">
-                    <view>状态</view>
-                    <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
-                </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_network_open_event">
-                    <view>网络</view>
-                    <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
-                </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main">
-                    <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
-                        <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                            <view>{{ item.status_name }}</view>
-                            <view class="cr-grey-9">{{ item.add_time }}</view>
+                    <view v-if="data.length > 0">
+                        <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
+                            <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-e align-c">
+                                <view class="cr-grey-9">{{ item.add_time }}</view>
+                            </view>
+                            <view class="convert-group-row">
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转换单号：</text>
+                                    <text class="fw-b">{{ item.convert_no }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转出余额：</text>
+                                    <text class="fw-b">{{ item.convert_value }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转出账户：</text>
+                                    <text class="fw-b">{{ item.send_accounts_id }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">转入账户：</text>
+                                    <text class="fw-b">{{ item.receive_accounts_id }}</text>
+                                </view>
+                                <view class="margin-bottom-sm flex-row">
+                                    <text class="cr-grey-9 title">最新币：</text>
+                                    <text class="fw-b">{{ item.coin }}</text>
+                                </view>
+                                <view class="flex-row">
+                                    <text class="cr-grey-9 title">备注：</text>
+                                    <text class="fw-b">{{ item.note }}</text>
+                                </view>
+                            </view>
                         </view>
-                        <view class="convert-group-row">
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">充值单号：</text>
-                                <text class="fw-b">{{ item.recharge_no }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">平台：</text>
-                                <text class="fw-b">{{ item.platform_name }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">充值网络：</text>
-                                <text class="fw-b">{{ item.network_name }}</text>
-                            </view>
-                            <view class="margin-bottom-sm flex-row">
-                                <text class="cr-grey-9 title">充值地址：</text>
-                                <text class="fw-b">{{ item.address }}</text>
-                            </view>
-                            <view class="flex-row">
-                                <text class="cr-grey-9 title">充值币：</text>
-                                <text class="fw-b">{{ item.coin }}</text>
-                            </view>
-                        </view>
-                        <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
-                            <button type="default" class="recharge-del-btn round" @tap="recharge_del_event(item.id)">删除</button>
-                            <button type="default" class="recharge-apy-btn round" @tap="recharge_pay_event(item.id)">支付</button>
-                        </div>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     </view>
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                    </view>
                 </view>
             </scroll-view>
             <!-- 账户 -->
@@ -66,42 +63,6 @@
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
-                        <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
-                    </view>
-                </view>
-            </component-popup>
-            <!-- 类型 -->
-            <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
-                <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
-                        </view>
-                        <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
-                        </view>
-                    </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_recharge_status_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
-                        <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
-                    </view>
-                </view>
-            </component-popup>
-            <!-- 网络 -->
-            <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
-                <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
-                        </view>
-                        <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
-                        </view>
-                    </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_network_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
@@ -127,7 +88,6 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 accounts_static_url: accounts_static_url,
                 data_list_loding_status: 1,
-                data_list_loding_msg: '',
                 data_bottom_line_status: false,
 
                 // 弹窗距离顶部距离
@@ -138,16 +98,6 @@
                 accounts_id: null,
                 accounts_list_index: null,
                 accounts_list: [],
-                // 类型
-                popup_recharge_status_status: false,
-                status: null,
-                recharge_status_list_index: null,
-                recharge_status_list: [],
-                // 网络
-                popup_network_status: false,
-                network_id: null,
-                network_list_index: null,
-                network_list: [],
 
                 data: [],
                 data_page_total: 0,
@@ -189,7 +139,7 @@
             init(e) {
                 var user = app.globalData.get_user_info(this, 'init');
                 if (user != false) {
-                    this.init_data();
+                    this.get_data();
                     this.get_data_list();
                     var self = this;
                     var timer = setInterval(function () {
@@ -203,7 +153,7 @@
             },
 
             // 初始化数据
-            init_data() {
+            get_data() {
                 uni.request({
                     url: app.globalData.get_request_url('init', 'user', 'coin'),
                     method: 'POST',
@@ -216,8 +166,6 @@
                             var data = res.data.data;
                             this.setData({
                                 accounts_list: data.accounts_list || [],
-                                recharge_status_list: data.recharge_status_list || [],
-                                network_list: data.network_list || [],
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
@@ -256,13 +204,12 @@
                     });
                 }
                 var new_data = {
-                    accounts_id: this.accounts_id,
-                    network_id: this.network_id,
-                    status: this.status,
+                    send_accounts_id: this.accounts_id,
+                    receive_accounts_id: this.accounts_id,
                     page: this.data_page,
                 };
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'recharge', 'coin'),
+                    url: app.globalData.get_request_url('index', 'convert', 'coin'),
                     method: 'POST',
                     data: new_data,
                     dataType: 'json',
@@ -288,7 +235,6 @@
                                     data: temp_data_list,
                                     data_page_total: data.page_total,
                                     data_page: data.page + 1,
-                                    data_list_loding_msg: '',
                                     data_list_loding_status: 3,
                                     data_is_loading: 0,
                                 });
@@ -303,7 +249,6 @@
                                         data: data.data_list,
                                         data_page_total: data.page_total,
                                         data_page: data.page + 1,
-                                        data_list_loding_msg: '',
                                         data_list_loding_status: 3,
                                         data_is_loading: 0,
                                     });
@@ -313,18 +258,12 @@
                                         data_is_loading: 0,
                                     });
                                 }
-                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
                             }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
-                                data_list_loding_msg: res.data.msg,
+                                data_is_loading: 0,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
                         }
                     },
                     fail: () => {
@@ -334,7 +273,7 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
-                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                            data_is_loading: 0,
                         });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
@@ -343,7 +282,7 @@
 
             // 账户打开
             popup_accounts_open_event() {
-                if (!this.popup_recharge_status_status && !this.popup_network_status) {
+                if (!this.popup_type_status) {
                     this.setData({
                         popup_accounts_status: !this.popup_accounts_status,
                     });
@@ -358,7 +297,7 @@
             },
 
             // 账户选择
-            accounts_list_event(e) {
+            accounts_event(e) {
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
                     accounts_id: e.currentTarget.dataset.value,
@@ -366,92 +305,6 @@
                     data_page: 1,
                 });
                 this.get_data_list(1);
-            },
-
-            // 类型打开
-            popup_recharge_status_open_event() {
-                if (!this.popup_accounts_status && !this.popup_network_status) {
-                    this.setData({
-                        popup_recharge_status_status: !this.popup_recharge_status_status,
-                    });
-                }
-            },
-
-            // 类型关闭
-            popup_recharge_status_close_event() {
-                this.setData({
-                    popup_recharge_status_status: false,
-                });
-            },
-
-            // 类型选择
-            recharge_status_list_event(e) {
-                this.setData({
-                    recharge_status_list_index: e.currentTarget.dataset.index,
-                    status: e.currentTarget.dataset.value,
-                    popup_recharge_status_status: false,
-                    data_page: 1,
-                });
-                this.get_data_list(1);
-            },
-
-            // 网络打开
-            popup_network_open_event() {
-                if (!this.popup_accounts_status && !this.popup_recharge_status_status) {
-                    this.setData({
-                        popup_network_status: !this.popup_network_status,
-                    });
-                }
-            },
-
-            // 网络关闭
-            popup_network_close_event() {
-                this.setData({
-                    popup_network_status: false,
-                });
-            },
-
-            // 网络选择
-            network_list_event(e) {
-                this.setData({
-                    network_list_index: e.currentTarget.dataset.index,
-                    network_id: e.currentTarget.dataset.value,
-                    popup_network_status: false,
-                    data_page: 1,
-                });
-                this.get_data_list(1);
-            },
-
-            // 删除
-            recharge_del_event(id) {
-                uni.request({
-                    url: app.globalData.get_request_url('delete', 'recharge', 'coin'),
-                    method: 'POST',
-                    data: { ids: id },
-                    dataType: 'json',
-                    success: (res) => {
-                        uni.stopPullDownRefresh();
-                        console.log(res.data.data);
-                        if (res.data.code == 0) {
-                            this.setData({
-                                data_page: 1,
-                            });
-                            this.get_data_list(1);
-                        } else {
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        }
-                    },
-                    fail: () => {
-                        uni.stopPullDownRefresh();
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
-            },
-            // 支付
-            recharge_pay_event(id) {
-                app.globalData.url_open('/pages/plugins/coin/recharge-pay/recharge-pay?id=' + id);
             },
 
             // 计算搜索框的高度
@@ -478,5 +331,5 @@
     };
 </script>
 <style>
-    @import './recharge-detail.css';
+    @import './convert-list.css';
 </style>

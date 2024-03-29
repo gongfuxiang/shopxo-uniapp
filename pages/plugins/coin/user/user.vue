@@ -45,7 +45,7 @@
                         <view class="coin-item padding-main">
                             <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c" :class="accounts_list.length == index + 1 ? '' : 'br-b-f5 margin-bottom-lg padding-bottom-lg'" :data-value="'/pages/plugins/coin/detail/detail?id=' + item.id" @tap="url_event">
                                 <view class="flex-1 flex-width flex-row align-c padding-right-main">
-                                    <image :src="item.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                                    <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-content-list-img round" />
                                     <text class="fw-b single-text margin-left-main">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="flex-col align-e">
@@ -70,19 +70,19 @@
                     </view>
                     <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/recharge-detail/recharge-detail" @tap="url_event">充值明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/recharge-list/recharge-list" @tap="url_event">充值明细</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-accounts-detail/transfer-accounts-detail" @tap="url_event">转账明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-list/transfer-list" @tap="url_event">转账明细</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-detail/transaction-detail" @tap="url_event">交易明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-list/transaction-list" @tap="url_event">交易明细</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-detail/convert-detail" @tap="url_event">转换明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-list/convert-list" @tap="url_event">转换明细</view>
                         </view>
                     </view>
                 </view>
