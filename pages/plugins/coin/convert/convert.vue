@@ -18,7 +18,7 @@
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="金额" @input="default_value_change" />
+                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_value_change" />
                                 <view class="margin-top-main tr text-size-xs">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -39,7 +39,7 @@
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled placeholder="金额" />
+                                <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled />
                                 <view class="margin-top-main tr text-size-xs">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -121,9 +121,9 @@
                 ],
                 // 是否转换
                 convert_bool: false,
-                // 输入默认金额
+                // 输入默认币
                 default_value: '',
-                // 转换金额
+                // 转换币
                 convert_value: '0.00',
                 // 支付密码
                 pay_pwd: '',
@@ -263,7 +263,7 @@
                 };
 
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: '请输入转换金额' }];
+                var validation = [{ fields: 'coin', msg: '请输入转换币' }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

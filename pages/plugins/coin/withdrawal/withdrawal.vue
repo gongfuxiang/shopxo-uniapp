@@ -14,7 +14,7 @@
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                     </view>
                                 </view>
-                                <view class="text-size-xs fw-b padding-left-main text">可提现金额</view>
+                                <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
                             </view>
                             <view class="flex-row align-e">
                                 <view class="text-size-40 fw-b">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>

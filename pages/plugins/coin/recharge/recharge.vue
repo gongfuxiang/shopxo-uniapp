@@ -45,7 +45,7 @@
                     </picker>
                 </view>
                 <view class="margin-bottom-xxxl">
-                    <view class="margin-bottom-xs">选择充值金额</view>
+                    <view class="margin-bottom-xs">选择充值币</view>
                     <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
                         <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
                             <view class="flex-row align-c jc-c">
@@ -129,7 +129,7 @@
                 network_list: [],
                 // 充值选中下标
                 preset_data_index: null,
-                // 充值金额
+                // 充值币
                 preset_data: [],
                 // 充值数量
                 recharge_num: '',
@@ -227,7 +227,7 @@
                     network_list_index: parseInt(e.detail.value || 0),
                 });
             },
-            // 充值金额选中
+            // 充值币选中
             recharge_num_change(e) {
                 this.setData({
                     recharge_num: e.detail.value,
