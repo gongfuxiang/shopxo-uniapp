@@ -156,7 +156,7 @@
                                             </view>
                                         </block>
                                         <!-- 协议 -->
-                                        <view class="margin-top-xl cr-grey flex-row flex-wrap">
+                                        <view class="margin-top-xl cr-grey flex-row flex-wrap align-c">
                                             <view class="dis-inline-block va-m" @tap="agreement_change">
                                                 <radio-group class="dis-inline-block va-m" style="transform: scale(0.6)">
                                                     <label>
@@ -326,12 +326,12 @@
                                 <view class="flex-row align-c jc-c">
                                     <view v-for="(item, key, index) in plugins_thirdpartylogin_data" :key="index">
                                         <block v-if="index < 3">
-                                            <view class="item round flex-row align-c jc-c" :style="'background-color:' + item.bg_color + ';'" :data-type="key" @tap="plugins_thirdpartylogin_event">
+                                            <view class="item round flex-row align-c jc-c margin-horizontal-sm" :style="'background-color:' + item.bg_color + ';'" :data-type="key" @tap="plugins_thirdpartylogin_event">
                                                 <image :src="item.icon" mode="aspectFit" class="dis-block auto"></image>
                                             </view>
                                         </block>
                                     </view>
-                                    <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round more-submit" @tap="popup_login_open_event">
+                                    <view v-if="Object.keys(plugins_thirdpartylogin_data).length > 3" class="item dis-inline-block round more-submit margin-horizontal-sm" @tap="popup_login_open_event">
                                         <image :src="login_static_url + 'more.png'" mode="aspectFit" class="dis-block auto"></image>
                                     </view>
                                 </view>
