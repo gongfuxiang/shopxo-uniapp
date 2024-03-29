@@ -487,18 +487,22 @@
 
             // 获取数据
             init(params = {}) {
-                // 本地缓存数据
-                var key = app.globalData.data.cache_index_data_key;
-                var upd_data = uni.getStorageSync(key) || null;
-                if(upd_data != null) {
-                    // 先使用缓存数据展示
-                    this.setData(upd_data);
+                // 还没有数据则读取缓存
+                if(this.load_status == 0)
+                {
+                    // 本地缓存数据
+                    var key = app.globalData.data.cache_index_data_key;
+                    var upd_data = uni.getStorageSync(key) || null;
+                    if(upd_data != null) {
+                        // 先使用缓存数据展示
+                        this.setData(upd_data);
 
-                    // 初始化返回公共处理
-                    this.init_result_common_handle();
+                        // 初始化返回公共处理
+                        this.init_result_common_handle();
 
-                    // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
-                    params['is_cache'] = 0;
+                        // 已有本地缓存则直接取远程有效数据（默认首次取的是远程缓存数据）
+                        params['is_cache'] = 0;
+                    }
                 }
 
                 // 网络检查

@@ -137,20 +137,21 @@
                 <view class="goods-base-content border-radius-main bg-white spacing-mb">
                     <view class="padding-main">
                         <view class="goods-title-content oh flex-row jc-sb align-c">
-                            <!-- 标题 -->
+                            <!-- 标题容器 -->
                             <view class="goods-title flex-1 flex-width" :style="'color:' + goods.title_color">
-                                <text class="va-m">{{ goods.title }}</text>
                                 <!-- icon -->
-                                <view v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0" class="goods-icon-container dis-inline-block va-m">
+                                <block v-if="(goods.plugins_view_icon_data || null) != null && goods.plugins_view_icon_data.length > 0">
                                     <block v-for="(item, index) in goods.plugins_view_icon_data" :key="index">
                                         <text
                                             v-if="(item.name || null) != null"
-                                            class="item round text-size-xs bg-white margin-left-sm"
-                                            :style="((item.br_color || null) == null ? '' : 'border:1px solid ' + item.br_color + ';') + '' + ((item.color || null) == null ? '' : 'color: ' + item.color + ';')"
+                                            class="goods-title-icon-item va-m radius text-size-xs margin-right-xs"
+                                            :style="((item.br_color || null) == null ? '' : 'border:1px solid ' + item.br_color + ';') + ((item.bg_color || null) == null ? '' : 'background: ' + item.bg_color + ';') + '' + ((item.color || null) == null ? '' : 'color: ' + item.color + ';')"
                                             :data-value="item.url || ''"
                                             @tap="url_event">{{ item.name }}</text>
                                     </block>
-                                </view>
+                                </block>
+                                <!-- 标题 -->
+                                <text class="va-m">{{ goods.title }}</text>
                             </view>
                             <view v-if="(plugins_seckill_data || null) !== null" class="flex-row align-c padding-left-main">
                                 <!-- 分享 -->
@@ -902,9 +903,11 @@
             // 获取数据
             init() {
                 // 缓存数据
-                var goods = app.globalData.goods_data_cache_handle(this.params.id);
-                if(goods != null) {
-                    this.init_result_data_handle(goods);
+                if((this.goods || null) == null) {
+                    var goods = app.globalData.goods_data_cache_handle(this.params.id);
+                    if(goods != null) {
+                        this.init_result_data_handle(goods);
+                    }
                 }
 
                 // 获取数据
@@ -1012,7 +1015,8 @@
                     },
                 });
             },
-            
+
+            // 初始化数据处理
             init_result_data_handle(goods) {
                 // 价格字段
                 var price_text_arr = [this.$t('goods-detail.goods-detail.bogx42'), this.$t('goods-category.goods-category.g2u3lf'), this.$t('goods-detail.goods-detail.3kdgjl')];

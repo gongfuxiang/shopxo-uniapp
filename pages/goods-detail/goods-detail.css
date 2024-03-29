@@ -173,7 +173,7 @@
     min-height: 86rpx;
 }
 .goods-base-content .goods-title-content .goods-title {
-    font-size: 28rpx;
+    font-size: 30rpx;
     line-height: 40rpx;
     font-weight: bold;
     width: calc(100% - 200rpx);
@@ -241,10 +241,10 @@
     width: 76rpx;
 }
 .price-content .price-icon {
-    padding: 0px 10rpx;
-    color: #FF5722;
+    padding: 0px 8rpx;
+    color: #fff;
     border: 1px solid #FF5722;
-    background: transparent;
+    background: #FF5722;
     font-size: 24rpx;
 }
 .price-content .sales-price {
@@ -337,12 +337,14 @@
 }
 
 /*
-* icon
+* 标题icon
 */
-.goods-icon-container .item {
-    border: 1px solid #3bb4f2;
-    color: #3bb4f2;
-    padding: 2rpx 16rpx;
+.goods-title-icon-item {
+    background: #666;
+    color: #fff;
+    padding: 0 8rpx;
+    line-height: 26rpx;
+    font-weight: 400;
 }
 
 /*
