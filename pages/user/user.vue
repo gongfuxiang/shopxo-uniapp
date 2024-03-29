@@ -126,21 +126,18 @@
                         <!-- 默认九方格模式 -->
                         <view v-else class="nav-box oh margin-top-sm">
                             <block v-for="(item, index) in navigation" :key="index">
-                                <!-- 这里不展示订单导航 -->
-                                <block v-if="item.event_value != '/pages/user-order/user-order'">
-                                    <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item padding-main fl tc cp">
-                                        <image :src="item.images_url" class="item-icon" mode="widthFix"></image>
-                                        <view class="item-name single-text cr-base text-size-sm">{{ item.name }}</view>
-                                    </view>
-                                </block>
+                                <view :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp">
+                                    <image :src="item.images_url" class="item-icon" mode="widthFix"></image>
+                                    <view class="item-name single-text cr-base text-size-sm">{{ item.name }}</view>
+                                </view>
                             </block>
                             <!-- 清除缓存 -->
-                            <view v-if="(nav_logout_data || null) != null" class="nav-item padding-main fl tc cp" @tap="remove_user_cache_event">
+                            <view v-if="(nav_logout_data || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="remove_user_cache_event">
                                 <image :src="common_static_url + nav_logout_data.icon + '-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ nav_logout_data.name }}</view>
                             </view>
                             <!-- 联系客服 -->
-                            <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-main fl tc cp" @tap="call_event">
+                            <view v-if="(common_app_customer_service_tel || null) != null" class="nav-item padding-vertical-main padding-horizontal-xs fl tc cp" @tap="call_event">
                                 <image :src="common_static_url + 'customer-service-icon.png'" class="item-icon" mode="widthFix"></image>
                                 <view class="item-name single-text cr-base text-size-sm">{{ $t('user.user.ki1nor') }}</view>
                             </view>
