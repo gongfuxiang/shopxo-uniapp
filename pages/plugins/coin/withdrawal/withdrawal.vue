@@ -21,7 +21,7 @@
                                 <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
                             </view>
                         </view>
-                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/withdrawal-detail/withdrawal-detail" @tap="url_event">提现明细</view>
+                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
                     </view>
                 </view>
                 <view class="content padding-main">
@@ -284,7 +284,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/withdrawal-detail/withdrawal-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/withdrawal-list/withdrawal-list', true);
                                 }, 1000);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {

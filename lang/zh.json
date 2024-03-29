@@ -191,11 +191,11 @@
 		"plugins-coin-convert": "转换",
 		"plugins-coin-withdrawal": "提现",
 		"plugins-coin-detail": "明细",
-		"plugins-coin-transfer-accounts-detail": "转账明细",
-		"plugins-coin-transaction-detail": "交易明细",
-		"plugins-coin-withdrawal-detail": "提现明细",
-		"plugins-coin-convert-detail": "转换明细",
-		"plugins-coin-recharge-detail": "充值明细",
+		"plugins-coin-transfer-list": "转账明细",
+		"plugins-coin-transaction-list": "交易明细",
+		"plugins-coin-withdrawal-list": "提现明细",
+		"plugins-coin-convert-list": "转换明细",
+		"plugins-coin-recharge-list": "充值明细",
 		"plugins-coin-collection": "收款"
 	},
 	"login": {

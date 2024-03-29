@@ -284,7 +284,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/convert-detail/convert-detail', true);
+                                    app.globalData.url_open('/pages/plugins/coin/convert-list/convert-list', true);
                                 }, 1000);
                             } else {
                                 this.setData({

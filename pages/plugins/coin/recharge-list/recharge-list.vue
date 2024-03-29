@@ -1,22 +1,18 @@
 <template>
     <view :class="theme_view">
-        <view class="transaction">
+        <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
                 <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_operate_type_open_event">
-                    <view>操作类型</view>
-                    <view class="pa right-0"><iconfont :name="popup_operate_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_recharge_status_open_event">
+                    <view>状态</view>
+                    <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_business_type_open_event">
-                    <view>业务类型</view>
-                    <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
-                </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_coin_type_open_event">
-                    <view>币类型</view>
-                    <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_network_open_event">
+                    <view>网络</view>
+                    <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
@@ -24,35 +20,35 @@
                     <view v-if="data.length > 0">
                         <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                             <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                                <view>{{ item.business_type_name }}</view>
+                                <view>{{ item.status_name }}</view>
                                 <view class="cr-grey-9">{{ item.add_time }}</view>
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">币类型：</text>
-                                    <text class="fw-b">{{ item.coin_type_name }}</text>
+                                    <text class="cr-grey-9 title">充值单号：</text>
+                                    <text class="fw-b">{{ item.recharge_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">操作类型：</text>
-                                    <text class="fw-b">{{ item.operate_type_name }}</text>
+                                    <text class="cr-grey-9 title">平台：</text>
+                                    <text class="fw-b">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">操作币：</text>
-                                    <text class="fw-b">{{ item.operate_coin }}</text>
+                                    <text class="cr-grey-9 title">充值网络：</text>
+                                    <text class="fw-b">{{ item.network_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">原始币：</text>
-                                    <text class="fw-b">{{ item.original_coin }}</text>
-                                </view>
-                                <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">最新币：</text>
-                                    <text class="fw-b">{{ item.latest_coin }}</text>
+                                    <text class="cr-grey-9 title">充值地址：</text>
+                                    <text class="fw-b">{{ item.address }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">描述：</text>
-                                    <text class="fw-b">{{ item.msg }}</text>
+                                    <text class="cr-grey-9 title">充值币：</text>
+                                    <text class="fw-b">{{ item.coin }}</text>
                                 </view>
                             </view>
+                            <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
+                                <button type="default" class="recharge-del-btn round" @tap="recharge_del_event(item.id)">删除</button>
+                                <button type="default" class="recharge-apy-btn round" @tap="recharge_pay_event(item.id)">支付</button>
+                            </div>
                         </view>
                         <!-- 结尾 -->
                         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -81,55 +77,37 @@
                     </view>
                 </view>
             </component-popup>
-            <!-- 操作类型 -->
-            <component-popup :propShow="popup_operate_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_operate_type_close_event">
+            <!-- 类型 -->
+            <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="operate_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
                         </view>
-                        <view v-for="(item, index) in operate_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
+                        <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_operate_type_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_recharge_status_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
                 </view>
             </component-popup>
-            <!-- 业务类型 -->
-            <component-popup :propShow="popup_business_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_business_type_close_event">
+            <!-- 网络 -->
+            <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="business_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
                         </view>
-                        <view v-for="(item, index) in business_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
-                        </view>
-                    </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_business_type_close_event">
-                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
-                        <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
-                    </view>
-                </view>
-            </component-popup>
-            <!-- 币类型 -->
-            <component-popup :propShow="popup_coin_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_coin_type_close_event">
-                <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
-                        <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="coin_type_list_event">全部</view>
-                        </view>
-                        <view v-for="(item, index) in coin_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>
+                        <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_coin_type_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_network_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
@@ -165,21 +143,16 @@
                 accounts_id: null,
                 accounts_list_index: null,
                 accounts_list: [],
-                // 操作类型
-                popup_operate_type_status: false,
-                operate_type: null,
-                operate_type_list_index: null,
-                operate_type_list: [],
-                // 业务类型
-                popup_business_type_status: false,
-                business_type: null,
-                business_type_list_index: null,
-                business_type_list: [],
-                // 币类型
-                popup_coin_type_status: false,
-                coin_type: null,
-                coin_type_list_index: null,
-                coin_type_list: [],
+                // 类型
+                popup_recharge_status_status: false,
+                status: null,
+                recharge_status_list_index: null,
+                recharge_status_list: [],
+                // 网络
+                popup_network_status: false,
+                network_id: null,
+                network_list_index: null,
+                network_list: [],
 
                 data: [],
                 data_page_total: 0,
@@ -248,9 +221,8 @@
                             var data = res.data.data;
                             this.setData({
                                 accounts_list: data.accounts_list || [],
-                                operate_type_list: data.log_operate_type_list || [],
-                                business_type_list: data.log_business_type_list || [],
-                                coin_type_list: data.log_coin_type_list || [],
+                                recharge_status_list: data.recharge_status_list || [],
+                                network_list: data.network_list || [],
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
@@ -290,13 +262,12 @@
                 }
                 var new_data = {
                     accounts_id: this.accounts_id,
-                    business_type: this.business_type,
-                    operate_type: this.operate_type,
-                    coin_type: this.coin_type,
+                    network_id: this.network_id,
+                    status: this.status,
                     page: this.data_page,
                 };
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'accountslog', 'coin'),
+                    url: app.globalData.get_request_url('index', 'recharge', 'coin'),
                     method: 'POST',
                     data: new_data,
                     dataType: 'json',
@@ -369,7 +340,7 @@
 
             // 账户打开
             popup_accounts_open_event() {
-                if (!this.popup_operate_type_status && !this.popup_business_type_status && !this.popup_coin_type_status) {
+                if (!this.popup_recharge_status_status && !this.popup_network_status) {
                     this.setData({
                         popup_accounts_status: !this.popup_accounts_status,
                     });
@@ -394,85 +365,90 @@
                 this.get_data_list(1);
             },
 
-            // 操作类型打开
-            popup_operate_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_business_type_status && !this.popup_coin_type_status) {
+            // 类型打开
+            popup_recharge_status_open_event() {
+                if (!this.popup_accounts_status && !this.popup_network_status) {
                     this.setData({
-                        popup_operate_type_status: !this.popup_operate_type_status,
+                        popup_recharge_status_status: !this.popup_recharge_status_status,
                     });
                 }
             },
 
-            // 操作类型关闭
-            popup_operate_type_close_event() {
+            // 类型关闭
+            popup_recharge_status_close_event() {
                 this.setData({
-                    popup_operate_type_status: false,
+                    popup_recharge_status_status: false,
                 });
             },
 
-            // 操作类型选择
-            operate_type_list_event(e) {
+            // 类型选择
+            recharge_status_list_event(e) {
                 this.setData({
-                    operate_type_list_index: e.currentTarget.dataset.index,
-                    operate_type: e.currentTarget.dataset.value,
-                    popup_operate_type_status: false,
+                    recharge_status_list_index: e.currentTarget.dataset.index,
+                    status: e.currentTarget.dataset.value,
+                    popup_recharge_status_status: false,
                     data_page: 1,
                 });
                 this.get_data_list(1);
             },
 
-            // 业务类型打开
-            popup_business_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_operate_type_status && !this.popup_coin_type_status) {
+            // 网络打开
+            popup_network_open_event() {
+                if (!this.popup_accounts_status && !this.popup_recharge_status_status) {
                     this.setData({
-                        popup_business_type_status: !this.popup_business_type_status,
+                        popup_network_status: !this.popup_network_status,
                     });
                 }
             },
 
-            // 业务类型关闭
-            popup_business_type_close_event() {
+            // 网络关闭
+            popup_network_close_event() {
                 this.setData({
-                    popup_business_type_status: false,
+                    popup_network_status: false,
                 });
             },
 
-            // 业务类型选择
-            business_type_list_event(e) {
+            // 网络选择
+            network_list_event(e) {
                 this.setData({
-                    business_type_list_index: e.currentTarget.dataset.index,
-                    business_type: e.currentTarget.dataset.value,
-                    popup_business_type_status: false,
+                    network_list_index: e.currentTarget.dataset.index,
+                    network_id: e.currentTarget.dataset.value,
+                    popup_network_status: false,
                     data_page: 1,
                 });
                 this.get_data_list(1);
             },
 
-            // 币类型打开
-            popup_coin_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_operate_type_status && !this.popup_business_type_status) {
-                    this.setData({
-                        popup_coin_type_status: !this.popup_coin_type_status,
-                    });
-                }
-            },
-
-            // 币类型关闭
-            popup_coin_type_close_event() {
-                this.setData({
-                    popup_coin_type_status: false,
+            // 删除
+            recharge_del_event(id) {
+                uni.request({
+                    url: app.globalData.get_request_url('delete', 'recharge', 'coin'),
+                    method: 'POST',
+                    data: { ids: id },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.stopPullDownRefresh();
+                        console.log(res.data.data);
+                        if (res.data.code == 0) {
+                            this.setData({
+                                data_page: 1,
+                            });
+                            this.get_data_list(1);
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.stopPullDownRefresh();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
-
-            // 币类型选择
-            coin_type_list_event(e) {
-                this.setData({
-                    coin_type_list_index: e.currentTarget.dataset.index,
-                    coin_type: e.currentTarget.dataset.value,
-                    popup_coin_type_status: false,
-                    data_page: 1,
-                });
-                this.get_data_list(1);
+            // 支付
+            recharge_pay_event(id) {
+                app.globalData.url_open('/pages/plugins/coin/recharge-pay/recharge-pay?id=' + id);
             },
 
             // 计算搜索框的高度
@@ -499,5 +475,5 @@
     };
 </script>
 <style>
-    @import './transaction-detail.css';
+    @import './recharge-list.css';
 </style>
