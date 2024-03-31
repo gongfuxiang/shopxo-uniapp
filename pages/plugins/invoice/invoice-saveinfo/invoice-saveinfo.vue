@@ -197,24 +197,25 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var default_data = ((data.data || null) == null || data.data.length == 0) ? null : data.data;
                             var upd_data = {
                                 data_base: data.base || null,
                                 apply_type_list: data.apply_type_list || [],
                                 can_invoice_type_list: data.can_invoice_type_list || [],
                                 invoice_content_list: data.invoice_content_list || [],
                                 save_base_data: data.save_base_data,
-                                data: (data.data || null) == null || data.data.length == 0 ? {} : data.data,
+                                data: default_data || {},
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: true,
                                 data_list_loding_msg: data.save_base_data.total_price <= 0 ? this.$t('invoice-saveinfo.invoice-saveinfo.dl11n1') : '',
                             };
                             // 类型数据处理
-                            if (upd_data.data != null) {
-                                var invoice_content_index = upd_data.invoice_content_list.indexOf(upd_data.data.invoice_content);
-                                upd_data['form_invoice_type_index'] = upd_data.data.invoice_type;
-                                upd_data['form_apply_type_index'] = upd_data.data.apply_type;
+                            if (default_data != null) {
+                                var invoice_content_index = upd_data.invoice_content_list.indexOf(default_data.invoice_content);
+                                upd_data['form_invoice_type_index'] = default_data.invoice_type;
+                                upd_data['form_apply_type_index'] = default_data.apply_type;
                                 upd_data['form_invoice_content_index'] = invoice_content_index == -1 ? 0 : invoice_content_index;
-                                upd_data['form_apply_type_disabled'] = upd_data.data.apply_type == 1;
+                                upd_data['form_apply_type_disabled'] = default_data.apply_type == 1;
                             }
                             this.setData(upd_data);
 
