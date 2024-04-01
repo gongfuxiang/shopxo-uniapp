@@ -9,3 +9,9 @@
 .transfer-btn:active {
     background: linear-gradient(107deg, #168ACA 0%, #022A97 100%);
 }
+
+.coin-content-list-img {
+    --size: 80rpx;
+    width: var(--size);
+    height: var(--size) !important;
+}

@@ -3,11 +3,24 @@
         <view class="transfer">
             <view class="padding-main">
                 <view class="bg-white padding-main radius-md margin-bottom-main">
+                    <view class="padding-vertical-sm border-radius-sm flex-row align-c">
+                        <view class="flex-row">
+                            <image v-if="accounts.platform_icon" :src="accounts.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                            <view class="padding-left-main">
+                                <view class="coin-dropdown text-size-md pr margin-bottom-xs flex-row">
+                                    <text class="cr-666">{{ accounts.platform_name }}</text>
+                                </view>
+                                <view class="fw-b text-size">{{ accounts.platform_symbol }}{{ accounts.normal_coin }}</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="bg-white padding-main radius-md margin-bottom-main">
                     <view class="padding-vertical-sm flex-row align-c">
                         <text class="text-size fw-b">收款账号</text>
                         <view class="padding-left-lg flex-row jc-sb align-c flex-1 flex-width">
                             <view class="flex-1 padding-right-main">
-                                <input type="digit" name="receive_accounts_key" :value="receive_accounts_key" placeholder-class="text-size-md cr-grey-9" placeholder="请输入收款账号" @input="receive_accounts_key_change" />
+                                <input type="text" name="receive_accounts_key" :value="receive_accounts_key" placeholder-class="text-size-md cr-grey-9" placeholder="请输入收款账号" @input="receive_accounts_key_change" />
                             </view>
                             <iconfont name="icon-scan" size="40rpx" @tap="scancode_event"></iconfont>
                         </view>
@@ -58,11 +71,10 @@
                 accounts_static_url: accounts_static_url,
 
                 accounts_id: null,
-                accounts_key: null,
+                receive_accounts_key: null,
                 receive_accounts_id: null,
                 accounts: {},
                 receive_accounts: {},
-                receive_accounts_key: null,
                 coin: null,
                 note: '',
                 // pay_pwd: '',
@@ -73,6 +85,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                accounts_id: params.id,
+            });
         },
 
         onShow() {
@@ -101,7 +117,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('createinfo', 'transfer', 'coin'),
                     method: 'POST',
-                    data: { accounts_id: this.accounts_id, accounts_key: this.accounts_key },
+                    data: { accounts_id: this.accounts_id, accounts_key: this.receive_accounts_key },
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -111,6 +127,7 @@
                             this.setData({
                                 accounts: data.accounts || {},
                                 receive_accounts: data.receive_accounts || {},
+                                receive_accounts_id: data.receive_accounts ? data.receive_accounts.id : null,
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
@@ -163,7 +180,6 @@
             // 立即转账
             transfer_event(e) {
                 var new_data = {
-                    receive_accounts_key: this.receive_accounts_key,
                     receive_accounts_id: this.receive_accounts_id,
                     coin: this.coin,
                     note: this.note,
