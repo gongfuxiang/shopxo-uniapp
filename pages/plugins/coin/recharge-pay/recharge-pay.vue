@@ -70,7 +70,7 @@
                 params: null,
                 accounts: {},
                 image_list: [],
-                editor_path_type: 'common',
+                editor_path_type: '',
                 // 备注
                 pay_note: '',
                 pay_note_length_max: '500',
@@ -129,6 +129,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
+                                editor_path_type: data.editor_path_type || '',
                                 accounts: data.data || {},
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
