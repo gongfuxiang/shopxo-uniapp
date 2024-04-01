@@ -191,6 +191,7 @@
 		"plugins-coin-convert": "转换",
 		"plugins-coin-cash": "提现",
 		"plugins-coin-detail": "明细",
+		"plugins-coin-transfer": "转账",
 		"plugins-coin-transfer-list": "转账明细",
 		"plugins-coin-transaction-list": "交易明细",
 		"plugins-coin-cash-list": "提现明细",

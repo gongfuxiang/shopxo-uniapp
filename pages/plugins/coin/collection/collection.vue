@@ -39,7 +39,7 @@
                     code: '',
                     size: 280,
                 },
-                accounts_key: '3453sdfsdf3254233453sdfsdf325423',
+                accounts_key: '',
             };
         },
 

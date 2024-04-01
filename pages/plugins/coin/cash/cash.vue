@@ -37,9 +37,6 @@
                             <view class="margin-bottom-main">提币地址</view>
                             <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
                                 <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提币地址" @input="coin_address_change" />
-                                <view @tap.stop="text_copy_event" :data-value="coin_address">
-                                    <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
-                                </view>
                             </view>
                         </view>
                         <view>
@@ -267,7 +264,6 @@
                 var validation = [
                     { fields: 'coin', msg: '请输入提现数量' },
                     { fields: 'address', msg: '请输入提币地址' },
-                    { fields: 'user_note', msg: '请输入备注' },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {
