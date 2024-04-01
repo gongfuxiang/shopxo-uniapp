@@ -253,7 +253,6 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
-                                    data_list: [],
                                     data_bottom_line_status: false,
                                     data_is_loading: 0,
                                 });

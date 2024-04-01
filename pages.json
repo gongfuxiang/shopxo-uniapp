@@ -1475,7 +1475,7 @@
                     }
                 },
                 {
-                    "path": "withdrawal/withdrawal",
+                    "path": "cash/cash",
                     "style": {
                         // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
                         "navigationStyle": "custom",
@@ -1517,7 +1517,7 @@
                     }
                 },
                 {
-                    "path": "withdrawal-list/withdrawal-list",
+                    "path": "cash-list/cash-list",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

@@ -1,7 +1,7 @@
 /* 
  * 顶部
 */
-.withdrawal .title {
+.cash .title {
     background: radial-gradient(60% 70% at 90% 79%, rgba(33, 125, 239, 0.85) 0%, #A6C8F3 100%);
     padding-top: 130rpx;
     /* #ifndef H5  */
@@ -25,7 +25,7 @@
     padding: 0;
 }
 
-.withdrawal .detail {
+.cash .detail {
     --height: 64rpx;
     height: var(--height);
     line-height: var(--height);
@@ -35,14 +35,14 @@
     margin-top: 40rpx;
 }
 
-.withdrawal .text {
+.cash .text {
     color: #EBF3FF;
 }
 
 /* 
  * 内容
 */
-.withdrawal .content {
+.cash .content {
     margin-top: -200rpx;
     border-radius: 32rpx 32rpx 0 0;
     min-height: calc(100vh - 528rpx);
@@ -51,18 +51,18 @@
     /* #endif */
 }
 
-.withdrawal .content-input-bg {
+.cash .content-input-bg {
     background-color: #fafafc;
 }
 
-.withdrawal .price-item {
+.cash .price-item {
     --size: -10rpx;
     margin-left: var(--size);
     margin-right: var(--size);
     width: calc(100% - var(--size));
 }
 
-.withdrawal .price-list {
+.cash .price-list {
     background: #F5F7F9;
     border: 2rpx solid #F5F7F9;
     border-radius: 16rpx;
@@ -71,22 +71,22 @@
     width: calc((100% / 3) - 24rpx);
 }
 
-.withdrawal .price-img {
+.cash .price-img {
     --size: 36rpx;
     width: var(--size);
     height: var(--size) !important;
 }
 
-.withdrawal-btn {
+.cash-btn {
     background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%);
     transition: all 0.3s ease-in-out;
 }
 
-.withdrawal-btn:active {
+.cash-btn:active {
     background: linear-gradient(107deg, #168ACA 0%, #022A97 100%);
 }
 
-.withdrawal .content-tips .item::before {
+.cash .content-tips .item::before {
     content: '';
     width: 12rpx;
     height: 12rpx;

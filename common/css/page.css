@@ -1115,7 +1115,7 @@ button[disabled].bg-grey {
     justify-content: space-around;
 }
 .jc-e {
-    justify-content: end;
+    justify-content: flex-end;
 }
 .align-c {
     align-items: center;

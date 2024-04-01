@@ -18,7 +18,7 @@
                     </view>
                     <view class="recharge-qrcode">
                         <block v-if="recharge_qrcode">
-                            <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" />
+                            <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" :data-value="recharge_qrcode" @tap="recharge_qrcode_event" />
                         </block>
                         <block v-else>
                             <iconfont name="icon-qrcode" size="160rpx" color="#f6f6f6"></iconfont>
@@ -292,6 +292,11 @@
             text_copy_event(e) {
                 app.globalData.text_copy_event(e);
             },
+            
+            // 二维码预览
+            recharge_qrcode_event(e) {
+                app.globalData.image_show_event(e);
+            }
         },
     };
 </script>

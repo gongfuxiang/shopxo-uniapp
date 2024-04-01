@@ -109,7 +109,7 @@
                         <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-list/transaction-list" @tap="url_event">交易明细</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
                     </view>
                     <view class="flex-width-half">
                         <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-list/convert-list" @tap="url_event">转换明细</view>

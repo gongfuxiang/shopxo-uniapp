@@ -26,9 +26,9 @@
                             </view>
                             <view>转换</view>
                         </view>
-                        <view v-if="data_base.is_enable_cash == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/withdrawal/withdrawal" @tap="url_event">
+                        <view v-if="data_base.is_enable_cash == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/cash/cash" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
-                                <iconfont name="icon-withdrawal" size="44rpx" color="#635BFF"></iconfont>
+                                <iconfont name="icon-cash" size="44rpx" color="#635BFF"></iconfont>
                             </view>
                             <view>提现</view>
                         </view>
@@ -79,7 +79,7 @@
                             <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-list/transaction-list" @tap="url_event">交易明细</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
                         </view>
                         <view class="flex-width-half">
                             <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-list/convert-list" @tap="url_event">转换明细</view>

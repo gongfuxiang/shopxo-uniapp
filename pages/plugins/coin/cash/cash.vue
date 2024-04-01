@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
         <component-nav-back></component-nav-back>
-        <view class="withdrawal">
+        <view class="cash">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="title flex-col padding-lg">
                     <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
@@ -21,7 +21,7 @@
                                 <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
                             </view>
                         </view>
-                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/withdrawal-list/withdrawal-list" @tap="url_event">提现明细</view>
+                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
                     </view>
                 </view>
                 <view class="content padding-main">
@@ -30,7 +30,7 @@
                             <view class="margin-bottom-main fw-b">提现数量</view>
                             <view class="padding-vertical-main br-b-e flex-row align-c">
                                 <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入" @input="coin_num_change" />
-                                <view @tap.stop="all_withdrawal_event">全部提现</view>
+                                <view @tap.stop="all_cash_event">全部提现</view>
                             </view>
                         </view>
                         <view class="margin-bottom-xxxl">
@@ -44,7 +44,7 @@
                         </view>
                         <view>
                             <view class="margin-bottom-main">提币网络</view>
-                            <picker v-if="network_list.length > 0" class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="withdrawal_event" :value="network_list_index" :range="network_list" range-key="name">
+                            <picker v-if="network_list.length > 0" class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
                                 <view class="picker arrow-bottom">
                                     {{ network_list[network_list_index]['name'] }}
                                 </view>
@@ -63,7 +63,7 @@
                         </view>
                     </view> -->
                     <view class="padding-xxxl">
-                        <button type="default" class="withdrawal-btn cr-white round" @tap="apply_for_withdrawal_event">申请提现</button>
+                        <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">申请提现</button>
                     </view>
                 </view>
             </scroll-view>
@@ -219,7 +219,7 @@
             },
 
             // 充币网络切换
-            withdrawal_event(e) {
+            cash_event(e) {
                 this.setData({
                     network_list_index: parseInt(e.detail.value || 0),
                 });
@@ -227,7 +227,7 @@
             },
 
             // 全部提现
-            all_withdrawal_event(e) {
+            all_cash_event(e) {
                 this.setData({
                     coin_num: this.accounts_list[this.accounts_list_index].normal_coin || '',
                 });
@@ -255,7 +255,7 @@
             },
 
             // 申请提现
-            apply_for_withdrawal_event() {
+            apply_for_cash_event() {
                 var new_data = {
                     accounts_id: this.accounts_list[this.accounts_list_index].id,
                     network_id: this.network_list[this.network_list_index].id,
@@ -284,7 +284,7 @@
                             if (res.data.code == 0) {
                                 app.globalData.showToast(res.data.msg, 'success');
                                 setTimeout(function () {
-                                    app.globalData.url_open('/pages/plugins/coin/withdrawal-list/withdrawal-list', true);
+                                    app.globalData.url_open('/pages/plugins/coin/cash-list/cash-list', true);
                                 }, 1000);
                             } else {
                                 if (app.globalData.is_login_check(res.data)) {
@@ -320,5 +320,5 @@
     };
 </script>
 <style>
-    @import './withdrawal.css';
+    @import './cash.css';
 </style>

@@ -189,11 +189,11 @@
 		"plugins-coin-recharge": "充值",
 		"plugins-coin-recharge-pay": "充值支付",
 		"plugins-coin-convert": "转换",
-		"plugins-coin-withdrawal": "提现",
+		"plugins-coin-cash": "提现",
 		"plugins-coin-detail": "明细",
 		"plugins-coin-transfer-list": "转账明细",
 		"plugins-coin-transaction-list": "交易明细",
-		"plugins-coin-withdrawal-list": "提现明细",
+		"plugins-coin-cash-list": "提现明细",
 		"plugins-coin-convert-list": "转换明细",
 		"plugins-coin-recharge-list": "充值明细",
 		"plugins-coin-collection": "收款"

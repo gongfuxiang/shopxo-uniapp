@@ -185,7 +185,7 @@
                                 <text :data-value="'/pages/goods-search/goods-search?category_id=' + floor.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
                             <view class="floor-list wh-auto oh pr">
-                                <block v-if="floor.goods.length > 0">
+                                <block v-if="(floor.goods || null) != null && floor.goods.length > 0">
                                     <component-goods-list :propData="{ style_type: 1, goods_list: floor.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index"></component-goods-list>
                                 </block>
                             </view>

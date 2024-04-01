@@ -19,14 +19,14 @@
 }
 
 .recharge-del-btn {
-    color: #0079ff;
+    color: #0079ff !important;
     background-color: #fff;
     border: 2rpx solid #0079ff;
 }
 
 .recharge-apy-btn {
     background: linear-gradient(107deg, #31B4FC 0%, #0842E2 100%), #0079FF;
-    color: #fff;
+    color: #fff !important;
 }
 
 .convert-group-row .title {

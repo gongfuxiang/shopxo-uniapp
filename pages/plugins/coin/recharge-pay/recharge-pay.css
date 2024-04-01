@@ -103,10 +103,10 @@
 .cancel-btn {
     border: 2rpx solid #0079FF;
     background-color: transparent;
-    color: #0079FF;
+    color: #0079FF !important;
 }
 
 .submit-btn {
     background: linear-gradient(107deg, #3AB1F3 0%, #3C6BF7 100%);
-    color: #fff;
+    color: #fff !important;
 }

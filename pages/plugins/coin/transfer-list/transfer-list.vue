@@ -9,8 +9,8 @@
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event" @scrolltolower="scroll_lower">
                 <view class="padding-main">
-                    <view v-if="data.length > 0">
-                        <view v-for="(item, index) in data" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
+                    <view v-if="data_list.length > 0">
+                        <view v-for="(item, index) in data_list" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                             <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
                                 <view>转账时间</view>
                                 <view class="cr-grey-9">{{ item.add_time }}</view>
@@ -89,7 +89,7 @@
                 accounts_list_index: null,
                 accounts_list: [],
 
-                data: [],
+                data_list: [],
                 data_page_total: 0,
                 data_page: 1,
                 data_is_loading: 0,
@@ -206,41 +206,36 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            // 数据列表
                             var data = res.data.data;
-                            if (data.data_list.length > 0) {
-                                if (this.data_page <= 1) {
-                                    var temp_data_list = data.data_list;
-                                } else {
-                                    var temp_data_list = this.data || [];
-                                    var temp_data = res.data.data.data;
-                                    for (var i in temp_data) {
-                                        temp_data_list.push(temp_data[i]);
-                                    }
-                                }
-                                this.setData({
-                                    data: temp_data_list,
-                                    data_page_total: data.page_total,
-                                    data_page: data.page + 1,
-                                    data_list_loding_status: 3,
-                                    data_is_loading: 0,
-                                });
-
-                                // 是否还有数据
-                                this.setData({
-                                    data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
-                                });
+                            if (this.data_page <= 1) {
+                                var temp_data_list = data.data_list || [];
                             } else {
-                                this.setData({
-                                    data_list_loding_status: 0,
-                                    data_is_loading: 0,
-                                });
+                                var temp_data_list = this.data_list || [];
+                                var temp_data = data.data_list;
+                                for (var i in temp_data) {
+                                    temp_data_list.push(temp_data[i]);
+                                }
                             }
+                        
+                            this.setData({
+                                data_list: temp_data_list,
+                                data_total: data.total,
+                                data_page_total: data.page_total,
+                                data_list_loding_status: temp_data_list.length > 0 ? 3 : 0,
+                                data_page: this.data_page + 1,
+                                data_is_loading: 0,
+                            });
+                        
+                            // 是否还有数据
+                            this.setData({
+                                data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
-                                data_is_loading: 0,
+                                data_list_loding_msg: res.data.msg,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
