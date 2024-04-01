@@ -137,7 +137,7 @@
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
                 params: null,
-				data_list_loding_status: 1,
+                data_list_loding_status: 1,
 
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
@@ -190,6 +190,7 @@
                 params: params,
             });
             this.coin_oprate_list[1].url = this.coin_oprate_list[1].url + '?id=' + params.id;
+            this.coin_oprate_list[0].url = this.coin_oprate_list[0].url + '?id=' + params.id;
             this.init();
         },
 
