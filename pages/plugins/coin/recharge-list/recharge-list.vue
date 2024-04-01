@@ -46,8 +46,8 @@
                                 </view>
                             </view>
                             <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
-                                <button type="default" class="recharge-del-btn round" @tap="recharge_del_event(item.id)">删除</button>
-                                <button type="default" class="recharge-apy-btn round" @tap="recharge_pay_event(item.id)">支付</button>
+                                <button type="default" class="recharge-del-btn round" :data-id="item.id" @tap="recharge_del_event">删除</button>
+                                <button type="default" class="recharge-apy-btn round" :data-id="item.id" @tap="recharge_pay_event">支付</button>
                             </div>
                         </view>
                         <!-- 结尾 -->
@@ -404,35 +404,55 @@
             },
 
             // 删除
-            recharge_del_event(id) {
-                uni.request({
-                    url: app.globalData.get_request_url('delete', 'recharge', 'coin'),
-                    method: 'POST',
-                    data: { ids: id },
-                    dataType: 'json',
-                    success: (res) => {
-                        uni.stopPullDownRefresh();
-                        console.log(res.data.data);
-                        if (res.data.code == 0) {
-                            this.setData({
-                                data_page: 1,
-                            });
-                            this.get_data_list(1);
-                        } else {
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                app.globalData.showToast(res.data.msg);
+            recharge_del_event(e) {
+                // 是否再次确认
+                if (e.alert_status != 0 && e.alert_status != 1) {
+                    app.globalData.alert({
+                        msg: '确定删除这条充值订单吗',
+                        is_show_cancel: 1,
+                        object: this,
+                        params: { id: e.currentTarget.dataset.id },
+                        method: 'recharge_del_event',
+                    });
+                    return false;
+                }
+                if (e.alert_status == 1) {
+                    // 加载loding
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('delete', 'recharge', 'coin'),
+                        method: 'POST',
+                        data: { ids: e.id },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            console.log(res.data.data);
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    data_page: 1,
+                                });
+                                app.globalData.showToast(this.$t('user-list.user-list.kpn3fp'), 'success');
+                                this.get_data_list(1);
+                            } else {
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(this.$t('user-list.user-list.649j60'));
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
                             }
-                        }
-                    },
-                    fail: () => {
-                        uni.stopPullDownRefresh();
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
-                    },
-                });
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
             // 支付
-            recharge_pay_event(id) {
-                app.globalData.url_open('/pages/plugins/coin/recharge-pay/recharge-pay?id=' + id);
+            recharge_pay_event(e) {
+                app.globalData.url_open('/pages/plugins/coin/recharge-pay/recharge-pay?id=' + e.currentTarget.dataset.id);
             },
 
             // 计算搜索框的高度

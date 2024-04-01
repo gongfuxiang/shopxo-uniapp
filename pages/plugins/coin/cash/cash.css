@@ -50,7 +50,7 @@
     min-height: calc(100vh - 528rpx - var(--status-bar-height) - 5px);
     /* #endif */
 }
-
+.cash .recharge-content-input-bg,
 .cash .content-input-bg {
     background-color: #fafafc;
 }

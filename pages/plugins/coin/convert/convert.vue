@@ -45,13 +45,13 @@
                         </view>
                         <view class="flex-row align-c">
                             <iconfont name="icon-recharge" color="#333" size="32rpx"></iconfont>
-                            <view class="margin-left-sm">1XRP = 2.45546 <text class="cr-grey-9">($21.00)</text></view>
+                            <view class="margin-left-sm">{{ default_value || 0 }} * {{ coin_list[send_accounts_id_index]['platform_rate'] }} = {{ Math.round(default_value * coin_list[receive_accounts_id_index]['platform_rate'] * 100) / 100 }}</view>
                         </view>
                     </view>
-                    <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
+                    <!-- <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
                         <text class="padding-right">支付密码</text>
-                        <input type="number" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
-                    </view>
+                        <input type="password" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                    </view> -->
                     <view class="padding-main radius-md margin-bottom-main">
                         <button type="default" class="convert-btn cr-white round" @tap="convert_submit">立即转换</button>
                     </view>
@@ -182,6 +182,15 @@
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
+                            if (data.accounts_list.length > 0) {
+                                this.setData({
+                                    send_accounts_id_index: data.accounts_list.findIndex((item) => item.id === data.send_accounts.id),
+                                    receive_accounts_id_index: data.accounts_list.findIndex((item) => item.id === data.receive_accounts.id),
+                                });
+                                console.log(data.accounts_list.findIndex((item) => item.id === data.send_accounts.id));
+
+                                console.log(data.accounts_list.findIndex((item) => item.id === data.receive_accounts.id));
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
@@ -207,7 +216,7 @@
             popup_coin_status_event(type) {
                 this.setData({
                     coin_type: type,
-                    coin_index: type == 1 ? this.send_accounts_id_index : this.receive_accounts_id_index,
+                    receive_accounts_idsend_accounts_id_index: this.receive_accounts_id_index,
                     popup_coin_status: true,
                 });
             },
@@ -251,6 +260,7 @@
             default_value_change(e) {
                 this.setData({
                     default_value: e.detail.value,
+                    convert_value: Math.round(e.detail.value * this.coin_list[this.receive_accounts_id_index]['platform_rate'] * 100) / 100,
                 });
             },
 

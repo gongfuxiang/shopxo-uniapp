@@ -45,6 +45,9 @@
                                     <text class="fw-b">{{ item.coin }}</text>
                                 </view>
                             </view>
+                            <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
+                                <button type="default" class="recharge-del-btn round margin-0" :data-id="item.id" @tap="cash_del_event">删除</button>
+                            </div>
                         </view>
                         <!-- 结尾 -->
                         <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -389,6 +392,54 @@
                     data_page: 1,
                 });
                 this.get_data_list(1);
+            },
+
+            // 删除支付
+            cash_del_event(e) {
+                // 是否再次确认
+                if (e.alert_status != 0 && e.alert_status != 1) {
+                    app.globalData.alert({
+                        msg: '确定删除这条提现订单吗',
+                        is_show_cancel: 1,
+                        object: this,
+                        params: { id: e.currentTarget.dataset.id },
+                        method: 'cash_del_event',
+                    });
+                    return false;
+                }
+                if (e.alert_status == 1) {
+                    // 加载loding
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                    uni.request({
+                        url: app.globalData.get_request_url('delete', 'cash', 'coin'),
+                        method: 'POST',
+                        data: { ids: e.id },
+                        dataType: 'json',
+                        success: (res) => {
+                            uni.hideLoading();
+                            console.log(res.data.data);
+                            if (res.data.code == 0) {
+                                this.setData({
+                                    data_page: 1,
+                                });
+                                app.globalData.showToast(this.$t('user-list.user-list.kpn3fp'), 'success');
+                                this.get_data_list(1);
+                            } else {
+                                if (app.globalData.is_login_check(res.data)) {
+                                    app.globalData.showToast(this.$t('user-list.user-list.649j60'));
+                                } else {
+                                    app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                                }
+                            }
+                        },
+                        fail: () => {
+                            uni.hideLoading();
+                            app.globalData.showToast(this.$t('common.internet_error_tips'));
+                        },
+                    });
+                }
             },
 
             // 计算搜索框的高度
