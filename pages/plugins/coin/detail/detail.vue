@@ -151,9 +151,9 @@
                 // 虚拟币操作列表
                 coin_oprate_list: [
                     {
-                        name: '充值',
+                        name: '转账',
                         icon: 'icon-transfer-count',
-                        url: '/pages/plugins/coin/recharge/recharge',
+                        url: '/pages/plugins/coin/transfer/transfer',
                     },
                     {
                         name: '收款',
