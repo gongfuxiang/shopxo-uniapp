@@ -30,27 +30,27 @@
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">币类型：</text>
-                                    <text class="fw-b">{{ item.coin_type_name }}</text>
+                                    <text class="fw-b warp">{{ item.coin_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">操作类型：</text>
-                                    <text class="fw-b">{{ item.operate_type_name }}</text>
+                                    <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">操作币：</text>
-                                    <text class="fw-b">{{ item.operate_coin }}</text>
+                                    <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">原始币：</text>
-                                    <text class="fw-b">{{ item.original_coin }}</text>
+                                    <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">最新币：</text>
-                                    <text class="fw-b">{{ item.latest_coin }}</text>
+                                    <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                                 <view class="flex-row">
                                     <text class="cr-grey-9 title">描述：</text>
-                                    <text class="fw-b">{{ item.msg }}</text>
+                                    <text class="fw-b warp">{{ item.msg }}</text>
                                 </view>
                             </view>
                         </view>
@@ -157,6 +157,8 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
 
+                params: null,
+
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
@@ -203,9 +205,11 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            this.setData({
-                accounts_id: params.id,
-            });
+            if (params !== null && params.id) {
+                this.setData({
+                    params: params,
+                });
+            }
         },
 
         onShow() {
@@ -251,7 +255,6 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -260,10 +263,11 @@
                                 business_type_list: data.log_business_type_list || [],
                                 coin_type_list: data.log_coin_type_list || [],
                             });
-                            if (data.accounts_list.length > 0) {
-                                var index = data.accounts_list.findIndex((item) => item.id === this.accounts_id);
+                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.params.id);
                                 this.setData({
                                     accounts_list_index: index,
+                                    accounts_id: data.accounts_list[index].id,
                                     accounts_name: data.accounts_list[index].platform_name,
                                 });
                             }
@@ -332,7 +336,7 @@
                                     temp_data_list.push(temp_data[i]);
                                 }
                             }
-                        
+
                             this.setData({
                                 data_list: temp_data_list,
                                 data_total: data.total,
@@ -341,7 +345,7 @@
                                 data_page: this.data_page + 1,
                                 data_is_loading: 0,
                             });
-                        
+
                             // 是否还有数据
                             this.setData({
                                 data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
@@ -369,11 +373,12 @@
 
             // 账户打开
             popup_accounts_open_event() {
-                if (!this.popup_operate_type_status && !this.popup_business_type_status && !this.popup_coin_type_status) {
-                    this.setData({
-                        popup_accounts_status: !this.popup_accounts_status,
-                    });
-                }
+                this.setData({
+                    popup_accounts_status: !this.popup_accounts_status,
+                    popup_operate_type_status: false,
+                    popup_business_type_status: false,
+                    popup_coin_type_status: false,
+                });
             },
 
             // 账户关闭
@@ -397,11 +402,12 @@
 
             // 操作类型打开
             popup_operate_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_business_type_status && !this.popup_coin_type_status) {
-                    this.setData({
-                        popup_operate_type_status: !this.popup_operate_type_status,
-                    });
-                }
+                this.setData({
+                    popup_operate_type_status: !this.popup_operate_type_status,
+                    popup_accounts_status: false,
+                    popup_business_type_status: false,
+                    popup_coin_type_status: false,
+                });
             },
 
             // 操作类型关闭
@@ -425,11 +431,12 @@
 
             // 业务类型打开
             popup_business_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_operate_type_status && !this.popup_coin_type_status) {
-                    this.setData({
-                        popup_business_type_status: !this.popup_business_type_status,
-                    });
-                }
+                this.setData({
+                    popup_business_type_status: !this.popup_business_type_status,
+                    popup_accounts_status: false,
+                    popup_operate_type_status: false,
+                    popup_coin_type_status: false,
+                });
             },
 
             // 业务类型关闭
@@ -453,11 +460,12 @@
 
             // 币类型打开
             popup_coin_type_open_event() {
-                if (!this.popup_accounts_status && !this.popup_operate_type_status && !this.popup_business_type_status) {
-                    this.setData({
-                        popup_coin_type_status: !this.popup_coin_type_status,
-                    });
-                }
+                this.setData({
+                    popup_coin_type_status: !this.popup_coin_type_status,
+                    popup_accounts_status: false,
+                    popup_operate_type_status: false,
+                    popup_business_type_status: false,
+                });
             },
 
             // 币类型关闭

@@ -18,19 +18,19 @@
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">转账单号：</text>
-                                    <text class="fw-b">{{ item.transfer_no }}</text>
+                                    <text class="fw-b warp">{{ item.transfer_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">收款人：</text>
-                                    <text class="fw-b">{{ item.receive_user.username }}</text>
+                                    <text class="fw-b warp">{{ item.receive_user.username }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">转账币：</text>
-                                    <text class="fw-b">{{ item.coin }}</text>
+                                    <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                                 <view class="flex-row">
                                     <text class="cr-grey-9 title">转账备注：</text>
-                                    <text class="fw-b">{{ item.note }}</text>
+                                    <text class="fw-b warp">{{ item.note }}</text>
                                 </view>
                             </view>
                         </view>
@@ -83,6 +83,8 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
 
+                params: null,
+
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
@@ -111,9 +113,11 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            this.setData({
-                accounts_id: params.id,
-            });
+            if (params !== null && params.id) {
+                this.setData({
+                    params: params,
+                });
+            }
         },
 
         onShow() {
@@ -163,10 +167,11 @@
                             this.setData({
                                 accounts_list: data.accounts_list || [],
                             });
-                            if (data.accounts_list.length > 0) {
-                                var index = data.accounts_list.findIndex((item) => item.id === this.accounts_id);
+                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.params.id);
                                 this.setData({
                                     accounts_list_index: index,
+                                    accounts_id: data.accounts_list[index].id,
                                     accounts_name: data.accounts_list[index].platform_name,
                                 });
                             }

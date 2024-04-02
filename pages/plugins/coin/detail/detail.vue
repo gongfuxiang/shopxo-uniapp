@@ -4,7 +4,7 @@
         <view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
-                    <view v-if="accounts_list.length > 0" class="margin-bottom-xxxxl margin-top-xl padding-bottom-main flex-row jc-sb align-c">
+                    <view v-if="accounts_list.length > 0" class="margin-bottom-xxxxl padding-bottom-main flex-row jc-sb align-c">
                         <view class="flex-row">
                             <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
                             <view class="padding-left-main">
@@ -42,22 +42,23 @@
                             <view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9">操作类型：</text>
-                                    <text class="fw-b">{{ item.operate_type_name }}</text>
+                                    <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9">操作数量：</text>
-                                    <text class="fw-b">{{ item.operate_coin }}</text>
+                                    <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9">原始数量：</text>
-                                    <text class="fw-b">{{ item.original_coin }}</text>
+                                    <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="flex-row">
                                     <text class="cr-grey-9">最新数量：</text>
-                                    <text class="fw-b">{{ item.latest_coin }}</text>
+                                    <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                             </view>
                         </view>
+                        <view class="tc cr-main" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">查看更多明细</view>
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
@@ -98,7 +99,7 @@
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
+                <view v-if="accounts_list.length > 0" class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                     <view class="flex-width-half">
                         <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">充值明细</view>
                     </view>
@@ -186,11 +187,13 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            this.setData({
-                params: params,
-            });
-            this.coin_oprate_list[1].url = this.coin_oprate_list[1].url + '?id=' + params.id;
-            this.coin_oprate_list[0].url = this.coin_oprate_list[0].url + '?id=' + params.id;
+            if (params !== null && params.id) {
+                this.setData({
+                    params: params,
+                });
+                this.coin_oprate_list[1].url = this.coin_oprate_list[1].url + '?id=' + params.id;
+                this.coin_oprate_list[0].url = this.coin_oprate_list[0].url + '?id=' + params.id;
+            }
             this.init();
         },
 
@@ -233,13 +236,12 @@
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
-                            for (var i = 0; i < data.accounts_list.length; i++) {
-                                if (data.accounts_list[i].id === this.params.id) {
-                                    this.setData({
-                                        accounts_list_index: i,
-                                    });
-                                }
+                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
+                                this.setData({
+                                    accounts_list_index: data.accounts_list.findIndex((item) => item.id === this.params.id),
+                                });
                             }
+                            console.log(this.accounts_list_index);
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
