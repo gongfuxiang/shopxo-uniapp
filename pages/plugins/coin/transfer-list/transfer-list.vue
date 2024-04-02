@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="transfer-accounts">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
@@ -48,6 +48,9 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>

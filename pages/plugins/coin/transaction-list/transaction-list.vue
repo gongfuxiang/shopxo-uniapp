@@ -2,19 +2,19 @@
     <view :class="theme_view">
         <view class="transaction">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_operate_type_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_operate_type_open_event">
                     <view>操作类型</view>
                     <view class="pa right-0"><iconfont :name="popup_operate_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_business_type_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_business_type_open_event">
                     <view>业务类型</view>
                     <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_coin_type_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_coin_type_open_event">
                     <view>币类型</view>
                     <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
@@ -282,7 +282,7 @@
             },
 
             // 账户选择
-            accounts_event(e) {
+            accounts_list_event(e) {
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
                     accounts_id: e.currentTarget.dataset.value,

@@ -2,15 +2,15 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>账户</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_recharge_status_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_recharge_status_open_event">
                     <view>状态</view>
                     <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_network_open_event">
+                <view class="flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_network_open_event">
                     <view>网络</view>
                     <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
