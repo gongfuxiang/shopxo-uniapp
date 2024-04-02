@@ -14,7 +14,7 @@
                     <view>{{ business_type_name !== null && business_type_name !== '全部' ? business_type_name : '业务类型' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_coin_type_open_event">
+                <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_coin_type_open_event">
                     <view>{{ coin_type_name !== null && coin_type_name !== '全部' ? coin_type_name : '币类型' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
@@ -84,7 +84,7 @@
             <!-- 操作类型 -->
             <component-popup :propShow="popup_operate_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_operate_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
+                    <view class="padding-horizontal-main text-size-xs">操作类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="operate_type_list_event">全部</view>
@@ -102,7 +102,7 @@
             <!-- 业务类型 -->
             <component-popup :propShow="popup_business_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_business_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
+                    <view class="padding-horizontal-main text-size-xs">业务类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="business_type_list_event">全部</view>
@@ -120,7 +120,7 @@
             <!-- 币类型 -->
             <component-popup :propShow="popup_coin_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_coin_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
+                    <view class="padding-horizontal-main text-size-xs">币类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="coin_type_list_event">全部</view>
@@ -202,6 +202,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                accounts_id: params.id,
+            });
         },
 
         onShow() {
@@ -256,6 +260,13 @@
                                 business_type_list: data.log_business_type_list || [],
                                 coin_type_list: data.log_coin_type_list || [],
                             });
+                            if (data.accounts_list.length > 0) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.accounts_id);
+                                this.setData({
+                                    accounts_list_index: index,
+                                    accounts_name: data.accounts_list[index].platform_name,
+                                });
+                            }
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);

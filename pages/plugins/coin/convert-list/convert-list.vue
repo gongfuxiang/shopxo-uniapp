@@ -2,9 +2,13 @@
     <view :class="theme_view">
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row oa">
-                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
-                    <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_send_accounts_open_event">
+                    <view>{{ send_accounts_name !== null && send_accounts_name !== '全部' ? send_accounts_name : '发起账户' }}</view>
+                    <view class="pa right-0"><iconfont :name="popup_send_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
+                </view>
+                <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_receive_accounts_open_event">
+                    <view>{{ receive_accounts_name !== null && receive_accounts_name !== '全部' ? receive_accounts_name : '接收账户' }}</view>
+                    <view class="pa right-0"><iconfont :name="popup_receive_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
@@ -50,19 +54,37 @@
                     </view>
                 </view>
             </scroll-view>
-            <!-- 账户 -->
-            <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
+            <!-- 发起账户 -->
+            <component-popup :propShow="popup_send_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_send_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="padding-horizontal-main text-size-xs">发起账户</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="send_accounts_list_event">全部</view>
                         </view>
-                        <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
+                        <view v-for="(item, index) in send_accounts_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="send_accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
-                    <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
+                    <view class="tc padding-top-lg br-t" @tap="popup_send_accounts_close_event">
+                        <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
+                        <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
+                    </view>
+                </view>
+            </component-popup>
+            <!-- 接收账户 -->
+            <component-popup :propShow="popup_receive_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_receive_accounts_close_event">
+                <view class="padding-vertical-lg">
+                    <view class="padding-horizontal-main text-size-xs">接收账户</view>
+                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">全部</view>
+                        </view>
+                        <view v-for="(item, index) in receive_accounts_list" class="flex-width-half-half" :key="index">
+                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="receive_accounts_list_event">{{ item.platform_name }}</view>
+                        </view>
+                    </view>
+                    <view class="tc padding-top-lg br-t" @tap="popup_receive_accounts_close_event">
                         <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                         <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                     </view>
@@ -93,12 +115,18 @@
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
-                // 账户
-                popup_accounts_status: false,
-                accounts_id: null,
-                accounts_list_index: null,
-                accounts_name: null,
-                accounts_list: [],
+                // 发起账户
+                popup_send_accounts_status: false,
+                send_accounts_id: null,
+                send_accounts_list_index: null,
+                send_accounts_name: null,
+                send_accounts_list: [],
+                // 接收账户
+                popup_receive_accounts_status: false,
+                receive_accounts_id: null,
+                receive_accounts_list_index: null,
+                receive_accounts_name: null,
+                receive_accounts_list: [],
 
                 data_list: [],
                 data_page_total: 0,
@@ -117,6 +145,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                send_accounts_id: params.id,
+            });
         },
 
         onShow() {
@@ -166,8 +198,16 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                accounts_list: data.accounts_list || [],
+                                send_accounts_list: data.accounts_list || [],
+                                receive_accounts_list: data.accounts_list || [],
                             });
+                            if (data.accounts_list.length > 0) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.send_accounts_id);
+                                this.setData({
+                                    send_accounts_list_index: index,
+                                    send_accounts_name: data.accounts_list[index].platform_name,
+                                });
+                            }
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
@@ -205,8 +245,8 @@
                     });
                 }
                 var new_data = {
-                    send_accounts_id: this.accounts_id,
-                    receive_accounts_id: this.accounts_id,
+                    send_accounts_id: this.send_accounts_id,
+                    receive_accounts_id: this.receive_accounts_id,
                     page: this.data_page,
                 };
                 uni.request({
@@ -267,29 +307,56 @@
             },
 
             // 账户打开
-            popup_accounts_open_event() {
+            popup_send_accounts_open_event() {
                 if (!this.popup_type_status) {
                     this.setData({
-                        popup_accounts_status: !this.popup_accounts_status,
+                        popup_send_accounts_status: !this.popup_send_accounts_status,
                     });
                 }
             },
 
             // 账户关闭
-            popup_accounts_close_event() {
+            popup_send_accounts_close_event() {
                 this.setData({
-                    popup_accounts_status: false,
+                    popup_send_accounts_status: false,
                 });
             },
 
             // 账户选择
-            accounts_list_event(e) {
-                console.log(e);
+            send_accounts_list_event(e) {
                 this.setData({
-                    accounts_list_index: e.currentTarget.dataset.index,
-                    accounts_id: e.currentTarget.dataset.value,
-                    accounts_name: e.currentTarget.dataset.name,
-                    popup_accounts_status: false,
+                    send_accounts_list_index: e.currentTarget.dataset.index,
+                    send_accounts_id: e.currentTarget.dataset.value,
+                    send_accounts_name: e.currentTarget.dataset.name,
+                    popup_send_accounts_status: false,
+                    data_page: 1,
+                });
+                this.get_data_list(1);
+            },
+
+            // 账户打开
+            popup_receive_accounts_open_event() {
+                if (!this.popup_type_status) {
+                    this.setData({
+                        popup_receive_accounts_status: !this.popup_receive_accounts_status,
+                    });
+                }
+            },
+
+            // 账户关闭
+            popup_receive_accounts_close_event() {
+                this.setData({
+                    popup_receive_accounts_status: false,
+                });
+            },
+
+            // 账户选择
+            receive_accounts_list_event(e) {
+                this.setData({
+                    receive_accounts_list_index: e.currentTarget.dataset.index,
+                    receive_accounts_id: e.currentTarget.dataset.value,
+                    receive_accounts_name: e.currentTarget.dataset.name,
+                    popup_receive_accounts_status: false,
                     data_page: 1,
                 });
                 this.get_data_list(1);

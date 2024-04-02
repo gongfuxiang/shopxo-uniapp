@@ -187,9 +187,6 @@
                                     send_accounts_id_index: data.accounts_list.findIndex((item) => item.id === data.send_accounts.id),
                                     receive_accounts_id_index: data.accounts_list.findIndex((item) => item.id === data.receive_accounts.id),
                                 });
-                                console.log(data.accounts_list.findIndex((item) => item.id === data.send_accounts.id));
-
-                                console.log(data.accounts_list.findIndex((item) => item.id === data.receive_accounts.id));
                             }
                         } else {
                             this.setData({

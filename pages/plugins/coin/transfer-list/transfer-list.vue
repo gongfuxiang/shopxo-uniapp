@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="transfer-accounts">
             <view class="padding-main bg-white pr nav flex-row oa">
-                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
+                <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_accounts_open_event">
                     <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
@@ -110,6 +110,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                accounts_id: params.id,
+            });
         },
 
         onShow() {
@@ -159,6 +163,13 @@
                             this.setData({
                                 accounts_list: data.accounts_list || [],
                             });
+                            if (data.accounts_list.length > 0) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.accounts_id);
+                                this.setData({
+                                    accounts_list_index: index,
+                                    accounts_name: data.accounts_list[index].platform_name,
+                                });
+                            }
                         } else {
                             if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
                                 app.globalData.showToast(res.data.msg);
@@ -221,7 +232,7 @@
                                     temp_data_list.push(temp_data[i]);
                                 }
                             }
-                        
+
                             this.setData({
                                 data_list: temp_data_list,
                                 data_total: data.total,
@@ -230,7 +241,7 @@
                                 data_page: this.data_page + 1,
                                 data_is_loading: 0,
                             });
-                        
+
                             // 是否还有数据
                             this.setData({
                                 data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
