@@ -58,7 +58,12 @@
                                 </view>
                             </view>
                         </view>
-                        <view class="tc cr-main" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">查看更多明细</view>
+                        <view class="tc cr-grey cp" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">
+                            <text class="va-m">查看更多明细</text>
+                            <view class="dis-inline-block va-m margin-top-xs margin-left-xs">
+                                <iconfont name="icon-arrow-right" color="#999"></iconfont>
+                            </view>
+                        </view>
                     </view>
                     <view v-else>
                         <!-- 提示信息 -->
