@@ -192,6 +192,9 @@ button:before {
 .oh {
     overflow: hidden;
 }
+.oa {
+    overflow: auto;
+}
 .dis-none {
     display: none !important;
 }
@@ -1155,6 +1158,12 @@ button[disabled].bg-grey {
 }
 .self-e {
     align-self: flex-end;
+}
+.flex-shrink {
+    flex-shrink: 0;
+}
+.flex-shrink-1 {
+    flex-shrink: 0;
 }
 .flex-width {
     width: 0;
