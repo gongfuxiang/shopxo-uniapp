@@ -4,7 +4,7 @@
         <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
-                    <view class="margin-bottom-main flex-row jc-sb align-c margin-top-xl">
+                    <view class="margin-bottom-main flex-row jc-sb align-c">
                         <view>
                             <view class="cr-base text-size-md">总数量</view>
                             <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>

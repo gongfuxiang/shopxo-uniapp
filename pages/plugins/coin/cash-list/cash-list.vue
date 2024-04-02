@@ -26,23 +26,23 @@
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title">提现单号：</text>
-                                    <text class="fw-b">{{ item.cash_no }}</text>
+                                    <text class="fw-b warp">{{ item.cash_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title title">平台：</text>
-                                    <text class="fw-b">{{ item.platform_name }}</text>
+                                    <text class="fw-b warp">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title title">充值网络：</text>
-                                    <text class="fw-b">{{ item.network_name }}</text>
+                                    <text class="fw-b warp">{{ item.network_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
                                     <text class="cr-grey-9 title title">充值地址：</text>
-                                    <text class="fw-b">{{ item.address }}</text>
+                                    <text class="fw-b warp">{{ item.address }}</text>
                                 </view>
                                 <view class="flex-row">
                                     <text class="cr-grey-9 title">提现币：</text>
-                                    <text class="fw-b">{{ item.coin }}</text>
+                                    <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                             </view>
                             <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
@@ -134,6 +134,8 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
 
+                params: null,
+
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
 
@@ -174,9 +176,11 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            this.setData({
-                accounts_id: params.id,
-            });
+            if (params !== null && params.id) {
+                this.setData({
+                    params: params,
+                });
+            }
         },
 
         onShow() {
@@ -222,7 +226,6 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
@@ -230,10 +233,11 @@
                                 recharge_status_list: data.recharge_status_list || [],
                                 network_list: data.network_list || [],
                             });
-                            if (data.accounts_list.length > 0) {
-                                var index = data.accounts_list.findIndex((item) => item.id === this.accounts_id);
+                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
+                                var index = data.accounts_list.findIndex((item) => item.id === this.params.id);
                                 this.setData({
                                     accounts_list_index: index,
+                                    accounts_id: data.accounts_list[index].id,
                                     accounts_name: data.accounts_list[index].platform_name,
                                 });
                             }
@@ -338,11 +342,11 @@
 
             // 账户打开
             popup_accounts_open_event() {
-                if (!this.popup_recharge_status_status && !this.popup_network_status) {
-                    this.setData({
-                        popup_accounts_status: !this.popup_accounts_status,
-                    });
-                }
+                this.setData({
+                    popup_accounts_status: !this.popup_accounts_status,
+                    popup_recharge_status_status: false,
+                    popup_network_status: false,
+                });
             },
 
             // 账户关闭
@@ -366,11 +370,11 @@
 
             // 类型打开
             popup_recharge_status_open_event() {
-                if (!this.popup_accounts_status && !this.popup_network_status) {
-                    this.setData({
-                        popup_recharge_status_status: !this.popup_recharge_status_status,
-                    });
-                }
+                this.setData({
+                    popup_recharge_status_status: !this.popup_recharge_status_status,
+                    popup_accounts_status: false,
+                    popup_network_status: false,
+                });
             },
 
             // 类型关闭
@@ -394,11 +398,11 @@
 
             // 网络打开
             popup_network_open_event() {
-                if (!this.popup_accounts_status && !this.popup_recharge_status_status) {
-                    this.setData({
-                        popup_network_status: !this.popup_network_status,
-                    });
-                }
+                this.setData({
+                    popup_network_status: !this.popup_network_status,
+                    popup_accounts_status: false,
+                    popup_recharge_status_status: false,
+                });
             },
 
             // 网络关闭
@@ -445,7 +449,6 @@
                         dataType: 'json',
                         success: (res) => {
                             uni.hideLoading();
-                            console.log(res.data.data);
                             if (res.data.code == 0) {
                                 this.setData({
                                     data_page: 1,

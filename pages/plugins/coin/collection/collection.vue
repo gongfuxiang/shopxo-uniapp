@@ -15,7 +15,7 @@
                     <view class="pr">
                         <iconfont name="icon-sigh-o" size="32rpx"></iconfont>
                     </view>
-                    <text class="margin-left-sm text-size-xs">说出来的是你想的，做出来的是你说的，交出来的是你做的</text>
+                    <text class="margin-left-sm text-size-xs">扫一扫向对方发起转账，请核对认真账户后再确认转账！</text>
                 </view>
             </view>
         </view>

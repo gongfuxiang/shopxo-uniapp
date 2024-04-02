@@ -898,6 +898,12 @@ button[disabled].bg-grey {
     font-size: 28rpx;
     white-space: initial;
 }
+/**
+ * 文字超出部分换行
+ */
+.warp {
+    word-break: break-all;
+}
 
 /**
  * 基础导航
