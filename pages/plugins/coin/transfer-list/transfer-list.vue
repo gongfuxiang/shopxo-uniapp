@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
         <view class="transfer-accounts">
-            <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>账户</view>
+            <view class="padding-main bg-white pr nav flex-row oa">
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
+                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -48,8 +48,11 @@
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                        <view class="flex-width-half-half">
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                        </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
@@ -87,6 +90,7 @@
                 popup_accounts_status: false,
                 accounts_id: null,
                 accounts_list_index: null,
+                accounts_name: null,
                 accounts_list: [],
 
                 data_list: [],
@@ -271,6 +275,7 @@
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
                     accounts_id: e.currentTarget.dataset.value,
+                    accounts_name: e.currentTarget.dataset.name,
                     popup_accounts_status: false,
                     data_page: 1,
                 });

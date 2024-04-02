@@ -17,12 +17,12 @@
                 </view>
                 <view class="bg-white padding-main radius-md margin-bottom-main">
                     <view class="padding-vertical-sm flex-row align-c">
-                        <text class="text-size fw-b">收款账号</text>
+                        <iconfont name="icon-scan" size="40rpx" @tap="scancode_event"></iconfont>
                         <view class="padding-left-lg flex-row jc-sb align-c flex-1 flex-width">
                             <view class="flex-1 padding-right-main">
                                 <input type="text" name="receive_accounts_key" :value="receive_accounts_key" placeholder-class="text-size-md cr-grey-9" placeholder="请输入收款账号" @input="receive_accounts_key_change" />
                             </view>
-                            <iconfont name="icon-scan" size="40rpx" @tap="scancode_event"></iconfont>
+                            <button type="default" class="accounts-btn text-size-xs cr-white round" @tap="receive_accounts_key_event">确认</button>
                         </view>
                     </view>
                 </view>
@@ -157,6 +157,9 @@
                 this.setData({
                     receive_accounts_key: e.detail.value,
                 });
+            },
+            // 确认收款账号
+            receive_accounts_key_event() {
                 this.get_data();
             },
             // 转账币

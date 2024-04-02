@@ -1,21 +1,21 @@
 <template>
     <view :class="theme_view">
         <view class="transaction">
-            <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>账户</view>
+            <view class="padding-main bg-white pr nav flex-row oa">
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
+                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_operate_type_open_event">
-                    <view>操作类型</view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_operate_type_open_event">
+                    <view>{{ operate_type_name !== null && operate_type_name !== '全部' ? operate_type_name : '操作类型' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_operate_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_business_type_open_event">
-                    <view>业务类型</view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_business_type_open_event">
+                    <view>{{ business_type_name !== null && business_type_name !== '全部' ? business_type_name : '业务类型' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_coin_type_open_event">
-                    <view>币类型</view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_coin_type_open_event">
+                    <view>{{ coin_type_name !== null && coin_type_name !== '全部' ? coin_type_name : '币类型' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -69,10 +69,10 @@
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
@@ -87,10 +87,10 @@
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="operate_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="operate_type_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in operate_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_operate_type_close_event">
@@ -105,10 +105,10 @@
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="business_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="business_type_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in business_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_business_type_close_event">
@@ -123,10 +123,10 @@
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="coin_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="coin_type_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in coin_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_coin_type_close_event">
@@ -164,21 +164,25 @@
                 popup_accounts_status: false,
                 accounts_id: null,
                 accounts_list_index: null,
+                accounts_name: null,
                 accounts_list: [],
                 // 操作类型
                 popup_operate_type_status: false,
                 operate_type: null,
                 operate_type_list_index: null,
+                operate_type_name: null,
                 operate_type_list: [],
                 // 业务类型
                 popup_business_type_status: false,
                 business_type: null,
                 business_type_list_index: null,
+                business_type_name: null,
                 business_type_list: [],
                 // 币类型
                 popup_coin_type_status: false,
                 coin_type: null,
                 coin_type_list_index: null,
+                coin_type_name: null,
                 coin_type_list: [],
 
                 data_list: [],
@@ -373,6 +377,7 @@
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
                     accounts_id: e.currentTarget.dataset.value,
+                    accounts_name: e.currentTarget.dataset.name,
                     popup_accounts_status: false,
                     data_page: 1,
                 });
@@ -400,6 +405,7 @@
                 this.setData({
                     operate_type_list_index: e.currentTarget.dataset.index,
                     operate_type: e.currentTarget.dataset.value,
+                    operate_type_name: e.currentTarget.dataset.name,
                     popup_operate_type_status: false,
                     data_page: 1,
                 });
@@ -427,6 +433,7 @@
                 this.setData({
                     business_type_list_index: e.currentTarget.dataset.index,
                     business_type: e.currentTarget.dataset.value,
+                    business_type_name: e.currentTarget.dataset.name,
                     popup_business_type_status: false,
                     data_page: 1,
                 });
@@ -454,6 +461,7 @@
                 this.setData({
                     coin_type_list_index: e.currentTarget.dataset.index,
                     coin_type: e.currentTarget.dataset.value,
+                    coin_type_name: e.currentTarget.dataset.name,
                     popup_coin_type_status: false,
                     data_page: 1,
                 });

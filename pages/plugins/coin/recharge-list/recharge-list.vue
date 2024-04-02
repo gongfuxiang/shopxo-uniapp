@@ -1,17 +1,17 @@
 <template>
     <view :class="theme_view">
         <view class="convert">
-            <view class="padding-main bg-white pr nav flex-row">
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>账户</view>
+            <view class="padding-main bg-white pr nav flex-row oa">
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
+                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_recharge_status_open_event">
-                    <view>状态</view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_recharge_status_open_event">
+                    <view>{{ recharge_status_name !== null && recharge_status_name !== '全部' ? recharge_status_name : '状态' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
-                <view class="flex-row align-c margin-right-main padding-right-xl pr" @tap="popup_network_open_event">
-                    <view>网络</view>
+                <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_network_open_event">
+                    <view>{{ network_name !== null && network_name !== '全部' ? network_name : '网络' }}</view>
                     <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -65,10 +65,10 @@
                     <view class="padding-horizontal-main text-size-xs">账户种类</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
@@ -83,10 +83,10 @@
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_recharge_status_close_event">
@@ -101,10 +101,10 @@
                     <view class="padding-horizontal-main text-size-xs">提现类型</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
                         </view>
                         <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_network_close_event">
@@ -142,16 +142,19 @@
                 popup_accounts_status: false,
                 accounts_id: null,
                 accounts_list_index: null,
+                accounts_name: null,
                 accounts_list: [],
                 // 类型
                 popup_recharge_status_status: false,
                 status: null,
                 recharge_status_list_index: null,
+                recharge_status_name: null,
                 recharge_status_list: [],
                 // 网络
                 popup_network_status: false,
                 network_id: null,
                 network_list_index: null,
+                network_name: null,
                 network_list: [],
 
                 data_list: [],
@@ -343,6 +346,7 @@
                 this.setData({
                     accounts_list_index: e.currentTarget.dataset.index,
                     accounts_id: e.currentTarget.dataset.value,
+                    accounts_name: e.currentTarget.dataset.name,
                     popup_accounts_status: false,
                     data_page: 1,
                 });
@@ -370,6 +374,7 @@
                 this.setData({
                     recharge_status_list_index: e.currentTarget.dataset.index,
                     status: e.currentTarget.dataset.value,
+                    recharge_status_name: e.currentTarget.dataset.name,
                     popup_recharge_status_status: false,
                     data_page: 1,
                 });
@@ -397,6 +402,7 @@
                 this.setData({
                     network_list_index: e.currentTarget.dataset.index,
                     network_id: e.currentTarget.dataset.value,
+                    network_name: e.currentTarget.dataset.name,
                     popup_network_status: false,
                     data_page: 1,
                 });
