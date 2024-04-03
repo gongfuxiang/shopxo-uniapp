@@ -329,7 +329,7 @@
                     </view>
                     <view class="border-radius-main padding-main bg-white">
                         <component-ask-comments-goods :propData="plugins_ask_data.ask_data"></component-ask-comments-goods>
-                        <view data-value="/pages/plugins/ask/form/form" @tap="url_event" class="cp">
+                        <view :data-value="'/pages/plugins/ask/form/form?goods_id='+goods.id" @tap="url_event" class="cp">
                             <view class="br-t-e padding-top-main cr-base flex-row jc-c align-c">{{$t('goods-detail.goods-detail.7ulh8b')}}<iconfont name="icon-arrow-right" color="#666" propClass="pr top-sm margin-left-sm"></iconfont>
                             </view>
                         </view>

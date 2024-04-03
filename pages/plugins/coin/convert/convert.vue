@@ -1,25 +1,25 @@
 <template>
     <view :class="theme_view">
-        <view v-if="coin_list.length > 0">
+        <view v-if="accounts_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="padding-main pr">
                     <view class="padding-lg bg-white radius-md margin-bottom-main">
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event(1)">
-                                    <image v-if="coin_list[send_accounts_id_index]['platform_icon']" :src="coin_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[send_accounts_id_index]['platform_name'] }}</text>
+                                    <image v-if="accounts_list[send_accounts_id_index]['platform_icon']" :src="accounts_list[send_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ accounts_list[send_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }}{{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
                                 <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_value_change" />
-                                <view class="margin-top-main tr text-size-xs">{{ coin_list[send_accounts_id_index]['platform_symbol'] }}{{ coin_list[send_accounts_id_index]['default_coin'] }}</view>
+                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }}{{ accounts_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
@@ -28,24 +28,24 @@
                         <view class="br-f5 margin-bottom-main radius-md padding-lg flex-row jc-sb">
                             <view>
                                 <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_event">
-                                    <image v-if="coin_list[receive_accounts_id_index]['platform_icon']" :src="coin_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-sm fw-b single-text">{{ coin_list[receive_accounts_id_index]['platform_name'] }}</text>
+                                    <image v-if="accounts_list[receive_accounts_id_index]['platform_icon']" :src="accounts_list[receive_accounts_id_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-sm fw-b single-text">{{ accounts_list[receive_accounts_id_index]['platform_name'] }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }}{{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
                                 <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled />
-                                <view class="margin-top-main tr text-size-xs">{{ coin_list[receive_accounts_id_index]['platform_symbol'] }}{{ coin_list[receive_accounts_id_index]['default_coin'] }}</view>
+                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }}{{ accounts_list[receive_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="flex-row align-c">
                             <iconfont name="icon-recharge" color="#333" size="32rpx"></iconfont>
-                            <view class="margin-left-sm">{{ default_value || 0 }} * {{ coin_list[send_accounts_id_index]['platform_rate'] }} = {{ Math.round(default_value * coin_list[receive_accounts_id_index]['platform_rate'] * 100) / 100 }}</view>
+                            <view class="margin-left-sm">{{ default_value || 0 }} * {{ accounts_list[send_accounts_id_index]['platform_rate'] }} = {{ Math.round(default_value * accounts_list[receive_accounts_id_index]['platform_rate'] * 100) / 100 }}</view>
                         </view>
                     </view>
                     <!-- <view class="padding-main bg-white radius-md margin-bottom-xxxxl flex-row align-c">
@@ -67,7 +67,7 @@
                     </view>
                     <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
                         <view class="scroll-y">
-                            <view v-for="(item, index) in coin_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="coin_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
+                            <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
                                 <view class="flex-row align-c">
                                     <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
@@ -80,6 +80,10 @@
                     </view>
                 </view>
             </component-popup>
+        </view>
+        <view v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
     </view>
 </template>
@@ -98,6 +102,8 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
 
                 // 虚拟币状态
                 coin_type: 1,
@@ -109,16 +115,7 @@
                 send_accounts_id: 0,
                 receive_accounts_id: 0,
                 popup_coin_status: false,
-                coin_list: [
-                    // {
-                    //     name: 'BTC',
-                    //     img: wallet_static_url + 'user-head-bg.png',
-                    // },
-                    // {
-                    //     name: 'USDT-polygon',
-                    //     img: wallet_static_url + 'user-head-bg.png',
-                    // },
-                ],
+                accounts_list: [],
                 // 是否转换
                 convert_bool: false,
                 // 输入默认币
@@ -173,12 +170,14 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var send_accounts = data.send_accounts || null;
+                            var receive_accounts = data.receive_accounts || null;
                             this.setData({
                                 data_base: data.base || null,
-                                coin_list: data.accounts_list || [],
+                                accounts_list: data.accounts_list || [],
                                 convert_value: data.convert_value || '0',
-                                send_accounts_id: data.send_accounts.id,
-                                receive_accounts_id: data.receive_accounts.id,
+                                send_accounts_id: (send_accounts == null) ? 0 : send_accounts.id,
+                                receive_accounts_id: (receive_accounts == null) ? 0 : receive_accounts.id,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
@@ -190,12 +189,10 @@
                             }
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
-                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            app.globalData.is_login_check(res.data, this, 'get_data');
                         }
                     },
                     fail: () => {
@@ -257,7 +254,7 @@
             default_value_change(e) {
                 this.setData({
                     default_value: e.detail.value,
-                    convert_value: Math.round(e.detail.value * this.coin_list[this.receive_accounts_id_index]['platform_rate'] * 100) / 100,
+                    convert_value: Math.round(e.detail.value * this.accounts_list[this.receive_accounts_id_index]['platform_rate'] * 100) / 100,
                 });
             },
 

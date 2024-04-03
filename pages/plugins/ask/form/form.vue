@@ -42,11 +42,12 @@
                 theme_color: theme_color,
                 data_list_loding_status: 1,
                 data_list_loding_msg: this.$t('form.form.bniyyt'),
+                params: {},
                 form_submit_loading: false,
                 text_num: 0,
                 image_list: [],
                 is_anonymous: '0',
-                editor_path_type: '', // ----------目前缺少此子段
+                editor_path_type: 'plugins_ask',
             };
         },
 
@@ -59,6 +60,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 参数记录
+            this.setData({
+                params: params || {}
+            });
         },
 
         onShow() {
@@ -106,6 +111,7 @@
                         form_submit_loading: true,
                     });
                     var newData = {
+                        goods_id: this.params.goods_id || 0,
                         image_list:this.image_list,
                         is_anonymous:this.is_anonymous,
                         ...e.detail.value,

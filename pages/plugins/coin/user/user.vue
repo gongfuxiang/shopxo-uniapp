@@ -58,6 +58,10 @@
                         </view>
                     </view>
                 </view>
+                <view v-else>
+                    <!-- 提示信息 -->
+                    <component-no-data propStatus="0"></component-no-data>
+                </view>
             </scroll-view>
             <!-- 明细 -->
             <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">

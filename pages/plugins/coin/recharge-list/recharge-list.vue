@@ -243,7 +243,7 @@
                                 });
                             }
                         } else {
-                            if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
+                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
                             }
                         }

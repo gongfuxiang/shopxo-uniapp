@@ -1,93 +1,99 @@
 <template>
     <view :class="theme_view">
         <component-nav-back></component-nav-back>
-        <view class="cash">
-            <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
-                <view class="title flex-col padding-lg">
-                    <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
-                        <view v-if="accounts_list.length > 0" class="cr-white">
-                            <view class="flex-row align-e margin-bottom-main">
-                                <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_open_event">
-                                    <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
-                                    <view class="coin-dropdown-icon pa padding-left-xxl">
-                                        <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
+        <block v-if="accounts_list.length > 0">
+            <view class="cash">
+                <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
+                    <view class="title flex-col padding-lg">
+                        <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
+                            <view v-if="accounts_list.length > 0" class="cr-white">
+                                <view class="flex-row align-e margin-bottom-main">
+                                    <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_open_event">
+                                        <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                                        <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
+                                        <view class="coin-dropdown-icon pa padding-left-xxl">
+                                            <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
+                                        </view>
+                                    </view>
+                                    <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
+                                </view>
+                                <view class="flex-row align-e">
+                                    <view class="text-size-40 fw-b">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
+                                    <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
+                                </view>
+                            </view>
+                            <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
+                        </view>
+                    </view>
+                    <view class="content padding-main">
+                        <view class="padding-xxxl bg-white radius-md margin-bottom-main">
+                            <view class="margin-bottom-xxxl">
+                                <view class="margin-bottom-main fw-b">提现数量</view>
+                                <view class="padding-vertical-main br-b-e flex-row align-c">
+                                    <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入" @input="coin_num_change" />
+                                    <view @tap.stop="all_cash_event">全部提现</view>
+                                </view>
+                            </view>
+                            <view class="margin-bottom-xxxl">
+                                <view class="margin-bottom-main">提币地址</view>
+                                <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
+                                    <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提币地址" @input="coin_address_change" />
+                                </view>
+                            </view>
+                            <view>
+                                <view class="margin-bottom-main">提币网络</view>
+                                <picker v-if="network_list.length > 0" class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
+                                    <view class="picker arrow-bottom">
+                                        {{ network_list[network_list_index]['name'] }}
+                                    </view>
+                                </picker>
+                                <view class="content-input-bg padding-main border-radius-sm">
+                                    <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提现备注信息" @input="user_note_change" />
+                                </view>
+                            </view>
+                        </view>
+                        <!-- <view class="padding-main bg-white radius-md">
+                            <view class="padding-vertical-sm border-radius-sm flex-row align-c">
+                                <text class="text-size fw-b">支付密码</text>
+                                <view class="padding-left-lg">
+                                    <input type="digit" name="coin" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
+                                </view>
+                            </view>
+                        </view> -->
+                        <view class="padding-xxxl">
+                            <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">申请提现</button>
+                        </view>
+                    </view>
+                </scroll-view>
+                <!-- 虚拟币下拉框 -->
+                <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
+                    <view class="padding-horizontal-main padding-top-main bg-white">
+                        <view class="oh">
+                            <view class="fr" @tap.stop="popup_coin_status_close_event">
+                                <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                            </view>
+                        </view>
+                        <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
+                            <view class="scroll-y">
+                                <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
+                                    <view class="flex-row align-c">
+                                        <image v-if="platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                        <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
+                                    </view>
+                                    <view>
+                                        <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                     </view>
                                 </view>
-                                <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
-                            </view>
-                            <view class="flex-row align-e">
-                                <view class="text-size-40 fw-b">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
-                                <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
-                            </view>
-                        </view>
-                        <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
-                    </view>
-                </view>
-                <view class="content padding-main">
-                    <view class="padding-xxxl bg-white radius-md margin-bottom-main">
-                        <view class="margin-bottom-xxxl">
-                            <view class="margin-bottom-main fw-b">提现数量</view>
-                            <view class="padding-vertical-main br-b-e flex-row align-c">
-                                <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入" @input="coin_num_change" />
-                                <view @tap.stop="all_cash_event">全部提现</view>
-                            </view>
-                        </view>
-                        <view class="margin-bottom-xxxl">
-                            <view class="margin-bottom-main">提币地址</view>
-                            <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
-                                <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提币地址" @input="coin_address_change" />
-                            </view>
-                        </view>
-                        <view>
-                            <view class="margin-bottom-main">提币网络</view>
-                            <picker v-if="network_list.length > 0" class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
-                                <view class="picker arrow-bottom">
-                                    {{ network_list[network_list_index]['name'] }}
-                                </view>
-                            </picker>
-                            <view class="content-input-bg padding-main border-radius-sm">
-                                <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提现备注信息" @input="user_note_change" />
                             </view>
                         </view>
                     </view>
-                    <!-- <view class="padding-main bg-white radius-md">
-                        <view class="padding-vertical-sm border-radius-sm flex-row align-c">
-                            <text class="text-size fw-b">支付密码</text>
-                            <view class="padding-left-lg">
-                                <input type="digit" name="coin" :value="pay_pwd" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
-                            </view>
-                        </view>
-                    </view> -->
-                    <view class="padding-xxxl">
-                        <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">申请提现</button>
-                    </view>
-                </view>
-            </scroll-view>
-            <!-- 虚拟币下拉框 -->
-            <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="oh">
-                        <view class="fr" @tap.stop="popup_coin_status_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
-                        <view class="scroll-y">
-                            <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
-                                <view class="flex-row align-c">
-                                    <image v-if="platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
-                                    <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
-                                </view>
-                                <view>
-                                    <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
-                                </view>
-                            </view>
-                        </view>
-                    </view>
-                </view>
-            </component-popup>
-        </view>
+                </component-popup>
+            </view>
+        </block>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
     </view>
 </template>
 <script>
@@ -107,6 +113,8 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 wallet_static_url: wallet_static_url,
                 status_bar_height: bar_height,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
 
                 // 虚拟币
                 coin_num: '',
@@ -177,11 +185,15 @@
                             this.setData({
                                 accounts_list: data.accounts_list || [],
                                 network_list: data.network_list || [],
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 0,
                             });
                         } else {
-                            if (app.globalData.is_login_check(res.data, this, 'get_data')) {
-                                app.globalData.showToast(res.data.msg);
-                            }
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
+                            });
+                            app.globalData.is_login_check(res.data, this, 'get_data');
                         }
                     },
                     fail: () => {
