@@ -1,20 +1,20 @@
 <template>
     <view :class="theme_view">
         <component-nav-back propName="账户详情"></component-nav-back>
-        <view>
+        <view v-if="accounts_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
-                    <view v-if="accounts_list.length > 0" class="margin-bottom-xxxxl padding-bottom-main flex-row jc-sb align-c">
+                    <view v-if="accounts_list.length > 0 && (accounts || null) != null" class="margin-bottom-xxxxl padding-bottom-main flex-row jc-sb align-c">
                         <view class="flex-row">
-                            <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
+                            <image v-if="(accounts.platform_icon || null) != null" :src="accounts.platform_icon" mode="widthFix" class="coin-content-list-img round" />
                             <view class="padding-left-main">
                                 <view class="coin-dropdown text-size-md pr margin-bottom-xs flex-row" @tap="popup_coin_status_open_event">
-                                    <text class="cr-666">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
+                                    <text class="cr-666">{{ accounts.platform_name }}</text>
                                     <view class="padding-left-sm">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
-                                <view class="fw-b text-size">{{ is_price_show ? accounts_list[accounts_list_index]['normal_coin'] : '***' }}</view>
+                                <view class="fw-b text-size">{{ is_price_show ? accounts.normal_coin : '***' }}</view>
                             </view>
                         </view>
                         <view @tap="price_change">
@@ -32,8 +32,8 @@
                         </view>
                     </view>
                 </view>
-                <view class="coin-content padding-lg">
-                    <view v-if="log_list.length > 0">
+                <view class="coin-content padding-lg pr">
+                    <block v-if="log_list.length > 0" >
                         <view v-for="(item, index) in log_list" :key="index" class="bg-white radius-md padding-main margin-bottom-main">
                             <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
                                 <view>{{ item.coin_type_name }}</view>
@@ -58,20 +58,24 @@
                                 </view>
                             </view>
                         </view>
-                        <view class="tc cr-grey cp" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">
+                        <view class="tc cr-grey cp" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">
                             <text class="va-m">查看更多明细</text>
                             <view class="dis-inline-block va-m margin-top-xs margin-left-xs">
                                 <iconfont name="icon-arrow-right" color="#999"></iconfont>
                             </view>
                         </view>
-                    </view>
-                    <view v-else>
+                    </block>
+                    <block v-else>
                         <!-- 提示信息 -->
-                        <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-                    </view>
+                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                    </block>
                 </view>
             </scroll-view>
         </view>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
         <!-- 虚拟币下拉框 -->
         <component-popup :propShow="popup_coin_status" propPosition="bottom" @onclose="popup_coin_status_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
@@ -82,13 +86,15 @@
                 </view>
                 <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
                     <view class="scroll-y">
-                        <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
-                            <view class="flex-row align-c">
-                                <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
-                                <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
-                            </view>
-                            <view>
-                                <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                        <view v-for="(item, index) in accounts_list" :key="index">
+                            <view class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item" :data-index="index" @tap="coin_checked_event">
+                                <view class="flex-row align-c">
+                                    <image v-if="item.platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                    <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
+                                </view>
+                                <view>
+                                    <iconfont :name="accounts.id === item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                </view>
                             </view>
                         </view>
                     </view>
@@ -104,21 +110,21 @@
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view v-if="accounts_list.length > 0" class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
+                <view v-if="accounts_list.length > 0 && (accounts || null) != null" class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">充值明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts.id" @tap="url_event">充值明细</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transfer-list/transfer-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">转账明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transfer-list/transfer-list?id=' + accounts.id" @tap="url_event">转账明细</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">交易明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">交易明细</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/cash-list/cash-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">提现明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/cash-list/cash-list?id=' + accounts.id" @tap="url_event">提现明细</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/convert-list/convert-list?id=' + accounts_list[accounts_list_index]['id']" @tap="url_event">转换明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/convert-list/convert-list?id=' + accounts.id" @tap="url_event">转换明细</view>
                     </view>
                 </view>
             </view>
@@ -144,39 +150,24 @@
                 status_bar_height: bar_height,
                 params: null,
                 data_list_loding_status: 1,
+                data_list_loding_msg: '',
 
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
-                // 虚拟币下标
-                accounts_list_index: 0,
                 // 虚拟币下拉框list
                 accounts_list: [],
+                // 账户
+                accounts: {},
 
                 // 是否显示虚拟币
                 is_price_show: false,
                 // 虚拟币操作列表
-                coin_oprate_list: [
-                    {
-                        name: '转账',
-                        icon: 'icon-transfer-count',
-                        url: '/pages/plugins/coin/transfer/transfer',
-                    },
-                    {
-                        name: '收款',
-                        icon: 'icon-collection',
-                        url: '/pages/plugins/coin/collection/collection',
-                    },
-                    {
-                        name: '明细',
-                        icon: 'icon-detail',
-                        url: '',
-                        method: true,
-                    },
-                ],
+                coin_oprate_list: [],
 
                 // 明细弹窗
                 popup_user_detail_status: false,
 
+                // 日志列表
                 log_list: [],
             };
         },
@@ -196,8 +187,6 @@
                 this.setData({
                     params: params,
                 });
-                this.coin_oprate_list[1].url = this.coin_oprate_list[1].url + '?id=' + params.id;
-                this.coin_oprate_list[0].url = this.coin_oprate_list[0].url + '?id=' + params.id;
             }
             this.init();
         },
@@ -227,7 +216,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'accounts', 'coin'),
                     method: 'POST',
-                    data: this.params,
+                    data: {id: this.accounts.id || this.params.id},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -235,18 +224,37 @@
                             var data = res.data.data;
                             this.setData({
                                 data_base: data.base || null,
+                                accounts: data.accounts || {},
                                 accounts_list: data.accounts_list || [],
                                 log_list: data.log_list || [],
                                 accounts_summary: data.accounts_summary || 0,
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
-                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
-                                this.setData({
-                                    accounts_list_index: data.accounts_list.findIndex((item) => item.id === this.params.id),
+
+                            // 操作导航
+                            var temp_coin_oprate_list = [];
+                            if(parseInt(this.accounts.platform_data.is_enable_transfer || 0) == 1) {
+                                temp_coin_oprate_list.push({
+                                    name: '转账',
+                                    icon: 'icon-transfer-count',
+                                    url: '/pages/plugins/coin/transfer/transfer?id=' + this.params.id,
                                 });
                             }
-                            console.log(this.accounts_list_index);
+                            temp_coin_oprate_list.push({
+                                name: '收款',
+                                icon: 'icon-collection',
+                                url: '/pages/plugins/coin/collection/collection?id=' + this.params.id,
+                            });
+                            temp_coin_oprate_list.push({
+                                name: '明细',
+                                icon: 'icon-detail',
+                                url: '',
+                                method: true,
+                            });
+                            this.setData({
+                                coin_oprate_list: temp_coin_oprate_list
+                            });
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
@@ -283,9 +291,12 @@
             // 虚拟币切换
             coin_checked_event(e) {
                 this.setData({
-                    accounts_list_index: parseInt(e.currentTarget.dataset.index || 0),
+                    accounts: this.accounts_list[e.currentTarget.dataset.index],
                     popup_coin_status: false,
+                    log_list: [],
+                    data_list_loding_status: 1,
                 });
+                this.get_data();
             },
             popup_coin_status_open_event() {
                 this.setData({

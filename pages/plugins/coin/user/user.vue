@@ -6,7 +6,7 @@
                 <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
                     <view class="margin-bottom-main flex-row jc-sb align-c">
                         <view>
-                            <view class="cr-base text-size-md">总数量</view>
+                            <view class="cr-base text-size-md">余额</view>
                             <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>
                         </view>
                         <view @tap="price_change">
@@ -14,19 +14,19 @@
                         </view>
                     </view>
                     <view class="flex-row jc-sb padding-bottom-main">
-                        <view v-if="data_base.is_enable_recharge == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/recharge/recharge" @tap="url_event">
+                        <view v-if="data_base.is_enable_recharge == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/recharge/recharge" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-recharge" size="44rpx" color="#635BFF"></iconfont>
                             </view>
                             <view>充值</view>
                         </view>
-                        <view v-if="data_base.is_enable_convert == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
+                        <view v-if="data_base.is_enable_convert == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-convert" size="44rpx" color="#635BFF"></iconfont>
                             </view>
                             <view>转换</view>
                         </view>
-                        <view v-if="data_base.is_enable_cash == '1'" class="tc text-size-xs" data-value="/pages/plugins/coin/cash/cash" @tap="url_event">
+                        <view v-if="data_base.is_enable_cash == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/cash/cash" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-cash" size="44rpx" color="#635BFF"></iconfont>
                             </view>
@@ -49,8 +49,8 @@
                                     <text class="fw-b single-text margin-left-main">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="flex-col align-e">
-                                    <view class="margin-bottom-xss text-size">{{ item.default_coin }}</view>
-                                    <view class="cr-grey-9">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
+                                    <view class="margin-bottom-xss text-size">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
+                                    <view class="cr-grey-9 text-size-xs">{{ item.default_symbol }}{{ item.default_coin }}</view>
                                 </view>
                             </view>
                             <!-- 结尾 -->

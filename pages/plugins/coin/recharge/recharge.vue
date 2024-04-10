@@ -8,18 +8,18 @@
                         <view class="cr-white flex-1 flex-width">
                             <view class="coin-dropdown margin-bottom-main">
                                 <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
-                                    <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                    <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
+                                    <image v-if="(accounts.platform_icon || null) != null" :src="accounts.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                                    <text class="margin-left-xs">{{ accounts.platform_name }}</text>
                                     <view class="coin-dropdown-icon pa padding-left-xxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                     </view>
                                 </view>
                             </view>
-                            <view class="text-size-xl fw-b single-text">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
+                            <view class="text-size-xl fw-b single-text">{{ accounts.normal_coin }}</view>
                         </view>
                         <view class="recharge-qrcode">
-                            <block v-if="recharge_qrcode">
-                                <image :src="recharge_qrcode" mode="widthFix" class="img margin-right-xs circle" :data-value="recharge_qrcode" @tap="recharge_qrcode_event" />
+                            <block v-if="accounts.platform_data.recharge_qrcode">
+                                <image :src="accounts.platform_data.recharge_qrcode" mode="widthFix" class="img margin-right-xs radius dis-block" :data-value="accounts.platform_data.recharge_qrcode" @tap="recharge_qrcode_event" />
                             </block>
                             <block v-else>
                                 <iconfont name="icon-qrcode" size="160rpx" color="#f6f6f6"></iconfont>
@@ -31,8 +31,8 @@
                     <view class="margin-bottom-xxxl">
                         <view class="margin-bottom-main">充币地址</view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
-                            <view class="single-text padding-right-sm flex-1 flex-width">{{ recharge_address }}</view>
-                            <view @tap.stop="text_copy_event" :data-value="recharge_address">
+                            <view class="single-text padding-right-sm flex-1 flex-width">{{ accounts.platform_data.recharge_address }}</view>
+                            <view :data-value="accounts.platform_data.recharge_address" @tap.stop="text_copy_event">
                                 <iconfont name="icon-copy" size="24rpx" color="#999"></iconfont>
                             </view>
                         </view>
@@ -46,15 +46,19 @@
                         </picker>
                     </view>
                     <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-xs">选择充值币</view>
-                        <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
-                            <view v-for="(item, index) in preset_data" :key="index" class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
-                                <view class="flex-row align-c jc-c">
-                                    <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
-                                    <view class="margin-left-xs recharge-price-name">{{ item.value }}</view>
-                                </view>
-                                <view class="margin-top-sm cr-grey-9 text-size-xs">10000</view>
-                                <view v-if="item.tips" class="recharge-price-badge text-size-xss cr-white single-text">{{ item.tips }}</view>
+                        <view v-if="accounts.platform_data.preset_data.length > 0">
+                            <view class="margin-bottom-xs">选择充值币</view>
+                            <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
+                                <block v-for="(item, index) in accounts.platform_data.preset_data" :key="index">
+                                    <view class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
+                                        <view class="flex-row align-c jc-c">
+                                            <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
+                                            <view class="margin-left-xs recharge-price-name">{{ item.value }}</view>
+                                        </view>
+                                        <view class="margin-top-sm cr-grey-9 text-size-xs">10000</view>
+                                        <view v-if="item.tips" class="recharge-price-badge text-size-xss cr-white single-text">{{ item.tips }}</view>
+                                    </view>
+                                </block>
                             </view>
                         </view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
@@ -65,10 +69,10 @@
                         </view>
                         <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">立即充值</button>
                     </view>
-                    <view v-if="recharge_desc.length > 0" class="margin-bottom-xxxl">
+                    <view v-if="accounts.platform_data.recharge_desc.length > 0" class="margin-bottom-xxxl">
                         <view class="margin-bottom-main">充值说明：</view>
                         <view class="recharge-content-tips">
-                            <view v-for="(item, index) in recharge_desc" :key="index" class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">{{ item }}</view>
+                            <view v-for="(item, index) in accounts.platform_data.recharge_desc" :key="index" class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">{{ item }}</view>
                         </view>
                     </view>
                 </view>
@@ -89,7 +93,7 @@
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
-                                    <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                    <iconfont :name="accounts.id === item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -123,27 +127,19 @@
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
 
-                // 付款码
-                recharge_qrcode: '',
+                // 账户
+                accounts: {},
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
-                // 虚拟币下标
-                accounts_list_index: 0,
                 // 虚拟币下拉框list
                 accounts_list: [],
-                // 充币地址
-                recharge_address: '',
                 // 充币网络
                 network_list_index: 0,
                 network_list: [],
                 // 充值选中下标
                 preset_data_index: null,
-                // 充值币
-                preset_data: [],
                 // 充值数量
                 recharge_num: '',
-                // 充值规则
-                recharge_desc: [],
             };
         },
 
@@ -193,12 +189,9 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
+                                accounts: data.accounts,
                                 accounts_list: data.accounts_list || [],
                                 network_list: data.network_list || [],
-                                recharge_qrcode: data.recharge_qrcode || '',
-                                recharge_address: data.recharge_address || '',
-                                recharge_desc: data.recharge_desc || [],
-                                preset_data: data.preset_data || [],
                                 data_list_loding_msg: '',
                                 data_list_loding_status: 0,
                             });
@@ -224,7 +217,7 @@
             // 虚拟币切换
             coin_checked_event(e) {
                 this.setData({
-                    accounts_list_index: parseInt(e.currentTarget.dataset.index || 0),
+                    accounts: this.accounts_list[e.currentTarget.dataset.index],
                     popup_coin_status: false,
                 });
             },
@@ -260,9 +253,9 @@
             // 立即充值
             recharge_submit() {
                 var new_data = {
-                    accounts_id: this.accounts_list[this.accounts_list_index].id,
+                    accounts_id: this.accounts.id,
                     network_id: this.network_list[this.network_list_index].id,
-                    address: this.recharge_address,
+                    address: this.accounts.platform_data.recharge_address,
                     coin: this.recharge_num,
                 };
                 // 数据校验

@@ -1034,8 +1034,8 @@
                     goods_photo: photo,
                     goods_content_app: goods.content_app || [],
                     nav_favor_button_info: {
-                        text: (goods.is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
-                        status: goods.is_favor,
+                        text: (goods.user_is_favor == 1 ? this.$t('goods-detail.goods-detail.by7052') : '') + this.$t('goods-detail.goods-detail.dco1sc'),
+                        status: goods.user_is_favor,
                     },
                     goods_spec_base_price: goods.price,
                     goods_spec_base_original_price: goods.original_price || 0,
@@ -1235,7 +1235,7 @@
                             uni.hideLoading();
                             if (res.data.code == 0) {
                                 this.setData({
-                                    'goods.is_favor': res.data.data.status,
+                                    'goods.user_is_favor': res.data.data.status,
                                     nav_favor_button_info: {
                                         text: res.data.data.text,
                                         status: res.data.data.status,
