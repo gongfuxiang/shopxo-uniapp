@@ -14,7 +14,10 @@
                                         <iconfont name="icon-arrow-bottom" size="24rpx" color="#666"></iconfont>
                                     </view>
                                 </view>
-                                <view class="fw-b text-size">{{ is_price_show ? accounts.normal_coin : '***' }}</view>
+                                <view>
+                                    <text class="fw-b text-size">{{ is_price_show ? accounts.normal_coin : '***' }}</text>
+                                    <text v-if="is_price_show" class="cr-grey-9 text-size-xs margin-left">{{ accounts.default_symbol }}{{ accounts.default_coin }}</text>
+                                </view>
                             </view>
                         </view>
                         <view @tap="price_change">
@@ -238,13 +241,13 @@
                                 temp_coin_oprate_list.push({
                                     name: '转账',
                                     icon: 'icon-transfer-count',
-                                    url: '/pages/plugins/coin/transfer/transfer?id=' + this.params.id,
+                                    url: '/pages/plugins/coin/transfer/transfer?id=' + this.accounts.id,
                                 });
                             }
                             temp_coin_oprate_list.push({
                                 name: '收款',
                                 icon: 'icon-collection',
-                                url: '/pages/plugins/coin/collection/collection?id=' + this.params.id,
+                                url: '/pages/plugins/coin/collection/collection?accounts_key=' + this.accounts.accounts_key,
                             });
                             temp_coin_oprate_list.push({
                                 name: '明细',

@@ -4,7 +4,7 @@
         <block v-if="accounts_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="recharge-title flex-col padding-lg">
-                    <view v-if="accounts_list.length > 0" class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
+                    <view v-if="(accounts || mull) != null" class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
                         <view class="cr-white flex-1 flex-width">
                             <view class="coin-dropdown margin-bottom-main">
                                 <view class="flex-row align-c pr" @tap="popup_coin_status_open_event">
@@ -126,6 +126,7 @@
                 status_bar_height: bar_height,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                params: {},
 
                 // 账户
                 accounts: {},
@@ -153,7 +154,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
-
+            // 设置参数
+            this.setData({
+                params: params,
+            });
             this.init();
         },
 

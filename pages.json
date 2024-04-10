@@ -1547,7 +1547,7 @@
                 {
                     "path": "collection/collection",
                     "style": {
-                        "enablePullDownRefresh": true,
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }

@@ -133,8 +133,7 @@
                 wallet_static_url: wallet_static_url,
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
-
-                params: null,
+                params: {},
 
                 // 弹窗距离顶部距离
                 popup_top_height: 0,
@@ -176,11 +175,10 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            if (params !== null && params.id) {
-                this.setData({
-                    params: params,
-                });
-            }
+            this.setData({
+                params: params,
+                accounts_id: params.id || 0,
+            });
         },
 
         onShow() {

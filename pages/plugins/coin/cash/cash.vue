@@ -6,11 +6,11 @@
                 <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                     <view class="title flex-col padding-lg">
                         <view class="margin-bottom-xxxl flex-row jc-sb margin-top-xl">
-                            <view v-if="accounts_list.length > 0" class="cr-white">
+                            <view v-if="(accounts || mull) != null" class="cr-white">
                                 <view class="flex-row align-e margin-bottom-main">
                                     <view class="flex-row align-c pr coin-dropdown" @tap="popup_coin_status_open_event">
-                                        <image v-if="accounts_list[accounts_list_index]['platform_icon']" :src="accounts_list[accounts_list_index]['platform_icon']" mode="widthFix" class="coin-content-list-img round" />
-                                        <text class="margin-left-xs">{{ accounts_list[accounts_list_index]['platform_name'] }}</text>
+                                        <image v-if="(accounts.platform_icon || null) != null" :src="accounts.platform_icon" mode="widthFix" class="coin-content-list-img round" />
+                                        <text class="margin-left-xs">{{ accounts.platform_name }}</text>
                                         <view class="coin-dropdown-icon pa padding-left-xxl">
                                             <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                         </view>
@@ -18,11 +18,11 @@
                                     <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
                                 </view>
                                 <view class="flex-row align-e">
-                                    <view class="text-size-40 fw-b">{{ accounts_list[accounts_list_index]['normal_coin'] }}</view>
-                                    <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts_list[accounts_list_index]['default_symbol'] }}{{ accounts_list[accounts_list_index]['default_coin'] }}</view>
+                                    <view class="text-size-40 fw-b">{{ accounts.normal_coin }}</view>
+                                    <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts.default_symbol }}{{ accounts.default_coin }}</view>
                                 </view>
                             </view>
-                            <view class="detail pa right-0 fw-b cr-white" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
+                            <view class="detail pa right-0 fw-b cr-white" :data-value="'/pages/plugins/coin/cash-list/cash-list?id='+accounts.id" @tap="url_event">提现明细</view>
                         </view>
                     </view>
                     <view class="content padding-main">
@@ -75,13 +75,15 @@
                         </view>
                         <view class="popup_coin_status_container padding-vertical-main flex-col text-size">
                             <view class="scroll-y">
-                                <view v-for="(item, index) in accounts_list" :key="index" class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
-                                    <view class="flex-row align-c">
-                                        <image v-if="platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
-                                        <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
-                                    </view>
-                                    <view>
-                                        <iconfont :name="accounts_list_index === index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                <view v-for="(item, index) in accounts_list" :key="index">
+                                    <view class="flex-row jc-sb align-c padding-vertical-main" :class="accounts_list.length == index + 1 ? '' : 'br-b-f9'" :data-value="item.id" :data-index="index" @tap="coin_checked_event">
+                                        <view class="flex-row align-c">
+                                            <image v-if="platform_icon" :src="item.platform_icon" mode="widthFix" class="coin-list-img round" />
+                                            <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
+                                        </view>
+                                        <view>
+                                            <iconfont :name="accounts.id === item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        </view>
                                     </view>
                                 </view>
                             </view>
@@ -115,14 +117,16 @@
                 status_bar_height: bar_height,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
+                params: {},
 
                 // 虚拟币
                 coin_num: '',
+                
+                // 账户
+                accounts: {},
 
                 // 虚拟币下拉框探弹窗状态
                 popup_coin_status: false,
-                // 虚拟币下标
-                accounts_list_index: 0,
                 // 虚拟币下拉框list
                 accounts_list: [],
                 // 充币网络
@@ -147,6 +151,10 @@
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
+            // 设置参数
+            this.setData({
+                params: params,
+            });
             this.init();
         },
 
@@ -175,7 +183,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('createinfo', 'cash', 'coin'),
                     method: 'POST',
-                    data: {},
+                    data: {accounts_id : this.accounts.id || this.params.id},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -183,6 +191,7 @@
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
+                                accounts: data.accounts || {},
                                 accounts_list: data.accounts_list || [],
                                 network_list: data.network_list || [],
                                 data_list_loding_msg: '',
@@ -211,7 +220,7 @@
             // 虚拟币切换
             coin_checked_event(e) {
                 this.setData({
-                    accounts_list_index: parseInt(e.currentTarget.dataset.index || 0),
+                    accounts: this.accounts_list[e.currentTarget.dataset.index],
                     coin_num: '',
                     popup_coin_status: false,
                 });
@@ -238,7 +247,7 @@
             // 全部提现
             all_cash_event(e) {
                 this.setData({
-                    coin_num: this.accounts_list[this.accounts_list_index].normal_coin || '',
+                    coin_num: this.accounts.normal_coin || '',
                 });
             },
 
@@ -266,7 +275,7 @@
             // 申请提现
             apply_for_cash_event() {
                 var new_data = {
-                    accounts_id: this.accounts_list[this.accounts_list_index].id,
+                    accounts_id: this.accounts.id,
                     network_id: this.network_list[this.network_list_index].id,
                     address: this.coin_address,
                     coin: this.coin_num,
