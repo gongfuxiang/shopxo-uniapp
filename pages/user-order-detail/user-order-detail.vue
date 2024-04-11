@@ -82,7 +82,7 @@
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                            <view class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">{{ item.value }}</view>
                         </view>
                     </view>
                 </view>
@@ -263,6 +263,13 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 文本复制
+            text_copy_event(e) {
+                if((e.currentTarget.dataset.value || null) != null) {
+                    app.globalData.text_copy_event(e);
+                }
             }
         },
     };
