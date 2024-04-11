@@ -253,56 +253,66 @@
             },
 
             // 支付方法
-            pay_handle(order_id, payment_id, payment_list = []) {
+            pay_handle(order_id, payment_id = 0, payment_list = []) {
                 // 没有指定支付方式则使用属性传过来的值
                 if((payment_list || null) != null && payment_list.length > 0) {
                     this.setData({
                         payment_list: payment_list
                     });
                 }
-                this.payment_list.forEach((item) => {
-                    if (item.id == payment_id) {
-                        if (item.payment === 'WalletPay') {
-                            var self = this;
-                            uni.showModal({
-                                title: self.$t('common.warm_tips'),
-                                content: self.$t('payment.payment.011cj4'),
-                                confirmText: self.$t('common.confirm'),
-                                cancelText: self.$t('common.not_yet'),
-                                success(res) {
-                                    if (res.confirm) {
-                                        self.pay_handle_event(order_id, payment_id);
-                                    } else {
-                                        self.order_item_pay_fail_handle(null, order_id, self.$t('paytips.paytips.6mpsl7'));
-                                    }
-                                },
-                            });
-                        } else {
-                            this.pay_handle_event(order_id, payment_id);
+                // 没有支付方式
+                if((payment_id || 0) == 0) {
+                    this.pay_handle_event(order_id, payment_id);
+                } else {
+                    // 循环匹配支付方式
+                    this.payment_list.forEach((item) => {
+                        if (item.id == payment_id) {
+                            if (item.payment === 'WalletPay') {
+                                var self = this;
+                                uni.showModal({
+                                    title: self.$t('common.warm_tips'),
+                                    content: self.$t('payment.payment.011cj4'),
+                                    confirmText: self.$t('common.confirm'),
+                                    cancelText: self.$t('common.not_yet'),
+                                    success(res) {
+                                        if (res.confirm) {
+                                            self.pay_handle_event(order_id, payment_id);
+                                        } else {
+                                            self.order_item_pay_fail_handle(null, order_id, self.$t('paytips.paytips.6mpsl7'));
+                                        }
+                                    },
+                                });
+                            } else {
+                                this.pay_handle_event(order_id, payment_id);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             },
 
             // 支付处理
-            pay_handle_event(order_id, payment_id) {
-                // #ifdef H5
-                // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id)) {
-                    return false;
-                }
-                // #endif
-                // 支付方式
+            pay_handle_event(order_id, payment_id = 0) {
+                // 没有指定支付方式则不匹配支付标识
                 var payment = null;
-                for (var i in this.payment_list) {
-                    if (this.payment_list[i]['id'] == (payment_id || this.payment_id)) {
-                        payment = this.payment_list[i];
+                if((payment_id || 0) != 0) {
+                    // #ifdef H5
+                    // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
+                    if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id)) {
+                        return false;
+                    }
+                    // #endif
+                    // 支付方式
+                    for (var i in this.payment_list) {
+                        if (this.payment_list[i]['id'] == (payment_id || this.payment_id)) {
+                            payment = this.payment_list[i];
+                        }
+                    }
+                    if (payment == null) {
+                        app.globalData.showToast(this.$t('payment.payment.7ihx9u'));
+                        return false;
                     }
                 }
-                if (payment == null) {
-                    app.globalData.showToast(this.$t('payment.payment.7ihx9u'));
-                    return false;
-                }
+
                 // 请求数据
                 var post_data = {
                     [this.propPayDataKey]: order_id,
@@ -312,11 +322,13 @@
                 // #ifdef H5
                 var redirect_url = app.globalData.page_url_protocol(this.propToAppointPage || app.globalData.get_page_url(false));
                 post_data['redirect_url'] = encodeURIComponent(base64.encode(redirect_url));
-                // 指定支付方式使用respond_url返回地址、移除重定向地址
-                var respond_arr = ['PayPal', 'UniPayment'];
-                if (respond_arr.indexOf(payment.payment) != -1) {
-                    post_data['respond_url'] = post_data['redirect_url'];
-                    delete post_data['redirect_url'];
+                // 存在支付标识、指定支付方式使用respond_url返回地址、移除重定向地址
+                if(payment != null) {
+                    var respond_arr = ['PayPal', 'UniPayment'];
+                    if (respond_arr.indexOf(payment.payment) != -1) {
+                        post_data['respond_url'] = post_data['redirect_url'];
+                        delete post_data['redirect_url'];
+                    }
                 }
                 // #endif
                 // 请求支付接口

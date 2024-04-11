@@ -201,7 +201,7 @@
                     </view>
                     
                     <!-- 支付选择 -->
-                    <view v-if="((total_price > 0 || plugins_coin_payment_id != 0) && common_order_is_booking != 1 && payment_list.length > 0) || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
+                    <view v-if="(total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0) || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
                         <!-- 虚拟币支付 -->
                         <block v-if="(plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0">
                             <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
@@ -223,7 +223,7 @@
                             </block>
                         </block>
                         <!-- 支付方式 -->
-                        <view v-if="(total_price > 0 || plugins_coin_payment_id != 0) && common_order_is_booking != 1 && payment_list.length > 0" class="br-t-f9">
+                        <view v-if="total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0" class="br-t-f9">
                             <view v-for="(item, index) in payment_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
@@ -821,8 +821,8 @@
                     data['buy_datetime_value'] = datetime.value || '';
                 }
 
-                // 是否需要选择支付方式
-                if (this.total_price > 0 && this.common_order_is_booking != 1) {
+                // 是否需要选择支付方式、并且未选择虚拟币支付方式
+                if (this.total_price > 0 && this.common_order_is_booking != 1 && (this.plugins_coin_payment_id || null) == null) {
                     if ((data.payment_id || null) == null) {
                         app.globalData.showToast(this.$t('buy.buy.71kidy'));
                         return false;
