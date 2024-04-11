@@ -345,9 +345,9 @@
                         </block>
                     </view>
                 </block>
-                <view v-else>
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" class="no-data bg-base pr"></component-no-data>
-                </view>
+                <block v-else>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                </block>
 
                 <block v-if="data_list_loding_status != 1">
                     <!-- 购物车抛物线 -->
