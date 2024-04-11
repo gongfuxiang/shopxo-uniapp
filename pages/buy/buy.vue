@@ -199,10 +199,31 @@
                             </view>
                         </view>
                     </view>
-
-                    <!-- 支付方式 -->
-                    <view v-if="total_price > 0 && common_order_is_booking != 1 && (payment_list.length > 0 || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0))" class="payment-list border-radius-main bg-white oh spacing-mb">
-                        <view v-if="payment_list.length > 0" class="padding-horizontal-main padding-top-main br-b-f9">
+                    
+                    <!-- 支付选择 -->
+                    <view v-if="((total_price > 0 || plugins_coin_payment_id != 0) && common_order_is_booking != 1 && payment_list.length > 0) || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
+                        <!-- 虚拟币支付 -->
+                        <block v-if="(plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0">
+                            <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
+                                <view class="item flex-row jc-sb align-c" :data-value="item.id" @tap="plugins_coin_payment_event">
+                                    <view class="item-content pr flex-row align-c">
+                                        <image v-if="(item.platform_icon || null) != null" class="icon margin-right-sm va-m" :src="item.platform_icon" mode="widthFix"></image>
+                                        <view class="flex-col">
+                                            <view class="cr-base">{{ item.platform_name }}</view>
+                                            <view class="flex-row align-c margin-top-xs">
+                                                <view class="fw-b">{{ item.default_symbol }}{{ item.default_coin }}</view>
+                                                <view class="margin-left-sm text-size-xs cr-999">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
+                                            </view>
+                                        </view>
+                                    </view>
+                                    <view>
+                                        <iconfont :name="plugins_coin_payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                    </view>
+                                </view>
+                            </block>
+                        </block>
+                        <!-- 支付方式 -->
+                        <view v-if="(total_price > 0 || plugins_coin_payment_id != 0) && common_order_is_booking != 1 && payment_list.length > 0" class="br-t-f9">
                             <view v-for="(item, index) in payment_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
@@ -211,35 +232,8 @@
                                         <text v-if="(item.tips || null) !== null" class="pay-tips">{{ item.tips }}</text>
                                     </view>
                                     <view>
-                                        <iconfont :name="payment_index == index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                        <iconfont :name="payment_id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                     </view>
-                                </view>
-                            </view>
-                        </view>
-                        <view v-if="(plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0" class="padding-horizontal-main padding-bottom-main">
-                            <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
-                                <block v-if="plugins_coin_more_control ? index < 3 : true">
-                                    <view class="item flex-row jc-sb align-c br-b-f9" :data-value="item.id" :data-index="index" @tap="coin_payment_event">
-                                        <view class="item-content pr flex-row align-c">
-                                            <image v-if="(item.logo || null) != null" class="icon margin-right-sm va-m" :src="item.logo" mode="widthFix"></image>
-                                            <view class="flex-col">
-                                                <view class="cr-base">{{ item.name }}</view>
-                                                <view class="flex-row align-c margin-top-xs">
-                                                    <view class="fw-b">{{ item.name }}</view>
-                                                    <view class="margin-left-sm text-size-xs cr-999">{{ item.name }}</view>
-                                                </view>
-                                            </view>
-                                        </view>
-                                        <view>
-                                            <iconfont :name="plugins_coin_index == index ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
-                                        </view>
-                                    </view>
-                                </block>
-                            </block>
-                            <view class="padding-top-main flex-row align-c jc-c" @tap="change_coin_more_event">
-                                <text class="cr-base">{{ plugins_coin_more_control ? '展开更多' : '收起更多' }}</text>
-                                <view class="pr top-xs margin-left-xs">
-                                    <iconfont :name="plugins_coin_more_control ? 'icon-arrow-bottom' : 'icon-arrow-top'" color="#666"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -365,7 +359,6 @@
                 payment_list: [],
                 payment_index: -1,
                 payment_id: 0,
-                payment_type: 'system-pay',
                 goods_list: [],
                 address: null,
                 address_id: null,
@@ -408,8 +401,7 @@
                 plugins_freightfee_choice_data: {},
                 // 虚拟币
                 plugins_coin_data: null,
-                plugins_coin_index: -1,
-                plugins_coin_more_control: true,
+                plugins_coin_payment_id: 0,
 
                 // 支付弹窗参数
                 pay_url: '',
@@ -539,7 +531,6 @@
                 var data = this.params;
                 data['address_id'] = this.address_id;
                 data['payment_id'] = this.payment_id;
-                data['payment_type'] = this.payment_type;
                 data['site_model'] = this.site_model;
                 uni.request({
                     url: app.globalData.get_request_url('index', 'buy'),
@@ -556,20 +547,13 @@
                             this.setData({
                                 currency_symbol: data.currency_symbol || app.globalData.currency_symbol(),
                                 payment_list: data.payment_list || [],
-                                payment_id: data.default_payment_id || 0,
-                                payment_type: data.default_payment_type || 'system-pay',
                             });
 
-                            // 支付选中索引
-                            if(this.payment_list.length > 0 && parseInt(this.payment_id) > 0 && this.payment_type == 'system-pay') {
-                                for(var i in this.payment_list) {
-                                    if(this.payment_id == this.payment_list[i]['id']) {
-                                        this.setData({
-                                            payment_index: i
-                                        });
-                                        break;
-                                    }
-                                }
+                            // 首次赋值默认支付方式
+                            if(this.is_first == 1) {
+                                this.setData({
+                                    payment_id: data.default_payment_id || 0
+                                });
                             }
 
                             // 订单是否已提交、直接进入支付页面
@@ -740,6 +724,10 @@
                 if (data['is_points'] == 1) {
                     data['actual_use_integral'] = this.actual_use_integral;
                 }
+
+                // 虚拟币
+                data['plugins_coin_payment_id'] = this.plugins_coin_payment_id;
+
                 return data;
             },
 
@@ -902,31 +890,22 @@
 
             // 支付方式选择
             payment_event(e) {
+                var value = e.currentTarget.dataset.value;
                 this.setData({
-                    payment_id: e.currentTarget.dataset.value,
-                    payment_type: 'system-pay',
-                    payment_index: e.currentTarget.dataset.index,
-                    plugins_coin_index: -1,
+                    payment_id: (this.payment_id == value) ? 0 : value,
+                    plugins_coin_payment_id: 0,
                 });
                 this.init();
             },
 
             // 虚拟币支付方式选择
-            coin_payment_event(e) {
+            plugins_coin_payment_event(e) {
+                var value = e.currentTarget.dataset.value;
                 this.setData({
-                    payment_id: e.currentTarget.dataset.value,
-                    payment_type: 'plugins-coin',
-                    plugins_coin_index: e.currentTarget.dataset.index,
-                    payment_index: -1,
+                    plugins_coin_payment_id: (this.plugins_coin_payment_id == value) ? 0 : value,
+                    payment_id: 0,
                 });
                 this.init();
-            },
-
-            // 展开更多
-            change_coin_more_event() {
-                this.setData({
-                    plugins_coin_more_control: !this.plugins_coin_more_control,
-                });
             },
 
             // 优惠劵弹层开启
