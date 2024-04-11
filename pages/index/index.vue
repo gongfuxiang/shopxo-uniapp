@@ -561,16 +561,16 @@
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();
 
-                            // 导航购物车处理
-                            if (this.cart_total <= 0) {
-                                app.globalData.set_tab_bar_badge(2, 0);
-                            } else {
-                                app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
-                            }
-
                             // 是否需要重新加载数据
                             if(parseInt(data.is_result_data_cache || 0) == 1) {
                                 this.init({is_cache: 0});
+                            } else {
+                                // 导航购物车处理、缓存数据则不更新导航角标
+                                if (this.cart_total <= 0) {
+                                    app.globalData.set_tab_bar_badge(2, 0);
+                                } else {
+                                    app.globalData.set_tab_bar_badge(2, 1, this.cart_total);
+                                }
                             }
                         } else {
                             this.setData({
