@@ -66,7 +66,7 @@
                 <!-- 提示/退货 -->
                 <view v-if="new_aftersale_data.status <= 2" class="msg-tips padding-main border-radius-main spacing-mb">
                     <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
-                    <text class="msg-a" @tap="show_aftersale_event">查看 >></text>
+                    <text class="msg-a" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
                     <view v-if="new_aftersale_data.status == 1 && new_aftersale_data.type == 1 && return_goods_address != null" class="margin-top-sm oh">
                         <button class="bg-green cr-white round dis-block fl" type="default" size="mini" @tap="delivery_submit_event">{{$t('user-orderaftersale-detail.user-orderaftersale-detail.uuhf62')}}</button>
                     </view>
@@ -87,7 +87,7 @@
                 <!-- 提示 -->
                 <view v-if="new_aftersale_data.status >= 3" :class="'msg-tips padding-main border-radius-main spacing-mb ' + (new_aftersale_data.status == 3 ? 'msg-tips-success' : new_aftersale_data.status == 4 ? 'msg-tips-danger' : 'msg-tips-warning')">
                     <text class="msg-text">{{ new_aftersale_data.tips_msg.title }}</text>
-                    <text class="msg-a margin-left-sm" @tap="show_aftersale_event">查看 >></text>
+                    <text class="msg-a margin-left-sm" @tap="show_aftersale_event"> {{$t('common.view_text')}} >></text>
                 </view>
 
                 <!-- 详情 -->
@@ -410,7 +410,7 @@ export default {
                             return_money_goods_reason: data.return_money_goods_reason || [],
                             aftersale_type_list: data.aftersale_type_list || [],
                             return_goods_address: data.return_goods_address || null,
-                            form_price: data.returned_data || null != null ? data.returned_data.refund_price : 0,
+                            form_price: data.returned_data || null != null ? data.returned_data.refund_price : '',
                             plugins_intellectstools_data: data.plugins_intellectstools_data || null,
                         });
                     } else {
@@ -591,13 +591,15 @@ export default {
             };
 
             // 防止金额大于计算的金额
-            if (form_data["price"] > this.returned_data["refund_price"]) {
-                form_data["price"] = this.returned_data["refund_price"];
+            var refund_price = parseFloat(this.returned_data["refund_price"]);
+            if (form_data["price"] > refund_price) {
+                form_data["price"] =refund_price;
             }
 
             // 防止数量大于计算的数量
-            if (form_data["number"] > this.returned_data["returned_quantity"]) {
-                form_data["number"] = this.returned_data["returned_quantity"];
+            var returned_quantity = parseInt(this.returned_data["returned_quantity"]);
+            if (form_data["number"] > returned_quantity) {
+                form_data["number"] = returned_quantity;
             }
 
             // 数据校验

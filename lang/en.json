@@ -28,6 +28,7 @@
 		"all": "All",
 		"share": "Share",
 		"return": "Return",
+        "view_text": "Check",
 		"processing_in_text": "Processing",
 		"loading_in_text": "Loading",
 		"upload_in_text": "Uploading",

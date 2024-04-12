@@ -18,7 +18,7 @@
 * 类型选择
 */
 .choose-type .choose-item {
-    width: calc(50% - 55rpx);
+    width: calc(50% - 60rpx);
     -webkit-transition: border-color .2s ease-in;
     -moz-transition: border-color .2s ease-in;
     -ms-transition: border-color .2s ease-in;

@@ -18,7 +18,7 @@
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_value_change" />
+                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_coin_change_event" />
                                 <view class="margin-top-main tr text-size-xs">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }}{{ accounts_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -214,23 +214,31 @@
                     popup_coin_status: true,
                 });
             },
+            // 切换账户
             coin_checked_event(e) {
+                var index = parseInt(e.currentTarget.dataset.index || 0);
+                var old_index = (this.coin_type == 1) ? this.receive_accounts_id_index : this.send_accounts_id_index;
+                if(index == old_index) {
+                    app.globalData.showToast('转出和接收选择不能相同');
+                    return false;
+                }
                 if (this.coin_type == 1) {
                     this.setData({
-                        send_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
+                        send_accounts_id_index: index,
                         send_accounts_id: e.currentTarget.dataset.value,
                     });
                 } else {
                     this.setData({
-                        receive_accounts_id_index: parseInt(e.currentTarget.dataset.index || 0),
+                        receive_accounts_id_index: index,
                         receive_accounts_id: e.currentTarget.dataset.value,
                     });
                 }
                 this.setData({
-                    coin_index: parseInt(e.currentTarget.dataset.index || 0),
+                    coin_index: index,
                     popup_coin_status: false,
                 });
             },
+            // 关闭账户选择弹窗
             popup_coin_status_close_event() {
                 this.setData({
                     popup_coin_status: false,
@@ -251,7 +259,8 @@
                     convert_bool: !this.convert_bool,
                 });
             },
-            default_value_change(e) {
+            // 需要转换的值事件
+            default_coin_change_event(e) {
                 this.setData({
                     default_value: e.detail.value,
                     convert_value: Math.round(e.detail.value * this.accounts_list[this.receive_accounts_id_index]['platform_rate'] * 100) / 100,
