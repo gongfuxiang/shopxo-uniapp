@@ -173,7 +173,7 @@
                                 </block>
                                 <block v-else>
                                     <!-- 一级导航 -->
-                                    <view class="left-nav bg-white ht-auto">
+                                    <view class="left-nav ht-auto">
                                         <scroll-view :scroll-y="true" class="ht-auto" :show-scrollbar="false">
                                             <view :class="common_site_type != 1 ? 'left-content-actual ht-auto' : ''">
                                                 <view class="left-content-actual-list ht-auto padding-0">
