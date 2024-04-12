@@ -525,17 +525,29 @@
 /**
  * 批发 - 插件
  */
-.plugins-wholesale-container-view .item-title {
-    min-width: 70rpx;
+.plugins-wholesale-container-view {
+    display: flex;
+    justify-content: space-around;
 }
 .plugins-wholesale-container-view .item {
-    padding: 5rpx 15rpx;
-    color: #ff6633;
-    border: 1px dashed #ff9e7e;
-    display: inline-table;
+    margin-bottom: 0 !important;
 }
-.plugins-wholesale-container-view .item:not(:last-child) {
-    margin-right: 24rpx;
+.plugins-wholesale-container-view .item .price > .unit {
+    border: 0.05rem solid #cdcdcd;
+    color: #969696;
+    border-radius: 50%;
+    padding: 1rpx 6rpx;
+    vertical-align: top;
+    margin-left: 5rpx;
+}
+.plugins-wholesale-container-view .spec-tips {
+    color: #ffefc0;
+    border: 1rpx solid #ff9800;
+    background: #FF9800;
+    padding: 0 16rpx;
+    position: absolute;
+    top: 0;
+    right: 0;
 }
 .plugins-wholesale-container {
     max-height: 50vh;

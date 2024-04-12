@@ -81,7 +81,20 @@
             <!-- 价格信息 -->
             <view class="goods-base-price bg-white oh spacing-mb" :class="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : ''">
                 <!-- 价格 -->
-                <view class="price-content padding-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                    <!-- 批发 -->
+                    <block v-if="(plugins_wholesale_data || null) != null">
+                        <view class="plugins-wholesale-container-view wh-auto item" @tap="popup_wholesale_event">
+                            <view v-for="(item, index) in plugins_wholesale_data.rules" :key="index" class="item">
+                                <view class="price">
+                                    <text v-if="item.arr.type == 1" class="cr-red text-size-xs">{{currency_symbol}}</text>
+                                    <text class="sales-price">{{item.range_val}}</text>
+                                    <text v-if="item.arr.type == 0" class="unit text-size-xsss">{{item.arr.unit}}</text>
+                                </view>
+                                <view class="msg cr-black text-size-sm cr-grey">{{item.range_msg}}</view>
+                            </view>
+                        </view>
+                    </block>
                     <!-- 售价 -->
                     <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
                         <!-- 图标 -->
@@ -204,19 +217,6 @@
                         </view>
                         <text v-if="(plugins_intellectstools_data.base_bottom.title || null) != null" class="fw-b">{{ plugins_intellectstools_data.base_bottom.title }}</text>
                         <view>{{ plugins_intellectstools_data.base_bottom.msg }}</view>
-                    </view>
-                </view>
-
-                <!-- 批发 -->
-                <view v-if="(plugins_wholesale_data || null) != null" class="plugins-wholesale-container-view pr oh padding-main border-radius-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c">
-                    <view class="item-title padding-right-main self-c">{{ plugins_wholesale_data.title }}</view>
-                    <view class="flex-row align-c flex-1 flex-width" @tap="popup_wholesale_event">
-                        <view class="padding-right-main border-radius-main single-text flex-1 flex-width">
-                            <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                                <view class="item round dis-inline-block margin-vertical-xs">{{ item.msg }}</view>
-                            </block>
-                        </view>
-                        <iconfont name="icon-arrow-right" color="#999"></iconfont>
                     </view>
                 </view>
 
@@ -514,8 +514,8 @@
                                 <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
                                     <view class="item flex-width-half margin-bottom">
                                         <view class="padding-main bg-base border-radius-main oh tc">
-                                            <text class="cr-base">{{ item.arr.msg }}</text>
-                                            <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.arr.val }}</text>
+                                            <text class="cr-base">{{ item.range_msg }}</text>
+                                            <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.range_val }}</text>
                                             <text class="cr-grey margin-left-xs">{{ item.arr.unit }}</text>
                                         </view>
                                     </view>
