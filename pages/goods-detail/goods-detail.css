@@ -523,54 +523,6 @@
 }
 
 /**
- * 批发 - 插件
- */
-.plugins-wholesale-container-view {
-    display: flex;
-    justify-content: space-around;
-}
-.plugins-wholesale-container-view .item {
-    margin-bottom: 0 !important;
-}
-.plugins-wholesale-container-view .item .price > .unit {
-    border: 0.05rem solid #cdcdcd;
-    color: #969696;
-    border-radius: 50%;
-    padding: 1rpx 6rpx;
-    vertical-align: top;
-    margin-left: 5rpx;
-}
-.plugins-wholesale-container-view .spec-tips {
-    color: #ffefc0;
-    border: 1rpx solid #ff9800;
-    background: #FF9800;
-    padding: 0 16rpx;
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.plugins-wholesale-container {
-    max-height: 50vh;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    margin-top: 20rpx;
-}
-.plugins-wholesale-container .item:nth-child(2n)>view {
-    margin-left: 10rpx;
-}
-.plugins-wholesale-container .item:nth-child(2n+1)>view {
-    margin-right: 10rpx;
-}
-.plugins-wholesale-container .spec-tips {
-    color: #ffbf00;
-    border: 1px solid #333;
-    background: #333;
-    padding: 2rpx 10rpx;
-    top: 22rpx;
-    left: 20rpx;
-}
-
-/**
  * 标签 - 插件
  */
 .plugins-label navigator:not(:last-child) {

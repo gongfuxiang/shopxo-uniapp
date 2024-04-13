@@ -567,6 +567,17 @@
                     goods_spec_base_buy_max_number: spec_buy_max_number,
                     buy_number: buy_number,
                 });
+
+                // 调用父级
+                this.$emit("BackSuccessEvent", {
+                    buy_number: this.buy_number,
+                    base_price: this.goods_spec_base_price,
+                    base_original_price: this.goods_spec_base_original_price,
+                    base_inventory: this.goods_spec_base_inventory,
+                    base_buy_min_number: this.goods_spec_base_buy_min_number,
+                    base_buy_max_number: this.goods_spec_base_buy_max_number,
+                    back_data: data
+                });
             },
 
             // 已选的商品规格

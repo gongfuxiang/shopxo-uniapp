@@ -488,11 +488,11 @@
             // 获取数据
             init(params = {}) {
                 // 还没有数据则读取缓存
+                var cache_key = app.globalData.data.cache_index_data_key;
                 if(this.load_status == 0)
                 {
                     // 本地缓存数据
-                    var key = app.globalData.data.cache_index_data_key;
-                    var upd_data = uni.getStorageSync(key) || null;
+                    var upd_data = uni.getStorageSync(cache_key) || null;
                     if(upd_data != null) {
                         // 先使用缓存数据展示
                         this.setData(upd_data);
@@ -556,7 +556,7 @@
                             this.setData(upd_data);
 
                             // 存储缓存
-                            uni.setStorageSync(key, upd_data);
+                            uni.setStorageSync(cache_key, upd_data);
 
                             // 弹屏广告插件处理
                             this.plugins_popupscreen_handle();

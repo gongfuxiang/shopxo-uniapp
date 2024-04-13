@@ -80,36 +80,34 @@
 
             <!-- 价格信息 -->
             <view class="goods-base-price bg-white oh spacing-mb" :class="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : ''">
+                <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
+                <view v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1" class="padding-horizontal-main padding-top-main">
+                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                </view>
                 <!-- 价格 -->
                 <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
-                    <!-- 批发 -->
-                    <block v-if="(plugins_wholesale_data || null) != null">
-                        <view class="plugins-wholesale-container-view wh-auto item" @tap="popup_wholesale_event">
-                            <view v-for="(item, index) in plugins_wholesale_data.rules" :key="index" class="item">
-                                <view class="price">
-                                    <text v-if="item.arr.type == 1" class="cr-red text-size-xs">{{currency_symbol}}</text>
-                                    <text class="sales-price">{{item.range_val}}</text>
-                                    <text v-if="item.arr.type == 0" class="unit text-size-xsss">{{item.arr.unit}}</text>
-                                </view>
-                                <view class="msg cr-black text-size-sm cr-grey">{{item.range_msg}}</view>
-                            </view>
+                    <!-- 批发规则、隐藏商品售价的时候在这里展示 -->
+                    <view v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) == 1" class="item">
+                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                    </view>
+                    <!-- 批发插件是否开启隐藏价格信息 -->
+                    <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
+                        <!-- 售价 -->
+                        <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
+                            <!-- 图标 -->
+                            <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+(((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1) ? 'seckill' : '')">{{ show_field_price_text }}</text>
+                            <!-- 售价 -->
+                            <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
+                            <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
+                        </view>
+                        <!-- 原价 -->
+                        <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
+                        <!-- 积分兑换 -->
+                        <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
+                            <text class="text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
+                            <text class="text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
                         </view>
                     </block>
-                    <!-- 售价 -->
-                    <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
-                        <!-- 图标 -->
-                        <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+(((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1) ? 'seckill' : '')">{{ show_field_price_text }}</text>
-                        <!-- 售价 -->
-                        <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                        <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
-                    </view>
-                    <!-- 原价 -->
-                    <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
-                    <!-- 积分兑换 -->
-                    <view v-if="(goods.plugins_points_data || null) != null && (goods.plugins_points_data.is_goods_detail_show || 0) == 1" class="item">
-                        <text class="text-size-lg cr-base va-m">{{ goods.plugins_points_data.points_value }}</text>
-                        <text class="text-size-xs cr-grey va-m margin-left-xs">{{goods.plugins_points_data.points_unit}}</text>
-                    </view>
                 </view>
                 <block v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1">
                     <view class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
@@ -499,36 +497,6 @@
                 </view>
             </component-popup>
 
-            <!-- 批发弹层 -->
-            <component-popup :propShow="popup_wholesale_status" propPosition="bottom" @onclose="popup_wholesale_close_event">
-                <view class="padding-horizontal-main padding-top-main bg-white">
-                    <view class="close oh">
-                        <view class="fr" @tap.stop="popup_wholesale_close_event">
-                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
-                        </view>
-                    </view>
-                    <view class="plugins-wholesale-container">
-                        <block v-if="(plugins_wholesale_data || null) != null">
-                            <text v-if="(plugins_wholesale_data.spec_tips || null) != null" class="spec-tips pa round">{{ plugins_wholesale_data.spec_tips }}</text>
-                            <view class="oh flex-row flex-warp">
-                                <block v-for="(item, index) in plugins_wholesale_data.rules" :key="index">
-                                    <view class="item flex-width-half margin-bottom">
-                                        <view class="padding-main bg-base border-radius-main oh tc">
-                                            <text class="cr-base">{{ item.range_msg }}</text>
-                                            <text class="margin-left-sm cr-main fw-b text-size-lg">{{ item.range_val }}</text>
-                                            <text class="cr-grey margin-left-xs">{{ item.arr.unit }}</text>
-                                        </view>
-                                    </view>
-                                </block>
-                            </view>
-                        </block>
-                        <block v-else>
-                            <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.m3op38')}}</view>
-                        </block>
-                    </view>
-                </view>
-            </component-popup>
-
             <!-- 优惠券弹层 -->
             <component-popup :propShow="popup_coupon_status" propPosition="bottom" @onclose="popup_coupon_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-white">
@@ -612,7 +580,7 @@
         <component-share-popup ref="share"></component-share-popup>
 
         <!-- 商品购买 -->
-        <component-goods-buy ref="goods_buy" :propParams="params" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
+        <component-goods-buy ref="goods_buy" :propParams="params" :propCurrencySymbol="currency_symbol" v-on:BackSuccessEvent="goods_buy_back_success_event" v-on:CartSuccessEvent="goods_cart_back_event" v-on:SpecChoiceEvent="goods_spec_back_event"></component-goods-buy>
 
         <!-- 商品批量下单 -->
         <component-goods-batch-buy ref="goods_batch_buy" v-on:BatchCartSuccessEvent="batch_goods_cart_back_event"></component-goods-batch-buy>
@@ -641,6 +609,7 @@
     import componentCouponCard from '@/components/coupon-card/coupon-card';
     import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
@@ -751,9 +720,6 @@
                 plugins_salerecords_tips_ent: '',
                 // 多商户插件
                 plugins_shop_data: null,
-                // 批发插件
-                plugins_wholesale_data: null,
-                popup_wholesale_status: false,
                 // 标签插件
                 plugins_label_data: null,
                 // 智能工具插件
@@ -794,7 +760,8 @@
             componentAskCommentsGoods,
             componentCouponCard,
             componentRealstoreCart,
-            componentGoodsList
+            componentGoodsList,
+            componentWholesaleRules
         },
 
         onLoad(params) {
@@ -1179,12 +1146,21 @@
                     // 商品批量下单-加入购物车
                     case 'plugins-batchbuy-button-cart':
                         if ((this.$refs.goods_batch_buy || null) != null) {
-                            this.$refs.goods_batch_buy.init(this.goods, this.plugins_batchbuy_data, this.buy_button);
+                            this.$refs.goods_batch_buy.init({goods: this.goods, batchbuy_data: this.plugins_batchbuy_data, buy_button: this.buy_button, plugins_wholesale_data: this.plugins_wholesale_data});
                         }
                         break;
                     // 默认
                     default:
                         app.globalData.showToast(this.$t('goods-detail.goods-detail.721e2h')+type+')');
+                }
+            },
+
+            // 数量和规格详情回调成功
+            goods_buy_back_success_event(e) {
+                if((e.back_data.plugins_wholesale_data || null) != null) {
+                    this.setData({
+                        plugins_wholesale_data: e.back_data.plugins_wholesale_data
+                    });
                 }
             },
 
@@ -1446,20 +1422,6 @@
             popup_params_close_event(e) {
                 this.setData({
                     popup_params_status: false,
-                });
-            },
-
-            // 批发开启弹层
-            popup_wholesale_event(e) {
-                this.setData({
-                    popup_wholesale_status: true,
-                });
-            },
-
-            // 批发弹层关闭
-            popup_wholesale_close_event(e) {
-                this.setData({
-                    popup_wholesale_status: false,
                 });
             },
 

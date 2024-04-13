@@ -7,15 +7,20 @@
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view class="plugins-batchbuy-container oh">
-                    <block v-if="(goods || null) != null && (batchbuy_data || null) != null && (batchbuy_data.goods_spec_data || null) != null && batchbuy_data.goods_spec_data.length > 0">
+                <view class="plugins-batchbuy-container">
+                    <!-- 批发规则 -->
+                    <view v-if="(plugins_wholesale_data || null) != null" class="padding-main br-b-f5">
+                        <component-wholesale-rules :propCurrencySymbol="propCurrencySymbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                    </view>
+                    <!-- 下单规格选择 -->
+                    <view v-if="(goods || null) != null && (batchbuy_data || null) != null && (batchbuy_data.goods_spec_data || null) != null && batchbuy_data.goods_spec_data.length > 0" :class="'spec-data-content oh '+((plugins_wholesale_data || null) != null ? 'wholesale' : '')">
                         <block v-if="batchbuy_data.is_only_level_one == 0">
-                            <view class="left-nav pa bg-base">
+                            <view class="left-nav ht-auto bg-base fl">
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
-                                        <view :class="'padding-top-xxl padding-bottom-xxl tc cp oh pr ' + (nav_active_index == index ? 'bg-white cr-main' : '')" :data-index="index" @tap="nav_event">
-                                            <image v-if="(item.images || null) != null" class="dis-inline-block va-m radius margin-right spec-images" :src="item.images" mode="widthFix"></image>
-                                            <text class="text-size-xs cr-base va-m">{{ item.name }}</text>
+                                        <view :class="'padding-vertical-main tc cp oh pr ' + (nav_active_index == index ? 'bg-white cr-main' : '')" :data-index="index" @tap="nav_event">
+                                            <image v-if="(item.images || null) != null" class="dis-inline-block br-f5 radius dis-block spec-images" :src="item.images" mode="widthFix"></image>
+                                            <view class="cr-base">{{ item.name }}</view>
                                             <view v-if="(item.badge_total || 0) > 0" class="badge-icon pa">
                                                 <component-badge :propNumber="item.badge_total"></component-badge>
                                             </view>
@@ -23,15 +28,16 @@
                                     </block>
                                 </scroll-view>
                             </view>
-                            <view class="right-conent ht-auto fr padding-main bs-bb">
+                            <view class="right-conent ht-auto bs-bb fr">
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data[nav_active_index]['data']" :key="index">
-                                        <view :class="'oh padding-vertical-main ' + (index > 0 ? 'br-t' : '')">
+                                        <view class="padding-main oh">
                                             <view class="fl item-left">
                                                 <view class="text-size-xs">{{ item.name }}</view>
-                                                <view class="sales-price text-size-xs">{{ currency_symbol }}{{ item.base.price }}</view>
+                                                <view class="sales-price text-size-xs">{{ propCurrencySymbol }}{{ item.base.price }}</view>
                                             </view>
-                                            <view class="tc oh round fr item-right text-size-xs">
+                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
+                                            <view v-else class="tc oh round fr item-right text-size-xs">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
                                                 <input @blur="batchbuy_goods_buy_number_blur" class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index">+</view>
@@ -45,15 +51,16 @@
                             <view class="right-conent ht-auto padding-main bs-bb right-conent-only-level-one">
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
-                                        <view :class="'oh padding-vertical-main ' + (index > 0 ? 'br-t' : '')">
+                                        <view class="oh padding-vertical-main">
                                             <view class="fl item-left">
                                                 <view>
-                                                    <image v-if="(item.images || null) != null" class="dis-inline-block va-m radius margin-right spec-images" :src="item.images" mode="widthFix"></image>
+                                                    <image v-if="(item.images || null) != null" class="dis-inline-block va-m br-f5 radius margin-right-sm spec-images" :src="item.images" mode="widthFix"></image>
                                                     <text class="text-size-xs va-m">{{ item.name }}</text>
                                                 </view>
-                                                <view class="sales-price text-size-xs">{{ currency_symbol }}{{ item.base.price }}</view>
+                                                <view class="sales-price text-size-xs margin-top-xs">{{ propCurrencySymbol }}{{ item.base.price }}</view>
                                             </view>
-                                            <view class="tc oh round fr item-right text-size-xs margin-top-xs">
+                                            <text v-if="(item.base.inventory || 0) == 0" class="fr text-size-xs cr-grey">{{$t('goods-batch-buy.goods-batch-buy.dsfd98')}}</text>
+                                            <view v-else :class="'tc oh round fr item-right text-size-xs margin-top'+((item.images || null) == null ? 'xs' : '')">
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0" :data-index="index">-</view>
                                                 <input @blur="batchbuy_goods_buy_number_blur" class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="item.buy_number || 0" :data-index="index" />
                                                 <view @tap="batchbuy_goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1" :data-index="index">+</view>
@@ -63,7 +70,7 @@
                                 </scroll-view>
                             </view>
                         </block>
-                        <view class="confirm-submit pa wh-auto bottom-line-exclude bg-white padding-top-main">
+                        <view class="confirm-submit pa wh-auto bottom-line-exclude bg-white padding-top-main br-t-f5">
                             <view class="oh padding-horizontal-main padding-bottom-main cr-grey">
                                 <text class="text-size-xs">
                                     <text>{{$t('buy.buy.g2vt78')}}</text>
@@ -72,7 +79,7 @@
                                     <text class="cr-red padding-left-xs padding-right-xs">{{ base_data.quantity }}</text>
                                     <text>{{ goods.inventory_unit }}</text>
                                 </text>
-                                <text class="text-size-xs fr">{{$t('goods-batch-buy.goods-batch-buy.geq82x')}}<text class="fw-b sales-price">{{ currency_symbol }}{{ base_data.amount_money }}</text></text>
+                                <text class="text-size-xs fr">{{$t('goods-batch-buy.goods-batch-buy.geq82x')}}<text class="fw-b sales-price">{{ propCurrencySymbol }}{{ base_data.amount_money }}</text></text>
                             </view>
                             <view v-if="(opt_button || null) != null && opt_button.length > 0" class="padding-bottom-main">
                                 <view :class="'oh buy-nav-btn-number-' + (opt_button.length || 0)">
@@ -84,7 +91,7 @@
                                 </view>
                             </view>
                         </view>
-                    </block>
+                    </view>
                     <block v-else>
                         <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-batch-buy.goods-batch-buy.ypby1k')}}</view>
                     </block>
@@ -95,14 +102,14 @@
 </template>
 <script>
 const app = getApp();
-import base64 from "../../common/js/lib/base64.js";
+import base64 from "@/common/js/lib/base64.js";
 import componentPopup from "@/components/popup/popup";
-import componentBadge from "../../components/badge/badge";
+import componentBadge from "@/components/badge/badge";
+import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
 export default {
     data() {
         return {
             theme_view: app.globalData.get_theme_value_view(),
-            currency_symbol: app.globalData.currency_symbol(),
             popup_status: false,
             nav_active_index: 0,
             goods: null,
@@ -114,25 +121,48 @@ export default {
                 quantity: 0,
                 amount_money: "0.00",
             },
+            // 批发数据
+            plugins_wholesale_data: null,
         };
     },
 
     components: {
         componentPopup,
         componentBadge,
+        componentWholesaleRules
+    },
+    
+    props: {
+        // 价格符号
+        propCurrencySymbol: {
+            type: String,
+            default: app.globalData.currency_symbol(),
+        },
+        // 批发数据
+        propPluginsWholesaleData: {
+            type: [Array, Object],
+            default: null,
+        }
     },
 
-    created: function () {},
+    // 页面被展示
+    created: function () {
+        this.setData({
+            plugins_wholesale_data: this.propPluginsWholesaleData,
+        });
+        console.log(this.plugins_wholesale_data)
+    },
 
     methods: {
         // 初始化
-        init(goods = null, batchbuy_data = null, buy_button = null, back_data = null) {
+        init(params = {}) {
             if (!app.globalData.is_single_page_check()) {
                 return false;
             }
 
             // 购买按钮处理，仅展示购买和购物车
             var opt_button = [];
+            var buy_button = params.buy_button || null;
             if(buy_button != null && (buy_button.data || null) != null && buy_button.data.length > 0) {
                 var arr = ['plugins-batchbuy-button-cart', 'plugins-batchbuy-button-buy'];
                 for(var i in buy_button.data) {
@@ -145,10 +175,11 @@ export default {
             // 设置数据
             this.setData({
                 popup_status: true,
-                goods: goods || null,
-                batchbuy_data: batchbuy_data || null,
                 opt_button: opt_button,
-                back_data: back_data,
+                goods: params.goods || null,
+                batchbuy_data: params.batchbuy_data || null,
+                back_data: params.back_data || null,
+                plugins_wholesale_data: params.plugins_wholesale_data || null
             });
         },
 
@@ -299,8 +330,14 @@ export default {
                 dataType: "json",
                 success: (res) => {
                     if (res.data.code == 0) {
+                        var plugins_wholesale_data = null;
                         res.data.data.forEach((item) => {
                             if (item.code == 0) {
+                                // 批发数据
+                                if((item.data.plugins_wholesale_data || null) != null && temp_spec_data.base_id == item.data.spec_base.id) {
+                                    plugins_wholesale_data = item.data.plugins_wholesale_data;
+                                }
+                                // 规格数据处理
                                 for (var i1 in temp_data.goods_spec_data) {
                                     if (parseInt(temp_data.is_only_level_one || 0) == 1) {
                                         if (temp_data.goods_spec_data[i1].base.id == item.data.spec_base.id) {
@@ -322,6 +359,15 @@ export default {
                         });
                         this.setData({
                             batchbuy_data: temp_data,
+                            plugins_wholesale_data: plugins_wholesale_data,
+                        });
+                        
+                        // 调用父级
+                        this.$emit("BatchStockSuccessEvent", {
+                            current_spec: temp_spec_data,
+                            goods_data: goods_data,
+                            back_data: res.data.data,
+                            plugins_wholesale_data: plugins_wholesale_data,
                         });
                     } else {
                         app.globalData.showToast(res.data.msg);
@@ -431,25 +477,28 @@ export default {
 </script>
 <style>
 .plugins-batchbuy-container {
-    height: 60vh;
+    height: 70vh;
     padding-bottom: 160rpx;
+}
+.plugins-batchbuy-container .spec-data-content {
+    height: calc(100% - 15rpx);
+}
+.plugins-batchbuy-container .spec-data-content.wholesale {
+    height: calc(100% - 160rpx);
 }
 .plugins-batchbuy-container .left-nav {
     width: 200rpx;
-    top: 0;
-    left: 0;
-    height: calc(100% - 160rpx);
 }
 .plugins-batchbuy-container .left-nav .badge-icon {
     top: 8rpx;
     right: 36rpx;
 }
 .plugins-batchbuy-container .left-nav .spec-images {
-    width: 50rpx;
-    height: 50rpx !important;
+    width: 100rpx;
+    height: 100rpx !important;
 }
 .plugins-batchbuy-container .right-conent {
-    width: calc(100% - 200rpx);
+    width: calc(100% - 210rpx);
 }
 .plugins-batchbuy-container .right-conent .item-left {
     width: calc(100% - 290rpx);
@@ -475,8 +524,8 @@ export default {
     width: 100%;
 }
 .plugins-batchbuy-container .right-conent-only-level-one .spec-images {
-    width: 34rpx;
-    height: 34rpx !important;
+    width: 100rpx;
+    height: 100rpx !important;
 }
 .plugins-batchbuy-container .confirm-submit {
     left: 0;
