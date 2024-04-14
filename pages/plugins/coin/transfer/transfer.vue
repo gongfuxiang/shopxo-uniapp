@@ -10,7 +10,7 @@
                                 <view class="coin-dropdown text-size-md pr margin-bottom-xs flex-row">
                                     <text class="cr-666">{{ accounts.platform_name }}</text>
                                 </view>
-                                <view class="fw-b text-size">{{ accounts.platform_symbol }}{{ accounts.normal_coin }}</view>
+                                <view class="fw-b text-size">{{ accounts.platform_symbol }} {{ accounts.normal_coin }}</view>
                             </view>
                         </view>
                     </view>
@@ -33,7 +33,7 @@
                             <input type="digit" name="coin" :value="coin" class="text-size-xl tc" placeholder-class="cr-grey-9" placeholder="请输入转账币" @input="coin_change" />
                             <view class="cr-grey-9 tc margin-top-main">
                                 我的余额：
-                                <span class="cr-black fw-b">{{ accounts.platform_symbol }}{{ accounts.default_coin }}</span>
+                                <span class="cr-black fw-b">{{ accounts.platform_symbol }} {{ accounts.default_coin }}</span>
                             </view>
                         </view>
                         <view class="note padding-main radius margin-top-xxxl">

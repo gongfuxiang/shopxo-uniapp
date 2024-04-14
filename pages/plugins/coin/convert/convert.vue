@@ -14,12 +14,12 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }}{{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
                                 <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_coin_change_event" />
-                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }}{{ accounts_list[send_accounts_id_index]['default_coin'] }}</view>
+                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="coin-center-convert pa flex-row jc-c align-c" @tap="coin_center_convert_event(2)">
@@ -35,12 +35,12 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }}{{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
                                 <input type="digit" :value="convert_value" class="num text-size" placeholder-class="text-size-sm cr-grey-9" disabled />
-                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }}{{ accounts_list[receive_accounts_id_index]['default_coin'] }}</view>
+                                <view class="margin-top-main tr text-size-xs">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
                         <view class="flex-row align-c">

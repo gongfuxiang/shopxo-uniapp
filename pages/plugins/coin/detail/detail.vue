@@ -16,7 +16,7 @@
                                 </view>
                                 <view>
                                     <text class="fw-b text-size">{{ is_price_show ? accounts.normal_coin : '***' }}</text>
-                                    <text v-if="is_price_show" class="cr-grey-9 text-size-xs margin-left">{{ accounts.default_symbol }}{{ accounts.default_coin }}</text>
+                                    <text v-if="is_price_show" class="cr-grey-9 text-size-xs margin-left">{{ accounts.default_symbol }} {{ accounts.default_coin }}</text>
                                 </view>
                             </view>
                         </view>
@@ -186,11 +186,9 @@
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
             // 设置参数
-            if (params !== null && params.id) {
-                this.setData({
-                    params: params,
-                });
-            }
+            this.setData({
+                params: params,
+            });
             this.init();
         },
 
@@ -219,7 +217,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('detail', 'accounts', 'coin'),
                     method: 'POST',
-                    data: {id: this.accounts.id || this.params.id},
+                    data: {id: this.accounts.id || this.params.id || null},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();

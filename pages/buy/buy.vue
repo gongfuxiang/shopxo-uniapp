@@ -211,8 +211,8 @@
                                         <view class="flex-col">
                                             <view class="cr-base">{{ item.platform_name }}</view>
                                             <view class="flex-row align-c margin-top-xs">
-                                                <view class="fw-b">{{ item.default_symbol }}{{ item.default_coin }}</view>
-                                                <view class="margin-left-sm text-size-xs cr-999">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
+                                                <view class="fw-b">{{ item.default_symbol }} {{ item.default_coin }}</view>
+                                                <view class="margin-left-lg text-size-xs cr-999">{{ item.platform_symbol }} {{ item.normal_coin }}</view>
                                             </view>
                                         </view>
                                     </view>

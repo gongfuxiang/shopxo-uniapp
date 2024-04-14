@@ -49,8 +49,8 @@
                                     <text class="fw-b single-text margin-left-main">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="flex-col align-e">
-                                    <view class="margin-bottom-xss text-size">{{ item.platform_symbol }}{{ item.normal_coin }}</view>
-                                    <view class="cr-grey-9 text-size-xs">{{ item.default_symbol }}{{ item.default_coin }}</view>
+                                    <view class="margin-bottom-xss text-size">{{ item.platform_symbol }} {{ item.normal_coin }}</view>
+                                    <view class="cr-grey-9 text-size-xs">{{ item.default_symbol }} {{ item.default_coin }}</view>
                                 </view>
                             </view>
                             <!-- 结尾 -->

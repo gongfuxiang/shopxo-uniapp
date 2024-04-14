@@ -149,7 +149,7 @@
             // 设置参数
             this.setData({
                 params: params,
-                send_accounts_id: params.id || 0,
+                send_accounts_id: params.id || null,
             });
         },
 

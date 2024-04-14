@@ -19,7 +19,7 @@
                                 </view>
                                 <view class="flex-row align-e">
                                     <view class="text-size-40 fw-b">{{ accounts.normal_coin }}</view>
-                                    <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts.default_symbol }}{{ accounts.default_coin }}</view>
+                                    <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts.default_symbol }} {{ accounts.default_coin }}</view>
                                 </view>
                             </view>
                             <view class="detail pa right-0 fw-b cr-white" :data-value="'/pages/plugins/coin/cash-list/cash-list?id='+accounts.id" @tap="url_event">提现明细</view>

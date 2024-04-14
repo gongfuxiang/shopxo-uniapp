@@ -130,11 +130,7 @@ export default {
         margin-bottom: 0 !important;
     }
     .plugins-wholesale-container-rules-view .item .price > .unit {
-        border: 0.05rem solid #cdcdcd;
         color: #969696;
-        border-radius: 50%;
-        padding: 1rpx 6rpx;
-        vertical-align: middle;
         margin-left: 5rpx;
     }
     .plugins-wholesale-container-rules {
