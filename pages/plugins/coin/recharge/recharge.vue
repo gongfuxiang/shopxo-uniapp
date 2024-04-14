@@ -37,13 +37,16 @@
                             </view>
                         </view>
                     </view>
-                    <view v-if="network_list.length > 0" class="margin-bottom-xxxl">
+                    <view class="margin-bottom-xxxl">
                         <view class="margin-bottom-main">充币网络</view>
-                        <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="network_list_index" :range="network_list" range-key="name">
-                            <view class="picker arrow-bottom">
-                                {{ network_list[network_list_index]['name'] }}
-                            </view>
-                        </picker>
+                        <block v-if="network_list.length > 0">
+                            <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="network_list_index" :range="network_list" range-key="name">
+                                <view class="picker arrow-bottom">
+                                    {{ network_list[network_list_index]['name'] }}
+                                </view>
+                            </picker>
+                        </block>
+                        <view v-else class="cr-grey">无网络数据</view>
                     </view>
                     <view class="margin-bottom-xxxl">
                         <view v-if="accounts.platform_data.preset_data.length > 0">
@@ -186,14 +189,14 @@
                 uni.request({
                     url: app.globalData.get_request_url('createinfo', 'recharge', 'coin'),
                     method: 'POST',
-                    data: {},
+                    data: {accounts_id : this.accounts.id || this.params.id || null},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({
-                                accounts: data.accounts,
+                                accounts: data.accounts || {},
                                 accounts_list: data.accounts_list || [],
                                 network_list: data.network_list || [],
                                 data_list_loding_msg: '',
@@ -224,6 +227,7 @@
                     accounts: this.accounts_list[e.currentTarget.dataset.index],
                     popup_coin_status: false,
                 });
+                this.get_data();
             },
             popup_coin_status_open_event() {
                 this.setData({
@@ -256,6 +260,12 @@
             },
             // 立即充值
             recharge_submit() {
+                if(this.network_list.length == 0) {
+                    app.globalData.showToast('网络数据为空、请联系客服！');
+                    return false;
+                }
+
+                // 表单数据
                 var new_data = {
                     accounts_id: this.accounts.id,
                     network_id: this.network_list[this.network_list_index].id,

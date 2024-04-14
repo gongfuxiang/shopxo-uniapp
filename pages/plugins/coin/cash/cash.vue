@@ -42,11 +42,14 @@
                             </view>
                             <view>
                                 <view class="margin-bottom-main">提币网络</view>
-                                <picker v-if="network_list.length > 0" class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
-                                    <view class="picker arrow-bottom">
-                                        {{ network_list[network_list_index]['name'] }}
-                                    </view>
-                                </picker>
+                                <block v-if="network_list.length > 0">
+                                    <picker class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
+                                        <view class="picker arrow-bottom">
+                                            {{ network_list[network_list_index]['name'] }}
+                                        </view>
+                                    </picker>
+                                </block>
+                                <view v-else class="cr-grey margin-bottom">无网络数据</view>
                                 <view class="content-input-bg padding-main border-radius-sm">
                                     <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提现备注信息" @input="user_note_change" />
                                 </view>
@@ -183,7 +186,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('createinfo', 'cash', 'coin'),
                     method: 'POST',
-                    data: {accounts_id : this.accounts.id || this.params.id},
+                    data: {accounts_id : this.accounts.id || this.params.id || null},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -224,6 +227,7 @@
                     coin_num: '',
                     popup_coin_status: false,
                 });
+                this.get_data();
             },
             popup_coin_status_open_event() {
                 this.setData({
@@ -241,7 +245,6 @@
                 this.setData({
                     network_list_index: parseInt(e.detail.value || 0),
                 });
-                console.log(1);
             },
 
             // 全部提现
@@ -274,6 +277,12 @@
 
             // 申请提现
             apply_for_cash_event() {
+                if(this.network_list.length == 0) {
+                    app.globalData.showToast('网络数据为空、请联系客服！');
+                    return false;
+                }
+
+                // 表单数据
                 var new_data = {
                     accounts_id: this.accounts.id,
                     network_id: this.network_list[this.network_list_index].id,
