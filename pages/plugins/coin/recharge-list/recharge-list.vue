@@ -3,15 +3,15 @@
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
+                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('cash-list.cash-list.n74r94') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_recharge_status_open_event">
-                    <view>{{ recharge_status_name !== null && recharge_status_name !== '全部' ? recharge_status_name : '状态' }}</view>
+                    <view>{{ recharge_status_name !== null && recharge_status_name !== $t('common.all') ? recharge_status_name : $t('invoice-detail.invoice-detail.rrfex6') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_recharge_status_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_network_open_event">
-                    <view>{{ network_name !== null && network_name !== '全部' ? network_name : '网络' }}</view>
+                    <view>{{ network_name !== null && network_name !== $t('common.all') ? network_name : $t('cash-list.cash-list.2g251t') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_network_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -25,29 +25,29 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">充值单号：</text>
+                                    <text class="cr-grey-9 title">{{$t('recharge-list.recharge-list.6b9399')}}</text>
                                     <text class="fw-b warp">{{ item.recharge_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">平台：</text>
+                                    <text class="cr-grey-9 title">{{$t('cash-list.cash-list.2w20g2')}}</text>
                                     <text class="fw-b warp">{{ item.platform_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">充值网络：</text>
+                                    <text class="cr-grey-9 title">{{$t('cash-list.cash-list.23ii8s')}}</text>
                                     <text class="fw-b warp">{{ item.network_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">充值地址：</text>
+                                    <text class="cr-grey-9 title">{{$t('cash-list.cash-list.714g2h')}}</text>
                                     <text class="fw-b warp">{{ item.address }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">充值币：</text>
+                                    <text class="cr-grey-9 title">{{$t('recharge-list.recharge-list.epd531')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                             </view>
                             <div v-if="item.status == 0" class="br-t-dashed padding-top-main margin-top-main flex-row jc-e align-c">
-                                <button type="default" class="recharge-del-btn round" :data-id="item.id" @tap="recharge_del_event">删除</button>
-                                <button type="default" class="recharge-apy-btn round" :data-id="item.id" @tap="recharge_pay_event">支付</button>
+                                <button type="default" class="recharge-del-btn round" :data-id="item.id" @tap="recharge_del_event">{{$t('common.del')}}</button>
+                                <button type="default" class="recharge-apy-btn round" :data-id="item.id" @tap="recharge_pay_event">{{$t('order.order.1i873j')}}</button>
                             </div>
                         </view>
                         <!-- 结尾 -->
@@ -62,10 +62,10 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
@@ -80,10 +80,10 @@
             <!-- 类型 -->
             <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">提现类型</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.t66tu3')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="recharge_status_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="recharge_status_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in recharge_status_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="recharge_status_list_event">{{ item.name }}</view>
@@ -98,10 +98,10 @@
             <!-- 网络 -->
             <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">网络类型</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.311tt2')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="network_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="network_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="network_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in network_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="network_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.id" :data-index="index" @tap="network_list_event">{{ item.name }}</view>
@@ -428,7 +428,7 @@
                 // 是否再次确认
                 if (e.alert_status != 0 && e.alert_status != 1) {
                     app.globalData.alert({
-                        msg: '确定删除这条充值订单吗',
+                        msg: this.$t('recharge-list.recharge-list.l5g8m1'),
                         is_show_cancel: 1,
                         object: this,
                         params: { id: e.currentTarget.dataset.id },

@@ -3,19 +3,19 @@
         <view class="transaction">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
+                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('cash-list.cash-list.n74r94') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_operate_type_open_event">
-                    <view>{{ operate_type_name !== null && operate_type_name !== '全部' ? operate_type_name : '操作类型' }}</view>
+                    <view>{{ operate_type_name !== null && operate_type_name !== $t('common.all') ? operate_type_name : $t('wallet-log-detail.wallet-log-detail.tdf3wo') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_operate_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_business_type_open_event">
-                    <view>{{ business_type_name !== null && business_type_name !== '全部' ? business_type_name : '业务类型' }}</view>
+                    <view>{{ business_type_name !== null && business_type_name !== $t('common.all') ? business_type_name : $t('invoice.invoice.l3832z') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_business_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_coin_type_open_event">
-                    <view>{{ coin_type_name !== null && coin_type_name !== '全部' ? coin_type_name : '币类型' }}</view>
+                    <view>{{ coin_type_name !== null && coin_type_name !== $t('common.all') ? coin_type_name : $t('transaction-list.transaction-list.cu39n5') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_coin_type_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -29,27 +29,27 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">币类型：</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.1mf6wj')}}</text>
                                     <text class="fw-b warp">{{ item.coin_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">操作类型：</text>
+                                    <text class="cr-grey-9 title">{{$t('detail.detail.4w20tq')}}</text>
                                     <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">操作币：</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.2w1o1l')}}</text>
                                     <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">原始币：</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.jgx0cf')}}</text>
                                     <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">最新币：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6347mw')}}</text>
                                     <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">描述：</text>
+                                    <text class="cr-grey-9 title">{{$t('transaction-list.transaction-list.7cv11k')}}</text>
                                     <text class="fw-b warp">{{ item.msg }}</text>
                                 </view>
                             </view>
@@ -66,10 +66,10 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
@@ -84,10 +84,10 @@
             <!-- 操作类型 -->
             <component-popup :propShow="popup_operate_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_operate_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">操作类型</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('wallet-log-detail.wallet-log-detail.tdf3wo')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="operate_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="operate_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in operate_type_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
@@ -102,10 +102,10 @@
             <!-- 业务类型 -->
             <component-popup :propShow="popup_business_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_business_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">业务类型</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('invoice.invoice.l3832z')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="business_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="business_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in business_type_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
@@ -120,10 +120,10 @@
             <!-- 币类型 -->
             <component-popup :propShow="popup_coin_type_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_coin_type_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">币类型</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('transaction-list.transaction-list.cu39n5')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="coin_type_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="coin_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in coin_type_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>

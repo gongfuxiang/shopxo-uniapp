@@ -3,7 +3,7 @@
         <view class="transfer-accounts">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_accounts_open_event">
-                    <view>{{ accounts_name !== null && accounts_name !== '全部' ? accounts_name : '账户' }}</view>
+                    <view>{{ accounts_name !== null && accounts_name !== $t('common.all') ? accounts_name : $t('cash-list.cash-list.n74r94') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -12,24 +12,24 @@
                     <view v-if="data_list.length > 0">
                         <view v-for="(item, index) in data_list" :key="index" class="padding-main bg-white radius-md margin-bottom-main">
                             <view class="br-b-dashed padding-bottom-main margin-bottom-main flex-row jc-sb align-c">
-                                <view>转账时间</view>
+                                <view>{{$t('user-transfer-detail.user-transfer-detail.x17599')}}</view>
                                 <view class="cr-grey-9">{{ item.add_time }}</view>
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转账单号：</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.69rnx6')}}</text>
                                     <text class="fw-b warp">{{ item.transfer_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">收款人：</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.4aj248')}}</text>
                                     <text class="fw-b warp">{{ item.receive_user.username }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转账币：</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.m2r55k')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">转账备注：</text>
+                                    <text class="cr-grey-9 title">{{$t('transfer-list.transfer-list.9g8lyb')}}</text>
                                     <text class="fw-b warp">{{ item.note }}</text>
                                 </view>
                             </view>
@@ -46,10 +46,10 @@
             <!-- 账户 -->
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">账户种类</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>

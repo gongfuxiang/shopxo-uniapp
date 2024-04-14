@@ -6,7 +6,7 @@
                 <view class="coin-title flex-col padding-lg" :style="'background-image:url(' + wallet_static_url + 'user-head-bg.png)'">
                     <view class="margin-bottom-main flex-row jc-sb align-c">
                         <view>
-                            <view class="cr-base text-size-md">余额</view>
+                            <view class="cr-base text-size-md">{{$t('user.user.67p34x')}}</view>
                             <view class="text-size-40 fw-b">{{ is_price_show ? accounts_summary : '***' }}</view>
                         </view>
                         <view @tap="price_change">
@@ -18,25 +18,25 @@
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-recharge" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>充值</view>
+                            <view>{{$t('recharge.recharge.otwkjn')}}</view>
                         </view>
                         <view v-if="data_base.is_enable_convert == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/convert/convert" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-convert" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>转换</view>
+                            <view>{{$t('pages.plugins-coin-convert')}}</view>
                         </view>
                         <view v-if="data_base.is_enable_cash == 1" class="tc text-size-xs" data-value="/pages/plugins/coin/cash/cash" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-cash" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>提现</view>
+                            <view>{{$t('user.user.8752a4')}}</view>
                         </view>
                         <view class="tc text-size-xs" data-value="/pages/plugins/coin/detail/detail" data-method="true" @tap="url_event">
                             <view class="coin-operate-list bg-white flex-row align-c jc-c margin-bottom-main">
                                 <iconfont name="icon-detail" size="44rpx" color="#635BFF"></iconfont>
                             </view>
-                            <view>明细</view>
+                            <view>{{$t('pages.plugins-coin-detail')}}</view>
                         </view>
                     </view>
                 </view>
@@ -67,26 +67,26 @@
             <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">
                 <view class="padding-horizontal-main padding-top-main bg-white">
                     <view class="oh">
-                        <text class="text-size">明细</text>
+                        <text class="text-size">{{$t('pages.plugins-coin-detail')}}</text>
                         <view class="fr" @tap.stop="popup_user_detail_close_event">
                             <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                         </view>
                     </view>
                     <view class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/recharge-list/recharge-list" @tap="url_event">充值明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/recharge-list/recharge-list" @tap="url_event">{{$t('pages.plugins-coin-recharge-list')}}</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-list/transfer-list" @tap="url_event">转账明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transfer-list/transfer-list" @tap="url_event">{{$t('pages.plugins-coin-transfer-list')}}</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-list/transaction-list" @tap="url_event">交易明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/transaction-list/transaction-list" @tap="url_event">{{$t('pages.plugins-coin-transaction-list')}}</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">提现明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/cash-list/cash-list" @tap="url_event">{{$t('pages.plugins-coin-cash-list')}}</view>
                         </view>
                         <view class="flex-width-half">
-                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-list/convert-list" @tap="url_event">转换明细</view>
+                            <view class="item padding-vertical-lg radius margin-sm" data-value="/pages/plugins/coin/convert-list/convert-list" @tap="url_event">{{$t('pages.plugins-coin-convert-list')}}</view>
                         </view>
                     </view>
                 </view>

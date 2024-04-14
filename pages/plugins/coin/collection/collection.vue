@@ -9,14 +9,14 @@
                         </view>
                         <view class="code br-c radius flex-row">
                             <view class="num flex-1 flex-width flex-row align-c text-size-md">{{ params.accounts_key }}</view>
-                            <view class="copy br-l-c text-size fw-b" :data-value="params.accounts_key" @tap.stop="text_copy_event">复制</view>
+                            <view class="copy br-l-c text-size fw-b" :data-value="params.accounts_key" @tap.stop="text_copy_event">{{$t('collection.collection.856g12')}}</view>
                         </view>
                     </view>
                     <view class="cr-grey-9 margin-top-xxl flex-row">
                         <view class="pr">
                             <iconfont name="icon-sigh-o" size="32rpx"></iconfont>
                         </view>
-                        <text class="margin-left-sm text-size-xs">扫一扫向对方发起转账，请核对认真账户后再确认转账！</text>
+                        <text class="margin-left-sm text-size-xs">{{$t('collection.collection.9p43lu')}}</text>
                     </view>
                 </block>
                 <block v-else>

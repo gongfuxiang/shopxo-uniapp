@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back propName="账户详情"></component-nav-back>
+        <component-nav-back :propName="$t('detail.detail.yvmu0z')"></component-nav-back>
         <view v-if="accounts_list.length > 0">
             <scroll-view :scroll-y="true" class="scroll-box" lower-threshold="60" @scroll="scroll_event">
                 <view class="coin-title flex-col padding-lg">
@@ -44,25 +44,25 @@
                             </view>
                             <view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">操作类型：</text>
+                                    <text class="cr-grey-9">{{$t('detail.detail.4w20tq')}}</text>
                                     <text class="fw-b warp">{{ item.operate_type_name }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">操作数量：</text>
+                                    <text class="cr-grey-9">{{$t('detail.detail.s101d1')}}</text>
                                     <text class="fw-b warp">{{ item.operate_coin }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9">原始数量：</text>
+                                    <text class="cr-grey-9">{{$t('detail.detail.e30wj1')}}</text>
                                     <text class="fw-b warp">{{ item.original_coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9">最新数量：</text>
+                                    <text class="cr-grey-9">{{$t('detail.detail.jdour8')}}</text>
                                     <text class="fw-b warp">{{ item.latest_coin }}</text>
                                 </view>
                             </view>
                         </view>
                         <view class="tc cr-grey cp" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">
-                            <text class="va-m">查看更多明细</text>
+                            <text class="va-m">{{$t('detail.detail.7fhy2u')}}</text>
                             <view class="dis-inline-block va-m margin-top-xs margin-left-xs">
                                 <iconfont name="icon-arrow-right" color="#999"></iconfont>
                             </view>
@@ -108,26 +108,26 @@
         <component-popup :propShow="popup_user_detail_status" propPosition="bottom" @onclose="popup_user_detail_close_event">
             <view class="padding-horizontal-main padding-top-main bg-white">
                 <view class="oh">
-                    <text class="text-size">明细</text>
+                    <text class="text-size">{{$t('pages.plugins-coin-detail')}}</text>
                     <view class="fr" @tap.stop="popup_user_detail_close_event">
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
                 <view v-if="accounts_list.length > 0 && (accounts || null) != null" class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts.id" @tap="url_event">充值明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-recharge-list')}}</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transfer-list/transfer-list?id=' + accounts.id" @tap="url_event">转账明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transfer-list/transfer-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-transfer-list')}}</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">交易明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/transaction-list/transaction-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-transaction-list')}}</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/cash-list/cash-list?id=' + accounts.id" @tap="url_event">提现明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/cash-list/cash-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-cash-list')}}</view>
                     </view>
                     <view class="flex-width-half">
-                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/convert-list/convert-list?id=' + accounts.id" @tap="url_event">转换明细</view>
+                        <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/convert-list/convert-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-convert-list')}}</view>
                     </view>
                 </view>
             </view>
@@ -237,18 +237,18 @@
                             var temp_coin_oprate_list = [];
                             if(parseInt(this.accounts.platform_data.is_enable_transfer || 0) == 1) {
                                 temp_coin_oprate_list.push({
-                                    name: '转账',
+                                    name: this.$t('user.user.29f6n5'),
                                     icon: 'icon-transfer-count',
                                     url: '/pages/plugins/coin/transfer/transfer?id=' + this.accounts.id,
                                 });
                             }
                             temp_coin_oprate_list.push({
-                                name: '收款',
+                                name: this.$t('index.index.6941e7'),
                                 icon: 'icon-collection',
                                 url: '/pages/plugins/coin/collection/collection?accounts_key=' + this.accounts.accounts_key,
                             });
                             temp_coin_oprate_list.push({
-                                name: '明细',
+                                name: this.$t('pages.plugins-coin-detail'),
                                 icon: 'icon-detail',
                                 url: '',
                                 method: true,

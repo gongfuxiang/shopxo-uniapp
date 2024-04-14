@@ -7,20 +7,20 @@
                     <form @submit="formBindPwd">
                         <view class="margin-top-xxxl">
                             <view class="pr">
-                                <input type="text" placeholder="请输入当前密码" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.password.4e24j1')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="1" @tap="eyes_event"><iconfont :name="eyes1 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" placeholder="请输入新密码" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.password.1lwiaz')" minlength="6" maxlength="18" name="new_pwd" :password="!eyes2" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="2" @tap="eyes_event"><iconfont :name="eyes2 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                             <view class="pr">
-                                <input type="text" placeholder="请确认新密码" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
+                                <input type="text" :placeholder="$t('password.password.338433')" minlength="6" maxlength="18" name="confirm_new_pwd" :password="!eyes3" class="form-item margin-bottom-main" />
                                 <view class="eyes pa" data-index="3" @tap="eyes_event"><iconfont :name="eyes3 ? 'icon-wodeqianbao-eye' : 'icon-wodeqianbao-eyeclo2'" color="#666" size="32rpx"></iconfont></view>
                             </view>
                         </view>
                         <view class="margin-top-xxxxl tc">
-                            <button class="bg-main br-main cr-white round text-size" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">确认修改</button>
+                            <button class="bg-main br-main cr-white round text-size" form-type="submit" type="default" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('password.password.xyekjf')}}</button>
                         </view>
                     </form>
                 </view>
@@ -94,9 +94,9 @@
             formBindPwd(e) {
                 // 数据验证
                 var validation = [
-                    { fields: 'my_pwd', msg: '请输入密码' },
-                    { fields: 'new_pwd', msg: '请输入新密码' },
-                    { fields: 'confirm_new_pwd', msg: '确认新密码' },
+                    { fields: 'my_pwd', msg: this.$t('login.login.277w03') },
+                    { fields: 'new_pwd', msg: this.$t('password.password.1lwiaz') },
+                    { fields: 'confirm_new_pwd', msg: this.$t('password.password.3pp6t7') },
                 ];
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({

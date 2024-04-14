@@ -28,7 +28,7 @@
 		"all": "All",
 		"share": "Share",
 		"return": "Return",
-        "view_text": "Check",
+		"view_text": "Check",
 		"processing_in_text": "Processing",
 		"loading_in_text": "Loading",
 		"upload_in_text": "Uploading",
@@ -193,7 +193,13 @@
 		"plugins-coin-convert-detail": "Conversion details",
 		"plugins-coin-collection": "Collection",
 		"plugins-coin-recharge-pay": "Recharge payment",
-		"plugins-coin-recharge-detail": "Recharge details"
+		"plugins-coin-recharge-detail": "Recharge details",
+		"plugins-coin-transfer": "Transfer",
+		"plugins-coin-transfer-list": "Transfer details",
+		"plugins-coin-transaction-list": "Transaction details",
+		"plugins-coin-cash-list": "Withdrawal details",
+		"plugins-coin-convert-list": "Conversion details",
+		"plugins-coin-recharge-list": "Recharge details"
 	},
 	"login": {
 		"login": {
@@ -342,7 +348,9 @@
 			"07o10b": "Please bind your phone first",
 			"nwt4o1": "Please log in first",
 			"utnr7g": "Service phone",
-			"87ytgh": "Unbind"
+			"87ytgh": "Unbind",
+			"5u59b1": "Change email",
+			"v8438r": "Change password"
 		}
 	},
 	"article-category": {
@@ -652,7 +660,14 @@
 			"eg25j9": "Enter live",
 			"86g7e1": "No WeChat app installed",
 			"9d3o6w": "Please open it in the WeChat mini program",
-			"6xvl35": "Generating"
+			"6xvl35": "Generating",
+			"fn3w01": "release",
+			"4w20tq": "Operation type:",
+			"s101d1": "Number of operations:",
+			"e30wj1": "Original quantity:",
+			"jdour8": "Latest quantity:",
+			"7fhy2u": "View more details",
+			"yvmu0z": "account details "
 		}
 	},
 	"form": {
@@ -764,7 +779,8 @@
 			"k78280": "Points",
 			"9u8e61": "Pay",
 			"66714e": "Shipping",
-			"aa1ri3": "Sales"
+			"aa1ri3": "Sales",
+			"67p34x": "balance"
 		}
 	},
 	"logistics": {
@@ -1297,7 +1313,14 @@
 			"4fm61g": "Recharge instructions",
 			"otwkjn": "Recharge",
 			"23zwpz": "other",
-			"73f4v9": "Please enter the recharge amount"
+			"73f4v9": "Please enter the recharge amount",
+			"lh6k86": "Recharge address",
+			"e5rblc": "Coin charging network",
+			"eb6722": "Choose recharge coins",
+			"k1e7hs": "Other quantities",
+			"e8n7ul": "Recharge instructions:",
+			"0i541i": "Please enter the recharge quantity",
+			"5q02ar": "Please select or enter the recharge quantity"
 		}
 	},
 	"transfer": {
@@ -1310,7 +1333,10 @@
 			"1aijp1": "Please enter the receiving account number",
 			"x4mzo9": "Please enter the correct receiving account",
 			"4g21cu": "Payee",
-			"t36tk2": "Transfer remarks"
+			"t36tk2": "Transfer remarks",
+			"b4m5p3": "Transfer currency",
+			"3i4h4z": "Transfer immediately",
+			"d15853": "Please enter the transfer currency"
 		}
 	},
 	"user-cash-detail": {
@@ -1548,7 +1574,7 @@
 			"geq82x": "Amount:",
 			"ypby1k": "No relevant information available",
 			"7tp1tc": "Incorrect operation event type",
-            "dsfd98": "Out of stock"
+			"dsfd98": "Out of stock"
 		}
 	},
 	"goods-buy": {
@@ -1713,6 +1739,112 @@
 			"di6v5t": "Please obtain authorization first",
 			"nu5058": "Geographic location selection is not supported!",
 			"4v6q86": "No location selected"
+		}
+	},
+	"password": {
+		"password": {
+			"338433": "Please confirm the new password",
+			"xyekjf": "Confirm modifications",
+			"4e24j1": "Please enter the current password",
+			"1lwiaz": "Please enter a new password",
+			"3pp6t7": "Confirm new password"
+		}
+	},
+	"cash": {
+		"cash": {
+			"zmhf3n": "Withdrawable currency",
+			"f6p4hm": "Withdrawal quantity",
+			"6oc6e7": "All withdrawals",
+			"ucg8e2": "Withdrawal address",
+			"h9i16y": "Withdrawal network",
+			"1g49wo": "No network data",
+			"42b37m": "Apply for withdrawal",
+			"i1f373": "Please enter the withdrawal address",
+			"g05p4g": "Please enter withdrawal note information",
+			"en6vsa": "Network data is empty, please contact customer service!",
+			"w01qjc": "Please enter the withdrawal quantity"
+		}
+	},
+	"cash-list": {
+		"cash-list": {
+			"e6pffe": "Withdrawal number:",
+			"2w20g2": "Platform:",
+			"23ii8s": "Recharge network:",
+			"714g2h": "Recharge address:",
+			"1o8838": "Withdrawal currency:",
+			"s7l616": "Account type",
+			"t66tu3": "Withdrawal type",
+			"311tt2": "Network type",
+			"n74r94": "account",
+			"2g251t": "network",
+			"8hrc73": "Are you sure to delete this withdrawal order"
+		}
+	},
+	"collection": {
+		"collection": {
+			"856g12": "copy",
+			"9p43lu": "Scan to initiate a transfer to the other party. Please verify your account carefully before confirming the transfer!"
+		}
+	},
+	"convert": {
+		"convert": {
+			"o56h58": "Balance:",
+			"4kcix6": "convert now",
+			"327y2v": "Transfer out and receive selection cannot be the same",
+			"vyjy7s": "Please enter the conversion currency"
+		}
+	},
+	"convert-list": {
+		"convert-list": {
+			"733518": "Transfer to account:",
+			"8813rd": "Conversion order number:",
+			"c374ec": "Transfer out balance:",
+			"6mxu85": "Transfer out account:",
+			"6347mw": "Latest Currency:",
+			"9oy325": "Remarks:",
+			"q48666": "Initiate account",
+			"47646p": "Receiving account"
+		}
+	},
+	"recharge-list": {
+		"recharge-list": {
+			"6b9399": "Recharge order number:",
+			"epd531": "Recharged coins:",
+			"l5g8m1": "Are you sure to delete this recharge order"
+		}
+	},
+	"recharge-pay": {
+		"recharge-pay": {
+			"lutmsv": "Payment voucher",
+			"1a5vqk": "(Upload up to 10 images)",
+			"wu49vk": "Payment remarks",
+			"95pfkd": "Please enter a note",
+			"v5fok8": "Please upload the voucher"
+		}
+	},
+	"transaction-list": {
+		"transaction-list": {
+			"1mf6wj": "Currency type:",
+			"2w1o1l": "Operation currency:",
+			"jgx0cf": "Original currency:",
+			"7cv11k": "Description:",
+			"cu39n5": "Currency type"
+		}
+	},
+	"transfer-list": {
+		"transfer-list": {
+			"69rnx6": "Transfer order number:",
+			"4aj248": "Payee:",
+			"m2r55k": "Transfer currency:",
+			"9g8lyb": "Transfer remarks:"
+		}
+	},
+	"user-goods-comments": {
+		"user-goods-comments": {
+			"58804r": "Is it displayed",
+			"jnk6da": "Do you want to reply",
+			"yyjemb": "Anonymous or not",
+			"0nhrj0": "Comment content"
 		}
 	}
 }

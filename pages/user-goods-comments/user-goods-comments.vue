@@ -11,7 +11,7 @@
                     <view class="content margin-top">
                         <view v-if="(item.goods || null) !== null" :data-value="item.goods.goods_url" @tap="url_event">
                             <view class="margin-top-xs flex-row align-c">
-                                <view class="cr-grey margin-right-xl">商品信息</view>
+                                <view class="cr-grey margin-right-xl">{{$t('user-order-detail.user-order-detail.7f8p26')}}</view>
                                 <view class="cr-base flex-1 flex-width flex-row align-c">
                                     <image class="br radius margin-right-sm goods-img" :src="item.goods.images" mode="aspectFit"></image>
                                     <text class="single-text flex-1 flex-width">{{ item.goods.title }}</text>
@@ -59,12 +59,12 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: '是否显示', field: 'is_show_text' },
-                    { name: '是否回复', field: 'is_reply_text' },
-                    { name: '是否匿名', field: 'is_anonymous_text' },
-                    { name: '评论内容', field: 'content' },
-                    { name: '回复内容', field: 'reply' },
-                    { name: '回复时间', field: 'reply_time_time' },
+                    { name: this.$t('user-goods-comments.user-goods-comments.58804r'), field: 'is_show_text' },
+                    { name: this.$t('user-goods-comments.user-goods-comments.jnk6da'), field: 'is_reply_text' },
+                    { name: this.$t('user-goods-comments.user-goods-comments.yyjemb'), field: 'is_anonymous_text' },
+                    { name: this.$t('user-goods-comments.user-goods-comments.0nhrj0'), field: 'content' },
+                    { name: this.$t('user-detail.user-detail.u411r2'), field: 'reply' },
+                    { name: this.$t('user-detail.user-detail.teo6qd'), field: 'reply_time_time' },
                 ],
             };
         },

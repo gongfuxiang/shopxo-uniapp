@@ -3,11 +3,11 @@
         <view class="convert">
             <view class="padding-main bg-white pr nav flex-row oa">
                 <view class="flex-shrink flex-row align-c margin-right-xxxl padding-right-xl pr" @tap="popup_send_accounts_open_event">
-                    <view>{{ send_accounts_name !== null && send_accounts_name !== '全部' ? send_accounts_name : '发起账户' }}</view>
+                    <view>{{ send_accounts_name !== null && send_accounts_name !== $t('common.all') ? send_accounts_name : $t('convert-list.convert-list.q48666') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_send_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
                 <view class="flex-shrink flex-row align-c padding-right-xl pr" @tap="popup_receive_accounts_open_event">
-                    <view>{{ receive_accounts_name !== null && receive_accounts_name !== '全部' ? receive_accounts_name : '接收账户' }}</view>
+                    <view>{{ receive_accounts_name !== null && receive_accounts_name !== $t('common.all') ? receive_accounts_name : $t('convert-list.convert-list.47646p') }}</view>
                     <view class="pa right-0"><iconfont :name="popup_receive_accounts_status ? 'icon-arrow-top' : 'icon-arrow-bottom'" size="24rpx"></iconfont></view>
                 </view>
             </view>
@@ -20,27 +20,27 @@
                             </view>
                             <view class="convert-group-row">
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转换单号：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.8813rd')}}</text>
                                     <text class="fw-b warp">{{ item.convert_no }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转出余额：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.c374ec')}}</text>
                                     <text class="fw-b warp">{{ item.convert_value }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转出账户：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6mxu85')}}</text>
                                     <text class="fw-b warp">{{ item.send_accounts_id }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">转入账户：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.733518')}}</text>
                                     <text class="fw-b warp">{{ item.receive_accounts_id }}</text>
                                 </view>
                                 <view class="margin-bottom-sm flex-row">
-                                    <text class="cr-grey-9 title">最新币：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.6347mw')}}</text>
                                     <text class="fw-b warp">{{ item.coin }}</text>
                                 </view>
                                 <view class="flex-row">
-                                    <text class="cr-grey-9 title">备注：</text>
+                                    <text class="cr-grey-9 title">{{$t('convert-list.convert-list.9oy325')}}</text>
                                     <text class="fw-b warp">{{ item.note }}</text>
                                 </view>
                             </view>
@@ -57,10 +57,10 @@
             <!-- 发起账户 -->
             <component-popup :propShow="popup_send_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_send_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">发起账户</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.q48666')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="send_accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="send_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in send_accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="send_accounts_list_event">{{ item.platform_name }}</view>
@@ -75,10 +75,10 @@
             <!-- 接收账户 -->
             <component-popup :propShow="popup_receive_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_receive_accounts_close_event">
                 <view class="padding-vertical-lg">
-                    <view class="padding-horizontal-main text-size-xs">接收账户</view>
+                    <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.47646p')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === null ? 'cr-main bg-main-light' : ''" data-name="全部" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">全部</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in receive_accounts_list" class="flex-width-half-half" :key="index">
                             <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="receive_accounts_list_event">{{ item.platform_name }}</view>

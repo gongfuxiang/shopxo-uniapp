@@ -14,11 +14,11 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">{{$t('convert.convert.o56h58')}}</text><text class="cr-blue">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
-                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" placeholder="请输入" @input="default_coin_change_event" />
+                                <input type="digit" name="coin" :value="default_value" class="num input-br text-size" placeholder-class="text-size-sm cr-grey-9" :placeholder="$t('common.please_input')" @input="default_coin_change_event" />
                                 <view class="margin-top-main tr text-size-xs">{{ accounts_list[send_accounts_id_index]['platform_symbol'] }} {{ accounts_list[send_accounts_id_index]['default_coin'] }}</view>
                             </view>
                         </view>
@@ -35,7 +35,7 @@
                                     </view>
                                 </view>
                                 <view class="margin-top-main text-size-xs flex-row align-c">
-                                    <text class="margin-right-sm">余额:</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
+                                    <text class="margin-right-sm">{{$t('convert.convert.o56h58')}}</text><text class="cr-blue">{{ accounts_list[receive_accounts_id_index]['platform_symbol'] }} {{ accounts_list[receive_accounts_id_index]['normal_coin'] }}</text>
                                 </view>
                             </view>
                             <view class="coin-num pr flex-col">
@@ -53,7 +53,7 @@
                         <input type="password" :value="pay_pwd" class="text-size flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入支付密码" />
                     </view> -->
                     <view class="padding-main radius-md margin-bottom-main">
-                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">立即转换</button>
+                        <button type="default" class="convert-btn cr-white round" @tap="convert_submit">{{$t('convert.convert.4kcix6')}}</button>
                     </view>
                 </view>
             </scroll-view>
@@ -219,7 +219,7 @@
                 var index = parseInt(e.currentTarget.dataset.index || 0);
                 var old_index = (this.coin_type == 1) ? this.receive_accounts_id_index : this.send_accounts_id_index;
                 if(index == old_index) {
-                    app.globalData.showToast('转出和接收选择不能相同');
+                    app.globalData.showToast(this.$t('convert.convert.327y2v'));
                     return false;
                 }
                 if (this.coin_type == 1) {
@@ -276,7 +276,7 @@
                 };
 
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: '请输入转换币' }];
+                var validation = [{ fields: 'coin', msg: this.$t('convert.convert.vyjy7s') }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

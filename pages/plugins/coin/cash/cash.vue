@@ -15,33 +15,33 @@
                                             <iconfont name="icon-arrow-bottom" size="24rpx" color="#fff"></iconfont>
                                         </view>
                                     </view>
-                                    <view class="text-size-xs fw-b padding-left-main text">可提现币</view>
+                                    <view class="text-size-xs fw-b padding-left-main text">{{$t('cash.cash.zmhf3n')}}</view>
                                 </view>
                                 <view class="flex-row align-e">
                                     <view class="text-size-40 fw-b">{{ accounts.normal_coin }}</view>
                                     <view class="padding-left-sm margin-bottom-main cr-grey-d">{{ accounts.default_symbol }} {{ accounts.default_coin }}</view>
                                 </view>
                             </view>
-                            <view class="detail pa right-0 fw-b cr-white" :data-value="'/pages/plugins/coin/cash-list/cash-list?id='+accounts.id" @tap="url_event">提现明细</view>
+                            <view class="detail pa right-0 fw-b cr-white" :data-value="'/pages/plugins/coin/cash-list/cash-list?id='+accounts.id" @tap="url_event">{{$t('pages.plugins-coin-cash-list')}}</view>
                         </view>
                     </view>
                     <view class="content padding-main">
                         <view class="padding-xxxl bg-white radius-md margin-bottom-main">
                             <view class="margin-bottom-xxxl">
-                                <view class="margin-bottom-main fw-b">提现数量</view>
+                                <view class="margin-bottom-main fw-b">{{$t('cash.cash.f6p4hm')}}</view>
                                 <view class="padding-vertical-main br-b-e flex-row align-c">
-                                    <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" placeholder="请输入" @input="coin_num_change" />
-                                    <view @tap.stop="all_cash_event">全部提现</view>
+                                    <input type="digit" :value="coin_num" class="flex-1 flex-width" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('common.please_input')" @input="coin_num_change" />
+                                    <view @tap.stop="all_cash_event">{{$t('cash.cash.6oc6e7')}}</view>
                                 </view>
                             </view>
                             <view class="margin-bottom-xxxl">
-                                <view class="margin-bottom-main">提币地址</view>
+                                <view class="margin-bottom-main">{{$t('cash.cash.ucg8e2')}}</view>
                                 <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
-                                    <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提币地址" @input="coin_address_change" />
+                                    <input type="text" name="coin_address" class="padding-right-sm flex-1 flex-width" :value="coin_address" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.cash.i1f373')" @input="coin_address_change" />
                                 </view>
                             </view>
                             <view>
-                                <view class="margin-bottom-main">提币网络</view>
+                                <view class="margin-bottom-main">{{$t('cash.cash.h9i16y')}}</view>
                                 <block v-if="network_list.length > 0">
                                     <picker class="content-input-bg padding-main margin-bottom-main border-radius-sm" @change="cash_event" :value="network_list_index" :range="network_list" range-key="name">
                                         <view class="picker arrow-bottom">
@@ -49,9 +49,9 @@
                                         </view>
                                     </picker>
                                 </block>
-                                <view v-else class="cr-grey margin-bottom">无网络数据</view>
+                                <view v-else class="cr-grey margin-bottom">{{$t('cash.cash.1g49wo')}}</view>
                                 <view class="content-input-bg padding-main border-radius-sm">
-                                    <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" placeholder="请输入提现备注信息" @input="user_note_change" />
+                                    <input type="text" name="user_note" :value="user_note" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('cash.cash.g05p4g')" @input="user_note_change" />
                                 </view>
                             </view>
                         </view>
@@ -64,7 +64,7 @@
                             </view>
                         </view> -->
                         <view class="padding-xxxl">
-                            <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">申请提现</button>
+                            <button type="default" class="cash-btn cr-white round" @tap="apply_for_cash_event">{{$t('cash.cash.42b37m')}}</button>
                         </view>
                     </view>
                 </scroll-view>
@@ -278,7 +278,7 @@
             // 申请提现
             apply_for_cash_event() {
                 if(this.network_list.length == 0) {
-                    app.globalData.showToast('网络数据为空、请联系客服！');
+                    app.globalData.showToast(this.$t('cash.cash.en6vsa'));
                     return false;
                 }
 
@@ -292,8 +292,8 @@
                 };
                 // 数据校验
                 var validation = [
-                    { fields: 'coin', msg: '请输入提现数量' },
-                    { fields: 'address', msg: '请输入提币地址' },
+                    { fields: 'coin', msg: this.$t('cash.cash.w01qjc') },
+                    { fields: 'address', msg: this.$t('cash.cash.i1f373') },
                 ];
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

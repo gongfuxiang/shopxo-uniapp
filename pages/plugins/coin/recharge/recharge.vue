@@ -29,7 +29,7 @@
                 </view>
                 <view class="recharge-content padding-xxl bg-white">
                     <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充币地址</view>
+                        <view class="margin-bottom-main">{{$t('recharge.recharge.lh6k86')}}</view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c">
                             <view class="single-text padding-right-sm flex-1 flex-width">{{ accounts.platform_data.recharge_address }}</view>
                             <view :data-value="accounts.platform_data.recharge_address" @tap.stop="text_copy_event">
@@ -38,7 +38,7 @@
                         </view>
                     </view>
                     <view class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充币网络</view>
+                        <view class="margin-bottom-main">{{$t('recharge.recharge.e5rblc')}}</view>
                         <block v-if="network_list.length > 0">
                             <picker class="recharge-content-input-bg padding-main border-radius-sm" @change="recharge_event" :value="network_list_index" :range="network_list" range-key="name">
                                 <view class="picker arrow-bottom">
@@ -46,11 +46,11 @@
                                 </view>
                             </picker>
                         </block>
-                        <view v-else class="cr-grey">无网络数据</view>
+                        <view v-else class="cr-grey">{{$t('cash.cash.1g49wo')}}</view>
                     </view>
                     <view class="margin-bottom-xxxl">
                         <view v-if="accounts.platform_data.preset_data.length > 0">
-                            <view class="margin-bottom-xs">选择充值币</view>
+                            <view class="margin-bottom-xs">{{$t('recharge.recharge.eb6722')}}</view>
                             <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
                                 <block v-for="(item, index) in accounts.platform_data.preset_data" :key="index">
                                     <view class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
@@ -65,15 +65,15 @@
                             </view>
                         </view>
                         <view class="recharge-content-input-bg padding-main border-radius-sm flex-row align-c margin-bottom-xxl">
-                            <text>其他数量</text>
+                            <text>{{$t('recharge.recharge.k1e7hs')}}</text>
                             <view class="padding-left-lg">
-                                <input type="digit" name="coin" :value="recharge_num" placeholder-class="text-size-md cr-grey-9" placeholder="请输入充值数量" @input="recharge_num_change" />
+                                <input type="digit" name="coin" :value="recharge_num" placeholder-class="text-size-md cr-grey-9" :placeholder="$t('recharge.recharge.0i541i')" @input="recharge_num_change" />
                             </view>
                         </view>
-                        <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">立即充值</button>
+                        <button type="default" class="recharge-btn cr-white round" @tap="recharge_submit">{{$t('recharge.recharge.x27b25')}}</button>
                     </view>
                     <view v-if="accounts.platform_data.recharge_desc.length > 0" class="margin-bottom-xxxl">
-                        <view class="margin-bottom-main">充值说明：</view>
+                        <view class="margin-bottom-main">{{$t('recharge.recharge.e8n7ul')}}</view>
                         <view class="recharge-content-tips">
                             <view v-for="(item, index) in accounts.platform_data.recharge_desc" :key="index" class="item pr padding-left-xl margin-bottom-sm cr-grey-9 text-size-xs">{{ item }}</view>
                         </view>
@@ -261,7 +261,7 @@
             // 立即充值
             recharge_submit() {
                 if(this.network_list.length == 0) {
-                    app.globalData.showToast('网络数据为空、请联系客服！');
+                    app.globalData.showToast(this.$t('cash.cash.en6vsa'));
                     return false;
                 }
 
@@ -273,7 +273,7 @@
                     coin: this.recharge_num,
                 };
                 // 数据校验
-                var validation = [{ fields: 'coin', msg: '请选择或输入充值数量' }];
+                var validation = [{ fields: 'coin', msg: this.$t('recharge.recharge.5q02ar') }];
 
                 // 验证提交表单
                 if (app.globalData.fields_check(new_data, validation)) {

@@ -17,11 +17,11 @@
                         <text class="fr cr-grey">{{ user.mobile_security || '' }} {{ (user.mobile_security || null) == null ? $t('setup.setup.dfg4wf') : $t('setup.setup.j6skqh') }}</text>
                     </view>
                     <view v-if="(home_user_login_type || null) != null && home_user_login_type.length > 0 && home_user_login_type.indexOf('email') != -1" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/login/login?opt_type=bind_email&opt_form=bind_email" @tap="url_event">
-                        <text>更换邮箱</text>
+                        <text>{{$t('setup.setup.5u59b1')}}</text>
                         <text class="fr cr-grey">{{ user.email_security || '' }} {{ (user.email_security || null) == null ? $t('setup.setup.dfg4wf') : $t('setup.setup.j6skqh') }}</text>
                     </view>
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-t" data-value="/pages/password/password" @tap="url_event">
-                        <text>更换密码</text>
+                        <text>{{$t('setup.setup.v8438r')}}</text>
                         <text class="fr cr-grey">{{ $t('setup.setup.j6skqh') }}</text>
                     </view>
 
