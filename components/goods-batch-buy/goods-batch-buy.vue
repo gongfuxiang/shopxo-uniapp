@@ -150,7 +150,6 @@ export default {
         this.setData({
             plugins_wholesale_data: this.propPluginsWholesaleData,
         });
-        console.log(this.plugins_wholesale_data)
     },
 
     methods: {

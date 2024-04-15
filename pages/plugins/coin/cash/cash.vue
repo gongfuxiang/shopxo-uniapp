@@ -190,7 +190,6 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        console.log(res.data.data);
                         if (res.data.code == 0) {
                             var data = res.data.data;
                             this.setData({

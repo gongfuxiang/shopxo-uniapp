@@ -370,7 +370,6 @@
                             uni.stopPullDownRefresh();
                             if (res.data.code == 0) {
                                 var data = res.data.data;
-                                console.log(data.id, this.form.payment_id, this.data.payment_list);
                                 this.setData({
                                     to_page: '/pages/plugins/scanpay/tips/tips?id=' + data.id,
                                     to_appoint_page: '/pages/plugins/scanpay/tips/tips?id=' + data.id,

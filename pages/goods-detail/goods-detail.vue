@@ -79,23 +79,23 @@
             </view>
 
             <!-- 价格信息 -->
-            <view class="goods-base-price bg-white oh spacing-mb" :class="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'goods-base-price-countdown' : ''">
+            <view class="goods-base-price bg-white oh spacing-mb" :class="plugins_seckill_is_valid ? 'goods-base-price-countdown' : ''">
                 <!-- 批发规则、未隐藏商品售价的时候独立行展示 -->
-                <view v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1" class="padding-horizontal-main padding-top-main">
-                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                <view v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) != 1" :class="'padding-horizontal-main padding-top-main '+((plugins_seckill_is_valid) ? 'padding-bottom-main' : '')">
+                    <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsSeckill="plugins_seckill_is_valid"></component-wholesale-rules>
                 </view>
                 <!-- 价格 -->
-                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1 ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
+                <view class="price-content padding-vertical-main padding-left-main bs-bb fl" :style="plugins_seckill_is_valid ? 'background-image: url(' + plugins_seckill_data.goods_detail_header + ')' : ''">
                     <!-- 批发规则、隐藏商品售价的时候在这里展示 -->
                     <view v-if="(plugins_wholesale_data || null) != null && (plugins_wholesale_data.is_hide_goods_price || 0) == 1" class="item">
-                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data"></component-wholesale-rules>
+                        <component-wholesale-rules :propIsPopup="true" :propCurrencySymbol="currency_symbol" :propData="plugins_wholesale_data" :propIsSeckill="plugins_seckill_is_valid"></component-wholesale-rules>
                     </view>
                     <!-- 批发插件是否开启隐藏价格信息 -->
                     <block v-if="(plugins_wholesale_data || null) == null || (plugins_wholesale_data.is_hide_goods_price || 0) != 1">
                         <!-- 售价 -->
                         <view v-if="(goods.show_field_price_status || 0) == 1" class="item single-text">
                             <!-- 图标 -->
-                            <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+(((plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1) ? 'seckill' : '')">{{ show_field_price_text }}</text>
+                            <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+((plugins_seckill_is_valid) ? 'seckill' : '')">{{ show_field_price_text }}</text>
                             <!-- 售价 -->
                             <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
                             <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
@@ -109,7 +109,7 @@
                         </view>
                     </block>
                 </view>
-                <block v-if="(plugins_seckill_data || null) != null && plugins_seckill_data.time.status == 1">
+                <block v-if="plugins_seckill_is_valid">
                     <view class="countdown-content padding-top-lg padding-bottom-lg padding-left-xs padding-right-xs fr tc">
                         <view class="time-title cr-white single-text">{{ plugins_seckill_data.goods_detail_title || $t('goods-detail.goods-detail.775ppk') }}</view>
                         <component-countdown
@@ -708,6 +708,7 @@
                 share_info: {},
                 // 限时秒杀插件
                 plugins_seckill_data: null,
+                plugins_seckill_is_valid: false,
                 // 优惠劵插件
                 plugins_coupon_data: null,
                 temp_coupon_receive_index: null,
@@ -893,13 +894,15 @@
                             this.init_result_data_handle(goods);
 
                             // 基础数据
+                            var plugins_seckill_data = data.plugins_seckill_data || null;
                             var upd_data = {
                                 data_loading_status: 1,
                                 guess_you_like: data.guess_you_like || [],
                                 nav_more_list: data.nav_more_list || [],
                                 buy_button: data.buy_button || null,
                                 top_nav_title_data: data.middle_tabs_nav || [],
-                                plugins_seckill_data: data.plugins_seckill_data || null,
+                                plugins_seckill_data: plugins_seckill_data,
+                                plugins_seckill_is_valid:  (plugins_seckill_data || null) != null && (plugins_seckill_data.time || null) != null && plugins_seckill_data.time.status == 1,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,

@@ -10,7 +10,7 @@
                             <text class="sales-price text-size-lg">{{item.range_val}}</text>
                             <text v-if="item.arr.type == 0" class="unit text-size-xsss">{{item.arr.unit}}</text>
                         </view>
-                        <view class="msg cr-black text-size-sm cr-base margin-top-xs">{{item.range_msg}}</view>
+                        <view :class="'msg text-size-sm cr-base margin-top-xs '+(propIsSeckill ? 'cr-white' : 'cr-black')">{{item.range_msg}}</view>
                     </view>
                 </view>
             </scroll-view>
@@ -64,6 +64,11 @@ export default {
         componentPopup
     },
     props: {
+        // 是否秒杀状态
+        propIsSeckill: {
+            type: Boolean,
+            default: false,
+        },
         // 是否展示弹窗
         propIsPopup: {
             type: Boolean,
@@ -87,7 +92,6 @@ export default {
             this.setData({
                 data: value,
             });
-            console.log(value)
         }
     },
 
