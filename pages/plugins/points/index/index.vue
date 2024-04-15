@@ -70,10 +70,18 @@
                         <view v-if="(data_base.goods_exchange_data || null) != null && data_base.goods_exchange_data.length > 0">
                             <component-goods-list :propData="{ style_type: 1, title: $t('index.index.f3l1xt'), url: '/pages/goods-search/goods-search', goods_list: data_base.goods_exchange_data }" propMoreUrlKey="url" :propCurrencySymbol="currency_symbol" :propGridBtnConfig="gridBtnConfig" :propIsOpenGridBtnSet="isOpenGridBtnSet" :propPriceField="(data_base.is_pure_exchange_modal || 0) == 1 ? '' : 'price'" propIntegral></component-goods-list>
                         </view>
+
+                        <!-- 积分明细和商品兑换都没有的时候展示无数据提示 -->
+                        <block v-if="integral_list.length == 0 && ((data_base.goods_exchange_data || null) === null || data_base.goods_exchange_data.length == 0)">
+                            <!-- 提示信息 -->
+                            <component-no-data :propStatus="0"></component-no-data>
+                        </block>
+                        <block v-else>
+                            <!-- 结尾 -->
+                            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                        </block>
                     </view>
 
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
                     <!-- 积分规则弹窗 -->
                     <component-popup v-if="(data_base.points_desc || null) != null && data_base.points_desc.length > 0" :propShow="popup_status" :propIsBar="propIsBar" propPosition="bottom" @onclose="quick_close_event">
                         <view class="rule">
@@ -133,11 +141,8 @@
                 // 规则弹窗
                 popup_status: false,
                 propIsBar: false,
-                // 积分
+                // 积分明细
                 integral_list: [],
-                integral_list_loding_status: 1,
-                integral_list_loding_msg: '',
-                integral_page: 1,
             };
         },
         components: {
@@ -173,7 +178,11 @@
 
             // 获取数据
             this.get_data();
-            this.get_integral_data_list();
+
+            // 已登录则获取积分明细
+            if(this.user != null) {
+                this.get_integral_data_list();
+            }
         },
         // 下拉刷新
         onPullDownRefresh() {
@@ -250,10 +259,14 @@
 
             // 立即登录
             login_event() {
-                var user = app.globalData.get_user_info(this, 'login_event');
+                // 获取用户信息
                 this.setData({
-                    user: user || null,
+                    user: app.globalData.get_user_info(this, 'login_event') || null,
                 });
+                // 获取积分明细
+                if(this.user != null) {
+                    this.get_integral_data_list();
+                }
             },
 
             // url事件
@@ -273,21 +286,6 @@
 
             // 获取积分数据
             get_integral_data_list(is_mandatory) {
-                // 是否加载中
-                if (this.integral_is_loading == 1) {
-                    return false;
-                }
-                this.setData({
-                    integral_is_loading: 1,
-                    integral_list_loding_status: 1,
-                });
-                // 加载loding
-                if(this.data_page > 1) {
-                    uni.showLoading({
-                        title: this.$t('common.loading_in_text'),
-                    });
-                }
-                // 获取数据
                 uni.request({
                     url: app.globalData.get_request_url('index', 'userintegral'),
                     method: 'POST',
@@ -304,34 +302,11 @@
                             if (res.data.data.data.length > 0) {
                                 this.setData({
                                     integral_list: res.data.data.data.length > 4 ? res.data.data.data.splice(0, 4) : res.data.data.data,
-                                    integral_list_loding_status: 3,
-                                    integral_is_loading: 0,
                                 });
-                            } else {
-                                this.setData({
-                                    integral_list_loding_status: 0,
-                                    integral_is_loading: 0,
-                                });
-                            }
-                        } else {
-                            this.setData({
-                                integral_list_loding_status: 0,
-                                integral_is_loading: 0,
-                            });
-                            if (app.globalData.is_login_check(res.data, this, 'get_integral_data_list')) {
-                                app.globalData.showToast(res.data.msg);
                             }
                         }
                     },
                     fail: () => {
-                        if(this.data_page > 1) {
-                            uni.hideLoading();
-                        }
-                        uni.stopPullDownRefresh();
-                        this.setData({
-                            data_list_loding_status: 2,
-                            data_is_loading: 0,
-                        });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });

@@ -98,7 +98,7 @@
                             <text v-if="(show_field_price_text || null) != null" :class="'price-icon round va-m margin-right-xs '+((plugins_seckill_is_valid) ? 'seckill' : '')">{{ show_field_price_text }}</text>
                             <!-- 售价 -->
                             <text class="sales-price va-m">{{ goods.show_price_symbol }}{{ goods_spec_base_price }}</text>
-                            <text class="text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
+                            <text class="sales-price-unit text-size-xs cr-grey va-m">{{ goods.show_price_unit }}</text>
                         </view>
                         <!-- 原价 -->
                         <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="item original-price single-text">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>

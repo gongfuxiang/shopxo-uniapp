@@ -286,9 +286,11 @@
 .goods-base-price-countdown .price-icon {
     border-color: #fff;
     color: #fff;
+    background: transparent;
 }
-.goods-base-price-countdown .sales-price {
-    color: #fff;
+.goods-base-price-countdown .sales-price,
+.goods-base-price-countdown .sales-price-unit {
+    color: #fff !important;
 }
 .goods-base-price-countdown .original-price,
 .goods-base-price-countdown .unit{

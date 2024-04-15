@@ -3,7 +3,7 @@
         <!-- 批发规则展示 -->
         <view v-if="(data || null) != null" class="scroll-view-horizontal">
             <scroll-view scroll-x="true">
-                <view class="plugins-wholesale-container-rules-view wh-auto" @tap="popup_wholesale_event">
+                <view :class="'plugins-wholesale-container-rules-view wh-auto item-number-'+data.rules.length" @tap="popup_wholesale_event">
                     <view v-for="(item, index) in data.rules" :key="index" class="item">
                         <view class="price">
                             <text v-if="item.arr.type == 1" class="cr-red text-size-xs">{{propCurrencySymbol}}</text>
@@ -129,6 +129,12 @@ export default {
         display: flex;
         justify-content: flex-start;
         gap: 60rpx;
+    }
+    .plugins-wholesale-container-rules-view.item-number-2,
+    .plugins-wholesale-container-rules-view.item-number-3,
+    .plugins-wholesale-container-rules-view.item-number-4 {
+        justify-content: space-around;
+        gap: 0;
     }
     .plugins-wholesale-container-rules-view .item {
         margin-bottom: 0 !important;
