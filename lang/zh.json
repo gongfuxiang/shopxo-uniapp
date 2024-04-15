@@ -588,7 +588,7 @@
 	},
 	"detail": {
 		"detail": {
-			"324777": "至{{ shop.close_week_name }}，{{ shop.open_time }}-",
+			"324777": "至",
 			"455787": "推荐",
 			"b4f3nw": "活动商品",
 			"ans2p4": "更多活动",

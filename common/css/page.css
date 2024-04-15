@@ -1080,10 +1080,10 @@ button[disabled].bg-grey {
 * 客服
 */
 .header-service {
-    width: 400rpx;
+    width: 430rpx;
     left: 80rpx;
-    top: 210rpx;
-    z-index: 2;
+    top: 240rpx;
+    z-index: 10;
     font-size: 24rpx;
     -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
     box-shadow: 0 10px 10px rgb(0 0 0 / 30%);

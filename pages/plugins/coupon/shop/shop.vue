@@ -1,44 +1,25 @@
 <template>
     <view :class="theme_view">
-        <view class="page-bottom-fixed">
+        <view class="plugins-coupon-container">
             <!-- 优惠劵列表 -->
-            <view v-if="data_list.length > 0" class="plugins-coupon-container padding-horizontal-main padding-top-main">
-                <block v-for="(item, index) in data_list" :key="index">
-                    <view :class="'item border-radius-main bg-white spacing-mb ' + (item.is_operable == 0 ? 'item-disabled' : '')">
-                        <view class="v-left fl">
-                            <view class="base single-text" :style="'color:' + item.bg_color_value + ';'">
-                                <text v-if="item.type == 0" class="symbol">{{ currency_symbol }}</text>
-                                <text class="price">{{ item.discount_value }}</text>
-                                <text class="unit">{{ item.type_unit }}</text>
-                                <text v-if="(item.desc || null) != null" class="desc cr-grey">{{ item.desc }}</text>
-                            </view>
-                            <view v-if="(item.use_limit_type_name || null) != null" class="base-tips cr-base single-text text-size-xs">{{ item.use_limit_type_name }}</view>
-                        </view>
-                        <view class="v-right fr cp" @tap="coupon_receive_event" :data-index="index" :data-value="item.id" :style="'background:' + item.bg_color_value + ';'">
-                            <text class="circle"></text>
-                            <text>{{ item.is_operable_name }}</text>
-                        </view>
-                    </view>
-                </block>
+            <view v-if="data_list.length > 0" class="coupon-content bg-white pr padding-top-main page-bottom-fixed">
+                <view class="flex-col">
+                    <block v-for="(item, index) in data_list" :key="index">
+                        <component-coupon-card :propData="item" :propStatusType="item.status_type" :propStatusOperableName="item.status_operable_name" :propIndex="index" propIsProgress @call-back="coupon_receive_event"></component-coupon-card>
+                    </block>
+                </view>
+                <!-- 结尾 -->
+                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
             </view>
             <view v-else>
                 <!-- 提示信息 -->
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
-
-            <!-- 结尾 -->
-            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
-            <!-- 回到店铺 -->
-            <view v-if="(shop || null) != null" class="bottom-fixed">
-                <view class="bottom-line-exclude">
-                    <button class="bg-main br-main cr-white round dis-block" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
-                        <view class="dis-inline-block va-m">
-                            <uni-icons type="shop" size="16" color="#fff"></uni-icons>
-                        </view>
-                        <text class="va-m margin-left-sm">{{$t('index.index.i78v36')}}</text>
-                    </button>
-                </view>
+        </view>
+        <!-- 回到店铺 -->
+        <view v-if="(shop || null) != null"  class="popup-bottom bottom-fixed bg-white">
+            <view class="bottom-line-exclude">
+                <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" :data-value="shop.url" @tap="shop_event">{{$t('index.index.i78v36')}}</button>
             </view>
         </view>
     </view>
@@ -47,6 +28,7 @@
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import componentCouponCard from '@/components/coupon-card/coupon-card.vue';
 
     export default {
         data() {
@@ -71,6 +53,7 @@
         components: {
             componentNoData,
             componentBottomLine,
+            componentCouponCard
         },
         props: {},
 
@@ -185,23 +168,20 @@
             },
 
             // 优惠劵领取事件
-            coupon_receive_event(e) {
+            coupon_receive_event(index, value) {
                 if (!app.globalData.is_single_page_check()) {
                     return false;
                 }
                 // 参数处理
-                if ((e || null) == null) {
+                if ((index || null) == null && (value || null) == null) {
                     var index = this.temp_coupon_receive_index;
                     var value = this.temp_coupon_receive_value;
                 } else {
-                    var index = e.currentTarget.dataset.index;
-                    var value = e.currentTarget.dataset.value;
                     this.setData({
                         temp_coupon_receive_index: index,
                         temp_coupon_receive_value: value,
                     });
                 }
-
                 // 登录校验
                 var user = app.globalData.get_user_info(this, 'coupon_receive_event');
                 if (user != false) {
@@ -221,13 +201,10 @@
                                 uni.hideLoading();
                                 if (res.data.code == 0) {
                                     app.globalData.showToast(res.data.msg, 'success');
-                                    if (this.data_base != null && this.data_base.is_repeat_receive != 1) {
-                                        temp_list[index]['is_operable'] = 0;
-                                        temp_list[index]['is_operable_name'] = this.$t('shop.shop.4q9oe2');
-                                        this.setData({
-                                            data_list: temp_list,
-                                        });
-                                    }
+                                    temp_list[index] = res.data.data.coupon;
+                                    this.setData({
+                                        data_list: temp_list,
+                                    });
                                 } else {
                                     if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
                                         app.globalData.showToast(res.data.msg);
@@ -255,4 +232,6 @@
         },
     };
 </script>
-<style></style>
+<style>
+    @import './shop.css';
+</style>

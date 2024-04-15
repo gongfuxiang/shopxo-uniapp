@@ -53,26 +53,26 @@
                 </view>
                 <!-- 在线客服 -->
                 <view v-if="header_service_status && ((data_base.is_service_info || 0) == 1 || (shop.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
-                    <view v-if="(shop.chat_info || null) != null" class="item padding-main br-t single-text">
+                    <view v-if="(shop.chat_info || null) != null" class="item padding-main single-text">
                         <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                         <view class="dis-inline-block chat-info cp" @tap="chat_event">
                             <image class="dis-inline-block va-m" :src="shop.chat_info.icon" mode="scaleToFill"></image>
                             <text class="margin-left-sm va-m cr-blue" :data-value="shop.chat_info.chat_url">{{shop.chat_info.name}}</text>
                         </view>
                     </view>
-                    <view v-if="(shop.service_qq || null) != null" class="item padding-main br-t single-text">
+                    <view v-if="(shop.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
                         <text>Q Q：</text>
                         <text class="cp" @tap="text_copy_event" :data-value="shop.service_qq">{{shop.service_qq}}</text>
                     </view>
-                    <view v-if="(shop.service_tel || null) != null" class="item padding-main br-t single-text">
+                    <view v-if="(shop.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
                         <text>{{$t('order.order.7dxbm5')}}</text>
                         <text class="cp" @tap="tel_event" :data-value="shop.service_tel">{{shop.service_tel}}</text>
                     </view>
-                    <view v-if="(shop.open_week_name || null) != null && (shop.close_week_name || null) != null" class="item padding-main br-t single-text">
+                    <view v-if="(shop.open_week_name || null) != null && (shop.close_week_name || null) != null" class="item padding-main br-t-f9 single-text">
                         <text>{{$t('article-detail.article-detail.728374')}}</text>
-                        <text class="cp" @tap="text_copy_event" :data-value="shop.open_week_name + $t('design.design.gv16tj') + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{shop.open_week_name}}{{$t('design.design.882220')}}{{shop.close_time}}</text>
+                        <text class="cp" @tap="text_copy_event" :data-value="shop.open_week_name + $t('design.design.gv16tj') + shop.close_week_name + '，' + shop.open_time + '-' + shop.close_time">{{ shop.open_week_name }}{{$t('detail.detail.324777')}}{{ shop.close_week_name }}，{{ shop.open_time }}-{{ shop.close_time }}</text>
                     </view>
-                    <view v-if="(shop.service_weixin_qrcode || null) != null || (shop.service_line_qrcode || null) != null" class="oh qrcode tc br-t padding-top-main">
+                    <view v-if="(shop.service_weixin_qrcode || null) != null || (shop.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
                         <view v-if="(shop.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
                             <image class="radius cp" :src="shop.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="shop.service_weixin_qrcode"></image>
                             <view>{{$t('detail.detail.54k10s')}}</view>

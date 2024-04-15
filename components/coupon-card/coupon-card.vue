@@ -174,7 +174,7 @@
     }
 
     .card-right.failure {
-        background: #ffffff;
+        background: linear-gradient(95deg, #f8f8f8 0%, #e0dede 100%);
     }
 
     .card-info.failure {

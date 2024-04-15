@@ -19,10 +19,7 @@
             <!-- 回到店铺 -->
             <view v-if="(shop || null) != null" class="bottom-fixed">
                 <view class="bottom-line-exclude">
-                    <button class="bg-main br-main cr-white round dis-block text-size" type="default" hover-class="none" size="mini" @tap="shop_event" :data-value="shop.url">
-                        <uni-icons type="shop" size="20" color="#fff" class="pa back-icon"></uni-icons>
-                        <text class="va-m margin-left-xxxl">{{$t('index.index.i78v36')}}</text>
-                    </button>
+                    <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" @tap="shop_event" :data-value="shop.url">{{$t('index.index.i78v36')}}</button>
                 </view>
             </view>
         </scroll-view>
