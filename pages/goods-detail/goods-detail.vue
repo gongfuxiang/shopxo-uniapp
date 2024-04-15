@@ -902,7 +902,7 @@
                                 buy_button: data.buy_button || null,
                                 top_nav_title_data: data.middle_tabs_nav || [],
                                 plugins_seckill_data: plugins_seckill_data,
-                                plugins_seckill_is_valid:  (plugins_seckill_data || null) != null && (plugins_seckill_data.time || null) != null && plugins_seckill_data.time.status == 1,
+                                plugins_seckill_is_valid:  plugins_seckill_data != null && (plugins_seckill_data.time || null) != null && plugins_seckill_data.time.status == 1,
                                 plugins_coupon_data: data.plugins_coupon_data || null,
                                 quick_nav_cart_count: data.cart_total.buy_number || 0,
                                 plugins_salerecords_data: data.plugins_salerecords_data || null,

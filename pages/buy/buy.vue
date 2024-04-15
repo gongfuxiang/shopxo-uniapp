@@ -201,9 +201,9 @@
                     </view>
                     
                     <!-- 支付选择 -->
-                    <view v-if="(total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0) || ((plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0)" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
+                    <view v-if="(total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0) || plugins_coin_is_valid" class="payment-list border-radius-main bg-white oh padding-main spacing-mb">
                         <!-- 虚拟币支付 -->
-                        <block v-if="(plugins_coin_data || null) != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0">
+                        <block v-if="plugins_coin_is_valid">
                             <block v-for="(item, index) in plugins_coin_data.accounts_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" @tap="plugins_coin_payment_event">
                                     <view class="item-content pr flex-row align-c">
@@ -223,7 +223,7 @@
                             </block>
                         </block>
                         <!-- 支付方式 -->
-                        <view v-if="total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0" class="br-t-f9">
+                        <view v-if="total_price > 0 && common_order_is_booking != 1 && payment_list.length > 0" :class="(plugins_coin_is_valid ? 'br-t-f9' : '')">
                             <view v-for="(item, index) in payment_list" :key="index">
                                 <view class="item flex-row jc-sb align-c" :data-value="item.id" :data-index="index" @tap="payment_event">
                                     <view class="item-content pr flex-1 flex-width">
@@ -401,6 +401,7 @@
                 plugins_freightfee_choice_data: {},
                 // 虚拟币
                 plugins_coin_data: null,
+                plugins_coin_is_valid: false,
                 plugins_coin_payment_id: 0,
 
                 // 支付弹窗参数
@@ -613,6 +614,7 @@
                                 }
 
                                 // 设置数据
+                                var plugins_coin_data = data.plugins_coin_data || null;
                                 this.setData({
                                     goods_list: goods_list,
                                     total_price: data.base.actual_price,
@@ -624,7 +626,8 @@
                                     plugins_points_data: data.plugins_points_data || null,
                                     plugins_realstore_data: data.plugins_realstore_data || null,
                                     plugins_intellectstools_data: data.plugins_intellectstools_data || null,
-                                    plugins_coin_data: data.plugins_coin_data || null,
+                                    plugins_coin_data: plugins_coin_data,
+                                    plugins_coin_is_valid:  plugins_coin_data != null && (plugins_coin_data.accounts_list || null) != null &&  plugins_coin_data.accounts_list.length > 0,
                                 });
 
                                 // 可使用积分数量
