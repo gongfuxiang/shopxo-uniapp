@@ -187,10 +187,11 @@
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             var data = res.data.data;
+                            var periods_list = data.periods_list || [];
                             var data_base = data.config || null;
                             var current = data.current || null;
-                            var time = current == null ? null : current.time || null;
-                            var goods = current == null ? [] : current.goods || [];
+                            var time = (current == null) ? null : current.time || null;
+                            var goods = (current == null) ? [] : current.goods || [];
                             var is_valid = time == null ? 0 : time.status <= 1 ? 1 : 0;
                             if (goods.length > 0) {
                                 for (var i in goods) {
@@ -198,13 +199,13 @@
                                 }
                             }
                             this.setData({
-                                periods_list: data.periods_list,
+                                periods_list: periods_list,
                                 data_base: data_base,
                                 current: current,
                                 time: time,
-                                time_first_text: time.time_first_text,
-                                seckill_status: data.periods_list[this.nav_active_index].time.status,
-                                isOpenGridBtnSet: data.periods_list[this.nav_active_index].time.status === 1 ? false : true,
+                                time_first_text: (time == null) ? '' : time.time_first_text,
+                                seckill_status: (periods_list.length > 0) ? data.periods_list[this.nav_active_index].time.status : 3,
+                                isOpenGridBtnSet: (periods_list.length > 0) ? (data.periods_list[this.nav_active_index].time.status === 1 ? false : true) : false,
                                 goods: goods,
                                 is_valid: is_valid,
                                 data_list_loding_msg: '',
