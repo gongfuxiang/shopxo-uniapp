@@ -9,7 +9,7 @@
                     <block v-if="(cart || null) != null && (cart.data || null) != null && cart.data.length > 0">
                         <view class="oh br-b padding-vertical-main padding-horizontal-main text-size-xs">
                             <text class="va-m cr-base">{{$t('goods-category.goods-category.ico62g')}}</text>
-                            <view class="dis-inline-block margin-left-xl">
+                            <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="dis-inline-block margin-left-xl">
                                 <text class="cr-red">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                                 <view class="va-m dis-inline-block br-green cr-green round padding-horizontal-sm padding-vertical-xs cp" @tap="buy_use_type_event">
                                     <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
@@ -60,7 +60,7 @@
                     </block>
                     <block v-else>
                         <component-no-data propStatus="0" :propMsg="$t('realstore-cart.realstore-cart.2dc65q')"></component-no-data>
-                        <view class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
+                        <view v-if="(info.buy_use_type_list || null) != null && info.buy_use_type_list.length > 0" class="padding-vertical-xxxl margin-vertical-xxxl tc text-size-xs">
                             <text class="cr-red va-m">{{$t('realstore-cart.realstore-cart.v437n6')}}</text>
                             <view class="va-m dis-inline-block br-green cr-green round padding-horizontal padding-vertical-xs cp" @tap="buy_use_type_event">
                                 <text class="va-m">{{$t('realstore-cart.realstore-cart.6bmc34')}}{{info.buy_use_type_list[buy_use_type_index]['name']}})</text>
@@ -175,6 +175,8 @@
                 // 操作按钮是否加载中
                 realstore_goods_data_cart_loading: true,
                 realstore_goods_data_cart_status: false,
+                realstore_goods_data_cart_type: null,
+                realstore_goods_data_cart_value: null,
                 realstore_goods_data_cart_text: this.$t('realstore-cart.realstore-cart.50lf68'),
             };
         },
@@ -214,7 +216,6 @@
                         info: info,
                         base: params.base || null,
                         source: params.source
-                        
                     });
 
                     // 商品来源
@@ -227,12 +228,22 @@
                         if(this.source != 'system-cart') {
                             // 店铺状态正常、是否指定商品、如果不存在操作按钮、不可以加入购物车则置空
                             var cart_status = false;
+                            var cart_type = '';
                             var cart_text = '';
                             var realstore_goods_data = params.realstore_goods_data || null;
                             if(realstore_goods_data != null && (realstore_goods_data.buy_button || null) != null) {
                                 // 是否存在错误
                                 if((realstore_goods_data.buy_button.error || null) != null) {
                                     cart_text = realstore_goods_data.buy_button.error;
+                                    // 是否展示型、门店存在客服电话则展示电话号码
+                                    if((realstore_goods_data.buy_button.data || null) != null && (realstore_goods_data.buy_button['data'][0] || null) != null && realstore_goods_data.buy_button['data'][0]['type'] == 'show') {
+                                        var cart_value = ((info.service_data || null) == null ? info.contacts_tel : (info.service_data.service_tel || info.contacts_tel)) || null;
+                                        if(cart_value != null) {
+                                            cart_status = true;
+                                            cart_type = 'show';
+                                            cart_text = this.$t('cart.cart.31h34v');
+                                        }
+                                    }
                                 } else {
                                     // 匹配是否可以加入购物车操作
                                     if(realstore_goods_data.buy_button.data.length > 0) {
@@ -241,6 +252,7 @@
                                         for(var i in buy_button) {
                                             if(arr.indexOf(buy_button[i]['type']) != -1) {
                                                 cart_status = true;
+                                                cart_type = buy_button[i]['type'];
                                                 cart_text = this.$t('realstore-cart.realstore-cart.b27ln3');
                                                 break;
                                             }
@@ -251,6 +263,8 @@
                             this.setData({
                                 realstore_goods_data: realstore_goods_data,
                                 realstore_goods_data_cart_status: cart_status,
+                                realstore_goods_data_cart_type: cart_type,
+                                realstore_goods_data_cart_value: cart_value,
                                 realstore_goods_data_cart_loading: false,
                                 realstore_goods_data_cart_text: cart_text,
                             });
@@ -351,7 +365,6 @@
                     // 购物车是否存在商品
                     if((this.cart || null) == null || parseInt(this.cart.buy_number || 0) == 0) {
                         btn_status = false;
-                        btn_text = this.$t('realstore-cart.realstore-cart.3qmxs7');
                     } else {
                         // 起步价
                         var msg = this.starting_price_handle();
@@ -406,6 +419,13 @@
 
             // 加入购物车
             cart_submit_event(e) {
+                // 是否展示模式、则拨打电话
+                if(this.realstore_goods_data_cart_type == 'show' && (this.realstore_goods_data_cart_value || null) != null) {
+                    app.globalData.call_tel(this.realstore_goods_data_cart_value);
+                    return false;
+                }
+
+                // 门店商品是否正常
                 if((this.realstore_goods_data || null) == null) {
                     app.globalData.showToast(this.$t('realstore-cart.realstore-cart.20epzm'));
                     return false;

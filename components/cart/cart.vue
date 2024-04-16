@@ -26,7 +26,7 @@
                             <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-il" color="#666"></iconfont>
                         </view>
                     </view>
-                    <view class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
+                    <view v-if="(plugins_realstore_info.buy_use_type_list || null) != null && plugins_realstore_info.buy_use_type_list.length > 0" class="pa top-0 right-0 padding-main cp" @tap="realstore_buy_type_switch_event">
                         <text class="cr-base">{{ plugins_realstore_info.buy_use_type_list[plugins_realstore_buy_use_type_index]['name'] }}</text>
                         <view class="dis-inline-block va-m margin-left-xs">
                             <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il" color="#666"></iconfont>
