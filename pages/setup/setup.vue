@@ -26,7 +26,7 @@
                     </view>
 
                     <!-- 第三方账户绑定-->
-                    <!-- #ifdef APP || H5 || MP -->
+                    <!-- #ifdef APP || H5 -->
                     <block v-if="(plugins_thirdpartylogin_data || null) != null">
                         <view v-for="(item, index) in plugins_thirdpartylogin_data" :key="index">
                             <block v-if="(item.bind_user_id || 0) == 0">
