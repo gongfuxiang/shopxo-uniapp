@@ -196,9 +196,9 @@
      */
     .loading-logo-content {
         position: absolute;
-        width: 130rpx;
-        height: 130rpx;
-        left: calc(50% - 75rpx);
+        width: 140rpx;
+        height: 140rpx;
+        left: calc(50% - 80rpx);
         top: 0;
         border-radius: 50%;
         overflow: hidden;
@@ -209,8 +209,8 @@
         content: '';
         display: block;
         position: absolute;
-        left: 24rpx;
-        top: 24rpx;
+        left: 30rpx;
+        top: 30rpx;
         width: 80rpx;
         height: 80rpx;
         opacity: 0.8;
@@ -222,10 +222,10 @@
         content: '';
         display: block;
         position: absolute;
-        width: 154rpx;
-        height: 154rpx;
-        left: -12rpx;
-        top: -12rpx;
+        width: 168rpx;
+        height: 168rpx;
+        left: -14rpx;
+        top: -14rpx;
         opacity: 0.8;
         background-size: contain;
         background-position: center center;
