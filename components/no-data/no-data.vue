@@ -42,7 +42,7 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 static_dir: '/static/images/common/',
                 loading_logo_border: app.globalData.data.static_url+'static/common/svg/loading-border.svg',
-                loading_logo: app.globalData.data.static_url+'favicon.ico',
+                loading_logo: app.globalData.get_application_logo_square() || app.globalData.data.static_url+'favicon.ico',
                 loading_content_type: app.globalData.data.loading_content_type,
                 title: app.globalData.get_application_title(),
                 network_type_value: '',
@@ -196,9 +196,9 @@
      */
     .loading-logo-content {
         position: absolute;
-        width: 4rem;
-        height: 4rem;
-        left: calc(50% - 2rem);
+        width: 130rpx;
+        height: 130rpx;
+        left: calc(50% - 75rpx);
         top: 0;
         border-radius: 50%;
         overflow: hidden;
@@ -209,10 +209,10 @@
         content: '';
         display: block;
         position: absolute;
-        left: 0.7rem;
-        top: 0.7rem;
-        width: 2.5rem;
-        height: 2.5rem;
+        left: 24rpx;
+        top: 24rpx;
+        width: 80rpx;
+        height: 80rpx;
         opacity: 0.8;
         background-size: contain;
         background-position: center center;
@@ -222,10 +222,10 @@
         content: '';
         display: block;
         position: absolute;
-        width: 4.8rem;
-        height: 4.8rem;
-        left: -0.4rem;
-        top: -0.4rem;
+        width: 154rpx;
+        height: 154rpx;
+        left: -12rpx;
+        top: -12rpx;
         opacity: 0.8;
         background-size: contain;
         background-position: center center;

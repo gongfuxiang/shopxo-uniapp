@@ -2625,28 +2625,45 @@
 
             // 页面导航标题处理
             set_pages_navigation_bar_title() {
+                // 标题
+                var value = null;
                 // 当前平台
                 var client_value = this.application_client_type();
                 // 当前页面地址
                 var url = this.current_page(false);
-                // 支付宝平台当前tab页面不增加标题
-                if(client_value == 'alipay' && this.data.tabbar_pages.indexOf('/'+url) == -1) {
-                    return false;
+                // 支付宝平台以下条件不增加标题
+                if(client_value == 'alipay') {
+                    // 自定义头页面
+                    var pages_always = [
+                        'pages/plugins/realstore/detail/detail',
+                        'pages/plugins/seckill/index/index',
+                        'pages/plugins/points/index/index',
+                        'pages/plugins/coupon/index/index',
+                        'pages/plugins/signin/detail/detail',
+                        'pages/plugins/membershiplevelvip/index/index',
+                    ];
+                    // 当前tab页面
+                    if(this.data.tabbar_pages.indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                        value = '';
+                    }
                 }
-                // 解析处理key
-                var arr = url.split('/');
-                    arr = arr.slice(1);
-                    arr = arr.slice(0, -1);
-                var key = 'pages.'+arr.join('-');
-                // 读取语言
-                var value = i18n.t(key);
-                // 首页则读取当前应用名称
-                if(this.data.tabbar_pages[0] == '/'+url) {
-                    value = this.get_application_title();
+                // 还没有标题则根据页面自动处理
+                if(value === null) {
+                    // 解析处理key
+                    var arr = url.split('/');
+                        arr = arr.slice(1);
+                        arr = arr.slice(0, -1);
+                    var key = 'pages.'+arr.join('-');
+                    // 读取语言
+                    var value = i18n.t(key);
+                    // 首页则读取当前应用名称
+                    if(this.data.tabbar_pages[0] == '/'+url) {
+                        value = this.get_application_title();
+                    }
                 }
                 // 设置标题
                 uni.setNavigationBarTitle({
-                    title: value
+                    title: value || ''
                 });
             },
 

@@ -5,13 +5,17 @@
             <view class="pr oh">
                 <image :src="signin_static_url + 'signin-bg.png'" mode="widthFix" class="wh-auto"></image>
                 <view class="signin-opration-group pa flex-col cr-white">
-                    <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row">
-                        <button type="default" class="content" @tap="share_event">
-                            <iconfont name="icon-qiandao-fenxiang" propClass="pr top-sm" size="32rpx"></iconfont>{{$t('common.share')}}</button>
+                    <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row"  @tap="share_event">
+                        <view class="content">
+                            <iconfont name="icon-qiandao-fenxiang" propClass="pr top-xs" size="32rpx"></iconfont>
+                            <text>{{$t('common.share')}}</text>
+                        </view>
                     </view>
                     <view v-if="(data_base.is_team || 0) == 1 && (user || null) != null && data.user_id != user.id" class="team oh flex-row" @tap="team_event">
                         <view class="content">
-                            <iconfont name="icon-qiandao-zudui" propClass="pr top-xs" size="34rpx"></iconfont>{{$t('detail.detail.8ua11k')}}</view>
+                            <iconfont name="icon-qiandao-zudui" propClass="pr top-xs" size="34rpx"></iconfont>
+                            <text>{{$t('detail.detail.8ua11k')}}</text>
+                        </view>
                     </view>
                 </view>
                 <view class="signin-btn pa left-0 right-0 tc">

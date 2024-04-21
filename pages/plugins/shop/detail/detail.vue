@@ -327,10 +327,6 @@
                                         img: this.shop.logo,
                                     },
                                 });
-                                // 标题名称
-                                uni.setNavigationBarTitle({
-                                    title: this.shop.name,
-                                });
                             }
                         } else {
                             this.setData({

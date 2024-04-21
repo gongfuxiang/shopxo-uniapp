@@ -433,7 +433,7 @@
                                     },
                                 });
 
-                                // #ifdef APP
+                                // #ifndef MP-ALIPAY
                                 // 标题名称
                                 uni.setNavigationBarTitle({
                                     title: this.info.name,

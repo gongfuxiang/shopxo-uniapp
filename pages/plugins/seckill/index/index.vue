@@ -222,12 +222,14 @@
                                         img: (this.slider || null) != null && this.slider.length > 0 ? this.slider[0]['images_url'] : '',
                                     },
                                 });
+                                // #ifndef MP-ALIPAY
                                 // 导航名称
                                 if ((this.data_base.application_name || null) != null) {
                                     uni.setNavigationBarTitle({
                                         title: this.data_base.application_name,
                                     });
                                 }
+                                // #endif
                             }
                         } else {
                             this.setData({

@@ -136,12 +136,15 @@
                                         path: '/pages/plugins/coupon/index/index',
                                     },
                                 });
+
+                                // #ifndef MP-ALIPAY
                                 // 导航名称
                                 if ((this.data_base.application_name || null) != null) {
                                     uni.setNavigationBarTitle({
                                         title: this.data_base.application_name,
                                     });
                                 }
+                                // #endif
                             }
                         } else {
                             this.setData({

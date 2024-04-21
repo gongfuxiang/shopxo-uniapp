@@ -475,7 +475,7 @@
                 </view>
             </block>
             <view v-else class="goods-buy-nav oh wh-auto bg-white br-top-shadow bottom-line-exclude flex-row jc-sb align-c">
-                <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main" type="default" :loading="true" disabled>{{ $t('realstore-cart.realstore-cart.50lf68') }}</button>
+                <button class="bg-white br-white round tc text-size-md wh-auto margin-horizontal-main" type="default" :loading="true">{{ $t('realstore-cart.realstore-cart.50lf68') }}</button>
             </view>
 
             <!-- 商品参数弹窗 -->
