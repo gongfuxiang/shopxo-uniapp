@@ -14,6 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-down-mark:before {
+  content: "\e729";
+}
+
 .icon-sigh-o:before {
   content: "\e71f";
 }

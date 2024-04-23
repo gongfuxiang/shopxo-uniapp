@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="plugins-goods" :class="data.style_type == 2 ? 'bg-white border-radius-main padding-main spacing-mb' : ''" v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
+        <view class="plugins-goods" :class="data.style_type == 2 ? propStyleTypeTowClass : ''" v-if="(data || null) != null && (data.goods_list || null) != null && data.goods_list.length > 0">
             <view v-if="(data.title || null) != null || (data.vice_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                 <view class="title-left">
                     <text v-if="(data.title || null) != null" class="text-wrapper" :class="data.style_type == 2 ? '' : 'title-left-border'" :style="'color:' + (data.color || '#333') + ';'">{{ data.title }}</text>
@@ -29,7 +29,7 @@
                                             </view>
                                         </block>
                                         <block v-if="(item.is_error || 0) == 0 && is_show_cart">
-                                            <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                            <view v-if="propOpenCart" class="bg-white right-cart-icon pr" :data-index="index" @tap.stop="goods_cart_event">
                                                 <iconfont name="icon-cart-inc" size="40rpx" :color="theme_color"></iconfont>
                                                 <view class="cart-badge-icon pa">
                                                     <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -131,7 +131,7 @@
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
                                                 <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-xs flex-row align-c">
                                                     <block v-if="(item.is_error || 0) == 0 && is_show_cart">
-                                                        <view v-if="propOpenCart" class="bg-white right-cart-icon" :data-index="index" @tap.stop="goods_cart_event">
+                                                        <view v-if="propOpenCart" class="bg-white right-cart-icon pr" :data-index="index" @tap.stop="goods_cart_event">
                                                             <iconfont name="icon-cart-inc" size="28rpx" :color="theme_color" propClass="pr top-xs margin-right-xs"></iconfont>
                                                             <view class="cart-badge-icon pa">
                                                                 <component-badge :propNumber="item.user_cart_count || 0"></component-badge>
@@ -214,6 +214,11 @@
             propData: {
                 type: [Array, Object],
                 default: [],
+            },
+            // 模式2默认class
+            propStyleTypeTowClass: {
+                type: String,
+                default: 'bg-white border-radius-main padding-main spacing-mb',
             },
             // 更多url地址
             propMoreUrlKey: {

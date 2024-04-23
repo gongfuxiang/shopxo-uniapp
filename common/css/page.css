@@ -1027,7 +1027,7 @@ button[disabled].bg-grey {
     width: calc(100% - 220rpx);
 }
 .goods-data-list .base .base-bottom {
-    width: calc(100% - 260rpx);
+    width: calc(100% - 60rpx);
 }
 .goods-data-list .error-msg {
     top: 24rpx;

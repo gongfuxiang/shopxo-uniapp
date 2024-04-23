@@ -162,7 +162,7 @@
 
                         <!-- 魔方 - 插件 -->
                         <view v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
-                            <component-magic-list :propData="{...plugins_magic_data, ...{random: random_value}}" :propCurrencySymbol="currency_symbol"></component-magic-list>
+                            <component-magic-list :propData="{...plugins_magic_data, ...{random: random_value}}" :propCurrencySymbol="currency_symbol" :propLabel="plugins_label_data"></component-magic-list>
                         </view>
                     </block>
                 </block>
