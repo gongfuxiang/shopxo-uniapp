@@ -1,23 +1,23 @@
 <template>
     <view :class="theme_view">
         <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
-            <view v-for="(item, index) in data_goods_list" :key="index" class="border-radius-main oh spacing-mb">
-                <block v-if="(item.data || null) != null && item.data.length > 0">
+            <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb">
+                <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || null) != null) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
                     <!-- 上下滚动 -->
-                    <view v-if="item.show_style == 0" class="hot-list flex-row flex-warp padding-vertical-main" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : 'background: #fff;'">
+                    <view v-if="item.show_style == 0" class="hot-list flex-row flex-warp padding-vertical-main">
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <block v-if="(items.data || null) != null && items.data.length > 0">
                                 <view :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === indexs + 1 ? 'wh-auto' : 'flex-width-half'">
                                     <view class="padding-horizontal-main">
                                         <view class="flex-row align-c margin-bottom-xs" :data-value="items.url" @tap="url_event">
-                                            <text class="text-size fw-b single-text">{{ items.title }}</text>
+                                            <text :class="'text-size fw-b single-text cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')">{{ items.title }}</text>
                                             <view class="hot-go margin-left-sm">
                                                 <block v-if="(items.icon || null) !== null">
-                                                    <image :src="items.icon" mode="heightFix" class="ht-auto"> </image>
+                                                    <image :src="items.icon" mode="heightFix" class="ht-auto"></image>
                                                 </block>
                                             </view>
                                         </view>
-                                        <view class="cr-grey-9 text-size-xs margin-bottom-sm">{{ items.describe }}</view>
+                                        <view :class="'text-size-xs margin-bottom-sm cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
                                         <swiper :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === indexs + 1 ? 'swiper-1' : 'swiper-2'" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">
@@ -28,7 +28,7 @@
                                                                 <view v-if="(gv.show_field_price_status || 0) == 1" class="price tc single-text">
                                                                     <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                                     <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
-                                                                    <text class="cr-grey va-m text-size-xss">{{ gv.show_price_unit }}</text>
+                                                                    <text :class="'va-m text-size-xss cr-'+(((item.is_text_white || null) != null) ? 'price' : 'grey')">{{ gv.show_price_unit }}</text>
                                                                 </view>
                                                             </view>
                                                         </view>
@@ -43,15 +43,15 @@
                     </view>
 
                     <!-- 1切换滚动、2切换九宫格、3切换滚动 -->
-                    <view v-else-if="item.show_style == 1 || item.show_style == 2 || item.show_style == 3" class="switch-tabs-item-list pr padding-top-main" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 50%);'">
+                    <view v-else-if="item.show_style == 1 || item.show_style == 2 || item.show_style == 3" class="switch-tabs-item-list pr padding-top-main">
                         <view class="scroll-view-horizontal padding-left-main">
                             <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'switch-tabs-item-' + show_style1_active_index">
                                 <block v-for="(items, indexs) in item.data" :key="indexs">
                                     <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-indexs="indexs" @tap="switch_tabs_event">
                                         <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFit"></image>
-                                        <text class="cr-white text-size-md va-m" :class="show_style1_active_index == indexs ? 'text-size' : ''">{{ items.title }} </text>
+                                        <text :class="'text-size-md va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+(show_style1_active_index == indexs ? 'text-size cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
                                         <view class="lh-xs">
-                                            <iconfont name="icon-down-mark" size="36rpx" :color="show_style1_active_index == indexs ? '#fff' : 'transparent'" propClass="lh-xs"></iconfont>
+                                            <iconfont name="icon-down-mark" size="36rpx" :color="show_style1_active_index == indexs ? (((item.is_text_white || null) != null) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
                                         </view>
                                     </view>
                                 </block>
@@ -59,18 +59,18 @@
                         </view>
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <view v-if="show_style1_active_index == indexs">
-                                <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cr-white cp pa top-xxxxxl right-0 padding-top-xs">
-                                    <text>{{ $t('common.more') }}</text>
-                                    <iconfont name="icon-arrow-right" color="#fff"></iconfont>
+                                <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cp pa top-xxxxxl right-0 padding-top-xs">
+                                    <text :class="'cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
+                                    <iconfont name="icon-arrow-right" :color="((item.is_text_white || null) != null) ? '#f5f5f5' : '#999'"></iconfont>
                                 </view>
-                                <view v-if="(items.describe || null) != null" class="cr-white text-size-xs single-text padding-vertical-sm padding-horizontal-main">{{items.describe}}</view>
+                                <view v-if="(items.describe || null) != null" :class="'text-size-xs single-text padding-vertical-sm padding-horizontal-main cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{items.describe}}</view>
                                 <view :class="(item.show_style == 1 || item.show_style == 2) ? 'padding-horizontal-main padding-top-sm' : (item.show_style == 3 ? 'padding-top-xs padding-bottom-main' : '')">
                                     <component-goods-list :propData="{ style_type: parseInt(item.show_style)-1, goods_list: items.goods_list }" :propLabel="propLabel" :propCurrencySymbol="propCurrencySymbol" :propIsAutoPlay="(items.rolling_time || null) != null" :propIsCartParaCurve="true" propSource="index" propStyleTypeTowClass="border-radius-main padding-horizontal-main padding-top-xs"></component-goods-list>
                                 </view>
                             </view>
                         </block>
                     </view>
-                </block>
+                </view>
             </view>
         </view>
     </view>
@@ -189,57 +189,56 @@
 </script>
 
 <style scoped>
-    .hot-list {
+    .plugins-magic-content .hot-list {
         gap: 10rpx 0;
     }
-    .hot-list > .flex-width-half {
+    .plugins-magic-content .hot-list > .flex-width-half {
         margin-bottom: 0;
     }
-    .hot-list > .flex-width-half:nth-last-of-type(1),
-    .hot-list > .flex-width-half:nth-last-of-type(2) {
+    .plugins-magic-content .hot-list > .flex-width-half:nth-last-of-type(1),
+    .plugins-magic-content .hot-list > .flex-width-half:nth-last-of-type(2) {
         margin-bottom: 0;
     }
-    .hot-list > .flex-width-half:nth-child(even) {
+    .plugins-magic-content .hot-list > .flex-width-half:nth-child(even) {
         position: relative;
     }
-    .hot-list > .flex-width-half:nth-child(even)::before {
+    .plugins-magic-content .hot-list > .flex-width-half:nth-child(even)::before {
         content: '';
         height: 80%;
         width: 2rpx;
-        border-left: 2rpx dashed #eeeeee;
+        border-left: 2rpx dashed #f5f5f5;
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
     }
-    .hot-list .swiper-2 {
+    .plugins-magic-content .hot-list .swiper-2 {
         height: 176rpx;
     }
-    .hot-list .swiper-2 .swiper-img {
+    .plugins-magic-content .hot-list .swiper-2 .swiper-img {
         height: 124rpx;
     }
-    .hot-list .swiper-1 {
+    .plugins-magic-content .hot-list .swiper-1 {
         height: 187rpx;
     }
-    .hot-list .swiper-1 .swiper-img {
+    .plugins-magic-content .hot-list .swiper-1 .swiper-img {
         height: 135rpx;
     }
-    .hot-go {
+    .plugins-magic-content .hot-go {
         height: 34rpx;
         line-height: 34rpx;
     }
-    .flex-width-half-2 {
+    .plugins-magic-content .flex-width-half-2 {
         width: 25%;
     }
-
 
     /**
      * 切换滚动、切换九宫格、切换滚动
      */
-    .switch-tabs-item-list > .scroll-view-horizontal {
+    .plugins-magic-content .switch-tabs-item-list > .scroll-view-horizontal {
         padding-right: 140rpx;
     }
-    .switch-tabs-item-list .switch-tabs-item-icon {
+    .plugins-magic-content .switch-tabs-item-list .switch-tabs-item-icon {
         width: 32rpx !important;
         height: 32rpx !important;
     }
