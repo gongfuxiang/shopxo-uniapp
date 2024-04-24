@@ -126,7 +126,7 @@
                                     <view class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr">
                                         <!-- 商品主体内容 -->
                                         <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">
-                                            <image class="goods-img dis-block wh-auto" :src="item.images" mode="aspectFit"></image>
+                                            <image class="goods-img dis-block wh-auto" :src="item.images" mode="scaleToFill"></image>
                                             <view class="padding-left-sm padding-right-sm margin-top-sm">
                                                 <view class="single-text text-size-xs">{{ item.title }}</view>
                                                 <view v-if="(item.show_field_price_status || 0) == 1" class="margin-top-xs flex-row align-c">

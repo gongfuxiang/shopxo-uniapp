@@ -4,10 +4,10 @@
             <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb">
                 <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || null) != null) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
                     <!-- 上下滚动 -->
-                    <view v-if="item.show_style == 0" class="hot-list flex-row flex-warp padding-vertical-main">
+                    <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-warp padding-vertical-main '+(((item.is_text_white || null) != null) ? 'is-text-white' : '')">
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <block v-if="(items.data || null) != null && items.data.length > 0">
-                                <view :class="items.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === indexs + 1 ? 'wh-auto' : 'flex-width-half'">
+                                <view :class="'group-item '+(item.data.length%2 != 0 && item.data.length-1 === indexs ? 'wh-auto' : 'flex-width-half')">
                                     <view class="padding-horizontal-main">
                                         <view class="flex-row align-c margin-bottom-xs" :data-value="items.url" @tap="url_event">
                                             <text :class="'text-size fw-b single-text cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')">{{ items.title }}</text>
@@ -17,18 +17,18 @@
                                                 </block>
                                             </view>
                                         </view>
-                                        <view :class="'text-size-xs margin-bottom-sm cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
-                                        <swiper :class="items.data.length % 2 == 0 ? 'swiper-2' : items.data.length === indexs + 1 ? 'swiper-1' : 'swiper-2'" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
+                                        <view :class="'text-size-xs margin-bottom-xs cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
+                                        <swiper class="swiper-list border-radius-main oh" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">
-                                                    <view class="flex-row">
-                                                        <view v-for="(gv, gi) in itemss" :key="gi" :class="item.data.length % 2 == 0 ? 'flex-width-half' : items.data.length === indexs + 1 ? 'flex-width-half-2' : 'flex-width-half'">
+                                                    <view :class="'flex-row gap-sm goods-item-number-'+itemss.length">
+                                                        <view v-for="(gv, gi) in itemss" :key="gi" :class="'bg-white border-radius-main oh flex-width-half '+(itemss.length % 2 != 0 && itemss.length-1 == gi ? 'wh-auto' : '')">
                                                             <view class="tc" :data-index="index" :data-indexs="indexs" :data-indexss="indexss" :data-gi="gi" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="goods_event">
-                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" mode="heightFix" class="swiper-img border-radius-sm"> </image>
-                                                                <view v-if="(gv.show_field_price_status || 0) == 1" class="price tc single-text">
+                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || null) != null) ? '' : 'border-radius-main')"> </image>
+                                                                <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text '+(((item.is_text_white || null) != null) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
                                                                     <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                                     <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
-                                                                    <text :class="'va-m text-size-xss cr-'+(((item.is_text_white || null) != null) ? 'price' : 'grey')">{{ gv.show_price_unit }}</text>
+                                                                    <text class="va-m text-size-xss cr-grey">{{ gv.show_price_unit }}</text>
                                                                 </view>
                                                             </view>
                                                         </view>
@@ -45,20 +45,20 @@
                     <!-- 1切换滚动、2切换九宫格、3切换滚动 -->
                     <view v-else-if="item.show_style == 1 || item.show_style == 2 || item.show_style == 3" class="switch-tabs-item-list pr padding-top-main">
                         <view class="scroll-view-horizontal padding-left-main">
-                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'switch-tabs-item-' + show_style1_active_index">
+                            <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'switch-tabs-item-' + (show_style1_active_index[index] || 0)">
                                 <block v-for="(items, indexs) in item.data" :key="indexs">
-                                    <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-indexs="indexs" @tap="switch_tabs_event">
+                                    <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-index="index" :data-indexs="indexs" @tap="switch_tabs_event">
                                         <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFit"></image>
-                                        <text :class="'text-size-md va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+(show_style1_active_index == indexs ? 'text-size cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
+                                        <text :class="'text-size-md va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'text-size cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
                                         <view class="lh-xs">
-                                            <iconfont name="icon-down-mark" size="36rpx" :color="show_style1_active_index == indexs ? (((item.is_text_white || null) != null) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
+                                            <iconfont name="icon-down-mark" size="36rpx" :color="(show_style1_active_index[index] || 0) == indexs ? (((item.is_text_white || null) != null) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
                                         </view>
                                     </view>
                                 </block>
                             </scroll-view>
                         </view>
                         <block v-for="(items, indexs) in item.data" :key="indexs">
-                            <view v-if="show_style1_active_index == indexs">
+                            <view v-if="(show_style1_active_index[index] || 0) == indexs">
                                 <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cp pa top-xxxxxl right-0 padding-top-xs">
                                     <text :class="'cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
                                     <iconfont name="icon-arrow-right" :color="((item.is_text_white || null) != null) ? '#f5f5f5' : '#999'"></iconfont>
@@ -87,7 +87,7 @@
                 theme_color: app.globalData.get_theme_color(),
                 theme_color_light: app.globalData.get_theme_color(null, true),
                 data_goods_list: [],
-                show_style1_active_index: 0,
+                show_style1_active_index: {},
             };
         },
         props: {
@@ -150,8 +150,10 @@
 
             // tabs切换
             switch_tabs_event(e) {
+                var temp = this.show_style1_active_index || {};
+                temp[e.currentTarget.dataset.index] = e.currentTarget.dataset.indexs;
                 this.setData({
-                    show_style1_active_index: e.currentTarget.dataset.indexs
+                    show_style1_active_index: temp
                 });
             },
 
@@ -206,30 +208,27 @@
         content: '';
         height: 80%;
         width: 2rpx;
-        border-left: 2rpx dashed #f5f5f5;
+        border-left: 2rpx solid rgb(232 232 232 / 28%);
         position: absolute;
         left: 0;
         top: 50%;
         transform: translateY(-50%);
     }
-    .plugins-magic-content .hot-list .swiper-2 {
-        height: 176rpx;
+    .plugins-magic-content .hot-list.is-text-white > .flex-width-half:nth-child(even)::before {
+        border-left: 2rpx solid rgb(255 245 245 / 9%);
     }
-    .plugins-magic-content .hot-list .swiper-2 .swiper-img {
-        height: 124rpx;
+    .plugins-magic-content .hot-list .swiper-list {
+        height: 216rpx;
     }
-    .plugins-magic-content .hot-list .swiper-1 {
-        height: 187rpx;
+    .plugins-magic-content .hot-list .swiper-list .swiper-item {
+        margin-top: 16rpx;
     }
-    .plugins-magic-content .hot-list .swiper-1 .swiper-img {
-        height: 135rpx;
+    .plugins-magic-content .hot-list .swiper-list .swiper-img {
+        height: 140rpx !important;
     }
     .plugins-magic-content .hot-go {
         height: 34rpx;
         line-height: 34rpx;
-    }
-    .plugins-magic-content .flex-width-half-2 {
-        width: 25%;
     }
 
     /**

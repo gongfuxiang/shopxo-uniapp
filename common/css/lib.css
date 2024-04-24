@@ -696,3 +696,26 @@
 .right-xxxxxl {
     right: 24rpx;
 }
+
+/**
+ * gap
+ */
+.gap-xs {
+    gap: 10rpx;
+}
+.gap-sm {
+    gap: 20rpx;
+}
+.gap-md,
+.gap {
+    gap: 30rpx;
+}
+.gap-lg {
+    gap: 40rpx;
+}
+.gap-xl {
+    gap: 50rpx;
+}
+.gap-xxl {
+    gap: 60rpx;
+}

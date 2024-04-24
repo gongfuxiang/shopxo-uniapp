@@ -49,7 +49,7 @@
                                             <block v-for="(item, index) in floor.blog_list" :key="index">
                                                 <swiper-item>
                                                     <view :data-value="item.url" @tap="url_event" class="item bg-white border-radius-main margin-right-main oh pr ht-auto pr cp">
-                                                        <image class="blog-img dis-block wh-auto" :src="item.cover" mode="aspectFill"></image>
+                                                        <image class="blog-img dis-block wh-auto" :src="item.cover" mode="scaleToFill"></image>
                                                         <view class="blog-title pa single-text cr-white padding-sm text-size-xs">{{ item.title }}</view>
                                                     </view>
                                                 </swiper-item>
