@@ -9,7 +9,7 @@
                             <block v-if="(items.data || null) != null && items.data.length > 0">
                                 <view :class="'group-item '+(item.data.length%2 != 0 && item.data.length-1 === indexs ? 'wh-auto' : 'flex-width-half')">
                                     <view class="padding-horizontal-main">
-                                        <view class="flex-row align-c margin-bottom-xs" :data-value="items.url" @tap="url_event">
+                                        <view class="flex-row align-c" :data-value="items.url" @tap="url_event">
                                             <text :class="'text-size fw-b single-text cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')">{{ items.title }}</text>
                                             <view class="hot-go margin-left-sm">
                                                 <block v-if="(items.icon || null) !== null">
@@ -17,7 +17,7 @@
                                                 </block>
                                             </view>
                                         </view>
-                                        <view :class="'text-size-xs margin-bottom-xs cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
+                                        <view :class="'text-size-xs margin-top-xs cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
                                         <swiper class="swiper-list border-radius-main oh" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">

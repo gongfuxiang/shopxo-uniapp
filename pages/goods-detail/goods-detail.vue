@@ -747,6 +747,8 @@
                 plugins_batchbuy_data: null,
                 // 问答插件
                 plugins_ask_data: null,
+                // 批发插件
+                plugins_wholesale_data: null,
             };
         },
 
