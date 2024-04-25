@@ -198,7 +198,7 @@
         position: absolute;
         width: 140rpx;
         height: 140rpx;
-        left: calc(50% - 80rpx);
+        left: calc(50% - 70rpx);
         top: 0;
         border-radius: 50%;
         overflow: hidden;
