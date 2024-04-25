@@ -49,7 +49,7 @@
                                 <block v-for="(items, indexs) in item.data" :key="indexs">
                                     <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-index="index" :data-indexs="indexs" @tap="switch_tabs_event">
                                         <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFit"></image>
-                                        <text :class="'text-size-md va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'text-size cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
+                                        <text :class="'text-size va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'fw-b cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
                                         <view class="lh-xs">
                                             <iconfont name="icon-down-mark" size="36rpx" :color="(show_style1_active_index[index] || 0) == indexs ? (((item.is_text_white || null) != null) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
                                         </view>
@@ -59,9 +59,11 @@
                         </view>
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <view v-if="(show_style1_active_index[index] || 0) == indexs">
-                                <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cp pa top-xxxxxl right-0 padding-top-xs">
-                                    <text :class="'cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
-                                    <iconfont name="icon-arrow-right" :color="((item.is_text_white || null) != null) ? '#f5f5f5' : '#999'"></iconfont>
+                                <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cp pa top-xxxxxl right-0">
+                                    <text :class="'text-size-xs va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
+                                    <view class="dis-inline-block va-m lh-xs">
+                                        <iconfont name="icon-arrow-right" size="24rpx" :color="((item.is_text_white || null) != null) ? '#f5f5f5' : '#999'"></iconfont>
+                                    </view>
                                 </view>
                                 <view v-if="(items.describe || null) != null" :class="'text-size-xs single-text padding-vertical-sm padding-horizontal-main cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{items.describe}}</view>
                                 <view :class="(item.show_style == 1 || item.show_style == 2) ? 'padding-horizontal-main padding-top-sm' : (item.show_style == 3 ? 'padding-top-xs padding-bottom-main' : '')">
