@@ -230,7 +230,7 @@
                                 log_list: data.log_list || [],
                                 accounts_summary: data.accounts_summary || 0,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                             });
 
                             // 操作导航
@@ -258,7 +258,7 @@
                             });
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {

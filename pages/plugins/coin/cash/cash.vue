@@ -197,7 +197,7 @@
                                 accounts_list: data.accounts_list || [],
                                 network_list: data.network_list || [],
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                             });
                         } else {
                             this.setData({
@@ -209,6 +209,10 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });

@@ -131,11 +131,11 @@
                                 editor_path_type: data.editor_path_type || '',
                                 accounts: data.data || {},
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                             });
                         } else {
                             this.setData({
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {

@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="transfer">
+        <view v-if="data_list_loding_status == 3" class="transfer">
             <view class="padding-main">
                 <view class="bg-white padding-main radius-md margin-bottom-main">
                     <view class="padding-vertical-sm border-radius-sm flex-row align-c">
@@ -52,10 +52,15 @@
                 </view>
             </view>
         </view>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        </block>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentNoData from '@/components/no-data/no-data';
     var accounts_static_url = app.globalData.get_static_url('coin', true) + 'app/';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -67,6 +72,8 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 accounts_static_url: accounts_static_url,
+                data_list_loding_status: 1,
+                data_list_loding_msg: '',
 
                 accounts_id: null,
                 receive_accounts_key: null,
@@ -77,6 +84,9 @@
                 note: '',
                 // pay_pwd: '',
             };
+        },
+        components: {
+            componentNoData
         },
         props: {},
 
@@ -125,8 +135,14 @@
                                 accounts: data.accounts || {},
                                 receive_accounts: data.receive_accounts || {},
                                 receive_accounts_id: data.receive_accounts ? data.receive_accounts.id : null,
+                                data_list_loding_msg: '',
+                                data_list_loding_status: 3,
                             });
                         } else {
+                            this.setData({
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
+                            });
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {
                                 app.globalData.showToast(res.data.msg);
                             }
@@ -134,6 +150,10 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
+                        this.setData({
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
+                        });
                         app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });

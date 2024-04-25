@@ -181,13 +181,13 @@
                                 accounts_list: data.accounts_list || [],
                                 accounts_summary: data.accounts_summary || 0,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                                 data_bottom_line_status: false,
                             });
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
-                                data_list_loding_status: 2,
+                                data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg,
                             });
                             if (app.globalData.is_login_check(res.data, this, 'get_data')) {

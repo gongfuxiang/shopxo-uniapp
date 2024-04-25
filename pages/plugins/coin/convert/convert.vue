@@ -179,7 +179,7 @@
                                 send_accounts_id: (send_accounts == null) ? 0 : send_accounts.id,
                                 receive_accounts_id: (receive_accounts == null) ? 0 : receive_accounts.id,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 0,
+                                data_list_loding_status: 3,
                             });
                             if (data.accounts_list.length > 0) {
                                 this.setData({
