@@ -65,9 +65,9 @@
                     </view>
                 </view>
 
-                <!-- 清除缓存、客服电话、账号注销 -->
+                <!-- 权限管理、清除缓存、客服电话、账号注销 -->
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
-                    <!-- #ifdef MP -->
+                    <!-- #ifdef MP || APP -->
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="open_setting_event">
                         <text>{{ $t('setup.setup.377uwg') }}</text>
                         <text class="fr cr-grey">{{ $t('setup.setup.5eltza') }}</text>
@@ -271,9 +271,14 @@
                 app.globalData.url_event(e);
             },
 
-            // 打开小程序权限中心
+            // 打开权限管理中心
             open_setting_event() {
+                // #ifdef MP
                 uni.openSetting();
+                // #endif
+                // #ifdef APP
+                uni.openAppAuthorizeSetting();
+                // #endif
             },
 
             // 客服电话
