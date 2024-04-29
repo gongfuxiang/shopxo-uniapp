@@ -21,7 +21,7 @@
                         </view>
                         <!-- 右上角 -->
                         <view class="head-right cr-black">
-                            <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" @tap="url_event">
+                            <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/setup/setup" data-login="0" @tap="url_event">
                                 <iconfont name="icon-applet-me-settings-acquiesce" size="46rpx"></iconfont>
                             </view>
                             <view class="item pr dis-inline-block margin-left-xxl" data-value="/pages/message/message" @tap="url_event">
@@ -540,7 +540,12 @@
 
             // url事件
             url_event(e) {
-                if(this.is_login()) {
+                var login = e.currentTarget.dataset.login;
+                if(login === undefined || login == 1) {
+                    if(this.is_login()) {
+                        app.globalData.url_event(e);
+                    }
+                } else {
                     app.globalData.url_event(e);
                 }
             },

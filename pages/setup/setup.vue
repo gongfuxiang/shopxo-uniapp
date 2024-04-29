@@ -1,8 +1,7 @@
 <template>
     <view :class="theme_view">
         <view class="page padding-main">
-            <!-- 主体内容 -->
-            <block v-if="data_list_loding_status == 3">
+            <block v-if="(user || null) != null">
                 <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
                     <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right oh" data-value="/pages/personal/personal" @tap="url_event">
                         <image :src="user.avatar || default_avatar" mode="widthFix" class="circle br fl user-avatar"></image>
@@ -64,65 +63,58 @@
                         <text class="fr cr-grey">{{ $t('setup.setup.izg78g') }}</text>
                     </view>
                 </view>
+            </block>
 
-                <!-- 权限管理、清除缓存、客服电话、账号注销 -->
-                <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
-                    <!-- #ifdef MP || APP -->
-                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="open_setting_event">
-                        <text>{{ $t('setup.setup.377uwg') }}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.5eltza') }}</text>
+            <!-- 权限管理、清除缓存、客服电话、账号注销 -->
+            <view class="padding-horizontal-main border-radius-main bg-white oh spacing-mb">
+                <!-- #ifdef MP || APP -->
+                <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="open_setting_event">
+                    <text>{{ $t('setup.setup.377uwg') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.setup.5eltza') }}</text>
+                </view>
+                <!-- #endif -->
+                <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="remove_user_cache_event">
+                    <text>{{ $t('setup.setup.5493ui') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.setup.f53166') }}</text>
+                </view>
+                <view v-if="(common_app_customer_service_tel || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="call_event">
+                    <text>{{ $t('setup.setup.656fv1') }}</text>
+                    <text class="fr cr-grey">{{ common_app_customer_service_tel || '' }} {{ $t('setup.setup.f25wcx') }}</text>
+                </view>
+                <view v-if="(user || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
+                    <text>{{ $t('setup.setup.11k15d') }}</text>
+                    <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
+                </view>
+            </view>
+
+            <!-- 打开语言选择弹层-->
+            <component-popup :propShow="popup_language_status" propPosition="bottom" :propIsRadius="false" @onclose="popup_language_close_event">
+                <view class="popup-language">
+                    <view class="flex-row align-c jc-sb padding-main">
+                        <view @tap="popup_language_close_event">
+                            <iconfont name="icon-close-o" size="28rpx"></iconfont>
+                        </view>
+                        <view class="text-size" @tap="popup_sub_language_event">{{ $t('common.confirm') }}</view>
                     </view>
-                    <!-- #endif -->
-                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="remove_user_cache_event">
-                        <text>{{ $t('setup.setup.5493ui') }}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.f53166') }}</text>
-                    </view>
-                    <view v-if="(common_app_customer_service_tel || null) != null" class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right br-b" @tap="call_event">
-                        <text>{{ $t('setup.setup.656fv1') }}</text>
-                        <text class="fr cr-grey">{{ common_app_customer_service_tel || '' }} {{ $t('setup.setup.f25wcx') }}</text>
-                    </view>
-                    <view class="padding-top-xxl padding-bottom-xxl padding-right-xxxl arrow-right" data-value="/pages/logout/logout" @tap="url_event">
-                        <text>{{ $t('setup.setup.11k15d') }}</text>
-                        <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
+                    <view class="br-t-f5 padding-main list">
+                        <view v-for="(value, key) in language_list" :key="key" class="spacing-mb flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap="checked_language_event">
+                            {{ value }}
+                            <iconfont v-if="language_key == key" name="icon-checked" size="32rpx"></iconfont>
+                        </view>
                     </view>
                 </view>
-
-                <!-- 打开语言选择弹层-->
-                <component-popup :propShow="popup_language_status" propPosition="bottom" :propIsRadius="false" @onclose="popup_language_close_event">
-                    <view class="popup-language">
-                        <view class="flex-row align-c jc-sb padding-main">
-                            <view @tap="popup_language_close_event">
-                                <iconfont name="icon-close-o" size="28rpx"></iconfont>
-                            </view>
-                            <view class="text-size" @tap="popup_sub_language_event">{{ $t('common.confirm') }}</view>
-                        </view>
-                        <view class="br-t-f5 padding-main list">
-                            <view v-for="(value, key) in language_list" :key="key" class="spacing-mb flex-row jc-sb align-c" :class="language_key == key ? 'cr-main' : ''" :data-key="key" :data-value="value" @tap="checked_language_event">
-                                {{ value }}
-                                <iconfont v-if="language_key == key" name="icon-checked" size="32rpx"></iconfont>
-                            </view>
-                        </view>
-                    </view>
-                </component-popup>
-            </block>
-            <block v-else>
-                <!-- 错误提示 -->
-                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
-            </block>
+            </component-popup>
         </view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
 
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                data_list_loding_status: 1,
-                data_list_loding_msg: '',
                 default_avatar: app.globalData.data.default_user_head_src,
                 user: null,
                 common_app_customer_service_tel: null,
@@ -147,8 +139,7 @@
         },
 
         components: {
-            componentNoData,
-            componentPopup,
+            componentPopup
         },
         onLoad(params) {
             // 调用公共事件方法
@@ -226,16 +217,10 @@
 
             // 获取数据
             init() {
-                var user = app.globalData.get_user_info(this, 'init');
-                if (user != false) {
+                var user = app.globalData.get_user_cache_info();
+                if (user != null) {
                     this.setData({
-                        data_list_loding_status: 3,
-                        user: user,
-                    });
-                } else {
-                    this.setData({
-                        data_list_loding_status: 0,
-                        data_list_loding_msg: this.$t('setup.setup.nwt4o1'),
+                        user: user
                     });
                 }
             },
