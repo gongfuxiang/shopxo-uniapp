@@ -81,7 +81,24 @@
                     <view class="panel-content oh">
                         <view v-for="(item, index) in detail_list" :key="index" class="item br-b-dashed oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">{{ item.value }}</view>
+                            <view class="content fl br-l padding-left-main" :data-value="item.value" @tap="text_copy_event">{{ item.value }}</view>
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 快递信息 -->
+                <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
+                    <view class="panel-content">
+                        <view v-for="(item, index) in detail.express_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                            <view class="item oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.12d445')}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_name" @tap="text_copy_event">{{item.express_name}}</view>
+                            </view>
+                            <view class="item oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.2byl8l')}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">{{item.express_number}}</view>
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -225,6 +242,13 @@ export default {
         // url事件
         url_event(e) {
             app.globalData.url_event(e);
+        },
+
+        // 文本复制
+        text_copy_event(e) {
+            if((e.currentTarget.dataset.value || null) != null) {
+                app.globalData.text_copy_event(e);
+            }
         }
     },
 };
