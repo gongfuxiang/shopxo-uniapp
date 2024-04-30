@@ -90,7 +90,7 @@ export default {
                             detail_list: [
                                 { name: this.$t('user-transfer-detail.user-transfer-detail.stj2eh'), value: data.data.transfer_no || "" },
                                 { name: this.$t('transfer.transfer.2q274j'), value: data.data.money || "" },
-                                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), value: data.data.note || "" },
+                                { name: this.$t('common.note'), value: data.data.note || "" },
                                 { name: this.$t('user-transfer-detail.user-transfer-detail.x17599'), value: data.data.add_time || "" },
                             ],
                             data_list_loding_status: 3,

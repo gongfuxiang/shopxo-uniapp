@@ -118,7 +118,7 @@ export default {
                                 { name: this.$t('user-qrcode-detail.user-qrcode-detail.do23j6'), value: data.data.name || "" },
                                 { name: this.$t('user-qrcode-detail.user-qrcode-detail.5k2ibd'), value: data.data.tel || "" },
                                 { name: this.$t('user-qrcode-detail.user-qrcode-detail.911a61'), value: data.data.address || "" },
-                                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), value: data.data.note || "" },
+                                { name: this.$t('common.note'), value: data.data.note || "" },
                                 { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
                                 { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
                             ],

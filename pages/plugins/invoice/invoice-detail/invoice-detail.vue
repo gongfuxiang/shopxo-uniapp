@@ -14,7 +14,7 @@
 
                 <!-- 快递信息 -->
                 <view v-if="detail.status == 2 && detail.invoice_type != 0 && express_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.0876xf')}}</view>
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
                     <view class="panel-content oh">
                         <view v-for="(item, index) in express_data" :key="index" class="item br-b oh padding-vertical-main">
                             <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>

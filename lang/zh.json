@@ -42,7 +42,8 @@
 		"sub_error_retry_tips": "提交失败，请重试！",
 		"not_more_list_data_tips": "无更多列表数据",
 		"scan_name": "扫一扫",
-		"not_have_name": "没有"
+		"not_have_name": "没有",
+        "note": "备注"
 	},
 	"pages": {
 		"goods-category": "商品分类",
@@ -290,6 +291,7 @@
 			"41ty94": "件 合计",
 			"7xtnjt": "未配置数据",
 			"7dikfm": "取货信息",
+            "0876xf": "快递信息",
 			"o38952": "取货码：",
 			"0f26j2": "订单信息",
 			"ct34n5": "扩展数据",
@@ -1086,7 +1088,6 @@
 	"invoice-detail": {
 		"invoice-detail": {
 			"s70kj4": "申请信息",
-			"0876xf": "快递信息",
 			"1s2f0g": "电子发票",
 			"4tu3v3": "可点击发票名称复制后、到浏览器打开地址下载发票。",
 			"rrfex6": "状态",
@@ -1107,7 +1108,6 @@
 	"invoice-saveinfo": {
 		"invoice-saveinfo": {
 			"x8hhiv": "企业统一社会信用代码或纳税识别号",
-			"tng0se": "备注",
 			"t3i3e3": "请选择发票类型",
 			"k31t2s": "请选择申请类型",
 			"i73t3c": "请选择发票内容",

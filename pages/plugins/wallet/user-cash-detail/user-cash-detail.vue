@@ -96,7 +96,7 @@ export default {
                                 { name: this.$t('user-cash-detail.user-cash-detail.m556tl'), value: data.data.bank_accounts || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.i308o1'), value: data.data.pay_money <= 0 ? "" : data.data.pay_money || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.451xxt'), value: data.data.pay_time_time || "" },
-                                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), value: data.data.msg || "" },
+                                { name: this.$t('common.note'), value: data.data.msg || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.y96262'), value: data.data.add_time_time || "" },
                                 { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time_time || "" },
                             ],

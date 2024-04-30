@@ -87,6 +87,27 @@
                     </view>
                 </view>
 
+                <!-- 快递信息 -->
+                <view v-if="(detail.express_data || null) != null && detail.express_data.length > 0" class="express-data panel-item padding-main border-radius-main bg-white spacing-mb">
+                    <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
+                    <view class="panel-content">
+                        <view v-for="(item, index) in detail.express_data" :key="index" class="item br-b-dashed oh padding-vertical-main">
+                            <view class="item oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.12d445')}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_name" @tap="text_copy_event">{{item.express_name}}</view>
+                            </view>
+                            <view class="item oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{$t('user-order-detail.user-order-detail.2byl8l')}}</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.express_number" @tap="text_copy_event">{{item.express_number}}</view>
+                            </view>
+                            <view v-if="(item.note || null) != null" class="item oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{$t('common.note')}}:</view>
+                                <view class="content fl br-l padding-left-main" :data-value="item.note" @tap="text_copy_event">{{item.note}}</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
                 <!-- 扩展数据 -->
                 <view v-if="extension_data.length > 0" class="panel-item padding-main border-radius-main bg-white spacing-mb">
                     <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.ct34n5')}}</view>
@@ -193,8 +214,6 @@
                                     { name: this.$t('user-order-detail.user-order-detail.8b18q8'), value: data.data.increase_price || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.516tlr'), value: data.data.pay_price || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.0e1sfs'), value: (data.data.payment_name || '') + ((data.data.is_under_line_text || null) == null || (data.data.payment_name || null) == null ? '' : '（' + data.data.is_under_line_text + '）') },
-                                    { name: this.$t('user-order-detail.user-order-detail.12d445'), value: data.data.express_name || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.2byl8l'), value: data.data.express_number || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.2b5fc8'), value: data.data.user_note || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || '' },
                                     { name: this.$t('user-order-detail.user-order-detail.9vivhl'), value: data.data.confirm_time || '' },

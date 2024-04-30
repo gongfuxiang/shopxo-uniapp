@@ -55,7 +55,7 @@
                     <uni-popup ref="inputDialog" type="dialog" :animation="false">
                         <view class="dialog-container">
                             <view class="dialog-title">
-                                <text>{{$t('invoice-saveinfo.invoice-saveinfo.tng0se')}}</text>
+                                <text>{{$t('common.note')}}</text>
                             </view>
                             <view class="dialog-content">
                                 <input type="text" class="dialog-input" maxlength="200" @input="input_change" />

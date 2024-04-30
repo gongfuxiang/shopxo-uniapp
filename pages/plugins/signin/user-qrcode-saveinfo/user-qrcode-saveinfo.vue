@@ -32,7 +32,7 @@
                             </view>
                         </view>
                         <view class="form-gorup">
-                            <view class="form-gorup-title">{{$t('invoice-saveinfo.invoice-saveinfo.tng0se')}}</view>
+                            <view class="form-gorup-title">{{$t('common.note')}}</view>
                             <input type="text" name="note" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('invoice-saveinfo.invoice-saveinfo.vaw647')" maxlength="60" :value="data.note || ''" />
                         </view>
                         <view class="bottom-fixed">

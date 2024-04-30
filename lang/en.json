@@ -42,7 +42,8 @@
 		"sending_in_text": "Sending",
 		"sending": "Sending",
 		"scan_name": "Scan it",
-		"not_have_name": "not have"
+		"not_have_name": "not have",
+        "note": "Remarks"
 	},
 	"pages": {
 		"goods-category": "Product classification",
@@ -299,6 +300,7 @@
 			"xcj552": "element",
 			"7xtnjt": "Unconfigured data",
 			"7dikfm": "Pickup information",
+            "0876xf": "Express delivery information",
 			"o38952": "Pickup code:",
 			"0f26j2": "Order Information",
 			"ct34n5": "Extended Data",
@@ -1095,7 +1097,6 @@
 	"invoice-detail": {
 		"invoice-detail": {
 			"s70kj4": "Application Information",
-			"0876xf": "Express delivery information",
 			"1s2f0g": "Electronic invoice",
 			"4tu3v3": "You can click on the invoice name and copy it, then go to the browser to open the address and download the invoice.",
 			"rrfex6": "state",
@@ -1116,7 +1117,6 @@
 	"invoice-saveinfo": {
 		"invoice-saveinfo": {
 			"x8hhiv": "Unified social credit code or tax identification number for enterprises",
-			"tng0se": "Remarks",
 			"t3i3e3": "Please select invoice type",
 			"k31t2s": "Please select the application type",
 			"i73t3c": "Please select invoice content",

@@ -105,7 +105,7 @@
 
                     <!-- 快递信息 -->
                     <view v-if="new_aftersale_data.status > 1 && new_aftersale_data.type == 1" class="panel-item padding-main border-radius-main bg-white spacing-mb">
-                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('invoice-detail.invoice-detail.0876xf')}}</view>
+                        <view class="br-b padding-bottom-main fw-b text-size">{{$t('user-order-detail.user-order-detail.0876xf')}}</view>
                         <view class="panel-content oh">
                             <view v-for="(item, index) in panel_express_data_list" :key="index" class="item br-b oh padding-vertical-main">
                                 <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>

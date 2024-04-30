@@ -72,7 +72,7 @@ export default {
             nav_status_index: 0,
             content_list: [
                 { name: this.$t('form.form.xy87t8'), field: "describe" },
-                { name: this.$t('invoice-saveinfo.invoice-saveinfo.tng0se'), field: "note" },
+                { name: this.$t('common.note'), field: "note" },
                 { name: this.$t('buy.buy.s7rr5s'), field: "upd_time" },
                 { name: this.$t('invoice-detail.invoice-detail.rrfex6'), field: "status_name" },
             ],
