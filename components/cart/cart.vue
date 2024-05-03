@@ -866,11 +866,11 @@
                     success: (res) => {
                         if (res.data.code == 0) {
                             var temp_list = [];
-                            var temp_id_arr = id.split(',');
+                            var temp_id_arr = id.toString().split(',');
                             var temp_del_goods_ids = [];
                             var temp_data_list = this.data_list;
                             for (var i in temp_data_list) {
-                                if (temp_id_arr.indexOf(temp_data_list[i]['id']) == -1) {
+                                if (temp_id_arr.indexOf(temp_data_list[i]['id'].toString()) == -1) {
                                     temp_list.push(temp_data_list[i]);
                                 } else {
                                     // 猜你喜欢商品处理
