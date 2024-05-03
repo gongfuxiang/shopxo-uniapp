@@ -36,7 +36,7 @@
             </block>
             <block v-else>
                 <!-- #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || MP-ALIPAY || APP -->
-                <component-nav-back propClass="bg-white" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
+                <component-nav-back propClass="bg-white" propColor="#333" propNameClass="cr-black" :propName="$t('common.cart')" :propFixed="false" :propIsShowBack="propSourceType !== 'page' ? false : true" :propIsRightSlot="false"></component-nav-back>
                 <!-- #endif -->
             </block>
         </block>
