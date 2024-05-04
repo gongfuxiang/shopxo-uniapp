@@ -7,7 +7,7 @@
                     <view class="base-nav flex-1 flex-width margin-left-sm">
                         <view class="oh nav padding-bottom-sm">
                             <view class="flex-row jc-sb align-c">
-                                <text class="va-m single-text flex-1 flex-width">{{ item.title }}</text>
+                                <text class="va-m single-text flex-1 flex-width">{{ item.title || item.content }}</text>
                                 <text class="cr-grey text-size-xs">{{$t('detail.detail.025362')}}{{ item.comments_count }}{{$t('ask-comments-goods.ask-comments-goods.xl51n6')}}</text>
                             </view>
                             <view v-if="(item.images || null) != null && item.images.length > 0" class="images oh margin-top-lg">

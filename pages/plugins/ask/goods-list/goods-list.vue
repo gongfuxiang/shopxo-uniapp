@@ -18,47 +18,35 @@
                             </view>
                         </view>
                     </view>
-                    <block v-if="item.is_reply == 1 || item.comments_count > 0">
+                    <block v-if="item.is_reply == 1 || (item.reply || null) != null">
                         <view class="ask flex-row spacing-mt">
                             <view class="title cr-white tc margin-right-sm">{{$t('goods-list.goods-list.rw12i7')}}</view>
                             <view class="flex-1 flex-width">
-                                <block v-for="(it, ix) in item.comments_list" :key="ix">
-                                    <block v-if="item.bool_more">
-                                        <view class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
-                                            <block v-if="item.reply">
-                                                {{ item.reply }}
-                                            </block>
-                                            <block v-else>
-                                                {{ it.content }}
-                                            </block>
-                                        </view>
-                                    </block>
-                                    <block v-else>
-                                        <view v-if="ix < 1" class="cr-base br-b-f9 padding-bottom-main" :class="ix + 1 < item.comments_list.length ? 'margin-bottom-main' : ''">
-                                            <block v-if="item.reply">
-                                                {{ item.reply }}
-                                            </block>
-                                            <block v-else>
-                                                {{ it.content }}
-                                            </block>
-                                        </view>
-                                    </block>
-                                    <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
-                                        <image v-for="(img, i) in it.images" class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
-                                    </view>
-                                </block>
-                            </view>
-                        </view>
-                        <view class="more flex-row jc-e align-c spacing-mt">
-                            <view v-if="(item.hide_more || false) === false" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
-                                <block v-if="!item.hide_comments_list_num">{{$t('goods-list.goods-list.278qr1')}}{{ item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</block>
-                                <block v-else>{{$t('goods-list.goods-list.h3t0f1')}}</block>
-                                <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
-                            </view>
-                            <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">{{$t('goods-list.goods-list.aem3e6')}}<iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
+                                <view class="cr-base padding-bottom-main">{{ item.reply }}</view>
                             </view>
                         </view>
                     </block>
+                    <block v-if="item.bool_more && (item.comments_list || null) != null && item.comments_list.length > 0">
+                        <block v-for="(it, ix) in item.comments_list" :key="ix">
+                            <view class="cr-base br-t-f9 padding-vertical-main">{{ it.content }}</view>
+                            <view v-if="(it.images || null) != null && it.images.length > 0" class="avatar spacing-mt-10 radius margin-right-sm oh">
+                                <block v-for="(img, i) in it.images">
+                                    <image class="wh-auto" @tap="comment_images_show_event" :data-index="i" :data-ix="i + 1" :src="img" mode="aspectFit"></image>
+                                </block>
+                            </view>
+                        </block>
+                    </block>
+                    <view class="more flex-row jc-e align-c br-t-f9 padding-top-main">
+                        <view v-if="(item.hide_more || false) === false && ((item.hide_comments_list_num === 0 && !item.bool_more) || (item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0))" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
+                            <text v-if="item.hide_comments_list_num === 0 && !item.bool_more">{{$t('goods-list.goods-list.h3t0f1')}}</text>
+                            <text v-if="item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0">{{$t('goods-list.goods-list.278qr1')}}{{ item.hide_comments_list_num || item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</text>
+                            <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
+                        </view>
+                        <view v-if="item.bool_more" class="cr-red text-size-xs margin-left-main" @tap="close_more(index)">
+                            <text>{{$t('goods-list.goods-list.aem3e6')}}</text>
+                            <iconfont name="icon-arrow-top" size="24rpx" propClass="pr top-xs"></iconfont>
+                        </view>
+                    </view>
                 </view>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -87,8 +75,7 @@
                 data_list_loding_status: 1,
                 data_bottom_line_status: false,
                 data_is_loading: 0,
-                goods_id: null,
-                comments_list: [],
+                params: {},
             };
         },
 
@@ -103,11 +90,9 @@
             app.globalData.page_event_onload_handle(params);
 
             // 设置参数
-            if (params || params.goods_id) {
-                this.setData({
-                    goods_id: params.goods_id,
-                });
-            }
+            this.setData({
+                params: params,
+            });
         },
 
         onShow() {
@@ -167,7 +152,7 @@
                     method: 'POST',
                     data: {
                         page: this.data_page,
-                        goods_id: this.goods_id,
+                        goods_id: this.params.goods_id || 0,
                         is_comments: 1,
                     },
                     dataType: 'json',
@@ -271,7 +256,7 @@
                                     } else {
                                         new_data_list[i].comments_list = new_data_list[i].comments_list.concat(res.data.data.data);
                                     }
-                                    new_data_list[i].hide_comments_list_num = true;
+                                    new_data_list[i].hide_comments_list_num = res.data.data.total-new_data_list[i].comments_list.length;
                                     // 判断当前页数是否小于总页数，如果是则继续显示更多按钮，且当前页+1，如果不是则隐藏更多按钮
                                     if (res.data.data.page < res.data.data.page_total) {
                                         new_data_list[i].hide_more = false;
@@ -300,14 +285,7 @@
                     // 查看更多是否调用接口
                     new_data_list[i].bool_api = true;
                     // 是否隐藏更多查看按钮
-                    new_data_list[i].hide_more = false;
-                    if (new_data_list[i].page < new_data_list[i].page_total) {
-                        // 是否隐藏更多查看按钮
-                        new_data_list[i].hide_more = false;
-                    } else {
-                        // 是否隐藏更多查看按钮
-                        new_data_list[i].hide_more = true;
-                    }
+                    new_data_list[i].hide_more = !((new_data_list[i].hide_comments_list_num == undefined && new_data_list[i].comments_count > 0) || new_data_list[i].hide_comments_list_num < new_data_list[i].comments_count);
                     this.setData({
                         data_list: new_data_list,
                     });
@@ -323,8 +301,6 @@
                 new_data_list[i].hide_more = false;
                 // 是否展示更多内容
                 new_data_list[i].bool_more = false;
-                // 显示查看更多的数量
-                new_data_list[i].hide_comments_list_num = false;
                 this.setData({
                     data_list: new_data_list,
                 });

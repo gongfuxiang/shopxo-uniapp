@@ -269,6 +269,7 @@
                 var index = e.currentTarget.dataset.index || 0;
                 var type = e.currentTarget.dataset.type || 0;
                 this.setData({
+                    data_list: [],
                     nav_index: index,
                     nav_type: type,
                     data_page: 1,
