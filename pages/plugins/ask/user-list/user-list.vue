@@ -6,7 +6,7 @@
                     <view :data-value="'/pages/plugins/ask/user-detail/user-detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb">
                         <view class="margin-bottom-xs flex-row jc-sb align-c">
                             <text class="cr-base text-size">{{ item.add_time_time }}</text>
-                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</text>
+                            <text class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply == 1 ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply == 1 ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</text>
                         </view>
                         <view class="spacing-mt">
                             <view class="text-size single-text">
@@ -73,6 +73,14 @@
 
             // 分享菜单处理
             app.globalData.page_share_handle();
+        },
+        
+        // 下拉刷新
+        onPullDownRefresh() {
+            this.setData({
+                data_page: 1,
+            });
+            this.get_data_list(1);
         },
 
         methods: {

@@ -95,7 +95,9 @@
         },
 
         // 下拉刷新
-        onPullDownRefresh() {},
+        onPullDownRefresh() {
+            this.init();
+        },
 
         methods: {
             init() {
