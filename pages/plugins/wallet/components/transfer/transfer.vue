@@ -5,8 +5,8 @@
         <view v-if="data_list.length > 0" class="data-list">
             <view v-for="(item, index) in data_list" :key="index" class="item padding-main border-radius-main oh bg-white spacing-mb">
                 <view class="base oh br-b-dashed padding-bottom-main flex-row jc-sb align-c">
-                    <text>{{$t('user-transfer-detail.user-transfer-detail.x17599')}}</text>
                     <text class="cr-grey-9">{{ item.add_time }}</text>
+                    <text v-if="(item.receive_user || null) != null">{{item.receive_user.user_name_view}}</text>
                 </view>
                 <view :data-value="'/pages/plugins/wallet/user-transfer-detail/user-transfer-detail?id=' + item.id" @tap="url_event" class="content margin-top cp">
                     <view v-for="(fv, fi) in content_list" :key="fi">
@@ -56,7 +56,7 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('transfer.transfer.4g21cu'), field: 'transfer_no' },
+                    { name: this.$t('transfer.transfer.678uyg'), field: 'transfer_no' },
                     { name: this.$t('transfer.transfer.2q274j'), field: 'money' },
                     { name: this.$t('transfer.transfer.t36tk2'), field: 'note' },
                 ],

@@ -95,7 +95,7 @@
                                     { name: this.$t('wallet-log-detail.wallet-log-detail.4q7pfq'), value: data.data.original_money || '' },
                                     { name: this.$t('wallet-log-detail.wallet-log-detail.r814ne'), value: data.data.latest_money || '' },
                                     { name: this.$t('wallet-log-detail.wallet-log-detail.0ghn6g'), value: data.data.msg || '' },
-                                    { name: this.$t('wallet-log-detail.wallet-log-detail.i2kze7'), value: data.data.add_time_time || '' },
+                                    { name: this.$t('wallet-log-detail.wallet-log-detail.i2kze7'), value: data.data.add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
