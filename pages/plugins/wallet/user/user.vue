@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propName="$t('recharge.recharge.otwkjn')"></component-nav-back>
+        <component-nav-back :propName="$t('pages.plugins-wallet-user')"></component-nav-back>
         <view v-if="(data_base || null) != null">
             <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" @scroll="scroll_event">
                 <view class="page-bottom-fixed">
