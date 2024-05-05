@@ -14,6 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-map-navigator:before {
+  content: "\10183";
+}
+
 .icon-down-mark:before {
   content: "\e729";
 }
@@ -250,7 +254,7 @@
   content: "\e6bc";
 }
 
-.icon-qiandao-fenxiang:before {
+.icon-share-square:before {
   content: "\e6bd";
 }
 

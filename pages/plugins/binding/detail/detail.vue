@@ -94,9 +94,6 @@
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-
-            <!-- 分享弹窗 -->
-            <component-share-popup ref="share"></component-share-popup>
         </view>
         <view v-else>
             <!-- 提示信息 -->
@@ -118,7 +115,6 @@
     import componentGoodsSpecChoice from '@/components/goods-spec-choice/goods-spec-choice';
     import componentGoodsBuy from '@/components/goods-buy/goods-buy';
     import componentBadge from '@/components/badge/badge';
-    import componentSharePopup from '@/components/share-popup/share-popup';
     let binding_static_url = app.globalData.get_static_url('binding', true);
 
     export default {
@@ -145,8 +141,7 @@
             componentBottomLine,
             componentGoodsSpecChoice,
             componentGoodsBuy,
-            componentBadge,
-            componentSharePopup,
+            componentBadge
         },
 
         onLoad(params) {

@@ -1084,12 +1084,12 @@ button[disabled].bg-grey {
 */
 .header-service {
     width: 430rpx;
-    left: 80rpx;
-    top: 240rpx;
+    left: calc(50% - 215rpx);
+    top: calc(50vh - 360rpx);
     z-index: 10;
     font-size: 24rpx;
-    -webkit-box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
-    box-shadow: 0 10px 10px rgb(0 0 0 / 30%);
+    -webkit-box-shadow: 0 0 100px rgb(0 0 0 / 30%);
+    box-shadow: 0 0 100px rgb(0 0 0 / 30%);
 }
 .header-service .item:first-child {
     border-top: 0 !important;

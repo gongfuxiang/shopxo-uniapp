@@ -141,11 +141,28 @@ page {
 }
 
 /**
- * 客服弹窗
+ * 独立模式下底部操作导航
  */
-.header-service {
-    left: auto;
-    right: 24rpx;
+.button-list {
+    display: flex;
+    justify-content: space-between;
+}
+.button-list .item {
+    height: 70rpx;
+    padding: 0 40rpx;
+}
+.button-list .button-left {
+    display: flex;
+    width: 50%;
+    justify-content: space-evenly;
+}
+.button-list .button-right {
+    display: flex;
+    width: 50%;
+}
+.button-list .button-right button {
+    line-height: 70rpx;
+    padding: 0;
 }
 
 /**

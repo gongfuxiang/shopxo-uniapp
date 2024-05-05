@@ -458,7 +458,7 @@
 
             // 电话
             tel_event(e) {
-                app.globalData.call_tel(e.currentTarget.dataset.value || null);
+                app.globalData.call_tel(e);
             },
 
             // 图片预览

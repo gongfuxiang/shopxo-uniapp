@@ -34,7 +34,7 @@
                     </view>
                     <!-- 右侧操作 -->
                     <view class="icon-list pa">
-                        <view v-if="(item.contacts_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.contacts_tel" @tap.stop="tel_event">
+                        <view v-if="(item.service_data || null) != null && (item.service_data.service_tel || null) != null" class="icon-item dis-inline-block tc cp" :data-value="item.service_data.service_tel" @tap.stop="tel_event">
                             <iconfont name="icon-md-phone" size="40rpx"></iconfont>
                         </view>
                         <!-- #ifndef MP-KUAISHOU -->

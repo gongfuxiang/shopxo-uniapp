@@ -7,7 +7,7 @@
                 <view class="signin-opration-group pa flex-col cr-white">
                     <view v-if="(data_base.is_share || 0) == 1" class="share oh flex-row"  @tap="share_event">
                         <view class="content">
-                            <iconfont name="icon-qiandao-fenxiang" propClass="pr top-xs" size="32rpx"></iconfont>
+                            <iconfont name="icon-share-square" propClass="pr top-xs" size="32rpx"></iconfont>
                             <text>{{$t('common.share')}}</text>
                         </view>
                     </view>
