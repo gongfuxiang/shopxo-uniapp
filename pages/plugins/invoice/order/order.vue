@@ -163,10 +163,10 @@
                         if (res.data.code == 0) {
                             if (res.data.data.data_list.length > 0) {
                                 if (this.data_page <= 1) {
-                                    var temp_data_list = res.data.data.data;
+                                    var temp_data_list = res.data.data.data_list;
                                 } else {
                                     var temp_data_list = this.data_list || [];
-                                    var temp_data = res.data.data.data;
+                                    var temp_data = res.data.data.data_list;
                                     for (var i in temp_data) {
                                         temp_data_list.push(temp_data[i]);
                                     }
