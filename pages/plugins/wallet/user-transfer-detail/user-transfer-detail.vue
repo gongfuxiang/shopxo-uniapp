@@ -89,7 +89,7 @@ export default {
                         this.setData({
                             detail: data.data,
                             detail_list: [
-                                { name: this.$t('user-transfer-detail.user-transfer-detail.stj2eh'), value: data.data.transfer_no || "" },
+                                { name: this.$t('transfer.transfer.678uyg'), value: data.data.transfer_no || "" },
                                 { name: this.$t('transfer.transfer.2q274j'), value: data.data.money || "" },
                                 { name: this.$t('transfer.transfer.4g21cu'), value: receive_user.user_name_view || "" },
                                 { name: this.$t('common.note'), value: data.data.note || "" },
