@@ -109,8 +109,7 @@
     .agreement-content {
         padding: 40rpx;
         position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 15%;
         width: calc(100% - 160rpx);
     }
     .agreement-content .logo {

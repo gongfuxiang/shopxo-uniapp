@@ -1,7 +1,7 @@
 <template>
     <view :class="theme_view">
-        <view class="padding-main">
-            <block v-if="data_list.length > 0">
+        <block v-if="data_list.length > 0">
+            <scroll-view :scroll-y="true" class="scroll-box padding-main bs-bb" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-for="(item, index) in data_list" :key="index" class="bg-white border-radius-main padding-main oh" :class="data_list.length > index + 1 ? 'spacing-mb' : ''">
                     <view class="title flex-row jc-sb align-c wh-auto">
                         <view class="name flex-1 flex-width cr-base">{{ item.name }}{{$t('goods-list.goods-list.27nkjm')}}</view>
@@ -36,7 +36,7 @@
                             </view>
                         </block>
                     </block>
-                    <view class="more flex-row jc-e align-c br-t-f9 padding-top-main">
+                    <view v-if="item.comments_count > 0" class="more flex-row jc-e align-c br-t-f9 padding-top-main">
                         <view v-if="(item.hide_more || false) === false && ((item.hide_comments_list_num === 0 && !item.bool_more) || (item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0))" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
                             <text v-if="item.hide_comments_list_num === 0 && !item.bool_more">{{$t('goods-list.goods-list.h3t0f1')}}</text>
                             <text v-if="item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0">{{$t('goods-list.goods-list.278qr1')}}{{ item.hide_comments_list_num || item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</text>
@@ -50,12 +50,12 @@
                 </view>
                 <!-- 结尾 -->
                 <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </block>
-            <block v-else>
-                <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
-            </block>
-        </view>
+            </scroll-view>
+        </block>
+        <block v-else>
+            <!-- 提示信息 -->
+            <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+        </block>
     </view>
 </template>
 
@@ -142,9 +142,11 @@
                 });
 
                 // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
+                if(this.data_page > 1) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
 
                 // 获取数据
                 uni.request({
@@ -157,7 +159,9 @@
                     },
                     dataType: 'json',
                     success: (res) => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
                             if (res.data.data.data.length > 0) {
@@ -200,7 +204,9 @@
                         }
                     },
                     fail: () => {
-                        uni.hideLoading();
+                        if(this.data_page > 1) {
+                            uni.hideLoading();
+                        }
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
@@ -271,9 +277,7 @@
                                     });
                                 }
                             } else {
-                                if (app.globalData.is_login_check(res.data, this, 'get_data_list')) {
-                                    app.globalData.showToast(res.data.msg);
-                                }
+                                app.globalData.showToast(res.data.msg);
                             }
                         },
                         fail: () => {

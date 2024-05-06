@@ -85,6 +85,10 @@
                 // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
                 is_weixin_privacy_setting: 1,
                 weixin_privacy_setting_timer: null,
+                
+                // 弹出获取用户当前位置（0否, 1是）
+                get_user_location_status: 1,
+                get_user_location_timer: null,
 
                 // 微信小程序打开地图使用（0否, 1是）【腾讯位置服务路线规划】插件、（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）
                 is_weixin_open_location_use_plugins: 0,
@@ -2483,6 +2487,16 @@
                 return { status: status, value: value };
             },
 
+            // 打开权限管理中心
+            open_setting_event() {
+                // #ifdef MP
+                uni.openSetting();
+                // #endif
+                // #ifdef APP
+                uni.openAppAuthorizeSetting();
+                // #endif
+            },
+
             // 扫码解析处理
             scan_handle() {
                 var self = this;
@@ -2590,8 +2604,79 @@
                         },
                     };
                 }
-                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : user_location.name || user_location.address || '';
+                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : (user_location.name || user_location.address || '');
                 return user_location;
+            },
+
+            // 获取用户当前位置
+            get_user_location() {
+                if(this.data.get_user_location_status == 1) {
+                    var cache_key = this.data.cache_userlocation_key;
+                    var result = uni.getStorageSync(cache_key) || null;
+                    if(result == null) {
+                        // 当前对象
+                        var self = this;
+                        // 当前平台
+                        var client_value = self.application_client_type();
+                        // 微信隐私状态
+                        var is_weixin_privacy = false;
+                        // 是否有网络
+                        var is_network = false;
+                        // 定时验证并获取位置权限
+                        self.data.get_user_location_timer = setInterval(function () {
+                            // 微信环境、协议验证处理
+                            // #ifdef MP-WEIXIN
+                            uni.getPrivacySetting({
+                                success: (res) => {
+                                    if (!res.needAuthorization) {
+                                        is_weixin_privacy = true;
+                                    }
+                                },
+                            });
+                            // #endif
+
+                            // app下先要网络
+                            // #ifdef APP
+                            uni.getNetworkType({
+                                success: function (res) {
+                                    if (res.networkType != 'none') {
+                                        is_network = true;
+                                    }
+                                },
+                            });
+                            // #endif
+
+                            // 是否可以读取位置权限
+                            var status = true;
+                            // 微信环境、必须先同意隐私权限后再弹出获取用户位置权限
+                            if(client_value == 'weixin' && !is_weixin_privacy) {
+                                status = false;
+                            }
+                            // app环境、必须先初始化完成有网络后再弹出获取用户位置权限
+                            if((client_value == 'ios' || client_value == 'android') && !is_network) {
+                                status = false;
+                            }
+                            if(status) {
+                                uni.getLocation({
+                                    type: 'wgs84',
+                                    success: function (res) {
+                                        uni.setStorageSync(cache_key, {
+                                            name: i18n.t('shopxo-uniapp.app.tghyu3'),
+                                            address: '',
+                                            latitude: res.latitude || null,
+                                            longitude: res.longitude || null,
+                                            status: 1,
+                                        });
+                                        clearInterval(self.data.get_user_location_timer);
+                                    },
+                                    fail: function(res) {
+                                        clearInterval(self.data.get_user_location_timer);
+                                    }
+                                });
+                            }
+                        }, 500);
+                    }
+                }
             },
 
             // 清除定时任务
@@ -2610,6 +2695,8 @@
                 this.data.network_type_page_record_timer = null;
                 // 清除微信隐私方法定时任务
                 clearInterval(this.data.weixin_privacy_setting_timer);
+                // 清除弹出位置权限提示定时任务
+                clearInterval(this.data.get_user_location_timer);
             },
 
             // 商品访问数据存储缓存
@@ -2671,6 +2758,9 @@
             page_event_onload_handle(params) {
                 // 设置底部菜单
                 this.set_tabbar();
+
+                // 获取用户当前位置
+                this.get_user_location();
             },
 
             // 页面展示事件处理

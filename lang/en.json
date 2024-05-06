@@ -1737,7 +1737,8 @@
 			"87yghj": "Logout successful",
 			"di6v5t": "Please obtain authorization first",
 			"nu5058": "Geographic location selection is not supported!",
-			"4v6q86": "No location selected"
+			"4v6q86": "No location selected",
+            "tghyu3": "current location"
 		}
 	},
 	"password": {

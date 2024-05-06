@@ -16,7 +16,7 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-red">{{ item.status_text }}</text>
                     </view>
-                    <view :url="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" @tap="url_event" class="goods-item oh cp">
+                    <view :data-value="'/pages/user-orderaftersale-detail/user-orderaftersale-detail?oid=' + item.order_id + '&did=' + item.order_detail_id" @tap="url_event" class="goods-item oh cp">
                         <image class="goods-image fl radius" :src="item.order_data.items.images" mode="aspectFill"></image>
                         <view class="goods-base pr">
                             <view class="multi-text">{{ item.order_data.items.title }}</view>

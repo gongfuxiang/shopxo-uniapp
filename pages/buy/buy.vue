@@ -523,9 +523,11 @@
                 }
 
                 // 加载loding
-                uni.showLoading({
-                    title: this.$t('common.loading_in_text'),
-                });
+                if(this.is_first == 0) {
+                    uni.showLoading({
+                        title: this.$t('common.loading_in_text'),
+                    });
+                }
                 this.setData({
                     data_list_loding_status: 1,
                 });
@@ -540,7 +542,9 @@
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
-                        uni.hideLoading();
+                        if(this.is_first == 0) {
+                            uni.hideLoading();
+                        }
                         if (res.data.code == 0) {
                             var data = res.data.data;
 
@@ -683,7 +687,9 @@
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
-                        uni.hideLoading();
+                        if(this.is_first == 0) {
+                            uni.hideLoading();
+                        }
                         this.setData({
                             data_list_loding_status: 2,
                             data_list_loding_msg: this.$t('common.internet_error_tips'),

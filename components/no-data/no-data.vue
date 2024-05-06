@@ -4,6 +4,9 @@
         <view v-if="network_type_value == 'none' && not_network_await_status == 0" class="network-type-tips wh-auto tc bs-bb padding-horizontal-main">
             <view class="cr-base text-size">{{$t('no-data.no-data.1u202v')}}</view>
             <view class="cr-grey margin-top-sm">{{$t('no-data.no-data.imw8f1')}}{{title}}{{$t('no-data.no-data.q87572')}}</view>
+            <view class="margin-top-lg tc">
+                <button type="default" class="br-main bg-main cr-white round padding-horizontal-xxl" size="mini" @tap="open_setting_event">{{ $t('setup.setup.377uwg') }}</button>
+            </view>
         </view>
         <view v-else>
             <!-- 1 加载中(0loog, 1名称) -->
@@ -137,7 +140,12 @@
             // 返回事件
             back_event(e) {
                 app.globalData.page_back_prev_event();
-            }
+            },
+
+            // 打开权限管理中心
+            open_setting_event() {
+                app.globalData.open_setting_event();
+            },
         },
     };
 </script>

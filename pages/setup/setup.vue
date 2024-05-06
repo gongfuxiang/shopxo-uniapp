@@ -258,12 +258,7 @@
 
             // 打开权限管理中心
             open_setting_event() {
-                // #ifdef MP
-                uni.openSetting();
-                // #endif
-                // #ifdef APP
-                uni.openAppAuthorizeSetting();
-                // #endif
+                app.globalData.open_setting_event();
             },
 
             // 客服电话
