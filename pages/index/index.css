@@ -160,14 +160,13 @@
 /**
  * 首页中间广告- 插件
  */
+.plugins-homemiddleadv {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20rpx;
+}
 .plugins-homemiddleadv .item {
-    width: calc(50% - 10rpx);
-}
-.plugins-homemiddleadv .item:nth-of-type(2n + 1) {
-    float: left;
-}
-.plugins-homemiddleadv .item:nth-of-type(2n) {
-    float: right;
+    flex: 1 1 calc(50% - 20rpx);
 }
 
 /**

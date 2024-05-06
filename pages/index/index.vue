@@ -103,8 +103,8 @@
                 <block v-if="plugins_sort_list.length > 0">
                     <block v-for="(pv, pi) in plugins_sort_list" :key="pi">
                         <!-- 首页中间广告 - 插件 -->
-                        <view v-if="pv.plugins == 'homemiddleadv' && (plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh">
-                            <view v-for="(item, index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp spacing-mb" :data-value="item.url || ''" @tap="url_event">
+                        <view v-if="pv.plugins == 'homemiddleadv' && (plugins_homemiddleadv_data || null) != null && plugins_homemiddleadv_data.length > 0" class="plugins-homemiddleadv oh spacing-mb">
+                            <view v-for="(item, index) in plugins_homemiddleadv_data" :key="index" class="item border-radius-main oh cp" :data-value="item.url || ''" @tap="url_event">
                                 <image class="dis-block wh-auto border-radius-main" :src="item.images" mode="widthFix"> </image>
                             </view>
                         </view>

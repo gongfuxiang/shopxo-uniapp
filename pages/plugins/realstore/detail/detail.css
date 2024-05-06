@@ -146,6 +146,7 @@ page {
 .button-list {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 .button-list .item {
     height: 70rpx;

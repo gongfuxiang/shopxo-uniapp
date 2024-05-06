@@ -651,7 +651,7 @@
     /**
      * 布局基础
      */
-    .layout-content-children,.layout-content-container{overflow:hidden;}
+    .layout-content-children,.layout-content-container{overflow:hidden;width:100%;}
     
     /**
      * 模块类型样式 - 数据列表

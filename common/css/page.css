@@ -1082,24 +1082,15 @@ button[disabled].bg-grey {
 /**
 * 客服
 */
-.header-service {
-    width: 430rpx;
-    left: calc(50% - 215rpx);
-    top: calc(50vh - 360rpx);
-    z-index: 10;
-    font-size: 24rpx;
-    -webkit-box-shadow: 0 0 100px rgb(0 0 0 / 30%);
-    box-shadow: 0 0 100px rgb(0 0 0 / 30%);
-}
 .header-service .item:first-child {
     border-top: 0 !important;
 }
 .header-service .qrcode .item:not(:last-child) {
-    margin-right: 20rpx;
+    margin-right: 40rpx;
 }
 .header-service image {
-    width: 130rpx;
-    height: 130rpx;
+    width: 200rpx;
+    height: 200rpx;
 }
 .header-service .chat-info image {
     width: 40rpx;

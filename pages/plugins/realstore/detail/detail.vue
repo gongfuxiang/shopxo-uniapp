@@ -73,7 +73,7 @@
                                         </view>
                                         <!-- 右侧操作 -->
                                         <view class="icon-list margin-left-main">
-                                            <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="header_service_event">
+                                            <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
                                                 <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
                                             </view>
                                             <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
@@ -86,37 +86,6 @@
                                     </view>
                                 </view>
                             </view>
-                        </view>
-
-                        <!-- 在线客服 -->
-                        <view v-if="header_service_status && (((data_base.is_service_info || 0) == 1 && (info.service_data || null) != null) || (info.chat_info || null) != null)" class="header-service pa border-radius-main oh bg-white br">
-                            <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
-                                <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
-                                <view class="dis-inline-block chat-info cp" @tap="chat_event">
-                                    <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
-                                    <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
-                                </view>
-                            </view>
-                            <block v-if="(info.service_data || null) != null">
-                                <view v-if="(info.service_data.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
-                                    <text>Q Q：</text>
-                                    <text class="cp" @tap="text_copy_event" :data-value="info.service_data.service_qq">{{ info.service_data.service_qq }}</text>
-                                </view>
-                                <view v-if="(info.service_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
-                                    <text>{{$t('order.order.7dxbm5')}}</text>
-                                    <text class="cp" @tap="tel_event" :data-value="info.service_data.service_tel">{{ info.service_data.service_tel }}</text>
-                                </view>
-                                <view v-if="(info.service_data.service_weixin_qrcode || null) != null || (info.service_data.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
-                                    <view v-if="(info.service_data.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                        <image class="radius cp" :src="info.service_data.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_weixin_qrcode"></image>
-                                        <view>{{$t('detail.detail.54k10s')}}</view>
-                                    </view>
-                                    <view v-if="(info.service_data.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
-                                        <image class="radius cp" :src="info.service_data.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_line_qrcode"></image>
-                                        <view>{{$t('detail.detail.vj4nom')}}</view>
-                                    </view>
-                                </view>
-                            </block>
                         </view>
                     </view>
 
@@ -143,7 +112,7 @@
                                     </view>
                                 </view>
                                 <view class="button-right">
-                                    <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="header_service_event">{{$t('cart.cart.31h34v')}}</button>
+                                    <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
                                 </view>
                             </view>
                         </view>
@@ -153,7 +122,7 @@
                         <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
                             <!-- 左侧 -->
                             <scroll-view :scroll-y="true" class="left-content ht-auto bg-base">
-                                <view class="left-content-actual text-size-xs">
+                                <view class="left-content-actual text-size-sm">
                                     <view :class="'item tc cr-base cp ' + (nav_active_index == -1 ? 'bg-white cr-main nav-left-border fw-b' : '')" :data-index="-1" :data-itemindex="-1" @tap="nav_event">{{$t('common.all')}}</view>
                                     <block v-if="(goods_category || null) != null && goods_category.length > 0">
                                         <block v-for="(item, index) in goods_category" :key="index">
@@ -254,6 +223,50 @@
             <component-realstore-cart ref="realstore_cart" :propCurrencySymbol="currency_symbol" :propStatus="is_cart_nav" v-on:CartSuccessEvent="goods_opt_cart_back_event" v-on:BuyTypeSwitchEvent="buy_type_switch_event" v-on:CartDataBackEvent="cart_data_back_event"></component-realstore-cart>
         </block>
 
+        <!-- 客服弹窗 -->
+        <component-popup :propShow="popup_service_status" propPosition="bottom" @onclose="popup_service_close_event">
+            <view class="padding-top-main bg-white">
+                <view class="padding-horizontal-main">
+                    <view class="close oh">
+                        <view class="fr" @tap.stop="popup_service_close_event">
+                            <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
+                        </view>
+                    </view>
+                </view>
+                <view class="popup-service-container">
+                    <view v-if="(data_base || null) != null && (info || null) != null && (data_base.is_service_info || 0) == 1 && ((info.service_data || null) != null || (info.chat_info || null) != null)" class="header-service">
+                        <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
+                            <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
+                            <view class="dis-inline-block chat-info cp" @tap="chat_event">
+                                <image class="dis-inline-block va-m" :src="info.chat_info.icon" mode="scaleToFill"></image>
+                                <text class="margin-left-sm va-m cr-blue" :data-value="info.chat_info.chat_url">{{ info.chat_info.name }}</text>
+                            </view>
+                        </view>
+                        <block v-if="(info.service_data || null) != null">
+                            <view v-if="(info.service_data.service_qq || null) != null" class="item padding-main br-t-f9 single-text">
+                                <text>Q Q：</text>
+                                <text class="cp" @tap="text_copy_event" :data-value="info.service_data.service_qq">{{ info.service_data.service_qq }}</text>
+                            </view>
+                            <view v-if="(info.service_data.service_tel || null) != null" class="item padding-main br-t-f9 single-text">
+                                <text>{{$t('order.order.7dxbm5')}}</text>
+                                <text class="cp" @tap="tel_event" :data-value="info.service_data.service_tel">{{ info.service_data.service_tel }}</text>
+                            </view>
+                            <view v-if="(info.service_data.service_weixin_qrcode || null) != null || (info.service_data.service_line_qrcode || null) != null" class="oh qrcode tc br-t-f9 padding-top-main">
+                                <view v-if="(info.service_data.service_weixin_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_data.service_weixin_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_weixin_qrcode"></image>
+                                    <view>{{$t('detail.detail.54k10s')}}</view>
+                                </view>
+                                <view v-if="(info.service_data.service_line_qrcode || null) != null" class="item padding-bottom-lg dis-inline-block">
+                                    <image class="radius cp" :src="info.service_data.service_line_qrcode" mode="scaleToFill" @tap="image_show_event" :data-value="info.service_data.service_line_qrcode"></image>
+                                    <view>{{$t('detail.detail.vj4nom')}}</view>
+                                </view>
+                            </view>
+                        </block>
+                    </view>
+                </view>
+            </view>
+        </component-popup>
+
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
     </view>
@@ -308,7 +321,7 @@
                 search_keywords_value: '',
                 nav_active_index: -1,
                 nav_active_item_index: -1,
-                header_service_status: false,
+                popup_service_status: false,
                 // 下单类型
                 buy_use_type_index: 0,
                 // 排序导航
@@ -456,7 +469,7 @@
                                 base_mode_style = ((data_base.is_service_info || 0) == 1) ? '240rpx' : '90rpx';
                             }
                             // 内容高度
-                            var content_style = 'height: calc(100vh - '+(this.client_type == 'h5' ? '376rpx' : '364rpx')+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+ ' - '+base_mode_style+');';
+                            var content_style = 'height: calc(100vh - '+(this.client_type == 'h5' ? '386rpx' : '374rpx')+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+ ' - '+base_mode_style+');';
 
                             this.setData({
                                 is_base_mode: is_base_mode,
@@ -951,10 +964,17 @@
                 }
             },
 
-            // 客服服务事件
-            header_service_event(e) {
+            // 开启客服弹层
+            popup_service_open_event(e) {
                 this.setData({
-                    header_service_status: !this.header_service_status,
+                    popup_service_status: true,
+                });
+            },
+
+            // 关闭客服弹层
+            popup_service_close_event(e) {
+                this.setData({
+                    popup_service_status: false,
                 });
             },
 
@@ -965,7 +985,7 @@
                         share_info: this.share_info
                     });
                 }
-            },
+            }
         },
     };
 </script>
