@@ -161,7 +161,7 @@
                         }
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
-                            if (res.data.data.data.length > 0) {
+                            if (res.data.data.data_list.length > 0) {
                                 if (this.data_page <= 1) {
                                     var temp_data_list = res.data.data.data;
                                 } else {
