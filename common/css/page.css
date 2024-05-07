@@ -1394,6 +1394,9 @@ button[disabled].bg-grey {
  */
 .top-search-width {
     width: calc(100% - 250rpx) !important;
+    /* #ifdef MP-ALIPAY */
+    width: calc(100% - 290rpx) !important;
+    /* #endif */
 }
 
 /**

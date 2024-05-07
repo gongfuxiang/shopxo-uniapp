@@ -23,7 +23,7 @@
                             <text class="text-wrapper title-left-border">{{$t('detail.detail.b4f3nw')}}</text>
                             <text class="vice-name margin-left-lg cr-grey">{{ data.vice_title }}</text>
                         </view>
-                        <text data-value="'/pages/plugins/activity/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('detail.detail.ans2p4')}}</text>
+                        <text data-value="/pages/plugins/activity/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('detail.detail.ans2p4')}}</text>
                     </view>
                     <component-goods-list :propData="{ style_type: 1, goods_list: data.goods_list }" :propCurrencySymbol="currency_symbol"></component-goods-list>
                 </view>

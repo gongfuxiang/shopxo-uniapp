@@ -294,7 +294,7 @@
                 client_type: app.globalData.application_client_type(),
                 currency_symbol: app.globalData.currency_symbol(),
                 is_top_search_width: false,
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU || APP
+                // #ifdef MP-WEIXIN || MP-QQ || MP-ALIPAY || MP-BAIDU || MP-KUAISHOU || APP
                 is_top_search_width: true,
                 // #endif
                 content_style: '',

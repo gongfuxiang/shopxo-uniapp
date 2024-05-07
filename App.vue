@@ -1515,7 +1515,14 @@
             // 是否为page页面地址
             is_page(value) {
                 var arr = ['/pages', 'pages/'];
-                return arr.indexOf(value.substr(0, 6)) != -1;
+                var status = arr.indexOf(value.substr(0, 6)) != -1;
+                if(!status) {
+                    // 是否打开插件地址
+                    if(arr.indexOf(value.substr(0, 15) == 'plugin-private:')) {
+                        status = true;
+                    }
+                }
+                return status;
             },
 
             // url打开
@@ -1573,7 +1580,7 @@
                                 }
                             }
                         } else {
-                            this.showToast(i18n.t('shopxo-uniapp.app.1244fe') + value + '）');
+                            this.showToast(i18n.t('shopxo-uniapp.app.1244fe') + '（'+value + '）');
                         }
                     }
                 }
@@ -2728,6 +2735,7 @@
                         'pages/plugins/coupon/index/index',
                         'pages/plugins/signin/detail/detail',
                         'pages/plugins/membershiplevelvip/index/index',
+                        'pages/plugins/ask/index/index',
                     ];
                     // 当前tab页面
                     if(this.data.tabbar_pages.indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {

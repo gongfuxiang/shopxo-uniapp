@@ -67,7 +67,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 is_mp_env: false,
-                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
                 is_mp_env: true,
                 // #endif
                 data_base: {},
