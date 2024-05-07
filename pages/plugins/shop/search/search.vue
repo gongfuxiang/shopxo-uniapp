@@ -166,15 +166,6 @@
                     app.globalData.is_config(this, 'init_config');
                 }
             },
-
-            // 搜索
-            search_event() {
-                this.setData({
-                    data_list: [],
-                    data_page: 1
-                });
-                this.get_data_list(1);
-            },
             
             // 初始化
             get_data() {
@@ -383,10 +374,13 @@
             form_submit_event(e) {
                 this.setData({
                     post_data: e.detail.value,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
-                this.popup_form_event_close();
                 this.get_data_list(1);
+                this.popup_form_event_close();
             },
 
             // 筛选条件关闭
@@ -424,7 +418,10 @@
                 this.setData({
                     search_nav_sort_index: index,
                     search_nav_sort_list: temp_search_nav_sort,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },
@@ -485,7 +482,10 @@
                     is_show_popup_form: false,
                     search_nav_sort_list: temp_search_nav_sort,
                     search_nav_sort_index: 0,
-                    data_page: 1
+                    data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },

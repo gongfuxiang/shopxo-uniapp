@@ -861,6 +861,7 @@
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.source_goods_remove();
                 this.reset_scroll();
@@ -912,7 +913,10 @@
             	this.setData({
             		search_nav_sort_index: index,
             		search_nav_sort_list: temp_search_nav_sort,
-            		data_page: 1
+            		data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
             	});
                 this.source_goods_remove();
                 this.reset_scroll();

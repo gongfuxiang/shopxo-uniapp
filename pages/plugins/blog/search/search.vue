@@ -289,6 +289,9 @@
                 this.setData({
                     nav_active_value: e.currentTarget.dataset.value || 0,
                     data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.get_data_list(1);
             },

@@ -827,17 +827,14 @@
                     nav_active_item_three_index: three_index,
                     data_content: temp_data_content,
                     data_three_content: temp_data_three_content,
+                    popup_status: false,
                     data_page: 1,
                     data_list: [],
                     data_list_loding_status: 1,
-                    popup_status: false,
+                    data_bottom_line_status: false
                 });
-
-                // 商品模式则读取商品
-                if (this.category_show_level == 0) {
-                    this.reset_scroll();
-                    this.get_goods_list(1);
-                }
+                this.reset_scroll();
+                this.get_goods_list(1);
             },
 
             // 打开弹窗
@@ -859,8 +856,9 @@
                     this.setData({
                         search_keywords_value: e || '',
                         data_page: 1,
-                        data_list_loding_status: 1,
                         data_list: [],
+                        data_list_loding_status: 1,
+                        data_bottom_line_status: false
                     });
                     this.get_goods_list(1);
                 } else {
@@ -1336,6 +1334,9 @@
                     search_nav_sort_index: index,
                     search_nav_sort_list: temp_search_nav_sort,
                     data_page: 1,
+                    data_list: [],
+                    data_list_loding_status: 1,
+                    data_bottom_line_status: false
                 });
                 this.reset_scroll();
                 this.get_goods_list(1);
