@@ -3,7 +3,7 @@
         <block v-if="online_service_status == 1">
             <!-- 是否商品页样式 -->
             <view v-if="propIsGoods == true" class="goods-chat-container item fl cp">
-                <block v-if="is_chat == 1">
+                <block v-if="is_chat == 1 || (common_app_customer_service_custom || null) != null">
                     <view @tap="chat_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
@@ -13,17 +13,21 @@
                     <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-KUAISHOU -->
                     <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                    </button>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
                     <button open-type="contact" class="alipay-contact">
                         <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="40rpx*40rpx" />
+                        <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
+                    </button>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
                     <button type="default" @tap="call_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
-                    <!-- #endif -->
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
+                    <!-- #endif -->
                 </block>
             </view>
             <!-- 默认浮动展示-可拖拽位置 -->
@@ -33,7 +37,7 @@
                         <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit spread">
                             <view class="ring"></view>
     	                    <view class="ring"></view>
-                            <block v-if="is_chat == 1">
+                            <block v-if="is_chat == 1 || (common_app_customer_service_custom || null) != null">
                                 <button type="default" :class="common_ent" @tap="chat_event">
                                     <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                                 </button>
@@ -69,9 +73,11 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: app.globalData.get_static_url('common'),
+                client_value: app.globalData.application_client_type(),
                 is_chat: 0,
                 chat_url: null,
                 common_app_customer_service_tel: null,
+                common_app_customer_service_custom: null,
                 online_service_status: 0,
                 is_online_service_fixed: app.globalData.data.is_online_service_fixed,
                 mini_alipay_tnt_inst_id: null,
@@ -165,9 +171,6 @@
                 top: 250,
                 height_dec: this.propIsBar ? 350 : 250,
                 // #endif
-                // 是否使用客服系统
-                is_chat: this.propIsChat || this.is_chat,
-                chat_url: this.propChatUrl || this.chat_url,
                 // 是否灰度
                 common_ent: this.propIsGrayscale ? 'grayscale' : ''
             });
@@ -175,33 +178,33 @@
         methods: {
             // 初始化配置
             init_config(status) {
+                // 客服优先级顺序( 1客服系统 -> 2自定义客服 -> 3平台提供的客服 -> 4电话客服 )
                 if ((status || false) == true) {
                     // 是否使用客服系统
                     var is_chat = app.globalData.get_config('plugins_base.chat.data.is_mobile_chat', 0);
                     var chat_url = app.globalData.get_config('plugins_base.chat.data.chat_url');
-                    if(is_chat == 1 && chat_url != null) {
+                    if(is_chat == 1 && (chat_url != null || (this.propChatUrl || null) != null)) {
                         this.setData({
                             is_chat: is_chat,
-                            chat_url: chat_url,
-                            common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                            chat_url: this.propChatUrl || chat_url,
                             online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)
                         });
                     } else {
-                        // #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-ALIPAY || MP-KUAISHOU || H5 || APP
+                        var online_service_url = app.globalData.get_config('config.common_app_customer_service_custom', null);
                         this.setData({
-                            common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel'),
+                            common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel', null),
+                            common_app_customer_service_custom: (online_service_url == null || (online_service_url[this.client_value] || null) == null) ? null : online_service_url[this.client_value],
                             online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)
                         });
-                        // #endif
-                        
-                        // #ifdef H5 || APP
-                        if((this.common_app_customer_service_tel || null) == null) {
+
+                        // 对应平台没有提供客服的、电话和自定义客服必须存在一个
+                        var arr = ['qq', 'h5', 'ios', 'android'];
+                        if(arr.indexOf(this.client_value) != -1 && (this.common_app_customer_service_tel || null) == null && (this.common_app_customer_service_custom || null) == null) {
                             this.setData({
                                 online_service_status: 0
                             });
                         }
-                        // #endif
-                        
+
                         // #ifdef MP-ALIPAY
                         // 在线客服开启，获取用户openid
                         if(this.online_service_status == 1)
@@ -219,19 +222,20 @@
                 }
             },
 
-            // 客服电话
-            call_event() {
-                if (this.common_app_customer_service_tel == null) {
-                    app.globalData.showToast(this.$t('setup.setup.utnr7g'));
+            // 客服事件
+            chat_event() {
+                if(this.is_chat == 1) {
+                    // 进入客服系统
+                    app.globalData.chat_entry_handle(this.chat_url);
                 } else {
-                    app.globalData.call_tel(this.common_app_customer_service_tel);
+                    // 自定义客服
+                    app.globalData.url_open(this.common_app_customer_service_custom);
                 }
             },
-            
-            // 进入客服系统
-            chat_event() {
-                var url = this.propChatUrl || this.chat_url || null;
-                app.globalData.chat_entry_handle(url);
+
+            // 客服电话
+            call_event() {
+                app.globalData.call_tel(this.common_app_customer_service_tel);
             }
         }
     };

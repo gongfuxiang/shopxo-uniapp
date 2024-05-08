@@ -2674,12 +2674,9 @@
                                             longitude: res.longitude || null,
                                             status: 1,
                                         });
-                                        clearInterval(self.data.get_user_location_timer);
-                                    },
-                                    fail: function(res) {
-                                        clearInterval(self.data.get_user_location_timer);
                                     }
                                 });
+                                clearInterval(self.data.get_user_location_timer);
                             }
                         }, 500);
                     }
