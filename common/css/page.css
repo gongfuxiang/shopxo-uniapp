@@ -907,6 +907,12 @@ button[disabled].bg-grey {
 .warp {
     word-break: break-all;
 }
+/**
+ * 文字不换行
+ */
+.nowrap {
+    white-space: nowrap;
+}
 
 /**
  * 基础导航

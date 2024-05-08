@@ -226,9 +226,9 @@
                             <block v-for="(item, index) in plugins_coupon_data.data" :key="index">
                                 <view class="coupon-padding margin-right-xs">
                                     <view class="oh">
-                                        <view class="item margin-vertical-xs mini-coupon" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
-                                            <text @tap="popup_coupon_event">{{ item.desc || item.name }}</text>
-                                            <text class="dis-inline-block margin-left-sm padding-left-sm divider-l" @tap="coupon_receive_event(index, item.id)">{{ item.status_operable_name }}</text>
+                                        <view class="item margin-vertical-xs mini-coupon flex-row flex-nowrap" :class="item.status_type === 2 ? 'received-coupon mini-coupon-br' : 'not-received-coupon'">
+                                            <text class="nowrap" @tap="popup_coupon_event">{{ item.desc || item.name }}</text>
+                                            <text class="dis-inline-block nowrap margin-left-sm padding-left-sm divider-l" @tap="coupon_receive_event(index, item.id)">{{ item.status_operable_name }}</text>
                                         </view>
                                     </view>
                                 </view>
