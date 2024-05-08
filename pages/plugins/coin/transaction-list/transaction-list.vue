@@ -69,10 +69,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_accounts_close_event">
@@ -87,10 +87,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('wallet-log-detail.wallet-log-detail.tdf3wo')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="operate_type_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="operate_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in operate_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="operate_type_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="operate_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_operate_type_close_event">
@@ -105,10 +105,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('invoice.invoice.l3832z')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="business_type_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="business_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in business_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="business_type_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="business_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_business_type_close_event">
@@ -123,10 +123,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('transaction-list.transaction-list.cu39n5')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="coin_type_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="coin_type_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in coin_type_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="coin_type_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.name" :data-value="item.value" :data-index="index" @tap="coin_type_list_event">{{ item.name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_coin_type_close_event">
@@ -261,12 +261,12 @@
                                 business_type_list: data.log_business_type_list || [],
                                 coin_type_list: data.log_coin_type_list || [],
                             });
-                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
-                                var index = data.accounts_list.findIndex((item) => item.id === this.params.id);
+                            if (this.accounts_list.length > 0 && (this.accounts_id || null) != null) {
+                                var index = this.accounts_list.findIndex((item) => item.id == this.accounts_id);
                                 this.setData({
                                     accounts_list_index: index,
-                                    accounts_id: data.accounts_list[index].id,
-                                    accounts_name: data.accounts_list[index].platform_name,
+                                    accounts_id: this.accounts_list[index].id,
+                                    accounts_name: this.accounts_list[index].platform_name,
                                 });
                             }
                         } else {

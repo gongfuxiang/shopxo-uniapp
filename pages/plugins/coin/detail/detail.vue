@@ -96,7 +96,7 @@
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
-                                    <iconfont :name="accounts.id === item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                    <iconfont :name="accounts.id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -230,7 +230,7 @@
                                 log_list: data.log_list || [],
                                 accounts_summary: data.accounts_summary || 0,
                                 data_list_loding_msg: '',
-                                data_list_loding_status: 3,
+                                data_list_loding_status: 0,
                             });
 
                             // 操作导航

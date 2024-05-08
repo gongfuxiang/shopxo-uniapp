@@ -53,7 +53,7 @@
                             <view class="margin-bottom-xs">{{$t('recharge.recharge.eb6722')}}</view>
                             <view class="flex-row flex-warp recharge-price-item margin-bottom-xs">
                                 <block v-for="(item, index) in accounts.platform_data.preset_data" :key="index">
-                                    <view class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index === index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
+                                    <view class="recharge-price-list flex-col align-c jc-c pr" :class="preset_data_index == index ? 'active' : ''" :data-index="index" :data-value="item.value" @tap="preset_data_change">
                                         <view class="flex-row align-c jc-c">
                                             <image :src="wallet_static_url + 'recharge-price.png'" mode="widthFix" class="recharge-price-img round" />
                                             <view class="margin-left-xs recharge-price-name">{{ item.value }}</view>
@@ -96,7 +96,7 @@
                                     <view class="margin-left-sm text-size-md single-text">{{ item.platform_name }}</view>
                                 </view>
                                 <view>
-                                    <iconfont :name="accounts.id === item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
+                                    <iconfont :name="accounts.id == item.id ? 'icon-zhifu-yixuan cr-red' : 'icon-zhifu-weixuan'" size="36rpx"></iconfont>
                                 </view>
                             </view>
                         </view>

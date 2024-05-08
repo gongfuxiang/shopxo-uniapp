@@ -60,10 +60,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.q48666')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="send_accounts_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="send_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in send_accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="send_accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="send_accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_send_accounts_close_event">
@@ -78,10 +78,10 @@
                     <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.47646p')}}</view>
                     <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
                         <view class="flex-width-half-half">
-                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">{{$t('common.all')}}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
                         <view v-for="(item, index) in receive_accounts_list" class="flex-width-half-half" :key="index">
-                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index === index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="receive_accounts_list_event">{{ item.platform_name }}</view>
+                            <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index == index ? 'cr-main bg-main-light' : ''" :data-name="item.platform_name" :data-value="item.id" :data-index="index" @tap="receive_accounts_list_event">{{ item.platform_name }}</view>
                         </view>
                     </view>
                     <view class="tc padding-top-lg br-t" @tap="popup_receive_accounts_close_event">
@@ -202,12 +202,12 @@
                                 send_accounts_list: data.accounts_list || [],
                                 receive_accounts_list: data.accounts_list || [],
                             });
-                            if (data.accounts_list.length > 0 && this.params !== null && this.params.id) {
-                                var index = data.accounts_list.findIndex((item) => item.id === this.params.id);
+                            if (this.send_accounts_list.length > 0 && (this.send_accounts_id || null) != null) {
+                                var index = this.send_accounts_list.findIndex((item) => item.id == this.send_accounts_id);
                                 this.setData({
                                     send_accounts_list_index: index,
-                                    send_accounts_id: data.accounts_list[index].id,
-                                    send_accounts_name: data.accounts_list[index].platform_name,
+                                    send_accounts_id: this.send_accounts_list[index].id,
+                                    send_accounts_name: this.send_accounts_list[index].platform_name,
                                 });
                             }
                         } else {
