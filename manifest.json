@@ -225,6 +225,11 @@
         "appid" : "1110736292",
         "setting" : {
             "urlCheck" : false
+        },
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "你的位置将用于小程序中相应业务位置服务使用"
+            }
         }
     },
     "mp-kuaishou" : {

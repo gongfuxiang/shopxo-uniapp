@@ -10,14 +10,55 @@
         </view>
         <view v-else>
             <!-- 1 加载中(0loog, 1名称) -->
-            <view v-if="propStatus == 1 && network_type_value != 'none'" class="no-data-box tc no-data-loading">
-                <view v-if="loading_content_type == 1" class="loading-title-animation">
-                    <text>{{title}}</text>
-                </view>
-                <view v-else class="loading-logo-content">
-                    <view class="loading-logo" :style="'background-image: url('+loading_logo+')'"></view>
-                    <view class="loading-border" :style="'background-image: url('+loading_logo_border+')'"></view>
-                </view>
+            <view v-if="propStatus == 1 && network_type_value != 'none'" :class="'no-data-box tc no-data-loading '+(is_loading_use_skeleton == 1 && (propPage || null) != null ? 'skeleton' : '')">
+                <block v-if="is_loading_use_skeleton == 1 && (propPage || null) != null">
+                    <!-- 是否展示头站位 -->
+                    <view v-if="propIsHeader" class="skeleton-header"></view>
+                    <!-- 首页 -->
+                    <block v-if="propPage == 'home'">
+                        <x-skeleton propType="banner"></x-skeleton>
+                        <x-skeleton propType="menu"></x-skeleton>
+                        <x-skeleton propType="waterfall"></x-skeleton>
+                        <x-skeleton propType="list" propRowNumber="4"></x-skeleton>
+                    </block>
+                    <!-- 商品分类-整体内容 -->
+                    <block v-else-if="propPage == 'goods-category'">
+                        <x-skeleton propType="menu" propRowNumber="1"></x-skeleton>
+                        <view class="goods-category-content flex-row jc-sb">
+                            <view class="left">
+                                <x-skeleton :propConfig="skeleton_goods_category_left_config"></x-skeleton>
+                            </view>
+                            <view class="right">
+                                <x-skeleton propType="list" propRowNumber="7"></x-skeleton>
+                            </view>
+                        </view>
+                    </block>
+                    <!-- 商品分类-内容项 -->
+                    <block v-else-if="propPage == 'goods-category-item'">
+                        <x-skeleton propType="list" propRowNumber="6"></x-skeleton>
+                    </block>
+                    <!-- 购物车 -->
+                    <block v-else-if="propPage == 'cart'">
+                        <x-skeleton propType="list" propRowNumber="3"></x-skeleton>
+                        <x-skeleton propType="waterfall" propRowNumber="4"></x-skeleton>
+                    </block>
+                    <!-- 商品详情 -->
+                    <block v-else-if="propPage == 'goods'">
+                        <x-skeleton propType="banner" propHeightNumber="600"></x-skeleton>
+                        <x-skeleton propType="text"></x-skeleton>
+                        <x-skeleton propType="info"></x-skeleton>
+                        <x-skeleton propType="waterfall" propRowNumber="4"></x-skeleton>
+                    </block>
+                </block>
+                <block v-else>
+                    <view v-if="loading_content_type == 1" class="loading-title-animation">
+                        <text>{{title}}</text>
+                    </view>
+                    <view v-else class="loading-logo-content">
+                        <view class="loading-logo" :style="'background-image: url('+loading_logo+')'"></view>
+                        <view class="loading-border" :style="'background-image: url('+loading_logo_border+')'"></view>
+                    </view>
+                </block>
             </view>
 
             <!-- 2 处理错误 -->
@@ -44,12 +85,27 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 static_dir: '/static/images/common/',
+                is_loading_use_skeleton: app.globalData.data.is_loading_use_skeleton,
                 loading_logo_border: app.globalData.data.static_url+'static/common/svg/loading-border.svg',
                 loading_logo: app.globalData.get_application_logo_square() || app.globalData.data.static_url+'favicon.ico',
                 loading_content_type: app.globalData.data.loading_content_type,
                 title: app.globalData.get_application_title(),
                 network_type_value: '',
                 not_network_await_status: 0,
+
+                // 骨架屏配置
+                // 商品分类内容-左侧
+                skeleton_goods_category_left_config: {
+                	padding: '30rpx',
+                	gridRows: 19,
+                	gridColumns: 1,
+                	gridRowsGap: '30rpx',
+                	headShow: true,
+                	headWidth: '200rpx',
+                	headHeight: '60rpx',
+                	headBorderRadius: '16rpx',
+                	textShow: false,
+                },
             };
         },
         components: {},
@@ -74,6 +130,14 @@
                 type: Number,
                 default: 40,
             },
+            propPage: {
+                type: String,
+                default: '',
+            },
+            propIsHeader: {
+                type: Boolean,
+                default: false,
+            }
         },
         // 页面被展示
         created: function () {
@@ -149,7 +213,7 @@
         },
     };
 </script>
-<style>
+<style scoped>
     .no-data-box {
         padding: 15% 0;
     }
@@ -238,5 +302,24 @@
         background-size: contain;
         background-position: center center;
         background-repeat: no-repeat;
+    }
+    
+    /**
+     * 骨架屏
+     */
+    .skeleton-header {
+        /* #ifndef H5 || APP */
+        padding-top: var(--status-bar-height);
+        padding-bottom: 55px;
+        /* #endif */
+    }
+    .no-data-box.skeleton {
+        padding: 0;
+    }
+    .no-data-loading .goods-category-content > .left {
+        width: 30%;
+    }
+    .no-data-loading .goods-category-content > .right {
+        width: 70%;
     }
 </style>

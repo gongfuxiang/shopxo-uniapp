@@ -43,7 +43,7 @@
 
         <!-- 提示信息 -->
         <block v-if="data_list_loding_status == 1">
-            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+            <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="cart" :propIsHeader="true"></component-no-data>
         </block>
         <block v-else>
             <!-- 购物车商品列表 -->

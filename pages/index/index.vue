@@ -255,7 +255,7 @@
 
             <!-- 提示信息 -->
             <block v-if="load_status == 0">
-                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="home" :propIsHeader="true"></component-no-data>
             </block>
 
             <!-- 结尾 -->

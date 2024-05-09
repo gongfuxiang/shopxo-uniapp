@@ -114,8 +114,12 @@
                 // 钱包插件货币符号使用当前 currency_symbol 数据的固定值（0否, 1是）
                 is_wallet_use_fixed_currency_symbol: 0,
 
+                // 加载是否使用骨架屏（0否, 1是）
+                is_loading_use_skeleton: 0,
+
                 // 加载动画类型（0logo, 1名称）
                 loading_content_type: 0,
+
 
                 // 数据缓存key
                 // 场景值

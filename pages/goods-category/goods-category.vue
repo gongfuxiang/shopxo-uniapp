@@ -165,7 +165,7 @@
                                                     </view>
                                                 </view>
                                                 <block v-else>
-                                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propBackBtn="false"></component-no-data>
+                                                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propBackBtn="false" propPage="goods-category-item"></component-no-data>
                                                 </block>
                                             </view>
                                         </scroll-view>
@@ -346,7 +346,7 @@
                     </view>
                 </block>
                 <block v-else>
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="goods-category" :propIsHeader="true"></component-no-data>
                 </block>
 
                 <block v-if="data_list_loding_status != 1">
@@ -445,7 +445,7 @@
                 // 底部tab高度 - 只有H5下有值
                 window_bottom_height: 0,
                 // #ifdef H5
-                window_bottom_height: uni.getWindowInfo().windowBottom || 0,
+                window_bottom_height: uni.getWindowInfo().windowBottom || 50,
                 // #endif
             };
         },

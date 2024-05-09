@@ -579,7 +579,7 @@
         </view>
 
         <!-- 提示信息 -->
-        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="goods" :propIsHeader="true"></component-no-data>
 
         <!-- 分享弹窗 -->
         <component-share-popup ref="share"></component-share-popup>
