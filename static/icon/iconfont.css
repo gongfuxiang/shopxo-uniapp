@@ -14,6 +14,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-enlarge-four:before {
+  content: "\e602";
+}
+
+.icon-enlarge:before {
+  content: "\e64e";
+}
+
+.icon-enlarge-border:before {
+  content: "\e6f2";
+}
+
 .icon-map-navigator:before {
   content: "\10183";
 }

@@ -19,7 +19,12 @@
                                 <scroll-view :scroll-y="true" class="ht-auto">
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
                                         <view :class="'padding-vertical-main tc cp oh pr ' + (nav_active_index == index ? 'bg-white cr-main' : '')" :data-index="index" @tap="nav_event">
-                                            <image v-if="(item.images || null) != null" class="dis-inline-block br-f5 radius dis-block spec-images" :src="item.images" mode="widthFix"></image>
+                                            <block v-if="(item.images || null) != null">
+                                                <image class="dis-inline-block br-f5 radius dis-block spec-images" :src="item.images" mode="widthFix"></image>
+                                                <view class="icon-enlarge-submit pa padding-xs lh-sm radius" :data-value="item.images" @tap="spec_images_view_event">
+                                                    <iconfont name="icon-enlarge" size="26rpx" color="#fff" propClass="lh-sm"></iconfont>
+                                                </view>
+                                            </block>
                                             <view class="cr-base">{{ item.name }}</view>
                                             <view v-if="(item.badge_total || 0) > 0" class="badge-icon pa">
                                                 <component-badge :propNumber="item.badge_total"></component-badge>
@@ -53,8 +58,13 @@
                                     <block v-for="(item, index) in batchbuy_data.goods_spec_data" :key="index">
                                         <view class="oh padding-vertical-main">
                                             <view class="fl item-left">
-                                                <view>
-                                                    <image v-if="(item.images || null) != null" class="dis-inline-block va-m br-f5 radius margin-right-sm spec-images" :src="item.images" mode="widthFix"></image>
+                                                <view class="pr">
+                                                    <block v-if="(item.images || null) != null">
+                                                        <image class="dis-inline-block va-m br-f5 radius margin-right-sm spec-images" :src="item.images" mode="widthFix"></image>
+                                                        <view class="icon-enlarge-submit pa padding-xs lh-sm radius" :data-value="item.images" @tap="spec_images_view_event">
+                                                            <iconfont name="icon-enlarge" size="26rpx" color="#fff" propClass="lh-sm"></iconfont>
+                                                        </view>
+                                                    </block>
                                                     <text class="text-size-xs va-m">{{ item.name }}</text>
                                                 </view>
                                                 <view class="sales-price text-size-xs margin-top-xs">{{ propCurrencySymbol }}{{ item.base.price }}</view>
@@ -471,76 +481,96 @@ export default {
                 },
             });
         },
+
+        // 规格图片预览事件
+        spec_images_view_event(e) {
+            var value = e.currentTarget.dataset.value || null;
+            if (value != null) {
+                uni.previewImage({
+                    current: value,
+                    urls: [value],
+                });
+            }
+        }
     },
 };
 </script>
 <style>
-.plugins-batchbuy-container {
-    height: 70vh;
-    padding-bottom: 160rpx;
-}
-.plugins-batchbuy-container .spec-data-content {
-    height: calc(100% - 15rpx);
-}
-.plugins-batchbuy-container .spec-data-content.wholesale {
-    height: calc(100% - 160rpx);
-}
-.plugins-batchbuy-container .left-nav {
-    width: 200rpx;
-}
-.plugins-batchbuy-container .left-nav .badge-icon {
-    top: 8rpx;
-    right: 36rpx;
-}
-.plugins-batchbuy-container .left-nav .spec-images {
-    width: 100rpx;
-    height: 100rpx !important;
-}
-.plugins-batchbuy-container .right-conent {
-    width: calc(100% - 210rpx);
-}
-.plugins-batchbuy-container .right-conent .item-left {
-    width: calc(100% - 290rpx);
-}
-.plugins-batchbuy-container .item-right {
-    background: #fbfbfb;
-    border: 1px solid #f0f0f0;
-}
-.plugins-batchbuy-container .item-right .number-submit {
-    width: 80rpx;
-    font-weight: bold;
-}
-.plugins-batchbuy-container .item-right input {
-    width: 50px;
-}
-.plugins-batchbuy-container .item-right .number-submit,
-.plugins-batchbuy-container .item-right input {
-    padding: 0;
-    height: 60rpx;
-    line-height: 60rpx;
-}
-.plugins-batchbuy-container .right-conent-only-level-one {
-    width: 100%;
-}
-.plugins-batchbuy-container .right-conent-only-level-one .spec-images {
-    width: 100rpx;
-    height: 100rpx !important;
-}
-.plugins-batchbuy-container .confirm-submit {
-    left: 0;
-    bottom: 0;
-}
-.plugins-batchbuy-container .buy-nav-btn-number-0 .item,
-.plugins-batchbuy-container .buy-nav-btn-number-1 .item {
-    width: 100% !important;
-}
-.plugins-batchbuy-container .buy-nav-btn-number-2 .item {
-    width: 50% !important;
-}
-.plugins-batchbuy-container .buy-nav-btn-number-3 .item {
-    width: 33.33% !important;
-}
-.plugins-batchbuy-container .buy-nav-btn-number-4 .item {
-    width: 25% !important;
-}
+    .plugins-batchbuy-container {
+        height: 70vh;
+        padding-bottom: 160rpx;
+    }
+    .plugins-batchbuy-container .spec-data-content {
+        height: calc(100% - 15rpx);
+    }
+    .plugins-batchbuy-container .spec-data-content.wholesale {
+        height: calc(100% - 160rpx);
+    }
+    .plugins-batchbuy-container .left-nav {
+        width: 200rpx;
+    }
+    .plugins-batchbuy-container .left-nav .badge-icon {
+        top: 8rpx;
+        right: 36rpx;
+    }
+    .plugins-batchbuy-container .left-nav .spec-images {
+        width: 100rpx;
+        height: 100rpx !important;
+    }
+    .plugins-batchbuy-container .icon-enlarge-submit {
+        left: 55rpx;
+        top: 30rpx;
+        background: rgb(0, 0, 0, 30%);
+    }
+    .plugins-batchbuy-container .right-conent {
+        width: calc(100% - 210rpx);
+    }
+    .plugins-batchbuy-container .right-conent .item-left {
+        width: calc(100% - 290rpx);
+    }
+    .plugins-batchbuy-container .item-right {
+        background: #fbfbfb;
+        border: 1px solid #f0f0f0;
+    }
+    .plugins-batchbuy-container .item-right .number-submit {
+        width: 80rpx;
+        font-weight: bold;
+    }
+    .plugins-batchbuy-container .item-right input {
+        width: 50px;
+    }
+    .plugins-batchbuy-container .item-right .number-submit,
+    .plugins-batchbuy-container .item-right input {
+        padding: 0;
+        height: 60rpx;
+        line-height: 60rpx;
+    }
+    .plugins-batchbuy-container .right-conent-only-level-one {
+        width: 100%;
+    }
+    .plugins-batchbuy-container .right-conent-only-level-one .spec-images {
+        width: 100rpx;
+        height: 100rpx !important;
+    }
+    .plugins-batchbuy-container .right-conent-only-level-one .icon-enlarge-submit {
+        left: 5rpx;
+        top: 5rpx;
+    }
+    .plugins-batchbuy-container .confirm-submit {
+        left: 0;
+        bottom: 0;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-0 .item,
+    .plugins-batchbuy-container .buy-nav-btn-number-1 .item {
+        width: 100% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-2 .item {
+        width: 50% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-3 .item {
+        width: 33.33% !important;
+    }
+    .plugins-batchbuy-container .buy-nav-btn-number-4 .item {
+        width: 25% !important;
+    }
 </style>
