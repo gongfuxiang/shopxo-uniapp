@@ -43,7 +43,8 @@
 		"not_more_list_data_tips": "无更多列表数据",
 		"scan_name": "扫一扫",
 		"not_have_name": "没有",
-        "note": "备注"
+        "note": "备注",
+        "recommend_code_name": "推荐码"
 	},
 	"pages": {
 		"goods-category": "商品分类",

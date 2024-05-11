@@ -6,6 +6,10 @@
     height: 116rpx;
 }
 
+.head-bottom {
+    height: 48rpx;
+}
+
 .head-item .level-item {
     padding: 0 20rpx;
     height: 48rpx;
@@ -20,7 +24,7 @@
 
 .head-base {
     right: 0;
-    top: 50%;
+    top: 74%;
     transform: translateY(-50%);
 }
 
@@ -110,7 +114,7 @@
  * 修改用户上级
  */
 .user-search .custom-info {
-    height: 58rpx;
+    height: 100rpx;
 }
 .user-search .custom-info .custom-avatar {
     width: 50rpx;

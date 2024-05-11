@@ -15,19 +15,32 @@
                                         <image class="wh-auto circle" @tap="preview_event" @error="user_avatar_error" :src="avatar" mode="widthFix"></image>
                                     </view>
                                     <view class="head-item padding-left-main flex-1 flex-width">
-                                        <view class="cr-white text-size fw-b">{{ nickname }}</view>
-                                        <view v-if="(user_level || null) != null" class="single-text level-item round dis-inline-block margin-top-sm">
-                                            <image v-if="(user_level.images_url || null) != null" class="level-icon margin-right-sm pr top-sm" :src="user_level.images_url" mode="widthFix"></image>
-                                            <text v-if="(user_level.name || null) != null" class="cr-white text-size-xs">{{ user_level.name }}</text>
+                                        <view class="cr-white">
+                                            <view class="dis-inline-block text-size fw-b" @tap="user_referrer">{{ nickname }}</view>
+                                            <view v-if="(user_referrer || null) != null" class="dis-inline-block margin-left-lg br-b-f9 padding-bottom-xss text-size-xs" data-event="copy" :data-value="user_referrer" @tap="text_event">
+                                                <view class="dis-inline-block">
+                                                    <text>{{$t('common.recommend_code_name')}}</text>
+                                                    <text class="fw-b margin-left-sm">{{user_referrer}}</text>
+                                                </view>
+                                                <view class="dis-inline-block margin-left-xs">
+                                                    <iconfont name="icon-copy" size="22rpx" color="#fff"></iconfont>
+                                                </view>
+                                            </view>
+                                        </view>
+                                        <view class="margin-top oh head-bottom">
+                                            <view v-if="(user_level || null) != null" class="single-text level-item round dis-inline-block">
+                                                <image v-if="(user_level.images_url || null) != null" class="level-icon margin-right-sm pr top-sm" :src="user_level.images_url" mode="widthFix"></image>
+                                                <text v-if="(user_level.name || null) != null" class="cr-white text-size-xs">{{ user_level.name }}</text>
+                                            </view>
+                                            <view class="head-base pa">
+                                                <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
+                                                    <button data-value="/pages/plugins/distribution/extraction/extraction" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
+                                                        {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
+                                                    </button>
+                                                </block>
+                                            </view>
                                         </view>
                                     </view>
-                                </view>
-                                <view class="head-base pa">
-                                    <block v-if="(data_base || null) != null && (data_base.is_enable_self_extraction || 0) == 1">
-                                        <button data-value="/pages/plugins/distribution/extraction/extraction" @tap="url_event" class="text-size-xs cr-white" size="mini" type="default" hover-class="none">
-                                            {{ (extraction || null) == null ? $t('user.user.2344s8') : '' }}{{$t('user.user.b5cnj1')}}<iconfont name="icon-arrow-right" size="18rpx" color="#fff" propClass="pa"></iconfont>
-                                        </button>
-                                    </block>
                                 </view>
                             </view>
                         </view>
@@ -232,6 +245,7 @@
                                                         <view v-else class="cr-red">{{modify_superior_user_data.error_msg}}</view>
                                                     </block>
                                                     <view v-else class="cr-grey">{{$t('user.user.iynkpl')}}</view>
+                                                    <view v-if="(superior || null) != null && (superior.can_modify_number_msg || null) != null" class="cr-yellow margin-top">{{superior.can_modify_number_msg}}</view>
                                                 </view>
                                             </view>
                                         </view>
@@ -273,6 +287,7 @@
                 currency_symbol: currency_symbol,
                 avatar: app.globalData.data.default_user_head_src,
                 nickname: this.$t('login.login.6yfr9g'),
+                user_referrer: null,
                 data_base: null,
                 user_level: null,
                 extraction: null,
@@ -370,6 +385,7 @@
                                 user_level: data.user_level || null,
                                 extraction: data.extraction || null,
                                 superior: data.superior || null,
+                                user_referrer: data.user_referrer || null,
                                 profit_ladder: data.profit_ladder || null,
                                 nav_list: data.nav_list || [],
                                 time_data: time_data,
@@ -650,6 +666,11 @@
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
+            }
         },
     };
 </script>

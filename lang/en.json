@@ -43,7 +43,8 @@
 		"sending": "Sending",
 		"scan_name": "Scan it",
 		"not_have_name": "not have",
-        "note": "Remarks"
+        "note": "Remarks",
+        "recommend_code_name": "Recommend code"
 	},
 	"pages": {
 		"goods-category": "Product classification",
