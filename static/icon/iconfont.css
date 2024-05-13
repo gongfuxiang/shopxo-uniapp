@@ -14,12 +14,12 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-enlarge-four:before {
-  content: "\e602";
+.icon-enlarge:before {
+  content: "\e60d";
 }
 
-.icon-enlarge:before {
-  content: "\e64e";
+.icon-enlarge-four:before {
+  content: "\e602";
 }
 
 .icon-enlarge-border:before {
