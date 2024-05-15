@@ -8,7 +8,7 @@
                     <view class="tc">
                         <image :src="membership_level_vip + 'title.png'" mode="widthFix" class="title-img"></image>
                         <!-- 标题 -->
-                        <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }}123 </view>
+                        <view v-if="(data_base.banner_top_title || null) != null" class="banner-title single-text text-size-lg margin-top-xxxl"> {{ data_base.banner_top_title }} </view>
                         <!-- 购买按钮 -->
                         <button data-value="/pages/plugins/membershiplevelvip/buy/buy" @tap="url_event" class="banner-buy fw-b round auto margin-top-xxxl" hover-class="none" :style="join_vip_btn">
                             {{ data_base.banner_middle_name || $t('index.index.tbo22p') }}
