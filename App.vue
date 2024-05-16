@@ -22,8 +22,11 @@
                 // 默认logo、如 /static/images/common/logo.png
                 application_logo: '',
 
-                // 版本号
+                // 版本号、如: v1.0.0
                 version: 'v6.1',
+
+                // app版本信息、如: v1.0.0 20180118
+                app_version_info: 'v6.1 20240516',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -1883,6 +1886,10 @@
                 var type = this.application_client_type() || null;
                 if (type !== null) {
                     value = this.get_config('config.common_app_mini_' + type + '_describe') || null;
+                }
+                // 商店介绍
+                if (type !== null) {
+                    value = this.get_config('config.common_customer_store_describe') || null;
                 }
                 // 获取公共数据
                 if (value === null) {

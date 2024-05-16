@@ -482,6 +482,18 @@
             ]
         },
         {
+            "root": "pages/about",
+            "pages": [
+                {
+                    "path": "about",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/seckill",
             "pages": [
                 {
