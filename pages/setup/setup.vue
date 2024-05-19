@@ -85,11 +85,9 @@
                     <text>{{ $t('setup.setup.11k15d') }}</text>
                     <text class="fr cr-grey">{{ $t('setup.setup.48r261') }}</text>
                 </view>
-                <!-- #ifdef APP -->
                 <view class="item padding-vertical-xxl padding-right-xxxl arrow-right" data-value="/pages/about/about" @tap="url_event">
                     <text>{{ $t('setup.setup.tghrf2') }}</text>
                 </view>
-                <!-- #endif -->
             </view>
 
             <!-- 打开语言选择弹层-->

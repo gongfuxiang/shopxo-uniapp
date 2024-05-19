@@ -182,15 +182,11 @@
                     is_success_tips: is_success_tips,
                 });
 
-                // 是否初始化
-                var is_init = (params.is_init == undefined || params.is_init) == 1 ? 1 : 0;
-                if (is_init == 1) {
-                    // 不能选择规格处理
-                    this.spec_handle_dont(0, 1);
-                } else {
-                    // 获取规格详情
-                    this.get_spec_detail();
-                }
+                // 初始化不能选择规格处理
+                this.spec_handle_dont(0, 1);
+
+                // 获取规格详情
+                this.get_spec_detail();
 
                 // 规格选中处理
                 this.selected_spec_handle();

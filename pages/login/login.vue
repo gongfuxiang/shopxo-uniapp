@@ -1566,7 +1566,7 @@
                                 );
                             },
                             fail: function (error) {
-                                app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
+                                app.globalData.showToast(error.errMsg+'('+error.code+')');
                             },
                         });
                         break;
@@ -1590,7 +1590,7 @@
                                 );
                             },
                             fail: function (error) {
-                                app.globalData.showToast(error.errMsg || this.$t('login.login.4835p5'));
+                                app.globalData.showToast(error.errMsg+'('+error.code+')');
                             },
                         });
                         break;

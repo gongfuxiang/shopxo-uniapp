@@ -5,7 +5,9 @@
                 <view class="padding-vertical-xxl">
                     <image class="logo circle br-f5 padding-sm dis-block auto margin-top-xl" :src="logo" mode="aspectFill"></image>
                     <view class="margin-top-sm text-size">{{title}}</view>
+                    <!-- #ifdef APP -->
                     <view class="margin-top-sm cr-grey-9">{{app_version_info}}</view>
+                    <!-- #endif -->
                     <view class="margin-top-xxl cr-base text-size-sm">{{describe}}</view>
                     <view class="margin-top-xxxxl padding-vertical-xxxxl">
                         <text class="cp cr-blue margin-right" data-value="userregister" @tap="agreement_event">{{ $t('login.login.2v11we') }}</text>
@@ -13,6 +15,7 @@
                     </view>
                 </view>
             </view>
+            <view class="margin-top cr-grey-c">Copyright 2018-{{year}} by {{title}}</view>
         </view>
     </view>
 </template>
@@ -25,7 +28,8 @@
                 logo: app.globalData.get_application_logo_square(),
                 title: app.globalData.get_application_title(),
                 describe: app.globalData.get_application_describe(),
-                app_version_info: app.globalData.data.app_version_info
+                app_version_info: app.globalData.data.app_version_info,
+                year: (new Date()).getFullYear(),
             };
         },
 
