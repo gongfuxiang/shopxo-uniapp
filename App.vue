@@ -90,7 +90,7 @@
                 weixin_privacy_setting_timer: null,
                 
                 // 弹出获取用户当前位置（0否, 1是）
-                get_user_location_status: 1,
+                get_user_location_status: 0,
                 get_user_location_timer: null,
 
                 // 微信小程序打开地图使用（0否, 1是）【腾讯位置服务路线规划】插件、（需要到小程序后台设置->第三方设置->插件管理里面添加【腾讯位置服务路线规划】插件，教程 https://mp.weixin.qq.com/wxopen/plugindevdoc?appid=wx50b5593e81dd937a）

@@ -718,6 +718,15 @@
                 });
             },
             region_event(address1, address2, address3) {
+                if((address1 || null) == null) {
+                    address1 = {};
+                }
+                if((address2 || null) == null) {
+                    address2 = {};
+                }
+                if((address3 || null) == null) {
+                    address3 = {};
+                }
                 this.setData({
                     province_id: address1.id || null,
                     city_id: address2.id || null,
