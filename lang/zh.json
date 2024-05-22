@@ -201,7 +201,8 @@
 		"plugins-coin-cash-list": "提现明细",
 		"plugins-coin-convert-list": "转换明细",
 		"plugins-coin-recharge-list": "充值明细",
-		"plugins-coin-collection": "收款"
+		"plugins-coin-collection": "收款",
+        "plugins-antifakecode-index": "正品查询"
 	},
 	"login": {
 		"login": {

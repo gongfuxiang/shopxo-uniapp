@@ -202,7 +202,8 @@
 		"plugins-coin-transaction-list": "Transaction details",
 		"plugins-coin-cash-list": "Withdrawal details",
 		"plugins-coin-convert-list": "Conversion details",
-		"plugins-coin-recharge-list": "Recharge details"
+		"plugins-coin-recharge-list": "Recharge details",
+        "plugins-antifakecode-index": "Authentic inquiry"
 	},
 	"login": {
 		"login": {

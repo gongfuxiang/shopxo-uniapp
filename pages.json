@@ -1564,6 +1564,18 @@
                     }
                 }
             ]
+        },
+        {
+            "root": "pages/plugins/antifakecode",
+            "pages": [
+                {
+                    "path": "index/index",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
         }
     ],
     "preloadRule": {
