@@ -1315,7 +1315,9 @@
     .scroll-box.realstore .content {
         padding-bottom: 40rpx;
     }
-    .scroll-box.cart .content,
+    .scroll-box.cart .content {
+        padding-bottom: 260rpx;
+    }
     .scroll-box.cart.realstore .content {
         padding-bottom: 120rpx;
     }
