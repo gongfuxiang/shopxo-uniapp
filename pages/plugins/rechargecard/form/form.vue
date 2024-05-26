@@ -89,7 +89,11 @@
                                     self.setData({
                                         form_submit_loading: false
                                     });
-                                    uni.navigateBack();
+                                    if(app.globalData.prev_page() == null) {
+                                        app.globalData.url_open('/pages/plugins/rechargecard/index/index', true);
+                                    } else {
+                                        uni.navigateBack();
+                                    }
                                 }, 1500);
                             } else {
                                 if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
