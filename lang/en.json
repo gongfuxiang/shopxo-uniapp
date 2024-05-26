@@ -203,7 +203,9 @@
 		"plugins-coin-cash-list": "Withdrawal details",
 		"plugins-coin-convert-list": "Conversion details",
 		"plugins-coin-recharge-list": "Recharge details",
-        "plugins-antifakecode-index": "Authentic inquiry"
+        "plugins-antifakecode-index": "Authentic inquiry",
+        "plugins-rechargecard-index": "My recharge card",
+        "plugins-rechargecard-form": "Recharge card redemption"
 	},
 	"login": {
 		"login": {
@@ -1849,5 +1851,13 @@
 			"yyjemb": "Anonymous or not",
 			"0nhrj0": "Comment content"
 		}
-	}
+	},
+    "rechargecard-index": {
+    	"rechargecard-index": {
+    		"hfg2fg": "Cami",
+            "8uhyui": "Recharge time",
+            "8tfgh2": "Recharge card redemption",
+            "fu3rf1": "Please enter the card password"
+    	}
+    }
 }

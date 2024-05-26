@@ -1,4 +1,3 @@
-<!-- 转账支付页 -->
 <template>
     <view :class="theme_view">
         <view class="padding-main">
@@ -183,7 +182,7 @@
                                 if (res.data.code == 0) {
                                     app.globalData.url_open('/pages/plugins/wallet/user/user?type=3', true);
                                 } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
+                                    if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
                                         app.globalData.showToast(res.data.msg);
                                     }
                                 }

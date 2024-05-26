@@ -202,7 +202,9 @@
 		"plugins-coin-convert-list": "转换明细",
 		"plugins-coin-recharge-list": "充值明细",
 		"plugins-coin-collection": "收款",
-        "plugins-antifakecode-index": "正品查询"
+        "plugins-antifakecode-index": "正品查询",
+        "plugins-rechargecard-index": "我的充值卡",
+        "plugins-rechargecard-form": "充值卡兑换"
 	},
 	"login": {
 		"login": {
@@ -1834,5 +1836,13 @@
 			"yyjemb": "是否匿名",
 			"0nhrj0": "评论内容"
 		}
-	}
+	},
+    "rechargecard-index": {
+    	"rechargecard-index": {
+    		"hfg2fg": "卡密",
+            "8uhyui": "充值时间",
+            "8tfgh2": "充值卡兑换",
+            "fu3rf1": "请输入卡密"
+    	}
+    }
 }
