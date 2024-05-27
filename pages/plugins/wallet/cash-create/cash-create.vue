@@ -5,24 +5,28 @@
                 <view class="padding-main oh">
                     <view class="form-gorup">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.qg404q')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + can_cash_max_money" />
-                        <view class="cr-red text-size-xs">
-                            <view v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-bottom-sm">{{$t('cash-create.cash-create.5o1q52')}}</view>
+                        <input type="digit" name="money" :value="default_data.money || ''" placeholder-class="cr-grey" class="cr-base" :placeholder="$t('cash-create.cash-create.cymbdz') + ((data_base.cash_minimum_amount || 0) <= 0 ? 0.01 : data_base.cash_minimum_amount) + $t('cash-create.cash-create.27ky42') + can_cash_max_money" @input="cash_money_event" />
+                        <view class="text-size-xs">
                             <view v-if="(data_base || null) != null && data_base.cash_minimum_amount > 0">
                                 <text>{{$t('cash-auth.cash-auth.27b4w5')}}</text>
-                                <text class="cr-red fw-b margin-left-sm margin-right-sm">{{ data_base.cash_minimum_amount }}</text>
+                                <text class="cr-red fw-b margin-left-sm">{{ data_base.cash_minimum_amount }}</text>
                             </view>
                             <view>
                                 <text>{{$t('cash-create.cash-create.iaw845')}}</text>
-                                <text class="cr-main fw-b margin-left-sm margin-right-sm">{{ can_cash_max_money }}</text>
+                                <text class="cr-main fw-b margin-left-sm">{{ can_cash_max_money }}</text>
                             </view>
                             <view>
                                 <text>{{$t('cash-create.cash-create.1dbkw2')}}</text>
-                                <text class="cr-green fw-b margin-left-sm margin-right-sm">{{ user_wallet.normal_money }}</text>
+                                <text class="cr-green fw-b margin-left-sm">{{ user_wallet.normal_money }}</text>
                             </view>
                             <view>
                                 <text>{{$t('cash-create.cash-create.162f7o')}}</text>
-                                <text class="cr-base fw-b margin-left-sm margin-right-sm">{{ user_wallet.give_money }}</text>
+                                <text class="cr-base fw-b margin-left-sm">{{ user_wallet.give_money }}</text>
+                                <text v-if="(data_base || null) == null || data_base.is_cash_retain_give != 0" class="cr-red margin-left-lg">{{$t('cash-create.cash-create.5o1q52')}}</text>
+                            </view>
+                            <view v-if="(data_base || null) == null || data_base.cash_commission_rate != 0" class="margin-top-sm cr-red">
+                                <text>{{$t('cash-create.cash-create.678iu2')}}</text>
+                                <text class="fw-b margin-left-sm">{{cash_commission_value}}</text>
                             </view>
                         </view>
                     </view>
@@ -57,9 +61,7 @@
             <view v-else-if="check_status === 0" class="overdue tc">
                 <view class="padding-main">
                     <view class="cr-red margin-top-xxxl">{{$t('cash-create.cash-create.858o54')}}</view>
-                    <navigator class="dis-inline" hover-class="none" open-type="navigateBack">
-                        <button class="round bg-main cr-white cr-white text-size margin-top-xl" size="mini" type="default" hover-class="none">{{$t('cash-create.cash-create.ke15x5')}}</button>
-                    </navigator>
+                    <button class="round bg-main cr-white cr-white text-size margin-top-xl" size="mini" type="default" hover-class="none" data-value="/pages/plugins/wallet/cash-auth/cash-auth" data-redirect="1" @tap="url_event">{{$t('cash-create.cash-create.ke15x5')}}</button>
                 </view>
             </view>
             <view v-else>
@@ -85,7 +87,8 @@
                 user_wallet: {},
                 default_data: {},
                 check_status: null,
-                can_cash_max_money: 0.0,
+                can_cash_max_money: 0.00,
+                cash_commission_value: 0.00
             };
         },
 
@@ -176,6 +179,16 @@
                 });
             },
 
+            // 提现金额事件
+            cash_money_event(e) {
+                if((this.data_base || null) != null && (this.data_base.cash_commission_rate || 0) != 0) {
+                    var value = parseFloat(e.detail.value || 0);
+                    this.setData({
+                        cash_commission_value: app.globalData.price_two_decimal(value*parseFloat(this.data_base.cash_commission_rate)),
+                    })
+                }
+            },
+
             // 数据提交
             form_submit(e) {
                 // 表单数据
@@ -241,6 +254,11 @@
                     });
                 }
             },
+
+            // url事件
+            url_event(e) {
+                app.globalData.url_event(e);
+            }
         },
     };
 </script>

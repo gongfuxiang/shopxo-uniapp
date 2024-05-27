@@ -91,6 +91,7 @@ export default {
                                 { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), value: data.data.cash_no || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.wyad6w'), value: data.data.status_name || "" },
                                 { name: this.$t('cash-create.cash-create.qg404q'), value: data.data.money || "" },
+                                { name: this.$t('cash-create.cash-create.9ugssd'), value: data.data.commission || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.j5s3u6'), value: data.data.bank_name || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.53k647'), value: data.data.bank_username || "" },
                                 { name: this.$t('user-cash-detail.user-cash-detail.m556tl'), value: data.data.bank_accounts || "" },

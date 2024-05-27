@@ -1279,6 +1279,7 @@
 	"cash-create": {
 		"cash-create": {
 			"qg404q": "Withdrawal amount",
+            "9ugssd": "Handling fees",
 			"5o1q52": "Gift amount cannot be withdrawn",
 			"iaw845": "Withdrawable amount",
 			"1dbkw2": "Available amount",
@@ -1301,7 +1302,8 @@
 			"0mn186": "Please fill in the receiving account number",
 			"c7h4mu": "Please fill in the name of the account holder",
 			"724kn8": "Withdrawals cannot be lower than",
-			"duo0ts": "Withdrawal cannot be greater than"
+			"duo0ts": "Withdrawal cannot be greater than",
+            "678iu2": "Estimated handling fee"
 		}
 	},
 	"payment-code": {

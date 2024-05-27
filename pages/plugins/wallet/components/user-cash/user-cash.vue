@@ -71,6 +71,7 @@
                 content_list: [
                     { name: this.$t('user-cash-detail.user-cash-detail.e8a3e8'), field: 'cash_no' },
                     { name: this.$t('cash-create.cash-create.qg404q'), field: 'money' },
+                    { name: this.$t('cash-create.cash-create.9ugssd'), field: 'commission' },
                 ],
             };
         },
