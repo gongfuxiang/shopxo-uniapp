@@ -8,7 +8,7 @@
                 <view class="header pr z-i">
                     <component-nav-back :propIsShowBack="is_realstore_top_nav_back == 1" :propFixed="false" propColor="#333">
                         <template slot="right" :class="is_top_search_width ? 'top-search-width' : 'flex-1 flex-width'">
-                            <view v-if="is_base_mode != 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
+                            <view v-if="is_base_mode != 1 || is_base_mode_show_goods == 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
                                 <block v-if="client_type == 'h5'">
                                     <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
                                 </block>
@@ -90,32 +90,11 @@
                     </view>
 
                     <!-- 内容、是否基础模式则展示门店介绍 -->
-                    <view v-if="is_base_mode == 1" class="padding-horizontal-main padding-top-main border-radius-main bg-white">
+                    <view v-if="is_base_mode == 1 && is_base_mode_show_goods != 1" class="padding-horizontal-main padding-top-main border-radius-main bg-white">
                         <view class="fw-b title-left-border">门店介绍</view>
-                        <scroll-view :scroll-y="true" class="margin-top-sm cr-base text-size-sm" :style="content_style">{{info.describe}}</scroll-view>
-                        <view v-if="(data_base.is_service_info || 0) == 1" class="bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
-                            <view class="bottom-line-exclude button-list">
-                                <view class="button-left tc">
-                                    <!-- #ifndef MP-KUAISHOU -->
-                                    <view v-if="info.lat != 0 && info.lng != 0" propClass="item" @tap="address_map_event">
-                                        <view>
-                                            <iconfont name="icon-map-navigator" class="lh-sm" size="26rpx"></iconfont>
-                                        </view>
-                                        <view class="cr-base text-size-md">{{$t('detail.detail.688i26')}}</view>
-                                    </view>
-                                    <!-- #endif -->
-                                    <view class="item" @tap="share_event">
-                                        <view>
-                                            <iconfont name="icon-share-square" propClass="lh-sm" size="26rpx"></iconfont>
-                                        </view>
-                                        <view class="cr-base text-size-md">{{$t('common.share')}}</view>
-                                    </view>
-                                </view>
-                                <view class="button-right">
-                                    <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
-                                </view>
-                            </view>
-                        </view>
+                        <scroll-view :scroll-y="true" class="margin-top-sm cr-base text-size-sm" :style="content_style">
+                            <mp-html :content="info.describe" />
+                        </scroll-view>
                     </view>
                     <block v-else>
                         <!-- 左侧分类和右侧商品 -->
@@ -172,12 +151,12 @@
                                                                 <view class="goods-title text-size-md multi-text fw-b">{{ item.title }}</view>
                                                                 <view v-if="(item.simple_desc || null) != null" class="simple-desc cr-grey-9 text-size-xs margin-top-xs single-text">{{ item.simple_desc }}</view>
                                                             </view>
-                                                            <view class="margin-top oh flex-row jc-sb align-c">
+                                                            <view class="margin-top-sm oh flex-row jc-sb align-c">
                                                                 <view class="single-text sales-price va-b va-m">
                                                                     <text class="text-size-xss">{{ currency_symbol }}</text>
                                                                     <text class="text-size-lg">{{ item.min_price }}</text>
                                                                 </view>
-                                                                <view class="tc flex-row align-c">
+                                                                <view v-if="is_base_mode != 1" class="tc flex-row align-c">
                                                                     <block v-if="(item.is_error || 0) == 0">
                                                                         <view v-if="(item.buy_number || 0) > 0" class="cp pr top-sm" :data-index="index" data-type="0" @tap.stop="buy_number_event">
                                                                             <iconfont name="icon-cart-dec" size="40rpx" :color="theme_color"></iconfont>
@@ -210,6 +189,31 @@
                         <!-- 商品购买 -->
                         <component-goods-buy ref="goods_buy" :propCurrencySymbol="currency_symbol" v-on:CartSuccessEvent="goods_spec_cart_back_event"></component-goods-buy>
                     </block>
+
+                    <!-- 基础模式底部导航 -->
+                    <view v-if="is_base_mode == 1" class="bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
+                        <view class="bottom-line-exclude button-list">
+                            <view class="button-left tc">
+                                <!-- #ifndef MP-KUAISHOU -->
+                                <view v-if="info.lat != 0 && info.lng != 0" propClass="item" @tap="address_map_event">
+                                    <view>
+                                        <iconfont name="icon-map-navigator" class="lh-sm" size="26rpx"></iconfont>
+                                    </view>
+                                    <view class="cr-base text-size-md">{{$t('detail.detail.688i26')}}</view>
+                                </view>
+                                <!-- #endif -->
+                                <view class="item" @tap="share_event">
+                                    <view>
+                                        <iconfont name="icon-share-square" propClass="lh-sm" size="26rpx"></iconfont>
+                                    </view>
+                                    <view class="cr-base text-size-md">{{$t('common.share')}}</view>
+                                </view>
+                            </view>
+                            <view class="button-right">
+                                <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
+                            </view>
+                        </view>
+                    </view>
                 </view>
             </block>
             <block v-else>
@@ -302,6 +306,7 @@
                 data_list_loding_msg: '',
                 data_is_loading: 0,
                 is_base_mode: 0,
+                is_base_mode_show_goods: 0,
                 is_cart_nav: false,
                 buy_use_type_index: 0,
                 params: null,
@@ -460,11 +465,13 @@
                             var data_base = data.base || {};
                             // 是否基础模式
                             var is_base_mode = parseInt(data.is_base_mode || 0);
+                            // 基础模式下是否展示商品
+                            var is_base_mode_show_goods = parseInt(data.is_base_mode_show_goods || 0);
                             // 桌码
                             var tablecode = data.tablecode || null;
                             // 开启门店基础
                             var base_mode_style = '0rpx';
-                            if(is_base_mode == 1) {
+                            if(is_base_mode == 1 && is_base_mode_show_goods != 1) {
                                 // 开启了联系客服有底部按钮、则仅内容高度
                                 base_mode_style = ((data_base.is_service_info || 0) == 1) ? '240rpx' : '90rpx';
                             }
@@ -473,6 +480,7 @@
 
                             this.setData({
                                 is_base_mode: is_base_mode,
+                                is_base_mode_show_goods: is_base_mode_show_goods,
                                 is_cart_nav: true,
                                 data_base: data_base,
                                 info: data.info || null,
@@ -526,7 +534,7 @@
                                 // 获取数据、仅首次调用，获取列表接口
                                 if (this.is_first == 1) {
                                     // 是否基础模式
-                                    if(this.is_base_mode != 1) {
+                                    if(this.is_base_mode != 1 || is_base_mode_show_goods == 1) {
                                         this.get_data_list();
                                     }
                                     // 非首次记录
