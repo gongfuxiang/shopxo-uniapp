@@ -2,30 +2,30 @@
     <view :class="theme_view">
         <view v-if="(data_goods_list || null) != null && data_goods_list.length > 0">
             <view v-for="(item, index) in data_goods_list" :key="index" class="plugins-magic-content border-radius-main oh spacing-mb">
-                <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || null) != null) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
+                <view v-if="(item.data || null) != null && item.data.length > 0" :style="(item.bg_images || null) !== null ? 'background-image: url(' + item.bg_images + ');background-size: auto 100%;' : (((item.is_text_white || 0) == 1) ? 'background: linear-gradient(180deg, '+theme_color+' 0%, '+theme_color_light+' 80%);' : 'background: #fff;')">
                     <!-- 上下滚动 -->
-                    <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-warp padding-vertical-main '+(((item.is_text_white || null) != null) ? 'is-text-white' : '')">
+                    <view v-if="item.show_style == 0" :class="'hot-list flex-row flex-warp padding-vertical-main '+(((item.is_text_white || 0) == 1) ? 'is-text-white' : '')">
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <block v-if="(items.data || null) != null && items.data.length > 0">
                                 <view :class="'group-item '+(item.data.length%2 != 0 && item.data.length-1 === indexs ? 'wh-auto' : 'flex-width-half')">
                                     <view class="padding-horizontal-main">
                                         <view class="flex-row align-c" :data-value="items.url" @tap="url_event">
-                                            <text :class="'text-size fw-b single-text cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')">{{ items.title }}</text>
+                                            <text :class="'text-size fw-b single-text cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'black')">{{ items.title }}</text>
                                             <view class="hot-go margin-left-sm">
                                                 <block v-if="(items.icon || null) !== null">
                                                     <image :src="items.icon" mode="heightFix" class="ht-auto"></image>
                                                 </block>
                                             </view>
                                         </view>
-                                        <view :class="'text-size-xs margin-top-xs cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey-9')">{{ items.describe }}</view>
+                                        <view :class="'text-size-xs margin-top-xs cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'grey-9')">{{ items.describe }}</view>
                                         <swiper class="swiper-list border-radius-main oh" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">
                                                     <view :class="'flex-row gap-sm goods-item-number-'+itemss.length">
                                                         <view v-for="(gv, gi) in itemss" :key="gi" :class="'bg-white border-radius-main oh flex-width-half '+(itemss.length % 2 != 0 && itemss.length-1 == gi ? 'wh-auto' : '')">
                                                             <view class="tc" :data-index="index" :data-indexs="indexs" :data-indexss="indexss" :data-gi="gi" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="goods_event">
-                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || null) != null) ? '' : 'border-radius-main')"> </image>
-                                                                <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text '+(((item.is_text_white || null) != null) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
+                                                                <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || 0) == 1) ? '' : 'border-radius-main')"> </image>
+                                                                <view v-if="(gv.show_field_price_status || 0) == 1" :class="'price tc single-text '+(((item.is_text_white || 0) == 1) ? 'padding-horizontal-xs padding-bottom-xs' : '')">
                                                                     <text class="sales-price va-m text-size-xss va-b">{{ gv.show_price_symbol }}</text>
                                                                     <text class="sales-price va-m text-size-xs">{{ gv.min_price }}</text>
                                                                     <text class="va-m text-size-xss cr-grey">{{ gv.show_price_unit }}</text>
@@ -49,9 +49,9 @@
                                 <block v-for="(items, indexs) in item.data" :key="indexs">
                                     <view :class="'tc cp dis-inline-block '+(indexs > 0 ? 'margin-left-xxl' : '')" :id="'switch-tabs-item-' + indexs" :data-index="index" :data-indexs="indexs" @tap="switch_tabs_event">
                                         <image v-if="(items.icon || null) != null" :src="items.icon" class="switch-tabs-item-icon va-m margin-right-xs" mode="aspectFit"></image>
-                                        <text :class="'text-size va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'fw-b cr-'+(((item.is_text_white || null) != null) ? 'white' : 'main') : '')">{{ items.title }} </text>
+                                        <text :class="'text-size va-m cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'black')+' '+((show_style1_active_index[index] || 0) == indexs ? 'fw-b cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'main') : '')">{{ items.title }} </text>
                                         <view class="lh-xs">
-                                            <iconfont name="icon-down-mark" size="36rpx" :color="(show_style1_active_index[index] || 0) == indexs ? (((item.is_text_white || null) != null) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
+                                            <iconfont name="icon-down-mark" size="36rpx" :color="(show_style1_active_index[index] || 0) == indexs ? (((item.is_text_white || 0) == 1) ? '#fff' : theme_color) : 'transparent'" propClass="lh-xs"></iconfont>
                                         </view>
                                     </view>
                                 </block>
@@ -60,12 +60,12 @@
                         <block v-for="(items, indexs) in item.data" :key="indexs">
                             <view v-if="(show_style1_active_index[index] || 0) == indexs">
                                 <view v-if="(items.url || null) != null" :data-value="items.url" @tap="url_event" class="padding-right cp pa top-xxxxxl right-0">
-                                    <text :class="'text-size-xs va-m cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
+                                    <text :class="'text-size-xs va-m cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'grey')">{{ $t('common.more') }}</text>
                                     <view class="dis-inline-block va-m lh-xs">
-                                        <iconfont name="icon-arrow-right" size="24rpx" :color="((item.is_text_white || null) != null) ? '#f5f5f5' : '#999'"></iconfont>
+                                        <iconfont name="icon-arrow-right" size="24rpx" :color="((item.is_text_white || 0) == 1) ? '#f5f5f5' : '#999'"></iconfont>
                                     </view>
                                 </view>
-                                <view v-if="(items.describe || null) != null" :class="'text-size-xs single-text padding-vertical-sm padding-horizontal-main cr-'+(((item.is_text_white || null) != null) ? 'white' : 'grey')">{{items.describe}}</view>
+                                <view v-if="(items.describe || null) != null" :class="'text-size-xs single-text padding-vertical-sm padding-horizontal-main cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'grey')">{{items.describe}}</view>
                                 <view :class="(item.show_style == 1 || item.show_style == 2) ? 'padding-horizontal-main padding-top-sm' : (item.show_style == 3 ? 'padding-top-xs padding-bottom-main' : '')">
                                     <component-goods-list :propData="{ style_type: parseInt(item.show_style)-1, goods_list: items.goods_list }" :propLabel="propLabel" :propCurrencySymbol="propCurrencySymbol" :propIsAutoPlay="(items.rolling_time || null) != null" :propIsCartParaCurve="true" propSource="index" propStyleTypeTowClass="border-radius-main padding-horizontal-main padding-top-xs"></component-goods-list>
                                 </view>
