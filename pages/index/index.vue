@@ -276,6 +276,9 @@
 
             <!-- 用户基础 -->
             <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+
+            <!-- app管理 -->
+            <component-app-admin ref="app_admin"></component-app-admin>
         </block>
     </view>
 </template>
@@ -301,6 +304,7 @@
     import componentUserBase from '@/components/user-base/user-base';
     import componentBindingList from '@/components/binding-list/binding-list';
     import componentMagicList from '@/components/magic-list/magic-list';
+    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -413,6 +417,7 @@
             componentUserBase,
             componentBindingList,
             componentMagicList,
+            componentAppAdmin
         },
         props: {},
 
@@ -450,7 +455,14 @@
 
             // 初始化配置
             this.init_config();
+        },
 
+        onReady() {
+            // app管理
+            if ((this.$refs.app_admin || null) != null) {
+                this.$refs.app_admin.init();
+            }
+            
             // 用户头像和昵称设置提示
             if ((this.$refs.user_base || null) != null) {
                 this.$refs.user_base.init('index');

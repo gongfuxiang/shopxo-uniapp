@@ -272,8 +272,6 @@
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 用户基础 -->
-            <component-user-base ref="user_base"></component-user-base>
         </block>
 
         <!-- 选择门店弹层 -->
@@ -322,7 +320,6 @@
     const app = getApp();
     import base64 from '../../common/js/lib/base64.js';
     import componentNoData from '../../components/no-data/no-data';
-    import componentUserBase from '../../components/user-base/user-base';
     import componentGoodsList from '../../components/goods-list/goods-list';
     import componentNavBack from '../../components/nav-back/nav-back';
     import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
@@ -422,7 +419,6 @@
 
         components: {
             componentNoData,
-            componentUserBase,
             componentGoodsList,
             componentNavBack,
             componentRealstoreCart,
@@ -483,14 +479,6 @@
                     // 猜你喜欢、仅首次读取、还未加载过
                     if (this.is_first == 1 && this.goods_is_loading == 0) {
                         this.get_data_list(1);
-                    }
-
-                    // 用户头像和昵称设置提示
-                    if ((this.$refs.user_base || null) != null) {
-                        var self = this;
-                        setTimeout(function () {
-                            self.$refs.user_base.init('cart');
-                        }, 10);
                     }
                 } else {
                     this.setData({

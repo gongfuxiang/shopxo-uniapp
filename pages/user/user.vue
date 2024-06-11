@@ -163,15 +163,19 @@
 
         <!-- 用户基础 -->
         <component-user-base ref="user_base"></component-user-base>
+
+        <!-- app管理 -->
+        <component-app-admin ref="app_admin"></component-app-admin>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentQuickNav from '../../components/quick-nav/quick-nav';
-    import componentBadge from '../../components/badge/badge';
-    import componentCopyright from '../../components/copyright/copyright';
-    import componentOnlineService from '../../components/online-service/online-service';
-    import componentUserBase from '../../components/user-base/user-base';
+    import componentQuickNav from '@/components/quick-nav/quick-nav';
+    import componentBadge from '@/components/badge/badge';
+    import componentCopyright from '@/components/copyright/copyright';
+    import componentOnlineService from '@/components/online-service/online-service';
+    import componentUserBase from '@/components/user-base/user-base';
+    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     var common_static_url = app.globalData.get_static_url('common');
     var static_url = app.globalData.get_static_url('user');
@@ -213,6 +217,7 @@
             componentCopyright,
             componentOnlineService,
             componentUserBase,
+            componentAppAdmin
         },
         props: {},
 
@@ -233,6 +238,18 @@
 
             // 数据加载
             this.init();
+        },
+
+        onReady() {
+            // app管理
+            if ((this.$refs.app_admin || null) != null) {
+                this.$refs.app_admin.init();
+            }
+
+            // 用户头像和昵称设置提示
+            if ((this.$refs.user_base || null) != null) {
+                this.$refs.user_base.init('user');
+            }
         },
 
         // 下拉刷新
@@ -322,11 +339,6 @@
 
                 // 获取基础数据
                 this.set_user_base(user);
-
-                // 用户头像和昵称设置提示
-                if ((this.$refs.user_base || null) != null) {
-                    this.$refs.user_base.init('user');
-                }
 
                 // 分享菜单处理
                 app.globalData.page_share_handle();

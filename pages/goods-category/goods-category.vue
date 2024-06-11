@@ -358,6 +358,9 @@
 
                     <!-- 用户基础 -->
                     <component-user-base ref="user_base"></component-user-base>
+
+                    <!-- app管理 -->
+                    <component-app-admin ref="app_admin"></component-app-admin>
                 </block>
             </view>
         </view>
@@ -366,15 +369,16 @@
 
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
-    import componentGoodsBuy from '../../components/goods-buy/goods-buy';
-    import componentSearch from '../../components/search/search';
-    import componentNoData from '../../components/no-data/no-data';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentSearch from '@/components/search/search';
+    import componentNoData from '@/components/no-data/no-data';
     import componentPopup from '@/components/popup/popup';
-    import componentBadge from '../../components/badge/badge';
-    import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
-    import componentUserBase from '../../components/user-base/user-base';
-    import componentNavMore from '../../components/nav-more/nav-more';
+    import componentBadge from '@/components/badge/badge';
+    import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
+    import componentUserBase from '@/components/user-base/user-base';
+    import componentNavMore from '@/components/nav-more/nav-more';
+    import componentAppAdmin from '@/components/app-admin/app-admin';
 
     var theme_static_url = app.globalData.get_static_url('goods-category');
     var common_static_url = app.globalData.get_static_url('common');
@@ -459,6 +463,7 @@
             componentCartParaCurve,
             componentUserBase,
             componentNavMore,
+            componentAppAdmin
         },
         props: {},
 
@@ -493,16 +498,18 @@
 
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
+        },
+
+        onReady() {
+            // app管理
+            if ((this.$refs.app_admin || null) != null) {
+                this.$refs.app_admin.init();
+            }
 
             // 用户头像和昵称设置提示
             if ((this.$refs.user_base || null) != null) {
                 this.$refs.user_base.init('goods-category');
             }
-        },
-        created() {
-            // #ifdef H5 || APP
-            this.popup_top = '98rpx';
-            // #endif
         },
 
         methods: {
