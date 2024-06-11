@@ -238,9 +238,7 @@
 
             // 数据加载
             this.init();
-        },
 
-        onReady() {
             // app管理
             if ((this.$refs.app_admin || null) != null) {
                 this.$refs.app_admin.init();

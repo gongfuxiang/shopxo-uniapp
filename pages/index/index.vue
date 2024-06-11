@@ -455,14 +455,12 @@
 
             // 初始化配置
             this.init_config();
-        },
 
-        onReady() {
             // app管理
             if ((this.$refs.app_admin || null) != null) {
                 this.$refs.app_admin.init();
             }
-            
+
             // 用户头像和昵称设置提示
             if ((this.$refs.user_base || null) != null) {
                 this.$refs.user_base.init('index');

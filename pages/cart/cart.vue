@@ -40,9 +40,7 @@ export default {
         if ((this.$refs.cart || null) != null) {
             this.$refs.cart.init();
         }
-    },
-    
-    onReady() {
+
         // app管理
         if ((this.$refs.app_admin || null) != null) {
             this.$refs.app_admin.init();

@@ -1373,7 +1373,7 @@
     * 空购物车
     */
     .cart-no-data-box {
-        padding: 100rpx 0 80rpx 0;
+        padding: 140rpx 0 80rpx 0;
     }
     .cart-no-data-box image {
         width: 160rpx;

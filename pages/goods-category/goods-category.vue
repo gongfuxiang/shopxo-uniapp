@@ -498,9 +498,7 @@
 
             // 清除tab参数
             app.globalData.remove_page_tabbar_switch_params();
-        },
 
-        onReady() {
             // app管理
             if ((this.$refs.app_admin || null) != null) {
                 this.$refs.app_admin.init();

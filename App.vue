@@ -7,10 +7,10 @@
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url: 'http://shopxo.com/',
+                request_url: 'https://d1.shopxo.vip/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'http://shopxo.com/',
+                static_url: 'https://d1.shopxo.vip/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -2087,6 +2087,13 @@
                 }
                 // 未登录提示缓存记录
                 uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
+                // 用户基础资料提示间隔key
+                uni.removeStorageSync(this.data.cache_user_base_personal_interval_time_key);
+                // app更新提示缓存记录key
+                uni.removeStorageSync(this.data.cache_app_update_tips_interval_time_key);
+                // app评分提示缓存记录key
+                uni.removeStorageSync(this.data.cache_app_star_tips_interval_time_key);
+
                 // 非小程序则两秒后回到首页
                 this.showToast(i18n.t('shopxo-uniapp.app.'+((client_value == 'mp' || !is_remove_user) ? '0gwt7z' : '87yghj')), 'success');
             },
