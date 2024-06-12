@@ -7,7 +7,7 @@
                 <view class="padding-top-xs padding-left-xl padding-right-xl padding-bottom-xl">
                     <view class="text-size-xl fw-b tc pa name">{{update_data.name}}</view>
                     <view class="text-size tc pa version">v{{update_data.version_new}}</view>
-                    <scroll-view :scroll-y="true" class="content">
+                    <scroll-view :scroll-y="true" class="content tl">
                         <block v-for="(item, index) in update_data.content" :key="index">
                             <view class="margin-bottom-sm text-size-xs">{{item}}</view>
                         </block>
@@ -21,16 +21,28 @@
         </view>
 
         <!-- 评分 -->
-        <view v-if="is_star_status && (star_url || null) != null" class="star-container pf left-0 top-0 wh-auto ht-auto tc">
+        <view v-if="is_star_status && (star_url || null) != null && (star_alert_images || null) != null" class="star-container pf left-0 top-0 wh-auto ht-auto tc">
             <view class="star-content">
-                <image :src="star_alert_images" mode="widthFix" class="star-alert-images wh-auto" @tap="star_event"></image>
+                <image :src="star_alert_images" mode="widthFix" class="star-alert-images wh-auto" @tap="to_star_event"></image>
             </view>
             <view class="padding-sm margin-top-xl">
-                <view class="dis-inline-block" data-value="close" @tap="star_event">
+                <view class="dis-inline-block" @tap="close_star_event">
                     <iconfont name="icon-close-o" size="30rpx" color="#ccc"></iconfont>
                 </view>
             </view>
         </view>
+
+        <!-- 关于我们中使用 -->
+        <!-- #ifdef APP -->
+        <view v-if="propType == 'about'" class="margin-top">
+            <text class="cr-grey-9">{{app_version_info}}</text>
+            <block v-if="is_loading">
+                <text v-if="(update_data || null) == null" class="cr-grey-c margin-left-lg text-size-xs">已是最新</text>
+                <text v-else class="cr-blue margin-left-lg text-size-xs cp" @tap="update_event">去更新(v{{update_data.version_new}})</text>
+                <text v-if="(star_url || null) != null && (star_alert_images || null) != null" class="cr-blue margin-left-lg text-size-xs cp" @tap="star_event">去评分</text>
+            </block>
+        </view>
+        <!-- #endif -->
     </view>
 </template>
 <script>
@@ -41,6 +53,9 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 update_tips_cache_key: app.globalData.data.cache_app_update_tips_interval_time_key,
                 star_tips_cache_key: app.globalData.data.cache_app_star_tips_interval_time_key,
+                app_version_info: app.globalData.data.app_version_info,
+                is_loading: false,
+                update_data: null,
                 // 更新提示
                 is_update_status: false,
                 update_tips_interval_time: 0,
@@ -54,7 +69,12 @@
             };
         },
         components: {},
-        props: {},
+        props: {
+            propType: {
+            	type: String,
+            	default: ''
+            }
+        },
         // 页面被展示
         created: function () {
             this.init();
@@ -63,6 +83,7 @@
         methods: {
             // 初始化、获取数据
             init(is_init = 0) {
+                // #ifdef APP
                 uni.request({
                     url: app.globalData.get_request_url('index', 'version', 'appadmin'),
                     method: 'POST',
@@ -72,6 +93,7 @@
                         if(res.data.code == 0) {
                             var data = res.data.data;
                             var upd_data = {
+                                is_loading: true,
                                 update_data: data.update_data || null,
                                 // 更新提示
                                 update_alert_bg_images: data.update_alert_bg_images || null,
@@ -112,6 +134,12 @@
                                 upd_data.is_star_status = false;
                             }
 
+                            // 关于我们页面则不直接展示
+                            if(this.propType == 'about') {
+                                upd_data.is_update_status = false;
+                                upd_data.is_star_status = false;
+                            }
+
                             this.setData(upd_data);
                         }
                     },
@@ -122,6 +150,7 @@
                         }
                     }
                 });
+                // #endif
             },
 
             // 更新关闭
@@ -132,24 +161,41 @@
                 uni.setStorageSync(this.update_tips_cache_key, Date.parse(new Date()) / 1000);
             },
 
-            // 更新事件
+            // 打开更新事件
+            update_event(e) {
+                this.setData({
+                    is_update_status: true
+                });
+            },
+
+            // 去更新事件
             to_update_event(e) {
                 plus.runtime.openURL(this.update_data.update_url);
             },
-
-            // 打分事件
+            
+            // 打开评分事件
             star_event(e) {
+                this.setData({
+                    is_star_status: true
+                });
+            },
+
+            // 去打分事件
+            to_star_event(e) {
+                // 先关闭评分
+                this.close_star_event();
+
+                // 打开地址
+                plus.runtime.openURL(this.star_url);
+            },
+
+            // 关闭评分事件
+            close_star_event(e) {
                 this.setData({
                     is_star_status: false
                 });
                 // 增加间隔时间，到时间后才会再提示
                 uni.setStorageSync(this.star_tips_cache_key, (Date.parse(new Date()) / 1000)+this.star_tips_interval_time);
-
-                // 打开地址
-                var value = e.currentTarget.dataset.value || null;
-                if(value == null) {
-                    plus.runtime.openURL(this.star_url);
-                }
             }
         }
     };
