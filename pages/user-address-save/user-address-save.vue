@@ -38,7 +38,7 @@
                                                 <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
-                                                <input type="text" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
+                                                <input type="text" :value="address_data.code || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
                                                 <button type="default" size="mini" class="bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
                                             </view>
                                         </view>
@@ -123,7 +123,7 @@
                             </view>
                             <view class="flex-row align-c padding-vertical-sm margin-bottom-lg">
                                 <view class="form-gorup-title">{{$t('user-address-save.user-address-save.761ek6')}}<text class="form-group-tips-must">*</text></view>
-                                <view class="form-upload-data cr-grey-9">{{$t('user-address-save.user-address-save.c811s5')}}</view>
+                                <view class="form-upload-data cr-grey-9 text-size-xs">{{$t('user-address-save.user-address-save.c811s5')}}</view>
                             </view>
                             <view class="flex-row align-c">
                                 <view class="flex-width-half oh padding-right-main pr">
@@ -303,6 +303,7 @@
                                 address_data: ads_data || {},
                                 idcard_images_data: idcard_images,
                                 editor_path_type: data.editor_path_type || '',
+                                data_list_loding_status: 3,
                             });
                             if (this.alias_list.indexOf(alias) === -1) {
                                 this.setData({

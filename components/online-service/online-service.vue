@@ -3,7 +3,7 @@
         <block v-if="online_service_status == 1">
             <!-- 是否商品页样式 -->
             <view v-if="propIsGoods == true" class="goods-chat-container item fl cp">
-                <block v-if="is_chat == 1 || (common_app_customer_service_custom || null) != null">
+                <block v-if="is_chat == 1">
                     <view @tap="chat_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
@@ -37,7 +37,7 @@
                         <movable-view direction="all" :x="x" :y="y" :animation="false" class="online-service-event-submit spread">
                             <view class="ring"></view>
     	                    <view class="ring"></view>
-                            <block v-if="is_chat == 1 || (common_app_customer_service_custom || null) != null">
+                            <block v-if="is_chat == 1">
                                 <button type="default" :class="common_ent" @tap="chat_event">
                                     <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                                 </button>
@@ -78,6 +78,8 @@
                 chat_url: null,
                 common_app_customer_service_tel: null,
                 common_app_customer_service_custom: null,
+                common_app_customer_service_company_weixin_corpid: null,
+                common_app_customer_service_company_weixin_url: null,
                 online_service_status: 0,
                 is_online_service_fixed: app.globalData.data.is_online_service_fixed,
                 mini_alipay_tnt_inst_id: null,
@@ -178,30 +180,48 @@
         methods: {
             // 初始化配置
             init_config(status) {
-                // 客服优先级顺序( 1客服系统 -> 2自定义客服 -> 3平台提供的客服 -> 4电话客服 )
+                // 客服优先级顺序( 客服系统 -> 自定义客服 -> 企业微信客服(仅app+h5+微信小程序生效) -> 各端平台客服 -> 电话客服 )
                 if ((status || false) == true) {
                     // 是否使用客服系统
                     var is_chat = app.globalData.get_config('plugins_base.chat.data.is_mobile_chat', 0);
                     var chat_url = app.globalData.get_config('plugins_base.chat.data.chat_url');
+                    var is_online_service = app.globalData.get_config('config.common_app_is_online_service', 0);
                     if(is_chat == 1 && (chat_url != null || (this.propChatUrl || null) != null)) {
                         this.setData({
                             is_chat: is_chat,
                             chat_url: this.propChatUrl || chat_url,
-                            online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)
+                            online_service_status: is_online_service,
                         });
                     } else {
                         var online_service_url = app.globalData.get_config('config.common_app_customer_service_custom', null);
                         this.setData({
                             common_app_customer_service_tel: app.globalData.get_config('config.common_app_customer_service_tel', null),
                             common_app_customer_service_custom: (online_service_url == null || (online_service_url[this.client_value] || null) == null) ? null : online_service_url[this.client_value],
-                            online_service_status: app.globalData.get_config('config.common_app_is_online_service', 0)
+                            common_app_customer_service_company_weixin_corpid: app.globalData.get_config('config.common_app_customer_service_company_weixin_corpid', null),
+                            common_app_customer_service_company_weixin_url: app.globalData.get_config('config.common_app_customer_service_company_weixin_url', null),
+                            online_service_status: is_online_service,
                         });
 
-                        // 对应平台没有提供客服的、电话和自定义客服必须存在一个
-                        var arr = ['qq', 'h5', 'ios', 'android'];
-                        if(arr.indexOf(this.client_value) != -1 && (this.common_app_customer_service_tel || null) == null && (this.common_app_customer_service_custom || null) == null) {
+                        // 存在自定义客服和微信企业客服则走客服模式
+                        if((this.common_app_customer_service_custom || null) != null || ((this.common_app_customer_service_company_weixin_corpid || null) != null && (this.common_app_customer_service_company_weixin_url || null) != null)) {
                             this.setData({
-                                online_service_status: 0
+                                is_chat: 1
+                            });
+                        }
+
+                        // 对应平台没有提供客服的、[电话，自定义客服，企业微信客服]必须存在一个，则关闭在线客服
+                        if(['qq', 'h5', 'ios', 'android'].indexOf(this.client_value) != -1 && (this.common_app_customer_service_tel || null) == null && (this.common_app_customer_service_custom || null) == null) {
+                            var temp_service_status = this.online_service_status;
+                            if(this.client_value == 'qq') {
+                                temp_service_status = 0;
+                            } else {
+                                // h5,app是否配置企业微信客服
+                                if((this.common_app_customer_service_company_weixin_corpid || null) == null && (this.common_app_customer_service_company_weixin_url || null) == null) {
+                                    temp_service_status = 0;
+                                }
+                            }
+                            this.setData({
+                                online_service_status: temp_service_status
                             });
                         }
 
@@ -224,12 +244,45 @@
 
             // 客服事件
             chat_event() {
-                if(this.is_chat == 1) {
-                    // 进入客服系统
+                // 在线客服系统
+                if((this.chat_url || null) != null) {
                     app.globalData.chat_entry_handle(this.chat_url);
                 } else {
                     // 自定义客服
-                    app.globalData.url_open(this.common_app_customer_service_custom);
+                    if((this.common_app_customer_service_custom || null) != null) {
+                        app.globalData.url_open(this.common_app_customer_service_custom);
+                    } else {
+                        // 企业微信客服
+                        if((this.common_app_customer_service_company_weixin_corpid || null) != null && (this.common_app_customer_service_company_weixin_url || null) != null) {
+                            // #ifdef APP
+                            // app打开企业微信客服
+                            plus.share.getServices(res => {
+                                var wechat = res.find(i => i.id === 'weixin')
+                                if(wechat) {
+                                    wechat.openCustomerServiceChat({
+                                        corpid: this.common_app_customer_service_company_weixin_corpid,
+                                        url: this.common_app_customer_service_company_weixin_url,
+                                    });
+                                }
+                            });
+                            // #endif
+
+                            // #ifdef MP-WEIXIN
+                            // 微信小程序打开企业微信客服
+                            uni.openCustomerServiceChat({
+                                extInfo: {url: this.common_app_customer_service_company_weixin_url},
+                                corpId: this.common_app_customer_service_company_weixin_corpid,
+                                showMessageCard: this.propCard,
+                                sendMessageTitle: this.propTitle,
+                                sendMessagePath: this.propPath,
+                                sendMessageImg: this.propImg,
+                            });
+                            // #endif
+                        } else {
+                            // 电话客服
+                            this.call_event();
+                        }
+                    }
                 }
             },
 
