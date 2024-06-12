@@ -45,7 +45,10 @@
 		"not_have_name": "not have",
         "note": "Remarks",
         "recommend_code_name": "Recommend code",
-        "now_update_text": "Update Now"
+        "now_update_text": "Update Now",
+        "already_latest_text": "It is already the latest",
+        "to_update_text": "Go update",
+        "to_star_text": "To star"
 	},
 	"pages": {
 		"goods-category": "Product classification",

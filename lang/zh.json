@@ -45,7 +45,10 @@
 		"not_have_name": "没有",
         "note": "备注",
         "recommend_code_name": "推荐码",
-        "now_update_text": "立即更新"
+        "now_update_text": "立即更新",
+        "already_latest_text": "已是最新",
+        "to_update_text": "去更新",
+        "to_star_text": "去评分"
 	},
 	"pages": {
 		"goods-category": "商品分类",

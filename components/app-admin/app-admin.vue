@@ -37,9 +37,9 @@
         <view v-if="propType == 'about'" class="margin-top">
             <text class="cr-grey-9">{{app_version_info}}</text>
             <block v-if="is_loading">
-                <text v-if="(update_data || null) == null" class="cr-grey-c margin-left-lg text-size-xs">已是最新</text>
-                <text v-else class="cr-blue margin-left-lg text-size-xs cp" @tap="update_event">去更新(v{{update_data.version_new}})</text>
-                <text v-if="(star_url || null) != null && (star_alert_images || null) != null" class="cr-blue margin-left-lg text-size-xs cp" @tap="star_event">去评分</text>
+                <text v-if="(update_data || null) == null" class="cr-grey-c margin-left-lg text-size-xs">{{$t('common.already_latest_text')}}</text>
+                <text v-else class="cr-blue margin-left-lg text-size-xs cp" @tap="update_event">{{$t('common.to_update_text')}}(v{{update_data.version_new}})</text>
+                <text v-if="(star_url || null) != null && (star_alert_images || null) != null" class="cr-blue margin-left-lg text-size-xs cp" @tap="star_event">{{$t('common.to_star_text')}}</text>
             </block>
         </view>
         <!-- #endif -->
