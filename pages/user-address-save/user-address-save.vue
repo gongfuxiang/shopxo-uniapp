@@ -38,7 +38,7 @@
                                                 <component-region-picker :propProvinceId="province_id" :propCityId="city_id" :propCountyId="county_id" :propShow="region_picker_show" @onclose="close_event" @call-back="region_event"></component-region-picker>
                                             </view>
                                             <view class="code-search oh pr">
-                                                <input type="text" :value="address_data.code || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
+                                                <input type="text" :value="address_data.last_code || ''" maxlength="30" placeholder-class="cr-grey-9" class="cr-base dis-inline-block bg-base text-size-xs padding-left-sm va-m" :placeholder="$t('user-address-save.user-address-save.he685s')" @input="region_code_value_event" />
                                                 <button type="default" size="mini" class="bg-black br-black cr-white text-size-xs pa" @tap="region_code_event" :disabled="form_submit_disabled_status">{{$t('user-address-save.user-address-save.mb7cjx')}}</button>
                                             </view>
                                         </view>
