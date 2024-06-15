@@ -72,7 +72,7 @@
                 <view v-if="navigation.length > 0" class="spacing-mt" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : ' spacing-mb'">
                     <view class="padding-horizontal-main">
                         <view class="bg-white border-radius-main">
-                            <component-icon-nav :propData="navigation"></component-icon-nav>
+                            <component-icon-nav :propData="{...{data: navigation}, ...{random: random_value}}"></component-icon-nav>
                         </view>
                     </view>
                 </view>
@@ -134,7 +134,7 @@
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
                                 <text data-value="/pages/plugins/realstore/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
-                            <component-realstore-list :propDataList="plugins_realstore_data.data"></component-realstore-list>
+                            <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}"></component-realstore-list>
                         </view>
 
                         <!-- 多商户 - 插件 -->
@@ -143,7 +143,7 @@
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
                                 <text data-value="/pages/plugins/shop/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
-                            <component-shop-list :propConfig="plugins_shop_data.base" :propDataList="plugins_shop_data.data"></component-shop-list>
+                            <component-shop-list :propConfig="plugins_shop_data.base" :propData="{...{data: plugins_shop_data.data}, ...{random: random_value}}"></component-shop-list>
                         </view>
 
                         <!-- 组合搭配 - 插件 -->
@@ -152,7 +152,7 @@
                                 <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
                                 <text data-value="/pages/plugins/binding/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                             </view>
-                            <component-binding-list :propConfig="plugins_binding_data.base" :propDataList="plugins_binding_data.data" :propCurrencySymbol="currency_symbol"></component-binding-list>
+                            <component-binding-list :propConfig="plugins_binding_data.base" :propData="{...{data: plugins_binding_data.data}, ...{random: random_value}}" :propCurrencySymbol="currency_symbol"></component-binding-list>
                         </view>
 
                         <!-- 博客-楼层顶部 - 插件 -->
@@ -539,6 +539,7 @@
                         var data = res.data.data;
                         if (res.data.code == 0) {
                             var upd_data = {
+                                random_value: Math.random(),
                                 data_bottom_line_status: true,
                                 banner_list: data.banner_list || [],
                                 navigation: data.navigation || [],
@@ -547,7 +548,6 @@
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
-                                random_value: Math.random(),
                                 data_list_loding_status: data.data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,

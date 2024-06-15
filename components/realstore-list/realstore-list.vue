@@ -64,9 +64,11 @@ export default {
             type: Boolean,
             default: true,
         },
-        propDataList: {
-            type: Array,
-            default: () => [],
+        propData: {
+            type: Object,
+            default: () => {
+                return {};
+            },
         },
         propFavorUser: {
             type: Array,
@@ -79,23 +81,26 @@ export default {
     },
     // 属性值改变监听
     watch: {
-        // 数据列表
-        propDataList(value, old_value) {
-            this.setData({
-                data_list: value,
-            });
-            this.data_list_handle();
-        },
+        // 数据
+        propData(value, old_value) {
+            this.init();
+        }
     },
     // 页面被展示
     created: function (e) {
-        this.setData({
-            data_list: this.propDataList,
-            favor_user: this.propFavorUser,
-        });
-        this.data_list_handle();
+        this.init();
     },
     methods: {
+        // 初始化
+        init() {
+            var data_list = ((this.propData || null) == null || (this.propData.data || null) == null || this.propData.data.length == 0) ? [] : this.propData.data;
+            this.setData({
+                data_list: data_list,
+                favor_user: this.propFavorUser,
+            });
+            this.data_list_handle();
+        },
+
         // 数据列表处理
         data_list_handle() {
             var temp_data_list = this.data_list;

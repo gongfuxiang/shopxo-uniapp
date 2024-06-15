@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="padding-main">
             <view v-if="detail != null">
-                <form @submit="formSubmit" class="form-container">
+                <form @submit="form_submit" class="form-container">
                     <view v-for="(item, index) in detail.items" :key="index" class="form-gorup oh">
                         <view class="oh">
                             <view :data-value="item.goods_url" @tap="url_event" class="cp">
@@ -307,7 +307,7 @@ export default {
         },
 
         // 表单
-        formSubmit(e) {
+        form_submit(e) {
             // 商品数量
             var length = this.detail.items.length;
 

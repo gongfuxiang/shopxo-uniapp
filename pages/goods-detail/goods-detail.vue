@@ -287,12 +287,12 @@
                         <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.goods-detail.317jp2')}}</text>
                         <text data-value="/pages/plugins/realstore/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                     </view>
-                    <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
+                    <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                 </view>
 
                 <!-- 多商户 -->
                 <block v-if="plugins_shop_data != null">
-                    <component-shop-list :propDataList="[plugins_shop_data]"></component-shop-list>
+                    <component-shop-list :propData="{...{data: [plugins_shop_data]}, ...{random: random_value}}"></component-shop-list>
                 </block>
 
                 <!-- 商品评价 -->
@@ -653,6 +653,8 @@
                 goods_spec_selected_text: this.$t('goods-detail.goods-detail.6brk57'),
                 show_field_price_text: null,
                 goods_video_is_autoplay: false,
+                // 增加随机数，避免无法监听数据列表内部数据更新
+                random_value: 0,
                 // 底部导航展示状态、如果已开启多门店默认展示、则先展示加载
                 goods_bottom_opt_nav_status: app.globalData.get_config('plugins_base.realstore', null) == null,
                 // 更多导航
@@ -905,6 +907,7 @@
                             // 基础数据
                             var plugins_seckill_data = data.plugins_seckill_data || null;
                             var upd_data = {
+                                random_value: Math.random(),
                                 data_loading_status: 1,
                                 goods_bottom_opt_nav_status: true,
                                 guess_you_like: data.guess_you_like || [],
