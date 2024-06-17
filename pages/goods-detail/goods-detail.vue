@@ -39,12 +39,6 @@
                     </component-trn-nav>
                 </block>
                 <!-- #endif -->
-                <!-- #ifdef H5 || APP -->
-                <!-- 右侧icon -->
-                <view class="top-nav-right-icon pf" :style="'top:' + top_nav_icon_top_value + 'px;left:' + top_nav_right_icon_left_value + 'px;'">
-                    <uni-icons type="redo" size="20" color="#333" class="icon round cp" @tap="popup_share_event"></uni-icons>
-                </view>
-                <!-- #endif -->
             </block>
 
             <!-- 相册 -->
@@ -533,7 +527,7 @@
                     </view>
                     <view class="plugins-realstore-popup">
                         <block v-if="(plugins_realstore_data || null) != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0">
-                            <component-realstore-list :propDataList="plugins_realstore_data.data" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
+                            <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.gwwf19')}}</view>

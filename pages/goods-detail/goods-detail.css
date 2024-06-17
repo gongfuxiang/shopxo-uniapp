@@ -5,8 +5,7 @@
 /**
  * 顶部导航内容
  */
-.top-nav-left-icon,
-.top-nav-right-icon {
+.top-nav-left-icon {
     top: 28px;
     z-index: 11;
 }
@@ -14,11 +13,7 @@
     left: auto;
     margin-left: 20rpx;
 }
-.top-nav-right-icon {
-    right: 20rpx;
-}
-.top-nav-left-icon .icon,
-.top-nav-right-icon .icon {
+.top-nav-left-icon .icon {
     background: rgb(255 255 255 / 70%);
     width: 25px;
     height: 25px;
