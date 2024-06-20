@@ -176,17 +176,17 @@
                     </view>
 
                     <!-- 基础总计数据 -->
-                    <view class="br-t padding-main">
-                        <view class="base-grid oh padding-top-sm padding-bottom-sm text-size-xs">
-                            <view class="fl tl">
+                    <view v-if="(goods.show_sales_number_status || 0) == 1 || (goods.show_inventory_status || 0) == 1" class="br-t padding-main">
+                        <view class="text-size-xs flex-row jc-sb">
+                            <view v-if="(goods.show_inventory_status || 0) == 1">
                                 <text class="cr-grey">{{$t('goods-detail.goods-detail.1s79t4')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.inventory }}</text>
                             </view>
-                            <view class="fl tc">
+                            <view>
                                 <text class="cr-grey">{{$t('goods-category.goods-category.283ot0')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.access_count }}</text>
                             </view>
-                            <view class="fl tr">
+                            <view v-if="(goods.show_sales_number_status || 0) == 1">
                                 <text class="cr-grey">{{$t('goods-category.goods-category.at5p35')}}</text>
                                 <text class="cr-main padding-left-sm">{{ goods.sales_count }}</text>
                             </view>
@@ -586,6 +586,11 @@
 
         <!-- 门店购物车 -->
         <component-realstore-cart ref="realstore_cart" :propStatus="plugins_realstore_cart_nav_status" v-on:BuyTypeSwitchEvent="refresh_loading_event" v-on:RefreshLoadingEvent="refresh_loading_event" :propCurrencySymbol="currency_symbol"></component-realstore-cart>
+
+        <!-- 品类限制温馨提示 -->
+        <block v-if="(plugins_categorylimit_data || null) != null">
+            <component-categorylimit-warm-tips :propData="plugins_categorylimit_data"></component-categorylimit-warm-tips>
+        </block>
     </view>
 </template>
 <script>
@@ -609,6 +614,7 @@
     import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentWholesaleRules from '@/components/wholesale-rules/wholesale-rules';
+    import componentCategorylimitWarmTips from '@/components/categorylimit-warm-tips/categorylimit-warm-tips';
 
     var common_static_url = app.globalData.get_static_url('common');
     var ask_static_url = app.globalData.get_static_url('ask', true) + 'app/';
@@ -745,6 +751,8 @@
                 plugins_ask_data: null,
                 // 批发插件
                 plugins_wholesale_data: null,
+                // 品类限制插件
+                plugins_categorylimit_data: null,
             };
         },
 
@@ -767,7 +775,8 @@
             componentCouponCard,
             componentRealstoreCart,
             componentGoodsList,
-            componentWholesaleRules
+            componentWholesaleRules,
+            componentCategorylimitWarmTips
         },
 
         onLoad(params) {
@@ -923,6 +932,7 @@
                                 plugins_goodsservice_data: data.plugins_goodsservice_data || null,
                                 plugins_batchbuy_data: data.plugins_batchbuy_data || null,
                                 plugins_ask_data: data.plugins_ask_data || null,
+                                plugins_categorylimit_data: data.plugins_categorylimit_data || null,
                             };
                             // 导航首页按钮
                             if ((data.nav_home_button_info || null) != null) {

@@ -44,7 +44,7 @@
             </view>
             <view v-else>
                 <!-- 提示信息 -->
-                <component-no-data :propStatus="data_list_loding_status"></component-no-data>
+                <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
 
             <!-- 结尾 -->
@@ -387,9 +387,9 @@
                             this.set_tab_bar_badge_handle();
                         } else {
                             this.setData({
-                                data_list_loding_status: 0
+                                data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
 
                         // 基础自定义分享
@@ -409,9 +409,9 @@
                     fail: () => {
                         uni.stopPullDownRefresh();
                         this.setData({
-                            data_list_loding_status: 2
+                            data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },
@@ -469,6 +469,7 @@
                                     data_total: data.total,
                                     data_page_total: data.page_total,
                                     data_list_loding_status: 3,
+                                    data_list_loding_msg: '',
                                     data_page: this.data_page + 1,
                                     data_is_loading: 0
                                 });
@@ -480,6 +481,7 @@
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
+                                    data_list_loding_msg: res.data.msg,
                                     data_total: 0,
                                     data_is_loading: 0
                                 });
@@ -493,9 +495,9 @@
                         } else {
                             this.setData({
                                 data_list_loding_status: 0,
+                                data_list_loding_msg: res.data.msg,
                                 data_is_loading: 0
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
@@ -505,9 +507,9 @@
                         uni.stopPullDownRefresh();
                         this.setData({
                             data_list_loding_status: 2,
+                            data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     }
                 });
             },

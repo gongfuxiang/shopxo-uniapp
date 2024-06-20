@@ -180,9 +180,6 @@
 .goods-base-content .collect {
     width: 76rpx;
 }
-.goods-base-content .base-grid view {
-    width: calc(33.33% - 1px);
-}
 
 /**
 * 视频
