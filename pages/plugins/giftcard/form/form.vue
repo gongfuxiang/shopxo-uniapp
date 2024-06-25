@@ -4,8 +4,8 @@
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white padding-main padding-bottom-xxxxl spacing-mb">
-                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('rechargecard-index.rechargecard-index.hfg2fg')}}</view>
-                        <input name="secret_key" type="text" class="text-size-xl tc margin-bottom-sm" :placeholder="$t('rechargecard-index.rechargecard-index.fu3rf1')" placeholder-class="cr-grey-c" />
+                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('giftcard-index.giftcard-index.hfg2fg')}}</view>
+                        <input name="secret_key" type="text" class="text-size-lg tc margin-bottom-sm" :placeholder="$t('giftcard-index.giftcard-index.fu3rf1')" placeholder-class="cr-grey-c" />
                     </view>
                     <view class="padding-main">
                         <button type="default" form-type="submit" hover-class="none" size="mini" class="br-main bg-main cr-white round buy-submit text-size dis-block" :disabled="form_submit_loading">{{$t('common.confirm')}}</button>
@@ -66,7 +66,7 @@
             // 转账表单提交
             form_submit(e) {
                 var validation = [
-                    { fields: 'secret_key', msg: this.$t('rechargecard-index.rechargecard-index.fu3rf1') }
+                    { fields: 'secret_key', msg: this.$t('giftcard-index.giftcard-index.fu3rf1') }
                 ];
                 if (app.globalData.fields_check(e.detail.value, validation)) {
                     uni.showLoading({
@@ -76,7 +76,7 @@
                         form_submit_loading: true
                     });
                     uni.request({
-                        url: app.globalData.get_request_url('exchange', 'index', 'rechargecard'),
+                        url: app.globalData.get_request_url('exchange', 'index', 'giftcard'),
                         method: 'POST',
                         data: e.detail.value,
                         dataType: 'json',
@@ -90,7 +90,7 @@
                                         form_submit_loading: false
                                     });
                                     if(app.globalData.prev_page() == null) {
-                                        app.globalData.url_open('/pages/plugins/rechargecard/index/index', true);
+                                        app.globalData.url_open('/pages/plugins/giftcard/index/index', true);
                                     } else {
                                         uni.navigateBack();
                                     }

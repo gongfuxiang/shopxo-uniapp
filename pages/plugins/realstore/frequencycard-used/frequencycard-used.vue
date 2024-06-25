@@ -48,7 +48,7 @@ export default {
                 { name: this.$t('frequencycard-used.frequencycard-used.538686'), field: "dec_number", unit: this.$t('buy.buy.0pgsrm') },
                 { name: this.$t('frequencycard-used.frequencycard-used.xjmepo'), field: "msg" },
                 { name: this.$t('frequencycard-used.frequencycard-used.aod4pc'), field: "operate_name" },
-                { name: this.$t('frequencycard-used.frequencycard-used.l4878i'), field: "use_time" },
+                { name: this.$t('common.use_time'), field: "use_time" },
             ],
         };
     },

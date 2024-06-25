@@ -48,7 +48,13 @@
         "now_update_text": "立即更新",
         "already_latest_text": "已是最新",
         "to_update_text": "去更新",
-        "to_star_text": "去评分"
+        "to_star_text": "去评分",
+        "use_time": "使用时间",
+        "add_time": "添加时间",
+        "upd_time": "更新时间",
+        "receive_time": "接收时间",
+		"service_time": "服务时间",
+		"apply_time": "申请时间"
 	},
 	"pages": {
 		"goods-category": "商品分类",
@@ -207,8 +213,8 @@
 		"plugins-coin-recharge-list": "充值明细",
 		"plugins-coin-collection": "收款",
         "plugins-antifakecode-index": "正品查询",
-        "plugins-rechargecard-index": "我的充值卡",
-        "plugins-rechargecard-form": "充值卡兑换"
+        "plugins-giftcard-index": "我的礼品卡",
+        "plugins-giftcard-form": "充值卡兑换"
 	},
 	"login": {
 		"login": {
@@ -853,7 +859,6 @@
 			"521pp4": "完成照片",
 			"u745i8": "异常时间",
 			"5fq8pr": "派单时间",
-			"21ift9": "更新时间",
 			"9153qn": "订单时间",
 			"pyw6xg": "用户头像",
 			"2d766e": "用户昵称",
@@ -978,7 +983,6 @@
 		"profit-detail": {
 			"kn8yye": "结算状态",
 			"x28rw5": "订单支付状态",
-			"b7v892": "添加时间",
 			"jkrvf3": "结算时间",
 			"3jg81h": "返佣规则"
 		}
@@ -1175,15 +1179,12 @@
 		"frequencycard-used": {
 			"538686": "扣除次数",
 			"xjmepo": "描述说明",
-			"aod4pc": "操作人员",
-			"l4878i": "使用时间"
+			"aod4pc": "操作人员"
 		}
 	},
 	"orderallot-detail": {
 		"orderallot-detail": {
-			"81jvw1": "订单类型",
-			"du0120": "接收时间",
-			"8z8ika": "服务时间"
+			"81jvw1": "订单类型"
 		}
 	},
 	"orderallot-list": {
@@ -1350,8 +1351,7 @@
 			"53k647": "转账姓名",
 			"m556tl": "转账账户",
 			"i308o1": "打款金额",
-			"451xxt": "打款时间",
-			"y96262": "申请时间"
+			"451xxt": "打款时间"
 		}
 	},
 	"user-recharge-detail": {
@@ -1843,12 +1843,12 @@
 			"0nhrj0": "评论内容"
 		}
 	},
-    "rechargecard-index": {
-    	"rechargecard-index": {
-    		"hfg2fg": "卡密",
-            "8uhyui": "充值时间",
-            "8tfgh2": "充值卡兑换",
-            "fu3rf1": "请输入卡密"
+    "giftcard-index": {
+    	"giftcard-index": {
+    		"hfg2fg": "卡密key",
+    		"fyjnsd": "卡密数据",
+            "8tfgh2": "卡密兑换",
+            "fu3rf1": "请输入卡密key"
     	}
     }
 }

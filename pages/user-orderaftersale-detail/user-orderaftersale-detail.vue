@@ -301,7 +301,7 @@ export default {
                     field: "refuse_reason",
                 },
                 {
-                    name: this.$t('user-cash-detail.user-cash-detail.y96262'),
+                    name: this.$t('common.apply_time'),
                     field: "apply_time",
                 },
                 {
@@ -321,11 +321,11 @@ export default {
                     field: "cancel_time",
                 },
                 {
-                    name: this.$t('profit-detail.profit-detail.b7v892'),
+                    name: this.$t('common.add_time'),
                     field: "add_time",
                 },
                 {
-                    name: this.$t('order-detail.order-detail.21ift9'),
+                    name: this.$t('common.upd_time'),
                     field: "upd_time",
                 },
             ],

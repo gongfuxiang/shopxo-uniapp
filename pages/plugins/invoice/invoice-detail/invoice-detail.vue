@@ -131,7 +131,7 @@ export default {
                                 { name: this.$t('invoice-detail.invoice-detail.rpdwd3'), value: data.data.refuse_reason || "" },
                                 { name: this.$t('invoice-detail.invoice-detail.dt77rq'), value: data.data.user_note || "" },
                                 { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
+                                { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                             ],
                             express_data: [
                                 { name: this.$t('invoice-detail.invoice-detail.2000a0'), value: data.data.express_name || "" },

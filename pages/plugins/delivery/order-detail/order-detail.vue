@@ -165,7 +165,7 @@
                                     { name: this.$t('order-detail.order-detail.u745i8'), value: data.data.abnormal_delivery_time || '' },
                                     { name: this.$t('order.order.865029'), value: data.data.reason || '' },
                                     { name: this.$t('order-detail.order-detail.5fq8pr'), value: data.data.add_time || '' },
-                                    { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || '' },
+                                    { name: this.$t('common.upd_time'), value: data.data.upd_time || '' },
                                     { name: this.$t('order-detail.order-detail.9153qn'), value: data.data.order_add_time || '' },
                                 ],
                                 data_list_loding_status: 3,

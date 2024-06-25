@@ -48,7 +48,13 @@
         "now_update_text": "Update Now",
         "already_latest_text": "It is already the latest",
         "to_update_text": "Go update",
-        "to_star_text": "To star"
+        "to_star_text": "To star",
+        "use_time": "Usage time",
+        "add_time": "Add time",
+        "upd_time": "Update time",
+        "receive_time": "Receiving time",
+		"service_time": "service time ",
+		"apply_time": "Application time"
 	},
 	"pages": {
 		"goods-category": "Product classification",
@@ -209,8 +215,8 @@
 		"plugins-coin-convert-list": "Conversion details",
 		"plugins-coin-recharge-list": "Recharge details",
         "plugins-antifakecode-index": "Authentic inquiry",
-        "plugins-rechargecard-index": "My recharge card",
-        "plugins-rechargecard-form": "Recharge card redemption"
+        "plugins-giftcard-index": "My gift card",
+        "plugins-giftcard-form": "Recharge card redemption"
 	},
 	"login": {
 		"login": {
@@ -1185,15 +1191,12 @@
 		"frequencycard-used": {
 			"538686": "Deduction frequency",
 			"xjmepo": "Description",
-			"aod4pc": "Operators",
-			"l4878i": "Usage time"
+			"aod4pc": "Operators"
 		}
 	},
 	"orderallot-detail": {
 		"orderallot-detail": {
-			"81jvw1": "Order type",
-			"du0120": "Receiving time",
-			"8z8ika": "service time"
+			"81jvw1": "Order type"
 		}
 	},
 	"orderallot-list": {
@@ -1360,8 +1363,7 @@
 			"53k647": "Transfer Name",
 			"m556tl": "Transfer account",
 			"i308o1": "Payment amount",
-			"451xxt": "Payment time",
-			"y96262": "Application time"
+			"451xxt": "Payment time"
 		}
 	},
 	"user-recharge-detail": {
@@ -1859,12 +1861,12 @@
 			"0nhrj0": "Comment content"
 		}
 	},
-    "rechargecard-index": {
-    	"rechargecard-index": {
-    		"hfg2fg": "Cami",
-            "8uhyui": "Recharge time",
-            "8tfgh2": "Recharge card redemption",
-            "fu3rf1": "Please enter the card password"
+    "giftcard-index": {
+    	"giftcard-index": {
+    		"hfg2fg": "Cami key",
+    		"fyjnsd": "Card security data",
+            "8tfgh2": "Card exchange",
+            "fu3rf1": "Please enter the card password key"
     	}
     }
 }

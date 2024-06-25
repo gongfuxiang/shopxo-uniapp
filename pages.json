@@ -1578,7 +1578,7 @@
             ]
         },
         {
-            "root": "pages/plugins/rechargecard",
+            "root": "pages/plugins/giftcard",
             "pages": [
                 {
                     "path": "index/index",

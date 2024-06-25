@@ -26,7 +26,7 @@
                 <!-- 兑换卡密 -->
                 <view class="bottom-fixed">
                     <view class="bottom-line-exclude">
-                        <button data-value="/pages/plugins/rechargecard/form/form" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('rechargecard-index.rechargecard-index.8tfgh2')}}</button>
+                        <button data-value="/pages/plugins/giftcard/form/form" @tap="url_event" class="round cr-main bg-white br-main text-size wh-auto sub-btn" type="default" hover-class="none">{{$t('giftcard-index.giftcard-index.8tfgh2')}}</button>
                     </view>
                 </view>
             </view>
@@ -52,11 +52,11 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
-                    { name: this.$t('rechargecard-index.rechargecard-index.hfg2fg'), field: 'secret_key' },
-                    { name: this.$t('recharge.recharge.qbw1x2'), field: 'money' },
-                    { name: this.$t('rechargecard-index.rechargecard-index.8uhyui'), field: 'recharge_time' },
-                    { name: this.$t('profit-detail.profit-detail.b7v892'), field: 'add_time' },
-                    { name: this.$t('order-detail.order-detail.21ift9'), field: 'upd_time' },
+                    { name: this.$t('giftcard-index.giftcard-index.hfg2fg'), field: 'secret_key' },
+                    { name: this.$t('giftcard-index.giftcard-index.fyjnsd'), field: 'secret_value_text' },
+                    { name: this.$t('common.use_time'), field: 'use_time' },
+                    { name: this.$t('common.add_time'), field: 'add_time' },
+                    { name: this.$t('common.upd_time'), field: 'upd_time' },
                 ],
             };
         },
@@ -136,7 +136,7 @@
 
                 // 获取数据
                 uni.request({
-                    url: app.globalData.get_request_url('index', 'index', 'rechargecard'),
+                    url: app.globalData.get_request_url('index', 'index', 'giftcard'),
                     method: 'POST',
                     data: {page: this.data_page},
                     dataType: 'json',
