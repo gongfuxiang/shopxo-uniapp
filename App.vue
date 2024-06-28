@@ -23,10 +23,10 @@
                 application_logo: '',
 
                 // 版本号、如: v1.0.0
-                version: 'v6.1',
+                version: 'v6.2',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.1 20240516',
+                app_version_info: 'v6.2 20240630',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -1659,7 +1659,7 @@
                 // 是否插件
                 if ((is_plugins || false) == true) {
                     // 根据配置的静态url地址+插件标识符
-                    return this.data.static_url + 'static/plugins/images/' + type + '/';
+                    return this.data.static_url + 'static/plugins/' + type + '/images/';
                 } else {
                     // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
                     return this.data.static_url + 'static/app/' + this.get_theme_value() + '/' + type + '/';

@@ -390,6 +390,7 @@
                                 data_list_loding_status: 0,
                                 data_list_loding_msg: res.data.msg
                             });
+                            app.globalData.is_login_check(res.data, this, 'get_data');
                         }
 
                         // 基础自定义分享
@@ -498,6 +499,7 @@
                                 data_list_loding_msg: res.data.msg,
                                 data_is_loading: 0
                             });
+                            app.globalData.is_login_check(res.data, this, 'get_data_list', is_mandatory);
                         }
                     },
                     fail: () => {
