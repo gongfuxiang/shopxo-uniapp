@@ -12,6 +12,23 @@
                                     <text v-if="(fv.unit || null) != null" class="cr-grey">{{ fv.unit }}</text>
                                 </view>
                             </view>
+                            <view v-if="(item.use_data || null) != null && item.use_data.length > 0">
+                                <view class="margin-top-sm">{{$t('giftcard-index.giftcard-index.6redfg')}}</view>
+                                <view v-for="(uv, uk) in item.use_data" :key="uk">
+                                    <view>
+                                        <text class="cr-grey-9 margin-right-main">{{$t('user-order-detail.user-order-detail.n18sd2')}}:</text>
+                                        <text data-event="copy" :data-value="uv.order_no" @tap="text_event">{{uv.order_no}}</text>
+                                    </view>
+                                    <view>
+                                        <text class="cr-grey-9 margin-right-main">{{$t('user-order-detail.user-order-detail.yghjkf')}}:</text>
+                                        <text :data-value="uv.goods_url" @tap="url_event">{{uv.goods_title}}</text>
+                                    </view>
+                                    <view>
+                                        <text class="cr-grey-9 margin-right-main">{{$t('common.use_time')}}:</text>
+                                        <text>{{uv.use_time}}</text>
+                                    </view>
+                                </view>
+                            </view>
                         </view>
                     </view>
 
@@ -54,7 +71,7 @@
                 content_list: [
                     { name: this.$t('giftcard-index.giftcard-index.hfg2fg'), field: 'secret_key' },
                     { name: this.$t('giftcard-index.giftcard-index.fyjnsd'), field: 'secret_value_text' },
-                    { name: this.$t('common.use_time'), field: 'use_time' },
+                    { name: this.$t('giftcard-index.giftcard-index.87yyj3'), field: 'exchange_time' },
                     { name: this.$t('common.add_time'), field: 'add_time' },
                     { name: this.$t('common.upd_time'), field: 'upd_time' },
                 ],
@@ -208,6 +225,11 @@
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
+            },
+
+            // 文本事件
+            text_event(e) {
+                app.globalData.text_event_handle(e);
             }
         },
     };

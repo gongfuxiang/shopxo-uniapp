@@ -323,6 +323,7 @@
 			"hpq62x": "The pickup code does not exist. Please contact the administrator",
 			"io6p5k": "Order Mode",
 			"n18sd2": "Order number",
+            "yghjkf": "Order Goods",
 			"yxwu8n": "Order Status",
 			"23qj7m": "Payment status",
 			"vg4jb1": "Order unit price",
@@ -1865,7 +1866,9 @@
     	"giftcard-index": {
     		"hfg2fg": "Cami key",
     		"fyjnsd": "Card security data",
+            "87yyj3": "Redemption time",
             "8tfgh2": "Card exchange",
+            "6redfg": "Use data",
             "fu3rf1": "Please enter the card password key"
     	}
     }
