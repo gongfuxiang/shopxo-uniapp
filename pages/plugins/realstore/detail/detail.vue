@@ -73,7 +73,7 @@
                                         </view>
                                         <!-- 右侧操作 -->
                                         <view class="icon-list margin-left-main">
-                                            <view v-if="(data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
+                                            <view v-if="(data_base || null) != null && (data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
                                                 <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
                                             </view>
                                             <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
@@ -238,7 +238,7 @@
                     </view>
                 </view>
                 <view class="popup-service-container">
-                    <view v-if="(data_base || null) != null && (info || null) != null && (data_base.is_service_info || 0) == 1 && ((info.service_data || null) != null || (info.chat_info || null) != null)" class="header-service">
+                    <view v-if="(info || null) != null && (data_base || null) != null && (data_base.is_service_info || 0) == 1" class="header-service">
                         <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
                             <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">

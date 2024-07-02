@@ -161,7 +161,7 @@
                     </view>
                 </view>
                 <view class="popup-service-container">
-                    <view v-if="(data_base || null) != null && (shop || null) != null && (data_base.is_service_info || 0) == 1 && ((shop.service_data || null) != null || (shop.chat_info || null) != null)" class="header-service">
+                    <view v-if="(shop || null) != null && (data_base || null) != null && (data_base.is_service_info || 0) == 1" class="header-service">
                         <view v-if="(shop.chat_info || null) != null" class="item padding-main single-text">
                             <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
