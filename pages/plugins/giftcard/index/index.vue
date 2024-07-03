@@ -69,6 +69,7 @@
                 data_is_loading: 0,
                 params: null,
                 content_list: [
+                    { name: this.$t('giftcard-index.giftcard-index.87ytyh'), field: 'data_type_name' },
                     { name: this.$t('giftcard-index.giftcard-index.hfg2fg'), field: 'secret_key' },
                     { name: this.$t('giftcard-index.giftcard-index.fyjnsd'), field: 'secret_value_text' },
                     { name: this.$t('giftcard-index.giftcard-index.87yyj3'), field: 'exchange_time' },
