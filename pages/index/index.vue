@@ -588,7 +588,6 @@
                                 data_list_loding_msg: res.data.msg,
                                 data_bottom_line_status: true,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
 
                         // 初始化返回公共处理
@@ -607,7 +606,6 @@
                             data_bottom_line_status: true,
                             load_status: 1,
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },

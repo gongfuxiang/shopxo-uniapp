@@ -778,7 +778,6 @@
                                 data_list_loding_msg: res.data.msg,
                                 data_is_loading: 0,
                             });
-                            app.globalData.showToast(res.data.msg);
                         }
                     },
                     fail: () => {
@@ -787,7 +786,6 @@
                             data_list_loding_msg: this.$t('common.internet_error_tips'),
                             data_is_loading: 0,
                         });
-                        app.globalData.showToast(this.$t('common.internet_error_tips'));
                     },
                 });
             },
