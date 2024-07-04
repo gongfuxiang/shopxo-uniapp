@@ -10,8 +10,8 @@
 
                 <!-- 搜索 -->
                 <view v-if="common_app_is_header_nav_fixed == 1" :class="'search-fixed-seat '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')"></view>
-                <view :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_bg_color : ''">
-                    <view :class="'search-content-fixed-content '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 && search_is_fixed == 1 ? top_content_search_content_style : '')">
+                <view :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 ? top_content_search_bg_color : ''">
+                    <view :class="'search-content-fixed-content '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 ? top_content_search_content_style : '')">
                         <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                             <!-- 定位 -->
                             <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
@@ -358,7 +358,6 @@
                 // #ifdef APP
                 top_content_style: 'padding-top:' + (bar_height) + 'px;',
                 // #endif
-                search_is_fixed: 0,
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
                 // 用户位置信息
@@ -563,6 +562,10 @@
                                 plugins_binding_data: data.plugins_binding_data || null,
                                 plugins_magic_data: data.plugins_magic_data || null,
                             };
+                            // 如果开启了哀悼灰色则不固定导航
+                            if(upd_data.plugins_mourning_data_is_app == 1) {
+                                upd_data['common_app_is_header_nav_fixed'] = 0;
+                            }
                             this.setData(upd_data);
 
                             // 存储缓存
@@ -653,18 +656,6 @@
                 });
             },
 
-            // 页面滚动监听
-            onPageScroll(e) {
-                if (this.common_app_is_header_nav_fixed == 1) {
-                    // 开启哀悼插件的时候不需要浮动导航并且搜索框也不需要缩短、开启站点灰度会导致浮动失效
-                    if (!this.plugins_mourning_data_is_app) {
-                        this.setData({
-                            search_is_fixed: e.scrollTop > 0 ? 1 : 0,
-                        });
-                    }
-                }
-            },
-
             // url事件
             url_event(e) {
                 app.globalData.url_event(e);
@@ -719,7 +710,7 @@
                 }
                 this.setData({
                     top_content_bg_color: 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 80%);',
-                    top_content_search_bg_color: 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 460%);',
+                    top_content_search_bg_color: 'background: linear-gradient(180deg, ' + color + ' 0%, #f5f5f5 300%);',
                 });
             },
 

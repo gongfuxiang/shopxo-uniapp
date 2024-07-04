@@ -261,10 +261,10 @@
                 <view v-if="(plugins_goodsservice_data || null) != null && plugins_goodsservice_data.length > 0" class="plugins-goodsservice-view-container border-radius-main padding-main bg-white text-size-xs spacing-mb flex-row jc-sb align-c" @tap="popup_goodsservice_event">
                     <view class="padding-right-main single-text border-radius-right-main flex-1 flex-width">
                         <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
-                            <text :class="'item ' + (index > 0 ? 'margin-left-xxl' : '')">
-                                <image class="va-m" :src="item.images" mode="widthFix"></image>
+                            <view :class="'item dis-inline-block ' + (index > 0 ? 'margin-left-xxl' : '')">
+                                <image class="va-m radius" :src="item.images" mode="widthFix"></image>
                                 <text class="cr-base va-m margin-left-sm">{{ item.name }}</text>
-                            </text>
+                            </view>
                         </block>
                     </view>
                     <iconfont name="icon-arrow-right" color="#999" propClass="va-m"></iconfont>
@@ -549,7 +549,7 @@
                             <block v-for="(item, index) in plugins_goodsservice_data" :key="index">
                                 <view :class="'item oh padding-vertical-main ' + (index > 0 ? 'br-t' : '')">
                                     <view class="fl left">
-                                        <image class="dis-block" :src="item.images" mode="widthFix"></image>
+                                        <image class="dis-block radius" :src="item.images" mode="widthFix"></image>
                                     </view>
                                     <view class="fr right tl">
                                         <view class="cr-base fw-b text-size-sm">{{ item.name }}</view>

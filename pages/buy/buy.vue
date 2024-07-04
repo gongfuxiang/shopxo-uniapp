@@ -277,16 +277,16 @@
                         <block v-for="(item, index) in plugins_coupon_list" :key="index">
                             <view :class="'item spacing-mt bg-white border-radius-main ' + ((item.is_active || 0) == 1 ? 'item-disabled' : '')">
                                 <view class="v-left fl">
-                                    <view class="base single-text" :style="'color:' + item.coupon.bg_color_value + ';'">
-                                        <text v-if="item.coupon.type == 0" class="symbol">{{ currency_symbol }}</text>
-                                        <text class="price">{{ item.coupon.discount_value }}</text>
+                                    <view class="base single-text">
+                                        <text v-if="item.coupon.type == 0" class="symbol cr-price">{{ currency_symbol }}</text>
+                                        <text class="price cr-price">{{ item.coupon.discount_value }}</text>
                                         <text class="unit">{{ item.coupon.type_unit }}</text>
                                         <text v-if="(item.coupon.desc || null) != null" class="desc cr-grey">{{ item.coupon.desc }}</text>
                                     </view>
                                     <view v-if="(item.coupon.use_limit_type_name || null) != null" class="base-tips cr-base single-text">{{ item.coupon.use_limit_type_name }}</view>
                                     <view class="base-time cr-grey single-text">{{ item.time_start_show_text }}-{{ item.time_end_show_text }}</view>
                                 </view>
-                                <view :class="'v-right fr ' + ((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
+                                <view :class="'v-right bg-main fr ' + ((item.is_active || 0) == 1 ? '' : 'cp')" :style="'background:' + item.coupon.bg_color_value + ';'" :data-index="index" :data-value="item.id" @tap="plugins_coupon_use_event">
                                     <text class="circle"></text>
                                     <text>{{ (item.is_active || 0) == 1 ? $t('buy.buy.g2vt78') : $t('buy.buy.inyxpx') }}</text>
                                 </view>
