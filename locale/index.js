@@ -1,14 +1,14 @@
 import VueI18n from 'vue-i18n';
 import Vue from 'vue';
 
-import zhHans from './zh.json';
+import zh from './zh.json';
 import en from './en.json';
 
 let i18nConfig = {
     locale: uni.getLocale(),
     silentTranslationWarn: true,
     messages: {
-        "zh-Hans": zhHans,
+        "zh": zh,
         "en": en
     }
 }

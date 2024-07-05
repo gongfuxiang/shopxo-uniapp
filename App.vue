@@ -1,7 +1,7 @@
 <script>
     import base64 from './common/js/lib/base64.js';
     // 多语言引入并初始化
-    import i18n from './lang/index';
+    import i18n from './locale/index';
     export default {
         globalData: {
             data: {
@@ -46,7 +46,7 @@
                 // 增加或者减少语言时
                 // 1.新增一个对象，按照当前格式新增
                 // 2.去lang里面各个文件去新增语言翻译
-                default_language: 'zh-Hans',
+                default_language: 'zh',
 
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
@@ -322,17 +322,8 @@
                 var user_location = this.choice_user_location_init();
                 var user_location_params = (user_location || null) != null && (user_location.status || 0) == 1 ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
                 // 当前语言
-                var lang_list = {
-                    'zh-Hans': 'zh',
-                    'zh-Hant': 'cht',
-                    en: 'en',
-                    fr: 'fra',
-                    es: 'spa',
-                };
-                var lang = lang_list[this.get_language_value()] || null;
-                if (lang == null) {
-                    lang = 'zh';
-                }
+                var lang = this.get_language_value();
+
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
                 return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang;
