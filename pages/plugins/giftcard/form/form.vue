@@ -4,8 +4,13 @@
             <block v-if="data_list_loding_status == 3">
                 <form @submit="form_submit" class="form-container">
                     <view class="border-radius-main bg-white padding-main padding-bottom-xxxxl spacing-mb">
-                        <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('giftcard-index.giftcard-index.hfg2fg')}}</view>
-                        <input name="secret_key" type="text" class="text-size-lg tc margin-bottom-sm" :placeholder="$t('giftcard-index.giftcard-index.fu3rf1')" placeholder-class="cr-grey-c" />
+                        <view class="title fw-b text-size margin-vertical-xxxl">{{$t('giftcard-index.giftcard-index.hfg2fg')}}</view>
+                        <view class="flex-row align-c padding-bottom-xl">
+                            <view class="margin-right" @tap="scan_event">
+                                <uni-icons type="scan" size="42rpx" color="#666"></uni-icons>
+                            </view>
+                            <input type="text" class="text-size-lg wh-auto" :placeholder="$t('giftcard-index.giftcard-index.fu3rf1')" placeholder-class="cr-grey-c" :value="secret_key_value" @input="secret_key_event" />
+                        </view>
                     </view>
                     <view class="padding-main">
                         <button type="default" form-type="submit" hover-class="none" size="mini" class="br-main bg-main cr-white round buy-submit text-size dis-block" :disabled="form_submit_loading">{{$t('common.confirm')}}</button>
@@ -27,7 +32,8 @@
                 theme_view: app.globalData.get_theme_value_view(),
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                form_submit_loading: false
+                form_submit_loading: false,
+                secret_key_value: ''
             };
         },
         components: {
@@ -62,13 +68,38 @@
                     });
                 }
             },
+            
+            // 输入事件
+            secret_key_event(e) {
+                this.setData({
+                    secret_key_value: e.detail.value
+                });
+            },
 
-            // 转账表单提交
-            form_submit(e) {
+            // 扫码事件
+            scan_event(e) {
+                var self = this;
+                uni.scanCode({
+                	success: function (res) {
+                        if((res.result || null) != null) {
+                            self.setData({
+                                secret_key_value: res.result
+                            });
+                            self.form_submit();
+                        }
+                	}
+                });
+            },
+
+            // 表单提交
+            form_submit() {
+                var form_data = {
+                    secret_key: this.secret_key_value
+                }
                 var validation = [
                     { fields: 'secret_key', msg: this.$t('giftcard-index.giftcard-index.fu3rf1') }
                 ];
-                if (app.globalData.fields_check(e.detail.value, validation)) {
+                if (app.globalData.fields_check(form_data, validation)) {
                     uni.showLoading({
                         title: this.$t('common.processing_in_text'),
                     });
@@ -78,7 +109,7 @@
                     uni.request({
                         url: app.globalData.get_request_url('exchange', 'index', 'giftcard'),
                         method: 'POST',
-                        data: e.detail.value,
+                        data: form_data,
                         dataType: 'json',
                         success: (res) => {
                             uni.hideLoading();
@@ -96,7 +127,7 @@
                                     }
                                 }, 1500);
                             } else {
-                                if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
+                                if (app.globalData.is_login_check(res.data, this, 'form_submit')) {
                                     this.setData({
                                         form_submit_loading: false
                                     });

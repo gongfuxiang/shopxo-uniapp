@@ -29,6 +29,7 @@
 		"share": "Share",
 		"return": "Return",
 		"view_text": "Check",
+        "place_order_text": "Place Order",
 		"processing_in_text": "Processing",
 		"loading_in_text": "Loading",
 		"upload_in_text": "Uploading",

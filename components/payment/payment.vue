@@ -486,7 +486,7 @@
                         self.setData({
                             open_pay_url_status: false
                         });
-                        self.order_item_pay_fail_handle(data, order_id, error);
+                        self.order_item_pay_fail_handle(data, order_id, error.message+'('+error.code+')');
                     });
                     // 定时3秒后提示用户确认支付状态
                     self.open_pay_url_timer = setTimeout(function() {
