@@ -1092,6 +1092,13 @@
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""
                     }
+                },
+                {
+                    "path": "check/check",
+                    "style": {
+                        "enablePullDownRefresh": false,
+                        "navigationBarTitleText": ""
+                    }
                 }
             ]
         },
@@ -1255,6 +1262,13 @@
                     "path": "frequencycard-used/frequencycard-used",
                     "style": {
                         "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "check/check",
+                    "style": {
+                        "enablePullDownRefresh": false,
                         "navigationBarTitleText": ""
                     }
                 }

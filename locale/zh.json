@@ -55,7 +55,9 @@
         "upd_time": "更新时间",
         "receive_time": "接收时间",
 		"service_time": "服务时间",
-		"apply_time": "申请时间"
+		"apply_time": "申请时间",
+        "verification_text": "核销码",
+        "verification_message": "请输入核销码"
 	},
 	"pages": {
 		"goods-category": "商品分类",
@@ -163,6 +165,7 @@
 		"plugins-shop-design": "",
 		"plugins-shop-favor": "店铺收藏",
 		"plugins-shop-license": "工商资质",
+        "plugins-shop-check": "订单核销",
 		"plugins-activity-index": "所有活动",
 		"plugins-activity-detail": "活动详情",
 		"plugins-label-detail": "标签详情",
@@ -182,6 +185,7 @@
 		"plugins-realstore-batchorder-list": "批次订单",
 		"plugins-realstore-frequencycard-list": "次卡",
 		"plugins-realstore-frequencycard-used": "次卡使用记录",
+        "plugins-realstore-check": "订单核销",
 		"plugins-binding-index": "组合搭配",
 		"plugins-binding-detail": "组合搭配详情",
 		"plugins-delivery-order": "配送订单",

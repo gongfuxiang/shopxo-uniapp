@@ -55,7 +55,9 @@
         "upd_time": "Update time",
         "receive_time": "Receiving time",
 		"service_time": "service time ",
-		"apply_time": "Application time"
+		"apply_time": "Application time",
+        "verification_text": "Verification code",
+        "verification_message": "Please enter the verification code"
 	},
 	"pages": {
 		"goods-category": "Product classification",
@@ -160,6 +162,7 @@
 		"plugins-shop-search": "Store Product Search",
 		"plugins-shop-favor": "Store favorites",
 		"plugins-shop-license": "Business qualifications",
+        "plugins-shop-check": "Order verification",
 		"plugins-activity-index": "All activities",
 		"plugins-activity-detail": "Event details",
 		"plugins-label-detail": "Label details",
@@ -179,6 +182,7 @@
 		"plugins-realstore-batchorder-list": "Batch orders",
 		"plugins-realstore-frequencycard-list": "Secondary card",
 		"plugins-realstore-frequencycard-used": "Secondary Card Usage Record",
+        "plugins-realstore-check": "Order verification",
 		"plugins-binding-index": "Combination and matching",
 		"plugins-binding-detail": "Combination and matching details",
 		"plugins-delivery-order": "Delivery order",
