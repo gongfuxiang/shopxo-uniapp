@@ -279,7 +279,7 @@
                 <view v-if="plugins_realstore_data != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0" class="plugins-realstore-container">
                     <view class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                         <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{$t('goods-detail.goods-detail.317jp2')}}</text>
-                        <text data-value="/pages/plugins/realstore/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
+                        <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
                     </view>
                     <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
                 </view>
@@ -528,6 +528,9 @@
                     <view class="plugins-realstore-popup">
                         <block v-if="(plugins_realstore_data || null) != null && ((plugins_realstore_data.data || null) != null) && plugins_realstore_data.data.length > 0">
                             <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}" :propRealstoreDetailQuery="'&source_goods_id='+goods.id" :propIsFavor="false"></component-realstore-list>
+                            <view class="tc margin-top-sm margin-bottom-lg">
+                                <text :data-value="'/pages/plugins/realstore/search/search?goods_id='+goods.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}{{$t('goods-detail.goods-detail.317jp2')}}</text>
+                            </view>
                         </block>
                         <block v-else>
                             <view class="cr-grey tc padding-top-xl padding-bottom-xxxl">{{$t('goods-detail.goods-detail.gwwf19')}}</view>
