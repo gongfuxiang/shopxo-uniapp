@@ -13,11 +13,24 @@
             <view v-if="(data_list || null) != null && data_list.length > 0" class="data-list padding-horizontal-main padding-top-main oh">
                 <block v-for="(item, index) in data_list" :key="index">
                     <view :data-value="item.url" @tap="url_event" class="item padding-main border-radius-main bg-white oh cp spacing-mb">
-                        <view class="cr-base fw-b" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
-                        <view class="cr-grey oh margin-top-sm">
-                            <text class="fl">{{ item.add_time }}</text>
-                            <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                        <view v-if="(item.cover || null) != null" class="oh pr item-cover">
+                            <image :src="item.cover" mode="aspectFit" class="radius fl cover"></image>
+                            <view class="base-right fr">
+                                <view class="fw-b single-text text-size" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
+                                <view v-if="(item.describe || null) != null" class="cr-base margin-top-sm multi-text text-size-sm">{{item.describe}}</view>
+                                <view class="pa right-0 bottom-0 base-right-bottom cr-grey text-size-xs">
+                                    <text class="fl">{{ item.add_time }}</text>
+                                    <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                                </view>
+                            </view>
                         </view>
+                        <block v-else>
+                            <view class="fw-b single-text text-size" :style="(item.title_color || null) != null ? 'color:' + item.title_color + ' !important;' : ''">{{ item.title }}</view>
+                            <view class="cr-grey oh text-size-xs margin-top-sm">
+                                <text class="fl">{{ item.add_time }}</text>
+                                <text class="fr">{{$t('article-category.article-category.gxra15')}}{{ item.access_count }}</text>
+                            </view>
+                        </block>
                     </view>
                 </block>
             </view>
@@ -257,4 +270,6 @@ export default {
     },
 };
 </script>
-<style></style>
+<style>
+    @import "./article-category.css";
+</style>

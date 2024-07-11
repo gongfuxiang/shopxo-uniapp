@@ -1918,7 +1918,7 @@
                     desc: data.desc || share_config.desc || this.get_application_describe(),
                     path: data.path || this.data.tabbar_pages[0],
                     query: this.share_query_handle(data.query || ''),
-                    img: data.img || share_config.pic || this.get_config('config.home_site_logo_square'),
+                    img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
                 result['url'] = this.get_page_url();
                 // #ifdef H5 || APP
