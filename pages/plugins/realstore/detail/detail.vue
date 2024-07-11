@@ -8,7 +8,7 @@
                 <view class="header pr z-i">
                     <component-nav-back :propIsShowBack="is_realstore_top_nav_back == 1" :propFixed="false" propColor="#333">
                         <template slot="right" :class="is_top_search_width ? 'top-search-width' : 'flex-1 flex-width'">
-                            <view v-if="is_base_mode != 1 || is_base_mode_show_goods == 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
+                            <view v-if="is_base_mode != 1" :class="'va-m wh-auto top-nav-search '+(is_realstore_top_nav_back == 1 ? 'padding-left-main' : '')">
                                 <block v-if="client_type == 'h5'">
                                     <component-search @onsearch="search_button_event" :propIsRequired="false" propIconColor="#333" propPlaceholderClass="cr-grey-c" :propPlaceholder="$t('detail.detail.q42ger')" propBgColor="#fff"></component-search>
                                 </block>
@@ -73,7 +73,7 @@
                                         </view>
                                         <!-- 右侧操作 -->
                                         <view class="icon-list margin-left-main">
-                                            <view v-if="(data_base || null) != null && (data_base.is_service_info || 0) == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
+                                            <view v-if="(data_base || null) != null && is_service_info == 1" class="icon-item green cr-green border-radius-sm dis-inline-block tc cp" @tap="popup_service_open_event">
                                                 <iconfont name="icon-mendian-kefu" size="26rpx"></iconfont>
                                             </view>
                                             <view :class="'icon-item red border-radius-sm dis-inline-block tc cp pr ' + (favor_info.status == 1 ? 'cr-red' : 'cr-grey-9')" @tap="favor_event">
@@ -89,14 +89,23 @@
                         </view>
                     </view>
 
-                    <!-- 内容、是否基础模式则展示门店介绍 -->
-                    <view v-if="is_base_mode == 1 && is_base_mode_show_goods != 1" class="padding-horizontal-main padding-top-main border-radius-main bg-white">
-                        <view class="fw-b title-left-border">门店介绍</view>
-                        <scroll-view :scroll-y="true" class="margin-top-sm cr-base text-size-sm" :style="content_style">
-                            <mp-html :content="info.describe" />
+                    <!-- 门店基础模式 -->
+                    <view v-if="is_base_mode == 1 && is_base_mode_show_type == 2" class="nav-base bg-white fw-b margin-bottom-sm margin-top-sm">
+                        <block v-for="(item, index) in nav_base_list" :key="index">
+                            <view v-if="nav_base_index == index" class="item fl tc padding-horizontal-main cr-main nav-active-line" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
+                            <view v-else class="item fl tc padding-horizontal-main" :data-index="index" @tap="nav_base_event">{{ item.name }}</view>
+                        </block>
+                    </view>
+                    <!-- 门店基础模式 - 商品 -->
+                    <view v-if="is_base_mode == 1 && (is_base_mode_show_type == 0 || (is_base_mode_show_type == 2 && nav_base_index == 0))" class="padding-horizontal-main border-radius-main bg-white">
+                        <view v-if="is_base_mode_show_type == 0" class="fw-b title-left-border margin-bottom-sm margin-top-main">{{$t('goods-detail.goods-detail.dfge45')}}</view>
+                        <scroll-view :scroll-y="true" class="cr-base text-size-sm" :style="content_style">
+                            <view class="right-content-actual base-mode-goods">
+                                <mp-html :content="info.describe" />
+                            </view>
                         </scroll-view>
                     </view>
-                    <block v-else>
+                    <block v-if="is_base_mode == 0 || (is_base_mode_show_type == 1 || (is_base_mode_show_type == 2 && nav_base_index == 1))">
                         <!-- 左侧分类和右侧商品 -->
                         <view class="content oh bg-white pr flex-row jc-sb" :style="content_style">
                             <!-- 左侧 -->
@@ -117,7 +126,7 @@
                             </scroll-view>
                             <!-- 右侧 -->
                             <scroll-view :scroll-y="true" class="right-content ht-auto goods-list flex-1 flex-width" :scroll-top="scroll_top" @scroll="scroll_event" @scrolltolower="scroll_lower" lower-threshold="60">
-                                <view class="right-content-actual pr">
+                                <view :class="'right-content-actual pr '+(is_base_mode == 1 ? 'base-mode-goods' : '')">
                                     <!-- 操作导航 -->
                                     <view class="goods-list-top-nav bg-white">
                                         <!-- 排序 -->
@@ -193,7 +202,7 @@
                     <!-- 基础模式底部导航 -->
                     <view v-if="is_base_mode == 1" class="bg-white pf left-0 bottom-0 wh-auto padding-main bs-bb br-top-shadow">
                         <view class="bottom-line-exclude button-list">
-                            <view class="button-left tc">
+                            <view :class="'button-left tc '+(is_service_info == 1 ? '' : 'wh-auto')">
                                 <!-- #ifndef MP-KUAISHOU -->
                                 <view v-if="info.lat != 0 && info.lng != 0" propClass="item" @tap="address_map_event">
                                     <view>
@@ -209,7 +218,7 @@
                                     <view class="cr-base text-size-md">{{$t('common.share')}}</view>
                                 </view>
                             </view>
-                            <view class="button-right">
+                            <view v-if="is_service_info == 1" class="button-right">
                                 <button type="default" class="item br-main bg-main cr-white round text-size-md dis-block wh-auto" @tap="popup_service_open_event">{{$t('cart.cart.31h34v')}}</button>
                             </view>
                         </view>
@@ -238,7 +247,7 @@
                     </view>
                 </view>
                 <view class="popup-service-container">
-                    <view v-if="(info || null) != null && (data_base || null) != null && (data_base.is_service_info || 0) == 1" class="header-service">
+                    <view v-if="(info || null) != null && (data_base || null) != null && is_service_info == 1" class="header-service">
                         <view v-if="(info.chat_info || null) != null" class="item padding-main single-text">
                             <text class="va-m">{{$t('detail.detail.r4124d')}}</text>
                             <view class="dis-inline-block chat-info cp" @tap="chat_event">
@@ -306,7 +315,7 @@
                 data_list_loding_msg: '',
                 data_is_loading: 0,
                 is_base_mode: 0,
-                is_base_mode_show_goods: 0,
+                is_base_mode_show_type: 0,
                 is_cart_nav: false,
                 buy_use_type_index: 0,
                 params: null,
@@ -327,6 +336,12 @@
                 nav_active_index: -1,
                 nav_active_item_index: -1,
                 popup_service_status: false,
+                // 基础导航
+                nav_base_index: 0,
+                nav_base_list: [
+                    { name: this.$t('goods-detail.goods-detail.dfge45'), value: 0 },
+                    { name: this.$t('goods-detail.goods-detail.567uhg'), value: 1 },
+                ],
                 // 下单类型
                 buy_use_type_index: 0,
                 // 排序导航
@@ -463,24 +478,26 @@
                             var data = res.data.data;
                             // 基础配置
                             var data_base = data.base || {};
+                            // 是否开启在线客服
+                            var is_service_info = parseInt(data_base.is_service_info || 0);
                             // 是否基础模式
                             var is_base_mode = parseInt(data.is_base_mode || 0);
-                            // 基础模式下是否展示商品
-                            var is_base_mode_show_goods = parseInt(data.is_base_mode_show_goods || 0);
+                            // 基础模式下是否展示类型
+                            var is_base_mode_show_type = parseInt(data.is_base_mode_show_type || 0);
                             // 桌码
                             var tablecode = data.tablecode || null;
-                            // 开启门店基础
+                            // 基础模式内容高度处理
                             var base_mode_style = '0rpx';
-                            if(is_base_mode == 1 && is_base_mode_show_goods != 1) {
-                                // 开启了联系客服有底部按钮、则仅内容高度
-                                base_mode_style = ((data_base.is_service_info || 0) == 1) ? '240rpx' : '90rpx';
+                            if(is_base_mode == 1 && (is_base_mode_show_type == 0 || is_base_mode_show_type == 2)) {
+                                base_mode_style = (is_base_mode_show_type == 0) ? '58rpx' : '92rpx';
                             }
                             // 内容高度
                             var content_style = 'height: calc(100vh - '+(this.client_type == 'h5' ? '386rpx' : '374rpx')+' - '+this.status_bar_height+'px - '+(tablecode == null ? '0rpx' : '44rpx')+ ' - '+base_mode_style+');';
 
                             this.setData({
+                                is_service_info: is_service_info,
                                 is_base_mode: is_base_mode,
-                                is_base_mode_show_goods: is_base_mode_show_goods,
+                                is_base_mode_show_type: is_base_mode_show_type,
                                 is_cart_nav: true,
                                 data_base: data_base,
                                 info: data.info || null,
@@ -534,7 +551,7 @@
                                 // 获取数据、仅首次调用，获取列表接口
                                 if (this.is_first == 1) {
                                     // 是否基础模式
-                                    if(this.is_base_mode != 1 || is_base_mode_show_goods == 1) {
+                                    if(this.is_base_mode != 1 || is_base_mode_show_type != 0) {
                                         this.get_data_list();
                                     }
                                     // 非首次记录
@@ -997,6 +1014,13 @@
                         share_info: this.share_info
                     });
                 }
+            },
+
+            // 基础导航事件
+            nav_base_event(e) {
+                this.setData({
+                    nav_base_index: e.currentTarget.dataset.index,
+                });
             }
         },
     };

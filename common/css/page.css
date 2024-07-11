@@ -935,10 +935,10 @@ button[disabled].bg-grey {
 }
 .nav-active-line::before {
     content: '';
-    width: 12px;
-    height: 2px;
+    width: 24rpx;
+    height: 6rpx;
     background: transparent;
-    border-radius: 1px;
+    border-radius: 6rpx;
     position: absolute;
     left: 50%;
     bottom: 0;
