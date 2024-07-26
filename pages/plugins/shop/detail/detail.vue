@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(shop || null) != null" class="pr">
             <!-- 搜索 -->
-            <view class="flex-row jc-sb align-c padding-main bg-white pr oh" :class="is_shop_search_all_search_button == 1 ? '' : 'header-shop-whole-search'">
+            <view class="flex-row jc-sb align-c padding-main bg-white pr oh">
                 <view class="flex-1 wh-auto">
                     <view class="search flex-row jc-sb align-c round border-color-main bg-white">
                         <view class="flex-row align-c flex-1 wh-auto padding-left-main">
@@ -14,8 +14,8 @@
                         </button>
                     </view>
                 </view>
-                <view class="search-btn padding-left-main flex-row align-c">
-                    <button v-if="is_shop_search_all_search_button == 1" class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.design.ay7m42')}}</button>
+                <view v-if="is_shop_search_all_search_button == 1" class="search-btn padding-left-main flex-row align-c">
+                    <button class="bg-main-pair br-main-pair cr-white round text-size-xs" type="default" size="mini" hover-class="none" @tap="search_button_event" data-value="/pages/goods-search/goods-search?">{{$t('design.design.ay7m42')}}</button>
                 </view>
             </view>
             <!-- 顶部 -->
