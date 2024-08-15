@@ -102,6 +102,7 @@
 
         <!-- 支付组件 -->
         <component-payment
+            ref="payment"
             :propCurrencySymbol="payment_currency_symbol"
             :propPayUrl="pay_url"
             :propQrcodeUrl="qrcode_url"
@@ -336,18 +337,14 @@
                                     data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
 
-                                // 判断url是否含有从其他页面携带过来的参数
-                                if ((this.params.order_ids || null) !== null) {
-                                    var order_ids_arr = this.params.order_ids.split(',');
-                                    var temp_data_list = this.data_list;
-                                    for (var i in temp_data_list) {
-                                        if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
-                                            temp_data_list[i]['is_under_line'] = 1;
-                                        }
+                                // 下订单支付处理
+                                var key = app.globalData.data.cache_page_pay_key;
+                                var pay_data = uni.getStorageSync(key) || null;
+                                if (pay_data != null && (pay_data.order_ids || null) != null && (pay_data.payment_id || null) != null) {
+                                    uni.removeStorageSync(key);
+                                    if ((this.$refs.payment || null) != null) {
+                                        this.$refs.payment.pay_handle(pay_data.order_ids, pay_data.payment_id, this.original_payment_list);
                                     }
-                                    this.setData({
-                                        data_list: temp_data_list,
-                                    });
                                 }
                             } else {
                                 this.setData({
@@ -426,13 +423,12 @@
 
             // 支付成功数据设置
             // 订单完成回调
-            order_item_pay_success_handle(data, index, order_ids) {
-                var order_ids_arr = data.order_id.split(',');
+            order_item_pay_success_handle(data) {
+                var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
-
-                // 数据设置
+                console.log(order_ids_arr)
                 for (var i in temp_data_list) {
-                    if (order_ids_arr.indexOf(temp_data_list[i]['id']) != -1) {
+                    if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
                         temp_data_list[i]['operate_data']['is_pay'] = 0;
                         temp_data_list[i]['operate_data']['is_cancel'] = 0;
                         switch (parseInt(temp_data_list[i]['order_model'])) {

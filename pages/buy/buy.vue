@@ -889,10 +889,6 @@
                         },
                     });
                 } else {
-                    // 调用支付
-                    this.setData({
-                        to_appoint_page: this.to_appoint_page + '?order_ids=' + res.data.order_ids.join(','),
-                    });
                     this.$refs.payment.pay_handle(res.data.order_ids.join(','), res.data.payment_id, this.payment_list);
                 }
             },

@@ -1777,7 +1777,7 @@
                 url = this.page_url_protocol(url);
                 // #endif
                 // #ifdef H5
-                var url = window.location.href;
+                url = window.location.href;
                 // #endif
                 if (is_whole == false) {
                     var temp = url.split('?');
@@ -1813,7 +1813,7 @@
             },
 
             // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids, payment_id = 0) {
+            is_user_weixin_web_openid(order_ids, payment_id = 0, page = null) {
                 // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
                 if (this.is_weixin_env()) {
                     var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
@@ -1848,7 +1848,7 @@
                                 order_ids: typeof order_ids == 'array' ? order_ids.join(',') : order_ids,
                                 payment_id: payment_id,
                             });
-                            var page_url = this.get_page_url();
+                            var page_url = (page || null) == null ? this.get_page_url() : this.page_url_protocol(page);
                             page_url += page_url.indexOf('?') == -1 ? '?' : '&';
                             page_url += 'is_weixin_auth_web_openid=1';
                             var request_url = encodeURIComponent(base64.encode(page_url));

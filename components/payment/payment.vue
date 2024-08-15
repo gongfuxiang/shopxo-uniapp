@@ -299,7 +299,7 @@
                 if((payment_id || 0) != 0) {
                     // #ifdef H5
                     // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                    if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id)) {
+                    if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id, this.propToAppointPage)) {
                         return false;
                     }
                     // #endif
@@ -729,9 +729,11 @@
                 let back_data = {
                     data: data,
                     order_id: order_id,
+                    temp_pay_index: this.propTempPayIndex,
+                    payment_id: this.payment_id,
                     is_to_page: is_to_page,
                 };
-                this.$emit('pay-success', back_data, this.propTempPayIndex, Number(this.propPaymentId) == 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
+                this.$emit('pay-success', back_data);
                 if (is_to_page) {
                     this.to_success_page_event();
                 }
