@@ -696,7 +696,7 @@ button:before {
 }
 .bg-white-disabled,
 button[disabled].bg-white {
-    background-color: #fdfdfd !important;
+    background-color: #fff !important;
     color: #ccc !important;
 }
 .bg-green-disabled,

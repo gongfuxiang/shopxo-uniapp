@@ -215,7 +215,7 @@
                 if ((params.scene || null) != null) {
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
-                // 原始缓存是否存在邀请id、邀请使用最开始的用户id
+                // 如果当前没有邀请id、但是原始缓存有邀请id、则使用缓存邀请id
                 if ((params['referrer'] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
                     params['referrer'] = cache_params.referrer;
                 }
@@ -323,10 +323,12 @@
                 var user_location_params = (user_location || null) != null && (user_location.status || 0) == 1 ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
                 // 当前语言
                 var lang = this.get_language_value();
+                // 当前主题
+                var theme = this.get_theme_value();
 
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
             },
 
             /**
