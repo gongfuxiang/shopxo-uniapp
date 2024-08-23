@@ -1,13 +1,5 @@
-.avatar {
-    width: 35rpx;
-    height: 35rpx;
-}
-
 .scroll-box {
-    height: calc(100vh - 174rpx - var(--status-bar-height));
-    /* #ifdef H5 */
-    height: calc(100vh - 174rpx);
-    /* #endif */
+    height: calc(100vh - 40px);
 }
 
 .status .ask-status {

@@ -225,6 +225,9 @@ button:before {
 .pr {
     position: relative;
 }
+.ps {
+    position: sticky;
+}
 .z-i {
     z-index: 1 !important;
 }
