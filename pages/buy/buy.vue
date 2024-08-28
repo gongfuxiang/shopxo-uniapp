@@ -332,7 +332,7 @@
                     </view>
                 </view>
             </component-popup>
-            <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propTo-pageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
+            <component-payment ref="payment" :propIsRedirectTo="true" :propPayUrl="pay_url" :propQrcodeUrl="qrcode_url" :propToAppointPage="to_appoint_page" propPayDataKey="ids" :propPaymentList="payment_list" :propToPageBack="to_page_back" :propToFailPage="to_fail_page"></component-payment>
         </block>
     </view>
 </template>
@@ -407,7 +407,7 @@
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
-                // 前往页面携带的参数
+                // 前往支付页面携带的参数
                 to_page_back: {
                     title: this.$t('buy.buy.718tux'),
                     page: '/pages/user-order/user-order',

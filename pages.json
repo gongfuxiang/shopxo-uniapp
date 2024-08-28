@@ -1592,6 +1592,39 @@
             ]
         },
         {
+            "root": "pages/plugins/givegift",
+            "pages": [
+                {
+                    "path": "goods/goods",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "receive/receive",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "gift/gift",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "gift-detail/gift-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                }
+            ]
+        },
+        {
             "root": "pages/plugins/giftcard",
             "pages": [
                 {

@@ -1,0 +1,23 @@
+.goods-buy-number {
+    height: 70rpx;
+}
+.number-content {
+    background: #eee;
+    border: 1px solid #eee;
+}
+.number-content .number-submit {
+    width: 80rpx;
+    font-weight: bold;
+}
+.number-content input {
+    width: 50px;
+}
+.number-content .number-submit,
+.number-content input {
+    padding: 0;
+    height: 60rpx;
+    line-height: 60rpx;
+}
+.right-width .fr {
+    width: calc(100% - 190rpx);
+}

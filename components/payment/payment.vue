@@ -39,8 +39,10 @@
                         </view>
                     </scroll-view>
                 </view>
-                <view class="payment-sub">
-                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('payment.payment.25r53g')}}</button>
+                <view class="payment-submit">
+                    <view class="bottom-line-exclude">
+                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('payment.payment.25r53g')}}</button>
+                    </view>
                 </view>
             </view>
             <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{$t('payment.payment.058a46')}}</view>
@@ -759,13 +761,8 @@
                         code: '9000',
                     };
                     url_data = Object.assign({}, url_data, this.propToPageBack);
-                    if (this.propIsRedirectTo) {
-                        // 跳转支付页面
-                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))), true);
-                    } else {
-                        // 跳转支付页面
-                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))));
-                    }
+                    // 跳转支付页面
+                    app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))), this.propIsRedirectTo);
                 }
             },
             // 失败跳转
@@ -833,7 +830,7 @@
         width: 50rpx;
         height: 50rpx !important;
     }
-    .payment-sub {
-        padding: 86rpx 90rpx 24rpx 90rpx;
+    .payment-submit {
+        padding: 40rpx;
     }
 </style>

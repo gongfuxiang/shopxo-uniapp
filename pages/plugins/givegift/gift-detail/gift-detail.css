@@ -1,0 +1,10 @@
+/**
+ * 商品
+ */
+.goods-images {
+    width: 76rpx;
+    height: 76rpx;
+}
+.goods-title {
+    width: calc(100% - 90rpx);
+}

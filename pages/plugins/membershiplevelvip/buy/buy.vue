@@ -63,6 +63,7 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+        <!-- 支付组件 -->
         <component-payment
             :propPayUrl="pay_url"
             :propQrcodeUrl="qrcode_url"
@@ -117,7 +118,7 @@
         },
         components: {
             componentNoData,
-            componentPayment,
+            componentPayment
         },
         props: {},
         onLoad(params) {
@@ -281,16 +282,19 @@
                     },
                 });
             },
+
             // 打开url
             url_event(e) {
                 app.globalData.url_event(e);
             },
+
+            // 支付窗口关闭
             payment_popup_event_close() {
                 this.setData({
                     is_show_payment_popup: false,
                 });
-            },
-        },
+            }
+        }
     };
 </script>
 <style scoped>

@@ -7,16 +7,19 @@
                         <view class="title fw-b text-size margin-right-main">{{$t('cash-create.cash-create.36756z')}}</view>
                         <view class="flex-1 flex-width padding-right-main">
                             <view class="flex-row jc-sb align-c">
-                                <input name="keywords" :value="inputClearValue" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.transfer.t53ary')" placeholder-class="cr-grey-c" @input="input_account_event" />
+                                <view class="margin-right-sm pr top-xs" @tap="scan_event">
+                                    <iconfont name="icon-scan" size="28rpx" color="#999" propClass="lh-il"></iconfont>
+                                </view>
+                                <input name="keywords" :value="input_clear_value" class="text-size-md pr top-sm flex-1 flex-width" :placeholder="$t('transfer.transfer.t53ary')" placeholder-class="cr-grey-c" @input="input_account_event" />
                                 <text class="cr-main pr top-xs margin-left-sm" @tap="search_account_event">{{$t('common.confirm')}}</text>
                             </view>
-                            <view v-if="(receive_user || null) != null && inputClearValue" class="br-t-e padding-top-main margin-top-main flex-row align-c">
+                            <view v-if="(receive_user || null) != null && input_clear_value" class="br-t-e padding-top-main margin-top-main flex-row align-c">
                                 <image :src="receive_user.avatar" mode="widthFix" class="img margin-right-xs circle" />
-                                <text class="text-size-xs">{{ receive_user.username }}</text>
+                                <text class="text-size-xs">{{ receive_user.user_name_view }}</text>
                             </view>
                         </view>
                     </view>
-                    <view v-if="is_error_msg" class="error-msg text-size-xs padding-vertical-xs">{{ error_msg }}</view>
+                    <view v-if="is_error_msg" class="error-msg text-size-xs padding-vertical">{{ error_msg }}</view>
                     <view class="border-radius-main bg-white padding-main spacing-mb">
                         <view class="title fw-b text-size margin-bottom-xxxl padding-bottom-xl">{{$t('transfer.transfer.2q274j')}}</view>
                         <input name="money" type="number" class="text-size-xl tc cr-red" :placeholder="$t('transfer.transfer.g22y5v')" placeholder-class="cr-grey-c" />
@@ -51,7 +54,7 @@
                 error_msg: '',
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
-                inputClearValue: '',
+                input_clear_value: '',
             };
         },
         components: {
@@ -118,7 +121,7 @@
             // 账户输入事件
             input_account_event(e) {
                 this.setData({
-                    inputClearValue: e.detail.value,
+                    input_clear_value: e.detail.value,
                 });
             },
             // 用户查询
@@ -128,7 +131,7 @@
                         url: app.globalData.get_request_url('userquery', 'transfer', 'wallet'),
                         method: 'POST',
                         data: {
-                            keywords: this.inputClearValue,
+                            keywords: this.input_clear_value,
                         },
                         dataType: 'json',
                         success: (res) => {
@@ -156,6 +159,20 @@
                     });
                 }
             },
+
+            // 扫码
+            scan_event(e) {
+                var self = this;
+                uni.scanCode({
+                	success: function (res) {
+                		self.setData({
+                            input_clear_value: res.result
+                        });
+                        self.search_account_event();
+                	}
+                });
+            },
+
             // 转账表单提交
             form_submit(e) {
                 if (this.is_user_login) {

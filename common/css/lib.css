@@ -539,6 +539,41 @@
 }
 
 /**
+ * 高度
+ */
+.ht-auto {
+    height: auto;
+}
+.ht-0 {
+    height: 0 !important;
+}
+.ht-xs {
+    height: 24rpx;
+}
+.ht-sm {
+    height: 26rpx;
+}
+.ht-md {
+    height: 28rpx;
+}
+.ht,
+.ht-default {
+    height: 32rpx;
+}
+.ht-lg {
+    height: 36rpx;
+}
+.ht-xl {
+    height: 48rpx;
+}
+.ht-xxl {
+    height: 64rpx;
+}
+.ht-xxxl {
+    height: 84rpx;
+}
+
+/**
  * 行间距
  */
 .lh-il {

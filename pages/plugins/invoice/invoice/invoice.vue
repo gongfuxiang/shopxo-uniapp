@@ -136,7 +136,7 @@
                     this.get_data_base();
                 }
             },
-            // 获取公告数据
+            // 获取公共数据
             get_data_base() {
                 uni.request({
                     url: app.globalData.get_request_url('center', 'user', 'invoice'),
