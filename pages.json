@@ -1602,13 +1602,6 @@
                     }
                 },
                 {
-                    "path": "receive/receive",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
-                    }
-                },
-                {
                     "path": "gift/gift",
                     "style": {
                         "enablePullDownRefresh": true,
@@ -1617,6 +1610,20 @@
                 },
                 {
                     "path": "gift-detail/gift-detail",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "code/code",
+                    "style": {
+                        "enablePullDownRefresh": true,
+                        "navigationBarTitleText": ""
+                    }
+                },
+                {
+                    "path": "receive/receive",
                     "style": {
                         "enablePullDownRefresh": true,
                         "navigationBarTitleText": ""

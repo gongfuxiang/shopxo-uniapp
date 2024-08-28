@@ -7,7 +7,7 @@
         <!-- 导航 -->
         <view v-if="nav_status_list.length > 0" class="nav-base bg-white flex-row jc-sa align-c">
             <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                <view :class="'item tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
         <!-- 列表 -->

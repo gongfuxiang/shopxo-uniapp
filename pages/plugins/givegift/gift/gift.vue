@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
         <!-- 导航 -->
-        <view class="nav-base bg-white">
+        <view class="nav-base bg-white flex-row jc-sa align-c">
             <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item fl tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                <view :class="'item fl tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
         <!-- 列表 -->
@@ -27,6 +27,10 @@
                             <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="pay_event" :data-value="item.id" :data-price="item.total_price" :data-index="index" :data-payment="item.payment_id" hover-class="none">{{$t('order.order.1i873j')}}</button>
                             <button class="round bg-white cr-yellow br-yellow" type="default" size="mini" @tap="cancel_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.cancel')}}</button>
                         </block>
+                        <block v-if="item.status == 1">
+                            <button class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/givegift/code/code?oid='+item.id" hover-class="none">{{$t('common.gift')}}</button>
+                            <button class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/givegift/receive/receive?key='+item.key" hover-class="none">{{$t('common.link')}}</button>
+                        </block>
                         <button v-if="item.status == 2" class="round bg-white cr-red br-red" type="default" size="mini" @tap="delete_event" :data-value="item.id" :data-index="index" hover-class="none">{{$t('common.del')}}</button>
                     </view>
                 </view>
@@ -49,7 +53,25 @@
                 </view>
                 <view class="padding-bottom-main">
                     <view v-if="(edit_data || null) != null">
-                        {{edit_data.order_no}}
+                        <form @submit="form_submit" class="form-container">
+                            <view class="border-radius-main spacing-mb oh">
+                                <view class="form-gorup">
+                                    <view class="flex-row jc-sb align-c padding-top-sm">
+                                        <view class="form-gorup-title">留言提示</view>
+                                        <input type="text" name="message_tips" :value="edit_data.message_tips || ''" class="br-b-f5 tr message-tips" placeholder-class="cr-grey-c" placeholder="留言提示,格式最多200个字符" />
+                                    </view>
+                                </view>
+                                <view class="form-gorup">
+                                    <view class="flex-row jc-sb align-c padding-bottom-sm">
+                                        <view class="form-gorup-title">不限领取</view>
+                                        <switch name="is_no_limit_receive" :checked="edit_data.is_no_limit_receive == 1" />
+                                    </view>
+                                </view>
+                            </view>
+                            <view class="padding-main">
+                                <button class="bg-main br-main cr-white round text-size" type="default" form-type="submit" hover-class="none" :disabled="form_submit_disabled_status">{{$t('common.save')}}</button>
+                            </view>
+                        </form>
                     </view>
                     <block v-else>
                         <component-no-data propStatus="0"></component-no-data>
@@ -99,6 +121,8 @@
                 params: null,
                 edit_data: null,
                 popup_edit_status: false,
+                edit_item_index: 0,
+                form_submit_disabled_status: false,
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
@@ -496,14 +520,68 @@
                 var index = e.currentTarget.dataset.index || 0;
                 this.setData({
                     popup_edit_status: true,
-                    edit_data: this.data_list[index]
+                    edit_data: this.data_list[index],
+                    edit_item_index: index
                 });
+                
+                console.log(this.edit_data)
             },
 
             // 编辑弹层关闭
             popup_edit_close_event(e) {
                 this.setData({
                     popup_edit_status: false,
+                });
+            },
+
+            // 数据提交
+            form_submit(e) {
+                var form_data = e.detail.value;
+                form_data['is_no_limit_receive'] = form_data.is_no_limit_receive == true ? 1 : 0;
+                form_data['id'] = this.edit_data.id;
+                this.setData({
+                    form_submit_disabled_status: true,
+                });
+                uni.showLoading({
+                    title: this.$t('common.processing_in_text'),
+                });
+                uni.request({
+                    url: app.globalData.get_request_url('save', 'gift', 'givegift'),
+                    method: 'POST',
+                    data: form_data,
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            var temp_data = this.data_list;
+                            var index = this.edit_item_index;
+                            temp_data[index]['is_no_limit_receive_name'] = form_data.is_no_limit_receive == 1 ? this.$t('common.yes_text') : this.$t('common.no_text');
+                            temp_data[index]['is_no_limit_receive'] = form_data.is_no_limit_receive;
+                            temp_data[index]['message_tips'] = form_data.message_tips;
+                            this.setData({
+                                data_list: temp_data,
+                                form_submit_disabled_status: false,
+                                popup_edit_status: false
+                            });
+                            app.globalData.showToast(res.data.msg, 'success');
+                        } else {
+                            this.setData({
+                                form_submit_disabled_status: false,
+                            });
+                            if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
+                                app.globalData.showToast(res.data.msg);
+                            } else {
+                                app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
+                            }
+                        }
+                    },
+                    fail: () => {
+                        this.setData({
+                            form_submit_disabled_status: false,
+                        });
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
 

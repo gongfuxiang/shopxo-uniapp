@@ -278,7 +278,7 @@
                             this.setData({
                                 form_submit_disabled_status: false,
                             });
-                            if (app.globalData.is_login_check(res.data)) {
+                            if (app.globalData.is_login_check(res.data, this, 'form_submit', e)) {
                                 app.globalData.showToast(res.data.msg);
                             } else {
                                 app.globalData.showToast(this.$t('common.sub_error_retry_tips'));
