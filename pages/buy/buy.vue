@@ -338,12 +338,12 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import base64 from '@/common/js/lib/base64.js';
     import componentPopup from '@/components/popup/popup';
-    import componentNoData from '../../components/no-data/no-data';
-    import componentTimeSelect from '../../components/time-select/time-select';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentTimeSelect from '@/components/time-select/time-select';
     import componentPayment from '@/components/payment/payment';
-    import componentBuyOrdergoodsform from '../../components/buy-ordergoodsform/buy-ordergoodsform';
+    import componentBuyOrdergoodsform from '@/components/buy-ordergoodsform/buy-ordergoodsform';
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {

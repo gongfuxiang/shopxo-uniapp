@@ -25,10 +25,10 @@
 </template>
 <script>
     const app = getApp();
-    import componentLayout from "../../components/layout/layout";
-    import componentSearch from "../../components/search/search";
-    import componentNoData from "../../components/no-data/no-data";
-    import componentBottomLine from "../../components/bottom-line/bottom-line";
+    import componentLayout from "@/components/layout/layout";
+    import componentSearch from "@/components/search/search";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
     export default {
         data() {
             return {

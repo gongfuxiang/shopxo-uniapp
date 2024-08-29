@@ -16,7 +16,7 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import base64 from '@/common/js/lib/base64.js';
 
     export default {
         data() {

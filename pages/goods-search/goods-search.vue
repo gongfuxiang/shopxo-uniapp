@@ -166,13 +166,13 @@
 </template>
 <script>
     const app = getApp();
-    import componentQuickNav from "../../components/quick-nav/quick-nav";
+    import componentQuickNav from "@/components/quick-nav/quick-nav";
     import componentPopup from "@/components/popup/popup";
-    import componentNoData from "../../components/no-data/no-data";
-    import componentBottomLine from "../../components/bottom-line/bottom-line";
-    import componentGoodsList from "../../components/goods-list/goods-list";
-    import componentSearch from "../../components/search/search";
-    import componentBadge from "../../components/badge/badge";
+    import componentNoData from "@/components/no-data/no-data";
+    import componentBottomLine from "@/components/bottom-line/bottom-line";
+    import componentGoodsList from "@/components/goods-list/goods-list";
+    import componentSearch from "@/components/search/search";
+    import componentBadge from "@/components/badge/badge";
 
     var common_static_url = app.globalData.get_static_url('common');
     export default {

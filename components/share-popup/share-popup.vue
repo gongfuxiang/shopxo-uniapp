@@ -66,7 +66,7 @@
     const app = getApp();
     var common_static_url = app.globalData.get_static_url('common');
     import componentPopup from '@/components/popup/popup';
-    import componentUserBase from '../../components/user-base/user-base';
+    import componentUserBase from '@/components/user-base/user-base';
     export default {
         data() {
             return {

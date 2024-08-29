@@ -50,8 +50,8 @@
 
 <script>
     const app = getApp();
-    import componentNoData from '../../components/no-data/no-data';
-    import componentBottomLine from '../../components/bottom-line/bottom-line';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     const theme_color = app.globalData.get_theme_color();
     const theme_color_light = app.globalData.get_theme_color(null, true);
 

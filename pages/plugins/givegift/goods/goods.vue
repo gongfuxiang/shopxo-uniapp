@@ -6,15 +6,20 @@
                 <view class="padding-main">
                     <view class="bg-white padding-main border-radius-main">
                         <view class="fw-b text-size multi-text lh-xl margin-bottom">{{goods.title}}</view>
-                        <view v-if="(goods.show_field_price_status || 0) == 1" class="margin-bottom-xs">
-                            <text class="price cr-price">{{goods.show_price_symbol}}</text>
-                            <text class="sales-price text-size-lg">{{goods.price}}</text>
-                            <text v-if="(goods.show_price_unit || null) != null" class="cr-grey text-size-xs">{{goods.show_price_unit}}</text>
-                        </view>
-                        <view v-if="(goods.show_field_original_price_status || 0) == 1" class="original-price">
-                            <text class="text-size-xs">{{goods.show_original_price_symbol}}</text>
-                            <text class="text-size">{{goods.original_price}}</text>
-                            <text v-if="(goods.show_original_price_unit || null) != null" class="text-size-xs">{{goods.show_original_price_unit}}</text>
+                        <view class="pr">
+                            <view v-if="(goods.show_field_price_status || 0) == 1" class="margin-bottom-xs">
+                                <text class="price cr-price">{{goods.show_price_symbol}}</text>
+                                <text class="sales-price text-size-lg">{{goods.price}}</text>
+                                <text v-if="(goods.show_price_unit || null) != null" class="cr-grey text-size-xs">{{goods.show_price_unit}}</text>
+                            </view>
+                            <view v-if="(goods.show_field_original_price_status || 0) == 1" class="original-price">
+                                <text class="text-size-xs">{{goods.show_original_price_symbol}}</text>
+                                <text class="text-size">{{goods.original_price}}</text>
+                                <text v-if="(goods.show_original_price_unit || null) != null" class="text-size-xs">{{goods.show_original_price_unit}}</text>
+                            </view>
+                            <view class="pa top-0 right-0" @tap="share_event">
+                                <iconfont name="icon-share-square" size="34rpx" color="#999"></iconfont>
+                            </view>
                         </view>
                         <view v-if="(goods.show_inventory_status || 0) == 1" class="inventory text-size-xs margin-top">
                             <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>
@@ -57,6 +62,9 @@
             <!-- 提示信息 -->
             <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
         </view>
+        <!-- 分享弹窗 -->
+        <component-share-popup ref="share"></component-share-popup>
+
         <!-- 支付组件 -->
         <component-payment
             :propPayUrl="pay_url"
@@ -81,6 +89,7 @@
     const app = getApp();
     import componentNoData from '@/components/no-data/no-data';
     import componentPayment from '@/components/payment/payment';
+    import componentSharePopup from '@/components/share-popup/share-popup';
     export default {
         data() {
             return {
@@ -111,12 +120,15 @@
                 to_fail_page: '/pages/plugins/givegift/gift/gift',
                 // 现金--跳转指定页面
                 to_appoint_page: '/pages/plugins/givegift/gift/gift',
+                // 自定义分享信息
+                share_info: {}
             };
         },
 
         components: {
             componentNoData,
-            componentPayment
+            componentPayment,
+            componentSharePopup
         },
 
         onLoad(params) {
@@ -175,6 +187,20 @@
                                 data_list_loding_status: 0,
                                 data_bottom_line_status: false,
                             });
+                            if (this.goods != null) {
+                                // 基础自定义分享
+                                this.setData({
+                                    share_info: {
+                                        title: this.goods.seo_title || this.goods.title,
+                                        desc: this.goods.seo_desc || this.goods.simple_desc,
+                                        path: '/pages/goods-detail/goods-detail',
+                                        query: 'id='+this.goods.id,
+                                        img: this.goods.images
+                                    },
+                                });
+                                // 标题
+                                uni.setNavigationBarTitle({ title: this.goods.title });
+                            }
                         } else {
                             this.setData({
                                 data_bottom_line_status: false,
@@ -301,6 +327,16 @@
                     is_show_payment_popup: false,
                     form_submit_disabled_status: false,
                 });
+            },
+
+            // 分享开启弹层
+            share_event(e) {
+                if ((this.$refs.share || null) != null) {
+                    this.$refs.share.init({
+                        status: true,
+                        share_info: this.share_info
+                    });
+                }
             }
         }
     };

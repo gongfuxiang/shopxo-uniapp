@@ -38,9 +38,9 @@
 </template>
 <script>
 const app = getApp();
-import componentNoData from "../../components/no-data/no-data";
-import componentBottomLine from "../../components/bottom-line/bottom-line";
-import componentGoodsComments from "../../components/goods-comments/goods-comments";
+import componentNoData from "@/components/no-data/no-data";
+import componentBottomLine from "@/components/bottom-line/bottom-line";
+import componentGoodsComments from "@/components/goods-comments/goods-comments";
 
 var static_url = app.globalData.get_static_url("home");
 export default {

@@ -241,8 +241,8 @@
 <script>
 const app = getApp();
 import componentPopup from "@/components/popup/popup";
-import componentNoData from "../../components/no-data/no-data";
-import componentBottomLine from "../../components/bottom-line/bottom-line";
+import componentNoData from "@/components/no-data/no-data";
+import componentBottomLine from "@/components/bottom-line/bottom-line";
 
 var common_static_url = app.globalData.get_static_url("common");
 export default {

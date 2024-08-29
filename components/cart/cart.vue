@@ -318,12 +318,12 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
-    import componentNoData from '../../components/no-data/no-data';
-    import componentGoodsList from '../../components/goods-list/goods-list';
-    import componentNavBack from '../../components/nav-back/nav-back';
-    import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
-    import componentBottomLine from '../../components/bottom-line/bottom-line';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
 
     var common_static_url = app.globalData.get_static_url('common');

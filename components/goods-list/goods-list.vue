@@ -178,9 +178,9 @@
 </template>
 <script>
     const app = getApp();
-    import componentBadge from '../../components/badge/badge';
-    import componentGoodsBuy from '../../components/goods-buy/goods-buy';
-    import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
+    import componentBadge from '@/components/badge/badge';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     export default {
         data() {
             return {
