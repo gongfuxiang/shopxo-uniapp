@@ -1609,13 +1609,6 @@
                     }
                 },
                 {
-                    "path": "gift-detail/gift-detail",
-                    "style": {
-                        "enablePullDownRefresh": true,
-                        "navigationBarTitleText": ""
-                    }
-                },
-                {
                     "path": "code/code",
                     "style": {
                         "enablePullDownRefresh": true,

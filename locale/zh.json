@@ -19,6 +19,7 @@
         "gift": "礼物",
 		"more": "更多",
 		"more_null": "更 多",
+        "view_more": "查看更多",
 		"search": "搜索",
 		"num": "数量",
 		"order": "订单",
@@ -113,7 +114,7 @@
 		"plugins-membershiplevelvip-order-detail": "订单详情",
 		"plugins-membershiplevelvip-profit": "收益明细",
 		"plugins-membershiplevelvip-profit-detail": "收益详情",
-		"plugins-membershiplevelvip-poster": "推广返利",
+		"plugins-membershiplevelvip-poster": "推广奖励",
 		"plugins-membershiplevelvip-team": "我的团队",
 		"plugins-membershiplevelvip-member-code": "会员码",
 		"plugins-distribution-user": "我的分销",
@@ -126,7 +127,7 @@
 		"plugins-distribution-recommend-list": "我的推荐宝",
 		"plugins-distribution-recommend-detail": "推荐宝详情",
 		"plugins-distribution-recommend-form": "推荐宝添加/编辑",
-		"plugins-distribution-poster": "推广返利",
+		"plugins-distribution-poster": "推广奖励",
 		"plugins-distribution-extraction": "取货点",
 		"plugins-distribution-extraction-apply": "取货点信息",
 		"plugins-distribution-extraction-order": "取货订单",
@@ -724,7 +725,6 @@
 			"rw12i7": "答",
 			"278qr1": "查看全部",
 			"8y3cc7": "个回答",
-			"h3t0f1": "查看更多",
 			"aem3e6": "收起回答",
 			"nr77jf": "暂无货源"
 		}

@@ -14,12 +14,12 @@
                         <text class="cr-base">{{ item.add_time }}</text>
                         <text class="fr cr-main">{{ item.status_name }}</text>
                     </view>
-                    <view :data-value="'/pages/plugins/givegift/gift-detail/gift-detail?id=' + item.id" @tap="url_event" class="margin-top">
-                        <view class="oh">
+                    <view  class="margin-top">
+                        <view class="oh" :data-value="item.goods.goods_url" @tap="url_event">
                             <image :src="item.goods.images" mode="aspectFill" class="radius goods-images fl"></image>
                             <view class="goods-title multi-text fr">{{item.goods.title}}</view>
                         </view>
-                        <component-panel-content :propData="item" :propDataField="content_field_list" :propIsTerse="true"></component-panel-content>
+                        <component-panel-content :propData="item" :propDataField="content_field_list" propIsItemShowMax="6" :propIsTerse="true"></component-panel-content>
                     </view>
                     <view class="item-operation tr br-t padding-top-main margin-top-main">
                         <button class="round bg-white cr-base br-grey" type="default" size="mini" @tap="popup_edit_open_event" :data-index="index" hover-class="none">{{$t('common.edit')}}</button>
@@ -123,6 +123,9 @@
                 popup_edit_status: false,
                 edit_item_index: 0,
                 form_submit_disabled_status: false,
+                nav_status_list: [],
+                nav_status_index: 0,
+                content_field_list: [],
                 // 支付弹窗参数
                 pay_url: '',
                 qrcode_url: '',
@@ -133,9 +136,6 @@
                 default_payment_id: 0,
                 is_show_payment_popup: false,
                 pay_price: 0,
-                nav_status_list: [],
-                nav_status_index: 0,
-                content_field_list: [],
             };
         },
         components: {

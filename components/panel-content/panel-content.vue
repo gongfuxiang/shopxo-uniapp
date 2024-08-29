@@ -2,15 +2,24 @@
     <view :class="theme_view">
         <!-- 简洁的数据，一般列表展示使用 -->
         <view v-if="propIsTerse" class="content margin-top cp">
-            <block v-if="propData != null && propDataField.length > 0">
-                <view v-for="(item, index) in propDataField" :key="index">
-                    <view class="single-text margin-top-xs">
+            <block v-if="data != null && data_field.length > 0">
+                <view v-for="(item, index) in data_field" :key="index">
+                    <view v-if="(item.is_hide || 0) == 0 " class="single-text margin-top-xs">
                         <text class="cr-grey margin-right-xl">{{ item.name }}</text>
-                        <text class="cr-base">{{ propData[item.field] }}</text>
-                        <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="propData[item.field]" @tap.stop="text_event_handle">
+                        <text class="cr-base">
+                            <block v-if="item.type == 'images'">
+                                <image :src="data[item.field]" mode="aspectFit" class="radius panel-item-images"></image>
+                            </block>
+                            <text v-else>{{ data[item.field] }}</text>
+                        </text>
+                        <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
                             <iconfont name="icon-copy" size="28rpx" class="cr-grey"></iconfont>
                         </view>
                     </view>
+                </view>
+                <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
+                    <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
+                    <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                 </view>
             </block>
             <slot></slot>
@@ -20,15 +29,24 @@
             <view class="panel-item padding-main border-radius-main bg-white spacing-mb">
                 <view v-if="(propTitle || null) != null" class="br-b padding-bottom-main fw-b text-size">{{propTitle}}</view>
                 <view class="panel-content oh">
-                    <block v-if="propData != null && propDataField.length > 0">
-                        <view v-for="(item, index) in propDataField" :key="index" class="item br-b-dashed oh padding-vertical-main">
-                            <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
-                            <view class="content fl br-l padding-left-main">
-                                <text>{{ propData[item.field] }}</text>
-                                <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="propData[item.field]" @tap.stop="text_event_handle">
-                                    <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
+                    <block v-if="data != null && data_field.length > 0">
+                        <view v-for="(item, index) in data_field" :key="index">
+                            <view v-if="(item.is_hide || 0) == 0 " class="item br-b-dashed oh padding-vertical-main">
+                                <view class="title fl padding-right-main cr-grey">{{ item.name }}</view>
+                                <view class="content fl br-l padding-left-main">
+                                    <block v-if="item.type == 'images'">
+                                        <image :src="data[item.field]" mode="aspectFit" class="panel-item-images"></image>
+                                    </block>
+                                    <text v-else>{{ data[item.field] }}</text>
+                                    <view v-if="(item.is_copy || 0) == 1" class="dis-inline-block margin-left" data-event="copy" :data-value="data[item.field]" @tap.stop="text_event_handle">
+                                        <iconfont name="icon-copy" size="28rpx" class="cr-grey lh-il"></iconfont>
+                                    </view>
                                 </view>
                             </view>
+                        </view>
+                        <view v-if="propIsItemShowMax > 0 && propIsItemShowMax < data_field.length" @tap="item_more_event" class="margin-top-sm tc">
+                            <text class="cr-grey-c margin-right-sm">{{$t('common.view_more')}}</text>
+                            <iconfont :name="'icon-arrow-'+(more_status ? 'top' : 'bottom')" size="28rpx" color="#ccc"></iconfont>
                         </view>
                     </block>
                     <slot></slot>
@@ -44,6 +62,9 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                data: null,
+                data_field: [],
+                more_status: false
             };
         },
         components: {
@@ -65,6 +86,11 @@
                 type: Array,
                 default: [],
             },
+            // 数据项最大展示数量（0则显示全部）
+            propIsItemShowMax: {
+                type: Number,
+                default: 0,
+            },
             // 无数据提示状态
             propNoDataStatus: {
                 type: [Number, String],
@@ -81,12 +107,55 @@
                 default: false,
             }
         },
+        // 属性值改变监听
+        watch: {
+            // 数据改变
+        	propData(value, old_value) {
+                this.data = this.value;
+        	},
+
+            // 字段改变
+            propDataField(value, old_value) {
+                this.data_field = this.value;
+            }
+        },
+        // 页面被展示
+        created: function(e) {        
+            this.setData({
+                data: this.propData
+            });
+            this.data_field_handle(this.propDataField);
+        },
         methods: {
+            // 数据字段处理
+            data_field_handle(data) {
+                var temp_data = data;
+                for(var i in temp_data) {
+                    temp_data[i]['is_hide'] = (temp_data[i]['is_hide'] || 0) == 0 ? ((i >= this.propIsItemShowMax && this.propIsItemShowMax > 0) ? 1 : 0) : 0;
+                }
+                this.setData({
+                    data_field: temp_data
+                });
+            },
+
             // 文本事件
             text_event_handle(e) {
                 app.globalData.text_event_handle(e);
+            },
+
+            // 数据项更多事件
+            item_more_event(e) {
+                this.data_field_handle(this.data_field);
+                this.setData({
+                    more_status: !this.more_status
+                });
             }
         }
     };
 </script>
-<style></style>
+<style scoped>
+    .panel-item-images {
+        width: 40rpx;
+        height: 40rpx;
+    }
+</style>

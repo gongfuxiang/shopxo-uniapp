@@ -298,7 +298,7 @@
                         </block>
                         <view class="padding-main tc">
                             <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
-                                <text class="cr-grey text-size-xs va-m">{{ $t('goods-list.goods-list.h3t0f1') }}</text>
+                                <text class="cr-grey text-size-xs va-m">{{ $t('common.view_more') }}</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
                                     <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>

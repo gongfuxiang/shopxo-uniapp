@@ -19,6 +19,7 @@
         "gift": "Gift",
 		"more": "More",
 		"more_null": "",
+        "view_more": "View more",
 		"search": "Search",
 		"num": "quantity",
 		"order": "order form",
@@ -111,7 +112,7 @@
 		"plugins-membershiplevelvip-order-detail": "Order details",
 		"plugins-membershiplevelvip-profit": "Revenue details",
 		"plugins-membershiplevelvip-profit-detail": "Revenue details",
-		"plugins-membershiplevelvip-poster": "Promotion rebate",
+		"plugins-membershiplevelvip-poster": "Promotion rewards",
 		"plugins-membershiplevelvip-team": "My team",
 		"plugins-membershiplevelvip-member-code": "Membership code",
 		"plugins-distribution-user": "My Distribution",
@@ -124,7 +125,7 @@
 		"plugins-distribution-recommend-list": "My Recommended Treasure",
 		"plugins-distribution-recommend-detail": "Recommended Treasure Details",
 		"plugins-distribution-recommend-form": "Recommended Treasure Add/Edit",
-		"plugins-distribution-poster": "Promotion rebate",
+		"plugins-distribution-poster": "Promotion rewards",
 		"plugins-distribution-extraction": "Pickup point",
 		"plugins-distribution-extraction-apply": "Pickup point information",
 		"plugins-distribution-extraction-order": "Pickup order",
@@ -734,7 +735,6 @@
 			"rw12i7": "answer",
 			"278qr1": "View All",
 			"8y3cc7": "Answers",
-			"h3t0f1": "View more",
 			"aem3e6": "Put away the answer",
 			"nr77jf": "There is currently no source of goods available"
 		}
