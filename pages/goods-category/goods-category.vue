@@ -158,7 +158,9 @@
                                                                     <view v-if="(plugins_label_data.base.is_user_goods_label_icon || 0) == 0" class="round cr-white bg-main text-size-xs fl" :style="((lv.bg_color || null) != null ? 'background-color:' + lv.bg_color + ' !important;' : '') + ((lv.text_color || null) != null ? 'color:' + lv.text_color + ' !important;' : '')">
                                                                         {{ lv.name }}
                                                                     </view>
-                                                                    <image v-else class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                                    <block v-else>
+                                                                        <image v-if="(lv.icon || null) != null" class="dis-block" :src="lv.icon" mode="scaleToFill"></image>
+                                                                    </block>
                                                                 </view>
                                                             </block>
                                                         </view>

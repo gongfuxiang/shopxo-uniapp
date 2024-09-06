@@ -65,7 +65,7 @@
                 </view>
 
                 <!-- 轮播 -->
-                <view class="banner-content padding-horizontal-main" v-if="banner_list.length > 0">
+                <view class="banner-content padding-horizontal-main margin-top-xs" v-if="banner_list.length > 0">
                     <component-banner :propData="banner_list" @changeBanner="change_banner"></component-banner>
                 </view>
                 <!-- 导航 -->
@@ -350,10 +350,10 @@
                 top_content_search_bg_color: '',
                 top_content_search_content_style: '',
                 // #ifdef MP
-                top_content_style: 'padding-top:' + (bar_height + 6) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                top_content_style: 'padding-top:' + (bar_height + 10) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 14) + 'px;',
                 // #endif
                 // #ifdef APP
                 top_content_style: 'padding-top:' + (bar_height) + 'px;',

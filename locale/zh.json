@@ -225,7 +225,11 @@
 		"plugins-coin-collection": "收款",
         "plugins-antifakecode-index": "正品查询",
         "plugins-giftcard-index": "我的礼品卡",
-        "plugins-giftcard-form": "礼品卡兑换"
+        "plugins-giftcard-form": "礼品卡兑换",
+        "plugins-givegift-goods": "购买礼品",
+        "plugins-givegift-receive": "礼品领取",
+        "plugins-givegift-gift": "我的送礼",
+        "plugins-givegift-code": "礼品链接"
 	},
 	"login": {
 		"login": {
