@@ -3,7 +3,7 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
-                diy
+                <componentDiy :value="data_list"></componentDiy>
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
@@ -310,6 +310,7 @@
     import componentBindingList from '@/components/binding-list/binding-list';
     import componentMagicList from '@/components/magic-list/magic-list';
     import componentAppAdmin from '@/components/app-admin/app-admin';
+    import componentDiy from '@/components/diy/diy';
 
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0, true));
@@ -422,7 +423,8 @@
             componentUserBase,
             componentBindingList,
             componentMagicList,
-            componentAppAdmin
+            componentAppAdmin,
+            componentDiy
         },
         props: {},
 
