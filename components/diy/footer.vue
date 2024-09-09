@@ -5,10 +5,10 @@
                 <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" @mouseenter="is_hover = index" @mouseleave="is_hover = 0">
                     <view v-if="nav_style !== 2" class="img re">
                         <view class="img-item abs radius-xs animate-linear w" :class="is_hover != index ? 'active' : ''">
-                            <image-empty v-model="item.img[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty>
+                            <!-- <image-empty v-model="item.img[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty> -->
                         </view>
                         <view class="img-item abs radius-xs animate-linear w" :class="is_hover == index ? 'active' : ''">
-                            <image-empty v-model="item.img_checked[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty>
+                            <!-- <image-empty v-model="item.img_checked[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty> -->
                         </view>
                     </view>
                     <span v-if="nav_style !== 1" class="animate-linear size-12 re z-i" :style="is_hover == index ? text_color_checked : default_text_color">{{ item.name }}</span>
@@ -35,15 +35,16 @@
                 nav_style: 0,
                 default_text_color: '',
                 text_color_checked: '',
+                is_hover: 0,
             };
         },
         mounted() {
-            init();
+            this.init();
         },
         methods: {
             init() {
-                const new_content = value.content || {};
-                const new_style = value.style || {};
+                const new_content = this.value.content || {};
+                const new_style = this.value.style || {};
                 this.nav_content = new_content.nav_content || [];
                 this.nav_style = new_content.nav_style || 0;
                 this.default_text_color = 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)';
@@ -56,7 +57,7 @@
                 } else {
                     footer_height = 70;
                 }
-                footer_nav_counter_store.padding_footer_computer(footer_height);
+                // footer_nav_counter_store.padding_footer_computer(footer_height);
             },
         },
     };

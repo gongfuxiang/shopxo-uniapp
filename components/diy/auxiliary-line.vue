@@ -22,7 +22,7 @@
             };
         },
         mounted() {
-            init();
+            this.init();
         },
         methods: {
             init() {
