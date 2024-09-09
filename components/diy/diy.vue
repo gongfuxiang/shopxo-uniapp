@@ -43,16 +43,14 @@
             };
         },
 
-                computed: {
-          diy_content_style(){
-              return {
-                  paddingBottom: this.padding_footer_computer
-              }
-          }
-                },
+        computed: {
+            diy_content_style() {
+                return `padding-bottom:${this.padding_footer_computer}rpx`;
+            },
+        },
         methods: {
             footer_height_computer(number) {
-                this.padding_footer_computer = number * 2 + 'rpx';
+                this.padding_footer_computer = number * 2;
             },
         },
     };
