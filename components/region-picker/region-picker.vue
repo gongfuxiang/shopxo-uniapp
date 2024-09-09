@@ -49,15 +49,15 @@ export default {
             default: false,
         },
         propProvinceId: {
-            type: String,
+            type: [String,Number],
             default: "",
         },
         propCityId: {
-            type: String,
+            type: [String,Number],
             default: "",
         },
         propCountyId: {
-            type: String,
+            type: [String,Number],
             default: "",
         },
     },

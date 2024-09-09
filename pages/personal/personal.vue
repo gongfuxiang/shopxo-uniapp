@@ -67,7 +67,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
 
     export default {
         data() {
@@ -119,7 +119,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('index', 'personal'),
                     method: 'POST',
-                    data: {},
+                    data: {lang_can_key: 'gender_list'},
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {

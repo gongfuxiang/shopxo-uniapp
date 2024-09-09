@@ -17,10 +17,6 @@
 /**
  * 底部按钮 
  */
-.btn-bottom {
-    padding: 42rpx 46rpx;
-}
-
 .btn-bottom button {
     height: 88rpx;
     line-height: 88rpx;

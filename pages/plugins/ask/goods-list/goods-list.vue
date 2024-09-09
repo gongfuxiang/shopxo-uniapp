@@ -38,7 +38,7 @@
                     </block>
                     <view v-if="item.comments_count > 0" class="more flex-row jc-e align-c br-t-f9 padding-top-main">
                         <view v-if="(item.hide_more || false) === false && ((item.hide_comments_list_num === 0 && !item.bool_more) || (item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0))" class="cr-red text-size-xs" @tap="open_more(item.id, index)">
-                            <text v-if="item.hide_comments_list_num === 0 && !item.bool_more">{{$t('goods-list.goods-list.h3t0f1')}}</text>
+                            <text v-if="item.hide_comments_list_num === 0 && !item.bool_more">{{$t('common.view_more')}}</text>
                             <text v-if="item.hide_comments_list_num == undefined || item.hide_comments_list_num > 0">{{$t('goods-list.goods-list.278qr1')}}{{ item.hide_comments_list_num || item.comments_count }}{{$t('goods-list.goods-list.8y3cc7')}}</text>
                             <iconfont :name="item.bool_more ? 'icon-arrow-bottom' : 'icon-arrow-top'" size="24rpx" propClass="pr top-xs"></iconfont>
                         </view>

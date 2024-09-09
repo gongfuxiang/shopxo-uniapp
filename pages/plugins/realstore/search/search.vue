@@ -27,7 +27,7 @@
             <!-- 列表 -->
             <scroll-view :scroll-y="true" class="scroll-box scroll-box-ece-nav" @scrolltolower="scroll_lower" lower-threshold="60">
                 <view v-if="(data_list || null) != null && data_list.length > 0" class="padding-top-main padding-horizontal-main">
-                    <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
+                    <component-realstore-list :propData="{data: data_list}" :propRealstoreDetailQuery="realstore_detail_query" :propFavorUser="favor_user"></component-realstore-list>
                 </view>
                 <view v-else>
                     <!-- 提示信息 -->
@@ -65,6 +65,7 @@ export default {
             search_keywords_value: "",
             nav_active_value: 0,
             favor_user: [],
+            realstore_detail_query: '',
             // 用户位置信息
             user_location: {},
             // 自定义分享信息
@@ -89,6 +90,7 @@ export default {
             params: params,
             search_keywords_value: params.keywords || "",
             nav_active_value: params.category_id || 0,
+            realstore_detail_query: (params.goods_id || null) == null ? '' : '&source_goods_id='+params.goods_id
         });
 
         // 数据加载
@@ -153,7 +155,7 @@ export default {
                                     title: this.search_keywords_value || this.data_base.seo_title || this.data_base.application_name,
                                     desc: this.data_base.seo_desc,
                                     path: "/pages/plugins/realstore/search/search",
-                                    query: "category_id=" + this.nav_active_value + "&keywords=" + this.search_keywords_value,
+                                    query: "category_id=" + this.nav_active_value + "&keywords=" + this.search_keywords_value+"&goods_id="+(this.params.goods_id || 0),
                                 },
                             });
                         }
@@ -220,6 +222,7 @@ export default {
                     page: this.data_page,
                     keywords: this.search_keywords_value,
                     category_id: this.nav_active_value || 0,
+                    goods_id: this.params.goods_id || 0,
                     lng: lng,
                     lat: lat,
                 },

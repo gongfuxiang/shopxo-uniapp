@@ -32,13 +32,15 @@ page {
 .form-content .verify input {
     height: 50px;
     line-height: 50px;
+}
+.form-content .form-item,
+.form-content .code input,
+.form-content .verify input {
     padding: 0 36rpx;
+    box-sizing: border-box;
 }
 .form-content .form-item ::v-deep .input-placeholder,
-.form-content .form-item ::v-deep .uni-input-input {
-    padding: 0 36rpx;
-    font-size: 30rpx;
-}
+.form-content .form-item ::v-deep .uni-input-input,
 .form-content .form-item ::v-deep .input-placeholder,
 .form-content .code input ::v-deep .input-placeholder,
 .form-content .verify input ::v-deep .input-placeholder {

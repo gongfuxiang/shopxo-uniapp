@@ -17,7 +17,7 @@
                                                 </block>
                                             </view>
                                         </view>
-                                        <view :class="'text-size-xs margin-top-xs cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'grey-9')">{{ items.describe }}</view>
+                                        <view :class="'single-text text-size-xs margin-top-xs cr-'+(((item.is_text_white || 0) == 1) ? 'white' : 'grey-9')">{{ items.describe }}</view>
                                         <swiper class="swiper-list border-radius-main oh" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">

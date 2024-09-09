@@ -4,7 +4,7 @@
         <block v-if="data_list_loding_status == 3">
             <view class="password">
                 <view class="padding-main">
-                    <form @submit="formBindPwd">
+                    <form @submit="form_bind_pwd">
                         <view class="margin-top-xxxl">
                             <view class="pr">
                                 <input type="text" :placeholder="$t('password.password.4e24j1')" minlength="6" maxlength="18" name="my_pwd" :password="!eyes1" class="form-item margin-bottom-main" />
@@ -34,7 +34,7 @@
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
     export default {
         data() {
             return {
@@ -91,7 +91,8 @@
                 }
             },
 
-            formBindPwd(e) {
+            // 绑定表单
+            form_bind_pwd(e) {
                 // 数据验证
                 var validation = [
                     { fields: 'my_pwd', msg: this.$t('login.login.277w03') },

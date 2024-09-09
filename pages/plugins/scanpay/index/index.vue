@@ -270,8 +270,8 @@
                     form: new_data,
                 });
             },
-            // 更多
 
+            // 更多
             more_event() {
                 this.setData({
                     is_more: !this.is_more,

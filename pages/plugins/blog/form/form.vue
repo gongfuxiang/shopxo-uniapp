@@ -98,6 +98,7 @@
                         <button class="cr-white bg-main round text-size wh-auto" type="default" form-type="submit" hover-class="none" :loading="form_submit_loading" :disabled="form_submit_loading">{{$t('form.form.4yd066')}}</button>
                     </view>
                 </view>
+                <!-- 分类选择 -->
                 <component-popup :propShow="popup_status" propPosition="bottom" @onclose="popup_close_event">
                     <view class="p-title flex-row jc-sb align-c padding-main br-b-e">
                         <view class="text-size-lg fw-b">{{$t('form.form.4vku7u')}}</view>
@@ -132,7 +133,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 theme_color: app.globalData.get_theme_color(),
-                blog_id: '',
+                params: {},
                 data_list_loding_status: 1,
                 data: {},
                 index: 0,
@@ -168,11 +169,10 @@
             app.globalData.page_event_onload_handle(params);
 
             // 设置参数
-            if (params !== null && params.id) {
-                this.setData({
-                    blog_id: params.id,
-                });
-            }
+            this.setData({
+                params: params || {},
+            });
+
             // 数据加载
             this.init();
         },
@@ -211,26 +211,39 @@
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'blog', 'blog'),
                     method: 'POST',
-                    data: { id: this.blog_id },
+                    data: {...this.params, ...{lang_can_key: 'blog_category_list'}},
                     success: (res) => {
                         uni.stopPullDownRefresh();
                         if (res.data.code == 0) {
+                            var blog_category_list = res.data.data.blog_category_list || [];
                             if (res.data.data.data) {
+                                var data = res.data.data.data || {};
+                                // 封面列表
                                 var img_list = [];
-                                if (res.data.data.data.cover.length > 0) {
-                                    img_list.push(res.data.data.data.cover);
+                                if ((data.cover || null) != null && data.cover.length > 0) {
+                                    img_list.push(data.cover);
                                 }
+                                // 分类名称匹配重新匹配赋值
+                                var blog_category_name = '';
+                                for(var i in blog_category_list) {
+                                    if(blog_category_list[i]['id'] == data.blog_category_id) {
+                                        blog_category_name = blog_category_list[i]['name'];
+                                        break;
+                                    }
+                                }
+                                data['blog_category_name'] = blog_category_name;
+                                // 设置数据
                                 this.setData({
-                                    data: res.data.data.data || {},
-                                    blog_category_list: res.data.data.blog_category_list,
+                                    data: data,
+                                    blog_category_list: blog_category_list,
                                     image_list: img_list,
-                                    more_height: res.data.data.data.describe || res.data.data.data.seo_title || res.data.data.data.seo_keywords || res.data.data.data.seo_desc ? '708rpx' : '0',
-                                    is_more: res.data.data.data.describe || res.data.data.data.seo_title || res.data.data.data.seo_keywords || res.data.data.data.seo_desc ? 'true' : 'false',
+                                    more_height: data.describe || data.seo_title || data.seo_keywords || data.seo_desc ? '708rpx' : '0',
+                                    is_more: data.describe || data.seo_title || data.seo_keywords || data.seo_desc ? 'true' : 'false',
                                     data_list_loding_status: 3,
                                 });
                             } else {
                                 this.setData({
-                                    blog_category_list: res.data.data.blog_category_list,
+                                    blog_category_list: blog_category_list,
                                     data_list_loding_status: 3,
                                 });
                             }

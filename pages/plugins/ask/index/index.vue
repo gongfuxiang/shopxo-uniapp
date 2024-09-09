@@ -1,45 +1,51 @@
 <template>
     <view :class="theme_view">
-        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333">
+        <component-nav-back :propFixed="false" propClass="bg-white cr-black" propColor="#333" :style="'padding-top:' + (status_bar_height + 5) + 'px;'">
             <template slot="right" :class="is_mp_env ? 'top-search-width' : ''">
                 <view class="margin-left-main" :class="is_mp_env ? '' : 'flex-1 flex-width'">
                     <component-search @onsearch="search_button_event" propIsOnEvent :propIsRequired="false" propIconColor="#ccc" propPlaceholderClass="cr-grey-c" propBgColor="#f6f6f6"></component-search>
                 </view>
             </template>
-            <template slot="content">
-                <view v-if="nav_list.length > 0" class="ask-type flex-row jc-sa align-c">
+        </component-nav-back>
+        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60" :style="'height: calc(100vh - '+(40+status_bar_height)+'px)'">
+            <view class="wh-auto">
+                <!-- 轮播 -->
+                <view v-if="slider_list.length > 0" class="padding-horizontal-main spacing-mb padding-top-main">
+                    <component-banner :propData="slider_list"></component-banner>
+                </view>
+                <!-- tab -->
+                <view v-if="nav_list.length > 0" class="ask-tab flex-row jc-sa align-c bg-white wh-auto left-0 top-0 ps z-i padding-bottom-sm">
                     <view v-for="(item, index) in nav_list" :key="index" class="flex-1 padding-vertical-sm tc" :class="nav_index === index ? 'cr-main fw-b nav-active-line' : 'cr-base'" :data-index="index" :data-type="item.type" @tap="nav_change_event">{{ item.name }}</view>
                 </view>
-            </template>
-        </component-nav-back>
-        <scroll-view :scroll-y="true" class="scroll-box" @scrolltolower="scroll_lower" lower-threshold="60">
-            <view :class="(data_base.is_user_add_ask || 0) == 1 ? 'page-bottom-fixed' : ''">
-                <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
-                    <block v-for="(item, index) in data_list" :key="index">
-                        <view :data-value="'/pages/plugins/ask/detail/detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb flex-row">
-                            <view v-if="nav_index === 1">
-                                <view class="ask-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
-                            </view>
-                            <view class="flex-1 flex-width">
-                                <view class="title text-size fw-b">{{ item.title }}</view>
-                                <view v-if="item.title != item.content" class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
-                                <view class="status flex-row align-c spacing-mt text-size-xs">
-                                    <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</view>
-                                    <view class="num cr-grey-9 flex-row self-c">
-                                        {{ item.add_time_date }}
-                                        <view class="fw-b padding-horizontal-xs">·</view>
-                                        {{ item.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}</view
-                                    >
+                <!-- 内容列表 -->
+                <view :class="(data_base.is_user_add_ask || 0) == 1 ? 'page-bottom-fixed' : ''">
+                    <view v-if="data_list.length > 0" class="padding-horizontal-main padding-top-main">
+                        <block v-for="(item, index) in data_list" :key="index">
+                            <view :data-value="'/pages/plugins/ask/detail/detail?id=' + item.id" @tap="url_event" class="padding-main border-radius-main bg-white oh cp spacing-mb flex-row">
+                                <view v-if="nav_index === 1">
+                                    <view class="ask-hot border-radius-sm tc margin-right-sm va-m pr top-md" :class="index < 3 ? 'cr-white text-size-xs hot-bg-' + index : 'text-size-md'">{{ index + 1 }}</view>
+                                </view>
+                                <view class="flex-1 flex-width">
+                                    <view class="title text-size fw-b">{{ item.title }}</view>
+                                    <view v-if="item.title != item.content" class="content cr-base margin-top-sm padding-top-xs multi-text">{{ item.content }}</view>
+                                    <view class="status flex-row align-c spacing-mt text-size-xs">
+                                        <view v-if="nav_index !== 1" class="ask-status cr-white border-radius-sm text-size-xss" :class="item.is_reply === '1' ? 'ask-bg-green' : 'ask-bg-yellow'">{{ item.is_reply === '1' ? $t('index.index.1c17n3') : $t('index.index.75l3l2') }}</view>
+                                        <view class="num cr-grey-9 flex-row self-c">
+                                            {{ item.add_time_date }}
+                                            <view class="fw-b padding-horizontal-xs">·</view>
+                                            {{ item.access_count || '0' }}{{ $t('detail.detail.e6ga1y') }}</view
+                                        >
+                                    </view>
                                 </view>
                             </view>
-                        </view>
-                    </block>
-                    <!-- 结尾 -->
-                    <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-                </view>
-                <view v-else>
-                    <!-- 提示信息 -->
-                    <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
+                        </block>
+                        <!-- 结尾 -->
+                        <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
+                    </view>
+                    <view v-else>
+                        <!-- 提示信息 -->
+                        <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" :propLoadingLogoTop="slider_list.length > 0 ? '80%' : '50%'"></component-no-data>
+                    </view>
                 </view>
             </view>
         </scroll-view>
@@ -61,11 +67,18 @@
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentSearch from '@/components/search/search';
+    import componentBanner from '@/components/slider/slider';
 
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
     export default {
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                status_bar_height: bar_height,
                 is_mp_env: false,
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-ALIPAY || MP-QQ || MP-KUAISHOU
                 is_mp_env: true,
@@ -79,6 +92,8 @@
                 data_list_loding_msg: '',
                 data_bottom_line_status: false,
                 data_is_loading: 0,
+                // 轮播
+                slider_list: [],
                 // 导航分类
                 nav_list: [],
                 nav_index: 0,
@@ -95,6 +110,7 @@
             componentNoData,
             componentBottomLine,
             componentSearch,
+            componentBanner
         },
         props: {},
 
@@ -136,6 +152,7 @@
                                 var data_base = res.data.data.base || {};
                                 this.setData({
                                     data_base: data_base,
+                                    slider_list: res.data.data.slider_list || [],
                                     nav_list: res.data.data.search_tab_list || [],
                                     // 基础自定义分享
                                     share_info: {
@@ -250,6 +267,7 @@
                 this.setData({
                     search_bwg: e || '',
                     data_page: 1,
+                    data_list: []
                 });
                 this.reset_scroll();
                 this.get_data_list(1);

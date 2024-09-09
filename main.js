@@ -6,7 +6,7 @@ import base from './common/js/common/base';
 import share from './common/js/common/share';
 
 // 多语言引入并初始化
-import i18n from './lang/index'
+import i18n from './locale/index'
 
 // 全局icon组件
 import iconfont from './components/iconfont/iconfont.vue'

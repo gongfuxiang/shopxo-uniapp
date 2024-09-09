@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed">
             <view v-if="save_base_data != null && save_base_data.total_price > 0">
-                <form @submit="formSubmit" class="form-container">
+                <form @submit="form_submit" class="form-container">
                     <view class="padding-main oh">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
                             <view>
@@ -191,7 +191,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'user', 'invoice'),
                     method: 'POST',
-                    data: this.params,
+                    data: {...this.params, ...{lang_can_key: 'apply_type_list,can_invoice_type_list'}},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -332,7 +332,7 @@
             },
 
             // 表单提交
-            formSubmit(e) {
+            form_submit(e) {
                 var data = e.detail.value;
                 if ((this.data || null) == null || (this.data.id || null) == null) {
                     data['ids'] = this.params.ids || '';

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view class="page-bottom-fixed">
             <view v-if="data_base != null">
-                <form @submit="formSubmit" class="form-container">
+                <form @submit="form_submit" class="form-container">
                     <view class="padding-main oh">
                         <view class="padding-main border-radius-main bg-white spacing-mb">
                             <view>
@@ -58,7 +58,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
-                params: null,
+                params: {},
                 form_submit_loading: false,
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
@@ -78,7 +78,7 @@
 
             // 设置参数
             this.setData({
-                params: params,
+                params: params || {},
             });
 
             // 设置标题
@@ -112,7 +112,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('saveinfo', 'userqrcode', 'signin'),
                     method: 'POST',
-                    data: this.params,
+                    data: {...this.params, ...{is_lang: 0}},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();
@@ -145,7 +145,7 @@
             },
 
             // 表单提交
-            formSubmit(e) {
+            form_submit(e) {
                 var data = e.detail.value;
                 if ((this.data || null) != null) {
                     data['id'] = this.data.id || 0;

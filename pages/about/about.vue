@@ -3,12 +3,15 @@
         <view class="padding-main tc">
             <view class="bg-white border-radius-main padding-main">
                 <view class="padding-vertical-xxl">
+                    <!-- logo -->
                     <image class="logo circle br-f5 padding-sm dis-block auto margin-top-xl" :src="logo" mode="aspectFill"></image>
+                    <!-- 名称 -->
                     <view class="margin-top-sm text-size">{{title}}</view>
-                    <!-- #ifdef APP -->
-                    <view class="margin-top-sm cr-grey-9">{{app_version_info}}</view>
-                    <!-- #endif -->
-                    <view class="margin-top-xxl cr-base text-size-sm">{{describe}}</view>
+                    <!-- app管理 -->
+                    <component-app-admin ref="app_admin" propType="about"></component-app-admin>
+                    <!-- 简介 -->
+                    <view class="margin-top-xxxxl cr-base text-size-sm">{{describe}}</view>
+                    <!-- 协议 -->
                     <view class="margin-top-xxxxl padding-vertical-xxxxl">
                         <text class="cp cr-blue margin-right" data-value="userregister" @tap="agreement_event">{{ $t('login.login.2v11we') }}</text>
                         <text class="cp cr-blue margin-left" data-value="userprivacy" @tap="agreement_event">{{ $t('login.login.myno2x') }}</text>
@@ -21,6 +24,7 @@
 </template>
 <script>
     const app = getApp();
+    import componentAppAdmin from '@/components/app-admin/app-admin';
     export default {
         data() {
             return {
@@ -28,12 +32,13 @@
                 logo: app.globalData.get_application_logo_square(),
                 title: app.globalData.get_application_title(),
                 describe: app.globalData.get_application_describe(),
-                app_version_info: app.globalData.data.app_version_info,
                 year: (new Date()).getFullYear(),
             };
         },
 
-        components: {},
+        components: {
+            componentAppAdmin
+        },
         onLoad(params) {
             // 调用公共事件方法
             app.globalData.page_event_onload_handle(params);
@@ -42,6 +47,11 @@
         onShow() {
             // 调用公共事件方法
             app.globalData.page_event_onshow_handle();
+
+            // app管理
+            if ((this.$refs.app_admin || null) != null) {
+                this.$refs.app_admin.init();
+            }
         },
 
         methods: {

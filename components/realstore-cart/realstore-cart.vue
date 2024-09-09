@@ -136,12 +136,12 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import base64 from '@/common/js/lib/base64.js';
     import componentPopup from "@/components/popup/popup";
-    import componentGoodsBuy from '../../components/goods-buy/goods-buy';
-    import componentCartParaCurve from '../../components/cart-para-curve/cart-para-curve';
-    import componentBadge from '../../components/badge/badge';
-    import componentNoData from '../../components/no-data/no-data';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
+    import componentBadge from '@/components/badge/badge';
+    import componentNoData from '@/components/no-data/no-data';
 
     var static_url = app.globalData.get_static_url('realstore', true);
     export default {

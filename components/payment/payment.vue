@@ -39,8 +39,10 @@
                         </view>
                     </scroll-view>
                 </view>
-                <view class="payment-sub">
-                    <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('payment.payment.25r53g')}}</button>
+                <view class="payment-submit">
+                    <view class="bottom-line-exclude">
+                        <button class="bg-main br-main cr-white round text-size" type="default" hover-class="none" @tap="popup_payment_event" :disabled="submit_disabled_status">{{$t('payment.payment.25r53g')}}</button>
+                    </view>
                 </view>
             </view>
             <view v-else class="padding-top-xxxl padding-bottom-xxxl oh bg-white tc cr-grey">{{$t('payment.payment.058a46')}}</view>
@@ -65,6 +67,27 @@
     import componentPopup from '@/components/popup/popup';
     export default {
         name: 'pay',
+        data() {
+            return {
+                theme_view: app.globalData.get_theme_value_view(),
+                // 支付方式列表
+                payment_list: [],
+                // 弹窗开关
+                is_show_payment_popup: false,
+                popup_view_pay_qrcode_is_show: false,
+                // 定时器
+                popup_view_pay_timer: null,
+                popup_view_pay_data: null,
+                // 支付id
+                payment_id: 0,
+                submit_disabled_status: true,
+                order_id: 0,
+                popup_view_pay_html_is_show: false,
+                // 打开url地址定时任务和状态
+                open_pay_url_timer: null,
+                open_pay_url_status: true,
+            };
+        },
         props: {
             propCurrencySymbol: {
                 type: String,
@@ -155,11 +178,17 @@
             componentPopup,
         },
         watch: {
+            // 支付方式是否改变
+            propPaymentList(value, old_value) {
+                this.setData({
+                    payment_list: value,
+                });
+            },
             // 是否显示支付方式
-            propIsShowPayment(newVal, oldVal) {
-                if (newVal !== oldVal) {
+            propIsShowPayment(new_val, old_val) {
+                if (new_val !== old_val) {
                     let bool = true;
-                    if (this.payment_list.length === 1) {
+                    if (this.payment_list.length == 1) {
                         bool = false;
                         this.setData({
                             payment_id: this.payment_list[0].id,
@@ -167,54 +196,29 @@
                     } else {
                         let self = this;
                         self.payment_list.forEach((item) => {
-                            let new_payment_id = Number(self.propPaymentId) === 0 ? self.propDefaultPaymentId : Number(self.propPaymentId);
+                            let new_payment_id = Number(self.propPaymentId) == 0 ? self.propDefaultPaymentId : Number(self.propPaymentId);
                             if (item.id == new_payment_id) {
                                 bool = false;
                             }
                         });
                         this.setData({
-                            payment_id: Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
+                            payment_id: Number(this.propPaymentId) == 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
                         });
                     }
+                    
                     this.setData({
-                        is_show_payment_popup: newVal,
+                        is_show_payment_popup: new_val,
                         submit_disabled_status: bool,
                     });
                 }
-            },
-            // 支付方式是否改变
-            propPaymentList(value, old_value) {
-                this.setData({
-                    payment_list: value,
-                });
-            },
+            }
         },
         // 页面被展示
         created: function () {
             this.setData({
-                payment_list: this.payment_list
+                payment_list: this.propPaymentList,
+                payment_id: Number(this.propPaymentId) == 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
             });
-        },
-        data() {
-            return {
-                theme_view: app.globalData.get_theme_value_view(),
-                // 支付方式列表
-                payment_list: [],
-                // 弹窗开关
-                is_show_payment_popup: false,
-                popup_view_pay_qrcode_is_show: false,
-                // 定时器
-                popup_view_pay_timer: null,
-                popup_view_pay_data: null,
-                // 支付id
-                payment_id: Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId),
-                submit_disabled_status: true,
-                order_id: 0,
-                popup_view_pay_html_is_show: false,
-                // 打开url地址定时任务和状态
-                open_pay_url_timer: null,
-                open_pay_url_status: true,
-            };
         },
         methods: {
             // 支付弹窗关闭
@@ -267,7 +271,7 @@
                     // 循环匹配支付方式
                     this.payment_list.forEach((item) => {
                         if (item.id == payment_id) {
-                            if (item.payment === 'WalletPay') {
+                            if (item.payment == 'WalletPay') {
                                 var self = this;
                                 uni.showModal({
                                     title: self.$t('common.warm_tips'),
@@ -297,7 +301,7 @@
                 if((payment_id || 0) != 0) {
                     // #ifdef H5
                     // 微信环境判断是否已有web_openid、不存在则不继续执行跳转到插件进行授权
-                    if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id)) {
+                    if (!app.globalData.is_user_weixin_web_openid(order_id, payment_id || this.payment_id, this.propToAppointPage)) {
                         return false;
                     }
                     // #endif
@@ -486,7 +490,7 @@
                         self.setData({
                             open_pay_url_status: false
                         });
-                        self.order_item_pay_fail_handle(data, order_id, error);
+                        self.order_item_pay_fail_handle(data, order_id, error.message+'('+error.code+')');
                     });
                     // 定时3秒后提示用户确认支付状态
                     self.open_pay_url_timer = setTimeout(function() {
@@ -727,9 +731,11 @@
                 let back_data = {
                     data: data,
                     order_id: order_id,
+                    temp_pay_index: this.propTempPayIndex,
+                    payment_id: this.payment_id,
                     is_to_page: is_to_page,
                 };
-                this.$emit('pay-success', back_data, this.propTempPayIndex, Number(this.propPaymentId) === 0 ? this.propDefaultPaymentId : Number(this.propPaymentId));
+                this.$emit('pay-success', back_data);
                 if (is_to_page) {
                     this.to_success_page_event();
                 }
@@ -755,13 +761,8 @@
                         code: '9000',
                     };
                     url_data = Object.assign({}, url_data, this.propToPageBack);
-                    if (this.propIsRedirectTo) {
-                        // 跳转支付页面
-                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))), true);
-                    } else {
-                        // 跳转支付页面
-                        app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))));
-                    }
+                    // 跳转支付页面
+                    app.globalData.url_open('/pages/paytips/paytips?params=' + encodeURIComponent(base64.encode(JSON.stringify(url_data))), this.propIsRedirectTo);
                 }
             },
             // 失败跳转
@@ -829,7 +830,7 @@
         width: 50rpx;
         height: 50rpx !important;
     }
-    .payment-sub {
-        padding: 86rpx 90rpx 24rpx 90rpx;
+    .payment-submit {
+        padding: 40rpx;
     }
 </style>

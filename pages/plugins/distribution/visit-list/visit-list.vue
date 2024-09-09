@@ -63,7 +63,7 @@ export default {
             content_list: [
                 { name: this.$t('visit-list.visit-list.q76du4'), field: "content" },
                 { name: this.$t('visit-list.visit-list.4z367h'), field: "images"},
-                { name: this.$t('order-detail.order-detail.21ift9'), field: "upd_time" },
+                { name: this.$t('common.upd_time'), field: "upd_time" },
             ],
         };
     },

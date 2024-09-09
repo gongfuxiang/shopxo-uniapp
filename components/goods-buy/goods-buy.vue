@@ -18,7 +18,7 @@
                             </view>
                             <view v-if="(goods.show_field_original_price_status || 0) == 1 && (goods_spec_base_original_price || null) != null && goods_spec_base_original_price != 0" class="original-price margin-top-sm">{{ goods.show_original_price_symbol }}{{ goods_spec_base_original_price }}{{ goods.show_original_price_unit }}</view>
                         </view>
-                        <view class="inventory text-size-xs margin-top">
+                        <view v-if="(goods.show_inventory_status || 0) == 1" class="inventory text-size-xs margin-top">
                             <text class="cr-grey">{{ $t('goods-detail.goods-detail.1s79t4') }}</text>
                             <text class="cr-base">{{ goods_spec_base_inventory }}</text>
                             <text class="cr-grey">{{ goods.inventory_unit }}</text>
@@ -72,7 +72,7 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import base64 from '@/common/js/lib/base64.js';
     import componentPopup from '@/components/popup/popup';
     export default {
         data() {
@@ -769,7 +769,7 @@
                                             },
                                         ])
                                     )
-                                ),
+                                )
                             };
                             app.globalData.url_open('/pages/buy/buy?data=' + encodeURIComponent(base64.encode(JSON.stringify(data))));
                             this.popup_close_event();

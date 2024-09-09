@@ -36,7 +36,7 @@
                             <view class="form-gorup-title">{{$t('recommend-form.recommend-form.5ws7m3')}}<text class="form-group-tips-must">*</text></view>
                             <view v-if="(recommend_data.detail_list || null) != null && recommend_data.detail_list.length > 0" class="margin-top-lg view-goods-list">
                                 <block v-for="(item, index) in recommend_data.detail_list" :key="index">
-                                    <view :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
+                                    <view v-if="(item.goods || null) != null" :class="'item oh pr ' + (index > 0 ? 'br-t-dashed padding-top-lg margin-top-lg' : '')">
                                         <view :data-value="item.goods.goods_url" @tap="url_event" class="cp br dis-block fl radius oh">
                                             <image :src="item.goods.images" mode="aspectFill" class="dis-block"></image>
                                         </view>
@@ -132,7 +132,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
-                params: null,
+                params: {},
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 recommend_data: {},
@@ -162,7 +162,7 @@
 
             // 设置参数
             this.setData({
-                params: params,
+                params: params || {},
             });
         },
 
@@ -199,7 +199,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('savedata', 'recommend', 'distribution'),
                     method: 'POST',
-                    data: { id: this.params.id || 0 },
+                    data: {...this.params, ...{lang_can_key: 'goods_category_list'}},
                     dataType: 'json',
                     success: (res) => {
                         uni.stopPullDownRefresh();

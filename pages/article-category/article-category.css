@@ -1,0 +1,8 @@
+.data-list .item-cover .cover {
+    width: 180rpx;
+    height: 180rpx;
+}
+.data-list .item-cover .base-right,
+.data-list .item-cover .base-right-bottom{
+    width: calc(100% - 200rpx);
+}

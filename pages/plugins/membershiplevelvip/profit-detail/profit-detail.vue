@@ -94,7 +94,7 @@ export default {
                                 { name: this.$t('profit-detail.profit-detail.kn8yye'), value: data.data.status_name || "" },
                                 { name: this.$t('profit-detail.profit-detail.3jg81h'), value: data.data.commission_rules || "" },
                                 { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
+                                { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,

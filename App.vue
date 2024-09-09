@@ -1,16 +1,16 @@
 <script>
     import base64 from './common/js/lib/base64.js';
     // 多语言引入并初始化
-    import i18n from './lang/index';
+    import i18n from './locale/index';
     export default {
         globalData: {
             data: {
                 // 基础配置
                 // 数据接口请求地址
-                request_url: 'https://d1.shopxo.vip/',
+                request_url: 'http://shopxo.com/',
 
                 // 静态资源地址（如系统根目录不在public目录下面请在静态地址后面加public目录、如：https://d1.shopxo.vip/public/）
-                static_url: 'https://d1.shopxo.vip/',
+                static_url: 'http://shopxo.com/',
 
                 // 系统类型（默认default、如额外独立小程序、可与程序分身插件实现不同主体小程序及支付独立）
                 system_type: 'default',
@@ -23,10 +23,10 @@
                 application_logo: '',
 
                 // 版本号、如: v1.0.0
-                version: 'v6.1',
+                version: 'v6.2',
 
                 // app版本信息、如: v1.0.0 20180118
-                app_version_info: 'v6.1 20240516',
+                app_version_info: 'v6.2 20240704',
 
                 // 货币价格符号
                 currency_symbol: '￥',
@@ -46,7 +46,7 @@
                 // 增加或者减少语言时
                 // 1.新增一个对象，按照当前格式新增
                 // 2.去lang里面各个文件去新增语言翻译
-                default_language: 'zh-Hans',
+                default_language: 'zh',
 
                 // tabbar页面
                 tabbar_pages: ['/pages/index/index', '/pages/goods-category/goods-category', '/pages/cart/cart', '/pages/user/user'],
@@ -170,6 +170,12 @@
                 // 未登录页面缓存记录key
                 cache_user_no_login_page_status_data_key: 'cache_user_no_login_page_status_data_key',
 
+                // app更新提示缓存记录key
+                cache_app_update_tips_interval_time_key: 'cache_app_update_tips_interval_time_key',
+
+                // app评分提示缓存记录key
+                cache_app_star_tips_interval_time_key: 'cache_app_star_tips_interval_time_key',
+
                 // 首页数据缓存key
                 cache_index_data_key: 'cache_index_data_key',
 
@@ -209,7 +215,7 @@
                 if ((params.scene || null) != null) {
                     params = this.url_params_to_json(decodeURIComponent(params.scene));
                 }
-                // 原始缓存是否存在邀请id、邀请使用最开始的用户id
+                // 如果当前没有邀请id、但是原始缓存有邀请id、则使用缓存邀请id
                 if ((params['referrer'] || null) == null && cache_params != null && (cache_params.referrer || null) != null) {
                     params['referrer'] = cache_params.referrer;
                 }
@@ -316,20 +322,13 @@
                 var user_location = this.choice_user_location_init();
                 var user_location_params = (user_location || null) != null && (user_location.status || 0) == 1 ? '&user_lng=' + user_location.lng + '&user_lat=' + user_location.lat : '';
                 // 当前语言
-                var lang_list = {
-                    'zh-Hans': 'zh',
-                    'zh-Hant': 'cht',
-                    en: 'en',
-                    fr: 'fra',
-                    es: 'spa',
-                };
-                var lang = lang_list[this.get_language_value()] || null;
-                if (lang == null) {
-                    lang = 'zh';
-                }
+                var lang = this.get_language_value();
+                // 当前主题
+                var theme = this.get_theme_value();
+
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
             },
 
             /**
@@ -1653,7 +1652,7 @@
                 // 是否插件
                 if ((is_plugins || false) == true) {
                     // 根据配置的静态url地址+插件标识符
-                    return this.data.static_url + 'static/plugins/images/' + type + '/';
+                    return this.data.static_url + 'static/plugins/' + type + '/images/';
                 } else {
                     // 根据配置的静态url地址+主题标识+参数类型组合远程静态文件地址
                     return this.data.static_url + 'static/app/' + this.get_theme_value() + '/' + type + '/';
@@ -1780,7 +1779,7 @@
                 url = this.page_url_protocol(url);
                 // #endif
                 // #ifdef H5
-                var url = window.location.href;
+                url = window.location.href;
                 // #endif
                 if (is_whole == false) {
                     var temp = url.split('?');
@@ -1816,7 +1815,7 @@
             },
 
             // 用户微信webopenid是否存在
-            is_user_weixin_web_openid(order_ids, payment_id = 0) {
+            is_user_weixin_web_openid(order_ids, payment_id = 0, page = null) {
                 // 微信环境判断是否已有web_openid、不存在则跳转到插件进行授权
                 if (this.is_weixin_env()) {
                     var web_openid = this.get_user_cache_info('weixin_web_openid') || null;
@@ -1851,7 +1850,7 @@
                                 order_ids: typeof order_ids == 'array' ? order_ids.join(',') : order_ids,
                                 payment_id: payment_id,
                             });
-                            var page_url = this.get_page_url();
+                            var page_url = (page || null) == null ? this.get_page_url() : this.page_url_protocol(page);
                             page_url += page_url.indexOf('?') == -1 ? '?' : '&';
                             page_url += 'is_weixin_auth_web_openid=1';
                             var request_url = encodeURIComponent(base64.encode(page_url));
@@ -1921,7 +1920,7 @@
                     desc: data.desc || share_config.desc || this.get_application_describe(),
                     path: data.path || this.data.tabbar_pages[0],
                     query: this.share_query_handle(data.query || ''),
-                    img: data.img || share_config.pic || this.get_config('config.home_site_logo_square'),
+                    img: data.img || share_config.pic || this.get_application_logo_square(),
                 };
                 result['url'] = this.get_page_url();
                 // #ifdef H5 || APP
@@ -2081,6 +2080,13 @@
                 }
                 // 未登录提示缓存记录
                 uni.removeStorageSync(this.data.cache_user_no_login_page_status_data_key);
+                // 用户基础资料提示间隔key
+                uni.removeStorageSync(this.data.cache_user_base_personal_interval_time_key);
+                // app更新提示缓存记录key
+                uni.removeStorageSync(this.data.cache_app_update_tips_interval_time_key);
+                // app评分提示缓存记录key
+                uni.removeStorageSync(this.data.cache_app_star_tips_interval_time_key);
+
                 // 非小程序则两秒后回到首页
                 this.showToast(i18n.t('shopxo-uniapp.app.'+((client_value == 'mp' || !is_remove_user) ? '0gwt7z' : '87yghj')), 'success');
             },

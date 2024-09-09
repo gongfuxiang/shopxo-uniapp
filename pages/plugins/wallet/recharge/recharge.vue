@@ -157,7 +157,7 @@
             },
             get_data() {
                 uni.request({
-                    url: app.globalData.get_request_url('rechargeconfigdata', 'user', 'wallet'),
+                    url: app.globalData.get_request_url('rechargeconfigdata', 'recharge', 'wallet'),
                     method: 'POST',
                     data: {},
                     dataType: 'json',
@@ -167,7 +167,6 @@
                             var data = res.data.data;
                             this.setData({
                                 preset_data: data.preset_data || [],
-                                payment_id: data.default_payment_id || 0,
                                 recharge_desc: data.recharge_desc || '',
                                 user_wallet: data.user_wallet || null,
                                 data_list_loding_msg: '',
@@ -238,11 +237,13 @@
                         uni.hideLoading();
                         if (res.data.code == 0) {
                             uni.setStorageSync(app.globalData.data.cache_page_pay_key, { type: 1 });
+                            var data = res.data.data;
                             this.setData({
+                                pay_price: data.money,
+                                temp_pay_value: data.recharge_id,
+                                payment_id: data.default_payment_id || 0,
+                                payment_list: data.payment_list,
                                 is_show_payment_popup: true,
-                                pay_price: res.data.data.money,
-                                temp_pay_value: res.data.data.recharge_id,
-                                payment_list: res.data.data.payment_list,
                             });
                         } else {
                             if (app.globalData.is_login_check(res.data)) {

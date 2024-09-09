@@ -19,7 +19,7 @@
 
                         <!-- 绑定手机 -->
                         <view v-if="current_opt_form == 'bind_verify'" class="form-content">
-                            <form @submit="formBindMobile">
+                            <form @submit="form_submit_bind_mobile">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
                                     <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
@@ -38,7 +38,7 @@
                             </form>
                         </view>
                         <view v-if="current_opt_form == 'bind_email'" class="form-content">
-                            <form @submit="formBindEmail">
+                            <form @submit="form_submit_bind_email">
                                 <view class="tc">
                                     <image class="icon circle auto dis-block margin-bottom-xxl br" :src="(user.avatar || null) == null ? '/static/images/default-user.png' : user.avatar" mode="widthFix"></image>
                                     <view v-if="(user.user_name_view || null) != null" class="cr-base">{{ user.user_name_view }}</view>
@@ -119,7 +119,7 @@
 
                         <!-- 登录 -->
                         <view v-if="current_opt_form == 'login'" class="form-content">
-                            <form @submit="formLogin">
+                            <form @submit="form_submit_login">
                                 <!-- form表单距离去除顶部沾满整个空间的高度 -->
                                 <view class="flex-col jc-sb">
                                     <view>
@@ -186,7 +186,7 @@
 
                         <!-- 注册 -->
                         <view v-else-if="current_opt_form == 'reg'" class="form-content">
-                            <form @submit="formReg">
+                            <form @submit="form_submit_reg">
                                 <!-- form表单距离去除顶部沾满整个空间的高度 -->
                                 <view class="flex-col jc-sb">
                                     <view>
@@ -254,7 +254,7 @@
 
                         <!-- 找回密码 -->
                         <view v-else-if="current_opt_form == 'forget'" class="form-content">
-                            <form @submit="formForget">
+                            <form @submit="form_submit_forget">
                                 <!-- form表单距离去除顶部沾满整个空间的高度 -->
                                 <view class="flex-col jc-sb">
                                     <view class="margin-bottom-xxxl">
@@ -408,7 +408,7 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
+    import base64 from '@/common/js/lib/base64.js';
     import componentPopup from '@/components/popup/popup';
     let login_static_url = app.globalData.get_static_url('thirdpartylogin', true) + 'icon/';
 
@@ -986,7 +986,7 @@
                     },
                 });
             },
-            formBindMobile(e) {
+            form_submit_bind_mobile(e) {
                 // 数据验证
                 var validation = [
                     { fields: 'mobile', msg: this.$t('login.login.4c5n8o') },
@@ -995,7 +995,7 @@
                 this.formBind(e, validation, app.globalData.get_request_url('appmobilebind', 'user'));
             },
             // 绑定手机表单提交
-            formBindEmail(e) {
+            form_submit_bind_email(e) {
                 // 数据验证
                 var validation = [
                     { fields: 'email', msg: this.$t('login.login.xak8g1') },
@@ -1101,7 +1101,7 @@
             },
 
             // 登录表单提交
-            formLogin(e) {
+            form_submit_login(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
                     app.globalData.showToast(this.$t('login.login.btu2c1'));
@@ -1169,7 +1169,7 @@
             },
 
             // 注册表单提交
-            formReg(e) {
+            form_submit_reg(e) {
                 // 是否已同意协议
                 if (!this.agreement_status) {
                     app.globalData.showToast(this.$t('login.login.btu2c1'));
@@ -1238,7 +1238,7 @@
             },
 
             // 密码找回表单提交
-            formForget(e) {
+            form_submit_forget(e) {
                 // 数据验证
                 var validation = [
                     { fields: 'accounts', msg: this.$t('login.login.h0515x') },
@@ -1694,6 +1694,8 @@
                 });
                 // 重新设置当前页面标题
                 this.set_navigation_bar_title();
+                // 重新读取数据配置
+                app.globalData.init_config();
             },
 
             // 多语言切换

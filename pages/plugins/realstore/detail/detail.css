@@ -94,6 +94,9 @@ page {
 .right-content-actual {
     padding-bottom: calc(105rpx + env(safe-area-inset-bottom));
 }
+.right-content-actual.base-mode-goods {
+    padding-bottom: calc(126rpx + env(safe-area-inset-bottom));
+}
 .goods-list-top-nav {
     position: sticky;
     top: 0;

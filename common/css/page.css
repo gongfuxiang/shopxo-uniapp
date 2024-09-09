@@ -96,7 +96,7 @@ uni-page-head[uni-page-head-type=default]~uni-page-wrapper {
  * 公共样式、框架样式覆盖
  */
 page {
-    background: #f5f5f5;
+    background: #f8f8f8;
     color: #4a4a4a;
 }
 
@@ -225,6 +225,9 @@ button:before {
 .pr {
     position: relative;
 }
+.ps {
+    position: sticky;
+}
 .z-i {
     z-index: 1 !important;
 }
@@ -288,7 +291,7 @@ button:before {
     width: 100%;
     box-sizing: border-box;
     z-index: 2;
-    padding: 40rpx 90rpx;
+    padding: 40rpx;
     background-color: #fff;
     box-shadow: inset 0px 1px 3px 0px rgba(0, 0, 0, 0.08);
 }
@@ -693,7 +696,7 @@ button:before {
 }
 .bg-white-disabled,
 button[disabled].bg-white {
-    background-color: #fdfdfd !important;
+    background-color: #fff !important;
     color: #ccc !important;
 }
 .bg-green-disabled,
@@ -935,10 +938,10 @@ button[disabled].bg-grey {
 }
 .nav-active-line::before {
     content: '';
-    width: 12px;
-    height: 2px;
+    width: 24rpx;
+    height: 6rpx;
     background: transparent;
-    border-radius: 1px;
+    border-radius: 6rpx;
     position: absolute;
     left: 50%;
     bottom: 0;

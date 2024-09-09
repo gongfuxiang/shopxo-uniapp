@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="scroll-box bg-white">
+        <scroll-view :scroll-y="true" class="scroll-box bg-white">
             <view class="page-bottom-fixed">
                 <block v-if="data_list_loding_status == 3">
                     <view class="padding-main">
@@ -17,12 +17,12 @@
                 <!-- 错误提示 -->
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg"></component-no-data>
             </view>
-        </view>
+        </scroll-view>
     </view>
 </template>
 <script>
     const app = getApp();
-    import componentNoData from '../../components/no-data/no-data';
+    import componentNoData from '@/components/no-data/no-data';
 
     export default {
         data() {

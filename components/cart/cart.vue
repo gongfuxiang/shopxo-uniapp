@@ -272,8 +272,6 @@
                     <component-bottom-line :propStatus="goods_bottom_line_status"></component-bottom-line>
                 </view>
             </scroll-view>
-            <!-- 用户基础 -->
-            <component-user-base ref="user_base"></component-user-base>
         </block>
 
         <!-- 选择门店弹层 -->
@@ -300,7 +298,7 @@
                         </block>
                         <view class="padding-main tc">
                             <view class="dis-inline-block cp" data-value="/pages/plugins/realstore/search/search" @tap="url_event">
-                                <text class="cr-grey text-size-xs va-m">{{ $t('goods-list.goods-list.h3t0f1') }}</text>
+                                <text class="cr-grey text-size-xs va-m">{{ $t('common.view_more') }}</text>
                                 <view class="dis-inline-block va-m margin-left-xs">
                                     <iconfont name="icon-arrow-right" size="24rpx" propClass="lh-il cr-grey"></iconfont>
                                 </view>
@@ -320,13 +318,12 @@
 </template>
 <script>
     const app = getApp();
-    import base64 from '../../common/js/lib/base64.js';
-    import componentNoData from '../../components/no-data/no-data';
-    import componentUserBase from '../../components/user-base/user-base';
-    import componentGoodsList from '../../components/goods-list/goods-list';
-    import componentNavBack from '../../components/nav-back/nav-back';
-    import componentRealstoreCart from '../../components/realstore-cart/realstore-cart';
-    import componentBottomLine from '../../components/bottom-line/bottom-line';
+    import base64 from '@/common/js/lib/base64.js';
+    import componentNoData from '@/components/no-data/no-data';
+    import componentGoodsList from '@/components/goods-list/goods-list';
+    import componentNavBack from '@/components/nav-back/nav-back';
+    import componentRealstoreCart from '@/components/realstore-cart/realstore-cart';
+    import componentBottomLine from '@/components/bottom-line/bottom-line';
     import componentPopup from '@/components/popup/popup';
 
     var common_static_url = app.globalData.get_static_url('common');
@@ -422,7 +419,6 @@
 
         components: {
             componentNoData,
-            componentUserBase,
             componentGoodsList,
             componentNavBack,
             componentRealstoreCart,
@@ -483,14 +479,6 @@
                     // 猜你喜欢、仅首次读取、还未加载过
                     if (this.is_first == 1 && this.goods_is_loading == 0) {
                         this.get_data_list(1);
-                    }
-
-                    // 用户头像和昵称设置提示
-                    if ((this.$refs.user_base || null) != null) {
-                        var self = this;
-                        setTimeout(function () {
-                            self.$refs.user_base.init('cart');
-                        }, 10);
                     }
                 } else {
                     this.setData({
@@ -1385,7 +1373,7 @@
     * 空购物车
     */
     .cart-no-data-box {
-        padding: 100rpx 0 80rpx 0;
+        padding: 140rpx 0 80rpx 0;
     }
     .cart-no-data-box image {
         width: 160rpx;

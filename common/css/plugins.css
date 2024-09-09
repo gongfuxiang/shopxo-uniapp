@@ -12,12 +12,8 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 }
-.plugins-coupon-container .v-left .base {
-    color: #D2364C;
-}
 .plugins-coupon-container .v-left .base .symbol {
     font-family: Verdana, Tahoma;
-    font-weight: 700;
 }
 .plugins-coupon-container .v-left .base .price {
     font-weight: 700;
@@ -35,7 +31,6 @@
     margin-top: 10rpx;
 }
 .plugins-coupon-container .v-right {
-    background: #d2364c;
     width: 140rpx;
     height: 180rpx;
     color: #fff;

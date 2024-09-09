@@ -75,7 +75,7 @@ export default {
             common_static_url: common_static_url,
             data_list_loding_status: 1,
             data_list_loding_msg: '',
-            params: null,
+            params: {},
             search_input_keywords_value: '',
             data: {},
             form_images_list: [],
@@ -98,7 +98,7 @@ export default {
 
         // 设置参数
         this.setData({
-            params: params,
+            params: params || {},
         });
 
         this.init();
@@ -135,7 +135,7 @@ export default {
             uni.request({
                 url: app.globalData.get_request_url("saveinfo", "visit", "distribution"),
                 method: "POST",
-                data: this.params,
+                data: {...this.params, ...{is_lang: 0}},
                 dataType: "json",
                 success: (res) => {
                     uni.stopPullDownRefresh();

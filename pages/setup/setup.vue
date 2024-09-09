@@ -310,6 +310,8 @@
                 });
                 // 重新设置当前页面导航标题
                 app.globalData.set_pages_navigation_bar_title();
+                // 重新读取数据配置
+                app.globalData.init_config();
             },
 
             // 多语言切换

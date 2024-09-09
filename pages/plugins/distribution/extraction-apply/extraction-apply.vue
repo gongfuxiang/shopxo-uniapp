@@ -87,7 +87,7 @@
             return {
                 theme_view: app.globalData.get_theme_value_view(),
                 common_static_url: common_static_url,
-                params: null,
+                params: {},
                 data_list_loding_status: 1,
                 data_list_loding_msg: '',
                 extraction_data: {},
@@ -118,7 +118,7 @@
 
             // 设置参数
             this.setData({
-                params: params,
+                params: params || {},
             });
 
             // 清除位置缓存信息
@@ -166,7 +166,7 @@
                 uni.request({
                     url: app.globalData.get_request_url('applyinfo', 'extraction', 'distribution'),
                     method: 'POST',
-                    data: {},
+                    data: {is_lang: 0},
                     dataType: 'json',
                     success: (res) => {
                         if (res.data.code == 0) {

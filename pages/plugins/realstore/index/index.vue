@@ -30,7 +30,7 @@
         <!-- 图标 -->
         <view v-if="icon_list.length > 0" class="padding-horizontal-main spacing-mb">
             <view class="bg-white border-radius-main">
-                <component-icon-nav :propData="icon_list"></component-icon-nav>
+                <component-icon-nav :propData="{...{data: icon_list}, ...{random: random_value}}"></component-icon-nav>
             </view>
         </view>
 
@@ -40,7 +40,7 @@
                 <!-- 导航 -->
                 <component-title :propTitle="data_base.home_data_list_title || $t('index.index.1vf378')" propMoreUrl="/pages/plugins/realstore/search/search"></component-title>
                 <!-- 数据列表 -->
-                <component-realstore-list :propDataList="data_list" :propFavorUser="favor_user"></component-realstore-list>
+                <component-realstore-list :propData="{data: data_list}" :propFavorUser="favor_user"></component-realstore-list>
             </view>
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
@@ -100,6 +100,8 @@
                 location_tips_close_status: false,
                 // 自定义分享信息
                 share_info: {},
+                // 增加随机数，避免无法监听数据列表内部数据更新
+                random_value: 0,
             };
         },
 
@@ -200,6 +202,7 @@
                             var data = res.data.data;
                             var data_list = data.data_list || [];
                             this.setData({
+                                random_value: Math.random(),
                                 data_base: data.base || null,
                                 favor_user: data.favor_user || [],
                                 slider_list: data.slider_list || [],

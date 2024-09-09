@@ -120,7 +120,7 @@ export default {
                                 { name: this.$t('user-qrcode-detail.user-qrcode-detail.911a61'), value: data.data.address || "" },
                                 { name: this.$t('common.note'), value: data.data.note || "" },
                                 { name: this.$t('user-order-detail.user-order-detail.h2c78h'), value: data.data.add_time || "" },
-                                { name: this.$t('order-detail.order-detail.21ift9'), value: data.data.upd_time || "" },
+                                { name: this.$t('common.upd_time'), value: data.data.upd_time || "" },
                             ],
                             data_list_loding_status: 3,
                             data_bottom_line_status: true,

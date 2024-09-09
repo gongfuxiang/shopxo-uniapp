@@ -52,24 +52,35 @@
 				type: [String, Object],
 				default: null
 			},
-			propDataList: {
-				type: Array,
-				default: () => []
+			propData: {
+			    type: Object,
+			    default: () => {
+			        return {};
+			    },
 			}
 		},
 		// 属性值改变监听
 		watch: {
-
+		    // 数据
+		    propData(value, old_value) {
+		        this.init();
+		    }
 		},
 		// 页面被展示
 		created: function(e) {
-			var config = ((this.propConfig || null) == null ? app.globalData.get_config('plugins_base.shop.data') : this.propConfig) || {};
-			this.setData({
-				config: config,
-				data_list: this.propDataList
-			});
+			this.init();
 		},
 		methods: {
+            // 初始化
+            init() {
+                var config = ((this.propConfig || null) == null ? app.globalData.get_config('plugins_base.shop.data') : this.propConfig) || {};
+                var data_list = ((this.propData || null) == null || (this.propData.data || null) == null || this.propData.data.length == 0) ? [] : this.propData.data;
+                this.setData({
+                	config: config,
+                	data_list: data_list
+                });
+            },
+
 			// url事件
 			url_event(e) {
 				app.globalData.url_event(e);

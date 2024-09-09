@@ -3,7 +3,7 @@
         <!-- 导航 -->
         <view class="nav-base bg-white">
             <block v-for="(item, index) in nav_status_list" :key="index">
-                <view :class="'item fl tc cr-grey ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
+                <view :class="'item fl tc ' + (nav_status_index == index ? 'cr-main nav-active-line' : '')" :data-index="index" @tap="nav_event">{{ item.name }}</view>
             </block>
         </view>
         <!-- 列表 -->
@@ -39,6 +39,7 @@
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
         </scroll-view>
         <component-payment
+            ref="payment"
             :propPayUrl="pay_url"
             :propQrcodeUrl="qrcode_url"
             propPayDataKey="id"
@@ -249,6 +250,20 @@
                                 this.setData({
                                     data_bottom_line_status: this.data_page > 1 && this.data_page > this.data_page_total,
                                 });
+
+                                // 下订单支付处理
+                                var key = app.globalData.data.cache_page_pay_key;
+                                var pay_data = uni.getStorageSync(key) || null;
+                                if (pay_data != null && (pay_data.order_ids || null) != null && (pay_data.payment_id || null) != null) {
+                                    uni.removeStorageSync(key);
+                                    this.setData({
+                                        temp_pay_value: pay_data.order_ids,
+                                        payment_id: pay_data.payment_id,
+                                    });
+                                    if ((this.$refs.payment || null) != null) {
+                                        this.$refs.payment.pay_handle(pay_data.order_ids, pay_data.payment_id, this.payment_list);
+                                    }
+                                }
                             } else {
                                 this.setData({
                                     data_list_loding_status: 0,
@@ -310,12 +325,16 @@
             },
 
             // 支付成功数据设置
-            order_item_pay_success_handle(data, index) {
-                // 数据设置
+            order_item_pay_success_handle(data) {
+                var order_ids_arr = data.order_id.toString().split(',');
                 var temp_data_list = this.data_list;
-                temp_data_list[index]['pay_price'] = temp_data_list[index]['price'];
-                temp_data_list[index]['status'] = 1;
-                temp_data_list[index]['status_name'] = this.$t('order.order.s8g966');
+                for (var i in temp_data_list) {
+                    if (order_ids_arr.indexOf(temp_data_list[i]['id'].toString()) != -1) {
+                        temp_data_list[i]['pay_price'] = temp_data_list[i]['price'];
+                        temp_data_list[i]['status'] = 1;
+                        temp_data_list[i]['status_name'] = this.$t('order.order.s8g966');
+                    }
+                }
                 this.setData({
                     data_list: temp_data_list,
                 });

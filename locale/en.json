@@ -1,6 +1,6 @@
 {
 	"language": {
-		"zh-Hans": "Simplified Chinese",
+		"zh": "Simplified Chinese",
 		"en": "English"
 	},
 	"common": {
@@ -15,8 +15,11 @@
 		"add": "Add",
 		"del": "Delete",
 		"edit": "Edit",
+        "link": "Link",
+        "gift": "Gift",
 		"more": "More",
 		"more_null": "",
+        "view_more": "View more",
 		"search": "Search",
 		"num": "quantity",
 		"order": "order form",
@@ -29,6 +32,10 @@
 		"share": "Share",
 		"return": "Return",
 		"view_text": "Check",
+        "detail_text": "Detail",
+        "yes_text": "Yes",
+        "no_text": "NO",
+        "place_order_text": "Place Order",
 		"processing_in_text": "Processing",
 		"loading_in_text": "Loading",
 		"upload_in_text": "Uploading",
@@ -44,7 +51,19 @@
 		"scan_name": "Scan it",
 		"not_have_name": "not have",
         "note": "Remarks",
-        "recommend_code_name": "Recommend code"
+        "recommend_code_name": "Recommend code",
+        "now_update_text": "Update Now",
+        "already_latest_text": "It is already the latest",
+        "to_update_text": "Go update",
+        "to_star_text": "To star",
+        "use_time": "Usage time",
+        "add_time": "Add time",
+        "upd_time": "Update time",
+        "receive_time": "Receiving time",
+		"service_time": "service time ",
+		"apply_time": "Application time",
+        "verification_text": "Verification code",
+        "verification_message": "Please enter the verification code"
 	},
 	"pages": {
 		"goods-category": "Product classification",
@@ -52,6 +71,7 @@
 		"user": "User Center",
 		"cart-page": "shopping cart",
 		"buy": "acknowledgement of order",
+        "web-view": "",
 		"login": "Login",
 		"paytips": "Secure payment",
 		"goods-search": "Product search",
@@ -72,7 +92,7 @@
 		"user-orderaftersale-detail": "After sales of orders",
 		"extraction-address": "Self pickup address",
 		"customview-customview": "Custom Page",
-		"design": "Page design",
+		"design": "",
 		"error": "Kind reminder",
 		"article-category": "All articles",
 		"article-detail": "Article details",
@@ -92,7 +112,7 @@
 		"plugins-membershiplevelvip-order-detail": "Order details",
 		"plugins-membershiplevelvip-profit": "Revenue details",
 		"plugins-membershiplevelvip-profit-detail": "Revenue details",
-		"plugins-membershiplevelvip-poster": "Promotion rebate",
+		"plugins-membershiplevelvip-poster": "Promotion rewards",
 		"plugins-membershiplevelvip-team": "My team",
 		"plugins-membershiplevelvip-member-code": "Membership code",
 		"plugins-distribution-user": "My Distribution",
@@ -105,7 +125,7 @@
 		"plugins-distribution-recommend-list": "My Recommended Treasure",
 		"plugins-distribution-recommend-detail": "Recommended Treasure Details",
 		"plugins-distribution-recommend-form": "Recommended Treasure Add/Edit",
-		"plugins-distribution-poster": "Promotion rebate",
+		"plugins-distribution-poster": "Promotion rewards",
 		"plugins-distribution-extraction": "Pickup point",
 		"plugins-distribution-extraction-apply": "Pickup point information",
 		"plugins-distribution-extraction-order": "Pickup order",
@@ -148,6 +168,7 @@
 		"plugins-shop-search": "Store Product Search",
 		"plugins-shop-favor": "Store favorites",
 		"plugins-shop-license": "Business qualifications",
+        "plugins-shop-check": "Order verification",
 		"plugins-activity-index": "All activities",
 		"plugins-activity-detail": "Event details",
 		"plugins-label-detail": "Label details",
@@ -167,6 +188,7 @@
 		"plugins-realstore-batchorder-list": "Batch orders",
 		"plugins-realstore-frequencycard-list": "Secondary card",
 		"plugins-realstore-frequencycard-used": "Secondary Card Usage Record",
+        "plugins-realstore-check": "Order verification",
 		"plugins-binding-index": "Combination and matching",
 		"plugins-binding-detail": "Combination and matching details",
 		"plugins-delivery-order": "Delivery order",
@@ -204,8 +226,8 @@
 		"plugins-coin-convert-list": "Conversion details",
 		"plugins-coin-recharge-list": "Recharge details",
         "plugins-antifakecode-index": "Authentic inquiry",
-        "plugins-rechargecard-index": "My recharge card",
-        "plugins-rechargecard-form": "Recharge card redemption"
+        "plugins-giftcard-index": "My gift card",
+        "plugins-giftcard-form": "Gift card redemption"
 	},
 	"login": {
 		"login": {
@@ -312,6 +334,7 @@
 			"hpq62x": "The pickup code does not exist. Please contact the administrator",
 			"io6p5k": "Order Mode",
 			"n18sd2": "Order number",
+            "yghjkf": "Order Goods",
 			"yxwu8n": "Order Status",
 			"23qj7m": "Payment status",
 			"vg4jb1": "Order unit price",
@@ -491,6 +514,8 @@
 			"w3jma9": "coupon",
 			"u401fi": "specifications",
 			"317jp2": "Related stores",
+            "dfge45": "Store Introduction",
+            "567uhg": "Store products",
 			"znz76d": "Evaluation",
 			"1rqkjt": "Positive review rate",
 			"6k7808": "I want to evaluate",
@@ -710,7 +735,6 @@
 			"rw12i7": "answer",
 			"278qr1": "View All",
 			"8y3cc7": "Answers",
-			"h3t0f1": "View more",
 			"aem3e6": "Put away the answer",
 			"nr77jf": "There is currently no source of goods available"
 		}
@@ -1180,15 +1204,12 @@
 		"frequencycard-used": {
 			"538686": "Deduction frequency",
 			"xjmepo": "Description",
-			"aod4pc": "Operators",
-			"l4878i": "Usage time"
+			"aod4pc": "Operators"
 		}
 	},
 	"orderallot-detail": {
 		"orderallot-detail": {
-			"81jvw1": "Order type",
-			"du0120": "Receiving time",
-			"8z8ika": "service time"
+			"81jvw1": "Order type"
 		}
 	},
 	"orderallot-list": {
@@ -1355,8 +1376,7 @@
 			"53k647": "Transfer Name",
 			"m556tl": "Transfer account",
 			"i308o1": "Payment amount",
-			"451xxt": "Payment time",
-			"y96262": "Application time"
+			"451xxt": "Payment time"
 		}
 	},
 	"user-recharge-detail": {
@@ -1854,12 +1874,15 @@
 			"0nhrj0": "Comment content"
 		}
 	},
-    "rechargecard-index": {
-    	"rechargecard-index": {
-    		"hfg2fg": "Cami",
-            "8uhyui": "Recharge time",
-            "8tfgh2": "Recharge card redemption",
-            "fu3rf1": "Please enter the card password"
+    "giftcard-index": {
+    	"giftcard-index": {
+            "87ytyh": "Card type",
+    		"hfg2fg": "Cami key",
+    		"fyjnsd": "Card security data",
+            "87yyj3": "Redemption time",
+            "8tfgh2": "Card exchange",
+            "6redfg": "Use data",
+            "fu3rf1": "Please enter the card password key"
     	}
     }
 }

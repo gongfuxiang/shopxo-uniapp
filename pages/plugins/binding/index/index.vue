@@ -5,7 +5,7 @@
             <view :class="'padding-main ' + ((shop || null) != null ? 'page-bottom-fixed' : '')">
                 <block v-if="(data_list || null) != null && data_list.length > 0">
                     <!-- 组合搭配组件 -->
-                    <component-binding-list :propConfig="data_base" :propDataList="data_list" :propCurrencySymbol="currency_symbol"></component-binding-list>
+                    <component-binding-list :propConfig="data_base" :propData="{data: data_list}" :propCurrencySymbol="currency_symbol"></component-binding-list>
                 </block>
                 <block v-else>
                     <!-- 提示信息 -->

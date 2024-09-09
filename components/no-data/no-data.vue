@@ -54,7 +54,7 @@
                     <view v-if="loading_content_type == 1" class="loading-title-animation">
                         <text>{{title}}</text>
                     </view>
-                    <view v-else class="loading-logo-content">
+                    <view v-else class="loading-logo-content" :style="'margin-top: '+propLoadingLogoTop+';'">
                         <view class="loading-logo" :style="'background-image: url('+loading_logo+')'"></view>
                         <view class="loading-border" :style="'background-image: url('+loading_logo_border+')'"></view>
                     </view>
@@ -137,6 +137,10 @@
             propIsHeader: {
                 type: Boolean,
                 default: false,
+            },
+            propLoadingLogoTop: {
+                type: String,
+                default: '50%',
             }
         },
         // 页面被展示

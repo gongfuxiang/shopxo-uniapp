@@ -9,8 +9,8 @@
 </template>
 <script>
     const app = getApp();
-    import componentQuickNav from '../../components/quick-nav/quick-nav';
-    import componentCart from '../../components/cart/cart';
+    import componentQuickNav from '@/components/quick-nav/quick-nav';
+    import componentCart from '@/components/cart/cart';
     export default {
         data() {
             return {
