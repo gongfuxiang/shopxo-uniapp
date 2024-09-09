@@ -5,6 +5,8 @@
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <componentDiySearch></componentDiySearch>
                 <componentDiyAuxiliaryLine v-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
+                <componentFloatWindow v-if="item.key == 'float-window'" :value="item.com_data"></componentFloatWindow>
+                <componentTextTitle v-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
             </view>
         </view>
         <componentDiyFooter :value="value.footer.com_data" @footer-height="footer_height_computer"></componentDiyFooter>
@@ -16,6 +18,8 @@
     import componentDiyFooter from '@/components/diy/footer';
     import componentDiySearch from '@/components/diy/search';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
+    import componentFloatWindow from '@/components/diy/float-window';
+    import componentTextTitle from '@/components/diy/text-title';
     export default {
         name: 'diy',
         props: {
@@ -29,6 +33,8 @@
             componentDiyFooter,
             componentDiySearch,
             componentDiyAuxiliaryLine,
+            componentFloatWindow,
+            componentTextTitle
         },
         data() {
             return {
