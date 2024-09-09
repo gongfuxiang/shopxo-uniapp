@@ -22,14 +22,18 @@
             };
         },
         mounted() {
-            const new_content = this.value.content || {};
-            const new_style = this.value.style || {};
-            let border_content = `border-bottom-style: ${new_content?.styles || 'solid'};`;
-            let border_style = `border-bottom-width: ${new_style.line_width || 1}px; border-bottom-color: ${new_style.line_color || 'rgba(204, 204, 204, 1)'};`;
-            this.style = border_content + border_style;
-            this.style_container = common_styles_computer(new_style.common_style);
+            this.init();
         },
-        methods: {},
+        methods: {
+            init() {
+                const new_content = this.value.content || {};
+                const new_style = this.value.style || {};
+                let border_content = `border-bottom-style: ${new_content?.styles || 'solid'};`;
+                let border_style = `border-bottom-width: ${new_style.line_width || 1}px; border-bottom-color: ${new_style.line_color || 'rgba(204, 204, 204, 1)'};`;
+                this.style = border_content + border_style;
+                this.style_container = common_styles_computer(new_style.common_style);
+            },
+        },
     };
 </script>
 

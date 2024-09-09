@@ -7,7 +7,7 @@
                 <componentDiyAuxiliaryLine v-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
             </view>
         </view>
-        <componentDiyFooter></componentDiyFooter>
+        <componentDiyFooter :value="value.footer.com_data"></componentDiyFooter>
     </view>
 </template>
 
