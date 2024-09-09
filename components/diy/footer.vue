@@ -1,14 +1,14 @@
 <template>
-    <view class="footer-nav flex-row jc-c align-c">
+    <view class="footer-nav flex-row jc-c align-c bottom-line-exclude">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <ul class="flex-row jc-sa align-c wh padding-0">
-                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" @mouseenter="is_active = index" @mouseleave="is_active = 0">
+                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" @click="handle_event">
                     <view v-if="nav_style !== 2" class="img pr">
                         <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
-                            <img :src="item.img[0].url" class="wh-auto" />
+                            <img :src="item.img[0].url" class="wh-auto ht-auto" />
                         </view>
                         <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
-                            <img :src="item.img_checked[0].url" class="wh-auto" />
+                            <img :src="item.img_checked[0].url" class="wh-auto ht-auto" />
                         </view>
                     </view>
                     <span v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</span>
@@ -52,12 +52,21 @@
 
                 this.style_container = common_styles_computer(new_style.common_style);
                 let footer_height = new_style.common_style.padding_top + new_style.common_style.padding_bottom + new_style.common_style.margin_top + new_style.common_style.margin_bottom + 50;
+                // #ifndef APP
+                // 底部菜单距离底部的安全距离
+                footer_height = footer_height + uni.getSystemInfoSync().statusBarHeight - 40;
+                // #endif
                 if (footer_height >= 70) {
                     footer_height = footer_height;
                 } else {
                     footer_height = 70;
                 }
+                console.log(footer_height);
                 this.$emit('footer-height', footer_height);
+            },
+            handle_event(e) {
+                console.log(e);
+                this.is_active = e.currentTarget.dataset.index;
             },
         },
     };
@@ -74,7 +83,6 @@
         max-width: 800px;
         /* #endif */
         margin: 0 auto;
-        padding: 0;
         cursor: pointer;
         background-color: transparent;
         .footer-nav-content {
