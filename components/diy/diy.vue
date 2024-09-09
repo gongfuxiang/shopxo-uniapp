@@ -36,6 +36,7 @@
             componentDiyHeader,
             componentDiyFooter,
             componentDiySearch,
+            componentDiyAuxiliaryLine,
             componentDiyRichText,
             componentFloatWindow,
             componentTextTitle,

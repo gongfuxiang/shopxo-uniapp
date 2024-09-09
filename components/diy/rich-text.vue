@@ -34,7 +34,6 @@
 </script>
 
 <style>
-    @import url('@/components/u-parse/u-parse.css');
     .rich-text {
         * {
             max-width: 100%;
