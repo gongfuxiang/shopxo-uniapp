@@ -1293,6 +1293,12 @@ button[disabled].bg-grey {
     left: 0;
     transform: translateY(-50%);
 }
+/**
+ * 延迟动画
+ */
+.animate-linear {
+    transition: all 0.3s linear;
+}
 
 /**
  * 呼吸

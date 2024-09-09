@@ -21,7 +21,7 @@
                                         <swiper class="swiper-list border-radius-main oh" circular :autoplay="(items.rolling_time || null) !== null ? true : false" :vertical="propVertical" :interval="(items.rolling_time || null) !== null ? Number(items.rolling_time) * 1000 : '6000'" :duration="propDuration">
                                             <swiper-item v-for="(itemss, indexss) in items.data" :key="indexss">
                                                 <view class="swiper-item">
-                                                    <view :class="'flex-row gap-sm goods-item-number-'+itemss.length">
+                                                    <view :class="'flex-row gap-10 goods-item-number-'+itemss.length">
                                                         <view v-for="(gv, gi) in itemss" :key="gi" :class="'bg-white border-radius-main oh flex-width-half '+(itemss.length % 2 != 0 && itemss.length-1 == gi ? 'wh-auto' : '')">
                                                             <view class="tc" :data-index="index" :data-indexs="indexs" :data-indexss="indexss" :data-gi="gi" :data-value="(gv.goods_url || null) !== null ? gv.goods_url : ''" @tap="goods_event">
                                                                 <image :src="(gv.images || null) !== null ? gv.images : ''" :mode="itemss.length % 2 != 0 && itemss.length-1 == gi ? 'aspectFit' : 'scaleToFill'" :class="'swiper-img wh-auto dis-block '+(((item.is_text_white || 0) == 1) ? '' : 'border-radius-main')"> </image>

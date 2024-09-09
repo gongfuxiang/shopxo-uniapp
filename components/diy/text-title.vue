@@ -1,14 +1,15 @@
 <template>
     <view :style="style_container">
         <view class="pr flex-row" :class="title_center">
-            <view class="z-i pr-15" :style="title_style">{{ form.title || '标题' }}</view>
+            <view class="z-i pr-15" :style="title_style" @click="url_open">{{ form.title || '标题' }}</view>
             <view class="flex-row gap-10 align-c right-0 pa">
                 <template v-if="form.keyword_show == '1'">
                     <view v-for="item in keyword_list" :key="item.id" :style="keyword_style">
                         {{ item.title }}
                     </view>
                 </template>
-                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style">{{ form.right_title }}<el-icon class="iconfont icon-arrow-right" :color="new_style.right_color || '#999'"></el-icon></view>
+                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style">{{ form.right_title }}<iconfont name="icon-arrow-right" :size="right_size" :color="new_style.right_color || '#999'"></iconfont>
+                </view>
             </view>
         </view>
     </view>
@@ -17,6 +18,7 @@
 <script>
 const app = getApp();
 import { is_obj_empty } from '../../common/js/common/common';
+import { common_styles_computer } from '@/common/js/common/common.js';
 export default {
     props: {
         value: {
@@ -31,19 +33,50 @@ export default {
             form: {},
             new_style: {},
             style_container: '',
+            title_center: '',
+            keyword_list: [],
+            keyword_style: '',
+            right_style: '',
+            right_size: ''
         };
     },
     created() {
         this.form = this.value.content;
         this.new_style = this.value.style;
+        // 是否居中
+        this.title_center = this.form.is_title_center == '1' ? 'jc-c' : '';
+        // 关键字
+        this.set_keyword_list();
+        // 样式设置
+        this.set_common_styles();
     },
     methods: {
+        set_keyword_list() {
+            console.log(this.form.keyword_list.filter(item => item.is_show == '1'));
+            this.keyword_list = this.form.keyword_list.filter(item => item.is_show == '1');
+        },
+        set_common_styles() {
+            const {keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
+            // 关键字设置
+            this.keyword_style = `color:${keyword_color}; font-size: ${keyword_size * 2}rpx;`;
+            // 右边按钮设置
+            this.right_size = right_size * 2 + 'rpx';
+            this.right_style = `color:${right_color}; font-size: ${right_size * 2}rpx;`;
+            // 标题样式设置
+            let common_styles = '';
+            if (title_weight == 'italic') {
+                common_styles += `font-style: italic`;
+            } else if (title_weight == '500') {
+                common_styles += `font-weight: 500`;
+            }
+            this.title_style =  `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`;
+            // 通用样式区
+            this.style_container = common_styles_computer(common_style);
+        },
         url_open() {
             const { button_jump, button_link} = this.form;
             if (button_jump == 'link' && !is_obj_empty(button_link)) {
                 app.globalData.url_open(button_link.page)
-            } else {
-                console.log('客服');
             }
         }
     },
@@ -51,44 +84,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.img {
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
-}
-/**
-* 呼吸灯
-*/
-.spread {
-    position: relative;
-    z-index: 1;
-    width: 100rpx;
-    height: 100rpx;
-    border-radius: 50%;
-}
-.spread .ring {
-    /* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
-    animation: pulsing 1.5s ease-out infinite;
-    border-radius: 100%;
-    width: 100rpx;
-    height: 100rpx;
-    position: absolute;
-}
-/* 速度为1*层数 */
-.spread .ring:nth-of-type(1) {
-    -webkit-animation-delay: -1.5s;
-    animation-delay: -1.5s;
-}
-
-/* 速度为1*层数 */
-.spread .ring:nth-of-type(2) {
-    -webkit-animation-delay: -2s;
-    animation-delay: -2s;
-}
-@keyframes pulsing {
-    100% {
-        transform: scale(1.35);
-        opacity: 0
-    }
+.right-0 {
+    top: 50%;
+    transform: translateY(-50%);
 }
 </style>

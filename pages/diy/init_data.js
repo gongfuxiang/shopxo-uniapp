@@ -293,7 +293,7 @@ const initData = {
                 }
             }
         }
-    },{
+    }, {
         "name": "悬浮按钮",
         "show_tabs": "0",
         "is_enable": "1",
@@ -302,22 +302,20 @@ const initData = {
         "com_data": {
             "content": {
                 "button_jump": "link",
-                "button_img": [
-                    {
-                        "id": 2781,
-                        "category_id": 75,
-                        "title": "1713931511719969.png",
-                        "original": "背景1 4@2x.png",
-                        "size": "161.39KB",
-                        "ext": ".png",
-                        "type": "image",
-                        "url": "http://shopxo.com/public/static/upload/images/plugins_magic/2024/04/24/1713931511719969.png",
-                        "hash": "7a06b18f74cf937f7ad2ea95ee47a6cbee7a08897c29b79ee494f6505c6e73fe",
-                        "add_time": "2024-04-24 12:05:11",
-                        "category_name": "plugins_magic",
-                        "type_name": "图片"
-                    }
-                ],
+                "button_img": [{
+                    "id": 2781,
+                    "category_id": 75,
+                    "title": "1713931511719969.png",
+                    "original": "背景1 4@2x.png",
+                    "size": "161.39KB",
+                    "ext": ".png",
+                    "type": "image",
+                    "url": "http://shopxo.com/public/static/upload/images/plugins_magic/2024/04/24/1713931511719969.png",
+                    "hash": "7a06b18f74cf937f7ad2ea95ee47a6cbee7a08897c29b79ee494f6505c6e73fe",
+                    "add_time": "2024-04-24 12:05:11",
+                    "category_name": "plugins_magic",
+                    "type_name": "图片"
+                }],
                 "button_link": {
                     "name": "我的积分",
                     "page": "/pages/user-integral/user-integral"
@@ -328,6 +326,75 @@ const initData = {
                 "offset_number": 120,
                 "float_style": "shadow",
                 "float_style_color": "#32373a1a"
+            }
+        }
+    }, {
+        "name": "文本标题",
+        "show_tabs": "0",
+        "is_enable": "1",
+        "id": "r7qr7trcyp",
+        "key": "text-title",
+        "com_data": {
+            "content": {
+                "title": "22255",
+                "title_link": {
+                    "name": "订单列表",
+                    "page": "/pages/user-order/user-order"
+                },
+                "is_title_center": "0",
+                "keyword_show": "1",
+                "right_show": "1",
+                "right_title": "更多",
+                "right_link": {
+                    "name": "关于我们",
+                    "page": "/pages/about/about"
+                },
+                "keyword_list": [{
+                    "id": "z9qi3g5svt",
+                    "title": "1244545",
+                    "link": {
+                        "name": "我的地址",
+                        "page": "/pages/user-address/user-address"
+                    },
+                    "is_show": "1"
+                }]
+            },
+            "style": {
+                "title_color": "#000",
+                "title_size": 12,
+                "title_weight": "normal",
+                "keyword_color": "#000",
+                "keyword_size": 20,
+                "right_color": "#999",
+                "right_size": 29,
+                "common_style": {
+                    "direction": "90deg",
+                    "color_list": [{
+                        "color": "#fff"
+                    }],
+                    "background_img_style": 2,
+                    "padding": 15,
+                    "padding_top": 15,
+                    "padding_bottom": 15,
+                    "padding_left": 15,
+                    "padding_right": 15,
+                    "margin": 0,
+                    "margin_top": 0,
+                    "margin_bottom": 0,
+                    "margin_left": 0,
+                    "margin_right": 0,
+                    "radius": 0,
+                    "radius_top_left": 0,
+                    "radius_top_right": 0,
+                    "radius_bottom_left": 0,
+                    "radius_bottom_right": 0,
+                    "box_shadow_color": "",
+                    "box_shadow_x": 0,
+                    "box_shadow_y": 0,
+                    "box_shadow_blur": 0,
+                    "box_shadow_spread": 0,
+                    "background_img": []
+                }
             }
         }
     }]

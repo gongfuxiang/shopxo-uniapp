@@ -1,17 +1,17 @@
 <template>
     <view class="footer-nav flex-row jc-c align-c">
-        <view class="footer-nav-content flex-row jc-c align-c w" :style="style_container">
-            <ul class="flex-row jc-sa align-c w">
-                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" @mouseenter="is_hover = index" @mouseleave="is_hover = 0">
-                    <view v-if="nav_style !== 2" class="img re">
-                        <view class="img-item abs radius-xs animate-linear w" :class="is_hover != index ? 'active' : ''">
-                            <!-- <image-empty v-model="item.img[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty> -->
+        <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
+            <ul class="flex-row jc-sa align-c wh padding-0">
+                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" @mouseenter="is_active = index" @mouseleave="is_active = 0">
+                    <view v-if="nav_style !== 2" class="img pr">
+                        <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
+                            <img :src="item.img[0].url" class="wh-auto" />
                         </view>
-                        <view class="img-item abs radius-xs animate-linear w" :class="is_hover == index ? 'active' : ''">
-                            <!-- <image-empty v-model="item.img_checked[0]" error-img-style="width:1.5rem;height:1.5rem;"></image-empty> -->
+                        <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
+                            <img :src="item.img_checked[0].url" class="wh-auto" />
                         </view>
                     </view>
-                    <span v-if="nav_style !== 1" class="animate-linear size-12 re z-i" :style="is_hover == index ? text_color_checked : default_text_color">{{ item.name }}</span>
+                    <span v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</span>
                 </li>
             </ul>
         </view>
@@ -35,7 +35,7 @@
                 nav_style: 0,
                 default_text_color: '',
                 text_color_checked: '',
-                is_hover: 0,
+                is_active: 0,
             };
         },
         mounted() {
@@ -57,10 +57,40 @@
                 } else {
                     footer_height = 70;
                 }
-                // footer_nav_counter_store.padding_footer_computer(footer_height);
+                this.$emit('footer-height', footer_height);
             },
         },
     };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+    .footer-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        /* #ifdef H5 */
+        max-width: 800px;
+        /* #endif */
+        margin: 0 auto;
+        padding: 0;
+        cursor: pointer;
+        background-color: transparent;
+        .footer-nav-content {
+            min-height: 140rpx;
+            .img {
+                width: 40rpx;
+                height: 40rpx;
+                .img-item {
+                    width: 44rpx;
+                    height: 44rpx;
+                    opacity: 0;
+                    &.active {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+</style>

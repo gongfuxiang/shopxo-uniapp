@@ -1,14 +1,15 @@
 <template>
-    <view class="ht flex-col">
+    <view class="ht">
         <componentDiyHeader></componentDiyHeader>
-        <view class="flex-1" v-if="value.diy_data.length > 0">
+        <view v-if="value.diy_data.length > 0" :style="diy_content_style">
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <componentDiySearch></componentDiySearch>
                 <componentDiyAuxiliaryLine v-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
                 <componentFloatWindow v-if="item.key == 'float-window'" :value="item.com_data"></componentFloatWindow>
+                <componentTextTitle v-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
             </view>
         </view>
-        <componentDiyFooter :value="value.footer.com_data"></componentDiyFooter>
+        <componentDiyFooter :value="value.footer.com_data" @footer-height="footer_height_computer"></componentDiyFooter>
     </view>
 </template>
 
@@ -18,6 +19,7 @@
     import componentDiySearch from '@/components/diy/search';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentFloatWindow from '@/components/diy/float-window';
+    import componentTextTitle from '@/components/diy/text-title';
     export default {
         name: 'diy',
         props: {
@@ -32,9 +34,26 @@
             componentDiySearch,
             componentDiyAuxiliaryLine,
             componentFloatWindow,
+            componentTextTitle
         },
         data() {
-            return {};
+            return {
+                // 底部菜单导航高度计算
+                padding_footer_computer: 140,
+            };
+        },
+
+                computed: {
+          diy_content_style(){
+              return {
+                  paddingBottom: this.padding_footer_computer
+              }
+          }
+                },
+        methods: {
+            footer_height_computer(number) {
+                this.padding_footer_computer = number * 2 + 'rpx';
+            },
         },
     };
 </script>
