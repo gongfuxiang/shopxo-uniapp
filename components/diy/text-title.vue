@@ -1,14 +1,14 @@
 <template>
     <view :style="style_container">
         <view class="pr flex-row" :class="title_center">
-            <view class="z-i pr-15" :style="title_style" @click="url_open">{{ form.title || '标题' }}</view>
+            <view class="z-i pr-15" :style="title_style" @click="url_open_event(form.title_link)">{{ form.title || '标题' }}</view>
             <view class="flex-row gap-10 align-c right-0 pa">
                 <template v-if="form.keyword_show == '1'">
-                    <view v-for="item in keyword_list" :key="item.id" :style="keyword_style">
+                    <view v-for="item in keyword_list" :key="item.id" :style="keyword_style" @click="url_open_event(item.link)">
                         {{ item.title }}
                     </view>
                 </template>
-                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style">{{ form.right_title }}<iconfont name="icon-arrow-right" :size="right_size" :color="new_style.right_color || '#999'"></iconfont>
+                <view v-if="form.right_show == '1'" class="nowrap" :style="right_style" @click="url_open_event(form.right_link)">{{ form.right_title }}<iconfont name="icon-arrow-right" :size="right_size" :color="new_style.right_color || '#999'"></iconfont>
                 </view>
             </view>
         </view>
@@ -52,7 +52,6 @@ export default {
     },
     methods: {
         set_keyword_list() {
-            console.log(this.form.keyword_list.filter(item => item.is_show == '1'));
             this.keyword_list = this.form.keyword_list.filter(item => item.is_show == '1');
         },
         set_common_styles() {
@@ -73,10 +72,9 @@ export default {
             // 通用样式区
             this.style_container = common_styles_computer(common_style);
         },
-        url_open() {
-            const { button_jump, button_link} = this.form;
-            if (button_jump == 'link' && !is_obj_empty(button_link)) {
-                app.globalData.url_open(button_link.page)
+        url_open_event(link) {
+            if (!is_obj_empty(link)) {
+                app.globalData.url_open(link.page)
             }
         }
     },
