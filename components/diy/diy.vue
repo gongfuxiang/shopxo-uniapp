@@ -1,7 +1,7 @@
 <template>
-    <view>
+    <view class="ht flex-col">
         <componentDiyHeader></componentDiyHeader>
-        <view v-if="value.diy_data.length > 0">
+        <view class="flex-1" v-if="value.diy_data.length > 0">
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <componentDiySearch></componentDiySearch>
                 <componentDiyAuxiliaryLine v-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
