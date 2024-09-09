@@ -94,7 +94,7 @@ export function gradient_handle(color_list, direction, is_return_all = true) {
  * @returns {string}
  */
 export function padding_computer(new_style) {
-    return `padding: ${new_style.padding_top || 0}px ${new_style.padding_right || 0}px ${new_style.padding_bottom || 0}px ${new_style.padding_left || 0}px;`;
+    return `padding: ${new_style.padding_top*2 || 0}rpx ${new_style.padding_right*2 || 0}rpx ${new_style.padding_bottom*2 || 0}rpx ${new_style.padding_left*2 || 0}rpx;`;
 }
 /**
  * 设置外边距的方法
@@ -103,7 +103,7 @@ export function padding_computer(new_style) {
  * @returns {string}
  */
 export function margin_computer(new_style) {
-    return `margin: ${new_style.margin_top || 0}px ${new_style.margin_right || 0}px ${new_style.margin_bottom || 0}px ${new_style.margin_left || 0}px;`;
+    return `margin: ${new_style.margin_top*2 || 0}rpx ${new_style.margin_right*2 || 0}rpx ${new_style.margin_bottom*2 || 0}rpx ${new_style.margin_left*2 || 0}rpx;`;
 }
 /**
  * 设置圆角的方法
@@ -112,7 +112,7 @@ export function margin_computer(new_style) {
  * @returns {string}
  */
 export function radius_computer(new_style) {
-    return `border-radius: ${new_style.radius_top_left || 0}px ${new_style.radius_top_right || 0}px ${new_style.radius_bottom_right || 0}px ${new_style.radius_bottom_left || 0}px;`;
+    return `border-radius: ${new_style.radius_top_left*2 || 0}rpx ${new_style.radius_top_right*2 || 0}rpx ${new_style.radius_bottom_right*2 || 0}rpx ${new_style.radius_bottom_left*2 || 0}rpx;`;
 }
 /**
  * 设置阴影样式
@@ -121,7 +121,7 @@ export function radius_computer(new_style) {
  * @returns {string}
  */
 export function box_shadow_computer(new_style) {
-    return `box-shadow: ${new_style.box_shadow_x || 0}px ${new_style.box_shadow_y || 0}px ${new_style.box_shadow_blur || 0}px ${new_style.box_shadow_spread || 0}px ${new_style.box_shadow_color || 'rgba(0,0,0,0)'};`;
+    return `box-shadow: ${new_style.box_shadow_x*2 || 0}rpx ${new_style.box_shadow_y*2 || 0}rpx ${new_style.box_shadow_blur*2 || 0}rpx ${new_style.box_shadow_spread*2 || 0}rpx ${new_style.box_shadow_color || 'rgba(0,0,0,0)'};`;
 }
 /**
  * 设置阴影样式
