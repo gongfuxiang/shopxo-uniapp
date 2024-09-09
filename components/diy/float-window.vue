@@ -1,6 +1,6 @@
 <template>
     <view v-if="form.button_img.length > 0" class="pa" :style="style">
-        <view class="flex-row align-c jc-c suspension">
+        <view class="flex-row align-c jc-c" @click="url_open">
             <view class="spread flex-row align-c jc-c">
                 <block v-if="new_style.float_style == 'diffuse'">
                     <view class="ring" :style="`background-color: ${ color }`"></view>
@@ -13,38 +13,47 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            value: {
-                type: Object,
-                default: () => {
-                    return {};
-                },
+const app = getApp();
+import { is_obj_empty } from '../../common/js/common/common';
+export default {
+    props: {
+        value: {
+            type: Object,
+            default: () => {
+                return {};
             },
         },
-        data() {
-            return {
-                form: {},
-                new_style: {},
-                style: '',
-                color: ''
-            };
-        },
-        created() {
-            this.form = this.value.content;
-            this.new_style = this.value.style;
-            const { float_style, float_style_color, display_location, offset_number } = this.value.style;
-            this.color = float_style == 'shadow' ? `box-shadow: 0 5px 20px ${ float_style_color }` : float_style_color;
-            let location = `right: 10px;`;
-            if (display_location == 'left') {
-                location = `left: 10px;`;
+    },
+    data() {
+        return {
+            form: {},
+            new_style: {},
+            style: '',
+            color: ''
+        };
+    },
+    created() {
+        this.form = this.value.content;
+        this.new_style = this.value.style;
+        const { float_style, float_style_color, display_location, offset_number } = this.value.style;
+        this.color = float_style == 'shadow' ? `box-shadow: 0 5px 20px ${ float_style_color }` : float_style_color;
+        let location = `right: 10px;`;
+        if (display_location == 'left') {
+            location = `left: 10px;`;
+        }
+        this.style = `bottom: ${((offset_number / window.innerHeight) * 100).toFixed(4) + '%'};` + location;
+    },
+    methods: {
+        url_open() {
+            const { button_jump, button_link} = this.form;
+            if (button_jump == 'link' && !is_obj_empty(button_link)) {
+                app.globalData.url_open(button_link.page)
+            } else {
+                console.log('客服');
             }
-            this.style = `bottom: ${((offset_number / window.innerHeight) * 100).toFixed(4) + '%'};` + location;
-        },
-        methods: {
-            
-        },
-    };
+        }
+    },
+};
 </script>
 
 <style scoped lang="scss">
