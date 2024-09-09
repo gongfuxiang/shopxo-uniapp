@@ -2,12 +2,11 @@
     <view v-if="form.button_img.length > 0" class="pa" :style="style">
         <view class="flex-row align-c jc-c suspension">
             <view class="spread flex-row align-c jc-c">
-                {{ new_style.float_style }}
                 <block v-if="new_style.float_style == 'diffuse'">
-                    <view class="ring"></view>
-                    <view class="ring"></view>
+                    <view class="ring" :style="`background-color: ${ color }`"></view>
+                    <view class="ring" :style="`background-color: ${ color }`"></view>
                 </block>
-                <image :src="form.button_img[0].url" :class="{'shadow': new_style.float_style == 'shadow'}"></image>
+                <image :src="form.button_img[0].url" class="img" :style="color" fit="cover"></image>
             </view>
         </view>
     </view>
@@ -34,8 +33,8 @@
         created() {
             this.form = this.value.content;
             this.new_style = this.value.style;
-            const { float_style_color, display_location, offset_number } = this.value.style;
-            this.color = float_style_color;
+            const { float_style, float_style_color, display_location, offset_number } = this.value.style;
+            this.color = float_style == 'shadow' ? `box-shadow: 0 5px 20px ${ float_style_color }` : float_style_color;
             let location = `right: 10px;`;
             if (display_location == 'left') {
                 location = `left: 10px;`;
@@ -49,17 +48,10 @@
 </script>
 
 <style scoped lang="scss">
-:deep(.el-image) {
-    width: 4.5rem;
-    height: 4.5rem;
+.img {
+    width: 100rpx;
+    height: 100rpx;
     border-radius: 50%;
-    .image-slot img {
-        width: 3rem;
-        height: 3rem
-    }
-}
-.shadow {
-    box-shadow: 0 5px 20px v-bind(color);
 }
 /**
 * 呼吸灯
@@ -67,16 +59,16 @@
 .spread {
     position: relative;
     z-index: 1;
-    width: 6rem;
-    height: 6rem;
+    width: 100rpx;
+    height: 100rpx;
+    border-radius: 50%;
 }
 .spread .ring {
     /* 速度为1.5 * 层数 = 实际运行速度，速度修改则 animation-delay 属性也修改相同速度 */
     animation: pulsing 1.5s ease-out infinite;
-    background-color: v-bind(color);
     border-radius: 100%;
-    width: 5rem;
-    height: 5rem;
+    width: 100rpx;
+    height: 100rpx;
     position: absolute;
 }
 /* 速度为1*层数 */
