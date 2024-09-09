@@ -88,7 +88,7 @@
                 // 是否开启微信隐私弹窗授权提示、仅首页展示（0否, 1是）
                 is_weixin_privacy_setting: 1,
                 weixin_privacy_setting_timer: null,
-                
+
                 // 弹出获取用户当前位置（0否, 1是）
                 get_user_location_status: 0,
                 get_user_location_timer: null,
@@ -122,7 +122,6 @@
 
                 // 加载动画类型（0logo, 1名称）
                 loading_content_type: 0,
-
 
                 // 数据缓存key
                 // 场景值
@@ -328,7 +327,7 @@
 
                 // 拼接标识
                 var join = url.indexOf('?') == -1 ? '?' : '&';
-                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang+'&theme='+theme;
+                return url + join + 'system_type=' + this.data.system_type + '&application=app&application_client_type=' + client_value + '&token=' + token + '&uuid=' + uuid + referrer_params + user_location_params + '&lang=' + lang + '&theme=' + theme;
             },
 
             /**
@@ -351,7 +350,7 @@
              */
             user_is_bind_mobile(user, object, method, params, is_to_login = false) {
                 if ((user || null) != null && (user.mobile || null) == null && parseInt(user.is_mandatory_bind_mobile || 0) == 1) {
-                    if(is_to_login) {
+                    if (is_to_login) {
                         this.login_confirm_tips_modal(this, object, method, params);
                     }
                     return true;
@@ -393,7 +392,7 @@
                     return false;
                 } else {
                     // 是否需要绑定手机
-                    if(this.user_is_bind_mobile(user, object, method, params, true)) {
+                    if (this.user_is_bind_mobile(user, object, method, params, true)) {
                         return false;
                     }
                 }
@@ -529,27 +528,27 @@
             login_confirm_tips_modal(self, object, method, params) {
                 // 是否tabbar页面
                 var page = self.current_page(false);
-                var is_tabbar = self.is_tabbar_pages('/'+page);
+                var is_tabbar = self.is_tabbar_pages('/' + page);
                 // 非初始化 并且 非tabbar页面则关闭当前页面并跳转登录页面
-                if(method == 'init' && !is_tabbar) {
+                if (method == 'init' && !is_tabbar) {
                     uni.redirectTo({
-                        url: '/pages/login/login'
+                        url: '/pages/login/login',
                     });
-                // 初始化页面并且是tabbar页面
-                } else if(method == 'init' && is_tabbar) {
+                    // 初始化页面并且是tabbar页面
+                } else if (method == 'init' && is_tabbar) {
                     var key = this.data.cache_user_no_login_page_status_data_key;
                     var data = uni.getStorageSync(key) || [];
-                    if(data.indexOf(page) == -1) {
+                    if (data.indexOf(page) == -1) {
                         data.push(page);
                         uni.setStorageSync(key, data);
                         uni.navigateTo({
-                            url: '/pages/login/login'
+                            url: '/pages/login/login',
                         });
                     }
-                // 非初始化则直接跳转登录页面
-                } else if(method != 'init') {
+                    // 非初始化则直接跳转登录页面
+                } else if (method != 'init') {
                     uni.navigateTo({
-                        url: '/pages/login/login'
+                        url: '/pages/login/login',
                     });
                 }
             },
@@ -954,7 +953,7 @@
              */
             open_web_view(value, is_redirect = false) {
                 var url = '/pages/web-view/web-view?url=' + encodeURIComponent(value);
-                if(is_redirect) {
+                if (is_redirect) {
                     uni.redirectTo({
                         url: url,
                     });
@@ -1236,7 +1235,7 @@
             get_config(key, default_value) {
                 // 获取全部缓存
                 var config = uni.getStorageSync(this.data.cache_config_info_key) || null;
-                if((key || null) == null) {
+                if ((key || null) == null) {
                     return config;
                 }
 
@@ -1289,7 +1288,7 @@
                         if (res.networkType != 'none') {
                             // 获取配置本地缓存
                             var config = self.get_config();
-                            if(config != null) {
+                            if (config != null) {
                                 // 公共配置初始化返回处理
                                 self.init_config_result_handle(config, self);
                             }
@@ -1321,7 +1320,7 @@
                                         if (res.data.code == -10000) {
                                             self.data.common_data_init_status = 1;
                                         }
-                            
+
                                         // 首次则再次初始化配置、站点关闭状态则不处理
                                         if ((status || 0) == 0 && self.data.common_data_init_status == 0) {
                                             self.init_config(1, object, method, params);
@@ -1522,9 +1521,9 @@
             is_page(value) {
                 var arr = ['/pages', 'pages/'];
                 var status = arr.indexOf(value.substr(0, 6)) != -1;
-                if(!status) {
+                if (!status) {
                     // 是否打开插件地址
-                    if(arr.indexOf(value.substr(0, 15) == 'plugin-private:')) {
+                    if (arr.indexOf(value.substr(0, 15) == 'plugin-private:')) {
                         status = true;
                     }
                 }
@@ -1537,7 +1536,7 @@
                     // #ifdef MP
                     // 小程序最多打开10层页面
                     var pages = getCurrentPages();
-                    if(pages.length >= 10) {
+                    if (pages.length >= 10) {
                         is_redirect = true;
                     }
                     // #endif
@@ -1586,7 +1585,7 @@
                                 }
                             }
                         } else {
-                            this.showToast(i18n.t('shopxo-uniapp.app.1244fe') + '（'+value + '）');
+                            this.showToast(i18n.t('shopxo-uniapp.app.1244fe') + '（' + value + '）');
                         }
                     }
                 }
@@ -1794,9 +1793,9 @@
                     // 拼接H5地址
                     var host = this.get_config('config.common_app_h5_url', '');
                     // #ifdef H5
-                    if(host == '') {
+                    if (host == '') {
                         // H5模式下、未指定H5地址则获取当前host
-                        host = window.location.href.split('#')[0]+'#/';
+                        host = window.location.href.split('#')[0] + '#/';
                     }
                     // #endif
                     // 处理中间拼接的斜杠是否重复
@@ -1925,7 +1924,7 @@
                 result['url'] = this.get_page_url();
                 // #ifdef H5 || APP
                 // 是有效的url地址则通过#号分割处理参数
-                if(this.is_url(result['url'])) {
+                if (this.is_url(result['url'])) {
                     result['url'] = this.page_url_protocol(result.url.split('#')[0] + '#' + (result.path.substr(0, 1) == '/' ? '' : '/') + result.path + result.query);
                 }
                 // #endif
@@ -2072,7 +2071,7 @@
                 // 当前平台
                 var client_value = this.application_client();
                 // 是否清除用户登录信息
-                if(is_remove_user) {
+                if (is_remove_user) {
                     // 用户登录缓存
                     uni.removeStorageSync(this.data.cache_user_login_key);
                     // 用户信息缓存
@@ -2088,7 +2087,7 @@
                 uni.removeStorageSync(this.data.cache_app_star_tips_interval_time_key);
 
                 // 非小程序则两秒后回到首页
-                this.showToast(i18n.t('shopxo-uniapp.app.'+((client_value == 'mp' || !is_remove_user) ? '0gwt7z' : '87yghj')), 'success');
+                this.showToast(i18n.t('shopxo-uniapp.app.' + (client_value == 'mp' || !is_remove_user ? '0gwt7z' : '87yghj')), 'success');
             },
 
             // 是否站点变灰
@@ -2628,16 +2627,16 @@
                         },
                     };
                 }
-                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : (user_location.name || user_location.address || '');
+                user_location['text'] = user_location.status == 0 ? i18n.t('shopxo-uniapp.app.4v6q86') : user_location.name || user_location.address || '';
                 return user_location;
             },
 
             // 获取用户当前位置
             get_user_location() {
-                if(this.data.get_user_location_status == 1) {
+                if (this.data.get_user_location_status == 1) {
                     var cache_key = this.data.cache_userlocation_key;
                     var result = uni.getStorageSync(cache_key) || null;
-                    if(result == null) {
+                    if (result == null) {
                         // 当前对象
                         var self = this;
                         // 当前平台
@@ -2673,14 +2672,14 @@
                             // 是否可以读取位置权限
                             var status = true;
                             // 微信环境、必须先同意隐私权限后再弹出获取用户位置权限
-                            if(client_value == 'weixin' && !is_weixin_privacy) {
+                            if (client_value == 'weixin' && !is_weixin_privacy) {
                                 status = false;
                             }
                             // app环境、必须先初始化完成有网络后再弹出获取用户位置权限
-                            if((client_value == 'ios' || client_value == 'android') && !is_network) {
+                            if ((client_value == 'ios' || client_value == 'android') && !is_network) {
                                 status = false;
                             }
-                            if(status) {
+                            if (status) {
                                 uni.getLocation({
                                     type: 'wgs84',
                                     success: function (res) {
@@ -2691,7 +2690,7 @@
                                             longitude: res.longitude || null,
                                             status: 1,
                                         });
-                                    }
+                                    },
                                 });
                                 clearInterval(self.data.get_user_location_timer);
                             }
@@ -2723,9 +2722,9 @@
             // 商品访问数据存储缓存
             goods_data_cache_handle(goods_id, goods_data = null) {
                 var key = this.data.cache_goods_data_key;
-                if((goods_data || null) == null) {
+                if ((goods_data || null) == null) {
                     var res = uni.getStorageSync(key) || null;
-                    return (res != null && res.id == goods_id) ? res : null;
+                    return res != null && res.id == goods_id ? res : null;
                 } else {
                     uni.setStorageSync(key, goods_data);
                 }
@@ -2740,39 +2739,31 @@
                 // 当前页面地址
                 var url = this.current_page(false);
                 // 支付宝平台以下条件不增加标题
-                if(client_value == 'alipay') {
+                if (client_value == 'alipay') {
                     // 自定义头页面
-                    var pages_always = [
-                        'pages/plugins/realstore/detail/detail',
-                        'pages/plugins/seckill/index/index',
-                        'pages/plugins/points/index/index',
-                        'pages/plugins/coupon/index/index',
-                        'pages/plugins/signin/detail/detail',
-                        'pages/plugins/membershiplevelvip/index/index',
-                        'pages/plugins/ask/index/index',
-                    ];
+                    var pages_always = ['pages/plugins/realstore/detail/detail', 'pages/plugins/seckill/index/index', 'pages/plugins/points/index/index', 'pages/plugins/coupon/index/index', 'pages/plugins/signin/detail/detail', 'pages/plugins/membershiplevelvip/index/index', 'pages/plugins/ask/index/index'];
                     // 当前tab页面
-                    if(this.data.tabbar_pages.indexOf('/'+url) != -1 || pages_always.indexOf(url) != -1) {
+                    if (this.data.tabbar_pages.indexOf('/' + url) != -1 || pages_always.indexOf(url) != -1) {
                         value = '';
                     }
                 }
                 // 还没有标题则根据页面自动处理
-                if(value === null) {
+                if (value === null) {
                     // 解析处理key
                     var arr = url.split('/');
-                        arr = arr.slice(1);
-                        arr = arr.slice(0, -1);
-                    var key = 'pages.'+arr.join('-');
+                    arr = arr.slice(1);
+                    arr = arr.slice(0, -1);
+                    var key = 'pages.' + arr.join('-');
                     // 读取语言
                     var value = i18n.t(key);
                     // 首页则读取当前应用名称
-                    if(this.data.tabbar_pages[0] == '/'+url) {
+                    if (this.data.tabbar_pages[0] == '/' + url) {
                         value = this.get_application_title();
                     }
                 }
                 // 设置标题
                 uni.setNavigationBarTitle({
-                    title: value || ''
+                    title: value || '',
                 });
             },
 
