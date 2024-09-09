@@ -30,7 +30,7 @@ const initData = {
                 "tips": "请输入搜索内容",
                 "is_search_show": "0",
                 "search_type": "text",
-                "search_tips": "搜索",
+                "search_tips": "搜索", 
                 "hot_word_list": [],
                 "bottom_navigation_show": "1"
             },

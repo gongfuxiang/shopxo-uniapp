@@ -2,7 +2,7 @@
     <view class="footer-nav flex-row jc-c align-c bottom-line-exclude">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <ul class="flex-row jc-sa align-c wh padding-0">
-                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" @click="handle_event">
+                <li v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-link="item.link" @click="handle_event">
                     <view v-if="nav_style !== 2" class="img pr">
                         <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
                             <img :src="item.img[0].url" class="wh-auto ht-auto" />
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+    const app = getApp();
     import { common_styles_computer } from '@/common/js/common/common.js';
     export default {
         props: {
@@ -67,6 +68,7 @@
             handle_event(e) {
                 console.log(e);
                 this.is_active = e.currentTarget.dataset.index;
+                app.globalData.url_open(e.currentTarget.dataset.link.page);
             },
         },
     };
