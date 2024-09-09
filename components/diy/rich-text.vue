@@ -1,12 +1,11 @@
 <template>
     <view class="rich-text" :style="style_container">
-        <u-parse :content="content"></u-parse>
+        <mp-html :content="content" />
     </view>
 </template>
 
 <script>
     import { common_styles_computer } from '@/common/js/common/common.js';
-    import uParse from '@/components/u-parse/u-parse';
     export default {
         props: {
             value: {
