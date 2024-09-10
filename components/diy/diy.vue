@@ -4,10 +4,11 @@
         <view v-if="value.diy_data.length > 0" :style="diy_content_style">
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <!-- 基础组件 -->
-                <componentDiySearch></componentDiySearch>
+                <!-- <componentDiySearch></componentDiySearch> -->
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
                 <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
+                <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
                 <!-- 工具组件 -->
                 <componentFloatWindow v-else-if="item.key == 'float-window'" :value="item.com_data"></componentFloatWindow>
                 <componentTextTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
@@ -32,6 +33,7 @@
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text.vue';
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
+    import componentCarousel from '@/components/diy/carousel.vue';
     export default {
         name: 'diy',
         props: {
@@ -52,6 +54,7 @@
             componentFloatWindow,
             componentTextTitle,
             componentAuxiliaryBlank,
+            componentCarousel
         },
         data() {
             return {
