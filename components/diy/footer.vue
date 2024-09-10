@@ -63,7 +63,6 @@
                 } else {
                     footer_height = 70;
                 }
-                console.log(footer_height);
                 this.$emit('footer-height', footer_height);
             },
             handle_event(e) {
@@ -77,6 +76,7 @@
 
 <style lang="scss" scoped>
     .footer-nav {
+        z-index: 9;
         position: fixed;
         bottom: 0;
         left: 0;

@@ -949,8 +949,16 @@
     gap: 10rpx;
 }
 
+.gap-8 {
+    gap: 16rpx;
+}
+
 .gap-10 {
     gap: 20rpx;
+}
+
+.gap-12 {
+    gap: 24rpx;
 }
 
 /**
