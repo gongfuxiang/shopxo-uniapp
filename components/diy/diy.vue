@@ -10,6 +10,7 @@
                 <componentTextTitle v-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
                 <componentDiyAuxiliaryLine v-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
                 <componentDiyRichText v-if="item.key == 'rich-text'" :value="item.com_data"></componentDiyRichText>
+                <componentAuxiliaryBlank v-if="item.key == 'auxiliary-blank'" :value="item.com_data"></componentAuxiliaryBlank>
             </view>
         </view>
         <componentDiyFooter :value="value.footer.com_data" @footer-height="footer_height_computer"></componentDiyFooter>
@@ -24,6 +25,7 @@
     import componentTextTitle from '@/components/diy/text-title';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text.vue';
+    import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
     export default {
         name: 'diy',
         props: {
@@ -40,6 +42,7 @@
             componentDiyRichText,
             componentFloatWindow,
             componentTextTitle,
+            componentAuxiliaryBlank
         },
         data() {
             return {

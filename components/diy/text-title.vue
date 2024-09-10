@@ -55,12 +55,12 @@ export default {
             this.keyword_list = this.form.keyword_list.filter(item => item.is_show == '1');
         },
         set_common_styles() {
-            const {keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
+            const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
             // 关键字设置
-            this.keyword_style = `color:${keyword_color}; font-size: ${keyword_size * 2}rpx;`;
+            this.keyword_style = `color:${ keyword_color }; font-size: ${ keyword_size * 2 }rpx;`;
             // 右边按钮设置
             this.right_size = right_size * 2 + 'rpx';
-            this.right_style = `color:${right_color}; font-size: ${right_size * 2}rpx;`;
+            this.right_style = `color:${ right_color }; font-size: ${ right_size * 2 }rpx;`;
             // 标题样式设置
             let common_styles = '';
             if (title_weight == 'italic') {
@@ -68,7 +68,7 @@ export default {
             } else if (title_weight == '500') {
                 common_styles += `font-weight: 500`;
             }
-            this.title_style =  `color:${title_color}; font-size: ${title_size * 2}rpx; ${common_styles}`;
+            this.title_style =  `color:${ title_color }; font-size: ${ title_size * 2 }rpx; ${ common_styles }`;
             // 通用样式区
             this.style_container = common_styles_computer(common_style);
         },
