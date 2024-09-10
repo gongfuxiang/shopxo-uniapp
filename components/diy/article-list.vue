@@ -17,9 +17,9 @@
                         <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'ml-10' : 'align-e mt-10'">
                             <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                             <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                <icon name="eye"></icon>
+                                <iconfont name="icon-eye"></iconfont>
                                 <view>
-                                    {{ item.data.access_count ? item.data.access_count : '16' }}
+                                    {{ item.data.access_count ? item.data.access_count : '' }}
                                 </view>
                             </view>
                         </view>
@@ -41,7 +41,7 @@
                                 <view class="flex-row jc-sb gap-8 align-e mt-10">
                                     <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                        <icon name="eye"></icon>
+                                        <iconfont name="icon-eye"></iconfont>
                                         <view>
                                             {{ item.data.access_count ? item.data.access_count : '16' }}
                                         </view>
@@ -62,7 +62,7 @@
         props: {
             value: {
                 type: Object,
-                default: () => ({}),
+                default: () => {},
             },
             isCommonStyle: {
                 type: Boolean,
