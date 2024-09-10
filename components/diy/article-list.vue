@@ -1,25 +1,25 @@
 <template>
     <!-- 文章列表 -->
     <view class="oh" :style="style_container">
-        <view class="re oh" :style="style">
+        <view class="pr oh" :style="style">
             <view v-if="!['4'].includes(article_theme)" class="flex-warp" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
-                <view v-for="(item, index) in data_list" class="item bg-f oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style">
+                <view v-for="(item, index) in data_list" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style">
                     <template v-if="article_theme !== '3'">
                         <template v-if="item.new_cover.length > 0">
-                            <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="scaleToFill" />
+                            <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="widthFix" />
                         </template>
                         <template v-else>
-                            <image :src="item.data.cover" class="img" :style="img_radius" mode="scaleToFill" />
+                            <image :src="item.data.cover" class="img" :style="img_radius" mode="widthFix" />
                         </template>
                     </template>
                     <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
                         <view class="title" :class="article_theme == '3' ? 'text-line-1 flex-1 flex-width' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                        <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'ml-10' : 'align-e mt-10'">
+                        <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'margin-left' : 'align-e margin-top'">
                             <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                             <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                <icon name="eye"></icon>
+                                <iconfont name="icon-eye"></iconfont>
                                 <view>
-                                    {{ item.data.access_count ? item.data.access_count : '16' }}
+                                    {{ item.data.access_count ? item.data.access_count : '' }}
                                 </view>
                             </view>
                         </view>
@@ -29,21 +29,21 @@
             <view v-else class="oh" :class="article_theme_class">
                 <el-carousel :key="carousel_key" indicator-position="none" :interval="interval_time" arrow="never" :autoplay="is_roll ? true : false">
                     <el-carousel-item v-for="(item1, index1) in article_carousel_list" :key="index1" class="flex" :style="article_spacing">
-                        <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-f oh flex-col" :style="article_style">
+                        <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style">
                             <template v-if="item.new_cover.length > 0">
-                                <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="scaleToFill" />
+                                <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="widthFix" />
                             </template>
                             <template v-else>
-                                <image :src="item.data.cover" class="img" :style="img_radius" mode="scaleToFill" />
+                                <image :src="item.data.cover" class="img" :style="img_radius" mode="widthFix" />
                             </template>
                             <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
                                 <view class="title text-line-2" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
-                                <view class="flex-row jc-sb gap-8 align-e mt-10">
+                                <view class="flex-row jc-sb gap-8 align-e margin-top">
                                     <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
-                                        <icon name="eye"></icon>
+                                        <iconfont name="icon-eye"></iconfont>
                                         <view>
-                                            {{ item.data.access_count ? item.data.access_count : '16' }}
+                                            {{ item.data.access_count ? item.data.access_count : '' }}
                                         </view>
                                     </view>
                                 </view>
@@ -62,7 +62,7 @@
         props: {
             value: {
                 type: Object,
-                default: () => ({}),
+                default: () => {},
             },
             isCommonStyle: {
                 type: Boolean,
@@ -229,18 +229,19 @@
 <style lang="scss" scoped>
     .style1 {
         .item {
-            width: 100%;
+            max-width: 100%;
             .img {
-                height: 8.3rem;
-                width: 11rem;
+                height: 166rpx !important;
+                width: 220rpx;
             }
         }
     }
     .style2 {
         .item {
-            width: calc(50% - 0.5rem);
+            width: calc(50% - 10rpx);
             .img {
-                height: 18rem;
+                width: 100%;
+                height: 360rpx !important;
             }
         }
     }
@@ -249,7 +250,7 @@
             width: 100%;
             .img {
                 width: 100%;
-                height: 18rem;
+                height: 360rpx;
             }
         }
     }

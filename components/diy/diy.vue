@@ -1,5 +1,5 @@
 <template>
-    <view class="ht">
+    <view class="ht-auto min-ht">
         <componentDiyHeader></componentDiyHeader>
         <view v-if="value.diy_data.length > 0" :style="diy_content_style">
             <view v-for="(item, index) in value.diy_data" :key="index">
@@ -54,7 +54,7 @@
             componentFloatWindow,
             componentTextTitle,
             componentAuxiliaryBlank,
-            componentCarousel
+            componentCarousel,
         },
         data() {
             return {
