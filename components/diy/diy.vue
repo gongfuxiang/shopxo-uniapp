@@ -7,6 +7,7 @@
                 <componentDiySearch></componentDiySearch>
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
+                <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
                 <!-- 工具组件 -->
                 <componentFloatWindow v-else-if="item.key == 'float-window'" :value="item.com_data"></componentFloatWindow>
                 <componentTextTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
@@ -25,6 +26,7 @@
     import componentDiySearch from '@/components/diy/search';
     import componentDiyUserInfo from '@/components/diy/user-info';
     import componentDiyVideo from '@/components/diy/video';
+    import componentDiyArticleList from '@/components/diy/article-list';
     import componentFloatWindow from '@/components/diy/float-window';
     import componentTextTitle from '@/components/diy/text-title';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
@@ -44,6 +46,7 @@
             componentDiySearch,
             componentDiyUserInfo,
             componentDiyVideo,
+            componentDiyArticleList,
             componentDiyAuxiliaryLine,
             componentDiyRichText,
             componentFloatWindow,
