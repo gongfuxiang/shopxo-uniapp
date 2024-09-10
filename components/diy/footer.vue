@@ -1,4 +1,5 @@
 <template>
+    <!-- 底部导航 -->
     <view class="footer-nav flex-row jc-c align-c bottom-line-exclude">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <ul class="flex-row jc-sa align-c wh padding-0">

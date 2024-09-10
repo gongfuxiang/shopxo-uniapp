@@ -1,5 +1,5 @@
 <template>
-    <!-- 富文本 -->
+    <!-- 用户信息 -->
     <view class="rich-text" :style="style_container">
         <mp-html :content="content" />
     </view>

@@ -1,8 +1,7 @@
 <template>
-    <view>
-        <view :style="style_container">
-            <view :style="style"></view>
-        </view>
+    <!-- 横线 -->
+    <view :style="style_container">
+        <view :style="style"></view>
     </view>
 </template>
 
