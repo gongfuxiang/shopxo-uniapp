@@ -4,10 +4,10 @@
         <view class="pr padding-xxl" :style="style">
             <view class="flex-row jc-sb align-c margin-bottom-xxl">
                 <view class="flex-1 flex-row align-c gap-12">
-                    <img class="circle" src="@/static/images/common/user.png" :width="base_data.user_avatar_size" :height="base_data.user_avatar_size" />
+                    <img class="circle" :src="user_info.user.avatar" :width="base_data.user_avatar_size" :height="base_data.user_avatar_size" />
                     <view class="flex-col gap-8">
-                        <view class="text-size fw-b" :style="user_name_style">昵称</view>
-                        <view v-if="id_bool" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="user_id_style">ID:88888888</view>
+                        <view class="text-size fw-b" :style="user_name_style">{{ user_info.user.user_name_view || '' }}</view>
+                        <view v-if="id_bool" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code || '' }}</view>
                     </view>
                 </view>
                 <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
@@ -19,7 +19,7 @@
             </view>
             <view class="flex-row jc-sa align-c">
                 <template v-for="(item, index) in stats_list">
-                    <view v-if="user_info.includes(item.id)" :key="index" class="tc">
+                    <view v-if="config.includes(item.id)" :key="index" class="tc">
                         <view class="text-size fw-b margin-bottom-sm" :style="stats_number_style">{{ item.value }}</view>
                         <view class="text-size-xs" :style="stats_name_style">{{ item.name }}</view>
                     </view>
@@ -49,7 +49,7 @@
                     { id: 'goods_browse_count', name: '我的足迹', value: '1000' },
                     { id: 'integral_number', name: '我的积分', value: '10000' },
                 ],
-                user_info: ['order_count', 'goods_favor_count', 'goods_browse_count', 'integral_number'],
+                config: ['order_count', 'goods_favor_count', 'goods_browse_count', 'integral_number'],
                 icon_setting: [
                     { id: '1', img: [], icon: '', link: {} },
                     { id: '2', img: [], icon: '', link: {} },
@@ -57,9 +57,22 @@
                 base_data: {},
                 // 样式
                 user_name_style: '',
-                user_id_style: '',
+                number_code_style: '',
                 stats_name_style: '',
                 stats_number_style: '',
+                // 用户信息
+                user_info: {
+                    user: {
+                        avatar: '',
+                        user_name_view: '',
+                        number_code: '',
+                    },
+                    order_count: '0',
+                    goods_favor_count: '0',
+                    goods_browse_count: '0',
+                    message_unread_count: '0',
+                    integral_number: '0',
+                },
             };
         },
         mounted() {
@@ -69,13 +82,14 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
+                this.user_info = new_content.data;
                 if (new_content) {
-                    this.user_info = new_content.user_info;
+                    this.config = new_content.config;
                     this.icon_setting = new_content.icon_setting;
-                    this.id_bool = this.user_info ? this.user_info.includes('user_id') : true;
+                    this.id_bool = this.config ? this.config.includes('number_code') : true;
                     this.stats_list.map((item) => {
-                        if (this.user_info.includes(item.id)) {
-                            item.value = new_content[item.id];
+                        if (this.config.includes(item.id)) {
+                            item.value = new_content.data[item.id];
                         }
                     });
                 }
@@ -88,11 +102,11 @@
                         user_name_weight: new_style.user_name_weight,
                         user_name_size: new_style.user_name_size,
                         // id
-                        user_id_color_list: new_style.user_id_color_list,
-                        user_id_color: new_style.user_id_color,
-                        user_id_direction: new_style.user_id_direction,
-                        user_id_weight: new_style.user_id_weight,
-                        user_id_size: new_style.user_id_size,
+                        number_code_color_list: new_style.number_code_color_list,
+                        number_code_color: new_style.number_code_color,
+                        number_code_direction: new_style.number_code_direction,
+                        number_code_weight: new_style.number_code_weight,
+                        number_code_size: new_style.number_code_size,
                         // 图标设置
                         img_size: new_style.img_size,
                         img_space: new_style.img_space,
@@ -109,10 +123,10 @@
                 this.user_name_style = 'color:' + this.base_data.user_name_color + ';' + 'font-size:' + this.base_data.user_name_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.user_name_weight + ';';
                 // id样式
                 const new_gradient_obj = {
-                    color_list: this.base_data.user_id_color_list,
-                    direction: this.base_data.user_id_direction,
+                    color_list: this.base_data.number_code_color_list,
+                    direction: this.base_data.number_code_direction,
                 };
-                this.user_id_style = gradient_computer(new_gradient_obj) + 'color:' + this.base_data.user_id_color + ';' + 'font-size:' + this.base_data.user_id_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.user_id_weight + ';';
+                this.number_code_style = gradient_computer(new_gradient_obj) + 'color:' + this.base_data.number_code_color + ';' + 'font-size:' + this.base_data.number_code_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.number_code_weight + ';';
 
                 // 统计名称样式
                 this.stats_name_style = 'color:' + this.base_data.stats_name_color + ';' + 'font-size:' + this.base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.stats_name_weight + ';';
