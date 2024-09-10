@@ -1,25 +1,15 @@
 <template>
     <view class="pr" :style="style_container">
-        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+        <swiper circular="true" :autoplay="false" :interval="form.interval_time * 1000" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
             <block v-if="form.carousel_type == 'card'">
-                <swiper-item v-for="(item, index) in form.carousel_list" :key="index" class="flex-row align-c">
-                    <view class="swiper-item" :style="img_style" :animation="animationData[index]">
-                        <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
-                    </view>
-                </swiper-item>
-                <swiper-item v-for="(item, index1) in seat_list" :key="index1" class="flex-row align-c">
-                    <view class="swiper-item" :style="img_style" :animation="animationData[index1]">
+                <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c">
+                    <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData[index] }]">
                         <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
                     </view>
                 </swiper-item>
             </block>
             <block v-else>
-                <swiper-item v-for="(item, index) in form.carousel_list" :key="index">
-                    <view class="item-image flex-row jc-c align-c w h" :style="img_style">
-                        <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
-                    </view>
-                </swiper-item>
-                <swiper-item v-for="(item, index1) in seat_list" :key="index1">
+                <swiper-item v-for="(item, index) in new_list" :key="index">
                     <view class="item-image flex-row jc-c align-c w h" :style="img_style">
                         <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
                     </view>
@@ -62,12 +52,14 @@
                 // 指示器的样式
                 indicator_style: '',
                 seat_list: [],
+                new_list: [],
                 // 指示器选中的位置
                 actived_index: 0,
                 interval_types: '',
                 img_fit: '',
                 dot_style: '',
                 // 样式二的处理
+                animation: '',
                 animationData: {},
                 previousMargin: '0rpx',
                 nextMargin: '0rpx',
@@ -82,14 +74,15 @@
                 this.$nextTick(() => {
                     this.previousMargin = '82rpx';
                     this.nextMargin = '82rpx';
+                    // 数组合并
+                    this.seat_list = this.get_seat_list();
+                    this.new_list = this.seat_list.concat(this.form.carousel_list)
                     // 动态数据
-                    this.form.carousel_list.forEach((item, index) => {
-                        this.animationData[index] = {};
+                    this.new_list.forEach((item, index) => {
+                        this.animationData[index] = false;
                     });
+                    this.animationData[0] = true;
                 })
-                this.animation = uni.createAnimation();
-                this.animation.scale(this.zoomParam).step();
-                this.animationData[0] = this.animation.export();
             }
         },
         methods: {
@@ -103,8 +96,6 @@
                 this.indicator_style = this.get_indicator_style();
                 // 指示器位置
                 this.dot_style = `bottom: ${ common_style.padding_bottom * 2 + 12 }rpx;`;
-                
-                this.seat_list = this.get_seat_list();
                 // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
                 const { img_fit } = this.form;
                 let fit = 'scaleToFill'
@@ -166,15 +157,15 @@
                 } else {
                     this.actived_index = e.target.current;
                 }
-                console.log(this.actived_index);
+                console.log(e.target.current, 'cr');
                 if (this.form.carousel_type == 'card') {
                     for (let key in this.animationData) {
-                    	if (this.actived_index == key) {
-                    		this.animation.scale(this.zoomParam).step();
-                    		this.animationData[key] = this.animation.export();
+                    	if (e.target.current == key) {
+                            console.log(key);
+                    		this.animationData[key] = true;
                     	} else {
-                    		this.animation.scale(1.0).step();
-                    		this.animationData[key] = this.animation.export();
+                            console.log(key);
+                    		this.animationData[key] = false;
                     	}
                     }
                 }
@@ -212,6 +203,18 @@
     	width: 90%;
     	text-align: center;
     }
+    
+    .scale-defalt {
+        position: relative;
+        border-radius: 10px;
+        transform: scale(1);
+        transition: -webkit-transform 400ms linear, transform 400ms linear;
+        transform-origin: 50% 50% 0px;
+        &.scale-1 {
+            transform: scale(1.1);
+        }
+    }
+    
     .img {
         width: 100%;
         height: auto;
