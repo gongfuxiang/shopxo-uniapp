@@ -6,14 +6,16 @@
                 <view v-for="(item, index) in data_list" class="item bg-f oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style">
                     <template v-if="article_theme !== '3'">
                         <template v-if="item.new_cover.length > 0">
-                            <image-empty v-model="item.new_cover[0].url" class="img" :style="img_radius" :error-img-style="error_img"></image-empty>
+                            <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="scaleToFill" />
                         </template>
-                        <template v-else> <image-empty v-model="item.data.cover" class="img" :style="img_radius" :error-img-style="error_img"></image-empty> </template>
+                        <template v-else>
+                            <image :src="item.data.cover" class="img" :style="img_radius" mode="scaleToFill" />
+                        </template>
                     </template>
                     <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
-                        <view class="title" :class="article_theme == '3' ? 'text-line-1 flex-1 flex-width' : 'text-line-2'" :style="article_name">{{ !isEmpty(item.new_title) ? item.new_title : item.data.title }}</view>
+                        <view class="title" :class="article_theme == '3' ? 'text-line-1 flex-1 flex-width' : 'text-line-2'" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
                         <view class="flex-row jc-sb gap-8" :class="article_theme == '3' ? 'ml-10' : 'align-e mt-10'">
-                            <view :style="article_date">{{ field_show.includes('0') ? (!is_obj_empty(item.data) ? item.data.add_time : '2020-06-05 15:20') : '' }}</view>
+                            <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                             <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
                                 <icon name="eye"></icon>
                                 <view>
@@ -29,13 +31,15 @@
                     <el-carousel-item v-for="(item1, index1) in article_carousel_list" :key="index1" class="flex" :style="article_spacing">
                         <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-f oh flex-col" :style="article_style">
                             <template v-if="item.new_cover.length > 0">
-                                <image-empty v-model="item.new_cover[0].url" class="img" :style="img_radius" :error-img-style="error_img"></image-empty>
+                                <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="scaleToFill" />
                             </template>
-                            <template v-else> <image-empty v-model="item.data.cover" class="img" :style="img_radius" :error-img-style="error_img"></image-empty> </template>
+                            <template v-else>
+                                <image :src="item.data.cover" class="img" :style="img_radius" mode="scaleToFill" />
+                            </template>
                             <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                <view class="title text-line-2" :style="article_name">{{ !isEmpty(item.new_title) ? item.new_title : item.data.title }}</view>
+                                <view class="title text-line-2" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
                                 <view class="flex-row jc-sb gap-8 align-e mt-10">
-                                    <view :style="article_date">{{ field_show.includes('0') ? (!is_obj_empty(item.data) ? item.data.add_time : '2020-06-05 15:20') : '' }}</view>
+                                    <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
                                         <icon name="eye"></icon>
                                         <view>
@@ -67,6 +71,8 @@
         },
         data() {
             return {
+                style_container: '',
+                style: '',
                 // 数据
                 data_list: [],
                 // 风格
