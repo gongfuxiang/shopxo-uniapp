@@ -5,11 +5,12 @@
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <!-- 基础组件 -->
                 <!-- <componentDiySearch></componentDiySearch> -->
+                <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
                 <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
                 <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :value="item.com_data"></componentDiyArticleTabs>
-                <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
+                <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
                 <!-- 工具组件 -->
                 <componentFloatWindow v-else-if="item.key == 'float-window'" :value="item.com_data"></componentFloatWindow>
                 <componentTextTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentTextTitle>
@@ -26,16 +27,17 @@
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
     import componentDiySearch from '@/components/diy/search';
+    import componentCarousel from '@/components/diy/carousel.vue';
     import componentDiyUserInfo from '@/components/diy/user-info';
     import componentDiyVideo from '@/components/diy/video';
     import componentDiyArticleList from '@/components/diy/article-list';
     import componentDiyArticleTabs from '@/components/diy/article-tabs';
+    import componentDiyHotZone from '@/components/diy/hot-zone';
     import componentFloatWindow from '@/components/diy/float-window';
     import componentTextTitle from '@/components/diy/text-title';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text.vue';
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
-    import componentCarousel from '@/components/diy/carousel.vue';
     export default {
         name: 'diy',
         props: {
@@ -48,16 +50,17 @@
             componentDiyHeader,
             componentDiyFooter,
             componentDiySearch,
+            componentCarousel,
             componentDiyUserInfo,
             componentDiyVideo,
             componentDiyArticleList,
             componentDiyArticleTabs,
+            componentDiyHotZone,
             componentDiyAuxiliaryLine,
             componentDiyRichText,
             componentFloatWindow,
             componentTextTitle,
             componentAuxiliaryBlank,
-            componentCarousel,
         },
         data() {
             return {

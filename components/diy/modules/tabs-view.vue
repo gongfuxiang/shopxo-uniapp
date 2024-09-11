@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="tabs flex-row oh" :style="'column-gap: ' + tabs_spacing + 'px;'">
         <view v-for="(item, index) in tabs_list" :key="index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @click="handle_event">
-            <image v-if="item.img" :src="item.img[0].url" class="img" mode="scaleToFill" />
+            <image v-if="item.img" :src="item.img[0].url" class="img" mode="widthFix" />
             <view class="title" :style="title_style(index)">{{ item.title }}</view>
             <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
             <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
