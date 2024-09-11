@@ -57,7 +57,7 @@
 </template>
 
 <script>
-    import { common_styles_computer, padding_computer, radius_computer, is_obj_empty } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, radius_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -121,6 +121,7 @@
         },
         methods: {
             init() {
+                console.log(this.value);
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
                 // 判断是自动还是手动
@@ -196,7 +197,7 @@
                         this.article_carousel_list = [{ carousel_list: cloneList }];
                     }
                 }
-                if (new_style.common_style && this.isCommonStyle) {
+                if (this.isCommonStyle) {
                     this.style_container = common_styles_computer(new_style.common_style);
                 }
             },

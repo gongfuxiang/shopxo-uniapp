@@ -1,15 +1,13 @@
 <template>
     <!-- 文章列表 -->
-    <view class="tabs flex-row oh" :style="`column-gap: ${new_style.tabs_spacing}px;`">
-        <template v-for="(item, index) in form.tabs_list" :key="index">
-            <view class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == 0 ? ' active' : '')">
-                <image :src="item.img[0].url" class="img" mode="scaleToFill" />
-                <view class="title" :style="title_style(index)">{{ item.title }}</view>
-                <view class="desc" :style="tabs_theme_index == '1' && index == 0 ? tabs_check : ''">{{ item.desc }}</view>
-                <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check() : ''"></iconfont>
-                <view class="bottom_line" :style="tabs_check"></view>
-            </view>
-        </template>
+    <view class="tabs flex-row oh" :style="'column-gap: ' + tabs_spacing + 'px;'">
+        <view v-for="(item, index) in tabs_list" :key="index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @click="handle_event">
+            <image v-if="item.img" :src="item.img[0].url" class="img" mode="scaleToFill" />
+            <view class="title" :style="title_style(index)">{{ item.title }}</view>
+            <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
+            <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
+            <view class="bottom_line" :style="tabs_check"></view>
+        </view>
     </view>
 </template>
 
@@ -24,13 +22,14 @@
         },
         data() {
             return {
-                style_container: '',
-                style: '',
                 tabs_theme_index: '',
                 tabs_theme: '',
                 tabs_check: '',
-                title_style: '',
+                // title_style: '',
                 icon_tabs_check: '',
+                tabs_spacing: '',
+                tabs_list: [],
+                active_index: 0,
             };
         },
         mounted() {
@@ -40,6 +39,8 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
+                this.tabs_spacing = new_style.tabs_spacing;
+                this.tabs_list = new_content.tabs_list;
                 // 选项卡主题
                 this.tabs_theme = this.get_tabs_theme(new_content);
                 this.tabs_theme_index = new_content.tabs_theme;
@@ -87,15 +88,23 @@
                 }
                 return style;
             },
+
+            // 事件
+            // tabs切换事件
+            handle_event(e) {
+                const index = e.currentTarget.dataset.index;
+                this.active_index = index;
+                this.$emit('tabs-click', index);
+            },
         },
     };
 </script>
 <style lang="scss" scoped>
     .tabs {
-        max-width: 39rem;
+        max-width: 780rpx;
+        overflow: auto;
         .item {
-            padding: 0 0 0.5rem 0;
-            // margin: 0 1rem;
+            padding: 0 0 10rpx 0;
             position: relative;
             &:first-of-type {
                 margin-left: 0;
@@ -104,19 +113,19 @@
                 margin-right: 0;
             }
             .title {
-                font-size: 1.4rem;
+                font-size: 28rpx;
                 text-align: center;
             }
             .desc {
-                font-size: 1.1rem;
+                font-size: 22rpx;
                 color: #999;
                 text-align: center;
                 display: none;
             }
             .bottom_line {
                 width: 100%;
-                height: 0.3rem;
-                border-radius: 1rem;
+                height: 6rpx;
+                border-radius: 20rpx;
                 background-color: red;
                 position: absolute;
                 left: 0;
@@ -130,14 +139,14 @@
                 right: 0;
                 bottom: 0;
                 text-align: center;
-                font-size: 2rem;
+                font-size: 40rpx;
                 display: none;
             }
             .img {
-                width: 3.9rem;
-                height: 3.9rem;
+                width: 78rpx;
+                height: 78rpx;
                 border-radius: 100%;
-                border: 0.1rem solid transparent;
+                border: 2rpx solid transparent;
                 display: none;
             }
             &.tabs-style-1 {
@@ -155,8 +164,8 @@
                     }
                 }
                 .desc {
-                    border-radius: 2rem;
-                    padding: 0.2rem 0.6rem;
+                    border-radius: 40rpx;
+                    padding: 4rpx 12rpx;
                     display: inline-block;
                 }
             }
@@ -164,14 +173,14 @@
                 &.active {
                     .title {
                         background: #ff2222;
-                        border-radius: 2rem;
-                        padding: 0.2rem 1.2rem;
+                        border-radius: 40rpx;
+                        padding: 4rpx 24rpx;
                         color: #fff;
                     }
                 }
             }
             &.tabs-style-4 {
-                padding-bottom: 1.8rem;
+                padding-bottom: 36rpx;
                 &.active {
                     .title {
                         color: #ff2222;
@@ -186,10 +195,10 @@
                 align-items: center;
                 &.active {
                     .title {
-                        font-size: 1.1rem;
+                        font-size: 22rpx;
                         background: #ff5e5e;
-                        border-radius: 2rem;
-                        padding: 0.2rem 0.7rem;
+                        border-radius: 40rpx;
+                        padding: 4rpx 14rpx;
                         color: #fff;
                     }
                     .img {

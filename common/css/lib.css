@@ -945,6 +945,10 @@
 /**
  * gap
  */
+.gap-4 {
+    gap: 8rpx;
+}
+
 .gap-5 {
     gap: 10rpx;
 }
