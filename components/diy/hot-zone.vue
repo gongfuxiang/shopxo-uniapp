@@ -47,7 +47,6 @@
                 this.img_height = new_content?.hot.img_height || 1;
                 this.hot_data = new_content?.hot?.data || [];
                 this.style_container = common_styles_computer(new_style.common_style);
-                console.log(this.hot_data);
             },
             // 图片加载完成 获取宽高
             on_load_img(e) {
