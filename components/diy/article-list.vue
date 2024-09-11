@@ -216,9 +216,7 @@
                         return 'style5';
                 }
             },
-
-            // 事件
-
+            // 跳转链接
             url_event(e) {
                 app.globalData.url_event(e);
             },

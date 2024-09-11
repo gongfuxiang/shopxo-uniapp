@@ -11,7 +11,7 @@
                     </view>
                 </view>
                 <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
-                    <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }">
+                    <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @click="url_event">
                         <image v-if="item.img.length > 0" :src="item.img[0].url" class="border-radius-sm" mode="scaleToFill" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" />
                         <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size + 'rpx'" color="#666"></iconfont>
                     </view>
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+    const app = getApp();
     import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
@@ -131,6 +132,10 @@
                 // 统计名称样式
                 this.stats_name_style = 'color:' + this.base_data.stats_name_color + ';' + 'font-size:' + this.base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.stats_name_weight + ';';
                 this.stats_number_style = 'color:' + this.base_data.stats_number_color + ';' + 'font-size:' + this.base_data.stats_number_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.stats_number_weight + ';';
+            },
+            // 跳转链接
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };
