@@ -1,7 +1,7 @@
 <template>
-    <div class="dis-inline-block" :class="propClass">
+    <view class="dis-inline-block" :class="propClass">
         <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
-    </div>
+    </view>
 </template>
 
 <script>

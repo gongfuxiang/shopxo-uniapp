@@ -41,7 +41,6 @@
             get_video_height(data) {
                 uni.getSystemInfo({
                     success: (res) => {
-                        console.log(res);
                         let video_ratio = ``;
                         const width = res.windowWidth;
                         if (data == '4:3') {
