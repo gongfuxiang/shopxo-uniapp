@@ -79,7 +79,7 @@
                 };
                 // 默认是未选中的状态
                 let style = `${tabs_theme_style.tabs_title}`;
-                if (index == 0) {
+                if (index == this.active_index) {
                     let checked_style = tabs_theme_style.tabs_title_checked;
                     if (['2', '4'].includes(this.tabs_theme_index)) {
                         checked_style += this.tabs_check;
