@@ -1,10 +1,10 @@
 <template>
     <view class="pr" :style="style_container">
-        <swiper circular="true" :autoplay="false" :interval="form.interval_time * 1000" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c">
-                    <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData[index] }]">
-                        <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
+                    <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
+                        <image :src="item.carousel_img[0].url" class="img ht-auto" :style="img_style" :mode="img_fit"></image>
                     </view>
                 </swiper-item>
             </block>
@@ -60,28 +60,25 @@
                 dot_style: '',
                 // 样式二的处理
                 animation: '',
-                animationData: {},
+                animationData: 0,
                 previousMargin: '0rpx',
                 nextMargin: '0rpx',
-                zoomParam: 1.10,
             };
         },
         created() {
             this.form = this.value.content;
             this.new_style = this.value.style;
+            // 数组合并
+            this.seat_list = this.get_seat_list();
+            this.new_list = this.seat_list.concat(this.form.carousel_list);
+            
             this.init();
             if (this.form.carousel_type == 'card') {
                 this.$nextTick(() => {
                     this.previousMargin = '82rpx';
                     this.nextMargin = '82rpx';
-                    // 数组合并
-                    this.seat_list = this.get_seat_list();
-                    this.new_list = this.seat_list.concat(this.form.carousel_list)
-                    // 动态数据
-                    this.new_list.forEach((item, index) => {
-                        this.animationData[index] = false;
-                    });
-                    this.animationData[0] = true;
+                    
+                    this.animationData = 0;
                 })
             }
         },
@@ -147,27 +144,18 @@
                 }
             },
             slideChange(e) {
+                this.animationData = e.target.current;
                 if (e.target.current > this.form.carousel_list.length - 1) {
                     const seat_length = this.seat_list.length;
                     if (seat_length == 2 && e.target.current == 3) {
                         this.actived_index = 1;
+                    } else if (seat_length == 3) {
+                        this.actived_index = 0;
                     } else {
                         this.actived_index = e.target.current - this.seat_list.length;
                     }
                 } else {
                     this.actived_index = e.target.current;
-                }
-                console.log(e.target.current, 'cr');
-                if (this.form.carousel_type == 'card') {
-                    for (let key in this.animationData) {
-                    	if (e.target.current == key) {
-                            console.log(key);
-                    		this.animationData[key] = true;
-                    	} else {
-                            console.log(key);
-                    		this.animationData[key] = false;
-                    	}
-                    }
                 }
             }
         },
@@ -217,6 +205,5 @@
     
     .img {
         width: 100%;
-        height: auto;
     }
 </style>
