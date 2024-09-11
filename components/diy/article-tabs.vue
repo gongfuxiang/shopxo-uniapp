@@ -58,6 +58,7 @@
             },
             tabs_click_event(index) {
                 let new_data = JSON.parse(JSON.stringify(this.value));
+                new_data.content.theme = new_data.content.article_theme;
                 new_data.content.data_type = new_data.content.tabs_list[index].data_type;
                 new_data.content.category = new_data.content.tabs_list[index].category;
                 new_data.content.carousel_col = new_data.content.article_carousel_col;
