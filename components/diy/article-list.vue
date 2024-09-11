@@ -3,7 +3,7 @@
     <view class="oh" :style="style_container">
         <view class="pr oh" :style="style">
             <view v-if="!['4'].includes(article_theme)" class="flex-warp" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
-                <view v-for="(item, index) in data_list" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style" :data-url="item.data.url" @click="url_open">
+                <view v-for="(item, index) in data_list" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style" :data-value="item.data.url" @click="url_event">
                     <template v-if="article_theme !== '3'">
                         <template v-if="item.new_cover.length > 0">
                             <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="aspectFill" />
@@ -219,9 +219,8 @@
 
             // 事件
 
-            url_open(e) {
-                const url = e.currentTarget.dataset.url || '';
-                app.globalData.url_open(url);
+            url_event(e) {
+                app.globalData.url_event(e);
             },
         },
     };
