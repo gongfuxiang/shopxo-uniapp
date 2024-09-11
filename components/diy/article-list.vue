@@ -122,7 +122,6 @@
         },
         methods: {
             init() {
-                console.log(this.value);
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
                 // 判断是自动还是手动

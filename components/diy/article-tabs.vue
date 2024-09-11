@@ -71,7 +71,6 @@
                 new_data.content.is_cover = new_data.content.tabs_list[index].is_cover;
                 this.article_tabs = new_data;
                 this.key = get_math();
-                console.log(this.article_tabs);
             },
         },
     };
