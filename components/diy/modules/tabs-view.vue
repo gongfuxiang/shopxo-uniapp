@@ -103,6 +103,12 @@
     .tabs {
         max-width: 780rpx;
         overflow: auto;
+        &::-webkit-scrollbar {
+            display: none;
+            width: 0;
+            height: 0;
+            color: transparent;
+        }
         .item {
             padding: 0 0 10rpx 0;
             position: relative;
