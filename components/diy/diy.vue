@@ -4,7 +4,7 @@
         <view v-if="value.diy_data.length > 0" :style="diy_content_style">
             <view v-for="(item, index) in value.diy_data" :key="index">
                 <!-- 基础组件 -->
-                <!-- <componentDiySearch></componentDiySearch> -->
+                <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                 <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>

@@ -43,7 +43,6 @@ export default {
         }
         const { windowHeight } = uni.getSystemInfoSync();
         this.style = `bottom: ${((offset_number / windowHeight) * 100).toFixed(4) + '%'};` + location;
-        
     },
     methods: {
         url_open() {
