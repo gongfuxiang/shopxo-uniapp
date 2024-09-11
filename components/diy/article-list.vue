@@ -6,10 +6,10 @@
                 <view v-for="(item, index) in data_list" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style">
                     <template v-if="article_theme !== '3'">
                         <template v-if="item.new_cover.length > 0">
-                            <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="widthFix" />
+                            <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="aspectFill" />
                         </template>
                         <template v-else>
-                            <image :src="item.data.cover" class="img" :style="img_radius" mode="widthFix" />
+                            <image :src="item.data.cover" class="img" :style="img_radius" mode="aspectFill" />
                         </template>
                     </template>
                     <view class="jc-sb flex-1" :class="article_theme == '3' ? 'flex-row align-c' : 'flex-col'" :style="article_theme !== '0' ? content_padding : ''">
@@ -27,17 +27,17 @@
                 </view>
             </view>
             <view v-else class="oh" :class="article_theme_class">
-                <el-carousel :key="carousel_key" indicator-position="none" :interval="interval_time" arrow="never" :autoplay="is_roll ? true : false">
-                    <el-carousel-item v-for="(item1, index1) in article_carousel_list" :key="index1" class="flex" :style="article_spacing">
+                <swiper class="swiper" circular :autoplay="is_roll ? true : false" :interval="interval_time" :style="'height:' + carousel_height_computer">
+                    <swiper-item v-for="(item1, index1) in article_carousel_list" :key="index1" class="flex-row" :style="article_spacing">
                         <view v-for="(item, index) in item1.carousel_list" :key="index" class="item bg-white oh flex-col" :style="article_style">
                             <template v-if="item.new_cover.length > 0">
-                                <image :src="item.new_cover[0].url" class="img" :style="img_radius" mode="widthFix" />
+                                <image :src="item.new_cover[0].url" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
                             </template>
                             <template v-else>
-                                <image :src="item.data.cover" class="img" :style="img_radius" mode="widthFix" />
+                                <image :src="item.data.cover" class="img" :style="img_radius + article_item_height" mode="aspectFill" />
                             </template>
                             <view class="jc-sb flex-1 flex-col" :style="article_theme !== '0' ? content_padding : ''">
-                                <view class="title text-line-2" :style="article_name">{{ item.new_title ? item.new_title : item.data.title }}</view>
+                                <view class="title text-line-2" :style="article_name + article_name_height_computer">{{ item.new_title ? item.new_title : item.data.title }}</view>
                                 <view class="flex-row jc-sb gap-8 align-e margin-top">
                                     <view :style="article_date">{{ field_show.includes('0') ? item.data.add_time : '' }}</view>
                                     <view v-show="field_show.includes('1')" class="flex-row align-c gap-3" :style="article_page_view">
@@ -49,8 +49,8 @@
                                 </view>
                             </view>
                         </view>
-                    </el-carousel-item>
-                </el-carousel>
+                    </swiper-item>
+                </swiper>
             </view>
         </view>
     </view>
@@ -97,26 +97,21 @@
                 // 文章间距
                 article_spacing: '',
                 article_spacing_children: '',
-                article_item_height: '155',
+                article_item_height: '',
 
                 article_style: {},
                 // 轮播图列数
                 carousel_col: '2',
-                // 轮播图key值
-                carousel_key: '0',
                 // 轮播图定时轮播
                 interval_time: 2000,
                 // 轮播图是否滚动
                 is_roll: 1,
 
                 article_theme_class: '',
-                // 轮播图 计算间隔的空间。(gap * gap数量) / 模块数量
-                multicolumn_columns_width: '',
                 // 轮播高度
                 carousel_height_computer: '',
                 // 文章内容高度
                 article_name_height_computer: '',
-                article_name_line_height_computer: '',
                 // 文章轮播数据
                 article_carousel_list: [],
             };
@@ -165,32 +160,29 @@
                 } else if (this.article_theme == '4') {
                     // 更新轮播图的key，确保更换时能重新更新轮播图
                     this.carousel_col = new_content.carousel_col || '1';
-                    this.carousel_key = new_style.interval_time + new_style.is_roll;
                     // 滚动时间
                     this.interval_time = (new_style.interval_time || 2) * 1000;
                     // 是否滚动修改
                     this.is_roll = new_style.is_roll;
-                    this.article_item_height = `${new_style.article_height}px`;
-                    this.article_style += this.content_radius;
-                } else {
-                    // 轮播宽度
-                    const { carousel_col } = new_content;
-                    let gap = carousel_col !== '0' ? (new_style.article_spacing * carousel_col) / (Number(carousel_col.value) + 1) : '0';
+                    this.article_item_height = `max-height: ${new_style.article_height}px`;
                     // 计算间隔的空间。(gap * gap数量) / 模块数量
-                    this.multicolumn_columns_width = `width:calc(${100 / (Number(carousel_col.value) + 1)}% - ${gap}px);min-width:calc(${100 / (Number(carousel_col.value) + 1)}% - ${gap}px)`;
+                    const multicolumn_columns_width = `width:calc(${100 / (Number(this.carousel_col) + 1)}% - ${gap}px);min-width:calc(${100 / (Number(this.carousel_col) + 1)}% - ${gap}px)`;
+                    this.article_style += this.content_radius + multicolumn_columns_width;
+
+                    // 轮播宽度
+                    let gap = this.carousel_col !== '0' ? (new_style.article_spacing * this.carousel_col) / (Number(this.carousel_col) + 1) : '0';
                     // 轮播高度
                     this.carousel_height_computer = new_style.name_size * 2 + new_style.article_height + 'px';
 
                     // 文章内容高度
-                    this.article_name_height_computer = new_style.name_size * 2.4 + 'px';
-                    this.article_name_line_height_computer = new_style.name_size * 1.2 + 'px';
+                    this.article_name_height_computer = `height:${new_style.name_size * 2.4 * 2}rpx;line-height:${new_style.name_size * 1.2 * 2}rpx;`;
 
                     // 文章轮播数据
                     const cloneList = JSON.parse(JSON.stringify(this.data_list));
                     // 如果是分页滑动情况下，根据选择的行数和每行显示的个数来区分具体是显示多少个
                     if (cloneList.length > 0) {
                         // 每页显示的数量
-                        const num = Number(carousel_col) + 1;
+                        const num = Number(this.carousel_col) + 1;
                         // 存储数据显示
                         let nav_list = [];
                         // 拆分的数量
@@ -264,24 +256,10 @@
     }
     .style5 {
         .item {
-            width: v-bind(multicolumn_columns_width);
-            min-width: v-bind(multicolumn_columns_width);
+            width: 100%;
             .img {
                 width: 100%;
-                max-height: v-bind(article_item_height);
             }
-            .title {
-                height: v-bind(article_name_height_computer);
-                line-height: v-bind(article_name_line_height_computer);
-            }
-        }
-    }
-
-    :deep(.el-carousel) {
-        width: 100%;
-        .el-carousel__container {
-            // height: v-bind(article_item_height);
-            height: v-bind(carousel_height_computer);
         }
     }
 </style>
