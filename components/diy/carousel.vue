@@ -4,18 +4,41 @@
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
-                        <image :src="item.carousel_img[0].url" class="img ht-auto" :style="img_style" :mode="img_fit"></image>
+                        <block v-if="!is_obj_empty(item.carousel_img)">
+                            <image :src="item.carousel_img[0].url" class="img ht-auto" :style="img_style" :mode="img_fit"></image>
+                        </block>
+                    </view>
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @click="video_play(item.carousel_video)">
+                        <block v-if="new_style.video_type == 'img'">
+                            <image :src="new_style.video_img[0].url" class="video_img" mode="aspectFill"></image>
+                        </block>
+                        <block v-else>
+                            <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                        </block>
+                        <span v-if="!is_obj_empty(item.video_title)" :style="`color:${new_style.video_title_color};font-size: ${new_style.video_title_size}px;`">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
             <block v-else>
                 <swiper-item v-for="(item, index) in new_list" :key="index">
-                    <view class="item-image flex-row jc-c align-c w h" :style="img_style">
-                        <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
+                    <view class="item-image flex-row jc-c align-c wh-auto ht-auto pr" :style="img_style">
+                        <block v-if="!is_obj_empty(item.carousel_img)">
+                            <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
+                        </block>
+                    </view>
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @click="video_play(item.carousel_video)">
+                        <block v-if="new_style.video_type == 'img'">
+                            <image :src="new_style.video_img[0].url" class="video_img" mode="aspectFill"></image>
+                        </block>
+                        <block v-else>
+                            <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                        </block>
+                        <span v-if="!is_obj_empty(item.video_title)" :style="`color:${new_style.video_title_color};font-size: ${new_style.video_title_size}px;`">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
         </swiper>
+        <video :src="video_src" id="carousel_video" :autoplay="true" show-fullscreen-btn class="video_class"></video>
         <view v-if="new_style.is_show == '1'" :class="{'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
             <template v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
@@ -31,7 +54,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, radius_computer, is_obj_empty } from '@/common/js/common/common.js';
+    import { common_styles_computer, radius_computer, is_obj_empty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -58,6 +81,8 @@
                 interval_types: '',
                 img_fit: '',
                 dot_style: '',
+                video_style: '',
+                video_src: '',
                 // 样式二的处理
                 animation: '',
                 animationData: 0,
@@ -83,6 +108,7 @@
             }
         },
         methods: {
+            is_obj_empty,
             init() {
                 const { common_style, actived_color } = this.new_style;
                 // 用于样式显示
@@ -102,6 +128,8 @@
                     fit = 'aspectFit';
                 }
                 this.img_fit = fit;
+                // 视频播放按钮显示逻辑
+                this.video_style = this.get_video_style();
             },
             get_indicator_style() {
                 const { indicator_radius, indicator_style, indicator_size, color } = this.new_style;
@@ -157,6 +185,25 @@
                 } else {
                     this.actived_index = e.target.current;
                 }
+            },
+            get_video_style() {
+                const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding} = this.new_style;
+                let style = `bottom: ${video_bottom}px;`;
+                if (!is_obj_empty(video_radius)) {
+                    style += radius_computer(video_radius)
+                }
+                const data = {
+                    color_list: video_color_list,
+                    direction: video_direction,
+                }
+                style += gradient_computer(data) + padding_computer(video_padding) + `color: ${video_title_color};`;
+                return style;
+            },
+            video_play(list) {
+                this.video_src = list[0].url;
+                let videoContext = uni.createVideoContext('carousel_video');
+                videoContext.requestFullScreen();
+                videoContext.play();
             }
         },
     };
@@ -185,6 +232,7 @@
     	display: flex;
     	flex-wrap: wrap;
     	justify-content: center;
+        align-items: center;
     	margin-left: auto;
     	margin-right: auto;
     	height: 90%;
@@ -205,5 +253,22 @@
     
     .img {
         width: 100%;
+    }
+    .video_img {
+        max-width: 6rem;
+        height: 1.4rem;
+    }
+    .video-class {
+        max-width: 100%;
+    }
+    .x-middle {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    .video_class {
+        position: absolute;
+        height: 0px;
+        width: 0px;
     }
 </style>
