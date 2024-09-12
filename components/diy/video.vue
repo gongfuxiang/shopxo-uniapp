@@ -31,12 +31,11 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.video_img = new_content.video_img[0].url || '';
-                this.video = new_content.video[0].url || '';
-
-                // 视频比例
-                this.get_video_height(new_content.video_ratio);
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    video_img: new_content.video_img[0].url || '',
+                    video: new_content.video[0].url || '',
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
             get_video_height(data) {
                 uni.getSystemInfo({
@@ -51,7 +50,9 @@
                             // 16:9 保留两位小数
                             video_ratio = `height: ${(((width * 9) / 16) * 2).toFixed(2)}rpx;`;
                         }
-                        this.style = video_ratio;
+                        this.setData({
+                            style: video_ratio,
+                        });
                     },
                 });
             },

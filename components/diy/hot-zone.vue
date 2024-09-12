@@ -42,11 +42,13 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.img = new_content?.img[0].url;
-                this.img_width = new_content?.hot.img_width || 1;
-                this.img_height = new_content?.hot.img_height || 1;
-                this.hot_data = new_content?.hot?.data || [];
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    img: new_content.img[0].url,
+                    img_width: new_content.hot.img_width || 1,
+                    img_height: new_content.hot.img_height || 1,
+                    hot_data: new_content.hot.data || [],
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
             // 图片加载完成 获取宽高
             on_load_img(e) {
