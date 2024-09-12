@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="oh" :style="style_container">
         <view class="pr oh" :style="style">
-            <view v-if="!['4'].includes(article_theme)" class="flex-warp" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
+            <view v-if="!['4'].includes(article_theme)" class="flex-wrap" :class="article_theme_class" :style="article_theme !== '3' ? article_spacing : ''">
                 <view v-for="(item, index) in data_list" class="item bg-white oh" :class="article_theme == '0' ? 'flex-row' : 'flex-col'" :key="index" :style="article_style" :data-value="item.data.url" @tap="url_event">
                     <template v-if="article_theme !== '3'">
                         <template v-if="item.new_cover.length > 0">

@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" :class="propClass" @tap="open_popup">
+        <view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-wrap align-c" :class="propClass" @tap="open_popup">
             <text>{{$t('common.more_null')}}</text>
             <iconfont name="icon-fenlei-more"></iconfont>
         </view>

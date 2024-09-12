@@ -1,6 +1,6 @@
 <template>
     <view :class="theme_view">
-        <view class="flex-row flex-warp">
+        <view class="flex-row flex-wrap">
             <block v-if="propData.length > 0">
                 <view v-for="(item, index) in propData" :key="index" class="item margin-right-lg pr">
                     <text class="delete-icon pa z-i" @tap="upload_delete_event" :data-index="index">

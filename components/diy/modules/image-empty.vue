@@ -1,5 +1,5 @@
 <template>
-    <view class="oh" :style="empty_outer_style">
+    <view class="oh wh-auto ht-auto" :style="empty_outer_style">
         <image :src="imageUrl" @error="handleImageError" :mode="img_fit" :style="empty_style" />
     </view>
 </template>
@@ -24,7 +24,7 @@
         data() {
             return {
                 empty_outer_style: '',
-                empty_style: '',
+                empty_style: 'width: 100%; height: 100%;', // 有图片的时候显示为100%
                 imageUrl: '',
                 defaultImage: '/static/images/common/image-empty.png',
             };
@@ -38,10 +38,11 @@
                 if (is_obj(this.imageSrc)) {
                     img_url = !is_obj_empty(this.imageSrc) ? this.imageSrc.url : '';
                 }
+                // 没有图片的时候根据默认值来算
                 if (img_url == undefined || img_url == null || img_url == '') {
                     this.setData({
-                        empty_outer_style: 'background: #f4fcff;',
-                        empty_style: `top: 50%;transform: translateY(-50%);${ this.errorStyle }`
+                        empty_outer_style: 'background: #f4fcff;display:flex;align-items: center;justify-content: center;',
+                        empty_style: `${ this.errorStyle }`
                     })
                     img_url = this.defaultImage;
                 }

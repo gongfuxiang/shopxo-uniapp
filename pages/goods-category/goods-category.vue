@@ -26,7 +26,7 @@
                             <block v-if="category_show_level == 1">
                                 <!-- 一级模式 -->
                                 <scroll-view scroll-y class="ht-auto" :show-scrollbar="false">
-                                    <view class="model-one padding-sm oh flex-row flex-warp">
+                                    <view class="model-one padding-sm oh flex-row flex-wrap">
                                         <block v-for="(item, index) in category_list" :key="index">
                                             <view class="content-item cp" :data-value="item.id" @tap="category_event">
                                                 <view class="padding-sm">
@@ -58,7 +58,7 @@
                                         </scroll-view>
                                         <component-nav-more class="nav-more-top" :propTop="search_height + 'px'" :propStatus="popup_status" @open-popup="open_popup_event">
                                             <view class="nav-list-more">
-                                                <view class="flex-row flex-warp align-c">
+                                                <view class="flex-row flex-wrap align-c">
                                                     <block v-for="(item, index) in category_list" :key="index">
                                                         <view class="item tc cr-base cp text-size-xss" :id="'one-nav-item-' + index" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="nav_event">
                                                             <view :class="'icon-content circle br auto ' + (nav_active_index == index ? 'border-color-main' : '')">
@@ -214,7 +214,7 @@
                                                     <block v-if="(data_content.items || null) != null && data_content.items.length > 0">
                                                         <!-- 二级模式 -->
                                                         <block v-if="category_show_level == 2">
-                                                            <view class="two-content oh border-radius-main spacing-mb flex-row flex-warp">
+                                                            <view class="two-content oh border-radius-main spacing-mb flex-row flex-wrap">
                                                                 <block v-for="(v, index) in data_content.items" :key="index">
                                                                     <view class="content-item tc cp two-img" :data-value="v.id" @tap="category_event">
                                                                         <view class="content">
@@ -235,7 +235,7 @@
                                                                     </view>
                                                                     <view :data-value="v.id" @tap="category_event" class="arrow-right padding-right cr-grey text-size-xs">{{ $t('common.more') }}</view>
                                                                 </view>
-                                                                <view v-if="(v.items || null) != null && v.items.length > 0" class="oh border-radius-main spacing-mb flex-row flex-warp">
+                                                                <view v-if="(v.items || null) != null && v.items.length > 0" class="oh border-radius-main spacing-mb flex-row flex-wrap">
                                                                     <block v-for="(vs, index2) in v.items" :key="index2">
                                                                         <view class="content-item two-img tc cp" :data-value="vs.id" @tap="category_event">
                                                                             <view class="content">

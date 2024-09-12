@@ -113,7 +113,7 @@
                         <iconfont name="icon-close-o" size="28rpx" color="#999"></iconfont>
                     </view>
                 </view>
-                <view v-if="accounts_list.length > 0 && (accounts || null) != null" class="popup_user_detail_container padding-vertical-main flex-row flex-warp align-c tc text-size">
+                <view v-if="accounts_list.length > 0 && (accounts || null) != null" class="popup_user_detail_container padding-vertical-main flex-row flex-wrap align-c tc text-size">
                     <view class="flex-width-half">
                         <view class="item padding-vertical-lg radius margin-sm" :data-value="'/pages/plugins/coin/recharge-list/recharge-list?id=' + accounts.id" @tap="url_event">{{$t('pages.plugins-coin-recharge-list')}}</view>
                     </view>

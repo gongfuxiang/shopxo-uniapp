@@ -37,7 +37,7 @@
         <view v-if="new_style.is_show == '1'" :class="{'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
             <template v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
-                    <span :style="{ color: new_style.actived_color }" >{{ actived_index + 1 }}</span><span>/{{ form.carousel_list.length }}</span>
+                    <span :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</span><span>/{{ form.carousel_list.length }}</span>
                 </view>
             </template>
             <template v-else>
