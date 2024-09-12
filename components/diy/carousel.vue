@@ -184,19 +184,21 @@
                 }
             },
             slideChange(e) {
-                this.animationData = e.target.current;
+                let actived_index = e.target.current;
                 if (e.target.current > this.form.carousel_list.length - 1) {
                     const seat_length = this.seat_list.length;
                     if (seat_length == 2 && e.target.current == 3) {
-                        this.actived_index = 1;
+                        actived_index = 1;
                     } else if (seat_length == 3) {
-                        this.actived_index = 0;
+                        actived_index = 0;
                     } else {
-                        this.actived_index = e.target.current - this.seat_list.length;
+                        actived_index = e.target.current - this.seat_list.length;
                     }
-                } else {
-                    this.actived_index = e.target.current;
                 }
+                this.setData({
+                    animationData: e.target.current,
+                    actived_index: actived_index
+                })
             },
             get_video_style() {
                 const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding} = this.new_style;
@@ -217,11 +219,15 @@
                 })
                 this.$refs.popup.open();
                 const videoContext = uni.createVideoContext('carousel_video');
-                videoContext.play();      
+                if (!is_obj_empty(videoContext)) {
+                    videoContext.play();      
+                }
             },
             video_close() {
                 const videoContext = uni.createVideoContext('carousel_video');
-                videoContext.pause();
+                if (!is_obj_empty(videoContext)) {
+                    videoContext.pause();
+                }
                 this.$refs.popup.close();
             }
         },
