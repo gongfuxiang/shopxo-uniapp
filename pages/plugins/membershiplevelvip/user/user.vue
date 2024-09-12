@@ -130,7 +130,7 @@
                     </view>
 
                     <!-- 导航 -->
-                    <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm">
+                    <view v-if="nav_list.length > 0" class="nav oh flex-row flex-wrap padding-sm">
                         <block v-for="(item, index) in nav_list" :key="index">
                             <view class="flex-width-half">
                                 <view class="item bg-white border-radius-main margin-sm">

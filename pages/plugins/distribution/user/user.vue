@@ -120,7 +120,7 @@
                             <!-- 返佣统计 -->
                             <view v-if="stats_profit_data_list.length > 0" class="stats-container padding-sm border-radius-main bg-white pr">
                                 <view class="title-left-border text-size fw-b padding-vertical-sm padding-horizontal-main margin-left-sm">{{$t('user.user.q822fj')}}</view>
-                                <view class="flex-row flex-warp">
+                                <view class="flex-row flex-wrap">
                                     <block v-for="(item, index) in stats_profit_data_list" :key="index">
                                         <view class="flex-width-half">
                                             <view class="anti-mercenary-count bg-grey-f5 border-radius-main margin-sm">
@@ -137,7 +137,7 @@
                         </view>
 
                         <!-- 导航 -->
-                        <view v-if="nav_list.length > 0" class="nav oh flex-row flex-warp padding-sm" :class="(profit_ladder || null) != null ? 'nav-bottom' : 'padding-bottom-main'">
+                        <view v-if="nav_list.length > 0" class="nav oh flex-row flex-wrap padding-sm" :class="(profit_ladder || null) != null ? 'nav-bottom' : 'padding-bottom-main'">
                             <block v-for="(item, index) in nav_list" :key="index">
                                 <view class="flex-width-half">
                                     <view class="item bg-white border-radius-main margin-sm">

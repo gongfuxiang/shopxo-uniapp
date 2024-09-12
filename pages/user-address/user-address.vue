@@ -11,7 +11,7 @@
                                 <text>{{ item.province_name || '' }}{{ item.city_name || '' }}{{ item.county_name || '' }}{{ item.address || '' }}</text>
                             </view>
                         </view>
-                        <view class="flex-row align-c flex-warp padding-top-main">
+                        <view class="flex-row align-c flex-wrap padding-top-main">
                             <view class="padding-right-main">{{ item.name }}</view>
                             <view class="cr-grey">{{ item.tel }}</view>
                             <view v-if="(item.distance_value || null) != null && (item.distance_unit || null) != null" class="cr-grey text-size-xs flex-1 tr">{{$t('extraction-switch.extraction-switch.w94x36')}}{{ item.distance_value }}{{ item.distance_unit }}</view>

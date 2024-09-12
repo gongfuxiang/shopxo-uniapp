@@ -1165,7 +1165,7 @@ button[disabled].bg-grey {
 .align-b {
     align-items: baseline;
 }
-.flex-warp {
+.flex-wrap {
     flex-wrap: wrap;
 }
 .flex-nowrap {

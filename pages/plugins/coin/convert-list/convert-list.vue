@@ -58,7 +58,7 @@
             <component-popup :propShow="popup_send_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_send_accounts_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.q48666')}}</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="send_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="send_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
@@ -76,7 +76,7 @@
             <component-popup :propShow="popup_receive_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_receive_accounts_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">{{$t('convert-list.convert-list.47646p')}}</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="receive_accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="receive_accounts_list_event">{{$t('common.all')}}</view>
                         </view>
