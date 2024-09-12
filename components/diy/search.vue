@@ -13,7 +13,7 @@
                             <iconfont :name="!is_obj_empty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="'28rpx'" :color="new_style.icon_color"></iconfont>
                         </template>
                     </template>
-                    <span v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="`color: ${ new_style.tips_color }`">{{ form.tips }}</span>
+                    <span v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</span>
                 </view>
                 <view v-if="form.is_search_show == '1'" class="pa search-botton h flex-row align-c jc-c" :style="search_button">
                     <template v-if="form.search_type === 'text'">
@@ -60,24 +60,23 @@
             };
         },
         created() {
-            this.form = this.value.content;
-            this.new_style = this.value.style;
+            this.setData({
+                form: this.value.content,
+                new_style: this.value.style
+            });
             this.init();
         },
         methods: {
             is_obj_empty,
             init() {
                 const { search_button_radius, common_style } = this.new_style;
-                // 内部样式
-                this.style = this.get_style();
-                // 全局样式
-                this.style_container = this.isPageSettings ? '' : common_styles_computer(common_style);
-                // 按钮圆角
-                this.search_button_radius = radius_computer(search_button_radius);
-                // 搜索框设置
-                this.box_style = this.get_box_style();
-                // 搜索按钮显示
-                this.search_button = this.get_search_button();
+                this.setData({
+                    style: this.get_style(), // 内部样式
+                    style_container: this.isPageSettings ? '' : common_styles_computer(common_style), // 全局样式
+                    search_button_radius: radius_computer(search_button_radius), // 按钮圆角
+                    box_style: this.get_box_style(), // 搜索框设置
+                    search_button: this.get_search_button(), // 搜索按钮显示
+                });
             },
             get_style() {
                 let common_styles = '';
@@ -107,7 +106,6 @@
                     }
                     style += gradient_computer(data) + background_computer(data) + `color: ${ this.new_style.button_inner_color };`;
                 }
-                console.log(style);
                 return style;
             }
         },

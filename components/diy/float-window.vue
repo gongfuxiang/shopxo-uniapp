@@ -33,18 +33,25 @@ export default {
         };
     },
     created() {
-        this.form = this.value.content;
-        this.new_style = this.value.style;
-        const { float_style, float_style_color, display_location, offset_number } = this.value.style;
-        this.color = float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${ float_style_color }` : `background-color: ${ float_style_color }`;
-        let location = `right: 20rpx;`;
-        if (display_location == 'left') {
-            location = `left: 20rpx;`;
-        }
-        const { windowHeight } = uni.getSystemInfoSync();
-        this.style = `bottom: ${((offset_number / windowHeight) * 100).toFixed(4) + '%'};` + location;
+        this.setData({
+            form: this.value.content,
+            new_style: this.value.style
+        });
+        this.init();
     },
     methods: {
+        init() {
+            const { float_style, float_style_color, display_location, offset_number } = this.value.style;
+            let location = `right: 20rpx;`;
+            if (display_location == 'left') {
+                location = `left: 20rpx;`;
+            }
+            const { windowHeight } = uni.getSystemInfoSync();
+            this.setData({
+                color: float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${ float_style_color }` : `background-color: ${ float_style_color }`,
+                style: `bottom: ${((offset_number / windowHeight) * 100).toFixed(4) + '%'};` + location
+            });
+        },
         url_open() {
             const { button_jump, button_link} = this.form;
             if (button_jump == 'link' && !is_obj_empty(button_link)) {

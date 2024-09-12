@@ -25,17 +25,23 @@
             };
         },
         created() {
-            const {
-                height
-            } = this.value.content;
-            const {
-                line_color,
-                common_style
-            } = this.value.style;
-            this.style = `height: ${height * 2 }rpx;background: ${line_color || 'transparent'};`;
-            this.style_container = common_styles_computer(common_style);
+            this.init();
         },
-        methods: {},
+        methods: {
+            init() {
+                const {
+                    height
+                } = this.value.content;
+                const {
+                    line_color,
+                    common_style
+                } = this.value.style;
+                this.setData({
+                    style: `height: ${height * 2 }rpx;background: ${line_color || 'transparent'};`,
+                    style_container: common_styles_computer(common_style)
+                });
+            }
+        },
     };
 </script>
 

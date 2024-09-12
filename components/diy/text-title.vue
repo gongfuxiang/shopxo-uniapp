@@ -41,26 +41,30 @@ export default {
         };
     },
     created() {
-        this.form = this.value.content;
-        this.new_style = this.value.style;
-        // 是否居中
-        this.title_center = this.form.is_title_center == '1' ? 'jc-c' : '';
-        // 关键字
-        this.set_keyword_list();
-        // 样式设置
-        this.set_common_styles();
+       this.setData({
+           form: this.value.content,
+           new_style: this.value.style
+       });
+       this.init();
     },
     methods: {
+        init() {
+            // 是否居中
+            this.setData({
+                title_center: this.form.is_title_center == '1' ? 'jc-c' : ''
+            });
+            // 关键字
+            this.set_keyword_list();
+            // 样式设置
+            this.set_common_styles();
+        },
         set_keyword_list() {
-            this.keyword_list = this.form.keyword_list.filter(item => item.is_show == '1');
+            this.setData({
+                keyword_list: this.form.keyword_list.filter(item => item.is_show == '1')
+            });
         },
         set_common_styles() {
             const { keyword_color, keyword_size, right_color, right_size, common_style, title_weight, title_color, title_size } = this.new_style;
-            // 关键字设置
-            this.keyword_style = `color:${ keyword_color }; font-size: ${ keyword_size * 2 }rpx;`;
-            // 右边按钮设置
-            this.right_size = right_size * 2 + 'rpx';
-            this.right_style = `color:${ right_color }; font-size: ${ right_size * 2 }rpx;`;
             // 标题样式设置
             let common_styles = '';
             if (title_weight == 'italic') {
@@ -68,9 +72,13 @@ export default {
             } else if (title_weight == '500') {
                 common_styles += `font-weight: 500`;
             }
-            this.title_style =  `color:${ title_color }; font-size: ${ title_size * 2 }rpx; ${ common_styles }`;
-            // 通用样式区
-            this.style_container = common_styles_computer(common_style);
+            this.setData({
+                keyword_style: `color:${ keyword_color }; font-size: ${ keyword_size * 2 }rpx;`, // 关键字设置
+                right_size: right_size * 2 + 'rpx' ,// 右边按钮设置
+                right_style: `color:${ right_color }; font-size: ${ right_size * 2 }rpx;`,
+                title_style: `color:${ title_color }; font-size: ${ title_size * 2 }rpx; ${ common_styles }`,
+                style_container: common_styles_computer(common_style) // 通用样式区
+            })
         },
         url_open_event(link) {
             if (!is_obj_empty(link)) {
