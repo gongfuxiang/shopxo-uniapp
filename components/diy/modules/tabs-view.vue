@@ -3,7 +3,7 @@
     <view class="tabs flex-row oh" :style="'column-gap: ' + tabs_spacing + 'px;'">
         <view v-for="(item, index) in tabs_list" :key="index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @click="handle_event">
             <image v-if="item.img" :src="item.img[0].url" class="img" mode="widthFix" />
-            <view class="title" :style="title_style(index)">{{ item.title }}</view>
+            <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
             <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
             <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
             <view class="bottom_line" :style="tabs_check"></view>
@@ -30,6 +30,10 @@
                 tabs_spacing: '',
                 tabs_list: [],
                 active_index: 0,
+                tabs_theme_style: {
+                    tabs_title_checked: '',
+                    tabs_title: '',
+                },
             };
         },
         mounted() {
@@ -47,6 +51,11 @@
                 // 选项卡样式
                 this.tabs_check = this.tabs_check_computer(new_style);
                 this.icon_tabs_check = `${this.tabs_check};line-height: 1;background-clip: text;-webkit-background-clip: text;-webkit-text-fill-color: transparent;`;
+                // 标题样式
+                this.tabs_theme_style = {
+                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked}px;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
+                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size}px;color:${new_style.tabs_color};`,
+                };
             },
             get_tabs_theme(data) {
                 switch (data.tabs_theme) {
@@ -69,24 +78,6 @@
                     direction: data.tabs_direction,
                 };
                 return gradient_computer(new_gradient_params);
-            },
-            // 标题样式
-            title_style(index) {
-                const new_style = this.value.style || {};
-                const tabs_theme_style = {
-                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked}px;color:${new_style.tabs_color_checked};`,
-                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size}px;color:${new_style.tabs_color};`,
-                };
-                // 默认是未选中的状态
-                let style = `${tabs_theme_style.tabs_title}`;
-                if (index == this.active_index) {
-                    let checked_style = tabs_theme_style.tabs_title_checked;
-                    if (['2', '4'].includes(this.tabs_theme_index)) {
-                        checked_style += this.tabs_check;
-                    }
-                    style = checked_style;
-                }
-                return style;
             },
 
             // 事件
