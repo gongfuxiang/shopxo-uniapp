@@ -8,14 +8,14 @@
                             <image :src="item.carousel_img[0].url" class="img ht-auto" :style="img_style" :mode="img_fit"></image>
                         </block>
                     </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @click="video_play(item.carousel_video)">
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
                             <image :src="new_style.video_img[0].url" class="video_img" mode="aspectFill"></image>
                         </block>
                         <block v-else>
                             <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!is_obj_empty(item.video_title)" :style="`color:${new_style.video_title_color};font-size: ${new_style.video_title_size}px;`">{{ item.video_title }}</span>
+                        <span v-if="!is_obj_empty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size *2 + 'rpx' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
@@ -26,19 +26,18 @@
                             <image :src="item.carousel_img[0].url" class="img" :style="img_style" :mode="img_fit"></image>
                         </block>
                     </view>
-                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @click="video_play(item.carousel_video)">
+                    <view v-if="new_style.video_is_show == '1' && item.carousel_video.length > 0" :class="{'x-middle': new_style.video_location == 'center', 'right-0': new_style.video_location == 'flex-end' }" class="video-class flex-row pa gap-10 align-c oh" :style="video_style" @tap="video_play(item.carousel_video)">
                         <block v-if="new_style.video_type == 'img'">
                             <image :src="new_style.video_img[0].url" class="video_img" mode="aspectFill"></image>
                         </block>
                         <block v-else>
                             <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!is_obj_empty(item.video_title)" :style="`color:${new_style.video_title_color};font-size: ${new_style.video_title_size}px;`">{{ item.video_title }}</span>
+                        <span v-if="!is_obj_empty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size *2 + 'rpx' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
         </swiper>
-        <video :src="video_src" id="carousel_video" :autoplay="true" show-fullscreen-btn class="video_class"></video>
         <view v-if="new_style.is_show == '1'" :class="{'dot-center': new_style.indicator_location == 'center', 'dot-right': new_style.indicator_location == 'flex-end' }" class="dot flex-row pa" :style="dot_style">
             <template v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
@@ -49,6 +48,12 @@
                 <view v-for="(item, index2) in form.carousel_list" :key="index2" :style="indicator_style + (actived_index == index2 ? 'background:' + new_style.actived_color : '')" class="dot-item" />
             </template>
         </view>
+        <uni-popup ref="popup" type="center" border-radius="20rpx" :mask-click="false">
+            <view class="flex-col align-c jc-c gap-10">
+                <video :src="video_src" id="carousel_video" :autoplay="true" :controls="true" :loop="true" show-fullscreen-btn class="radius-md" :style="{'width': popup_width , 'height': popup_height }"></video>
+                <iconfont name="icon-qiandao-tancguanbi" size="56rpx" color="#666" @tap="video_close"></iconfont>
+            </view>
+        </uni-popup>
     </view>
 </template>
 
@@ -83,6 +88,8 @@
                 dot_style: '',
                 video_style: '',
                 video_src: '',
+                popup_width: '0rpx',
+                popup_height: '0rpx',
                 // 样式二的处理
                 animation: '',
                 animationData: 0,
@@ -91,34 +98,20 @@
             };
         },
         created() {
-            this.form = this.value.content;
-            this.new_style = this.value.style;
-            // 数组合并
-            this.seat_list = this.get_seat_list();
-            this.new_list = this.seat_list.concat(this.form.carousel_list);
-            
+            this.setData({
+                form: this.value.content,
+                new_style: this.value.style,
+            })
             this.init();
-            if (this.form.carousel_type == 'card') {
-                this.$nextTick(() => {
-                    this.previousMargin = '82rpx';
-                    this.nextMargin = '82rpx';
-                    
-                    this.animationData = 0;
-                })
-            }
         },
         methods: {
             is_obj_empty,
             init() {
+                const { windowWidth } = uni.getSystemInfoSync();
+                // 将90%的宽度分成16份
+                const block = ((windowWidth * 0.9) / 16);
+                
                 const { common_style, actived_color } = this.new_style;
-                // 用于样式显示
-                this.style_container = common_styles_computer(common_style);
-                // 图片的设置
-                this.img_style = radius_computer(this.new_style);
-                // 指示器的样式
-                this.indicator_style = this.get_indicator_style();
-                // 指示器位置
-                this.dot_style = `bottom: ${ common_style.padding_bottom * 2 + 12 }rpx;`;
                 // aspectFill 对应 cover aspectFit 对应 contain  scaleToFill 对应 none
                 const { img_fit } = this.form;
                 let fit = 'scaleToFill'
@@ -127,9 +120,28 @@
                 } else if (img_fit == 'contain') {
                     fit = 'aspectFit';
                 }
-                this.img_fit = fit;
-                // 视频播放按钮显示逻辑
-                this.video_style = this.get_video_style();
+                this.setData({
+                    seat_list: this.get_seat_list(),
+                    new_list: this.seat_list.concat(this.form.carousel_list),
+                    popup_width: (block * 16) * 2 + 'rpx',
+                    popup_height: (block * 9) * 2 + 'rpx',
+                    style_container: common_styles_computer(common_style), // 用于样式显示
+                    img_style: radius_computer(this.new_style), // 图片的设置
+                    indicator_style: this.get_indicator_style(),  // 指示器的样式
+                    dot_style: `bottom: ${ common_style.padding_bottom * 2 + 12 }rpx;`, // 指示器位置
+                    img_fit: fit,
+                    video_style: this.get_video_style()  // 视频播放按钮显示逻辑
+                })
+                
+                if (this.form.carousel_type == 'card') {
+                    this.$nextTick(() => {
+                        this.setData({
+                            previousMargin: '82rpx',
+                            nextMargin: "82rpx", 
+                            animationData: 0
+                        });
+                    })
+                }
             },
             get_indicator_style() {
                 const { indicator_radius, indicator_style, indicator_size, color } = this.new_style;
@@ -200,10 +212,17 @@
                 return style;
             },
             video_play(list) {
-                this.video_src = list[0].url;
-                let videoContext = uni.createVideoContext('carousel_video');
-                videoContext.requestFullScreen();
-                videoContext.play();
+                this.setData({
+                    video_src: list[0].url
+                })
+                this.$refs.popup.open();
+                const videoContext = uni.createVideoContext('carousel_video');
+                videoContext.play();      
+            },
+            video_close() {
+                const videoContext = uni.createVideoContext('carousel_video');
+                videoContext.pause();
+                this.$refs.popup.close();
             }
         },
     };
@@ -242,7 +261,7 @@
     
     .scale-defalt {
         position: relative;
-        border-radius: 10px;
+        border-radius: 20rpx;
         transform: scale(1);
         transition: -webkit-transform 400ms linear, transform 400ms linear;
         transform-origin: 50% 50% 0px;
@@ -255,8 +274,8 @@
         width: 100%;
     }
     .video_img {
-        max-width: 6rem;
-        height: 1.4rem;
+        max-width: 120rpx;
+        height: 28rpx;
     }
     .video-class {
         max-width: 100%;
@@ -266,9 +285,9 @@
         left: 50%;
         transform: translateX(-50%);
     }
-    .video_class {
-        position: absolute;
-        height: 0px;
-        width: 0px;
-    }
+    // .video_class {
+    //     position: absolute;
+    //     height: 0rpx;
+    //     width: 0rpx;
+    // }
 </style>
