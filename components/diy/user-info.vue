@@ -111,8 +111,9 @@
                     color_list: temp_base_data.number_code_color_list,
                     direction: temp_base_data.number_code_direction,
                 };
-                const temp_stats_list = this.stats_list.map((item) => {
-                    if (this.config.includes(item.id)) {
+                let temp_stats_list = this.stats_list;
+                temp_stats_list.map((item) => {
+                    if (new_content.config.includes(item.id)) {
                         item.value = new_content.data[item.id];
                     }
                 });
