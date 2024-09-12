@@ -6,7 +6,7 @@
                     <view class="ring" :style="color"></view>
                     <view class="ring" :style="color"></view>
                 </block>
-                <image :src="form.button_img[0].url" class="img" :style="color" fit="cover"></image>
+                <image-empty :image-src="form.button_img[0]" class="img" :style="color" img_fit="aspectFill" error-style="width: 60rpx;height: 60rpx;"></image-empty>
             </view>
         </view>
     </view>
@@ -15,7 +15,11 @@
 <script>
 const app = getApp();
 import { is_obj_empty } from '../../common/js/common/common';
+import imageEmpty from './modules/image-empty.vue';
 export default {
+    components: {
+        imageEmpty
+    },
     props: {
         value: {
             type: Object,
