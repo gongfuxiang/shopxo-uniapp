@@ -49,12 +49,13 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.nav_content = new_content.nav_content || [];
-                this.nav_style = new_content.nav_style || 0;
-                this.default_text_color = 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)';
-                this.text_color_checked = 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)';
-
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    nav_content: new_content.nav_content || [],
+                    nav_style: new_content.nav_style || 0,
+                    default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
+                    text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
+                    style_container: common_styles_computer(new_style.common_style),
+                });
                 let footer_height = new_style.common_style.padding_top + new_style.common_style.padding_bottom + new_style.common_style.margin_top + new_style.common_style.margin_bottom + 50;
                 // #ifndef APP
                 // 底部菜单距离底部的安全距离
@@ -69,7 +70,9 @@
             },
             // 跳转链接
             url_event(e) {
-                this.is_active = e.currentTarget.dataset.index;
+                this.setData({
+                    is_active: e.currentTarget.dataset.index,
+                });
                 app.globalData.url_event(e);
             },
         },

@@ -53,8 +53,10 @@
                 new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
                 new_data.content.field_show = new_data.content.field_show;
                 new_data.content.is_cover = new_data.content.tabs_list[0].is_cover;
-                this.article_tabs = new_data;
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    article_tabs: new_data,
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
             tabs_click_event(index) {
                 let new_data = JSON.parse(JSON.stringify(this.value));
@@ -69,8 +71,10 @@
                 new_data.content.sort_rules = new_data.content.tabs_list[index].sort_rules;
                 new_data.content.field_show = new_data.content.field_show;
                 new_data.content.is_cover = new_data.content.tabs_list[index].is_cover;
-                this.article_tabs = new_data;
-                this.key = get_math();
+                this.setData({
+                    article_tabs: new_data,
+                    key: get_math(),
+                });
             },
         },
     };

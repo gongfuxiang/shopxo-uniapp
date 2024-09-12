@@ -5,7 +5,7 @@
             <view class="hide-scrollbar">
                 <template v-if="theme == '1'">
                     <view class="coupon-theme-1" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item" :style="'background: ' + theme_style.background">
+                        <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="coupon-theme-1-content tc" :style="'background-image: url(' + theme_bg_img.url_1 + ');background-size: 100% 100%;'">
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 <view class="price" :style="'color:' + theme_style.price_color">
@@ -20,7 +20,7 @@
                 </template>
                 <template v-else-if="theme == '2'">
                     <view class="coupon-theme-2" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item" :style="'background-image: url(' + theme_bg_img.url_2 + ');background-size: 100% 100%;'">
+                        <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background-image: url(' + theme_bg_img.url_2 + ');background-size: 100% 100%;'">
                             <view class="tc">
                                 <view class="price" :style="'color:' + theme_style.price_color">
                                     <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
@@ -36,9 +36,9 @@
                 </template>
                 <template v-else-if="theme == '3'">
                     <view class="coupon-theme-3" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item" :style="'background: ' + theme_style.background">
+                        <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="left" :style="'background: ' + theme_style.background_inside">
-                                <div class="price-before" :style="'border-left: 0.1rem dashed ' + theme_style.border_style + '">
+                                <div class="price-before" :style="'border-left: 2rpx dashed ' + theme_style.border_style">
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
                                         <span class="number">{{ item.discount_value }}</span>
@@ -65,7 +65,7 @@
                     <view class="coupon-theme-4" :style="'background: ' + theme_style.background">
                         <view class="hide-scrollbar">
                             <view class="left" :style="'gap: ' + theme_style.spacing">
-                                <view v-for="item in data_list" :key="item" class="item" :style="'background: ' + theme_style.background_inside">
+                                <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background_inside">
                                     <view class="type" :style="'background: ' + theme_style.type_background + ';color:' + theme_style.type_color">
                                         <view class="type-before" :style="'background: ' + theme_style.type_background"></view>
                                         <text>通用券</text>
@@ -92,7 +92,7 @@
                 </template>
                 <template v-else-if="theme == '5'">
                     <view class="coupon-theme-5" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item">
+                        <view v-for="(item, index) in data_list" :key="index" class="item">
                             <view class="left" :style="'background-image: url(' + theme_bg_img.url_3 + ');background-size: 100% 100%;'">
                                 <view class="price" :style="'color:' + theme_style.price_color">
                                     <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
@@ -109,7 +109,7 @@
                 </template>
                 <template v-else-if="theme == '6'">
                     <view class="coupon-theme-6" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item" :style="'background: ' + theme_style.background">
+                        <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="pr">
                                 <view class="top-before"></view>
                                 <view class="top" :style="'background: ' + theme_style.background_inside">
@@ -130,7 +130,7 @@
                 </template>
                 <template v-else-if="theme == '7'">
                     <view class="coupon-theme-7" :style="'gap:' + theme_style.spacing">
-                        <view v-for="item in data_list" :key="item" class="item" :style="'background: ' + theme_style.background">
+                        <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="item-before" :style="'background: ' + theme_style.theme_7_background"></view>
                             <view class="flex-row">
                                 <view class="left">
@@ -167,6 +167,7 @@
         },
         data() {
             return {
+                currency_symbol: app.globalData.currency_symbol(),
                 style_container: '',
                 data_list: [],
                 // 主题
@@ -191,43 +192,42 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.content_title = new_content.content_title || '';
-                this.content_desc = new_content.content_desc || '';
-                // 判断是自动还是手动
-                if (new_content.data_type == '0') {
-                    this.data_list = new_content.data_list;
-                } else {
-                    this.data_list = new_content.data_auto_list;
-                }
+                const temp_theme = new_content.theme;
                 // 主题
-                this.theme = new_content.theme;
                 const new_background = gradient_computer({ color_list: new_style.background, direction: new_style.direction }, false);
                 const new_background_inside = gradient_computer({ color_list: new_style.background_inside, direction: new_style.direction_inside }, false);
                 const new_btn_background = gradient_computer({ color_list: new_style.btn_background, direction: new_style.btn_direction }, false);
-                this.theme_style = {
-                    price_color: new_style.price_color,
-                    name_color: new_style.name_color,
-                    // 判断是否向对象添加desc_color属性
-                    ...(!['1', '5', '6', '7'].includes(this.theme) && { desc_color: new_style.desc_color }),
-                    ...(!['1', '2', '4', '5', '6', '7'].includes(this.theme) && { limit_send_count: new_style.limit_send_count }),
-                    ...(!['5', '6', '7'].includes(this.theme) && { btn_background: new_btn_background }),
-                    btn_color: new_style.btn_color,
-                    ...(!['2'].includes(this.theme) && { background: new_background }),
-                    ...(!['1', '2', '5', '7'].includes(this.theme) && { background_inside: new_background_inside }),
-                    spacing: new_style.spacing + 'px',
-                    ...(!['1', '2', '3', '5', '6', '7'].includes(this.theme) && { type_background: new_style.type_background }),
-                    ...(!['1', '2', '3', '5', '6', '7'].includes(this.theme) && { type_color: new_style.type_color }),
-                    ...(!['1', '2', '3', '5', '6', '7'].includes(this.theme) && { content_title_color: new_style.content_title_color }),
-                    ...(!['1', '2', '3', '5', '6', '7'].includes(this.theme) && { content_desc_color: new_style.content_desc_color }),
-                    ...(['3'].includes(this.theme) && { border_style: new_style.background[0].color }),
-                    ...(['7'].includes(this.theme) && { theme_7_background: new_style.background[0].width + 'px' }),
-                };
-                this.theme_bg_img = {
-                    url_1: new_content.theme_1_static_img[0].url,
-                    url_2: new_content.theme_2_static_img[0].url,
-                    url_3: new_content.theme_5_static_img[0].url,
-                };
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    content_title: new_content.content_title || '',
+                    content_desc: new_content.content_desc || '',
+                    // 判断是自动还是手动
+                    data_list: new_content.data_type == '0' ? new_content.data_list : new_content.data_auto_list,
+                    theme: temp_theme,
+                    theme_style: {
+                        price_color: new_style.price_color,
+                        name_color: new_style.name_color,
+                        // 判断是否向对象添加desc_color属性
+                        ...(!['1', '5', '6', '7'].includes(temp_theme) && { desc_color: new_style.desc_color }),
+                        ...(!['1', '2', '4', '5', '6', '7'].includes(temp_theme) && { limit_send_count: new_style.limit_send_count }),
+                        ...(!['5', '6', '7'].includes(temp_theme) && { btn_background: new_btn_background }),
+                        btn_color: new_style.btn_color,
+                        ...(!['2'].includes(temp_theme) && { background: new_background }),
+                        ...(!['1', '2', '5', '7'].includes(temp_theme) && { background_inside: new_background_inside }),
+                        spacing: new_style.spacing + 'px',
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { type_background: new_style.type_background }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { type_color: new_style.type_color }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_title_color: new_style.content_title_color }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_desc_color: new_style.content_desc_color }),
+                        ...(['3'].includes(temp_theme) && { border_style: new_style.background[0].color }),
+                        ...(['7'].includes(temp_theme) && { theme_7_background: new_style.background[0].width + 'px' }),
+                    },
+                    theme_bg_img: {
+                        url_1: new_content.theme_1_static_img[0].url,
+                        url_2: new_content.theme_2_static_img[0].url,
+                        url_3: new_content.theme_5_static_img[0].url,
+                    },
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
         },
     };
@@ -239,47 +239,47 @@
         .item {
             flex-basis: auto;
             flex-shrink: 0;
-            width: 9rem;
-            height: 9rem;
-            border-radius: 1rem;
-            margin-top: 1rem;
+            width: 180rpx;
+            height: 180rpx;
+            border-radius: 20rpx;
+            margin-top: 20rpx;
             .name {
-                padding: 0.5rem 0.5rem 0 0.5rem;
-                margin-bottom: 0.5rem;
-                font-size: 1rem;
+                padding: 10rpx 10rpx 0 10rpx;
+                margin-bottom: 10rpx;
+                font-size: 20rpx;
             }
             .price {
-                padding: 0.5rem 0 0.8rem 0;
+                padding: 10rpx 0 16rpx 0;
                 .symbol {
-                    font-size: 1.2rem;
+                    font-size: 24rpx;
                     position: relative;
-                    bottom: 0.3rem;
+                    bottom: 6rpx;
                 }
                 .number {
-                    font-size: 3rem;
-                    line-height: 2.4rem;
+                    font-size: 52rpx;
+                    line-height: 48rpx;
                     font-weight: 500;
-                    padding: 0 0.4rem;
+                    padding: 0 8rpx;
                 }
             }
             .coupon-theme-1-content {
-                width: calc(100% - 1rem);
-                margin: 0 0.5rem;
+                width: calc(100% - 20rpx);
+                margin: 0 10rpx;
                 background-size: 100% 100%;
                 position: relative;
-                top: -1rem;
+                top: -20rpx;
             }
 
             .coupon-btn {
                 margin: 0 auto;
-                width: 7.1rem;
-                height: 1.756rem;
-                line-height: 1.756rem;
+                width: 142rpx;
+                height: 35.112rpx;
+                line-height: 35.112rpx;
                 text-align: center;
-                font-size: 0.9rem;
-                border-radius: 2.3rem;
+                font-size: 18rpx;
+                border-radius: 46rpx;
                 position: relative;
-                top: -0.2rem;
+                top: -4rpx;
             }
         }
     }
@@ -290,42 +290,42 @@
             flex-basis: auto;
             flex-shrink: 0;
             background-size: 100% 100%;
-            width: 8.5rem;
-            height: 10rem;
-            padding: 0.5rem;
+            width: 170rpx;
+            height: 200rpx;
+            padding: 10rpx;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             .price {
-                padding: 0.3rem 0;
+                padding: 6rpx 0;
                 .symbol {
-                    font-size: 0.8rem;
+                    font-size: 16rpx;
                 }
                 .number {
-                    font-size: 2.6rem;
+                    font-size: 52rpx;
                     font-weight: 500;
-                    padding: 0 0.4rem;
+                    padding: 0 8rpx;
                 }
             }
             .name {
-                font-size: 0.8rem;
+                font-size: 16rpx;
                 font-weight: 500;
-                margin-bottom: 0.4rem;
+                margin-bottom: 8rpx;
             }
             .desc {
-                font-size: 0.8rem;
+                font-size: 16rpx;
             }
 
             .coupon-btn {
                 margin: 0 auto;
-                width: 5.5rem;
-                height: 1.6rem;
-                line-height: 1.6rem;
+                width: 110rpx;
+                height: 32rpx;
+                line-height: 32rpx;
                 text-align: center;
-                font-size: 0.9rem;
-                border-radius: 2.3rem;
-                margin-top: 0.5rem;
-                margin-bottom: 0.2rem;
+                font-size: 18rpx;
+                border-radius: 46rpx;
+                margin-top: 10rpx;
+                margin-bottom: 4rpx;
             }
         }
     }
@@ -333,43 +333,43 @@
         display: flex;
         .item {
             overflow: hidden;
-            border-radius: 1.6rem;
+            border-radius: 32rpx;
             flex-basis: auto;
             flex-shrink: 0;
             width: 100%;
-            padding: 0.8rem;
+            padding: 16rpx;
             display: flex;
             .left {
                 flex: 1;
                 width: 0;
-                border-radius: 0.8rem;
-                padding: 0.6rem 1.2rem 0.3rem 1.2rem;
+                border-radius: 16rpx;
+                padding: 12rpx 24rpx 6rpx 24rpx;
                 display: flex;
                 align-items: center;
                 .price-before {
                     content: '';
                     position: absolute;
                     right: 0;
-                    top: -3rem;
-                    bottom: -3rem;
-                    width: 0.1rem;
-                    height: calc(100% + 6rem);
+                    top: -60rpx;
+                    bottom: -60rpx;
+                    width: 2rpx;
+                    height: calc(100% + 120rpx);
                 }
                 .price {
                     text-align: center;
-                    width: 10rem;
+                    width: 200rpx;
                     position: relative;
                     display: flex;
                     align-items: flex-start;
                     .symbol {
-                        font-size: 1.8rem;
+                        font-size: 36rpx;
                         font-weight: 600;
                     }
                     .number {
-                        font-size: 3.2rem;
+                        font-size: 64rpx;
                         font-weight: 600;
-                        padding: 0 0.4rem;
-                        line-height: 3rem;
+                        padding: 0 8rpx;
+                        line-height: 60rpx;
                     }
                 }
                 .text {
@@ -380,24 +380,24 @@
                     align-items: center;
                     text-align: center;
                     .name {
-                        font-size: 1.8rem;
+                        font-size: 36rpx;
                         font-weight: 500;
-                        line-height: 2.5rem;
+                        line-height: 50rpx;
                     }
                     .desc {
-                        font-size: 1.4rem;
+                        font-size: 28rpx;
                         font-weight: 500;
-                        line-height: 2rem;
+                        line-height: 40rpx;
                     }
                     .limit {
-                        font-size: 1.2rem;
+                        font-size: 24rpx;
                     }
                 }
             }
             .right {
-                width: 8.6rem;
+                width: 172rpx;
                 position: relative;
-                padding: 0 1.8rem;
+                padding: 0 36rpx;
                 text-align: center;
                 display: flex;
                 align-items: center;
@@ -407,16 +407,16 @@
                     transform: translateY(-50%);
                     width: 200%;
                     height: 200%;
-                    left: -1.6rem;
+                    left: -32rpx;
                     border-radius: 100%;
                 }
                 .coupon-btn {
                     position: relative;
-                    font-size: 1.8rem;
+                    font-size: 36rpx;
                     font-weight: 500;
                     text-align: center;
                     .icon {
-                        font-size: 2rem;
+                        font-size: 40rpx;
                     }
                 }
             }
@@ -424,49 +424,49 @@
     }
     .coupon-theme-4 {
         overflow: hidden;
-        border-radius: 1.6rem;
-        padding: 0.8rem;
+        border-radius: 32rpx;
+        padding: 16rpx;
         display: flex;
         .left {
-            width: 21.4rem;
+            width: 428rpx;
             display: flex;
             flex-direction: row;
             .item {
                 overflow: hidden;
                 flex-basis: auto;
                 flex-shrink: 0;
-                width: 7.2rem;
-                height: 7.2rem;
-                border-radius: 1rem;
+                width: 144rpx;
+                height: 144rpx;
+                border-radius: 20rpx;
                 position: relative;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-end;
                 align-items: center;
-                padding: 0.4rem;
+                padding: 8rpx;
                 .type {
                     position: absolute;
                     top: 0;
                     left: 50%;
                     transform: translateX(-50%);
-                    font-size: 1rem;
-                    line-height: 1.4rem;
+                    font-size: 20rpx;
+                    line-height: 28rpx;
                     .type-before {
                         position: absolute;
-                        width: 1.5rem;
-                        height: 3rem;
-                        left: -0.8rem;
+                        width: 30rpx;
+                        height: 60rpx;
+                        left: -16rpx;
                         border-radius: 100%;
-                        top: -1.6rem;
+                        top: -32rpx;
                         z-index: -1;
                     }
                     .type-after {
                         position: absolute;
-                        width: 1.5rem;
-                        height: 3rem;
-                        right: -0.8rem;
+                        width: 30rpx;
+                        height: 60rpx;
+                        right: -16rpx;
                         border-radius: 100%;
-                        top: -1.6rem;
+                        top: -32rpx;
                         z-index: -1;
                     }
                 }
@@ -476,18 +476,18 @@
                     display: flex;
                     align-items: flex-end;
                     .symbol {
-                        font-size: 1.2rem;
+                        font-size: 24rpx;
                     }
                     .number {
-                        font-size: 2.4rem;
-                        line-height: 2.4rem;
+                        font-size: 48rpx;
+                        line-height: 48rpx;
                         font-weight: 600;
-                        padding-left: 0.4rem;
+                        padding-left: 8rpx;
                     }
                 }
                 .name {
-                    font-size: 1.1rem;
-                    line-height: 1.6rem;
+                    font-size: 22rpx;
+                    line-height: 32rpx;
                 }
             }
         }
@@ -496,32 +496,32 @@
             width: 0;
             position: relative;
             .right-before {
-                width: 18rem;
-                height: 18rem;
+                width: 360rpx;
+                height: 360rpx;
                 position: absolute;
-                left: -0.7rem;
+                left: -14rpx;
                 top: 50%;
                 transform: translateY(-50%);
                 border-radius: 100%;
             }
             .title {
-                font-size: 1.6rem;
+                font-size: 32rpx;
                 font-weight: 500;
-                line-height: 2.2rem;
+                line-height: 44rpx;
             }
             .desc {
-                margin-top: 0.3rem;
-                font-size: 1.2rem;
-                line-height: 1.7rem;
+                margin-top: 6rpx;
+                font-size: 24rpx;
+                line-height: 34rpx;
             }
             .coupon-btn {
-                width: 7.2rem;
-                height: 2.2rem;
-                font-size: 1.2rem;
-                line-height: 2.2rem;
+                width: 144rpx;
+                height: 44rpx;
+                font-size: 24rpx;
+                line-height: 44rpx;
                 text-align: center;
-                border-radius: 1.2rem;
-                margin-top: 0.6rem;
+                border-radius: 24rpx;
+                margin-top: 12rpx;
             }
         }
     }
@@ -531,16 +531,16 @@
         .item {
             flex-basis: auto;
             flex-shrink: 0;
-            border-radius: 0.6rem;
-            width: 12.6rem;
-            height: 6.4rem;
+            border-radius: 12rpx;
+            width: 252rpx;
+            height: 128rpx;
             position: relative;
             .left {
                 position: absolute;
                 left: 0;
-                width: 10rem;
+                width: 200rpx;
                 height: 100%;
-                padding: 0.6rem;
+                padding: 12rpx;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -550,27 +550,27 @@
                     text-align: center;
                     position: relative;
                     display: flex;
-                    align-items: end;
-                    margin-bottom: 0.5rem;
+                    align-items: flex-end;
+                    margin-bottom: 10rpx;
                     .symbol {
-                        font-size: 1.2rem;
+                        font-size: 24rpx;
                         font-weight: 500;
                     }
                     .number {
-                        font-size: 2.4rem;
+                        font-size: 48rpx;
                         font-weight: 500;
-                        line-height: 20px;
-                        padding-left: 0.4rem;
+                        line-height: 40rpx;
+                        padding-left: 8rpx;
                     }
                 }
                 .name {
-                    font-size: 1.2rem;
+                    font-size: 24rpx;
                 }
             }
             .right {
-                width: 4.6rem;
-                padding-left: 2rem;
-                border-radius: 0.6rem;
+                width: 92rpx;
+                padding-left: 40rpx;
+                border-radius: 12rpx;
                 position: absolute;
                 top: 0;
                 bottom: 0;
@@ -582,11 +582,11 @@
                 justify-content: center;
                 .coupon-btn {
                     position: relative;
-                    font-size: 1.2rem;
+                    font-size: 24rpx;
                     font-weight: 500;
                     text-align: center;
                     writing-mode: vertical-lr;
-                    letter-spacing: 5px;
+                    letter-spacing: 10rpx;
                 }
             }
         }
@@ -596,68 +596,68 @@
         .item {
             flex-basis: auto;
             flex-shrink: 0;
-            border-radius: 1.2rem;
-            padding: 0.6rem;
-            width: 14rem;
-            height: 10rem;
+            border-radius: 24rpx;
+            padding: 12rpx;
+            width: 280rpx;
+            height: 200rpx;
             position: relative;
             .top-before {
                 position: absolute;
-                left: -0.7rem;
+                left: -14rpx;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 1.4rem;
-                height: 1.4rem;
+                width: 28rpx;
+                height: 28rpx;
                 border-radius: 50%;
             }
             .top-after {
                 position: absolute;
-                right: -0.7rem;
+                right: -14rpx;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 1.4rem;
-                height: 1.4rem;
+                width: 28rpx;
+                height: 28rpx;
                 border-radius: 50%;
             }
             .top {
                 width: 100%;
-                padding: 0.4rem;
+                padding: 8rpx;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 z-index: 1;
-                border-radius: 0.6rem;
+                border-radius: 12rpx;
                 position: relative;
                 overflow: hidden;
                 .price {
                     text-align: center;
                     position: relative;
                     display: flex;
-                    align-items: end;
-                    margin-bottom: 0.1rem;
+                    align-items: flex-end;
+                    margin-bottom: 2rpx;
                     .symbol {
-                        font-size: 2.2rem;
+                        font-size: 44rpx;
                         font-weight: 500;
                     }
                     .number {
-                        font-size: 3.2rem;
+                        font-size: 64rpx;
                         font-weight: 500;
-                        line-height: 32px;
-                        padding-left: 0.4rem;
+                        line-height: 128rpx;
+                        padding-left: 8rpx;
                     }
                 }
                 .name {
-                    font-size: 1.2rem;
+                    font-size: 24rpx;
                 }
             }
             .bottom {
-                margin-top: 0.6rem;
+                margin-top: 12rpx;
                 text-align: center;
                 .coupon-btn {
                     position: relative;
-                    font-size: 1.6rem;
-                    line-height: 2.2rem;
+                    font-size: 32rpx;
+                    line-height: 44rpx;
                     font-weight: 500;
                     text-align: center;
                 }
@@ -669,31 +669,31 @@
         .item {
             flex-basis: auto;
             flex-shrink: 0;
-            border-radius: 0.4rem;
-            width: 11.8rem;
-            height: 6.4rem;
+            border-radius: 8rpx;
+            width: 236rpx;
+            height: 128rpx;
             position: relative;
             overflow: hidden;
             display: flex;
             .item-before {
                 position: absolute;
-                left: 8rem;
-                top: -0.6rem;
-                width: 1.2rem;
-                height: 1.2rem;
+                left: 160rpx;
+                top: -12rpx;
+                width: 24rpx;
+                height: 24rpx;
                 border-radius: 50%;
             }
             .item-after {
                 position: absolute;
-                left: 8rem;
-                bottom: -0.6rem;
-                width: 1.2rem;
-                height: 1.2rem;
+                left: 160rpx;
+                bottom: -12rpx;
+                width: 24rpx;
+                height: 24rpx;
                 border-radius: 50%;
             }
             .left {
-                width: 8.6rem;
-                padding: 0.4rem;
+                width: 172rpx;
+                padding: 8rpx;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
@@ -703,31 +703,31 @@
                     text-align: center;
                     position: relative;
                     display: flex;
-                    align-items: end;
-                    margin-bottom: 0.5rem;
+                    align-items: flex-end;
+                    margin-bottom: 10rpx;
                     .symbol {
-                        font-size: 1.2rem;
+                        font-size: 24rpx;
                         font-weight: 500;
                     }
                     .number {
-                        font-size: 2.4rem;
+                        font-size: 48rpx;
                         font-weight: 500;
-                        line-height: 2rem;
-                        padding-left: 0.4rem;
+                        line-height: 40rpx;
+                        padding-left: 8rpx;
                     }
                 }
                 .name {
-                    font-size: 1.2rem;
+                    font-size: 24rpx;
                 }
             }
             .right {
                 flex: 1;
                 width: 0;
-                padding-left: 0.7rem;
+                padding-left: 14rpx;
                 position: relative;
                 .right-before {
                     position: absolute;
-                    left: -0.05rem;
+                    left: -1rpx;
                     top: 0;
                     bottom: 0;
                     width: 0;
@@ -735,13 +735,13 @@
                     opacity: 0.61;
                 }
                 .coupon-btn {
-                    padding: 0.4rem;
+                    padding: 8rpx;
                     width: 100%;
-                    font-size: 1.1rem;
+                    font-size: 22rpx;
                     font-weight: 500;
                     text-align: center;
                     writing-mode: vertical-lr;
-                    letter-spacing: 3px;
+                    letter-spacing: 12rpx;
                 }
             }
         }

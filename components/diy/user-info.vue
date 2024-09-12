@@ -83,55 +83,54 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.user_info = new_content.data;
-                if (new_content) {
-                    this.config = new_content.config;
-                    this.icon_setting = new_content.icon_setting;
-                    this.id_bool = this.config ? this.config.includes('number_code') : true;
-                    this.stats_list.map((item) => {
-                        if (this.config.includes(item.id)) {
-                            item.value = new_content.data[item.id];
-                        }
-                    });
-                }
-                if (new_style) {
-                    this.base_data = {
-                        // 头像
-                        user_avatar_size: new_style.user_avatar_size,
-                        // 人物
-                        user_name_color: new_style.user_name_color,
-                        user_name_weight: new_style.user_name_weight,
-                        user_name_size: new_style.user_name_size,
-                        // id
-                        number_code_color_list: new_style.number_code_color_list,
-                        number_code_color: new_style.number_code_color,
-                        number_code_direction: new_style.number_code_direction,
-                        number_code_weight: new_style.number_code_weight,
-                        number_code_size: new_style.number_code_size,
-                        // 图标设置
-                        img_size: new_style.img_size,
-                        img_space: new_style.img_space,
-                        stats_name_color: new_style.stats_name_color,
-                        stats_name_weight: new_style.stats_name_weight,
-                        stats_name_size: new_style.stats_name_size,
-                        stats_number_color: new_style.stats_number_color,
-                        stats_number_weight: new_style.stats_number_weight,
-                        stats_number_size: new_style.stats_number_size,
-                    };
-                    this.style_container = common_styles_computer(new_style.common_style);
-                }
-                // 人物名称样式
-                this.user_name_style = 'color:' + this.base_data.user_name_color + ';' + 'font-size:' + this.base_data.user_name_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.user_name_weight + ';';
+                const temp_base_data = {
+                    // 头像
+                    user_avatar_size: new_style.user_avatar_size,
+                    // 人物
+                    user_name_color: new_style.user_name_color,
+                    user_name_weight: new_style.user_name_weight,
+                    user_name_size: new_style.user_name_size,
+                    // id
+                    number_code_color_list: new_style.number_code_color_list,
+                    number_code_color: new_style.number_code_color,
+                    number_code_direction: new_style.number_code_direction,
+                    number_code_weight: new_style.number_code_weight,
+                    number_code_size: new_style.number_code_size,
+                    // 图标设置
+                    img_size: new_style.img_size,
+                    img_space: new_style.img_space,
+                    stats_name_color: new_style.stats_name_color,
+                    stats_name_weight: new_style.stats_name_weight,
+                    stats_name_size: new_style.stats_name_size,
+                    stats_number_color: new_style.stats_number_color,
+                    stats_number_weight: new_style.stats_number_weight,
+                    stats_number_size: new_style.stats_number_size,
+                };
                 // id样式
                 const new_gradient_obj = {
-                    color_list: this.base_data.number_code_color_list,
-                    direction: this.base_data.number_code_direction,
+                    color_list: temp_base_data.number_code_color_list,
+                    direction: temp_base_data.number_code_direction,
                 };
-                this.number_code_style = gradient_computer(new_gradient_obj) + 'color:' + this.base_data.number_code_color + ';' + 'font-size:' + this.base_data.number_code_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.number_code_weight + ';';
-
-                // 统计名称样式
-                this.stats_name_style = 'color:' + this.base_data.stats_name_color + ';' + 'font-size:' + this.base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.stats_name_weight + ';';
-                this.stats_number_style = 'color:' + this.base_data.stats_number_color + ';' + 'font-size:' + this.base_data.stats_number_size * 2 + 'rpx;' + 'font-weight:' + this.base_data.stats_number_weight + ';';
+                const temp_stats_list = this.stats_list.map((item) => {
+                    if (this.config.includes(item.id)) {
+                        item.value = new_content.data[item.id];
+                    }
+                });
+                this.setData({
+                    user_info: new_content.data,
+                    config: new_content.config,
+                    icon_setting: new_content.icon_setting,
+                    base_data: temp_base_data,
+                    id_bool: new_content.config ? new_content.config.includes('number_code') : true,
+                    stats_list: temp_stats_list,
+                    // 人物名称样式
+                    user_name_style: 'color:' + temp_base_data.user_name_color + ';' + 'font-size:' + temp_base_data.user_name_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.user_name_weight + ';',
+                    number_code_style: gradient_computer(new_gradient_obj) + 'color:' + temp_base_data.number_code_color + ';' + 'font-size:' + temp_base_data.number_code_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.number_code_weight + ';',
+                    // 统计名称样式
+                    stats_name_style: 'color:' + temp_base_data.stats_name_color + ';' + 'font-size:' + temp_base_data.stats_name_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_name_weight + ';',
+                    stats_number_style: 'color:' + temp_base_data.stats_number_color + ';' + 'font-size:' + temp_base_data.stats_number_size * 2 + 'rpx;' + 'font-weight:' + temp_base_data.stats_number_weight + ';',
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
             // 跳转链接
             url_event(e) {

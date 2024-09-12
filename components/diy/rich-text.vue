@@ -27,8 +27,10 @@
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
-                this.content = new_content.html;
-                this.style_container = common_styles_computer(new_style.common_style);
+                this.setData({
+                    content: new_content.html,
+                    style_container: common_styles_computer(new_style.common_style),
+                });
             },
         },
     };
