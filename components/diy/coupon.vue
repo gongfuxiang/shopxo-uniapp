@@ -14,7 +14,7 @@
                                     <span v-if="item.type == '1'" class="symbol">折</span>
                                 </view>
                             </view>
-                            <view class="coupon-btn" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background">立即领取</view>
+                            <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
                         </view>
                     </view>
                 </template>
@@ -30,7 +30,7 @@
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.desc }}</view>
                             </view>
-                            <view class="coupon-btn" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background">立即领取</view>
+                            <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
                         </view>
                     </view>
                 </template>
@@ -53,8 +53,8 @@
                             </view>
                             <view class="right">
                                 <div class="right-before"></div>
-                                <view class="coupon-btn" :style="'color:' + theme_style.btn_color">
-                                    <text>立即领取</text>
+                                <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">
+                                    <text>{{ item.status_operable_name }}</text>
                                     <icon name="arrow-right-o" class="icon"></icon>
                                 </view>
                             </view>
@@ -85,7 +85,11 @@
                             <view class="re z-i flex-col jc-c align-c">
                                 <view class="title text-line-1" :style="'color:' + theme_style.content_title_color">{{ content_title }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.content_desc_color">{{ content_desc }}</view>
-                                <view class="coupon-btn" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background">领取全部</view>
+                                <view class="coupon-btn" :class="data_list.filter((item) => item.status_type == 0).length > 0 ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" @tap="receive_all_event">
+                                    {{ data_list.filter((item) => item.status_type == 0).length > 0 ? '立即领取' : '不可领取' }}
+                                </view>
+
+                                <!-- <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view> -->
                             </view>
                         </view>
                     </view>
@@ -183,6 +187,8 @@
                     url_2: '',
                     url_3: '',
                 },
+                // 首页地址
+                home_page_url: app.globalData.data.tabbar_pages[0],
             };
         },
         mounted() {
@@ -227,6 +233,72 @@
                         url_3: new_content.theme_5_static_img[0].url,
                     },
                     style_container: common_styles_computer(new_style.common_style),
+                });
+            },
+            // 领取优惠券
+            receive_event(e) {
+                const coupon_status_type = e.currentTarget.dataset.type;
+                const coupon_index = e.currentTarget.dataset.index;
+                const coupon_id = e.currentTarget.dataset.id;
+                switch (coupon_status_type) {
+                    case 0:
+                        // 登录校验
+                        var user = app.globalData.get_user_info(this, 'coupon_receive_event');
+                        if (user != false) {
+                            var temp_list = this.data_list;
+                            if (temp_list[coupon_index]['is_operable'] != 0) {
+                                uni.showLoading({
+                                    title: this.$t('common.processing_in_text'),
+                                });
+                                this.coupon_api(coupon_id, coupon_index);
+                            }
+                        }
+                        break;
+                    case 3:
+                        app.globalData.url_event(e);
+                        break;
+                }
+            },
+            // 全部领取
+            receive_all_event() {
+                const filter_data_list = this.data_list.map((item) => {
+                    if (item.is_operable != 0 && item.status_type == 0) {
+                        return item.id;
+                    }
+                });
+                this.coupon_api(filter_data_list.join(','));
+            },
+            // 优惠劵领取事件
+            coupon_api(val, index) {
+                uni.request({
+                    url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
+                    method: 'POST',
+                    data: {
+                        coupon_id: val,
+                    },
+                    dataType: 'json',
+                    success: (res) => {
+                        uni.hideLoading();
+                        if (res.data.code == 0) {
+                            app.globalData.showToast(res.data.msg, 'success');
+                            if (index) {
+                                temp_list = res.data.data.coupon || [];
+                            } else {
+                                temp_list[index] = res.data.data.coupon || {};
+                            }
+                            this.setData({
+                                data_list: temp_list,
+                            });
+                        } else {
+                            if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
+                                app.globalData.showToast(res.data.msg);
+                            }
+                        }
+                    },
+                    fail: () => {
+                        uni.hideLoading();
+                        app.globalData.showToast(this.$t('common.internet_error_tips'));
+                    },
                 });
             },
         },
@@ -745,6 +817,10 @@
                 }
             }
         }
+    }
+    // 已领取
+    .btn-already {
+        color: #e3ca90 !important;
     }
     .hide-scrollbar {
         overflow: auto;

@@ -17,9 +17,9 @@
             </view>
         </view>
         <!-- 回到店铺 -->
-        <view v-if="(shop || null) != null"  class="popup-bottom bottom-fixed bg-white">
+        <view v-if="(shop || null) != null" class="popup-bottom bottom-fixed bg-white">
             <view class="bottom-line-exclude">
-                <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" :data-value="shop.url" @tap="shop_event">{{$t('index.index.i78v36')}}</button>
+                <button class="bg-white cr-main br-main round dis-block text-size" type="default" hover-class="none" :data-value="shop.url" @tap="shop_event">{{ $t('index.index.i78v36') }}</button>
             </view>
         </view>
     </view>
@@ -53,7 +53,7 @@
         components: {
             componentNoData,
             componentBottomLine,
-            componentCouponCard
+            componentCouponCard,
         },
         props: {},
 
@@ -189,32 +189,6 @@
                     if (temp_list[index]['is_operable'] != 0) {
                         uni.showLoading({
                             title: this.$t('common.processing_in_text'),
-                        });
-                        uni.request({
-                            url: app.globalData.get_request_url('receive', 'coupon', 'coupon'),
-                            method: 'POST',
-                            data: {
-                                coupon_id: value,
-                            },
-                            dataType: 'json',
-                            success: (res) => {
-                                uni.hideLoading();
-                                if (res.data.code == 0) {
-                                    app.globalData.showToast(res.data.msg, 'success');
-                                    temp_list[index] = res.data.data.coupon;
-                                    this.setData({
-                                        data_list: temp_list,
-                                    });
-                                } else {
-                                    if (app.globalData.is_login_check(res.data, this, 'coupon_receive_event')) {
-                                        app.globalData.showToast(res.data.msg);
-                                    }
-                                }
-                            },
-                            fail: () => {
-                                uni.hideLoading();
-                                app.globalData.showToast(this.$t('common.internet_error_tips'));
-                            },
                         });
                     }
                 }
