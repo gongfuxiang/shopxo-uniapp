@@ -11,7 +11,7 @@
                     </view>
                 </view>
                 <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
-                    <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @click="url_event">
+                    <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @tap="url_event">
                         <image v-if="item.img.length > 0" :src="item.img[0].url" class="border-radius-sm" mode="scaleToFill" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" />
                         <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size + 'rpx'" color="#666"></iconfont>
                     </view>
