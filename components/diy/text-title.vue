@@ -17,8 +17,7 @@
 
 <script>
 const app = getApp();
-import { is_obj_empty } from '../../common/js/common/common';
-import { common_styles_computer } from '@/common/js/common/common.js';
+import { common_styles_computer, is_obj_empty } from '@/common/js/common/common.js';
 export default {
     props: {
         value: {
