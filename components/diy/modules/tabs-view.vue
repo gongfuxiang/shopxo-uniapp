@@ -2,7 +2,7 @@
     <!-- 文章列表 -->
     <view class="tabs flex-row oh" :style="'column-gap: ' + tabs_spacing + 'px;'">
         <view v-for="(item, index) in tabs_list" :key="index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @tap="handle_event">
-            <image v-if="item.img" :src="item.img[0].url" class="img" mode="widthFix" />
+            <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
             <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
             <view class="desc" :style="tabs_theme_index == '1' && index == active_index ? tabs_check : ''">{{ item.desc }}</view>
             <iconfont name="icon-checked-1" class="icon" :style="tabs_theme_index == '3' ? icon_tabs_check : ''"></iconfont>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import { gradient_computer } from '@/common/js/common/common.js';
+    import { gradient_computer, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -40,6 +40,7 @@
             this.init();
         },
         methods: {
+            isEmpty,
             init() {
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};

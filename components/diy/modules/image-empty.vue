@@ -1,11 +1,11 @@
 <template>
-    <view class="oh wh-auto ht-auto" :style="empty_outer_style">
+    <view class="oh img_wh" :style="empty_outer_style">
         <image :src="imageUrl" @error="handleImageError" :mode="img_fit" :style="empty_style" />
     </view>
 </template>
 
 <script>
-    import { is_obj, is_obj_empty } from '@/common/js/common/common.js';
+    import { is_obj, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             imageSrc: {
@@ -36,7 +36,7 @@
             init() {
                 let img_url = this.imageSrc;
                 if (is_obj(this.imageSrc)) {
-                    img_url = !is_obj_empty(this.imageSrc) ? this.imageSrc.url : '';
+                    img_url = !isEmpty(this.imageSrc) ? this.imageSrc.url : '';
                 }
                 // 没有图片的时候根据默认值来算
                 if (img_url == undefined || img_url == null || img_url == '') {
@@ -54,4 +54,8 @@
     };
 </script>
 <style lang="scss" scoped>
+    .img_wh {
+        width: 100%;
+        height: 100%;
+    }
 </style>

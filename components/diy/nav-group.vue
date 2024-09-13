@@ -28,11 +28,11 @@
 <script>
     const app = getApp();
     import {
-        is_obj_empty,
+        isEmpty,
         common_styles_computer,
         radius_computer
-    } from '../../common/js/common/common';
-    import imageEmpty from './modules/image-empty.vue';
+    } from '@/common/js/common/common.js';
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
             imageEmpty
@@ -120,7 +120,7 @@
                     color
                 } = this.new_style;
                 let styles = '';
-                if (!is_obj_empty(indicator_radius)) {
+                if (!isEmpty(indicator_radius)) {
                     styles += radius_computer(indicator_radius)
                 }
                 if (indicator_style == 'num') {
@@ -141,7 +141,7 @@
                 })
             },
             url_open_event(link) {
-                if (!is_obj_empty(link)) {
+                if (!isEmpty(link)) {
                     app.globalData.url_open(link.page)
                 }
             },

@@ -11,6 +11,19 @@
 export function is_obj_empty (obj) {
     return Object.keys(obj).length === 0;
 }
+
+/**
+ * 判断对象数组等是否为空。
+ */
+export function isEmpty(value) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === 'object' && Object.keys(value).length === 0)
+  )
+}
 /**
  * 检查给定的参数是否为对象
  *

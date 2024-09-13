@@ -11,9 +11,9 @@
                             <image-empty :image-src="new_style.video_img[0]" class="video_img" img_fit="aspectFill" error-style="width: 28rpx;height: 28rpx;"></image-empty>
                         </block>
                         <block v-else>
-                            <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                            <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!is_obj_empty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size *2 + 'rpx' }">{{ item.video_title }}</span>
+                        <span v-if="!isEmpty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
@@ -27,9 +27,9 @@
                             <image-empty :image-src="new_style.video_img[0]" class="video_img" img_fit="aspectFill" error-style="width: 28rpx;height: 28rpx;"></image-empty>
                         </block>
                         <block v-else>
-                            <iconfont :name="!is_obj_empty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
+                            <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!is_obj_empty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size *2 + 'rpx' }">{{ item.video_title }}</span>
+                        <span v-if="!isEmpty(item.video_title)" :style="{'color': new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
@@ -55,8 +55,8 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, radius_computer, is_obj_empty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
-    import imageEmpty from './modules/image-empty.vue';
+    import { common_styles_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
             imageEmpty
@@ -105,7 +105,7 @@
             this.init();
         },
         methods: {
-            is_obj_empty,
+            isEmpty,
             init() {
                 const { windowWidth } = uni.getSystemInfoSync();
                 // 将90%的宽度分成16份
@@ -146,7 +146,7 @@
             get_indicator_style() {
                 const { indicator_radius, indicator_style, indicator_size, color } = this.new_style;
                 let styles = '';
-                if (!is_obj_empty(indicator_radius)) {
+                if (!isEmpty(indicator_radius)) {
                     styles += radius_computer(indicator_radius)
                 }
                 if (indicator_style == 'num') {
@@ -203,7 +203,7 @@
             get_video_style() {
                 const { video_bottom, video_radius, video_color_list, video_direction, video_title_color, video_padding} = this.new_style;
                 let style = `bottom: ${video_bottom}px;`;
-                if (!is_obj_empty(video_radius)) {
+                if (!isEmpty(video_radius)) {
                     style += radius_computer(video_radius)
                 }
                 const data = {
@@ -219,19 +219,19 @@
                 })
                 this.$refs.popup.open();
                 const videoContext = uni.createVideoContext('carousel_video');
-                if (!is_obj_empty(videoContext)) {
+                if (!isEmpty(videoContext)) {
                     videoContext.play();      
                 }
             },
             video_close() {
                 const videoContext = uni.createVideoContext('carousel_video');
-                if (!is_obj_empty(videoContext)) {
+                if (!isEmpty(videoContext)) {
                     videoContext.pause();
                 }
                 this.$refs.popup.close();
             },
             url_open(link) {
-                if (!is_obj_empty(link)) {
+                if (!isEmpty(link)) {
                     app.globalData.url_open(link.page);
                 } 
             }
