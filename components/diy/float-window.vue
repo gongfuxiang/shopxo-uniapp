@@ -14,7 +14,7 @@
 
 <script>
 const app = getApp();
-import { is_obj_empty } from '../../common/js/common/common';
+import { isEmpty } from '../../common/js/common/common';
 import imageEmpty from './modules/image-empty.vue';
 export default {
     components: {
@@ -58,7 +58,7 @@ export default {
         },
         url_open() {
             const { button_jump, button_link} = this.form;
-            if (button_jump == 'link' && !is_obj_empty(button_link)) {
+            if (button_jump == 'link' && !isEmpty(button_link)) {
                 app.globalData.url_open(button_link.page)
             } else {
                 console.log('客服');

@@ -7,6 +7,7 @@
                 <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                 <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
                 <componentNavGroup v-if="item.key == 'nav-group'" :value="item.com_data"></componentNavGroup>
+                <componentGoodsList v-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
                 <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
@@ -42,6 +43,7 @@
     import componentDiyRichText from '@/components/diy/rich-text.vue';
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
     import componentNavGroup from '@/components/diy/nav-group.vue';
+    import componentGoodsList from '@/components/diy/goods-list.vue';
     export default {
         name: 'diy',
         props: {
@@ -66,7 +68,8 @@
             componentFloatWindow,
             componentTextTitle,
             componentAuxiliaryBlank,
-            componentNavGroup
+            componentNavGroup,
+            componentGoodsList
         },
         data() {
             return {
