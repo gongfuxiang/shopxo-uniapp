@@ -14,7 +14,7 @@
     export default {
         components: {
             componentDiyModulesTabsView,
-            componentGoodsList
+            componentGoodsList,
         },
         props: {
             value: {
@@ -22,7 +22,7 @@
                 default: () => {
                     return {};
                 },
-            }
+            },
         },
         data() {
             return {
@@ -69,5 +69,4 @@
     };
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

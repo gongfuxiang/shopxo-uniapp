@@ -7,7 +7,8 @@
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                             <view v-if="is_show('price')" class="num nowrap" :style="'color:' + new_style.shop_price_color">
-                                <span class="identifying">{{ item.show_price_symbol }}</span><span :style="price_style">{{ item.min_price }}</span>
+                                <span class="identifying">{{ item.show_price_symbol }}</span
+                                ><span :style="price_style">{{ item.min_price }}</span>
                                 <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                             </view>
                         </view>
@@ -25,17 +26,20 @@
                             <view class="flex-col gap-10 top-title">
                                 <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                 <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
-                                    <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color)}">{{ icon_data.name }}</view>
+                                    <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                 </view>
                             </view>
                             <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5 oh">
                                 <view :class="[form.is_price_solo == '1' ? 'flex-row align-c nowrap' : 'flex-col gap-5']">
                                     <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <span class="identifying">{{ item.show_price_symbol }}</span><span :style="price_style">{{ item.min_price }}</span>
+                                        <span class="identifying">{{ item.show_price_symbol }}</span
+                                        ><span :style="price_style">{{ item.min_price }}</span>
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
                                     <view v-if="show_content && is_show('original_price')" class="text-size-xss flex-row">
-                                        <span class="original-price-left"></span><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                        <span class="original-price-left"></span
+                                        ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                            >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
@@ -63,11 +67,14 @@
                             <view v-else class="flex-row align-c jc-sb">
                                 <view class="flex-row align-c nowrap">
                                     <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
-                                        <span class="identifying">{{ item.show_price_symbol }}</span><span :style="price_style">{{ item.min_price }}</span>
+                                        <span class="identifying">{{ item.show_price_symbol }}</span
+                                        ><span :style="price_style">{{ item.min_price }}</span>
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
                                     <view v-if="show_content && is_show('original_price')" class="text-size-xss flex-row">
-                                        <span class="original-price-left"></span><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                        <span class="original-price-left"></span
+                                        ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                            >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
                                             </block>
@@ -88,7 +95,7 @@
                 </view>
             </block>
             <block v-else>
-                <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width:'100%', height: new_style.content_outer_height * 2 + 'rpx' }">
+                <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1" class="flex-row" :style="onter_style">
                         <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style">
                             <block v-if="!isEmpty(item)">
@@ -103,17 +110,20 @@
                                 <view class="flex-col gap-10 top-title">
                                     <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
                                     <view v-if="show_content && is_show('plugins_view_icon') && !isEmpty(item.plugins_view_icon_data)" class="flex-row gap-5 align-c">
-                                        <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color)}">{{ icon_data.name }}</view>
+                                        <view v-for="(icon_data, icon_index) in item.plugins_view_icon_data" :key="icon_index" class="radius text-size-xsss padding-horizontal-xs" :style="{ background: icon_data.bg_color, color: icon_data.color, border: '1rpx solid' + (!isEmpty(icon_data.br_color) ? icon_data.br_color : icon_data.bg_color) }">{{ icon_data.name }}</view>
                                     </view>
                                 </view>
                                 <view class="flex-row align-c jc-sb">
                                     <view class="flex-row align-c nowrap">
                                         <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
-                                            <span class="identifying">{{ item.show_price_symbol }}</span><span :style="price_style">{{ item.min_price }}</span>
+                                            <span class="identifying">{{ item.show_price_symbol }}</span
+                                            ><span :style="price_style">{{ item.min_price }}</span>
                                             <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                         </view>
                                         <view v-if="show_content && is_show('original_price')" class="text-size-xss flex">
-                                            <span class="original-price-left"></span><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]">{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                            <span class="original-price-left"></span
+                                            ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                                >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
                                                 </block>
@@ -140,18 +150,11 @@
 
 <script>
     const app = getApp();
-    import {
-        isEmpty,
-        common_styles_computer,
-        get_math,
-        gradient_handle,
-        padding_computer,
-        radius_computer
-    } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, get_math, gradient_handle, padding_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
-            imageEmpty
+            imageEmpty,
         },
         props: {
             value: {
@@ -180,7 +183,8 @@
                     sales_count: '1000',
                     images: '',
                     new_cover: [],
-                    plugins_view_icon_data: [{
+                    plugins_view_icon_data: [
+                        {
                             name: '满减活动',
                             bg_color: '#EA3323',
                             br_color: '',
@@ -221,17 +225,17 @@
                 style_container: '', // 公共样式
                 shop_content_list: [],
                 // 内容样式
-                title_style:'',
+                title_style: '',
                 price_style: '',
                 sold_number_style: '',
                 score_style: '',
-                button_style: ''
+                button_style: '',
             };
         },
         created() {
             this.setData({
                 form: this.value.content,
-                new_style: this.value.style
+                new_style: this.value.style,
             });
             this.init();
         },
@@ -240,20 +244,21 @@
             init() {
                 let new_list = [];
                 // 指定商品并且指定商品数组不为空
-                 if (!isEmpty(this.form.data_list) && this.form.data_type == '0') {
+                if (!isEmpty(this.form.data_list) && this.form.data_type == '0') {
                     new_list = this.form.data_list.map((item) => ({
                         ...item.data,
                         title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
                         new_cover: item.new_cover,
-                    }))
+                    }));
                 } else if (!isEmpty(this.form.data_auto_list) && this.form.data_type == '1') {
                     // 筛选商品并且筛选商品数组不为空
                     new_list = this.form.data_auto_list.map((item) => ({
                         ...item.data,
                         title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
                         new_cover: item.new_cover,
-                    }))
-                } else { // 为空的时候走默认数据
+                    }));
+                } else {
+                    // 为空的时候走默认数据
                     new_list = Array(4).fill(this.default_list);
                 }
                 // 最外层不同风格下的显示
@@ -280,7 +285,7 @@
                     score_style: this.trends_config('score'),
                     button_style: this.trends_config('button', 'gradient'),
                     shop_content_list: this.get_shop_content_list(new_list),
-                })
+                });
             },
             get_shop_content_list(list) {
                 // 深拷贝一下，确保不会出现问题
@@ -295,15 +300,17 @@
                     const split_num = Math.ceil(cloneList.length / num);
                     for (let i = 0; i < split_num; i++) {
                         nav_list.push({
-                            split_list: cloneList.slice(i * num, (i + 1) * num)
+                            split_list: cloneList.slice(i * num, (i + 1) * num),
                         });
                     }
                     return nav_list;
                 } else {
                     // 否则的话，就返回全部的信息
-                    return [{
-                        split_list: cloneList
-                    }];
+                    return [
+                        {
+                            split_list: cloneList,
+                        },
+                    ];
                 }
             },
             get_text_line() {
@@ -355,18 +362,16 @@
                 const padding = ['0', '4'].includes(this.form.theme) ? padding_computer(this.new_style.shop_padding) + 'box-sizing: border-box;' : '';
                 let size_style = ``;
                 if (['1', '4'].includes(this.form.theme)) {
-                    size_style = `width: calc((100% - ${ this.new_style.content_outer_spacing * 2 + 'rpx' }) / 2);`
+                    size_style = `width: calc((100% - ${this.new_style.content_outer_spacing * 2 + 'rpx'}) / 2);`;
                 } else if (this.form.theme == '3') {
-                    size_style = `width: calc((100% - ${ this.new_style.content_outer_spacing * 4 + 'rpx' }) / 3);`;
+                    size_style = `width: calc((100% - ${this.new_style.content_outer_spacing * 4 + 'rpx'}) / 3);`;
                 } else if (this.form.theme == '5') {
-                    size_style = `width: ${ this.get_multicolumn_columns_width() };min-width: ${ this.get_multicolumn_columns_width() };height: ${ this.new_style.content_outer_height * 2 + 'rpx' }`;
+                    size_style = `width: ${this.get_multicolumn_columns_width()};min-width: ${this.get_multicolumn_columns_width()};height: ${this.new_style.content_outer_height * 2 + 'rpx'}`;
                 }
-                return `${radius} ${padding} ${ size_style }`;
+                return `${radius} ${padding} ${size_style}`;
             },
             get_multicolumn_columns_width() {
-                const {
-                    carousel_col
-                } = this.form;
+                const { carousel_col } = this.form;
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (this.new_style.content_outer_spacing * (carousel_col - 1)) / carousel_col;
                 return `calc(${100 / carousel_col}% - ${gap * 2}rpx)`;
@@ -415,9 +420,9 @@
             },
             url_open_event(link) {
                 if (!isEmpty(link)) {
-                    app.globalData.url_open(link.page)
+                    app.globalData.url_open(link.page);
                 }
-            }
+            },
         },
     };
 </script>

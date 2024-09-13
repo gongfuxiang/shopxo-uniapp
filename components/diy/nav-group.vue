@@ -1,9 +1,9 @@
 <template>
     <view :style="style_container">
-        <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{'height': newHeight }" @change="slideChange">
+        <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: newHeight }" @change="slideChange">
             <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c" @tap="url_open(item.carousel_link)">
                 <view ref="bannerImg" class="flex-row flex-wrap wh-auto gap-x-10">
-                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{'width': group_width }" @tap="url_open_event(item1.link)">
+                    <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" @tap="url_open_event(item1.link)">
                         <view v-if="['image_with_text', 'image'].includes(nav_style)" class="top-img flex-row align-c jc-c">
                             <image-empty :image-src="item1.img[0]" :style="img_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
                         </view>
@@ -12,10 +12,11 @@
                 </view>
             </swiper-item>
         </swiper>
-        <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :style="{ 'justify-content': new_style.indicator_location || 'center'}" class="dot flex-row">
+        <view v-if="form.display_style == 'slide' && new_style.is_show == '1'" :style="{ 'justify-content': new_style.indicator_location || 'center' }" class="dot flex-row">
             <block v-if="new_style.indicator_style == 'num'">
                 <view :style="indicator_style" class="dot-item">
-                    <span :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</span><span>/{{ nav_content_list.length }}</span>
+                    <span :style="{ color: new_style.actived_color }">{{ actived_index + 1 }}</span
+                    ><span>/{{ nav_content_list.length }}</span>
                 </view>
             </block>
             <block v-else>
@@ -27,15 +28,11 @@
 
 <script>
     const app = getApp();
-    import {
-        isEmpty,
-        common_styles_computer,
-        radius_computer
-    } from '@/common/js/common/common.js';
+    import { isEmpty, common_styles_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
-            imageEmpty
+            imageEmpty,
         },
         props: {
             value: {
@@ -56,13 +53,13 @@
                 newHeight: '200rpx',
                 actived_index: 0,
                 group_width: '',
-                nav_content_list: []
+                nav_content_list: [],
             };
         },
         created() {
             this.setData({
                 form: this.value.content,
-                new_style: this.value.style
+                new_style: this.value.style,
             });
             this.init();
         },
@@ -72,7 +69,7 @@
             });
             window.onresize = () => {
                 this.newHeight = this.$refs.bannerImg[0].$el.clientHeight * 2 + 'rpx';
-            }
+            };
         },
         methods: {
             init() {
@@ -84,8 +81,8 @@
                     actived_color: this.new_style.actived_color || '#2A94FF', // 轮播图显示样式
                     group_width: `${100 / (this.form.single_line || 4)}%`, // 每个导航所占位置
                     nav_style: this.form.nav_style || 'image_with_text', // 是否显示文字和图片
-                    nav_content_list: this.get_nav_content_list()
-                })
+                    nav_content_list: this.get_nav_content_list(),
+                });
             },
             get_nav_content_list() {
                 // 深拷贝一下，确保不会出现问题
@@ -101,48 +98,45 @@
                     const split_num = Math.ceil(list.length / num);
                     for (let i = 0; i < split_num; i++) {
                         nav_list.push({
-                            split_list: list.slice(i * num, (i + 1) * num)
+                            split_list: list.slice(i * num, (i + 1) * num),
                         });
                     }
                     return nav_list;
                 } else {
                     // 否则的话，就返回全部的信息
-                    return [{
-                        split_list: list
-                    }];
+                    return [
+                        {
+                            split_list: list,
+                        },
+                    ];
                 }
             },
             get_indicator_style() {
-                const {
-                    indicator_radius,
-                    indicator_style,
-                    indicator_size,
-                    color
-                } = this.new_style;
+                const { indicator_radius, indicator_style, indicator_size, color } = this.new_style;
                 let styles = '';
                 if (!isEmpty(indicator_radius)) {
-                    styles += radius_computer(indicator_radius)
+                    styles += radius_computer(indicator_radius);
                 }
                 if (indicator_style == 'num') {
                     styles += `color: ${color || '#DDDDDD'};`;
-                    styles += `font-size: ${ indicator_size * 2 }rpx;`;
+                    styles += `font-size: ${indicator_size * 2}rpx;`;
                 } else if (indicator_style == 'elliptic') {
                     styles += `background: ${color || '#DDDDDD'};`;
-                    styles += `width: ${ indicator_size * 6 }rpx; height: ${ indicator_size * 2 }rpx;`;
+                    styles += `width: ${indicator_size * 6}rpx; height: ${indicator_size * 2}rpx;`;
                 } else {
                     styles += `background: ${color || '#DDDDDD'};`;
-                    styles += `width: ${ indicator_size * 2 }rpx; height: ${ indicator_size * 2 }rpx;`;
+                    styles += `width: ${indicator_size * 2}rpx; height: ${indicator_size * 2}rpx;`;
                 }
                 return styles;
             },
             slideChange(e) {
                 this.setData({
-                    actived_index: e.target.current
-                })
+                    actived_index: e.target.current,
+                });
             },
             url_open_event(link) {
                 if (!isEmpty(link)) {
-                    app.globalData.url_open(link.page)
+                    app.globalData.url_open(link.page);
                 }
             },
         },

@@ -62,7 +62,7 @@
         created() {
             this.setData({
                 form: this.value.content,
-                new_style: this.value.style
+                new_style: this.value.style,
             });
             this.init();
         },
@@ -88,7 +88,7 @@
                 return common_styles;
             },
             get_box_style() {
-                let style = `border: 1px solid ${ this.new_style.search_border }; ${ radius_computer(this.new_style.search_border_radius) };`;
+                let style = `border: 1px solid ${this.new_style.search_border}; ${radius_computer(this.new_style.search_border_radius)};`;
                 if (this.form.is_center == '1') {
                     style += `justify-content: center;`;
                 }
@@ -96,43 +96,42 @@
             },
             get_search_button() {
                 let style = this.search_button_radius;
-                const { search_botton_color_list, search_botton_direction, search_botton_background_img_style, search_botton_background_img  } = this.new_style;
+                const { search_botton_color_list, search_botton_direction, search_botton_background_img_style, search_botton_background_img } = this.new_style;
                 if (this.form.search_type != 'img') {
                     const data = {
                         color_list: search_botton_color_list,
                         direction: search_botton_direction,
                         background_img: search_botton_background_img,
                         background_img_style: search_botton_background_img_style,
-                    }
-                    style += gradient_computer(data) + background_computer(data) + `color: ${ this.new_style.button_inner_color };`;
+                    };
+                    style += gradient_computer(data) + background_computer(data) + `color: ${this.new_style.button_inner_color};`;
                 }
                 return style;
-            }
+            },
         },
     };
 </script>
 
 <style lang="scss" scoped>
-.search {
-    height: 64rpx;
-    .box {
-        padding: 12rpx 30rpx;
-    }
-    .img-box {
-        height: 100%;
-        min-width: 4rpx;
-        max-width: 12rpx;
-    }
-    .search-botton {
-        height: 56rpx;
-        top: 4rpx;
-        right: 4rpx;
-        .img {
+    .search {
+        height: 64rpx;
+        .box {
+            padding: 12rpx 30rpx;
+        }
+        .img-box {
+            height: 100%;
+            min-width: 4rpx;
+            max-width: 12rpx;
+        }
+        .search-botton {
             height: 56rpx;
-            min-width: 6rpx;
-            max-width: 20rpx;
+            top: 4rpx;
+            right: 4rpx;
+            .img {
+                height: 56rpx;
+                min-width: 6rpx;
+                max-width: 20rpx;
+            }
         }
     }
-    
-}
 </style>
