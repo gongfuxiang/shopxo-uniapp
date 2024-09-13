@@ -51,11 +51,11 @@
                                     <view v-if="item.limit_send_count && item.limit_send_count > 0" class="limit text-line-1" :style="'color:' + theme_style.limit_send_count">(限领{{ item.limit_send_count }}张)</view>
                                 </view>
                             </view>
-                            <view class="right">
+                            <view class="right" :class="item.status_operable_name.length > 3 ? ' long-name' : ' short-name'">
                                 <div class="right-before" :style="'background: ' + theme_style.background"></div>
                                 <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">
-                                    <text>{{ item.status_operable_name }}</text>
-                                    <icon name="arrow-right-o" class="icon"></icon>
+                                    <text class="text">{{ item.status_operable_name }}</text>
+                                    <iconfont name="icon-arrow-right-round" class="icon"></iconfont>
                                 </view>
                             </view>
                         </view>
@@ -159,7 +159,10 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
+    import {
+        common_styles_computer,
+        gradient_computer
+    } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -198,9 +201,18 @@
                 const new_style = this.value.style || {};
                 const temp_theme = new_content.theme;
                 // 主题
-                const new_background = gradient_computer({ color_list: new_style.background, direction: new_style.direction }, false);
-                const new_background_inside = gradient_computer({ color_list: new_style.background_inside, direction: new_style.direction_inside }, false);
-                const new_btn_background = gradient_computer({ color_list: new_style.btn_background, direction: new_style.btn_direction }, false);
+                const new_background = gradient_computer({
+                    color_list: new_style.background,
+                    direction: new_style.direction
+                }, false);
+                const new_background_inside = gradient_computer({
+                    color_list: new_style.background_inside,
+                    direction: new_style.direction_inside
+                }, false);
+                const new_btn_background = gradient_computer({
+                    color_list: new_style.btn_background,
+                    direction: new_style.btn_direction
+                }, false);
                 this.setData({
                     content_title: new_content.content_title || '',
                     content_desc: new_content.content_desc || '',
@@ -211,19 +223,41 @@
                         price_color: new_style.price_color,
                         name_color: new_style.name_color,
                         // 判断是否向对象添加desc_color属性
-                        ...(!['1', '5', '6', '7'].includes(temp_theme) && { desc_color: new_style.desc_color }),
-                        ...(!['1', '2', '4', '5', '6', '7'].includes(temp_theme) && { limit_send_count: new_style.limit_send_count }),
-                        ...(!['5', '6', '7'].includes(temp_theme) && { btn_background: new_btn_background }),
+                        ...(!['1', '5', '6', '7'].includes(temp_theme) && {
+                            desc_color: new_style.desc_color
+                        }),
+                        ...(!['1', '2', '4', '5', '6', '7'].includes(temp_theme) && {
+                            limit_send_count: new_style.limit_send_count
+                        }),
+                        ...(!['5', '6', '7'].includes(temp_theme) && {
+                            btn_background: new_btn_background
+                        }),
                         btn_color: new_style.btn_color,
-                        ...(!['2'].includes(temp_theme) && { background: new_background }),
-                        ...(!['1', '2', '5', '7'].includes(temp_theme) && { background_inside: new_background_inside }),
+                        ...(!['2'].includes(temp_theme) && {
+                            background: new_background
+                        }),
+                        ...(!['1', '2', '5', '7'].includes(temp_theme) && {
+                            background_inside: new_background_inside
+                        }),
                         spacing: new_style.spacing + 'px',
-                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { type_background: new_style.type_background }),
-                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { type_color: new_style.type_color }),
-                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_title_color: new_style.content_title_color }),
-                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_desc_color: new_style.content_desc_color }),
-                        ...(['3'].includes(temp_theme) && { border_style: new_style.background[0].color }),
-                        ...(['7'].includes(temp_theme) && { theme_7_background: new_style.common_style.color_list[0].color }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
+                            type_background: new_style.type_background
+                        }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
+                            type_color: new_style.type_color
+                        }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
+                            content_title_color: new_style.content_title_color
+                        }),
+                        ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && {
+                            content_desc_color: new_style.content_desc_color
+                        }),
+                        ...(['3'].includes(temp_theme) && {
+                            border_style: new_style.background[0].color
+                        }),
+                        ...(['7'].includes(temp_theme) && {
+                            theme_7_background: new_style.common_style.color_list[0].color
+                        }),
                     },
                     theme_bg_img: {
                         url_1: new_content.theme_1_static_img[0].url,
@@ -306,6 +340,7 @@
     .coupon-theme-1 {
         display: flex;
         flex-direction: row;
+
         .item {
             flex-basis: auto;
             flex-shrink: 0;
@@ -313,25 +348,33 @@
             height: 180rpx;
             border-radius: 20rpx;
             margin-top: 20rpx;
+
             .name {
                 padding: 10rpx 10rpx 0 10rpx;
                 margin-bottom: 10rpx;
                 font-size: 20rpx;
+                box-sizing: border-box;
             }
+
             .price {
                 padding: 10rpx 0 16rpx 0;
+                box-sizing: border-box;
+
                 .symbol {
                     font-size: 24rpx;
                     position: relative;
                     bottom: 6rpx;
                 }
+
                 .number {
                     font-size: 52rpx;
                     line-height: 48rpx;
                     font-weight: 500;
                     padding: 0 8rpx;
+                    box-sizing: border-box;
                 }
             }
+
             .coupon-theme-1-content {
                 width: calc(100% - 20rpx);
                 margin: 0 10rpx;
@@ -353,9 +396,11 @@
             }
         }
     }
+
     .coupon-theme-2 {
         display: flex;
         flex-direction: row;
+
         .item {
             flex-basis: auto;
             flex-shrink: 0;
@@ -363,25 +408,33 @@
             width: 170rpx;
             height: 200rpx;
             padding: 10rpx;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+
             .price {
                 padding: 6rpx 0;
+                box-sizing: border-box;
+
                 .symbol {
                     font-size: 16rpx;
                 }
+
                 .number {
                     font-size: 52rpx;
                     font-weight: 500;
                     padding: 0 8rpx;
+                    box-sizing: border-box;
                 }
             }
+
             .name {
                 font-size: 16rpx;
                 font-weight: 500;
                 margin-bottom: 8rpx;
             }
+
             .desc {
                 font-size: 16rpx;
             }
@@ -399,45 +452,57 @@
             }
         }
     }
+
     .coupon-theme-3 {
         display: flex;
+
         .item {
             overflow: hidden;
+            height: 176rpx;
             border-radius: 32rpx;
             flex-basis: auto;
             flex-shrink: 0;
             width: 100%;
             padding: 16rpx;
+            box-sizing: border-box;
             display: flex;
+
             .left {
                 flex: 1;
                 width: 0;
                 border-radius: 16rpx;
                 padding: 12rpx 24rpx 6rpx 24rpx;
+                box-sizing: border-box;
                 display: flex;
                 align-items: center;
+
                 .price-before {
                     height: calc(100% + 120rpx);
                     display: flex;
                     align-items: center;
                 }
+
                 .price {
                     text-align: center;
                     width: 200rpx;
                     position: relative;
                     display: flex;
                     align-items: flex-start;
+
                     .symbol {
                         font-size: 36rpx;
                         font-weight: 600;
                     }
+
                     .number {
                         font-size: 64rpx;
                         font-weight: 600;
                         padding: 0 8rpx;
+                        box-sizing: border-box;
                         line-height: 60rpx;
                     }
                 }
+
                 .text {
                     flex: 1;
                     width: 0;
@@ -445,28 +510,51 @@
                     flex-direction: column;
                     align-items: center;
                     text-align: center;
+                    box-sizing: border-box;
+
                     .name {
                         font-size: 36rpx;
                         font-weight: 500;
                         line-height: 50rpx;
                     }
+
                     .desc {
                         font-size: 28rpx;
                         font-weight: 500;
                         line-height: 40rpx;
                     }
+
                     .limit {
                         font-size: 24rpx;
                     }
                 }
             }
+
             .right {
                 width: 172rpx;
                 position: relative;
                 padding: 0 36rpx;
+                box-sizing: border-box;
                 text-align: center;
                 display: flex;
                 align-items: center;
+
+                &.long-name {}
+
+                &.short-name {
+                    height: 132rpx;
+                    justify-content: center;
+                    padding: 0 10rpx;
+
+                    .coupon-btn {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        gap: 6rpx;
+                        width: 100%;
+                    }
+                }
+
                 .right-before {
                     position: absolute;
                     top: 50%;
@@ -476,27 +564,40 @@
                     left: -32rpx;
                     border-radius: 100%;
                 }
+
                 .coupon-btn {
                     position: relative;
                     font-size: 36rpx;
-                    font-weight: 500;
                     text-align: center;
+
+                    .text {
+                        height: 100rpx;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                    }
+
                     .icon {
                         font-size: 40rpx;
+                        line-height: 32rpx;
                     }
                 }
             }
         }
     }
+
     .coupon-theme-4 {
         overflow: hidden;
         border-radius: 32rpx;
         padding: 16rpx;
+        box-sizing: border-box;
         display: flex;
+
         .left {
             width: 428rpx;
             display: flex;
             flex-direction: row;
+
             .item {
                 overflow: hidden;
                 flex-basis: auto;
@@ -510,6 +611,8 @@
                 justify-content: flex-end;
                 align-items: center;
                 padding: 8rpx;
+                box-sizing: border-box;
+
                 .type {
                     position: absolute;
                     top: 0;
@@ -517,6 +620,7 @@
                     transform: translateX(-50%);
                     font-size: 20rpx;
                     line-height: 28rpx;
+
                     .type-before {
                         position: absolute;
                         width: 30rpx;
@@ -526,6 +630,7 @@
                         top: -32rpx;
                         z-index: -1;
                     }
+
                     .type-after {
                         position: absolute;
                         width: 30rpx;
@@ -536,31 +641,38 @@
                         z-index: -1;
                     }
                 }
+
                 .price {
                     text-align: center;
                     position: relative;
                     display: flex;
                     align-items: flex-end;
+
                     .symbol {
                         font-size: 24rpx;
                     }
+
                     .number {
                         font-size: 48rpx;
                         line-height: 48rpx;
                         font-weight: 600;
                         padding-left: 8rpx;
+                        box-sizing: border-box;
                     }
                 }
+
                 .name {
                     font-size: 22rpx;
                     line-height: 32rpx;
                 }
             }
         }
+
         .right {
             flex: 1;
             width: 0;
             position: relative;
+
             .right-before {
                 width: 360rpx;
                 height: 360rpx;
@@ -570,16 +682,19 @@
                 transform: translateY(-50%);
                 border-radius: 100%;
             }
+
             .title {
                 font-size: 32rpx;
                 font-weight: 500;
                 line-height: 44rpx;
             }
+
             .desc {
                 margin-top: 6rpx;
                 font-size: 24rpx;
                 line-height: 34rpx;
             }
+
             .coupon-btn {
                 width: 144rpx;
                 height: 44rpx;
@@ -591,9 +706,11 @@
             }
         }
     }
+
     .coupon-theme-5 {
         display: flex;
         flex-direction: row;
+
         .item {
             flex-basis: auto;
             flex-shrink: 0;
@@ -601,41 +718,50 @@
             width: 252rpx;
             height: 128rpx;
             position: relative;
+
             .left {
                 position: absolute;
                 left: 0;
                 width: 200rpx;
                 height: 100%;
                 padding: 12rpx;
+                box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 z-index: 1;
+
                 .price {
                     text-align: center;
                     position: relative;
                     display: flex;
                     align-items: flex-end;
                     margin-bottom: 10rpx;
+
                     .symbol {
                         font-size: 24rpx;
                         font-weight: 500;
                     }
+
                     .number {
                         font-size: 48rpx;
                         font-weight: 500;
                         line-height: 40rpx;
                         padding-left: 8rpx;
+                        box-sizing: border-box;
                     }
                 }
+
                 .name {
                     font-size: 24rpx;
                 }
             }
+
             .right {
                 width: 92rpx;
                 padding-left: 40rpx;
+                box-sizing: border-box;
                 border-radius: 12rpx;
                 position: absolute;
                 top: 0;
@@ -646,6 +772,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+
                 .coupon-btn {
                     position: relative;
                     font-size: 24rpx;
@@ -656,8 +783,10 @@
             }
         }
     }
+
     .coupon-theme-6 {
         display: flex;
+
         .item {
             flex-basis: auto;
             flex-shrink: 0;
@@ -666,6 +795,8 @@
             width: 280rpx;
             height: 200rpx;
             position: relative;
+            box-sizing: border-box;
+
             .top-before {
                 position: absolute;
                 left: -14rpx;
@@ -676,6 +807,7 @@
                 border-radius: 50%;
                 z-index: 2;
             }
+
             .top-after {
                 position: absolute;
                 right: -14rpx;
@@ -686,6 +818,7 @@
                 border-radius: 50%;
                 z-index: 2;
             }
+
             .top {
                 width: 100%;
                 padding: 8rpx;
@@ -697,30 +830,38 @@
                 border-radius: 12rpx;
                 position: relative;
                 overflow: hidden;
+                box-sizing: border-box;
+
                 .price {
                     text-align: center;
                     position: relative;
                     display: flex;
                     align-items: flex-end;
                     margin-bottom: 2rpx;
+
                     .symbol {
                         font-size: 40rpx;
                         font-weight: 500;
                     }
+
                     .number {
                         font-size: 64rpx;
                         font-weight: 500;
                         line-height: 64rpx;
                         padding-left: 8rpx;
+                        box-sizing: border-box;
                     }
                 }
+
                 .name {
                     font-size: 24rpx;
                 }
             }
+
             .bottom {
                 margin-top: 12rpx;
                 text-align: center;
+
                 .coupon-btn {
                     position: relative;
                     font-size: 32rpx;
@@ -731,8 +872,10 @@
             }
         }
     }
+
     .coupon-theme-7 {
         display: flex;
+
         .item {
             flex-basis: auto;
             flex-shrink: 0;
@@ -742,6 +885,7 @@
             position: relative;
             overflow: hidden;
             display: flex;
+
             .item-before {
                 position: absolute;
                 left: 160rpx;
@@ -750,6 +894,7 @@
                 height: 24rpx;
                 border-radius: 50%;
             }
+
             .item-after {
                 position: absolute;
                 left: 160rpx;
@@ -758,6 +903,7 @@
                 height: 24rpx;
                 border-radius: 50%;
             }
+
             .left {
                 width: 172rpx;
                 padding: 8rpx;
@@ -766,32 +912,41 @@
                 align-items: center;
                 justify-content: center;
                 position: relative;
+                box-sizing: border-box;
+
                 .price {
                     text-align: center;
                     position: relative;
                     display: flex;
                     align-items: flex-end;
                     margin-bottom: 10rpx;
+
                     .symbol {
                         font-size: 24rpx;
                         font-weight: 500;
                     }
+
                     .number {
                         font-size: 48rpx;
                         font-weight: 500;
                         line-height: 40rpx;
                         padding-left: 8rpx;
+                        box-sizing: border-box;
                     }
                 }
+
                 .name {
                     font-size: 24rpx;
                 }
             }
+
             .right {
                 flex: 1;
                 width: 0;
                 padding-left: 14rpx;
                 position: relative;
+                box-sizing: border-box;
+
                 .right-before {
                     position: absolute;
                     left: -1rpx;
@@ -801,7 +956,9 @@
                     height: 100%;
                     opacity: 0.61;
                 }
+
                 .coupon-btn {
+                    box-sizing: border-box;
                     padding: 8rpx;
                     width: 100%;
                     font-size: 20rpx;
@@ -815,20 +972,20 @@
             }
         }
     }
+
     // 已领取
     .btn-already {
         color: #e3ca90 !important;
     }
+
     .hide-scrollbar {
         overflow: auto;
+
         &::-webkit-scrollbar {
             display: none;
             width: 0;
             height: 0;
             color: transparent;
         }
-    }
-    * {
-        box-sizing: border-box;
     }
 </style>
