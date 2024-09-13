@@ -30,6 +30,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            footerActiveIndex: {
+                type: Number,
+                default: 0,
+            },
         },
         data() {
             return {
@@ -39,8 +43,12 @@
                 nav_style: 0,
                 default_text_color: '',
                 text_color_checked: '',
-                is_active: 0,
+                is_active: this.footerActiveIndex,
             };
+        },
+        created() {
+            //隐藏tabbar
+            uni.hideTabBar();
         },
         mounted() {
             this.init();
