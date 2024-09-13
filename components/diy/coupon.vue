@@ -38,21 +38,21 @@
                     <view class="coupon-theme-3" :style="'gap:' + theme_style.spacing">
                         <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="left" :style="'background: ' + theme_style.background_inside">
-                                <div class="price-before" :style="'border-left: 2rpx dashed ' + theme_style.border_style">
+                                <div class="price-before" :style="'border-right: 2rpx dashed ' + theme_style.border_style">
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
                                         <span class="number">{{ item.discount_value }}</span>
                                         <span v-if="item.type == '1'" class="symbol self-e">折</span>
                                     </view>
                                 </div>
-                                <view class="text pl-3 pr-8">
+                                <view class="text padding-left-xs padding-right-sm">
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                     <view class="desc text-line-1" :style="'color:' + theme_style.desc_color">{{ item.use_limit_type_name }}</view>
                                     <view v-if="item.limit_send_count && item.limit_send_count > 0" class="limit text-line-1" :style="'color:' + theme_style.limit_send_count">(限领{{ item.limit_send_count }}张)</view>
                                 </view>
                             </view>
                             <view class="right">
-                                <div class="right-before"></div>
+                                <div class="right-before" :style="'background: ' + theme_style.background"></div>
                                 <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">
                                     <text>{{ item.status_operable_name }}</text>
                                     <icon name="arrow-right-o" class="icon"></icon>
@@ -112,8 +112,8 @@
                 <template v-else-if="theme == '6'">
                     <view class="coupon-theme-6" :style="'gap:' + theme_style.spacing">
                         <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
-                            <view class="pr">
-                                <view class="top-before"></view>
+                            <view class="pr oh">
+                                <view class="top-before" :style="'background: ' + theme_style.background"></view>
                                 <view class="top" :style="'background: ' + theme_style.background_inside">
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
@@ -122,7 +122,7 @@
                                     </view>
                                     <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                                 </view>
-                                <view class="top-after"></view>
+                                <view class="top-after" :style="'background: ' + theme_style.background"></view>
                             </view>
                             <view class="bottom">
                                 <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
@@ -134,7 +134,7 @@
                     <view class="coupon-theme-7" :style="'gap:' + theme_style.spacing">
                         <view v-for="(item, index) in data_list" :key="index" class="item" :style="'background: ' + theme_style.background">
                             <view class="item-before" :style="'background: ' + theme_style.theme_7_background"></view>
-                            <view class="flex-row">
+                            <view class="flex-row flex-1">
                                 <view class="left">
                                     <view class="price" :style="'color:' + theme_style.price_color">
                                         <span v-if="item.type == '0'" class="symbol">{{ currency_symbol }}</span>
@@ -223,7 +223,7 @@
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_title_color: new_style.content_title_color }),
                         ...(!['1', '2', '3', '5', '6', '7'].includes(temp_theme) && { content_desc_color: new_style.content_desc_color }),
                         ...(['3'].includes(temp_theme) && { border_style: new_style.background[0].color }),
-                        ...(['7'].includes(temp_theme) && { theme_7_background: new_style.background[0].width + 'px' }),
+                        ...(['7'].includes(temp_theme) && { theme_7_background: new_style.common_style.color_list[0].color }),
                     },
                     theme_bg_img: {
                         url_1: new_content.theme_1_static_img[0].url,
@@ -417,13 +417,9 @@
                 display: flex;
                 align-items: center;
                 .price-before {
-                    content: '';
-                    position: absolute;
-                    right: 0;
-                    top: -60rpx;
-                    bottom: -60rpx;
-                    width: 2rpx;
                     height: calc(100% + 120rpx);
+                    display: flex;
+                    align-items: center;
                 }
                 .price {
                     text-align: center;
@@ -655,8 +651,7 @@
                     font-size: 24rpx;
                     font-weight: 500;
                     text-align: center;
-                    writing-mode: vertical-lr;
-                    letter-spacing: 10rpx;
+                    letter-spacing: 4rpx;
                 }
             }
         }
@@ -679,6 +674,7 @@
                 width: 28rpx;
                 height: 28rpx;
                 border-radius: 50%;
+                z-index: 2;
             }
             .top-after {
                 position: absolute;
@@ -688,6 +684,7 @@
                 width: 28rpx;
                 height: 28rpx;
                 border-radius: 50%;
+                z-index: 2;
             }
             .top {
                 width: 100%;
@@ -707,13 +704,13 @@
                     align-items: flex-end;
                     margin-bottom: 2rpx;
                     .symbol {
-                        font-size: 44rpx;
+                        font-size: 40rpx;
                         font-weight: 500;
                     }
                     .number {
                         font-size: 64rpx;
                         font-weight: 500;
-                        line-height: 128rpx;
+                        line-height: 64rpx;
                         padding-left: 8rpx;
                     }
                 }
@@ -807,11 +804,13 @@
                 .coupon-btn {
                     padding: 8rpx;
                     width: 100%;
-                    font-size: 22rpx;
+                    font-size: 20rpx;
                     font-weight: 500;
                     text-align: center;
-                    writing-mode: vertical-lr;
-                    letter-spacing: 12rpx;
+                    letter-spacing: 4rpx;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
                 }
             }
         }
@@ -828,5 +827,8 @@
             height: 0;
             color: transparent;
         }
+    }
+    * {
+        box-sizing: border-box;
     }
 </style>
