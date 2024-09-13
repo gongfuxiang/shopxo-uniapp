@@ -1123,13 +1123,13 @@
             page_share_handle(share = null) {
                 // 当前页面
                 var pages = getCurrentPages();
-                var obj = pages[pages.length - 1];
+                var obj = pages[pages.length - 1] || null;
                 // 分享信息、是否指定参数
                 if ((share || null) == null) {
                     share = {};
                 }
                 // 从页面对象获取参数
-                if (Object.keys(share).length <= 0) {
+                if (obj != null && Object.keys(share).length <= 0) {
                     share = obj.share_info || {};
                 }
                 // 参数处理

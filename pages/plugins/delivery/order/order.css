@@ -27,13 +27,13 @@
     height: calc(100vh - 160rpx);
 }
 .data-list .address-info {
-    width: calc(100% - 158rpx);
+    width: calc(100% - 58rpx);
     word-wrap: break-word;
     word-break: break-all;
 }
 .data-list .address-info .icon-item {
     right: 0;
-    top: 0;
+    top: -6rpx;
     line-height: 54rpx;
     height: 54rpx;
     width: 54rpx;

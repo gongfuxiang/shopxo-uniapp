@@ -2,21 +2,41 @@
     <view :class="theme_view">
         <view v-if="detail != null">
             <view class="padding-horizontal-main padding-top-main">
-                <!-- 地址 -->
-                <view v-if="(detail.address_data || null) != null" class="goods bg-white padding-main border-radius-main spacing-mb">
-                    <view class="address-base oh">
-                        <text v-if="(detail.address_data.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.address_data.alias}}</text>
-                        <text data-event="copy" :data-value="detail.address_data.name" @tap="text_event">{{detail.address_data.name}}</text>
-                        <text class="fr" data-event="tel" :data-value="detail.address_data.tel" @tap="text_event">{{detail.address_data.tel}}</text>
+                <!-- 发货地址 -->
+                <view v-if="(detail.warehouse_address || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
+                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.order.jhgfd1')}}</view>
+                    <view class="address-base oh margin-top-sm">
+                        <text v-if="(detail.warehouse_address.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.warehouse_address.alias}}</text>
+                        <text data-event="copy" :data-value="detail.warehouse_address.name" @tap="text_event">{{detail.warehouse_address.name}}</text>
+                        <text class="fr" data-event="tel" :data-value="detail.warehouse_address.tel" @tap="text_event">{{detail.warehouse_address.tel}}</text>
                     </view>
                     <view class="address-detail oh margin-bottom-main">
                         <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
                         <view class="text fr">
-                            <text data-event="copy" :data-value="detail.address_data.address_info" @tap="text_event">{{detail.address_data.address_info}}</text>
-                            <text v-if="(detail.address_data.lng || 0) != 0 && (detail.address_data.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                            <text data-event="copy" :data-value="detail.warehouse_address.address_info" @tap="text_event">{{detail.warehouse_address.address_info}}</text>
+                            <text v-if="(detail.warehouse_address.lng || 0) != 0 && (detail.warehouse_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
                         </view>
                     </view>
-                    <view class="address-divider spacing-mb"></view>
+                    <view class="address-divider margin-bottom-sm"></view>
+                </view>
+                
+                <!-- 收货地址 -->
+                <view v-if="(detail.user_address || null) != null" class="bg-white padding-main border-radius-main spacing-mb">
+                    <view class="br-b padding-bottom-sm fw-b text-size">{{$t('order.order.hbvwq4')}}</view>
+                    <view class="address-base oh margin-top-sm">
+                        <text v-if="(detail.user_address.alias || null) != null" class="address-alias round br-main cr-main bg-white margin-right-sm">{{detail.user_address.alias}}</text>
+                        <text data-event="copy" :data-value="detail.user_address.name" @tap="text_event">{{detail.user_address.name}}</text>
+                        <text class="fr" data-event="tel" :data-value="detail.user_address.tel" @tap="text_event">{{detail.user_address.tel}}</text>
+                    </view>
+                    <view v-if="(detail.user_address.appoint_time || null) != null" class="cr-red margin-top-xs">{{detail.user_address.appoint_time}}</view>
+                    <view class="address-detail oh margin-bottom-main">
+                        <image class="icon fl" :src="common_static_url+'map-icon.png'" mode="widthFix"></image>
+                        <view class="text fr">
+                            <text data-event="copy" :data-value="detail.user_address.address_info" @tap="text_event">{{detail.user_address.address_info}}</text>
+                            <text v-if="(detail.user_address.lng || 0) != 0 && (detail.user_address.lat || 0) != 0" class="address-map-submit cr-base br round bg-white margin-left-sm text-size-xs" @tap="address_map_event">{{$t('user-order-detail.user-order-detail.7lp6gw')}}</text>
+                        </view>
+                    </view>
+                    <view class="address-divider margin-bottom-sm"></view>
                 </view>
 
                 <!-- 基础信息 -->
@@ -153,9 +173,8 @@
                                 detail: data.data,
                                 detail_list: [
                                     { name: this.$t('order-detail.order-detail.36op8f'), value: data.data.main_order_no || '', event: 'copy' },
+                                    { name: this.$t('order-detail.order-detail.ygvc34'), value: data.data.merchant_name || '' },
                                     { name: this.$t('order-detail.order-detail.x3ge6c'), value: data.data.total_price || '' },
-                                    { name: this.$t('order-detail.order-detail.v52n5r'), value: data.data.refund_price || '' },
-                                    { name: this.$t('user-order-detail.user-order-detail.yxwu8n'), value: data.data.main_status_name || '' },
                                     { name: this.$t('order-detail.order-detail.8n1f72'), value: data.data.buy_number_count || '' },
                                     { name: this.$t('order-detail.order-detail.2443o1'), value: data.data.status_name || '' },
                                     { name: this.$t('order-detail.order-detail.342sfz'), value: data.data.start_delivery_time || '' },
@@ -166,7 +185,6 @@
                                     { name: this.$t('order.order.865029'), value: data.data.reason || '' },
                                     { name: this.$t('order-detail.order-detail.5fq8pr'), value: data.data.add_time || '' },
                                     { name: this.$t('common.upd_time'), value: data.data.upd_time || '' },
-                                    { name: this.$t('order-detail.order-detail.9153qn'), value: data.data.order_add_time || '' },
                                 ],
                                 data_list_loding_status: 3,
                                 data_bottom_line_status: true,
@@ -211,13 +229,13 @@
 
             // 地图查看
             address_map_event(e) {
-                if ((this.detail.address_data || null) == null) {
+                if ((this.detail.user_address || null) == null) {
                     app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                     return false;
                 }
                 
                 // 打开地图
-                var data = this.detail.address_data;
+                var data = this.detail.user_address;
                 var name = data.alias || data.name || '';
                 app.globalData.open_location(data.lng, data.lat, name, data.address_info);
             },
