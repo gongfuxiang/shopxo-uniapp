@@ -56,7 +56,7 @@
 <script>
     const app = getApp();
     import { common_styles_computer, radius_computer, isEmpty, gradient_computer, padding_computer } from '@/common/js/common/common.js';
-    import imageEmpty from './modules/image-empty.vue';
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
             imageEmpty

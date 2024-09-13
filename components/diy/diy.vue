@@ -8,6 +8,7 @@
                 <componentCarousel v-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
                 <componentNavGroup v-if="item.key == 'nav-group'" :value="item.com_data"></componentNavGroup>
                 <componentGoodsList v-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
+                <componentGoodsTabs v-if="item.key == 'goods-tabs'" :value="item.com_data"></componentGoodsTabs>
                 <componentDiyUserInfo v-if="item.key == 'user-info'" :value="item.com_data"></componentDiyUserInfo>
                 <componentDiyVideo v-else-if="item.key == 'video'" :value="item.com_data"></componentDiyVideo>
                 <componentDiyArticleList v-else-if="item.key == 'article-list'" :value="item.com_data"></componentDiyArticleList>
@@ -44,6 +45,7 @@
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
     import componentNavGroup from '@/components/diy/nav-group.vue';
     import componentGoodsList from '@/components/diy/goods-list.vue';
+    import componentGoodsTabs from '@/components/diy/goods-tabs.vue'
     export default {
         name: 'diy',
         props: {
@@ -69,7 +71,8 @@
             componentTextTitle,
             componentAuxiliaryBlank,
             componentNavGroup,
-            componentGoodsList
+            componentGoodsList,
+            componentGoodsTabs
         },
         data() {
             return {

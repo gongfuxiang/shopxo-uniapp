@@ -10,7 +10,7 @@
                             </view>
                         </template>
                         <template v-else>
-                            <iconfont :name="!is_obj_empty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="'28rpx'" :color="new_style.icon_color"></iconfont>
+                            <iconfont :name="!isEmpty(form.icon_class) ? 'icon-' + form.icon_class : 'icon-index-search'" size="'28rpx'" :color="new_style.icon_color"></iconfont>
                         </template>
                     </template>
                     <span v-if="form.is_tips_show == '1'" :class="[isPageSettings ? 'text-size-xs text-line-1' : 'text-size-md text-line-1']" :style="'color:' + new_style.tips_color">{{ form.tips }}</span>
@@ -19,12 +19,12 @@
                     <template v-if="form.search_type === 'text'">
                         <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                     </template>
-                    <template v-else-if="!is_obj_empty(form.search_botton_img) && form.search_botton_img.length > 0">
+                    <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
                         <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="aspectFill"></image>
                     </template>
                     <template v-else>
                         <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
-                            <iconfont :name="!is_obj_empty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="'28rpx'"></iconfont>
+                            <iconfont :name="!isEmpty(form.search_botton_icon) ? 'icon-' + form.search_botton_icon : ''" size="'28rpx'"></iconfont>
                         </view>
                     </template>
                 </view>
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-    import { background_computer, common_styles_computer, gradient_computer, radius_computer, is_obj_empty } from '@/common/js/common/common.js';
+    import { background_computer, common_styles_computer, gradient_computer, radius_computer, isEmpty } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -67,7 +67,7 @@
             this.init();
         },
         methods: {
-            is_obj_empty,
+            isEmpty,
             init() {
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({

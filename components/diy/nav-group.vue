@@ -31,8 +31,8 @@
         isEmpty,
         common_styles_computer,
         radius_computer
-    } from '../../common/js/common/common';
-    import imageEmpty from './modules/image-empty.vue';
+    } from '@/common/js/common/common.js';
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
             imageEmpty

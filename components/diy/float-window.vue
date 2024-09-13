@@ -14,8 +14,8 @@
 
 <script>
 const app = getApp();
-import { isEmpty } from '../../common/js/common/common';
-import imageEmpty from './modules/image-empty.vue';
+import { isEmpty } from '@/common/js/common/common.js';
+import imageEmpty from '@/components/diy/modules/image-empty.vue';
 export default {
     components: {
         imageEmpty
