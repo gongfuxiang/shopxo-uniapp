@@ -88,8 +88,6 @@
                                 <view class="coupon-btn" :class="data_list.filter((item) => item.status_type == 0).length > 0 ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" @tap="receive_all_event">
                                     {{ data_list.filter((item) => item.status_type == 0).length > 0 ? '立即领取' : '不可领取' }}
                                 </view>
-
-                                <!-- <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view> -->
                             </view>
                         </view>
                     </view>
@@ -106,7 +104,7 @@
                                 <view class="name text-line-1" :style="'color:' + theme_style.name_color">{{ item.name }}</view>
                             </view>
                             <view class="right" :style="'background: ' + theme_style.background">
-                                <view class="coupon-btn" :style="'color:' + theme_style.btn_color">领取</view>
+                                <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
                             </view>
                         </view>
                     </view>
@@ -127,7 +125,7 @@
                                 <view class="top-after"></view>
                             </view>
                             <view class="bottom">
-                                <view class="coupon-btn" :style="'color:' + theme_style.btn_color">立即领取</view>
+                                <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
                             </view>
                         </view>
                     </view>
@@ -147,7 +145,7 @@
                                 </view>
                                 <view class="right">
                                     <view class="right-before" :style="'border: 2rpx dashed ' + theme_style.theme_7_background"></view>
-                                    <view class="coupon-btn" :style="'color:' + theme_style.btn_color">立即领取</view>
+                                    <view class="coupon-btn" :class="[0, 3].includes(item.status_type) ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color" :data-value="home_page_url" :data-type="item.status_type" :data-index="index" :data-id="item.id" @tap="receive_event">{{ item.status_operable_name }}</view>
                                 </view>
                             </view>
                             <view class="item-after" :style="'background: ' + theme_style.theme_7_background"></view>
