@@ -1,0 +1,178 @@
+<template>
+    <!-- 公告 -->
+    <view :style="style_container">
+        <template v-if="form.content.notice_style == 'inherit'">
+            <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
+                <template v-if="form.content.title_type == 'img-icon'">
+                    <view v-if="form.content.icon_class">
+                        <iconfont :name="form.content.icon_class" :size="form.style.icon_size + ''" :color="form.style.icon_color"></iconfont>
+                    </view>
+                    <view v-else>
+                        <image :src="form.content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                    </view>
+                </template>
+                <template v-else>
+                    <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form.content.title || '公告' }}</view>
+                </template>
+                <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
+                    <swiper-item v-for="(item, index) in notice_list" :key="index">
+                        <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form.style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
+                    </swiper-item>
+                </swiper>
+                <view v-if="form.content.is_right_button == '1'" class="text-size-xs" :data-value="form.content.more_link.page" @tap="url_event">
+                    <iconfont name="icon-arrow-right" :color="form.style.button_color || '#999'"></iconfont>
+                </view>
+            </view>
+        </template>
+        <template v-else>
+            <view class="news-card flex-col gap-10" :style="container_background_style">
+                <view class="flex-row wh-auto jc-sb align-c">
+                    <template v-if="form.content.title_type == 'img-icon'">
+                        <template v-if="form.content.icon_class">
+                            <iconfont :name="form.content.icon_class" :size="form.style.icon_size + ''" :color="form.style.icon_color"></iconfont>
+                        </template>
+                        <template v-else>
+                            <image :src="form.content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                        </template>
+                    </template>
+                    <template v-else>
+                        <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form.content.title || '公告' }}</view>
+                    </template>
+                    <view v-if="form.content.is_right_button == '1'" class="text-size-xs flex-row" :style="`color: ${form.style.button_color || '#999'}`" :data-value="form.content.more_link.page" @tap="url_event">
+                        更多
+                        <view class="pr top-xs">
+                            <iconfont name="icon-arrow-right" :color="form.style.button_color || '#999'"></iconfont>
+                        </view>
+                    </view>
+                </view>
+                <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
+                    <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
+                    <view class="break" :style="`color: ${form.style.news_color}`">{{ item.notice_title }}</view>
+                </view>
+            </view>
+        </template>
+    </view>
+</template>
+
+<script>
+    const app = getApp();
+    import { background_computer, common_styles_computer, get_math, gradient_computer, gradient_handle, radius_computer } from '@/common/js/common/common.js';
+    export default {
+        props: {
+            value: {
+                type: Object,
+                default: () => ({}),
+            },
+        },
+        data() {
+            return {
+                form: {},
+                style_container: '',
+                // 容器高度
+                container_height: '',
+                // 容器背景
+                container_background_style: '',
+                // 图片设置
+                img_style: '',
+                // 标题的设置
+                title_style: '',
+                // 内容标题设置
+                content_title_style: '',
+                // 指示器的样式
+                // 轮播图定时显示
+                interval_time: 2000,
+                // 轮播图滚动方向 // vertical' | 'horizontal
+                direction_type: 'vertical',
+                // 记录当前显示的轮播图的数据
+                interval_list: {
+                    time: 2000,
+                    direction: 'vertical',
+                    notice_length: 1,
+                },
+                // 公告数据
+                notice_list: [],
+            };
+        },
+        mounted() {
+            this.init();
+        },
+        methods: {
+            init() {
+                const new_content = this.value.content || {};
+                const new_style = this.value.style || {};
+                // 容器背景
+                const { container_color_list, container_direction, container_background_img_style, container_background_img } = new_style;
+                const temp_obj = {
+                    color_list: container_color_list,
+                    direction: container_direction,
+                    background_img: container_background_img,
+                    background_img_style: container_background_img_style,
+                };
+                const temp_container_background_style = gradient_computer(temp_obj) + radius_computer(new_style.container_radius) + background_computer(temp_obj) + `overflow:hidden;`;
+                // 标题渐变色处理
+                const gradient = gradient_handle(new_style.title_color_list, '90deg');
+                const time = (new_style.interval_time || 2) * 1000;
+                const direction = new_content.direction;
+                const new_notice_list = new_content.notice_list.filter((item) => item.is_show == '1');
+                // 判断长度是否相等
+                const notice_length = new_notice_list.length;
+                const new_interval_list = {
+                    time: time,
+                    direction: direction,
+                    notice_length: notice_length,
+                };
+                this.setData({
+                    form: this.value,
+                    container_height: 'height:' + new_style.container_height * 2 + 'rpx',
+                    container_background_style: temp_container_background_style,
+                    img_style: `height: ${new_style.title_height * 2}rpx; width: ${new_style.title_width * 2}rpx`,
+                    title_style: `color:${new_style.title_color}; font-size: ${new_style.title_size * 2}rpx; font-weight: ${new_style.title_typeface}; ${gradient}`,
+                    content_title_style: `font-size: ${new_style.news_size * 2}rpx; font-weight: ${new_style.news_typeface};`,
+                    notice_list: new_notice_list,
+                    interval_time: time,
+                    direction_type: direction,
+                    interval_list: new_interval_list,
+                    style_container: common_styles_computer(new_style.common_style),
+                });
+            },
+            // 跳转链接
+            url_event(e) {
+                app.globalData.url_event(e);
+            },
+        },
+    };
+</script>
+
+<style lang="scss" scoped>
+    .news-box {
+        overflow: hidden;
+        padding: 0 20rpx;
+        background: #fff;
+    }
+    .news-card {
+        padding: 30rpx;
+        background: #fff;
+    }
+    .num {
+        padding-right: 14rpx;
+        color: #999;
+    }
+    .one1 {
+        color: #ea3323;
+    }
+    .one2 {
+        color: #ff7303;
+    }
+    .one3 {
+        color: #ffc300;
+    }
+    .two-style {
+        width: 48rpx;
+        height: 48rpx;
+    }
+    .break {
+        word-break: break-word;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+    }
+</style>

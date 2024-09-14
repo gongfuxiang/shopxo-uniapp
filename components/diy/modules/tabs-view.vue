@@ -86,7 +86,8 @@
             handle_event(e) {
                 const index = e.currentTarget.dataset.index;
                 this.active_index = index;
-                this.$emit('tabs-click', index);
+                const tabs_list_item = this.tabs_list[index];
+                this.$emit('tabs-click', index, tabs_list_item);
             },
         },
     };
