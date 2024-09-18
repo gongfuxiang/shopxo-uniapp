@@ -56,6 +56,7 @@
                 const query = uni.createSelectorQuery();
                 // 选择我们想要的元素
                 query
+                    .in(this)
                     .select('.container')
                     .boundingClientRect((res) => {
                         console.log('1:' + res);
@@ -70,6 +71,7 @@
                     })
                     .exec(); // 执行查询
                 query
+                    .in(this)
                     .select('.hot')
                     .boundingClientRect((res) => {
                         console.log('2:' + res);
