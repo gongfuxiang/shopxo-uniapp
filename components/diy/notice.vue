@@ -38,7 +38,7 @@
                     <template v-else>
                         <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form.content.title || '公告' }}</view>
                     </template>
-                    <view v-if="form.content.is_right_button == '1'" class="text-size-xs flex-row" :style="`color: ${form.style.button_color || '#999'}`" :data-value="form.content.more_link.page" @tap="url_event">
+                    <view v-if="form.content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form.style.button_color" :data-value="form.content.more_link.page" @tap="url_event">
                         更多
                         <view class="pr top-xs">
                             <iconfont name="icon-arrow-right" :color="form.style.button_color || '#999'"></iconfont>
@@ -47,7 +47,7 @@
                 </view>
                 <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
                     <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
-                    <view class="break" :style="`color: ${form.style.news_color}`">{{ item.notice_title }}</view>
+                    <view class="break" :style="'color:' + form.style.news_color">{{ item.notice_title }}</view>
                 </view>
             </view>
         </template>
