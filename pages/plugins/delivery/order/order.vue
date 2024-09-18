@@ -4,7 +4,7 @@
             <!-- 导航 -->
             <view class="nav-base">
                 <block v-for="(item, index) in nav_type_list" :key="index">
-                    <view :class="'item fl tc cr-grey pr ' + (nav_type_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">
+                    <view :class="'item fl tc pr ' + (nav_type_index == index ? 'cr-main' : '')" :data-index="index" @tap="nav_event">
                         <text>{{ item.name }}</text>
                         <view class="badge-icon pa">
                             <component-badge :propNumber="item.count || 0"></component-badge>
@@ -47,29 +47,48 @@
                             <text :class="'fr ' + (item.status == 4 ? 'cr-red' : item.status == 3 ? 'cr-green' : item.status == 2 ? 'cr-main' : 'cr-grey')">{{ item.status_name }}</text>
                         </view>
                         <view class="content margin-top">
-                            <view class="single-text margin-top-sm">
-                                <text class="cr-grey">{{$t('order.order.71n22h')}}</text>
-                                <text class="cr-base" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{ item.main_order_id }}</text>
-                            </view>
-                            <view class="single-text margin-top-sm">
-                                <text class="cr-grey">{{$t('order.order.232ygr')}}</text>
-                                <text class="cr-base" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{ item.main_order_no }}</text>
-                            </view>
-                            <view v-if="(item.address_data || null) != null">
-                                <view class="single-text margin-top-sm">
-                                    <text class="cr-grey">{{$t('order.order.u5p92y')}}</text>
-                                    <text class="cr-base" data-event="copy" :data-value="item.address_data.name" @tap="text_event">{{ item.address_data.name }}</text>
+                            <view class="oh margin-top-sm">
+                                <view class="single-text fl" data-event="copy" :data-value="item.main_order_no" @tap="text_event">
+                                    <text class="cr-grey">{{$t('order.order.232ygr')}}</text>
+                                    <text class="cr-base margin-left-sm">{{ item.main_order_no }}</text>
                                 </view>
-                                <view class="single-text margin-top-sm">
-                                    <text class="cr-grey">{{$t('order.order.7dxbm5')}}</text>
-                                    <text class="cr-base" data-event="tel" :data-value="item.address_data.tel" @tap="text_event">{{ item.address_data.tel }}</text>
+                                <view class="single-text fr" data-event="copy" :data-value="item.main_order_id" @tap="text_event">
+                                    <text class="cr-grey">{{$t('order.order.71n22h')}}</text>
+                                    <text class="cr-base margin-left-sm">{{ item.main_order_id }}</text>
                                 </view>
-                                <view class="margin-top-sm pr">
-                                    <text class="cr-grey va-t">{{$t('order.order.ra8222')}}</text>
-                                    <view class="dis-inline-block address-info">
-                                        <text class="cr-base" data-event="copy" :data-value="item.address_data.address_info" @tap="text_event">{{ item.address_data.address_info }}</text>
-                                        <view v-if="(item.address_data.lng || 0) != 0 && (item.address_data.lat || 0) != 0" class="icon-item bg-base circle dis-inline-block tc cp pa" :data-index="index" @tap.stop="address_map_event">
-                                            <uni-icons type="paperplane-filled" size="32rpx" color="#666"></uni-icons>
+                            </view>
+                            <view v-if="(item.warehouse_address || null) != null" class="margin-top">
+                                <view class="cr-grey-d tc">{{$t('order.order.jhgfd1')}}</view>
+                                <view class="cr-base margin-top-xs">
+                                    <view>
+                                        <text data-event="copy" :data-value="item.warehouse_address.name" @tap="text_event">{{item.warehouse_address.name}}</text>
+                                        <text class="margin-left-xl" data-event="copy" :data-value="item.warehouse_address.tel" @tap="text_event">{{item.warehouse_address.tel}}</text>
+                                        <text v-if="(item.merchant_name || null) != null" class="fr" data-event="copy" :data-value="item.merchant_name" @tap="text_event">{{item.merchant_name}}</text>
+                                    </view>
+                                    <view class="pr margin-top-xs">
+                                        <view class="address-info">
+                                            <text class="cr-base" data-event="copy" :data-value="item.warehouse_address.address_info" @tap="text_event">{{ item.warehouse_address.address_info }}</text>
+                                            <view v-if="(item.warehouse_address.lng || 0) != 0 && (item.warehouse_address.lat || 0) != 0" class="icon-item bg-base circle dis-inline-block tc cp pa" data-type="warehouse_address" :data-index="index" @tap.stop="address_map_event">
+                                                <uni-icons type="paperplane-filled" size="32rpx" color="#666"></uni-icons>
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                            <view v-if="(item.user_address || null) != null" class="margin-top">
+                                <view class="cr-grey-d tc">{{$t('order.order.hbvwq4')}}</view>
+                                <view class="cr-base margin-top-xs">
+                                    <view>
+                                        <text data-event="copy" :data-value="item.user_address.name" @tap="text_event">{{item.user_address.name}}</text>
+                                        <text class="margin-left-xl" data-event="copy" :data-value="item.user_address.tel" @tap="text_event">{{item.user_address.tel}}</text>
+                                    </view>
+                                    <view v-if="(item.user_address.appoint_time || null) != null" class="cr-red padding-vertical-xs">{{item.user_address.appoint_time}}</view>
+                                    <view class="pr margin-top-xs">
+                                        <view class="address-info">
+                                            <text class="cr-base" data-event="copy" :data-value="item.user_address.address_info" @tap="text_event">{{ item.user_address.address_info }}</text>
+                                            <view v-if="(item.user_address.lng || 0) != 0 && (item.user_address.lat || 0) != 0" class="icon-item bg-base circle dis-inline-block tc cp pa" data-type="user_address" :data-index="index" @tap.stop="address_map_event">
+                                                <uni-icons type="paperplane-filled" size="32rpx" color="#666"></uni-icons>
+                                            </view>
                                         </view>
                                     </view>
                                 </view>
@@ -78,7 +97,7 @@
                                 <text class="cr-grey">{{$t('order.order.ra8222')}}</text>
                                 <text class="cr-grey-white">{{$t('order.order.26yki1')}}</text>
                             </view>
-                            <view class="margin-top-lg padding-top-sm br-t-dashed">
+                            <view class="margin-top-lg padding-top-sm">
                                 <text>{{ item.describe }}</text>
                                 <text v-if="(item.distance || null) != null" class="fr cr-grey">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</text>
                             </view>
@@ -121,18 +140,18 @@
                     <block v-for="(item,index) in markers_active_data" :key="index">
                         <view :class="'pr '+(index > 0 ? 'br-t padding-top-sm margin-top-sm' : '')">
                             <view>
-                                <text>{{$t('order.order.71n22h')}}</text>
+                                <text>{{$t('order.order.71n22h')}}：</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_id" @tap="text_event">{{item.main_order_id}}</text>
                             </view>
                             <view>
-                                <text>{{$t('order.order.232ygr')}}</text>
+                                <text>{{$t('order.order.232ygr')}}：</text>
                                 <text class="cp" data-event="copy" :data-value="item.main_order_no" @tap="text_event">{{item.main_order_no}}</text>
                             </view>
                             <view class="single-text">
-                                <text>{{$t('order.order.ra8222')}}</text>
-                                <text class="cp" data-event="copy" :data-value="item.address_data.address_info" @tap="text_event">{{ item.address_data.address_info }}</text>
+                                <text>{{$t('order.order.ra8222')}}：</text>
+                                <text class="cp" data-event="copy" :data-value="item.user_address.address_info" @tap="text_event">{{ item.user_address.address_info }}</text>
                             </view>
-                            <view v-if="(item.address_data.lng || 0) != 0 && (item.address_data.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" :data-index="index" @tap.stop="address_map_event">
+                            <view v-if="(item.user_address.lng || 0) != 0 && (item.user_address.lat || 0) != 0" class="map-send-icon bg-base circle tc cp pa" data-type="map" :data-index="index" @tap.stop="address_map_event">
                                 <uni-icons type="paperplane-filled" size="44rpx" color="#666"></uni-icons>
                             </view>
                         </view>
@@ -409,13 +428,13 @@
                             var temp_markers = [];
                             if(temp_data_list.length > 0) {
                                 temp_data_list.forEach((item, index) => {
-                                    if((item.address_data || null) != null && (item.address_data.lat || 0) != 0 && (item.address_data.lng || 0) != 0) {
+                                    if((item.user_address || null) != null && (item.user_address.lat || 0) != 0 && (item.user_address.lng || 0) != 0) {
                                         temp_markers.push({
                                             id: index,
                                             width: 30,
                                             height: 30,
-                                            latitude: item.address_data.lat,
-                                            longitude: item.address_data.lng,
+                                            latitude: item.user_address.lat,
+                                            longitude: item.user_address.lng,
                                             iconPath: this.plugins_static_url+'order.png'
                                         });
                                     }
@@ -520,16 +539,16 @@
             // 地图查看
             address_map_event(e) {
                 var index = e.currentTarget.dataset.index;
-                var type = e.currentTarget.dataset.type || null;
+                var type = e.currentTarget.dataset.type;
                 if(type == 'map') {
-                    this.address_map_handle(this.markers_active_data[index]['address_data']);
+                    this.address_map_handle(this.markers_active_data[index]['user_address']);
                 } else {
                     var temp_data = this.data_list;
-                    if ((temp_data[index] || null) == null || (temp_data[index]["address_data"] || null) == null) {
+                    if ((temp_data[index] || null) == null || (temp_data[index][type] || null) == null) {
                         app.globalData.showToast(this.$t('user-order-detail.user-order-detail.i876o3'));
                         return false;
                     }
-                    this.address_map_handle(temp_data[index]["address_data"]);
+                    this.address_map_handle(temp_data[index][type]);
                 }
             },
 
@@ -807,7 +826,7 @@
                 var markers_active_data = [];
                 if(temp != null) {
                     for(var i in temp_data_list) {
-                        if((temp_data_list[i]['address_data'] || null) != null && (temp_data_list[i]['address_data']['lng'] || 0) != 0 && (temp_data_list[i]['address_data']['lat'] || 0) != 0 && temp.address_data.lng == temp_data_list[i]['address_data']['lng'] && temp.address_data.lat == temp_data_list[i]['address_data']['lat']) {
+                        if((temp_data_list[i]['user_address'] || null) != null && (temp_data_list[i]['user_address']['lng'] || 0) != 0 && (temp_data_list[i]['user_address']['lat'] || 0) != 0 && temp.user_address.lng == temp_data_list[i]['user_address']['lng'] && temp.user_address.lat == temp_data_list[i]['user_address']['lat']) {
                             markers_active_data.push(temp_data_list[i]);
                         }
                     }
