@@ -1,13 +1,29 @@
 <template>
     <!-- 选项卡 -->
-    <view class="tabs" :style="style_container">
-        <componentDiyModulesTabsView :value="value" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="pr">
+        <view v-if="top_up == '1'" class="pf z-i-deep-must left-0 right-0 top-0">
+            <view class="seize-seat" :style="'padding-top:' + tabs_top"></view>
+            <view :style="style_container">
+                <componentDiyModulesTabsView :value="value" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            </view>
+        </view>
+        <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
+            <view :style="style_container">
+                <componentDiyModulesTabsView :value="value" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+            </view>
+        </view>
     </view>
 </template>
 
 <script>
+    const app = getApp();
     import { common_styles_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
     export default {
         props: {
             value: {
@@ -22,6 +38,10 @@
             return {
                 style_container: '',
                 content: '',
+
+                // 是否滑动置顶
+                top_up: 0,
+                tabs_top: bar_height + 120 + 'rpx',
             };
         },
         mounted() {
@@ -33,6 +53,7 @@
                 const new_style = this.value.style || {};
                 this.setData({
                     style_container: common_styles_computer(new_style.common_style),
+                    top_up: new_content.tabs_top_up,
                 });
             },
             // 回调
@@ -45,4 +66,12 @@
     };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+    .seize-seat {
+        z-index: 101;
+        position: relative;
+    }
+    .vs-hide {
+        visibility: hidden;
+    }
+</style>

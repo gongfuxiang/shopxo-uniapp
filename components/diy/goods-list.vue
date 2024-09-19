@@ -2,7 +2,7 @@
     <view class="oh" :style="style_container">
         <view :class="outer_class" :style="onter_style">
             <block v-if="!['5'].includes(theme)">
-                <view v-for="(item, index) in list" :key="index" class="re" :class="layout_type" :style="layout_style">
+                <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style">
                     <block v-if="theme == '6'">
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>

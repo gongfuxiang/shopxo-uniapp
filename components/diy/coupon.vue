@@ -82,7 +82,7 @@
                         </view>
                         <view class="right">
                             <view class="right-before" :style="'background: ' + theme_style.background"></view>
-                            <view class="re z-i flex-col jc-c align-c">
+                            <view class="pr z-i flex-col jc-c align-c">
                                 <view class="title text-line-1" :style="'color:' + theme_style.content_title_color">{{ content_title }}</view>
                                 <view class="desc text-line-1" :style="'color:' + theme_style.content_desc_color">{{ content_desc }}</view>
                                 <view class="coupon-btn" :class="data_list.filter((item) => item.status_type == 0).length > 0 ? '' : 'btn-already'" :style="'color:' + theme_style.btn_color + ';background:' + theme_style.btn_background" @tap="receive_all_event">

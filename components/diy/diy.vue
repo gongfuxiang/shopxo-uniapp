@@ -1,10 +1,11 @@
 <template>
     <view class="ht-auto min-ht">
-        <componentDiyHeader></componentDiyHeader>
-        <view v-if="value.diy_data.length > 0" :style="diy_content_style">
-            {{ is_tabs }}
+        <view class="pr header-content">
+            <componentDiyHeader></componentDiyHeader>
+        </view>
+        <view v-if="value.diy_data.length > 0" class="pr" :style="diy_content_style">
             <componentDiyTabs v-if="is_tabs" :value="tabs_data"></componentDiyTabs>
-            <view v-if="is_tabs_type">
+            <view v-if="is_tabs_type" class="diy-content" :style="'padding-top:' + header_top + 'rpx;'">
                 <view v-for="(item, index) in value.diy_data" :key="index">
                     <!-- 基础组件 -->
                     <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+    const app = getApp();
     // 基础组件
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
@@ -62,7 +64,12 @@
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text.vue';
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
-    import { onMounted } from 'vue';
+
+    // 状态栏高度
+    var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
+    // #ifdef MP-TOUTIAO
+    bar_height = 0;
+    // #endif
 
     export default {
         name: 'diy',
@@ -108,6 +115,8 @@
                 tabs_data: {},
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
+
+                header_top: bar_height + 120,
             };
         },
         computed: {
@@ -136,4 +145,8 @@
     };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+    .header-content {
+        z-index: 101;
+    }
+</style>
