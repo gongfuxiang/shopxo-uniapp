@@ -100,8 +100,6 @@
             },
         },
         methods: {
-<<<<<<< HEAD
-=======
             init() {
                 // tabs选项卡数据过滤
                 const filter_tabs_list = this.value.tabs_data;
@@ -112,7 +110,6 @@
                     });
                 }
             },
->>>>>>> dev-sws
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
             },
