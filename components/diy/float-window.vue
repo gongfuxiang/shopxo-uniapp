@@ -6,7 +6,7 @@
                     <view class="ring" :style="color"></view>
                     <view class="ring" :style="color"></view>
                 </block>
-                <image-empty :image-src="form.button_img[0]" class="img" :style="color" img_fit="aspectFill" error-style="width: 60rpx;height: 60rpx;"></image-empty>
+                <image-empty :image-src="form.button_img[0]" class="img" :type_style="color" img_fit="aspectFill" error-style="width: 60rpx;height: 60rpx;"></image-empty>
             </view>
         </view>
     </view>
@@ -52,7 +52,7 @@
                 }
                 const { windowHeight } = uni.getSystemInfoSync();
                 this.setData({
-                    color: float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${float_style_color}` : `background-color: ${float_style_color}`,
+                    color: float_style == 'shadow' ? `box-shadow: 0 10rpx 40rpx ${float_style_color};border-radius: 50%;` : `background-color: ${float_style_color};border-radius: 50%;`,
                     style: `bottom: ${((offset_number / windowHeight) * 100).toFixed(4) + '%'};` + location,
                 });
             },

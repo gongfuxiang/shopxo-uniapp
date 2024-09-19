@@ -2,7 +2,7 @@
     <view :style="style_container">
         <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ height: newHeight }" @change="slideChange">
             <swiper-item v-for="(item, index) in nav_content_list" :key="index" class="flex-row align-c" @tap="url_open(item.carousel_link)">
-                <view ref="bannerImg" class="flex-row flex-wrap wh-auto gap-x-10">
+                <view class="bannerImg flex-row flex-wrap wh-auto gap-x-10">
                     <view v-for="(item1, index1) in item.split_list" :key="index1" class="flex-col gap-10 align-c" :style="{ width: group_width }" @tap="url_open_event(item1.link)">
                         <view v-if="['image_with_text', 'image'].includes(nav_style)" class="top-img flex-row align-c jc-c">
                             <image-empty :image-src="item1.img[0]" :style="img_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
@@ -50,7 +50,7 @@
                 img_style: '',
                 text_style: '',
                 indicator_style: '',
-                newHeight: '200rpx',
+                newHeight: '300rpx',
                 actived_index: 0,
                 group_width: '',
                 nav_content_list: [],
@@ -61,15 +61,9 @@
                 form: this.value.content,
                 new_style: this.value.style,
             });
-            this.init();
         },
         mounted() {
-            this.$nextTick(() => {
-                this.newHeight = this.$refs.bannerImg[0].$el.clientHeight * 2 + 'rpx';
-            });
-            window.onresize = () => {
-                this.newHeight = this.$refs.bannerImg[0].$el.clientHeight * 2 + 'rpx';
-            };
+            this.init();
         },
         methods: {
             init() {
@@ -83,6 +77,21 @@
                     nav_style: this.form.nav_style || 'image_with_text', // 是否显示文字和图片
                     nav_content_list: this.get_nav_content_list(),
                 });
+                setTimeout(() => {
+                    const query = uni.createSelectorQuery().in(this);
+                    // 选择我们想要的元素
+                    query
+                        .select('.bannerImg')
+                        .boundingClientRect((res) => {
+                            if ((res || null) != null) {
+                                // data包含元素的宽度、高度等信息
+                                this.setData({
+                                    newHeight: res.height * 2 + 'rpx',
+                                });
+                            }
+                        })
+                        .exec(); // 执行查询
+                }, 0)
             },
             get_nav_content_list() {
                 // 深拷贝一下，确保不会出现问题
@@ -148,6 +157,7 @@
         height: 100rpx;
         width: 100rpx;
         border-radius: 8rpx;
+        background-color: #f4fcff;
     }
 
     .dot {

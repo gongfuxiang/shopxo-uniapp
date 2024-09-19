@@ -1,5 +1,5 @@
 <template>
-    <view class="oh img_wh" :style="empty_outer_style">
+    <view :class="['oh img_wh', type_class]" :style="empty_outer_style + type_style">
         <image :src="imageUrl" @error="handleImageError" :mode="img_fit" :style="empty_style" />
     </view>
 </template>
@@ -19,6 +19,14 @@
             img_fit: {
                 type: String,
                 default: () => 'aspectFill',
+            },
+            type_style: {
+                type: String,
+                default: () => '',
+            },
+            type_class: {
+                type: String,
+                default: () => '',
             }
         },
         data() {
