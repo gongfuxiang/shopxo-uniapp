@@ -469,10 +469,15 @@
         width: 100%;
         height: 228rpx;
     }
-
     .flex-img4 {
         min-width: 140rpx;
         min-height: 140rpx;
+        height: 100%;
+    }
+    .flex-img5 {
+        width: 100%;
+        min-height: 208rpx;
+        height: 100%;
     }
     .plr-11 {
         padding-left: 22rpx;
@@ -489,10 +494,6 @@
     .ptb-5 {
         padding-top: 10rpx;
         padding-bottom: 10rpx;
-    }
-    .flex-img5 {
-        width: 100%;
-        min-height: 208rpx;
     }
     .ptb-15 {
         padding-top: 30rpx;

@@ -18,6 +18,8 @@
                     <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :value="item.com_data"></componentDiyArticleTabs>
                     <componentGoodsTabs v-else-if="item.key == 'goods-tabs'" :value="item.com_data"></componentGoodsTabs>
                     <componentGoodsList v-else-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
+                    <componentDataMagic v-if="item.key == 'data-magic'" :value="item.com_data"></componentDataMagic>
+                    <componentCustom v-if="item.key == 'custom'" :value="item.com_data"></componentCustom>
                     <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
                     <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
                     <!-- 插件 -->
@@ -39,38 +41,31 @@
 </template>
 
 <script>
-    const app = getApp();
-    // 基础组件
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
-    import componentDiyTabs from '@/components/diy/tabs';
     import componentDiySearch from '@/components/diy/search';
     import componentCarousel from '@/components/diy/carousel.vue';
-    import componentNavGroup from '@/components/diy/nav-group.vue';
     import componentDiyUserInfo from '@/components/diy/user-info';
-    import componentDiyNotice from '@/components/diy/notice';
     import componentDiyVideo from '@/components/diy/video';
     import componentDiyArticleList from '@/components/diy/article-list';
     import componentDiyArticleTabs from '@/components/diy/article-tabs';
-    import componentGoodsTabs from '@/components/diy/goods-tabs.vue';
-    import componentGoodsList from '@/components/diy/goods-list.vue';
-    import componentDiyImgMagic from '@/components/diy/img-magic';
     import componentDiyHotZone from '@/components/diy/hot-zone';
-    // 插件
     import componentDiyCoupon from '@/components/diy/coupon';
-    // 工具组件
     import componentFloatWindow from '@/components/diy/float-window';
     import componentTextTitle from '@/components/diy/text-title';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text.vue';
     import componentAuxiliaryBlank from '@/components/diy/auxiliary-blank.vue';
-
+    import componentNavGroup from '@/components/diy/nav-group.vue';
+    import componentGoodsList from '@/components/diy/goods-list.vue';
+    import componentGoodsTabs from '@/components/diy/goods-tabs.vue';
+    import componentDataMagic from '@/components/diy/data-magic.vue';
+    import componentCustom from '@/components/diy/custom.vue';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
     bar_height = 0;
     // #endif
-
     export default {
         name: 'diy',
         props: {
@@ -80,30 +75,26 @@
             },
         },
         components: {
-            // 基础组件
             componentDiyHeader,
             componentDiyFooter,
-            componentDiyTabs,
             componentDiySearch,
             componentCarousel,
-            componentNavGroup,
             componentDiyUserInfo,
-            componentDiyNotice,
             componentDiyVideo,
             componentDiyArticleList,
             componentDiyArticleTabs,
-            componentGoodsTabs,
-            componentGoodsList,
-            componentDiyImgMagic,
             componentDiyHotZone,
-            // 插件
             componentDiyCoupon,
-            // 工具组件
-            componentFloatWindow,
-            componentTextTitle,
             componentDiyAuxiliaryLine,
             componentDiyRichText,
+            componentFloatWindow,
+            componentTextTitle,
             componentAuxiliaryBlank,
+            componentNavGroup,
+            componentGoodsList,
+            componentGoodsTabs,
+            componentDataMagic,
+            componentCustom,
         },
         data() {
             return {

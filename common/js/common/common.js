@@ -182,3 +182,15 @@ export function get_math () {
     // 截取掉随机字符串开头的'0.'部分，获得最终的6位随机字符串。
     return randomString.substring(2);
 }
+
+/**
+ * 将大小计算成百分比
+ *
+ * @param num 当前的大小或位置。
+ * @param size 容器的大小。
+ * @returns 计算后的百分比值，含4位小数
+ */
+export const percentage_count = (num, container_size) => {
+    const marks = (num / container_size) * 100;
+    return marks.toFixed(4) + '%';
+};
