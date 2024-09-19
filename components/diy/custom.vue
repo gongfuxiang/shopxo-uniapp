@@ -1,7 +1,7 @@
 <template>
     <view ref="container" :style="style_container + 'height:'+ form.height * 2 + 'rpx;'">
         <view class="wh-auto ht-auto pr">
-            <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{'left': percentage_count(item.location.x, div_width) , 'top': percentage_count(item.location.y, form.height), 'width': percentage_count(item.com_data.com_width, div_width), 'height': percentage_count(item.com_data.com_height, form.height)}">
+            <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{'left': get_percentage_count(item.location.x, div_width) , 'top': get_percentage_count(item.location.y, form.height), 'width': get_percentage_count(item.com_data.com_width, div_width), 'height': get_percentage_count(item.com_data.com_height, form.height)}">
                 <template v-if="item.key == 'text'">
                     <model-text :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-text>
                 </template>
@@ -47,6 +47,13 @@
                 custom_height: 0,
             };
         },
+        computed: {
+          get_percentage_count() {
+            return (num, container_size) => {
+                return this.percentage_count(num, container_size);
+            }
+          }  
+        },
         created() {
             this.setData({
                 form: this.value.content,
@@ -55,6 +62,7 @@
             this.init();
         },
         methods: {
+            percentage_count,
             init() {
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示

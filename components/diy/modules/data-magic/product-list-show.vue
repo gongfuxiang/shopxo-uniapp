@@ -12,7 +12,8 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-10">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <span class="num">{{ item.show_price_symbol }}</span>{{ item.min_price }}
+                            <span class="num">{{ item.show_price_symbol }}</span
+                            >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <span class="num">{{ item.show_price_unit }}</span>
                             </template>
@@ -36,7 +37,7 @@
                             </template>
                         </view>
                     </view>
-                    <view v-if="isShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" style="overflow: inherit;">{{ item.title }}</view>
+                    <view v-if="isShow.includes('title')" class="text-line-1 text-size-md shop-title tl wh-auto" style="overflow: inherit">{{ item.title }}</view>
                 </view>
             </template>
             <template v-else>
@@ -50,7 +51,8 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto tl gap-10" :style="img_padding_computer">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <span class="num">{{ item.show_price_symbol }}</span>{{ item.min_price }}
+                            <span class="num">{{ item.show_price_symbol }}</span
+                            >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <span class="num">{{ item.show_price_unit }}</span>
                             </template>
@@ -73,7 +75,8 @@
                     <view v-if="!isEmpty(isShow)" class="flex-col wh-auto ht-auto tl gap-20">
                         <view v-if="isShow.includes('title')" class="text-line-2 text-size-md shop-title">{{ item.title }}</view>
                         <view v-if="isShow.includes('price')" class="identifying">
-                            <span class="num">{{ item.show_price_symbol }}</span>{{ item.min_price }}
+                            <span class="num">{{ item.show_price_symbol }}</span
+                            >{{ item.min_price }}
                             <template v-if="isShow.includes('price_unit')">
                                 <span class="num">{{ item.show_price_unit }}</span>
                             </template>
@@ -87,7 +90,7 @@
 
 <script>
     import { isEmpty, padding_computer } from '@/common/js/common/common.js';
-    import imageEmpty from '@/components/diy/modules/image-empty.vue'
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
         components: {
             imageEmpty,
@@ -129,25 +132,25 @@
         computed: {
             img_padding_computer() {
                 if (!isEmpty(this.chunkPadding)) {
-                    return padding_computer(this.chunkPadding) + ';box-sizing: border-box;'
+                    return padding_computer(this.chunkPadding) + ';box-sizing: border-box;';
                 } else {
                     return '';
                 }
-            }
+            },
         },
         methods: {
             isEmpty,
             url_event(link) {
                 this.$emit('url_event', link);
-            }
-        }
-    }
+            },
+        },
+    };
 </script>
 
 <style scoped lang="scss">
     .identifying {
         font-size: 28rpx;
-        color: #EA3323;
+        color: #ea3323;
         .num {
             font-size: 18rpx;
         }
@@ -158,13 +161,13 @@
         background: #fff;
         font-size: 24rpx;
         line-height: 34rpx;
-        color: #EA3323;
+        color: #ea3323;
         text-align: center;
         position: absolute;
         bottom: 8rpx;
         border-radius: 16rpx;
     }
-    .shop-max-height{
+    .shop-max-height {
         max-height: calc(100% / 3);
     }
     .half-width {

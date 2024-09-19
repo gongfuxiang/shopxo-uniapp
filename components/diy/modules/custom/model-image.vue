@@ -1,12 +1,15 @@
 <template>
     <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
-        <image-empty v-model="img" :style="image_style"></image-empty>
+        <image-empty :image-src="img" :style="image_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
     </view>
 </template>
 <script>
     import { percentage_count, radius_computer, isEmpty } from '@/common/js/common/common.js';
-
+    import imageEmpty from '@/components/diy/modules/image-empty.vue';
     export default {
+        components: {
+            imageEmpty,
+        },
         props: {
             value: {
                 type: Object,
@@ -56,20 +59,17 @@
                 }
             },
             get_image_style() {
-                return `${set_count()};transform: rotate(${this.form.img_rotate}deg); ${radius_computer(this.form.img_radius)};`;
+                return `width: ${percentage_count(this.form.img_width, this.form.com_width)}; height: ${percentage_count(this.form.img_height, this.form.com_height)};transform: rotate(${this.form.img_rotate}deg); ${radius_computer(this.form.img_radius)};`;
             },
             get_border_style() {
                 let style = ``;
                 if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size}px ${this.form.border_style} ${this.form.border_color}; ${radius_computer(this.form.border_radius)};`;
+                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color}; ${radius_computer(this.form.border_radius)};`;
                 }
                 return style;
             },
-            set_count() {
-                return `width: ${percentage_count(this.form.img_width, this.form.com_width)}; height: ${percentage_count(this.form.img_height, this.form.com_height)};`;
-            },
             url_open(link) {
-                this.$emit('url_open', link)
+                this.$emit('url_open', link);
             },
         },
     };

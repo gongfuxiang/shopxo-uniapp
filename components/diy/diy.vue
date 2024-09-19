@@ -6,7 +6,6 @@
             <componentDiyTabs v-if="is_tabs" :value="tabs_data"></componentDiyTabs>
             <view v-if="is_tabs_type">
                 <view v-for="(item, index) in value.diy_data" :key="index">
-                    {{ item.key }}
                     <!-- 基础组件 -->
                     <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                     <componentCarousel v-else-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
@@ -103,11 +102,13 @@
                 is_tabs_type: true,
             };
         },
-
         computed: {
             diy_content_style() {
                 return `padding-bottom:${this.padding_footer_computer}rpx`;
             },
+        },
+        mounted() {
+            this.init();
         },
         methods: {
             init() {

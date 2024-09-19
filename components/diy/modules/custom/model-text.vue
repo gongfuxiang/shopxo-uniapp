@@ -61,7 +61,7 @@
                 return text;
             },
             get_text_style() {
-                let style = `font-size: ${this.form.text_size}px;color: ${this.form.text_color}; text-align: ${this.form.text_location}; transform: rotate(${this.form.text_rotate}deg);text-decoration: ${this.form.text_option};${padding_computer(this.form.text_padding)};`;
+                let style = `font-size: ${this.form.text_size * 2}rpx;color: ${this.form.text_color}; text-align: ${this.form.text_location}; transform: rotate(${this.form.text_rotate}deg);text-decoration: ${this.form.text_option};${padding_computer(this.form.text_padding)};box-sizing: border-box;`;
                 if (this.form.text_weight == 'italic') {
                     style += `font-style: italic`;
                 } else if (this.form.text_weight == '500') {
@@ -72,7 +72,7 @@
             get_com_style() {
                 let style = `background-color: ${this.form.com_bg}; ${radius_computer(this.form.bg_radius)}`;
                 if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size}px ${this.form.border_style} ${this.form.border_color};`;
+                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color};`;
                 }
                 // 是富文本并且开启了上下滚动的开关
                 if (this.form.is_rich_text == '1' && this.form.is_up_down == '1') {

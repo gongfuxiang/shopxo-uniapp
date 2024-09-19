@@ -1,9 +1,9 @@
 <template>
-    <swiper circular="true" :autoplay="value.data_style.is_roll == '1'" :interval="value.data_style.interval_time * 1000" :duration="500" :vertical="value.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%;" @change="carousel_change">
+    <swiper circular="true" :autoplay="value.data_style.is_roll == '1'" :interval="value.data_style.interval_time * 1000" :duration="500" :vertical="value.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%" @change="carousel_change">
         <swiper-item v-for="(item1, index1) in value.data_content.list" :key="index1">
             <template v-if="type === 'img'">
                 <view @tap="url_event(item1.carousel_link.page)">
-                    <image-empty v-model="item1.carousel_img[0]" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
+                    <image-empty :image-src="item1.carousel_img[0]" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
                 </view>
             </template>
             <template v-else>
@@ -17,7 +17,7 @@
     const app = getApp();
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
     import productListShow from '@/components/diy/modules/data-magic/product-list-show.vue';
-import { isEmpty } from '../../../../common/js/common/common';
+    import { isEmpty } from '@/common/js/common/common.js';
     export default {
         components: {
             imageEmpty,
@@ -51,9 +51,8 @@ import { isEmpty } from '../../../../common/js/common/common';
                     app.globalData.url_open(link);
                 }
             },
-        }
-    }
+        },
+    };
 </script>
 
-<style>
-</style>
+<style></style>
