@@ -317,22 +317,4 @@
 .gap-20 {
     gap: 40rpx;
 }
-// 轮播高度自适应
-:deep(.el-carousel) {
-    height: 100%;
-    .el-carousel__container {
-        height: 100%;
-    }
-}
-
-:deep(.el-image) {
-    height: 100%;
-    width: 100%;
-    .el-image__inner {
-        object-fit: cover;
-    }
-    .image-slot img {
-        width: 6rem;
-    }
-}
 </style>

@@ -6,6 +6,7 @@
             <componentDiyTabs v-if="is_tabs" :value="tabs_data"></componentDiyTabs>
             <view v-if="is_tabs_type">
                 <view v-for="(item, index) in value.diy_data" :key="index">
+                    {{ item.key }}
                     <!-- 基础组件 -->
                     <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                     <componentCarousel v-else-if="item.key == 'carousel'" :value="item.com_data"></componentCarousel>
@@ -18,6 +19,7 @@
                     <componentGoodsTabs v-else-if="item.key == 'goods-tabs'" :value="item.com_data"></componentGoodsTabs>
                     <componentGoodsList v-else-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
                     <componentDataMagic v-if="item.key == 'data-magic'" :value="item.com_data"></componentDataMagic>
+                    <componentCustom v-if="item.key == 'custom'" :value="item.com_data"></componentCustom>
                     <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
                     <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
                     <!-- 插件 -->
@@ -57,7 +59,8 @@
     import componentNavGroup from '@/components/diy/nav-group.vue';
     import componentGoodsList from '@/components/diy/goods-list.vue';
     import componentGoodsTabs from '@/components/diy/goods-tabs.vue';
-    import componentDataMagic from '@/components/diy/data-magic.vue'
+    import componentDataMagic from '@/components/diy/data-magic.vue';
+    import componentCustom from '@/components/diy/custom.vue'
     export default {
         name: 'diy',
         props: {
@@ -85,12 +88,19 @@
             componentNavGroup,
             componentGoodsList,
             componentGoodsTabs,
-            componentDataMagic
+            componentDataMagic,
+            componentCustom
         },
         data() {
             return {
                 // 底部菜单导航高度计算
                 padding_footer_computer: 140,
+                // 是否有选项卡
+                is_tabs: false,
+                // 选项卡数据
+                tabs_data: {},
+                // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
+                is_tabs_type: true,
             };
         },
 
