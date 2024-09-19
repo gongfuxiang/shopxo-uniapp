@@ -52,14 +52,12 @@
             },
             // 图片加载完成 获取宽高
             on_load_img(e) {
-                console.log('123');
                 const query = uni.createSelectorQuery();
                 // 选择我们想要的元素
                 query
                     .in(this)
                     .select('.container')
                     .boundingClientRect((res) => {
-                        console.log('1:' + res);
                         if ((res || null) != null) {
                             // data包含元素的宽度、高度等信息
                             this.setData({
@@ -74,7 +72,6 @@
                     .in(this)
                     .select('.hot')
                     .boundingClientRect((res) => {
-                        console.log('2:' + res);
                         if ((res || null) != null) {
                             // data包含元素的宽度、高度等信息
                             this.setData({

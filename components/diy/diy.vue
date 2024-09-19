@@ -2,6 +2,7 @@
     <view class="ht-auto min-ht">
         <componentDiyHeader></componentDiyHeader>
         <view v-if="value.diy_data.length > 0" :style="diy_content_style">
+            {{ is_tabs }}
             <componentDiyTabs v-if="is_tabs" :value="tabs_data"></componentDiyTabs>
             <view v-if="is_tabs_type">
                 <view v-for="(item, index) in value.diy_data" :key="index">
@@ -120,8 +121,8 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
-                const filter_tabs_list = this.value.diy_data.filter((item) => item.key == 'tabs');
-                if (filter_tabs_list > 0) {
+                const filter_tabs_list = this.value.tabs_data;
+                if (filter_tabs_list.length > 0) {
                     this.setData({
                         tabs_data: filter_tabs_list[0].com_data,
                         is_tabs: true,
