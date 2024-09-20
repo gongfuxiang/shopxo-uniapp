@@ -3,28 +3,30 @@
         <view :class="(plugins_mourning_data_is_app ? ' grayscale' : '') + (is_single_page == 1 ? ' single-page-top' : '')">
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
-                <componentDiy :value="data_list"></componentDiy>
+                <block v-if="data_list !== null">
+                    <componentDiy :value="data_list.config" :prop-id="data_list.id"></componentDiy>
+                </block>
             </block>
             <!-- 自动和手动模式 -->
             <block v-else>
                 <!-- 顶部内容、如果没有轮播和导航则使用矮的浮动导航背景样式，则使用高的背景样式 -->
-                <view v-if="load_status == 1" class="home-top-nav-content pr" :style="((banner_list.length > 0 || navigation.length > 0) ? top_content_bg_color : top_content_search_bg_color) + top_content_style">
+                <view v-if="load_status == 1" class="home-top-nav-content pr" :style="(banner_list.length > 0 || navigation.length > 0 ? top_content_bg_color : top_content_search_bg_color) + top_content_style">
                     <!-- 顶部背景图片 -->
                     <view class="pa top-0 left-0 right-0">
                         <image class="bg-img wh-auto" mode="widthFix" :src="static_url + 'nav-top.png'"></image>
                     </view>
 
                     <!-- 搜索 -->
-                    <view v-if="common_app_is_header_nav_fixed == 1" :class="'search-fixed-seat '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')"></view>
+                    <view v-if="common_app_is_header_nav_fixed == 1" :class="'search-fixed-seat ' + (common_app_is_enable_search == 1 ? 'nav-enable-search' : '')"></view>
                     <view :class="'pr ' + (common_app_is_header_nav_fixed == 1 ? 'search-content-fixed' : '')" :style="common_app_is_header_nav_fixed == 1 ? top_content_search_bg_color : ''">
-                        <view :class="'search-content-fixed-content '+(common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 ? top_content_search_content_style : '')">
+                        <view :class="'search-content-fixed-content ' + (common_app_is_enable_search == 1 ? 'nav-enable-search' : '')" :style="(common_app_is_header_nav_fixed == 1 ? top_content_style : '') + (common_app_is_header_nav_fixed == 1 ? top_content_search_content_style : '')">
                             <view class="home-top-nav margin-bottom-sm pr padding-right-main">
                                 <!-- 定位 -->
                                 <view v-if="is_home_location_choice == 1" class="home-top-nav-location dis-inline-block va-m single-text cr-white pr bs-bb padding-left-main padding-right-lg" @tap="choose_user_location_event">
                                     <view class="dis-inline-block va-m lh">
                                         <iconfont name="icon-location" size="32rpx" propClass="lh" color="#fff"></iconfont>
                                     </view>
-                                    <text class="va-m margin-left-xs text-size-md">{{user_location.text || ''}}</text>
+                                    <text class="va-m margin-left-xs text-size-md">{{ user_location.text || '' }}</text>
                                     <view class="lh pa right-0 top-xxxl">
                                         <iconfont name="icon-arrow-bottom" size="24rpx" propClass="lh-xs" color="#fff"></iconfont>
                                     </view>
@@ -57,11 +59,11 @@
                             <view v-if="common_app_is_enable_search == 1" class="search-content-input padding-horizontal-main">
                                 <!-- 是否开启搜索框前面icon扫一扫 -->
                                 <block v-if="is_home_search_scan == 1">
-                                    <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"
-                                        <!-- #ifndef H5 -->
+                                    <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff" <!-- #ifndef H5 -->
                                         @onicon="search_icon_event" propIcon="icon-scan" :propIsIconOnEvent="true"
                                         <!-- #endif -->
-                                    ></component-search>
+                                        ></component-search
+                                    >
                                 </block>
                                 <block v-else>
                                     <component-search :propIsBtn="true" propSize="sm" :propPlaceholder="$t('customview.customview.726k7y')" propPlaceholderClass="cr-grey-c" propIconColor="#999" propBgColor="#fff"></component-search>
@@ -78,7 +80,7 @@
                     <view v-if="navigation.length > 0" class="spacing-mt" :class="load_status == 1 && (common_shop_notice || null) != null ? '' : ' spacing-mb'">
                         <view class="padding-horizontal-main">
                             <view class="bg-white border-radius-main">
-                                <component-icon-nav :propData="{...{data: navigation}, ...{random: random_value}}"></component-icon-nav>
+                                <component-icon-nav :propData="{ ...{ data: navigation }, ...{ random: random_value } }"></component-icon-nav>
                             </view>
                         </view>
                     </view>
@@ -92,7 +94,10 @@
                     </view>
                     <!-- 推荐文章 -->
                     <view v-if="article_list.length > 0" class="article-list padding-main border-radius-main oh bg-white spacing-mb">
-                        <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event"> <text>{{$t('index.index.t8bll8')}}</text><text class="cr-red">{{$t('index.index.t8bll9')}}</text> </view>
+                        <view mode="aspectFit" class="new-icon va-m fl cp pr divider-r" data-value="/pages/article-category/article-category" @tap="url_event">
+                            <text>{{ $t('index.index.t8bll8') }}</text
+                            ><text class="cr-red">{{ $t('index.index.t8bll9') }}</text>
+                        </view>
                         <view class="right-content fr va-m">
                             <swiper :vertical="true" :autoplay="true" :circular="true" display-multiple-items="1" interval="3000">
                                 <block v-for="(item, index) in article_list" :key="index">
@@ -124,7 +129,7 @@
                                             <component-countdown :propHour="plugins_seckill_data.data.time.hours" :propMinute="plugins_seckill_data.data.time.minutes" :propSecond="plugins_seckill_data.data.time.seconds"></component-countdown>
                                         </view>
                                     </view>
-                                    <text data-value="/pages/plugins/seckill/index/index" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{$t('common.more')}}</text>
+                                    <text data-value="/pages/plugins/seckill/index/index" @tap="url_event" class="arrow-right padding-right cr-grey text-size-xs cp">{{ $t('common.more') }}</text>
                                 </view>
                                 <component-goods-list :propData="{ style_type: 2, goods_list: plugins_seckill_data.data.goods }" :propLabel="plugins_label_data" :propCurrencySymbol="currency_symbol" :propIsCartParaCurve="true" propSource="index" :propOpenCart="false"></component-goods-list>
                             </view>
@@ -138,27 +143,27 @@
                             <view v-if="pv.plugins == 'realstore' && (plugins_realstore_data || null) != null">
                                 <view v-if="(plugins_realstore_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_realstore_data.base.home_data_list_title }}</text>
-                                    <text data-value="/pages/plugins/realstore/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
+                                    <text data-value="/pages/plugins/realstore/search/search" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                                 </view>
-                                <component-realstore-list :propData="{...{data: plugins_realstore_data.data}, ...{random: random_value}}"></component-realstore-list>
+                                <component-realstore-list :propData="{ ...{ data: plugins_realstore_data.data }, ...{ random: random_value } }"></component-realstore-list>
                             </view>
 
                             <!-- 多商户 - 插件 -->
                             <view v-if="pv.plugins == 'shop' && (plugins_shop_data || null) != null">
                                 <view v-if="(plugins_shop_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_shop_data.base.home_data_list_title }}</text>
-                                    <text data-value="/pages/plugins/shop/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
+                                    <text data-value="/pages/plugins/shop/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                                 </view>
-                                <component-shop-list :propConfig="plugins_shop_data.base" :propData="{...{data: plugins_shop_data.data}, ...{random: random_value}}"></component-shop-list>
+                                <component-shop-list :propConfig="plugins_shop_data.base" :propData="{ ...{ data: plugins_shop_data.data }, ...{ random: random_value } }"></component-shop-list>
                             </view>
 
                             <!-- 组合搭配 - 插件 -->
                             <view v-if="pv.plugins == 'binding' && (plugins_binding_data || null) != null">
                                 <view v-if="(plugins_binding_data.base.home_data_list_title || null) != null" class="spacing-nav-title flex-row align-c jc-sb text-size-xs">
                                     <text class="text-wrapper title-left-border single-text flex-1 flex-width padding-right-main">{{ plugins_binding_data.base.home_data_list_title }}</text>
-                                    <text data-value="/pages/plugins/binding/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
+                                    <text data-value="/pages/plugins/binding/index/index" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                                 </view>
-                                <component-binding-list :propConfig="plugins_binding_data.base" :propData="{...{data: plugins_binding_data.data}, ...{random: random_value}}" :propCurrencySymbol="currency_symbol"></component-binding-list>
+                                <component-binding-list :propConfig="plugins_binding_data.base" :propData="{ ...{ data: plugins_binding_data.data }, ...{ random: random_value } }" :propCurrencySymbol="currency_symbol"></component-binding-list>
                             </view>
 
                             <!-- 博客-楼层顶部 - 插件 -->
@@ -168,7 +173,7 @@
 
                             <!-- 魔方 - 插件 -->
                             <view v-if="pv.plugins == 'magic' && (plugins_magic_data || null) != null">
-                                <component-magic-list :propData="{...plugins_magic_data, ...{random: random_value}}" :propCurrencySymbol="currency_symbol" :propLabel="plugins_label_data"></component-magic-list>
+                                <component-magic-list :propData="{ ...plugins_magic_data, ...{ random: random_value } }" :propCurrencySymbol="currency_symbol" :propLabel="plugins_label_data"></component-magic-list>
                             </view>
                         </block>
                     </block>
@@ -188,7 +193,7 @@
                                         <text class="text-wrapper title-left-border" :style="'color:' + (floor.bg_color || '#333') + ';'">{{ floor.name }}</text>
                                         <text v-if="(floor.describe || null) != null" class="vice-name margin-left-lg cr-grey">{{ floor.describe }}</text>
                                     </view>
-                                    <text :data-value="'/pages/goods-search/goods-search?category_id=' + floor.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{$t('common.more')}}</text>
+                                    <text :data-value="'/pages/goods-search/goods-search?category_id=' + floor.id" @tap="url_event" class="arrow-right padding-right cr-grey cp">{{ $t('common.more') }}</text>
                                 </view>
                                 <view class="floor-list wh-auto oh pr">
                                     <block v-if="(floor.goods || null) != null && floor.goods.length > 0">
@@ -363,7 +368,7 @@
                 top_content_style: 'padding-top:' + (bar_height + 14) + 'px;',
                 // #endif
                 // #ifdef APP
-                top_content_style: 'padding-top:' + (bar_height) + 'px;',
+                top_content_style: 'padding-top:' + bar_height + 'px;',
                 // #endif
                 // 是否单页预览
                 is_single_page: app.globalData.is_current_single_page() || 0,
@@ -424,7 +429,7 @@
             componentBindingList,
             componentMagicList,
             componentAppAdmin,
-            componentDiy
+            componentDiy,
         },
         props: {},
 
@@ -438,23 +443,23 @@
             app.globalData.page_event_onshow_handle();
 
             // 加载数据
-            if(this.is_home_location_choice == 1) {
+            if (this.is_home_location_choice == 1) {
                 // 用户位置初始化
                 this.user_location_init();
                 // 先解绑自定义事件
                 uni.$off('refresh');
                 // 监听自定义事件并进行页面刷新操作
-                uni.$on('refresh', (data) => {
+                uni.$on('refresh', (data) => {
                     // 初始位置数据
-                    if((data.location_success || false) == true) {
+                    if ((data.location_success || false) == true) {
                         // 用户位置初始化
                         this.user_location_init();
                         // 重新请求数据
                         // #ifdef APP
                         this.init();
                         // #endif
-                    }
-                });
+                    }
+                });
             }
 
             // 数据加载
@@ -476,7 +481,7 @@
 
         // 下拉刷新
         onPullDownRefresh() {
-            if(this.data_list_loding_status === 1) {
+            if (this.data_list_loding_status === 1) {
                 uni.stopPullDownRefresh();
             } else {
                 this.init();
@@ -505,11 +510,10 @@
             init(params = {}) {
                 // 还没有数据则读取缓存
                 var cache_key = app.globalData.data.cache_index_data_key;
-                if(this.load_status == 0)
-                {
+                if (this.load_status == 0) {
                     // 本地缓存数据
                     var upd_data = uni.getStorageSync(cache_key) || null;
-                    if(upd_data != null) {
+                    if (upd_data != null) {
                         // 先使用缓存数据展示
                         this.setData(upd_data);
 
@@ -522,13 +526,13 @@
                 }
 
                 // 网络检查
-                if((params || null) == null || (params.loading || 0) == 0) {
+                if ((params || null) == null || (params.loading || 0) == 0) {
                     app.globalData.network_type_handle(this, 'init', params);
                     return false;
                 }
 
                 // 没有缓存数据则开启加载层
-                if(upd_data == null) {
+                if (upd_data == null) {
                     this.setData({
                         data_list_loding_status: 1,
                     });
@@ -556,7 +560,7 @@
                                 cart_total: data.cart_total.buy_number || 0,
                                 message_total: parseInt(data.message_total || 0),
                                 right_icon_list: data.right_icon_list || [],
-                                data_list_loding_status: (data_list == null || data_list.length == 0) ? 0 : 3,
+                                data_list_loding_status: data_list == null || data_list.length == 0 ? 0 : 3,
                                 plugins_sort_list: data.plugins_sort_list || [],
                                 plugins_seckill_data: data.plugins_seckill_data || null,
                                 plugins_salerecords_data: (data.plugins_salerecords_data || null) == null || data.plugins_salerecords_data.length <= 0 ? null : data.plugins_salerecords_data,
@@ -572,7 +576,7 @@
                                 plugins_magic_data: data.plugins_magic_data || null,
                             };
                             // 如果开启了哀悼灰色则不固定导航
-                            if(upd_data.plugins_mourning_data_is_app == 1) {
+                            if (upd_data.plugins_mourning_data_is_app == 1) {
                                 upd_data['common_app_is_header_nav_fixed'] = 0;
                             }
                             this.setData(upd_data);
@@ -584,8 +588,8 @@
                             this.plugins_popupscreen_handle();
 
                             // 是否需要重新加载数据
-                            if(parseInt(data.is_result_data_cache || 0) == 1) {
-                                this.init({is_cache: 0});
+                            if (parseInt(data.is_result_data_cache || 0) == 1) {
+                                this.init({ is_cache: 0 });
                             } else {
                                 // 导航购物车处理、缓存数据则不更新导航角标
                                 if (this.cart_total <= 0) {
@@ -632,7 +636,7 @@
 
                 // 轮播数据处理
                 if (this.load_status == 0 || (this.top_content_search_bg_color || null) == null) {
-                    var color = (this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null) ? this.banner_list[0]['bg_color'] : theme_color;
+                    var color = this.banner_list && this.banner_list.length > 0 && (this.banner_list[0]['bg_color'] || null) != null ? this.banner_list[0]['bg_color'] : theme_color;
                     this.change_banner(color);
                 }
 
@@ -661,7 +665,7 @@
             // 用户地理位置初始化
             user_location_init() {
                 this.setData({
-                    user_location: app.globalData.choice_user_location_init()
+                    user_location: app.globalData.choice_user_location_init(),
                 });
             },
 
