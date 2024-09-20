@@ -23,13 +23,11 @@
                 <view class="divider-b">
                     <view class="nav-list-more">
                         <view class="flex-row flex-wrap align-c">
-                            <block v-for="(item, index) in tabs_list" :key="index">
-                                <view class="item tc cr-base cp text-size-xs" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="handle_event">
-                                    <view class="dis-inline-block padding-vertical-xs padding-horizontal-sm round" :class="active_index == index ? 'bg-main border-color-main cr-white' : ''">
-                                        {{ item.title }}
-                                    </view>
+                            <view v-for="(item, index) in tabs_list" :key="index" class="item tc cr-base cp text-size-xs" :data-index="index" :data-itemtwoindex="-1" :data-itemthreeindex="-1" @tap="handle_event">
+                                <view class="dis-inline-block padding-vertical-xs padding-horizontal-sm round" :class="active_index == index ? 'bg-main border-color-main cr-white' : ''">
+                                    {{ item.title }}
                                 </view>
-                            </block>
+                            </view>
                         </view>
                     </view>
                 </view>

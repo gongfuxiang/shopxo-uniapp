@@ -41,6 +41,7 @@
 </template>
 
 <script>
+    const app = getApp();
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
     import componentDiySearch from '@/components/diy/search';
