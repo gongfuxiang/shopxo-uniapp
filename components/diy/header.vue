@@ -1,6 +1,9 @@
 <template>
     <view class="bg-white pf top-0 left-0 right-0" :style="'padding-top:' + bar_height + 'rpx'">
-        <view class="header-content"> 这是头部 </view>
+        <view class="header-content flex-row">
+            <view>返回</view>
+            <view>这是头部</view>
+        </view>
     </view>
 </template>
 

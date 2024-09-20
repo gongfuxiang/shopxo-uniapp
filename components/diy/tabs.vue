@@ -7,9 +7,10 @@
                 <componentDiyModulesTabsView :value="value" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
+        <!-- 占位 -->
         <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
             <view :style="style_container">
-                <componentDiyModulesTabsView :value="value" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+                <componentDiyModulesTabsView :value="value" isTabs></componentDiyModulesTabsView>
             </view>
         </view>
     </view>
