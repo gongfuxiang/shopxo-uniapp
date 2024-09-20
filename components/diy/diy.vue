@@ -5,7 +5,7 @@
         </view>
         <view v-if="value.diy_data.length > 0" class="pr" :style="diy_content_style">
             <componentDiyTabs v-if="is_tabs" :value="tabs_data"></componentDiyTabs>
-            <view v-if="is_tabs_type" class="diy-content" :style="'padding-top:' + header_top + 'rpx;'">
+            <view v-if="is_tabs_type" class="diy-content">
                 <view v-for="(item, index) in value.diy_data" :key="index">
                     <!-- 基础组件 -->
                     <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
@@ -44,9 +44,11 @@
     const app = getApp();
     import componentDiyHeader from '@/components/diy/header';
     import componentDiyFooter from '@/components/diy/footer';
+    import componentDiyTabs from '@/components/diy/tabs';
     import componentDiySearch from '@/components/diy/search';
     import componentCarousel from '@/components/diy/carousel.vue';
     import componentDiyUserInfo from '@/components/diy/user-info';
+    import componentDiyNotice from '@/components/diy/notice';
     import componentDiyVideo from '@/components/diy/video';
     import componentDiyArticleList from '@/components/diy/article-list';
     import componentDiyArticleTabs from '@/components/diy/article-tabs';
@@ -62,6 +64,7 @@
     import componentGoodsTabs from '@/components/diy/goods-tabs.vue';
     import componentDataMagic from '@/components/diy/data-magic.vue';
     import componentCustom from '@/components/diy/custom.vue';
+    import componentDiyImgMagic from '@/components/diy/img-magic';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -78,9 +81,11 @@
         components: {
             componentDiyHeader,
             componentDiyFooter,
+            componentDiyTabs,
             componentDiySearch,
             componentCarousel,
             componentDiyUserInfo,
+            componentDiyNotice,
             componentDiyVideo,
             componentDiyArticleList,
             componentDiyArticleTabs,
@@ -96,6 +101,7 @@
             componentGoodsTabs,
             componentDataMagic,
             componentCustom,
+            componentDiyImgMagic,
         },
         data() {
             return {
@@ -104,7 +110,7 @@
                 // 是否有选项卡
                 is_tabs: false,
                 // 选项卡数据
-                tabs_data: {},
+                tabs_data: [],
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
 
@@ -113,7 +119,7 @@
         },
         computed: {
             diy_content_style() {
-                return `padding-bottom:${this.padding_footer_computer}rpx`;
+                return `padding-top:${this.header_top}rpx;padding-bottom:${this.padding_footer_computer}rpx`;
             },
         },
         mounted() {
