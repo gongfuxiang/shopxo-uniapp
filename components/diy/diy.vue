@@ -20,6 +20,7 @@
                     <componentGoodsList v-else-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
                     <componentDataMagic v-else-if="item.key == 'data-magic'" :value="item.com_data"></componentDataMagic>
                     <componentCustom v-else-if="item.key == 'custom'" :value="item.com_data"></componentCustom>
+                    <componentSeckill v-else-if="item.key == 'seckill'" :value="item.com_data"></componentSeckill>
                     <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
                     <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
                     <!-- 插件 -->
@@ -64,6 +65,7 @@
     import componentGoodsTabs from '@/components/diy/goods-tabs.vue';
     import componentDataMagic from '@/components/diy/data-magic.vue';
     import componentCustom from '@/components/diy/custom.vue';
+    import componentSeckill from '@/components/diy/seckill.vue';
     import componentDiyImgMagic from '@/components/diy/img-magic';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -102,6 +104,7 @@
             componentDataMagic,
             componentCustom,
             componentDiyImgMagic,
+            componentSeckill
         },
         data() {
             return {
