@@ -35,7 +35,7 @@
             </view>
             <template v-if="form.shop_style_type != '3'">
                 <view class="flex-row flex-wrap" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
-                    <view v-for="(item, index) in list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')">
+                    <view v-for="(item, index) in list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" @tap="url_event(item.goods_url)">
                         <template v-if="!isEmpty(item)">
                             <view class="oh pr" :class="'flex-img' + form.shop_style_type">
                                 <template v-if="!isEmpty(item.new_cover)">
@@ -97,7 +97,7 @@
             <template v-else-if="">
                 <swiper circular="false" :autoplay="new_style.is_roll == '1'" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in list" :key="index1" :class="{'flex-row': new_style.rolling_fashion != 'translation'}" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
-                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')">
+                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" @tap="url_event(item.goods_url)">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
                                     <template v-if="!isEmpty(item.new_cover)">
@@ -470,6 +470,12 @@
                     location += `bottom: 0;right: 0;border-radius: ${shop_img_radius.radius_bottom_right * 2}rpx 0 ${shop_img_radius.radius_bottom_right * 2}rpx 0;`;
                 }
                 return location;
+            },
+            // 跳转链接
+            url_event(link) {
+                if (!isEmpty(link)) {
+                    app.globalData.url_open(link);
+                }
             },
         },
     };
