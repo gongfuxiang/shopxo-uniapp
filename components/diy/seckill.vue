@@ -246,7 +246,10 @@
             this.init();
         },
         beforeDestroy() {
-            clearInterval(this.intervalId);
+            // 如果有定时任务执行，在离开的时候清空掉定时任务
+            if (!isEmpty(this.intervalId)) {
+                clearInterval(this.intervalId);
+            }  
         },
         methods: {
             isEmpty,
@@ -330,7 +333,6 @@
                     // 存储数据显示
                     let nav_list = [];
                     cloneList.forEach(item => {
-                        console.log(item);
                         nav_list.push({
                             split_list: [ item ],
                         });
