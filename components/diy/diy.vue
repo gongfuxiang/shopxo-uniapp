@@ -132,7 +132,7 @@
                 return `padding-top:${this.header_top}rpx;padding-bottom:${this.padding_footer_computer}rpx`;
             },
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {
@@ -152,9 +152,10 @@
                 this.padding_footer_computer = number * 2;
             },
             // 选项卡回调更新数据
-            tabs_click_event(data) {
+            tabs_click_event(data, bool) {
                 this.setData({
                     diy_data: data,
+                    is_tabs_type: bool,
                 });
             },
         },
