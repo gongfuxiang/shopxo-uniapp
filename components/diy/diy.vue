@@ -123,7 +123,7 @@
                 header_data: {},
                 footer_data: {},
                 // 选项卡数据
-                tabs_data: [],
+                tabs_data: {},
                 diy_data: [],
             };
         },
@@ -138,16 +138,15 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
-                const filter_tabs_list = this.value.tabs_data;
-                if (filter_tabs_list.length > 0) {
-                    this.setData({
-                        header_data: this.value.header,
-                        footer_data: this.value.footer,
-                        diy_data: filter_tabs_list.diy_data,
-                        tabs_data: filter_tabs_list[0].com_data,
-                        is_tabs: true,
-                    });
-                }
+                const filter_tabs_list = this.value.tabs_data || [];
+                this.setData({
+                    header_data: this.value.header,
+                    footer_data: this.value.footer,
+                    diy_data: this.value.diy_data,
+                    tabs_data: filter_tabs_list.length > 0 ? filter_tabs_list[0].com_data : {},
+                    is_tabs: true,
+                });
+                uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
@@ -155,7 +154,7 @@
             // 选项卡回调更新数据
             tabs_click_event(data) {
                 this.setData({
-                    tabs_data: data,
+                    diy_data: data,
                 });
             },
         },
