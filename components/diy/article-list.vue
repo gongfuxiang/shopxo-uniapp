@@ -58,7 +58,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer, padding_computer, radius_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, radius_computer, get_math } from '@/common/js/common/common.js';
     export default {
         props: {
             value: {
@@ -123,7 +123,15 @@
                 const new_style = this.value.style || {};
                 this.setData({
                     // 判断是自动还是手动
-                    data_list: new_content.data_type == '0' ? new_content.data_list : new_content.data_auto_list,
+                    data_list:
+                        new_content.data_type == '0'
+                            ? new_content.data_list
+                            : new_content.data_auto_list.map((item) => ({
+                                  id: get_math(),
+                                  new_title: '',
+                                  new_cover: [],
+                                  data: item,
+                              })),
                     article_theme_class: this.article_theme_class_computer(new_content.theme),
                     article_theme: new_content.theme,
                     field_show: new_content.field_show,

@@ -31,6 +31,10 @@
                 type: Object,
                 default: () => ({}),
             },
+            propId: {
+                type: String,
+                default: '',
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -62,6 +66,36 @@
                 // 调接口
                 // 回调到上一级
                 // 更新上一级的数据，渲染更新页面
+                // 请求远程数据
+                let new_data = {};
+                let params = {
+                    id: this.propId,
+                };
+                if (index == 0) {
+                    // 获取缓存数据
+                    new_data = uni.getStorageSync('diy-data-' + this.propId) || {};
+                } else {
+                    params.id = item.id;
+                    new_data = uni.getStorageSync('diy-data-' + item.id) || {};
+                }
+                this.$emit('tabs-click', new_data);
+                uni.request({
+                    url: app.globalData.get_request_url('diy', 'index'),
+                    method: 'POST',
+                    data: params,
+                    dataType: 'json',
+                    success: (res) => {
+                        // 数据处理
+                        var data = res.data.data;
+                        if (res.data.code == 0) {
+                            uni.setStorageSync('diy-data-' + item.id, data.config.diy_data);
+                            this.$emit('tabs-click', data.config.diy_data);
+                        } else {
+                            app.globalData.showToast(res.data.msg);
+                        }
+                    },
+                    fail: () => {},
+                });
             },
         },
     };
