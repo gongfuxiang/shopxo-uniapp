@@ -81,28 +81,33 @@
                     // 获取缓存数据
                     new_data = uni.getStorageSync('diy-data-' + this.propId) || {};
                 } else {
-                    new_data = uni.getStorageSync('diy-data-' + item.id) || {};
+                    if (index !== 0) params.id = item.micro_page_list.id;
+                    if (params.id) {
+                        new_data = uni.getStorageSync('diy-data-' + item.id) || {};
+                    }
                 }
                 this.$emit('tabs-click', new_data, true);
                 if (item.data_type == '0') {
-                    if (index !== 0) params.id = item.classify.id;
-                    uni.request({
-                        url: app.globalData.get_request_url('index', 'diy'),
-                        method: 'POST',
-                        data: params,
-                        dataType: 'json',
-                        success: (res) => {
-                            // 数据处理
-                            var data = res.data.data;
-                            if (res.data.code == 0) {
-                                uni.setStorageSync('diy-data-' + item.id, data.config.diy_data);
-                                this.$emit('tabs-click', data.config.diy_data, true);
-                            } else {
-                                app.globalData.showToast(res.data.msg);
-                            }
-                        },
-                    });
+                    if (params.id) {
+                        uni.request({
+                            url: app.globalData.get_request_url('index', 'diy'),
+                            method: 'POST',
+                            data: params,
+                            dataType: 'json',
+                            success: (res) => {
+                                // 数据处理
+                                const data = res.data.data.data;
+                                if (res.data.code == 0) {
+                                    uni.setStorageSync('diy-data-' + params.id, data.config.diy_data);
+                                    this.$emit('tabs-click', data.config.diy_data, true);
+                                } else {
+                                    app.globalData.showToast(res.data.msg);
+                                }
+                            },
+                        });
+                    }
                 } else {
+                    if (index !== 0) params.id = item.classify.id;
                     console.log('123123123123123');
                 }
             },

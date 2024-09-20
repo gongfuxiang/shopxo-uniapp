@@ -3,7 +3,7 @@
         <view class="pr header-content">
             <componentDiyHeader></componentDiyHeader>
         </view>
-        <view v-if="diy_data.length > 0" class="pr" :style="diy_content_style">
+        <view class="pr" :style="diy_content_style">
             <componentDiyTabs v-if="is_tabs" :value="tabs_data" :prop-id="propId" @tabs-click="tabs_click_event"></componentDiyTabs>
             <template v-if="diy_data.length > 0">
                 <view v-if="is_tabs_type" class="diy-content">
@@ -146,6 +146,12 @@
                     tabs_data: filter_tabs_list.length > 0 ? filter_tabs_list[0].com_data : {},
                     is_tabs: true,
                 });
+                const storge_keys = uni.getStorageInfoSync().keys;
+                for (let i in storge_keys) {
+                    if (storge_keys[i].indexOf('diy-data-') !== -1) {
+                        uni.removeStorageSync(storge_keys[i]);
+                    }
+                }
                 uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },
             footer_height_computer(number) {
