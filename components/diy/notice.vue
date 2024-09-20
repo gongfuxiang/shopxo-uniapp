@@ -1,53 +1,53 @@
 <template>
     <!-- 公告 -->
     <view :style="style_container">
-        <template v-if="form.content.notice_style == 'inherit'">
+        <template v-if="form_content.notice_style == 'inherit'">
             <view class="flex-row align-c news-box gap-8" :style="container_background_style + container_height">
-                <template v-if="form.content.title_type == 'img-icon'">
-                    <view v-if="form.content.icon_class">
-                        <iconfont :name="form.content.icon_class" :size="form.style.icon_size + ''" :color="form.style.icon_color"></iconfont>
+                <template v-if="form_content.title_type == 'img-icon'">
+                    <view v-if="form_content.icon_class">
+                        <iconfont :name="form_content.icon_class" :size="form_style.icon_size + ''" :color="form_style.icon_color"></iconfont>
                     </view>
                     <view v-else>
-                        <image :src="form.content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                        <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
                     </view>
                 </template>
                 <template v-else>
-                    <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form.content.title || '公告' }}</view>
+                    <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
                 </template>
                 <swiper class="swiper flex-1" circular :indicator-dots="false" :autoplay="true" :interval="interval_time" :vertical="direction_type == 'vertical'" :style="container_height">
                     <swiper-item v-for="(item, index) in notice_list" :key="index">
-                        <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form.style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
+                        <view class="swiper-item flex-row align-c ht-auto" :style="content_title_style + 'color:' + form_style.news_color" :data-value="item.notice_link.page" @tap="url_event">{{ item.notice_title }}</view>
                     </swiper-item>
                 </swiper>
-                <view v-if="form.content.is_right_button == '1'" class="text-size-xs" :data-value="form.content.more_link.page" @tap="url_event">
-                    <iconfont name="icon-arrow-right" :color="form.style.button_color || '#999'"></iconfont>
+                <view v-if="form_content.is_right_button == '1'" class="text-size-xs" :data-value="form_content.more_link.page" @tap="url_event">
+                    <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
                 </view>
             </view>
         </template>
         <template v-else>
             <view class="news-card flex-col gap-10" :style="container_background_style">
                 <view class="flex-row wh-auto jc-sb align-c">
-                    <template v-if="form.content.title_type == 'img-icon'">
-                        <template v-if="form.content.icon_class">
-                            <iconfont :name="form.content.icon_class" :size="form.style.icon_size + ''" :color="form.style.icon_color"></iconfont>
+                    <template v-if="form_content.title_type == 'img-icon'">
+                        <template v-if="form_content.icon_class">
+                            <iconfont :name="form_content.icon_class" :size="form_style.icon_size + ''" :color="form_style.icon_color"></iconfont>
                         </template>
                         <template v-else>
-                            <image :src="form.content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
+                            <image :src="form_content.img_src[0].url" class="border-radius-sm dis-block" mode="aspectFill" :style="img_style"></image>
                         </template>
                     </template>
                     <template v-else>
-                        <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form.content.title || '公告' }}</view>
+                        <view :style="title_style" class="padding-horizontal-sm border-radius-sm">{{ form_content.title || '公告' }}</view>
                     </template>
-                    <view v-if="form.content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form.style.button_color" :data-value="form.content.more_link.page" @tap="url_event">
+                    <view v-if="form_content.is_right_button == '1'" class="text-size-xs flex-row" :style="'color: ' + form_style.button_color" :data-value="form_content.more_link.page" @tap="url_event">
                         更多
                         <view class="pr top-xs">
-                            <iconfont name="icon-arrow-right" :color="form.style.button_color || '#999'"></iconfont>
+                            <iconfont name="icon-arrow-right" :color="form_style.button_color || '#999'"></iconfont>
                         </view>
                     </view>
                 </view>
                 <view v-for="(item, index) in notice_list" :key="index" class="flex-row" :style="content_title_style" :data-value="item.notice_link.page" @tap="url_event">
                     <view class="num" :class="'one' + (index + 1)">{{ index + 1 }}</view>
-                    <view class="break" :style="'color:' + form.style.news_color">{{ item.notice_title }}</view>
+                    <view class="break" :style="'color:' + form_style.news_color">{{ item.notice_title }}</view>
                 </view>
             </view>
         </template>
@@ -66,7 +66,8 @@
         },
         data() {
             return {
-                form: {},
+                form_content: {},
+                form_style: {},
                 style_container: '',
                 // 容器高度
                 container_height: '',
@@ -122,7 +123,8 @@
                     notice_length: notice_length,
                 };
                 this.setData({
-                    form: this.value,
+                    form_content: new_content,
+                    form_style: new_style,
                     container_height: 'height:' + new_style.container_height * 2 + 'rpx',
                     container_background_style: temp_container_background_style,
                     img_style: `height: ${new_style.title_height * 2}rpx; width: ${new_style.title_width * 2}rpx`,

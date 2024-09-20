@@ -18,8 +18,8 @@
                     <componentDiyArticleTabs v-else-if="item.key == 'article-tabs'" :value="item.com_data"></componentDiyArticleTabs>
                     <componentGoodsTabs v-else-if="item.key == 'goods-tabs'" :value="item.com_data"></componentGoodsTabs>
                     <componentGoodsList v-else-if="item.key == 'goods-list'" :value="item.com_data"></componentGoodsList>
-                    <componentDataMagic v-if="item.key == 'data-magic'" :value="item.com_data"></componentDataMagic>
-                    <componentCustom v-if="item.key == 'custom'" :value="item.com_data"></componentCustom>
+                    <componentDataMagic v-else-if="item.key == 'data-magic'" :value="item.com_data"></componentDataMagic>
+                    <componentCustom v-else-if="item.key == 'custom'" :value="item.com_data"></componentCustom>
                     <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
                     <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
                     <!-- 插件 -->
