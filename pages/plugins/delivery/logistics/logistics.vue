@@ -113,9 +113,7 @@
                 uni.request({
                     url: app.globalData.get_request_url("logistics", "order", "delivery"),
                     method: "POST",
-                    data: {
-                        id: this.params.id || 0
-                    },
+                    data: this.params,
                     dataType: "json",
                     success: (res) => {
                         if (res.data.code == 0) {

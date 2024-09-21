@@ -148,18 +148,6 @@ export default {
                             favor_user: data.favor_user || [],
                         });
 
-                        if ((this.data_base || null) != null) {
-                            // 基础自定义分享
-                            this.setData({
-                                share_info: {
-                                    title: this.search_keywords_value || this.data_base.seo_title || this.data_base.application_name,
-                                    desc: this.data_base.seo_desc,
-                                    path: "/pages/plugins/realstore/search/search",
-                                    query: "category_id=" + this.nav_active_value + "&keywords=" + this.search_keywords_value+"&goods_id="+(this.params.goods_id || 0),
-                                },
-                            });
-                        }
-
                         // 获取列表数据
                         this.get_data_list(1);
                     } else {
@@ -169,9 +157,6 @@ export default {
                         });
                         app.globalData.showToast(res.data.msg);
                     }
-
-                    // 分享菜单处理
-                    app.globalData.page_share_handle(this.share_info);
                 },
                 fail: () => {
                     uni.stopPullDownRefresh();
@@ -192,6 +177,9 @@ export default {
                     return false;
                 }
             }
+
+            // 基础自定义分享
+            this.share_info_handle();
 
             // 是否加载中
             if (this.data_is_loading == 1) {
@@ -290,6 +278,24 @@ export default {
                     app.globalData.showToast(this.$t('common.internet_error_tips'));
                 },
             });
+        },
+
+        // 分享设置处理
+        share_info_handle() {
+            if ((this.data_base || null) != null) {
+                // 基础自定义分享
+                this.setData({
+                    share_info: {
+                        title: this.search_keywords_value || this.data_base.seo_title || this.data_base.application_name,
+                        desc: this.data_base.seo_desc,
+                        path: "/pages/plugins/realstore/search/search",
+                        query: "category_id=" + this.nav_active_value + "&keywords=" + this.search_keywords_value+"&goods_id="+(this.params.goods_id || 0),
+                    },
+                });
+            }
+
+            // 分享菜单处理
+            app.globalData.page_share_handle(this.share_info);
         },
 
         // 滚动加载

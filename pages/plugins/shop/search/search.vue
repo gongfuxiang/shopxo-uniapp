@@ -195,20 +195,6 @@
                             });
 
                             if((this.shop || null) != null) {
-                                // 基础自定义分享
-                                var shop_id = this.shop.id;
-                                var category_id = this.params.category_id || 0;
-                                var keywords = this.params.keywords || '';
-                                this.setData({
-                                    share_info: {
-                                        title: this.shop.seo_title || this.shop.name,
-                                        desc: this.shop.seo_desc || this.shop.describe,
-                                        path: '/pages/plugins/shop/search/search',
-                                        query: 'shop_id='+shop_id+'&category_id='+category_id+'&keywords='+keywords,
-                                        img: this.shop.logo
-                                    }
-                                });
-
                                 // 获取列表数据
                                 this.get_data_list(1);
                             } else {
@@ -223,9 +209,6 @@
                             });
                             app.globalData.showToast(res.data.msg);
                         }
-
-                        // 分享菜单处理
-                        app.globalData.page_share_handle(this.share_info);
                     },
                     fail: () => {
                         uni.stopPullDownRefresh();
@@ -246,6 +229,9 @@
                         return false;
                     }
                 }
+
+                // 基础自定义分享
+                this.share_info_handle();
                 
                 // 是否加载中
                 if(this.data_is_loading == 1) {
@@ -363,6 +349,28 @@
                 post_data['order_by_field'] = temp_search_nav_sort[temp_index]['field'];
 
                 return post_data;
+            },
+
+            // 分享设置处理
+            share_info_handle() {
+                if((this.shop || null) != null) {
+                    // 基础自定义分享
+                    var shop_id = this.shop.id;
+                    var category_id = this.params.category_id || 0;
+                    var keywords = this.post_data.wd || '';
+                    this.setData({
+                        share_info: {
+                            title: this.shop.seo_title || this.shop.name,
+                            desc: this.shop.seo_desc || this.shop.describe,
+                            path: '/pages/plugins/shop/search/search',
+                            query: 'shop_id='+shop_id+'&category_id='+category_id+'&keywords='+keywords,
+                            img: this.shop.logo
+                        }
+                    });
+                }
+
+                // 分享菜单处理
+                app.globalData.page_share_handle(this.share_info);
             },
 
             // 滚动加载

@@ -93,10 +93,6 @@
                                     </view>
                                 </view>
                             </view>
-                            <view v-else class="single-text margin-top-sm">
-                                <text class="cr-grey">{{$t('order.order.ra8222')}}</text>
-                                <text class="cr-grey-white">{{$t('order.order.26yki1')}}</text>
-                            </view>
                             <view class="margin-top-lg padding-top-sm">
                                 <text>{{ item.describe }}</text>
                                 <text v-if="(item.distance || null) != null" class="fr cr-grey">{{$t('extraction-address.extraction-address.42v8tv')}}{{ item.distance }}</text>
