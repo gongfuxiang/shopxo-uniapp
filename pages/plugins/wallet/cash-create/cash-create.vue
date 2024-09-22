@@ -32,21 +32,32 @@
                     </view>
 
                     <view class="form-gorup">
-                        <view class="form-gorup-title">{{$t('cash-create.cash-create.5mmir5')}}<text class="form-group-tips-must">*</text></view>
-                        <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.u2rnlw')" />
-                        <view class="cr-red text-size-xs">{{$t('cash-create.cash-create.14n20v')}}</view>
+                        <view class="form-gorup-title">{{$t('cash-create.cash-create.yu2raf')}}<text class="form-group-tips-must">*</text></view>
+                        <radio-group name="cash_type" @change="cash_type_event">
+                            <block v-for="(item, index) in user_cash_type_list" :key="index">
+                                <label class="margin-right">
+                                    <radio :value="item.value" :color="theme_color" :checked="default_data.cash_type == item.value" style="transform: scale(0.7)" /> {{item.name}}
+                                </label>
+                            </block>
+                        </radio-group>
                     </view>
 
-                    <view class="form-gorup">
+                    <view v-if="cash_type_0_status" class="form-gorup">
+                        <view class="form-gorup-title">{{$t('cash-create.cash-create.5mmir5')}}<text class="form-group-tips-must">*</text></view>
+                        <input type="text" name="bank_name" :value="default_data.bank_name || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.u2rnlw')" />
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.14n20v')}}</view>
+                    </view>
+
+                    <view v-if="cash_type_0_status || cash_type_2_status" class="form-gorup">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.36756z')}}<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_accounts" :value="default_data.bank_accounts || ''" placeholder-class="cr-grey" class="cr-base" maxlength="60" :placeholder="$t('cash-create.cash-create.s72t44')" />
-                        <view class="cr-red text-size-xs">{{$t('cash-create.cash-create.748r3i')}}</view>
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.748r3i')}}</view>
                     </view>
 
                     <view class="form-gorup">
                         <view class="form-gorup-title">{{$t('cash-create.cash-create.1xtff6')}}<text class="form-group-tips-must">*</text></view>
                         <input type="text" name="bank_username" :value="default_data.bank_username || ''" placeholder-class="cr-grey" class="cr-base" maxlength="30" :placeholder="$t('cash-create.cash-create.f4605e')" />
-                        <view class="cr-red text-size-xs">{{$t('cash-create.cash-create.445m7n')}}</view>
+                        <view class="cr-grey-c text-size-xs">{{$t('cash-create.cash-create.445m7n')}}</view>
                     </view>
 
                     <view class="bottom-fixed">
@@ -79,6 +90,7 @@
         data() {
             return {
                 theme_view: app.globalData.get_theme_value_view(),
+                theme_color: app.globalData.get_theme_color(),
                 params: null,
                 form_submit_loading: false,
                 data_list_loding_status: 1,
@@ -88,7 +100,10 @@
                 default_data: {},
                 check_status: null,
                 can_cash_max_money: 0.00,
-                cash_commission_value: 0.00
+                cash_commission_value: 0.00,
+                user_cash_type_list: [],
+                cash_type_0_status: false,
+                cash_type_2_status: false
             };
         },
 
@@ -157,7 +172,12 @@
                                 default_data: data.default_data || {},
                                 user_wallet: data.user_wallet || {},
                                 can_cash_max_money: parseFloat(data.can_cash_max_money) || 0.0,
+                                user_cash_type_list: data.user_cash_type_list || []
                             });
+                            // 默认选中处理
+                            if(this.default_data.cash_type !== undefined) {
+                                this.cash_type_event(this.default_data.cash_type);
+                            }
                         } else {
                             this.setData({
                                 data_list_loding_status: 2,
@@ -189,6 +209,35 @@
                 }
             },
 
+            // 提现方式事件
+            cash_type_event(e) {
+                var status_0 = false;
+                var status_2 = false;
+                var value = parseInt(typeof(e) == 'object' ? e.detail.value : e);
+                switch(value)
+                {
+                    // 其他方式
+                    case 0 :
+                        status_2 = false;
+                        status_0 = true;
+                        break;
+                    // 微信
+                    case 1 :
+                        status_0 = false;
+                        status_2 = false;
+                        break;
+                    // 支付宝
+                    case 2 :
+                        status_0 = false;
+                        status_2 = true;
+                        break;
+                }
+                this.setData({
+                    cash_type_0_status: status_0,
+                    cash_type_2_status: status_2
+                });
+            },
+
             // 数据提交
             form_submit(e) {
                 // 表单数据
@@ -197,10 +246,16 @@
                 // 数据校验
                 var validation = [
                     { fields: 'money', msg: this.$t('cash-create.cash-create.6t7x9u') },
-                    { fields: 'bank_name', msg: this.$t('cash-create.cash-create.vbr59h') },
-                    { fields: 'bank_accounts', msg: this.$t('cash-create.cash-create.0mn186') },
-                    { fields: 'bank_username', msg: this.$t('cash-create.cash-create.c7h4mu') },
+                    { fields: 'cash_type', msg: this.$t('cash-create.cash-create.thjid2'), is_can_zero: 1 }
                 ];
+                var cash_type = parseInt(form_data.cash_type);
+                if(cash_type == 0) {
+                    validation.push({ fields: 'bank_name', msg: this.$t('cash-create.cash-create.vbr59h') });
+                }
+                if(cash_type == 0 || cash_type == 2) {
+                    validation.push({ fields: 'bank_accounts', msg: this.$t('cash-create.cash-create.0mn186') });
+                }
+                validation.push({ fields: 'bank_username', msg: this.$t('cash-create.cash-create.c7h4mu') });
 
                 // 验证提交表单
                 if (app.globalData.fields_check(form_data, validation)) {
