@@ -4,16 +4,16 @@
         <view class="pr padding-xxl" :style="style">
             <view class="flex-row jc-sb align-c margin-bottom-xxl">
                 <view class="flex-1 flex-row align-c gap-12">
-                    <image :src="user_info.user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" />
+                    <image :src="(user_info.user || null) !== null ? user_info.user.avatar : user.avatar" class="circle" mode="widthFix" :style="'width:' + base_data.user_avatar_size * 2 + 'rpx;height:' + base_data.user_avatar_size * 2 + 'rpx;'" />
                     <view class="flex-col gap-8">
-                        <view class="text-size fw-b" :style="user_name_style">{{ user_info.user.user_name_view || '' }}</view>
-                        <view v-if="id_bool" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code || '' }}</view>
+                        <view class="text-size fw-b" :style="user_name_style">{{ (user_info.user || null) !== null ? user_info.user.user_name_view : user.user_name_view }}</view>
+                        <view v-if="id_bool && (user_info.user || null) !== null" class="padding-horizontal-sm padding-vertical-xsss border-radius-sm" :style="number_code_style">ID:{{ user_info.user.number_code }}</view>
                     </view>
                 </view>
                 <view class="flex-row align-c" :style="'gap:' + base_data.img_space * 2 + 'rpx;'">
                     <view v-for="(item, index) in icon_setting" :key="index" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" :data-value="item.link.page" @tap="url_event">
                         <image v-if="item.img.length > 0" :src="item.img[0].url" class="border-radius-sm" mode="scaleToFill" :style="{ width: base_data.img_size + 'px', height: base_data.img_size + 'px' }" />
-                        <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size + 'rpx'" color="#666"></iconfont>
+                        <iconfont v-else :name="'icon-' + item.icon" :size="base_data.img_size * 2 + 'rpx'" color="#666"></iconfont>
                     </view>
                 </view>
             </view>
@@ -63,16 +63,17 @@
                 stats_number_style: '',
                 // 用户信息
                 user_info: {
-                    user: {
-                        avatar: '',
-                        user_name_view: '',
-                        number_code: '',
-                    },
+                    user: null,
                     order_count: '0',
                     goods_favor_count: '0',
                     goods_browse_count: '0',
                     message_unread_count: '0',
                     integral_number: '0',
+                },
+                user: {
+                    avatar: app.globalData.data.default_user_head_src,
+                    user_name_view: '用户名',
+                    number_code: '',
                 },
             };
         },
