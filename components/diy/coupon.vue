@@ -192,7 +192,7 @@
                 home_page_url: app.globalData.data.tabbar_pages[0],
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

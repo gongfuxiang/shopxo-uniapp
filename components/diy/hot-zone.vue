@@ -35,7 +35,7 @@
                 h_scale2: 1,
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

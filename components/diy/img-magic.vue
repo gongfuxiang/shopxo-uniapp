@@ -53,7 +53,7 @@
                 container_size: '',
             };
         },
-        mounted() {
+        created() {
             this.$nextTick(() => {
                 this.init();
             });

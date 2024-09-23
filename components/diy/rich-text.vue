@@ -20,7 +20,7 @@
                 content: '',
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

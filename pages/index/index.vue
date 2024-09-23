@@ -4,7 +4,7 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
-                    <componentDiy :value="data_list.config" :prop-id="data_list.id"></componentDiy>
+                    <componentDiy :value="data_list.config" :prop-home-id="data_list.id"></componentDiy>
                 </block>
             </block>
             <!-- 自动和手动模式 -->

@@ -24,7 +24,7 @@
                 video: '',
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

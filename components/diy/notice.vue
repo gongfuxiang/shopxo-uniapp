@@ -94,7 +94,7 @@
                 notice_list: [],
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

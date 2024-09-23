@@ -114,7 +114,7 @@
                 article_carousel_list: [],
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

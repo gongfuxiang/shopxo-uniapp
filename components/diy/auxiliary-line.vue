@@ -20,7 +20,7 @@
                 style: '',
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {

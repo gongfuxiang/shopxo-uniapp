@@ -78,10 +78,13 @@
             },
             // 跳转链接
             url_event(e) {
+                const index = e.currentTarget.dataset.index;
+                const list_item = this.nav_content[index];
                 this.setData({
-                    is_active: e.currentTarget.dataset.index,
+                    is_active: index,
                 });
-                app.globalData.url_event(e);
+                // app.globalData.url_event(e);
+                this.$emit('footer-click', index, list_item);
             },
         },
     };

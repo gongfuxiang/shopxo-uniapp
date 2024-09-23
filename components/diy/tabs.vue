@@ -10,7 +10,7 @@
         <!-- 占位 -->
         <view class="pr" :class="top_up == '1' ? 'vs-hide' : ''">
             <view :style="style_container">
-                <componentDiyModulesTabsView :value="tabs_data" isTabs></componentDiyModulesTabsView>
+                <componentDiyModulesTabsView :value="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
         </view>
     </view>
@@ -31,10 +31,6 @@
                 type: Object,
                 default: () => ({}),
             },
-            propId: {
-                type: String,
-                default: '',
-            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -50,7 +46,7 @@
                 tabs_top: bar_height + 120 + 'rpx',
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {
@@ -58,57 +54,27 @@
                 const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
                 let new_tabs_data = this.value;
-                const new_tabs_list = new_content.tabs_list.unshift(new_content.home_data);
-                new_tabs_data.tabs_list = new_tabs_list;
+                new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,
                     style_container: common_styles_computer(new_style.common_style),
                     top_up: new_content.tabs_top_up,
                 });
             },
-            // 回调
+            // 选项卡回调
             tabs_click_event(index, item) {
-                console.log(item);
-                // 调接口
-                // 回调到上一级
-                // 更新上一级的数据，渲染更新页面
-                // 请求远程数据
-                let new_data = {};
-                let params = {
-                    id: this.propId,
-                };
-                if (index == 0) {
-                    // 获取缓存数据
-                    new_data = uni.getStorageSync('diy-data-' + this.propId) || {};
+                let tabs_id = '';
+                // 抽象出获取 tabs_id 的逻辑
+                tabs_id = this.get_tabs_id(item, index);
+                // 是否是商品分类页面
+                const is_micro_page = item.data_type == '0';
+                this.$emit('tabs-click', tabs_id, is_micro_page);
+            },
+            get_tabs_id(item, index) {
+                if (item.data_type === '0') {
+                    return index !== 0 ? item.micro_page_list?.id : '';
                 } else {
-                    if (index !== 0) params.id = item.micro_page_list.id;
-                    if (params.id) {
-                        new_data = uni.getStorageSync('diy-data-' + item.id) || {};
-                    }
-                }
-                this.$emit('tabs-click', new_data, true);
-                if (item.data_type == '0') {
-                    if (params.id) {
-                        uni.request({
-                            url: app.globalData.get_request_url('index', 'diy'),
-                            method: 'POST',
-                            data: params,
-                            dataType: 'json',
-                            success: (res) => {
-                                // 数据处理
-                                const data = res.data.data.data;
-                                if (res.data.code == 0) {
-                                    uni.setStorageSync('diy-data-' + params.id, data.config.diy_data);
-                                    this.$emit('tabs-click', data.config.diy_data, true);
-                                } else {
-                                    app.globalData.showToast(res.data.msg);
-                                }
-                            },
-                        });
-                    }
-                } else {
-                    if (index !== 0) params.id = item.classify.id;
-                    console.log('123123123123123');
+                    return index !== 0 ? item.classify?.id : '';
                 }
             },
         },
