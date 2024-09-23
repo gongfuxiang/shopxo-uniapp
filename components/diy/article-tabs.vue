@@ -47,6 +47,7 @@
                 new_data.content.category = new_data.content.tabs_list[0].category;
                 new_data.content.carousel_col = new_data.content.article_carousel_col;
                 new_data.content.data_list = new_data.content.tabs_list[0].data_list;
+                new_data.content.data_auto_list = new_data.content.tabs_list[0].data_auto_list;
                 new_data.content.data_ids = new_data.content.tabs_list[0].data_ids;
                 new_data.content.number = new_data.content.tabs_list[0].number;
                 new_data.content.sort = new_data.content.tabs_list[0].sort;
@@ -65,6 +66,7 @@
                 new_data.content.category = new_data.content.tabs_list[index].category;
                 new_data.content.carousel_col = new_data.content.article_carousel_col;
                 new_data.content.data_list = new_data.content.tabs_list[index].data_list;
+                new_data.content.data_auto_list = new_data.content.tabs_list[index].data_auto_list;
                 new_data.content.data_ids = new_data.content.tabs_list[index].data_ids;
                 new_data.content.number = new_data.content.tabs_list[index].number;
                 new_data.content.sort = new_data.content.tabs_list[index].sort;

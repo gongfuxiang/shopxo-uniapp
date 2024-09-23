@@ -46,6 +46,7 @@
                 new_data.content.sort = new_data.content.tabs_list[0].sort;
                 new_data.content.sort_rules = new_data.content.tabs_list[0].sort_rules;
                 new_data.content.data_list = new_data.content.tabs_list[0].data_list;
+                new_data.content.data_auto_list = new_data.content.tabs_list[0].data_auto_list;
                 this.setData({
                     goods_tabs: new_data,
                     style_container: common_styles_computer(new_style.common_style),
@@ -60,6 +61,7 @@
                 new_data.content.sort = new_data.content.tabs_list[index].sort;
                 new_data.content.sort_rules = new_data.content.tabs_list[index].sort_rules;
                 new_data.content.data_list = new_data.content.tabs_list[index].data_list;
+                new_data.content.data_auto_list = new_data.content.tabs_list[index].data_auto_list;
                 this.setData({
                     goods_tabs: new_data,
                     key: get_math(),

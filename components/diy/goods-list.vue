@@ -252,11 +252,7 @@
                     }));
                 } else if (!isEmpty(this.form.data_auto_list) && this.form.data_type == '1') {
                     // 筛选商品并且筛选商品数组不为空
-                    new_list = this.form.data_auto_list.map((item) => ({
-                        ...item.data,
-                        title: !isEmpty(item.new_title) ? item.new_title : item.data.title,
-                        new_cover: item.new_cover,
-                    }));
+                    new_list = this.form.data_auto_list
                 } else {
                     // 为空的时候走默认数据
                     new_list = Array(4).fill(this.default_list);
