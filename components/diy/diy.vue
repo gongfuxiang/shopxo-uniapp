@@ -23,6 +23,7 @@
                         <componentDiyCustom v-else-if="item.key == 'custom'" :value="item.com_data"></componentDiyCustom>
                         <componentDiyImgMagic v-else-if="item.key == 'img-magic'" :value="item.com_data"></componentDiyImgMagic>
                         <componentDiyHotZone v-else-if="item.key == 'hot-zone'" :value="item.com_data"></componentDiyHotZone>
+                        <componentDiySeckill v-else-if="item.key == 'seckill'" :value="item.com_data"></componentDiySeckill>
                         <!-- 插件 -->
                         <componentDiyCoupon v-else-if="item.key == 'coupon'" :value="item.com_data"></componentDiyCoupon>
                         <!-- 工具组件 -->
@@ -79,7 +80,7 @@
     import componentDiyDataMagic from '@/components/diy/data-magic';
     import componentDiyCustom from '@/components/diy/custom';
     import componentDiyImgMagic from '@/components/diy/img-magic';
-
+    import componentDiySeckill from '@/components/diy/seckill.vue';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -124,6 +125,7 @@
             componentDiyDataMagic,
             componentDiyCustom,
             componentDiyImgMagic,
+            componentDiySeckill,
             componentGoodsList,
             componentNoData,
             componentBottomLine,
