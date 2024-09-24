@@ -27,7 +27,7 @@
             type_class: {
                 type: String,
                 default: () => '',
-            }
+            },
         },
         data() {
             return {
@@ -37,7 +37,7 @@
                 defaultImage: '/static/images/common/image-empty.png',
             };
         },
-        mounted() {
+        created() {
             this.init();
         },
         methods: {
@@ -50,14 +50,14 @@
                 if (img_url == undefined || img_url == null || img_url == '') {
                     this.setData({
                         empty_outer_style: 'background: #f4fcff;display:flex;align-items: center;justify-content: center;',
-                        empty_style: `${ this.errorStyle }`
-                    })
+                        empty_style: `${this.errorStyle}`,
+                    });
                     img_url = this.defaultImage;
                 }
                 this.setData({
-                    imageUrl: img_url
-                })
-            }
+                    imageUrl: img_url,
+                });
+            },
         },
     };
 </script>

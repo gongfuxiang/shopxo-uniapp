@@ -6,7 +6,7 @@
                     <template v-if="form.is_icon_show == '1'">
                         <template v-if="form.icon_img.length > 0">
                             <view class="img-box">
-                                <image :src="form.icon_img[0].url" class="img" mode="aspectFill"></image>
+                                <image :src="form.icon_img[0].url" class="img" mode="heightFix"></image>
                             </view>
                         </template>
                         <template v-else>
@@ -20,7 +20,7 @@
                         <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">{{ form.search_tips }}</view>
                     </template>
                     <template v-else-if="!isEmpty(form.search_botton_img) && form.search_botton_img.length > 0">
-                        <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="aspectFill"></image>
+                        <image :src="form.search_botton_img[0].url" class="img" :style="search_button_radius" mode="heightFix"></image>
                     </template>
                     <template v-else>
                         <view :class="['padding-vertical-xs text-size-xs', isPageSettings ? 'padding-horizontal' : 'padding-horizontal-lg']">
@@ -64,11 +64,13 @@
                 form: this.value.content,
                 new_style: this.value.style,
             });
+            console.log(this.value);
             this.init();
         },
         methods: {
             isEmpty,
             init() {
+                console.log(this.new_style);
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({
                     style: this.get_style(), // 内部样式
@@ -114,14 +116,15 @@
 
 <style lang="scss" scoped>
     .search {
-        height: 64rpx;
         .box {
             padding: 12rpx 30rpx;
         }
         .img-box {
             height: 100%;
-            min-width: 4rpx;
-            max-width: 12rpx;
+            .img {
+                height: 36rpx;
+                display: block;
+            }
         }
         .search-botton {
             height: 56rpx;
