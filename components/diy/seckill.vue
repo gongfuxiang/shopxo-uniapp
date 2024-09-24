@@ -1,5 +1,5 @@
 <template>
-    <view :style="style">
+    <view :style="style_container">
         <view class="flex-col gap-10">
             <view v-if="form.head_state == '1'" class="seckill-head flex-row align-c jc-sb oh" :style="seckill_head_style">
                 <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
@@ -198,7 +198,7 @@
                 time_bg: '',
                 slide_active_color: '',
                 seckill_head_style: '',
-                style: '',
+                style_container: '',
                 time_config: [
                     { key: 'hour', value: '00' },
                     { key: 'minute', value: '00' },
@@ -285,7 +285,7 @@
                     time_bg: this.get_time_bg(),
                     slide_active_color: this.get_slide_active_color(),
                     seckill_head_style: this.get_seckill_head_style(),
-                    style: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;',
+                    style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;',
                     content_outer_spacing: this.new_style.content_outer_spacing,
                     content_outer_spacing_magin: this.new_style.content_outer_spacing * 2 + 'rpx',
                     content_radius: radius_computer(this.new_style.shop_radius),
