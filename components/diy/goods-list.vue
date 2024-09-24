@@ -6,7 +6,7 @@
                     <block v-if="theme == '6'">
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
-                            <view v-if="is_show('price')" class="num nowrap" :style="'color:' + new_style.shop_price_color">
+                            <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num nowrap" :style="'color:' + new_style.shop_price_color">
                                 <span class="identifying">{{ item.show_price_symbol }}</span
                                 ><span :style="price_style">{{ item.min_price }}</span>
                                 <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
@@ -31,14 +31,14 @@
                             </view>
                             <view v-if="!['3', '4', '5'].includes(form.theme)" class="flex-col gap-5 oh">
                                 <view :class="[form.is_price_solo == '1' ? 'flex-row align-c nowrap' : 'flex-col gap-5']">
-                                    <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
+                                    <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
                                         <span class="identifying">{{ item.show_price_symbol }}</span
                                         ><span :style="price_style">{{ item.min_price }}</span>
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
-                                    <view v-if="show_content && is_show('original_price')" class="text-size-xss flex-row">
-                                        <span class="original-price-left"></span
-                                        ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                    <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
+                                        <img class="original-price-left" :src="form.static_img[0].url" />
+                                        <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
@@ -66,14 +66,14 @@
                             </view>
                             <view v-else class="flex-row align-c jc-sb">
                                 <view class="flex-row align-c nowrap">
-                                    <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
+                                    <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
                                         <span class="identifying">{{ item.show_price_symbol }}</span
                                         ><span :style="price_style">{{ item.min_price }}</span>
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
-                                    <view v-if="show_content && is_show('original_price')" class="text-size-xss flex-row">
-                                        <span class="original-price-left"></span
-                                        ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                    <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
+                                        <img class="original-price-left" :src="form.static_img[0].url" />
+                                        <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
                                                 {{ item.show_original_price_unit }}
@@ -115,14 +115,14 @@
                                 </view>
                                 <view class="flex-row align-c jc-sb">
                                     <view class="flex-row align-c nowrap">
-                                        <view v-if="is_show('price')" class="num" :style="'color:' + new_style.shop_price_color">
+                                        <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="'color:' + new_style.shop_price_color">
                                             <span class="identifying">{{ item.show_price_symbol }}</span
                                             ><span :style="price_style">{{ item.min_price }}</span>
                                             <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                         </view>
-                                        <view v-if="show_content && is_show('original_price')" class="text-size-xss flex">
-                                            <span class="original-price-left"></span
-                                            ><span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
+                                        <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
+                                            <img class="original-price-left" :src="form.static_img[0].url" />
+                                            <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
                                                     {{ item.show_original_price_unit }}
@@ -427,14 +427,6 @@
     .identifying {
         font-size: 18rpx;
     }
-
-    // .original-price-left {
-    //     width: 20rpx;
-    //     background-image: url('/src/assets/images/components/model-goods-list/price.png');
-    //     background-size: 100% 100%;
-    //     background-repeat: no-repeat;
-    // }
-
     .original-price {
         background-color: #ede2c5;
         border-radius: 0;

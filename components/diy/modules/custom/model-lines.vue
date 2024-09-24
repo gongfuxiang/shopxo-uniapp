@@ -32,9 +32,9 @@
             },
             get_border_style() {
                 if (this.form.line_settings === 'horizontal') {
-                    return `margin: 5px 0;border-bottom: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
+                    return `margin: 10rpx 0;border-bottom: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
                 } else {
-                    return `margin: 0 5px;border-right: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
+                    return `margin: 0 10rpx;border-right: ${this.form.line_size * 2}rpx ${this.form.line_style} ${this.form.line_color};`;
                 }
             }
         },

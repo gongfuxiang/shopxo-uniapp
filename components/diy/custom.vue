@@ -1,7 +1,7 @@
 <template>
     <view ref="container" :style="style_container + 'height:'+ form.height * 2 + 'rpx;'">
         <view class="wh-auto ht-auto pr">
-            <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{'left': get_percentage_count(item.location.x, div_width) , 'top': get_percentage_count(item.location.y, form.height), 'width': get_percentage_count(item.com_data.com_width, div_width), 'height': get_percentage_count(item.com_data.com_height, form.height)}">
+            <view v-for="item in form.custom_list" :key="item.id" class="main-content" :style="{'left': get_percentage_count(item.location.x, div_width) , 'top': get_percentage_count(item.location.y, div_height), 'width': get_percentage_count(item.com_data.com_width, div_width), 'height': get_percentage_count(item.com_data.com_height, div_height)}">
                 <template v-if="item.key == 'text'">
                     <model-text :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-text>
                 </template>
@@ -10,6 +10,9 @@
                 </template>
                 <template v-else-if="item.key == 'auxiliary-line'">
                     <model-lines :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content"></model-lines>
+                </template>
+                <template v-else-if="item.key == 'icon'">
+                    <model-icon :key="item.com_data" :value="item.com_data" :source-list="form.data_source_content" @url_open="url_open"></model-icon>
                 </template>
             </view>
         </view>
@@ -24,12 +27,14 @@
     import modelText from '@/components/diy/modules/custom/model-text.vue';
     import modelLines from '@/components/diy/modules/custom/model-lines.vue';
     import modelImage from '@/components/diy/modules/custom/model-image.vue';
+    import modelIcon from '@/components/diy/modules/custom/model-icon.vue';
     
     export default {
         components: {
             modelText,
             modelLines,
-            modelImage
+            modelImage,
+            modelIcon
         },
         props: {
             value: {
@@ -43,14 +48,16 @@
             return {
                 form: {},
                 new_style: {},
+                scale: sys_width / 390,
                 style_container: '',
-                custom_height: 0,
+                div_width: 0,
+                div_height: 0
             };
         },
         computed: {
           get_percentage_count() {
             return (num, container_size) => {
-                return this.percentage_count(num, container_size);
+                return this.percentage_count(num * this.scale, container_size);
             }
           }  
         },
@@ -66,7 +73,8 @@
             init() {
                 this.setData({
                     style_container: common_styles_computer(this.new_style.common_style) + 'box-sizing: border-box;', // 用于样式显示
-                    div_width: sys_width
+                    div_width: sys_width,
+                    div_height: this.form.height * this.scale,
                 });
             },
             url_open(link) {

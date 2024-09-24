@@ -34,8 +34,8 @@
                 </view>
             </view>
             <template v-if="form.shop_style_type != '3'">
-                <view class="flex-row flex-wrap" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
-                    <view v-for="(item1, index1) in list" :key="index1" class="flex-row">
+                <view class="flex-row flex-wrap wh-auto" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
+                    <view v-for="(item1, index1) in list" :key="index1" class="flex-row wh-auto">
                         <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" @tap="url_event(item.goods_url)">
                                 <template v-if="!isEmpty(item)">
                                     <view class="oh pr" :class="'flex-img' + form.shop_style_type">
@@ -67,13 +67,13 @@
                                     </view>
                                     <view class="flex-row align-e gap-10 jc-sb">
                                         <view class="flex-col gap-5">
-                                            <view v-if="is_show('price')" class="num" :style="{ color: new_style.shop_price_color }">
+                                            <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                                 <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
                                                 <span class="identifying">{{ item.show_price_symbol }}</span
                                                 ><span :style="price_style">{{ item.min_price }}</span>
                                                 <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                             </view>
-                                            <view v-if="is_show('original_price')" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                            <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
                                                 <span class="original-price text-line-1 flex-1"
                                                     >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                     <template v-if="is_show('original_price_unit')">
@@ -130,13 +130,13 @@
                                 </view>
                                 <view class="flex-row align-e gap-10 jc-sb">
                                     <view class="flex-col gap-5">
-                                        <view v-if="is_show('price')" class="num" :style="{ color: new_style.shop_price_color }">
+                                        <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
                                             <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
                                             <span class="identifying">{{ item.show_price_symbol }}</span
                                             ><span :style="price_style">{{ item.min_price }}</span>
                                             <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                         </view>
-                                        <view v-if="is_show('original_price')" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                        <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
                                             <span class="original-price text-line-1 flex-1"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <template v-if="is_show('original_price_unit')">
@@ -273,7 +273,7 @@
                     });
                     // 先执行一次倒计时，后续的等待倒计时执行
                     setTimeout(() => {
-                        updateCountdown();
+                        this.updateCountdown();
                     }, 0);
                     this.setData({
                         intervalId: setInterval(this.updateCountdown, 1000),
@@ -364,23 +364,31 @@
             },
             updateCountdown() {
                 const now = new Date();
-                let endTime = this.seckill_time.endTime;
+                let endTime = this.seckill_time.endTime.replace(/-/g, '/');
                 if (this.seckill_time.status === 0) {
-                    endTime = this.seckill_time.startTime;
+                    endTime = this.seckill_time.startTime.replace(/-/g, '/');
                 }
                 const distance = new Date(endTime).getTime() - now.getTime();
                 // 如果倒计时结束，显示结束信息
                 if (distance <= 1000) {
-                    clearInterval(intervalId.value);
+                    clearInterval(this.intervalId);
                     // 如果是待开始状态，则显示开始倒计时，并且在结束的时候根据结束时候再执行一个定时器
                     if (this.seckill_time.status === 0) {
-                        this.seckill_time.status = 1;
-                        this.seckill_time.time_first_text = '距结束';
+                        this.setData({
+                            seckill_time: {
+                               endTime: this.seckill_time.current.time_end,
+                               startTime: this.seckill_time.current.time_start,
+                               status: 1,
+                               time_first_text: '距结束',
+                            }
+                        })
                         // 先执行一次倒计时，后续的等待倒计时执行
                         setTimeout(() => {
                             this.updateCountdown();
                         }, 0);
-                        intervalId.value = setInterval(updateCountdown, 1000);
+                        this.setData({
+                            intervalId: setInterval(this.updateCountdown, 1000),
+                        })
                     }
                     return;
                 }
