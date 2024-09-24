@@ -4,7 +4,7 @@
             <uni-swiper-dot class="uni-swiper-dot-box" mode="default" :dots-styles="dots_styles" @clickItem="click_item" :info="swiper_data" :current="current">
                 <swiper class="swiper-box" :autoplay="autoplay" :duration="duration" @change="swiper_change" :current="swiper_dot_index">
                     <swiper-item v-for="(swiper_item_data, i) in swiper_data" :key="i">
-                        <view class="swiper-item flex-row flex-warp" :class="'swiper-item' + i">
+                        <view class="swiper-item flex-row flex-wrap" :class="'swiper-item' + i">
                             <view v-for="(item, j) in swiper_item_data" :key="j" class="swiper-item item">
                                 <view :class="'item-content ' + ((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="(item.bg_color || null) == null ? '' : 'background-color:' + item.bg_color + ';'">
                                     <image :src="item.images_url" mode="aspectFit"></image>

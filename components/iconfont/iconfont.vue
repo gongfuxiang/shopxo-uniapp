@@ -1,7 +1,7 @@
 <template>
-    <div class="dis-inline-block" :class="propClass">
+    <view class="iconfont-container" :class="propClass">
         <text class="iconfont" :class="name" :style="[{ color: color }, { 'font-size': size }]" @tap="$emit('click', $event)"></text>
-    </div>
+    </view>
 </template>
 
 <script>
@@ -33,6 +33,10 @@
     @import url('@/static/icon/iconfont.css');
     /* @import url('https://at.alicdn.com/t/c/font_4227145_kbr2f9jt68b.css'); */
 
+    .iconfont-container {
+        display: inline-block;
+        height: inherit;
+    }
     .iconfont {
         display: inline-block;
         font-size: inherit;

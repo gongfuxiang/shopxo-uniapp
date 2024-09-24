@@ -63,7 +63,7 @@
             <component-popup :propShow="popup_accounts_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_accounts_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.s7l616')}}</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="accounts_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="accounts_list_event">{{$t('common.all')}}</view>
                         </view>
@@ -81,7 +81,7 @@
             <component-popup :propShow="popup_recharge_status_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_recharge_status_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.t66tu3')}}</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="recharge_status_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="recharge_status_list_event">{{$t('common.all')}}</view>
                         </view>
@@ -99,7 +99,7 @@
             <component-popup :propShow="popup_network_status" propPosition="top" :propTop="popup_top_height + 'px'" @onclose="popup_network_close_event">
                 <view class="padding-vertical-lg">
                     <view class="padding-horizontal-main text-size-xs">{{$t('cash-list.cash-list.311tt2')}}</view>
-                    <view class="popup_accounts_container padding-sm flex-row flex-warp align-c tc text-size-md">
+                    <view class="popup_accounts_container padding-sm flex-row flex-wrap align-c tc text-size-md">
                         <view class="flex-width-half-half">
                             <view class="item margin-sm padding-vertical-sm" :class="network_list_index == null ? 'cr-main bg-main-light' : ''" :data-name="$t('common.all')" :data-value="null" :data-index="null" @tap="network_list_event">{{$t('common.all')}}</view>
                         </view>

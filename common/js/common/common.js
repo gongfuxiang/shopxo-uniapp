@@ -8,8 +8,21 @@
  * @param obj 要检查的对象。可以是任何类型的对象，包括数组。
  * @returns 如果对象为空，则返回true；否则返回false。
  */
-export function is_obj_empty(obj) {
+export function is_obj_empty (obj) {
     return Object.keys(obj).length === 0;
+}
+
+/**
+ * 判断对象数组等是否为空。
+ */
+export function isEmpty(value) {
+  return (
+    value === null ||
+    value === undefined ||
+    value === '' ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === 'object' && Object.keys(value).length === 0)
+  )
 }
 /**
  * 检查给定的参数是否为对象
@@ -22,7 +35,7 @@ export function is_obj_empty(obj) {
  * @param obj 未知类型的参数，待检查是否为对象
  * @returns 如果参数是对象，则返回 true；否则返回 false
  */
-export function is_obj(obj) {
+export function is_obj (obj) {
     // 特殊处理 null值，因为 typeof null 返回 "object"，但 null 并不是我们要检查的对象
     if (obj === null) return false;
     // 使用 typeof 排除非对象类型
@@ -37,7 +50,7 @@ export function is_obj(obj) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function gradient_computer(new_style, is_return_all = true) {
+export function gradient_computer (new_style, is_return_all = true) {
     let color_list = new_style.color_list;
     let direction = new_style.direction;
     return gradient_handle(color_list, direction, is_return_all);
@@ -50,7 +63,7 @@ export function gradient_computer(new_style, is_return_all = true) {
  * @param is_return_all 是否返回所有样式，包括渐变类型、颜色列表和方向。默认为false，只返回渐变样式。
  * @returns 返回一个字符串，包含生成的线性渐变样式。
  */
-export function gradient_handle(color_list, direction, is_return_all = true) {
+export function gradient_handle (color_list, direction, is_return_all = true) {
     let container_common_styles = ``;
     if (color_list && color_list.length > 0) {
         if (is_return_all) {
@@ -93,8 +106,8 @@ export function gradient_handle(color_list, direction, is_return_all = true) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function padding_computer(new_style) {
-    return `padding: ${new_style.padding_top || 0}px ${new_style.padding_right || 0}px ${new_style.padding_bottom || 0}px ${new_style.padding_left || 0}px;`;
+export function padding_computer (new_style) {
+    return `padding: ${new_style.padding_top * 2 || 0}rpx ${new_style.padding_right * 2 || 0}rpx ${new_style.padding_bottom * 2 || 0}rpx ${new_style.padding_left * 2 || 0}rpx;`;
 }
 /**
  * 设置外边距的方法
@@ -102,8 +115,8 @@ export function padding_computer(new_style) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function margin_computer(new_style) {
-    return `margin: ${new_style.margin_top || 0}px ${new_style.margin_right || 0}px ${new_style.margin_bottom || 0}px ${new_style.margin_left || 0}px;`;
+export function margin_computer (new_style) {
+    return `margin: ${new_style.margin_top * 2 || 0}rpx ${new_style.margin_right * 2 || 0}rpx ${new_style.margin_bottom * 2 || 0}rpx ${new_style.margin_left * 2 || 0}rpx;`;
 }
 /**
  * 设置圆角的方法
@@ -111,8 +124,8 @@ export function margin_computer(new_style) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function radius_computer(new_style) {
-    return `border-radius: ${new_style.radius_top_left || 0}px ${new_style.radius_top_right || 0}px ${new_style.radius_bottom_right || 0}px ${new_style.radius_bottom_left || 0}px;`;
+export function radius_computer (new_style) {
+    return `border-radius: ${new_style.radius_top_left * 2 || 0}rpx ${new_style.radius_top_right * 2 || 0}rpx ${new_style.radius_bottom_right * 2 || 0}rpx ${new_style.radius_bottom_left * 2 || 0}rpx;`;
 }
 /**
  * 设置阴影样式
@@ -120,8 +133,8 @@ export function radius_computer(new_style) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function box_shadow_computer(new_style) {
-    return `box-shadow: ${new_style.box_shadow_x || 0}px ${new_style.box_shadow_y || 0}px ${new_style.box_shadow_blur || 0}px ${new_style.box_shadow_spread || 0}px ${new_style.box_shadow_color || 'rgba(0,0,0,0)'};`;
+export function box_shadow_computer (new_style) {
+    return `box-shadow: ${new_style.box_shadow_x * 2 || 0}rpx ${new_style.box_shadow_y * 2 || 0}rpx ${new_style.box_shadow_blur * 2 || 0}rpx ${new_style.box_shadow_spread * 2 || 0}rpx ${new_style.box_shadow_color || 'rgba(0,0,0,0)'};`;
 }
 /**
  * 设置阴影样式
@@ -129,7 +142,7 @@ export function box_shadow_computer(new_style) {
  * @param {string[], string} path
  * @returns {string}
  */
-export function background_computer(new_style) {
+export function background_computer (new_style) {
     if (new_style.background_img.length > 0) {
         let url_styke = '';
         if (new_style.background_img_style == 1) {
@@ -153,14 +166,14 @@ export function background_computer(new_style) {
  * @param new_style  组件的新样式对象，包含了需要计算的样式属性。
  * @returns 返回一个字符串，包含了计算后的样式定义，可以被直接应用于组件的样式属性。
  */
-export function common_styles_computer(new_style) {
+export function common_styles_computer (new_style) {
     return gradient_computer(new_style) + padding_computer(new_style) + margin_computer(new_style) + radius_computer(new_style) + box_shadow_computer(new_style) + background_computer(new_style) + `overflow:hidden;`;
 }
 /**
  * 生成一个随机数学字符串。
  * @returns {string} 一个6位的36进制随机字符串。
  */
-export function get_math() {
+export function get_math () {
     // 通过Math.random()生成随机数，并转换为36进制的字符串
     let randomString = Math.random().toString(36);
     // 确保随机字符串至少有6位，因为substring(2)可能会使短于6位的字符串产生错误。
@@ -169,3 +182,15 @@ export function get_math() {
     // 截取掉随机字符串开头的'0.'部分，获得最终的6位随机字符串。
     return randomString.substring(2);
 }
+
+/**
+ * 将大小计算成百分比
+ *
+ * @param num 当前的大小或位置。
+ * @param size 容器的大小。
+ * @returns 计算后的百分比值，含4位小数
+ */
+export const percentage_count = (num, container_size) => {
+    const marks = (num / container_size) * 100;
+    return marks.toFixed(4) + '%';
+};

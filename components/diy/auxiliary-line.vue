@@ -1,8 +1,7 @@
 <template>
-    <view>
-        <view :style="style_container">
-            <view :style="style"></view>
-        </view>
+    <!-- 横线 -->
+    <view :style="style_container">
+        <view :style="style"></view>
     </view>
 </template>
 
@@ -21,15 +20,21 @@
                 style: '',
             };
         },
-        mounted() {
-            const new_content = this.value.content || {};
-            const new_style = this.value.style || {};
-            let border_content = `border-bottom-style: ${new_content?.styles || 'solid'};`;
-            let border_style = `border-bottom-width: ${new_style.line_width || 1}px; border-bottom-color: ${new_style.line_color || 'rgba(204, 204, 204, 1)'};`;
-            this.style = border_content + border_style;
-            this.style_container = common_styles_computer(new_style.common_style);
+        created() {
+            this.init();
         },
-        methods: {},
+        methods: {
+            init() {
+                const new_content = this.value.content || {};
+                const new_style = this.value.style || {};
+                let border_content = `border-bottom-style: ${new_content?.styles || 'solid'};`;
+                let border_style = `border-bottom-width: ${new_style.line_width * 2 || 2}rpx; border-bottom-color: ${new_style.line_color || 'rgba(204, 204, 204, 1)'};`;
+                this.setData({
+                    style: border_content + border_style,
+                    style_container: common_styles_computer(new_style.common_style),
+                });
+            },
+        },
     };
 </script>
 

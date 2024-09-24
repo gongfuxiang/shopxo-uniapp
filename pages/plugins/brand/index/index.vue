@@ -17,7 +17,7 @@
                 </scroll-view>
                 <component-nav-more propClass="bg-white" :propStatus="popupStatus" @open-popup="open_popup_event">
                     <view class="nav-list-more">
-                        <view class="flex-row flex-warp align-c">
+                        <view class="flex-row flex-wrap align-c">
                             <block v-for="(item, index) in brand_category_list" :key="index">
                                 <view class="item flex-col align-c text-size-xss" @tap="nav_event" :id="'one-nav-item-' + index" :data-index="index" :data-value="item.id">
                                     <image :src="item.icon" mode="aspectFit"></image>

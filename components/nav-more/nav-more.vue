@@ -1,18 +1,18 @@
 <template>
     <view :class="theme_view">
-        <view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-warp align-c" :class="propClass" @tap="open_popup">
-            <text>{{$t('common.more_null')}}</text>
-            <iconfont name="icon-fenlei-more"></iconfont>
+        <view class="more cr-black padding-top-main padding-bottom-sm flex-row flex-wrap align-c" :class="propClass" @tap="open_popup">
+            <text v-if="isMoreText">{{ $t('common.more_null') }}</text>
+            <iconfont name="icon-category-more"></iconfont>
         </view>
         <!-- 弹窗 -->
         <component-popup :propShow="popup_status" :propIsBar="propIsBar" propPosition="top" :propMask="true" :propTop="propTop" @onclose="quick_close_event">
             <view class="padding-vertical-lg">
-                <view class="padding-left-main padding-bottom-main">{{$t('recommend-form.recommend-form.7gc30l')}}</view>
+                <view class="padding-left-main padding-bottom-main">{{ $t('recommend-form.recommend-form.7gc30l') }}</view>
                 <view class="divider-b">
                     <slot></slot>
                 </view>
                 <view class="tc padding-top-lg" @tap="quick_close_event">
-                    <text class="padding-right-sm">{{$t('nav-more.nav-more.h9g4b1')}}</text>
+                    <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                 </view>
             </view>
@@ -47,6 +47,14 @@
             propClass: {
                 type: String,
                 default: '',
+            },
+            themeBtn: {
+                type: String,
+                default: '1',
+            },
+            isMoreText: {
+                type: Boolean,
+                default: true,
             },
         },
         watch: {

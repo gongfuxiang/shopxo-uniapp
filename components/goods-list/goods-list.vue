@@ -57,7 +57,7 @@
                 </block>
                 <!-- 九方格 -->
                 <block v-else-if="data.style_type == 1">
-                    <view class="goods-data-grid-list flex-row flex-warp">
+                    <view class="goods-data-grid-list flex-row flex-wrap">
                         <view v-for="(item, index) in data.goods_list" :key="index" class="item oh border-radius-main bg-white oh pr spacing-mb">
                             <!-- 商品主体内容 -->
                             <view class="cp" :data-index="index" :data-value="item.goods_url" @tap="goods_event">

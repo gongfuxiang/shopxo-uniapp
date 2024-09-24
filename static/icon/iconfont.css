@@ -14,6 +14,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-bofang:before {
+  content: "\e798";
+}
+
+.icon-checked-1:before {
+  content: "\e778";
+}
+
+.icon-gift-fine:before {
+  content: "\e771";
+}
+
 .icon-enlarge:before {
   content: "\e60d";
 }

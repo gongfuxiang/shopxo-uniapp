@@ -27,7 +27,7 @@
                     </view>
                     <view class="plugins-wholesale-container-rules">
                         <block v-if="(data || null) != null">
-                            <view class="oh flex-row flex-warp">
+                            <view class="oh flex-row flex-wrap">
                                 <block v-for="(item, index) in data.rules" :key="index">
                                     <view class="item flex-width-half margin-bottom">
                                         <view class="item-content padding-main bg-base border-radius-main oh tc">
