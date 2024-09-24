@@ -64,13 +64,11 @@
                 form: this.value.content,
                 new_style: this.value.style,
             });
-            console.log(this.value);
             this.init();
         },
         methods: {
             isEmpty,
             init() {
-                console.log(this.new_style);
                 const { search_button_radius, common_style } = this.new_style;
                 this.setData({
                     style: this.get_style(), // 内部样式
