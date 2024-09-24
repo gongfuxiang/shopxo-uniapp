@@ -1,7 +1,7 @@
 <template>
     <view class="ht-auto min-ht">
         <view class="pr header-content">
-            <componentDiyHeader></componentDiyHeader>
+            <componentDiyHeader :value="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="pr" :style="diy_content_style">
             <componentDiyTabs v-if="is_tabs" :value="tabs_data" @tabs-click="tabs_click_event"></componentDiyTabs>

@@ -965,6 +965,10 @@
     gap: 24rpx;
 }
 
+.gap-16 {
+    gap: 32rpx;
+}
+
 /**
  * font-size 字体大小
  */
