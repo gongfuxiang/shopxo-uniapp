@@ -2,7 +2,7 @@
     <swiper circular="true" :autoplay="value.data_style.is_roll == '1'" :interval="value.data_style.interval_time * 1000" :duration="500" :vertical="value.data_style.rotation_direction == 'vertical'" class="swiper" style="height: 100%" @change="carousel_change">
         <swiper-item v-for="(item1, index1) in value.data_content.list" :key="index1">
             <template v-if="type === 'img'">
-                <view @tap="url_event(item1.carousel_link.page)">
+                <view :data-value="item1.carousel_link.page" @tap="url_event">
                     <image-empty :image-src="item1.carousel_img[0]" :style="contentImgRadius" error-style="width: 80rpx;height: 80rpx;"></image-empty>
                 </view>
             </template>
@@ -47,9 +47,7 @@
             },
             // 跳转链接
             url_event(link) {
-                if (!isEmpty(link)) {
-                    app.globalData.url_open(link);
-                }
+                app.globalData.url_event(link);
             },
         },
     };

@@ -11,7 +11,7 @@
                     <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
                         <span class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</span>
                         <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
-                            <image v-if="form.theme == '4'" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
+                            <image v-if="form.theme == '4' && form.theme_4_static_img.length > 0" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                             <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                 <template v-if="form.theme == '4'">
                                     <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
@@ -28,7 +28,7 @@
                         <span class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</span>
                     </view>
                 </view>
-                <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" @tap="url_event('/pages/plugins/seckill/index/index')">
+                <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" :data-value="'/pages/plugins/seckill/index/index'" @tap="url_event">
                     <span :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</span>
                     <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
                 </view>
@@ -36,7 +36,7 @@
             <template v-if="form.shop_style_type != '3'">
                 <view class="flex-row flex-wrap wh-auto" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
                     <view v-for="(item1, index1) in list" :key="index1" class="flex-row wh-auto">
-                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" @tap="url_event(item.goods_url)">
+                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" :data-value="item.goods_url" @tap="url_event">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr" :class="'flex-img' + form.shop_style_type">
                                     <template v-if="!isEmpty(item.new_cover)">
@@ -99,7 +99,7 @@
             <template v-else>
                 <swiper circular="false" :autoplay="new_style.is_roll == '1'" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in list" :key="index1" :class="{ 'flex-row': new_style.rolling_fashion != 'translation' }" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
-                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" @tap="url_event(item.goods_url)">
+                        <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" :data-value="item.goods_url" @tap="url_event">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
                                     <template v-if="!isEmpty(item.new_cover)">
@@ -485,9 +485,7 @@
             },
             // 跳转链接
             url_event(link) {
-                if (!isEmpty(link)) {
-                    app.globalData.url_open(link);
-                }
+                app.globalData.url_event(link);
             },
         },
     };
