@@ -3,7 +3,7 @@
         <view class="header-content flex-row">
             <view class="model-top flex-1" :style="position">
                 <view class="roll pr z-i" :style="roll_style">
-                    <view class="model-head tc pr padding-horizontal-sm flex-row align-c">
+                    <view class="model-head tc pr padding-horizontal-sm flex-row align-c" :style="'max-width:' + header_width">
                         <view class="flex-row align-c jc-sb gap-16 wh-auto padding-horizontal-main pr">
                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                 <template v-if="['2', '3'].includes(form.content.theme)">
@@ -73,6 +73,7 @@
                 position: '',
                 roll_style: '',
                 text_style: '',
+                header_width: '100%',
             };
         },
         created() {
@@ -95,11 +96,17 @@
                 } else {
                     new_roll_style += `background: transparent;`;
                 }
+                // 小程序下，获取小程序胶囊的宽度
+                let menuButtonInfo = '100%';
+                // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
+                menuButtonInfo = `calc(100% - ${uni.getMenuButtonBoundingClientRect().width + 130}rpx);`;
+                // #endif
                 this.setData({
                     form: this.value,
                     position: (new_style.up_slide_display == '1' ? 'position:absolute;' : 'position:relative;') + 'top:' + bar_height + 'rpx;',
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
+                    header_width: menuButtonInfo,
                 });
             },
         },
