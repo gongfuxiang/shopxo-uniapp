@@ -37,7 +37,7 @@
                 defaultImage: '/static/images/common/image-empty.png',
             };
         },
-        created() {
+        mounted() {
             this.init();
         },
         methods: {

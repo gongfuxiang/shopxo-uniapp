@@ -4,7 +4,10 @@
             <componentDiyHeader :key="key" :value="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="pr" :style="diy_content_style">
-            <componentDiyTabs v-if="is_tabs" :value="tabs_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <view v-for="(item, index) in tabs_data" :key="index">
+                <componentDiyTabs v-if="item.key == 'tabs'" :value="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + 'tabs-carousel'" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+            </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index">
@@ -80,7 +83,8 @@
     import componentDiyDataMagic from '@/components/diy/data-magic';
     import componentDiyCustom from '@/components/diy/custom';
     import componentDiyImgMagic from '@/components/diy/img-magic';
-    import componentDiySeckill from '@/components/diy/seckill.vue';
+    import componentDiySeckill from '@/components/diy/seckill';
+    import componentDiyTabsCarousel from '@/components/diy/tabs-carousel';
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
@@ -127,9 +131,10 @@
             componentDiyCustom,
             componentDiyImgMagic,
             componentDiySeckill,
+            componentDiyTabsCarousel,
             componentGoodsList,
             componentNoData,
-            componentBottomLine,
+            componentBottomLine
         },
         data() {
             return {
@@ -180,14 +185,13 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
-                const filter_tabs_list = this.value.tabs_data || [];
+                // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
                     key: get_math(),
                     header_data: this.value.header,
                     footer_data: this.value.footer,
                     diy_data: this.value.diy_data,
-                    tabs_data: filter_tabs_list.length > 0 ? filter_tabs_list[0].com_data : {},
-                    is_tabs: true,
+                    tabs_data: this.value.tabs_data,
                 });
                 uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },

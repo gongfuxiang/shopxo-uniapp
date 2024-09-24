@@ -18,7 +18,7 @@
 
 <script>
     const app = getApp();
-    import { common_styles_computer } from '@/common/js/common/common.js';
+    import { common_styles_computer, padding_computer, margin_computer } from '@/common/js/common/common.js';
     import componentDiyModulesTabsView from '@/components/diy/modules/tabs-view';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
@@ -31,6 +31,14 @@
                 type: Object,
                 default: () => ({}),
             },
+            isCommon: {
+                type: Boolean,
+                default: true,
+            },
+            spacingCommonStyle: {
+                type: Object,
+                default: () => ({}),
+            }
         },
         components: {
             componentDiyModulesTabsView,
@@ -57,7 +65,7 @@
                 new_tabs_data.content.tabs_list.unshift(new_tabs_data.content.home_data);
                 this.setData({
                     tabs_data: new_tabs_data,
-                    style_container: common_styles_computer(new_style.common_style),
+                    style_container: this.isCommon ? common_styles_computer(new_style.common_style) : new_content.tabs_top_up == '1' ? padding_computer(this.spacingCommonStyle) + margin_computer(this.spacingCommonStyle) : '',
                     top_up: new_content.tabs_top_up,
                 });
             },

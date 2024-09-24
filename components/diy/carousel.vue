@@ -69,6 +69,10 @@
                     return {};
                 },
             },
+            isCommon: {
+                type: Boolean,
+                default: true,
+            }
         },
         data() {
             return {
@@ -127,7 +131,7 @@
                     new_list: this.seat_list.concat(this.form.carousel_list),
                     popup_width: block * 16 * 2 + 'rpx',
                     popup_height: block * 9 * 2 + 'rpx',
-                    style_container: common_styles_computer(common_style), // 用于样式显示
+                    style_container: this.isCommon ? common_styles_computer(common_style) : '', // 用于样式显示
                     img_style: radius_computer(this.new_style), // 图片的设置
                     indicator_style: this.get_indicator_style(), // 指示器的样式
                     dot_style: `bottom: ${common_style.padding_bottom * 2 + 12}rpx;`, // 指示器位置

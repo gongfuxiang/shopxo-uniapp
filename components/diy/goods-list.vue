@@ -72,7 +72,7 @@
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                        <img class="original-price-left" :src="form.static_img[0].url" />
+                                        <image class="original-price-left" :src="form.static_img[0].url" />
                                         <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
@@ -121,7 +121,7 @@
                                             <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                         </view>
                                         <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
-                                            <img class="original-price-left" :src="form.static_img[0].url" />
+                                            <image class="original-price-left" :src="form.static_img[0].url" />
                                             <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
@@ -493,6 +493,10 @@
     }
     .gap-20 {
         gap: 40rpx;
+    }
+    .original-price-left {
+        width: 20rpx;
+        height: 28rpx;
     }
     .br-b-e {
         border-bottom: 2rpx solid #eee;

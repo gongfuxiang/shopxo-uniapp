@@ -1,7 +1,7 @@
 <template>
     <!-- 文章列表 -->
     <view class="container">
-        <view class="flex-row gap-10 jc-sb align-s">
+        <view class="flex-row gap-10 jc-sb align-c">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
                     <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'px;'">

@@ -11,7 +11,7 @@
                     <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
                         <span class="text-size-xss" :style="{ 'color': new_style.end_text_color }">{{ seckill_time.time_first_text }}</span>
                         <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
-                            <img v-if="form.theme == '4'" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
+                            <image v-if="form.theme == '4'" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                             <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                 <template v-if="form.theme == '4'">
                                     <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
