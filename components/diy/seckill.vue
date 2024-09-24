@@ -5,17 +5,17 @@
                 <view :class="['flex-row align-c', { 'gap-10': form.theme != '1', 'jc-sb wh-auto': form.theme == '2' }]">
                     <view class="seckill-title">
                         <image-empty v-if="form.title_type == 'image'" :image-src="form.title_src[0]" img_fit="heightFix" error-style="width:42rpx; height: 20rpx;"></image-empty>
-                        <span v-else :style="{'color': new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</span>
+                        <span v-else :style="{ color: new_style.title_color, 'font-size': new_style.title_size * 2 + 'rpx', 'line-height': '42rpx', 'font-weight': 600 }">{{ form.title_text }}</span>
                     </view>
                     <view v-if="form.theme == '1'" class="plr-6 cr-white">|</view>
                     <view v-if="intervalId != undefined" class="flex-row align-c gap-4">
-                        <span class="text-size-xss" :style="{ 'color': new_style.end_text_color }">{{ seckill_time.time_first_text }}</span>
+                        <span class="text-size-xss" :style="{ color: new_style.end_text_color }">{{ seckill_time.time_first_text }}</span>
                         <view class="flex-row gap-3 jc-c align-c" :style="[form.theme == '4' ? time_bg + 'padding: 6rpx 8rpx;border-radius: 22rpx;' : '']">
                             <image v-if="form.theme == '4'" class="seckill-head-icon radius-xs" :src="form.theme_4_static_img[0].url" />
                             <view v-for="(item, index) in time_config" :key="item.key" class="flex-row gap-3 jc-c align-c">
                                 <template v-if="form.theme == '4'">
                                     <view class="text-size-xs" :style="{ color: new_style.countdown_color }">{{ item.value }}</view>
-                                    <span v-if="[0, 1].includes(index)" class="colon" :style="{ 'color': new_style.countdown_color }">:</span>
+                                    <span v-if="[0, 1].includes(index)" class="colon" :style="{ color: new_style.countdown_color }">:</span>
                                 </template>
                                 <template v-else>
                                     <view class="time-config text-size-xs" :style="time_bg + 'color:' + new_style.countdown_color">{{ item.value }}</view>
@@ -25,10 +25,10 @@
                         </view>
                     </view>
                     <view v-else class="flex-row align-c gap-4">
-                        <span class="text-size-xss" :style="{ 'color': new_style.end_text_color }">已结束</span>
+                        <span class="text-size-xss" :style="{ color: new_style.end_text_color }">已结束</span>
                     </view>
                 </view>
-                <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ 'color': new_style.head_button_color }" @tap="url_event('/pages/plugins/seckill/index/index')">
+                <view v-if="form.button_status == '1'" class="flex-row align-c" :style="{ color: new_style.head_button_color }" @tap="url_event('/pages/plugins/seckill/index/index')">
                     <span :style="{ 'font-size': new_style.head_button_size * 2 + 'rpx' }">{{ form.button_text }}</span>
                     <iconfont name="icon-arrow-right" :color="new_style.head_button_color"></iconfont>
                 </view>
@@ -37,25 +37,25 @@
                 <view class="flex-row flex-wrap wh-auto" :style="{ gap: content_outer_spacing * 2 + 'rpx' }">
                     <view v-for="(item1, index1) in list" :key="index1" class="flex-row wh-auto">
                         <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="layout_type_style + content_radius + (form.shop_style_type == '1' ? content_padding : '')" @tap="url_event(item.goods_url)">
-                                <template v-if="!isEmpty(item)">
-                                    <view class="oh pr" :class="'flex-img' + form.shop_style_type">
-                                        <template v-if="!isEmpty(item.new_cover)">
-                                            <image-empty :image-src="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
-                                        </template>
-                                        <template v-else>
-                                            <image-empty :image-src="item.images" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
-                                        </template>
-                                        <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
-                                            <span class="text-line-1">{{ form.subscript_text }}</span>
-                                        </view>
+                            <template v-if="!isEmpty(item)">
+                                <view class="oh pr" :class="'flex-img' + form.shop_style_type">
+                                    <template v-if="!isEmpty(item.new_cover)">
+                                        <image-empty :image-src="item.new_cover[0]" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
+                                    </template>
+                                    <template v-else>
+                                        <image-empty :image-src="item.images" :class="'flex-img' + form.shop_style_type" :type_style="content_img_radius" error-style="width:100rpx; height: 100rpx;"></image-empty>
+                                    </template>
+                                    <view v-if="form.seckill_subscript_show == '1'" class="text-size-xs nowrap corner-marker" :style="corner_marker">
+                                        <span class="text-line-1">{{ form.subscript_text }}</span>
                                     </view>
-                                </template>
-                                <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
-                                    <view class="flex-col gap-10 wh-auto">
-                                        <!-- 标题 -->
-                                        <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
-                                        <!-- 进度条 -->
-                                        <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
+                                </view>
+                            </template>
+                            <view class="flex-col gap-10 wh-auto flex-1 jc-sb" :style="content_style">
+                                <view class="flex-col gap-10 wh-auto">
+                                    <!-- 标题 -->
+                                    <view v-if="is_show('title')" :style="title_style" class="text-line-2">{{ item.title }}</view>
+                                    <!-- 进度条 -->
+                                    <!-- <view v-if="form.shop_style_type == '1'" class="flex-row align-c gap-6">
                                                 <view class="re flex-1">
                                                     <view class="slide-bottom" :style="`background: ${new_style.progress_bg_color}`"></view>
                                                     <view class="slide-top" :style="` width: 51%; ${slide_active_color}`">
@@ -64,41 +64,41 @@
                                                 </view>
                                                 <span class="text-size-xss" :style="`color: ${new_style.progress_text_color}`">已抢51%</span>
                                             </view> -->
+                                </view>
+                                <view class="flex-row align-e gap-10 jc-sb">
+                                    <view class="flex-col gap-5">
+                                        <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
+                                            <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
+                                            <span class="identifying">{{ item.show_price_symbol }}</span
+                                            ><span :style="price_style">{{ item.min_price }}</span>
+                                            <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
+                                        </view>
+                                        <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
+                                            <span class="original-price text-line-1 flex-1"
+                                                >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
+                                                <template v-if="is_show('original_price_unit')">
+                                                    {{ item.show_original_price_unit }}
+                                                </template>
+                                            </span>
+                                        </view>
                                     </view>
-                                    <view class="flex-row align-e gap-10 jc-sb">
-                                        <view class="flex-col gap-5">
-                                            <view v-if="is_show('price') && !isEmpty(item.min_price)" class="num" :style="{ color: new_style.shop_price_color }">
-                                                <span v-if="form.shop_style_type == '1'" class="text-size-xss pr-4">秒杀价</span>
-                                                <span class="identifying">{{ item.show_price_symbol }}</span
-                                                ><span :style="price_style">{{ item.min_price }}</span>
-                                                <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
-                                            </view>
-                                            <view v-if="is_show('original_price') && !isEmpty(item.min_original_price)" class="size-11 flex" :style="{ color: new_style.original_price_color }">
-                                                <span class="original-price text-line-1 flex-1"
-                                                    >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
-                                                    <template v-if="is_show('original_price_unit')">
-                                                        {{ item.show_original_price_unit }}
-                                                    </template>
-                                                </span>
-                                            </view>
-                                        </view>
-                                        <view v-if="form.is_shop_show == '1'">
-                                            <template v-if="form.shop_type == 'text'">
-                                                <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
-                                            </template>
-                                            <template v-else>
-                                                <icon class="round plr-6 ptb-5" :name="!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart'" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></icon>
-                                            </template>
-                                        </view>
+                                    <view v-if="form.is_shop_show == '1'">
+                                        <template v-if="form.shop_type == 'text'">
+                                            <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
+                                        </template>
+                                        <template v-else>
+                                            <iconfont class="round plr-6 ptb-5" :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></iconfont>
+                                        </template>
                                     </view>
                                 </view>
                             </view>
                         </view>
                     </view>
+                </view>
             </template>
             <template v-else>
                 <swiper circular="false" :autoplay="new_style.is_roll == '1'" :next-margin="new_style.rolling_fashion == 'translation' ? '-' + content_outer_spacing_magin : '0rpx'" :interval="new_style.interval_time * 1000" :duration="500" :display-multiple-items="slides_per_group" :style="{ height: new_style.content_outer_height * 2 + 'rpx' }">
-                    <swiper-item v-for="(item1, index1) in list" :key="index1" :class="{'flex-row': new_style.rolling_fashion != 'translation'}" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
+                    <swiper-item v-for="(item1, index1) in list" :key="index1" :class="{ 'flex-row': new_style.rolling_fashion != 'translation' }" :style="new_style.rolling_fashion != 'translation' ? 'gap:' + content_outer_spacing_magin : ''">
                         <view v-for="(item, index) in item1.split_list" :key="index" :class="layout_type" :style="content_radius + (form.shop_style_type == '1' ? content_padding : '') + (new_style.rolling_fashion != 'translation' ? layout_type_style : 'margin-right:' + content_outer_spacing_magin + ';height: 100%;whith: 100%')" @tap="url_event(item.goods_url)">
                             <template v-if="!isEmpty(item)">
                                 <view class="oh pr wh-auto ht-auto">
@@ -150,7 +150,7 @@
                                             <view class="plr-11 ptb-3 round cr-white" :style="button_style + 'color:' + new_style.shop_button_text_color">{{ form.shop_button_text }}</view>
                                         </template>
                                         <template v-else>
-                                            <icon class="round plr-6 ptb-5" :name="!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart'" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></icon>
+                                            <iconfont class="round plr-6 ptb-5" :name="'icon-' + (!isEmpty(form.shop_button_icon_class) ? form.shop_button_icon_class : 'cart')" :color="new_style.shop_icon_color" :size="new_style.shop_icon_size + ''" :styles="button_gradient()"></iconfont>
                                         </template>
                                     </view>
                                 </view>
@@ -249,7 +249,7 @@
             // 如果有定时任务执行，在离开的时候清空掉定时任务
             if (!isEmpty(this.intervalId)) {
                 clearInterval(this.intervalId);
-            }  
+            }
         },
         methods: {
             isEmpty,
@@ -269,7 +269,7 @@
                             startTime: data.current.time_start,
                             status: status,
                             time_first_text: time_first_text,
-                        }
+                        },
                     });
                     // 先执行一次倒计时，后续的等待倒计时执行
                     setTimeout(() => {
@@ -277,7 +277,7 @@
                     }, 0);
                     this.setData({
                         intervalId: setInterval(this.updateCountdown, 1000),
-                    })
+                    });
                 } else {
                     new_list = Array(4).fill(this.default_list);
                 }
@@ -332,11 +332,11 @@
                 } else {
                     // 存储数据显示
                     let nav_list = [];
-                    cloneList.forEach(item => {
+                    cloneList.forEach((item) => {
                         nav_list.push({
-                            split_list: [ item ],
+                            split_list: [item],
                         });
-                    })
+                    });
                     return nav_list;
                 }
             },
@@ -376,19 +376,19 @@
                     if (this.seckill_time.status === 0) {
                         this.setData({
                             seckill_time: {
-                               endTime: this.seckill_time.current.time_end,
-                               startTime: this.seckill_time.current.time_start,
-                               status: 1,
-                               time_first_text: '距结束',
-                            }
-                        })
+                                endTime: this.seckill_time.current.time_end,
+                                startTime: this.seckill_time.current.time_start,
+                                status: 1,
+                                time_first_text: '距结束',
+                            },
+                        });
                         // 先执行一次倒计时，后续的等待倒计时执行
                         setTimeout(() => {
                             this.updateCountdown();
                         }, 0);
                         this.setData({
                             intervalId: setInterval(this.updateCountdown, 1000),
-                        })
+                        });
                     }
                     return;
                 }
@@ -434,7 +434,7 @@
                 return class_type;
             },
             get_layout_type_style() {
-                return ['1', '2'].includes(this.form.shop_style_type) ? `height: 100%;width: ${ this.get_multicolumn_columns_width() };min-width: ${ this.get_multicolumn_columns_width() };` : `height: ${ this.new_style.content_outer_height * 2 }rpx;width: ${ this.get_multicolumn_columns_width() };min-width: ${ this.get_multicolumn_columns_width() };`;
+                return ['1', '2'].includes(this.form.shop_style_type) ? `height: 100%;width: ${this.get_multicolumn_columns_width()};min-width: ${this.get_multicolumn_columns_width()};` : `height: ${this.new_style.content_outer_height * 2}rpx;width: ${this.get_multicolumn_columns_width()};min-width: ${this.get_multicolumn_columns_width()};`;
             },
             // 根据传递的参数，从对象中取值
             trends_config(key, type) {
@@ -463,7 +463,7 @@
                 }
                 // 计算间隔的空间。(gap * gap数量) / 模块数量
                 let gap = (this.new_style.content_outer_spacing * (model_number - 1)) / model_number;
-                return `calc(${100 / model_number }% - ${ gap * 2 }rpx)`;
+                return `calc(${100 / model_number}% - ${gap * 2}rpx)`;
             },
             is_show(index) {
                 return this.form.is_show.includes(index);

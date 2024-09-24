@@ -102,7 +102,7 @@
                 default: () => ({}),
             },
             propHomeId: {
-                type: String,
+                type: [String, Number],
                 default: '',
             },
         },
