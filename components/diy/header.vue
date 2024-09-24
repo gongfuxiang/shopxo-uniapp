@@ -1,9 +1,9 @@
 <template>
     <view class="bg-white pf top-0 left-0 right-0" :style="'padding-top:' + bar_height + 'rpx'">
-        <view class="header-content flex-row">
+        <view class="header-content flex-row align-c" :style="nav_bar_height">
             <view class="model-top flex-1" :style="position">
                 <view class="roll pr z-i" :style="roll_style">
-                    <view class="model-head tc pr padding-horizontal-sm flex-row align-c" :style="'max-width:' + header_width">
+                    <view class="model-head tc pr padding-horizontal-sm flex-row align-c" :style="header_style">
                         <view class="flex-row align-c jc-sb gap-16 wh-auto padding-horizontal-main pr">
                             <view v-if="['1', '2', '3'].includes(form.content.theme)" class="flex-1 flex-row align-c jc-c ht-auto gap-16" :style="text_style + 'justify-content:' + form.content.indicator_location || 'center'">
                                 <template v-if="['2', '3'].includes(form.content.theme)">
@@ -73,7 +73,9 @@
                 position: '',
                 roll_style: '',
                 text_style: '',
-                header_width: '100%',
+                header_style: 'max-width:100%',
+                // 导航栏高度
+                nav_bar_height: 'height:120rpx;',
             };
         },
         created() {
@@ -86,7 +88,6 @@
                 const new_style = this.value.style || {};
                 let new_roll_style = '';
                 const { header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type } = new_style;
-                console.log(header_background_img, header_background_img_style, header_background_color_list, header_background_direction, header_background_type);
                 if (header_background_type === 'color_image') {
                     // 渐变
                     const gradient = { color_list: header_background_color_list, direction: header_background_direction };
@@ -97,16 +98,23 @@
                     new_roll_style += `background: transparent;`;
                 }
                 // 小程序下，获取小程序胶囊的宽度
-                let menuButtonInfo = '100%';
+                let menuButtonInfo = 'max-width:100%';
+
+                //获取手机状态栏高度
+                let new_nav_bar_height = 60;
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
-                menuButtonInfo = `calc(100% - ${uni.getMenuButtonBoundingClientRect().width + 130}rpx);`;
+                const custom = uni.getMenuButtonBoundingClientRect();
+                new_nav_bar_height = custom.height + (custom.top - bar_height) * 2;
+                console.log('new_nav_bar_height', new_nav_bar_height);
+                menuButtonInfo = `max-width:calc(100% - ${custom.width + 130}rpx);padding-top:${new_nav_bar_height}rpx`;
                 // #endif
                 this.setData({
                     form: this.value,
+                    nav_bar_height: `height:${new_nav_bar_height * 2}rpx;`,
                     position: (new_style.up_slide_display == '1' ? 'position:absolute;' : 'position:relative;') + 'top:' + bar_height + 'rpx;',
                     roll_style: new_roll_style,
                     text_style: `font-weight:${new_style.header_background_title_typeface}; font-size: ${new_style.header_background_title_size * 2}rpx; color: ${new_style.header_background_title_color};`,
-                    header_width: menuButtonInfo,
+                    header_style: `height:${new_nav_bar_height * 2}rpx;` + menuButtonInfo,
                 });
             },
         },
@@ -114,9 +122,6 @@
 </script>
 
 <style lang="scss" scoped>
-    .header-content {
-        height: 120rpx;
-    }
     .model-top {
         left: 50%;
         z-index: 2;
@@ -133,7 +138,6 @@
     }
     .model-head {
         overflow: hidden;
-        height: 120rpx;
     }
     .model-head-icon {
         position: absolute;

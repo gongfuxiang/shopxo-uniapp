@@ -1,5 +1,6 @@
 <template>
     <view class="ht-auto min-ht">
+        <!-- 头部小程序兼容 -->
         <view class="pr header-content">
             <componentDiyHeader :key="key" :value="header_data.com_data"></componentDiyHeader>
         </view>
@@ -134,7 +135,7 @@
             componentDiyTabsCarousel,
             componentGoodsList,
             componentNoData,
-            componentBottomLine
+            componentBottomLine,
         },
         data() {
             return {
