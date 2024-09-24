@@ -1,6 +1,6 @@
 <template>
     <view class="pr" :style="style_container">
-        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
+        <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
             <block v-if="form.carousel_type == 'card'">
                 <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" @tap="url_open(item.carousel_link)">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
@@ -13,12 +13,12 @@
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx' }">{{ item.video_title }}</span>
+                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
             <block v-else>
-                <swiper-item v-for="(item, index) in new_list" :key="index">
+                <swiper-item v-for="(item, index) in new_list" :key="index" :style="{ 'padding-right': new_style.image_spacing * 2 + 'rpx' }">
                     <view class="item-image flex-row jc-c align-c wh-auto ht-auto pr" :style="img_style">
                         <image-empty :image-src="item.carousel_img[0]" class="img" :style="img_style" :img_fit="img_fit" error-style="width: 100rpx;height: 100rpx;"></image-empty>
                     </view>
@@ -29,7 +29,7 @@
                         <block v-else>
                             <iconfont :name="!isEmpty(new_style.video_icon_class) ? 'icon-' + new_style.video_icon_class : 'icon-bofang'" size="'28rpx'" :color="new_style.video_icon_color"></iconfont>
                         </block>
-                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx' }">{{ item.video_title }}</span>
+                        <span v-if="!isEmpty(item.video_title)" :style="{ color: new_style.video_title_color, 'font-size': new_style.video_title_size * 2 + 'rpx', 'text-wrap': 'nowrap' }">{{ item.video_title }}</span>
                     </view>
                 </swiper-item>
             </block>
@@ -96,6 +96,7 @@
                 animationData: 0,
                 previousMargin: '0rpx',
                 nextMargin: '0rpx',
+                slides_per_group: 1,
             };
         },
         created() {
@@ -140,6 +141,13 @@
                             previousMargin: '82rpx',
                             nextMargin: '82rpx',
                             animationData: 0,
+                        });
+                    });
+                } else if (this.form.carousel_type != 'inherit') {
+                    this.$nextTick(() => {
+                        this.setData({
+                            nextMargin: '100rpx',
+                            slides_per_group: this.form.carousel_type == 'twoDragOne' ? 2 : 1,
                         });
                     });
                 }
@@ -292,6 +300,8 @@
     }
     .video-class {
         max-width: 100%;
+        margin-right: 20rpx;
+        margin-left: 20rpx;
     }
     .x-middle {
         position: absolute;

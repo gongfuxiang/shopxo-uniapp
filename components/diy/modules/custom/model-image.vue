@@ -1,6 +1,6 @@
 <template>
     <view class="img-outer pr wh-auto ht-auto" :style="border_style" @tap="url_open(form.link)">
-        <image-empty :image-src="img" :style="image_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
+        <image-empty :image-src="img" :type_style="image_style" error-style="width: 60rpx;height: 60rpx;"></image-empty>
     </view>
 </template>
 <script>
@@ -64,7 +64,7 @@
             get_border_style() {
                 let style = ``;
                 if (this.form.border_show == '1') {
-                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color}; ${radius_computer(this.form.border_radius)};`;
+                    style += `border: ${this.form.border_size * 2}rpx ${this.form.border_style} ${this.form.border_color}; ${radius_computer(this.form.border_radius)};box-sizing: border-box;`;
                 }
                 return style;
             },
