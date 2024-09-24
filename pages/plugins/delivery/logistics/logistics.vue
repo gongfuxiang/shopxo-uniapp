@@ -18,7 +18,7 @@
                             <image class="avatar circle br va-m" :src="team.work_photo" mode="aspectFit"></image>
                             <text class="cr-base text-size-sm margin-left-sm">{{team.idcard_name}}</text>
                         </view>
-                        <view class="tel circle bg-base br tc cp pa" data-event="tel" :data-value="team.user.mobile" @tap="text_event">
+                        <view v-if="(team.user.mobile || null) != null" class="tel circle bg-base br tc cp pa" data-event="tel" :data-value="team.user.mobile" @tap="text_event">
                             <uni-icons type="phone" size="34rpx" color="#fd8008"></uni-icons>
                         </view>
                     </view>

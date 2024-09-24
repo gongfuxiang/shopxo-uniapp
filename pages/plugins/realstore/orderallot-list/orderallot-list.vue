@@ -44,6 +44,7 @@
                             item.operate_data.is_cancel +
                             item.operate_data.is_pay +
                             item.operate_data.is_collect +
+                            (item.plugins_delivery_data || 0) +
                             (item.plugins_is_order_frequencycard_button || 0) > 0
                         ) ||
                         ((item.express_data || null) != null && item.express_data.length > 0) ||
@@ -56,6 +57,7 @@
                         <button v-if="(item.operate_data.is_order_batch || 0) == 1" class="round bg-white cr-blue br-blue" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/batchorder-list/batchorder-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.6m73j2')}}</button>
                         <button v-if="(item.operate_data.is_order_frequencycard || 0) == 1" class="round bg-white cr-green br-green" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/realstore/frequencycard-list/frequencycard-list?oid=' + item.order_id" hover-class="none">{{$t('orderallot-list.orderallot-list.b13k5r')}}</button>
                         <button v-if="(item.express_data || null) != null && item.express_data.length > 0" class="round bg-white cr-main br-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/express/detail/detail?oid=' + item.id + '&action_type=realstore'" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
+                        <button v-if="(item.plugins_delivery_data || 0) > 0" class="round bg-white cr-main br-main margin-bottom-main" type="default" size="mini" @tap="url_event" :data-value="'/pages/plugins/delivery/logistics/logistics?id=' + item.plugins_delivery_data" hover-class="none">{{$t('orderallot-list.orderallot-list.w2t242')}}</button>
                     </view>
                 </view>
             </view>
