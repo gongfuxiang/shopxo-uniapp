@@ -33,7 +33,7 @@
                             <view v-if="!isEmpty(form.content.icon_setting)" class="flex-row align-c" :class="['1'].includes(form.content.theme) ? 'pa right-0 padding-right-main' : ''" :style="{ gap: form.style.img_space * 2 + 'rpx' }">
                                 <view v-for="(item, index) in form.content.icon_setting" :key="index" :style="{ width: form.style.img_size * 2 + 'rpx', height: form.style.img_size * 2 + 'rpx' }">
                                     <image-empty v-if="item.img.length > 0" :image-src="item.img[0].url" :error-style="'width: ' + Number(form.style.img_size) * 2 + 'rpx;height:' + Number(form.style.img_size) * 2 + 'rpx;'"></image-empty>
-                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size + 'rpx'" color="#666"></iconfont>
+                                    <iconfont v-else :name="'icon-' + item.icon" :size="form.style.img_size * 2 + 'rpx'" color="#666"></iconfont>
                                 </view>
                             </view>
                         </view>

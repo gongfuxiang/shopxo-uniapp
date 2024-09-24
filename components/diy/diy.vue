@@ -1,10 +1,10 @@
 <template>
     <view class="ht-auto min-ht">
         <view class="pr header-content">
-            <componentDiyHeader :value="header_data.com_data"></componentDiyHeader>
+            <componentDiyHeader :key="key" :value="header_data.com_data"></componentDiyHeader>
         </view>
         <view class="pr" :style="diy_content_style">
-            <componentDiyTabs v-if="is_tabs" :value="tabs_data" @tabs-click="tabs_click_event"></componentDiyTabs>
+            <componentDiyTabs v-if="is_tabs" :value="tabs_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
                     <view v-for="(item, index) in diy_data" :key="index">
@@ -51,7 +51,7 @@
                 </scroll-view>
             </view>
         </view>
-        <componentDiyFooter :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
     </view>
 </template>
 
@@ -84,6 +84,7 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
+    import { get_math } from '../../common/js/common/common';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -165,6 +166,7 @@
                 goods_bottom_line_status: false,
                 // 判断数据是否在加载中
                 data_is_loading: 0,
+                key: '',
             };
         },
         computed: {
@@ -180,6 +182,7 @@
                 // tabs选项卡数据过滤
                 const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
+                    key: get_math(),
                     header_data: this.value.header,
                     footer_data: this.value.footer,
                     diy_data: this.value.diy_data,
