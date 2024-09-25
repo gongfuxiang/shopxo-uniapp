@@ -2318,7 +2318,7 @@
                     var self = this;
                     self.weixin_privacy_setting_timer = setInterval(function () {
                         var page = self.get_page_url(false);
-                        if ('/' + page == self.data.tabbar_pages[0]) {
+                        if ('/' + page == self.tabbar_pages_data()[0]) {
                             uni.getPrivacySetting({
                                 success: (res) => {
                                     if (res.needAuthorization) {
