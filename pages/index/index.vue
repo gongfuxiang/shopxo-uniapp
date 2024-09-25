@@ -5,7 +5,6 @@
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
                     <componentDiy :value="data_list.config" :prop-home-id="data_list.id"></componentDiy>
-                    <componentDiyFooter key="" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
                 </block>
             </block>
             <!-- 自动和手动模式 -->
@@ -279,6 +278,9 @@
             <block v-if="load_status == 1 && data_mode != 3">
                 <component-copyright></component-copyright>
             </block>
+
+            <!-- 底部菜单 -->
+            <componentDiyFooter key="" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
         </view>
         <block v-if="load_status == 1 && data_mode != 3">
             <!-- 在线客服 -->
