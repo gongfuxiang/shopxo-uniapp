@@ -31,7 +31,7 @@
                         </view>
                     </view>
                 </view>
-                <view class="tc padding-top-lg" @tap="quick_close_event">
+                <view class="tc padding-top-lg flex-row jc-c align-c" @tap="quick_close_event">
                     <text class="padding-right-sm">{{ $t('nav-more.nav-more.h9g4b1') }}</text>
                     <iconfont name="icon-arrow-top" color="#ccc"></iconfont>
                 </view>
@@ -85,7 +85,16 @@
                 // 过滤弹窗
                 popup_status: false,
                 propIsBar: false,
-                propTop: bar_height + 120 + 'rpx',
+                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                propTop: bar_height + 34 + 5 + 12 + 'px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                propTop: bar_height + 34 + 7 + 12 + 'px;',
+                // #endif
+                // #ifdef APP
+                propTop: bar_height + 34 + 0 + 12 + 'px;',
+                // #endif
             };
         },
         mounted() {

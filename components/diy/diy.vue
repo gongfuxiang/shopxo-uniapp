@@ -11,7 +11,7 @@
             </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
-                    <view v-for="(item, index) in diy_data" :key="index" :style="{'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
+                    <view v-for="(item, index) in diy_data" :key="index" :style="{ 'margin-top': -(item.com_data.style.common_style.floating_up * 2 || 0) + 'rpx' }">
                         <!-- 基础组件 -->
                         <componentDiySearch v-if="item.key == 'search'" :value="item.com_data"></componentDiySearch>
                         <componentDiyCarousel v-else-if="item.key == 'carousel'" :value="item.com_data"></componentDiyCarousel>
@@ -55,7 +55,9 @@
                 </scroll-view>
             </view>
         </view>
-        <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <block v-if="is_show_footer !== '0'">
+            <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        </block>
     </view>
 </template>
 
@@ -164,6 +166,7 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
+                is_show_footer: '0',
                 tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
@@ -197,6 +200,7 @@
                 // tabs选项卡数据过滤
                 // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
+                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show,
                     key: get_math(),
                     header_data: this.value.header,
                     footer_data: this.value.footer,
