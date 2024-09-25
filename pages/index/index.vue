@@ -280,7 +280,7 @@
             </block>
 
             <!-- 底部菜单 -->
-            <componentDiyFooter key="" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
+            <componentDiyFooter :key="random_value" :value="app_tabber" @footer-click="footer_click_event"></componentDiyFooter>
         </view>
         <block v-if="load_status == 1 && data_mode != 3">
             <!-- 在线客服 -->
@@ -351,6 +351,7 @@
                 right_icon_list: [],
                 // 底部菜单
                 app_tabber: null,
+                footer_radom: 0,
                 // 首页数据模式
                 data_mode: 0,
                 // 增加随机数，避免无法监听数据列表内部数据更新
@@ -510,6 +511,7 @@
                         application_title: app.globalData.get_application_title(),
                         application_logo: app.globalData.get_application_logo(),
                         app_tabber: app.globalData.get_config('app_tabber'),
+                        footer_radom: Math.random(),
                     });
                 } else {
                     app.globalData.is_config(this, 'init_config');
