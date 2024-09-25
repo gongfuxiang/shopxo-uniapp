@@ -1,6 +1,6 @@
 <template>
     <view class="header-container" :style="roll_style + position">
-        <view class="bg-white pf top-0 left-0 right-0 padding-bottom" :style="top_content_style">
+        <view class="bg-white pf top-0 left-0 right-0" :style="top_content_style">
             <view class="header-content flex-row align-c">
                 <view class="model-top flex-1">
                     <view class="roll pr z-i">
@@ -77,13 +77,13 @@
                 header_style: 'max-width:100%',
                 common_app_is_header_nav_fixed: 0,
                 // #ifdef MP
-                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 5) + 'px;padding-bottom:12px;',
                 // #endif
                 // #ifdef H5 || MP-TOUTIAO
-                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;',
+                top_content_style: 'padding-top:' + (bar_height + 7) + 'px;padding-bottom:12px;',
                 // #endif
                 // #ifdef APP
-                top_content_style: 'padding-top:' + bar_height + 'px;',
+                top_content_style: 'padding-top:' + bar_height + 'px;padding-bottom:12px;',
                 // #endif
             };
         },
@@ -111,7 +111,6 @@
 
                 // #ifdef MP-WEIXIN || MP-BAIDU || MP-QQ || MP-KUAISHOU
                 const custom = uni.getMenuButtonBoundingClientRect();
-                console.log(custom);
                 menuButtonInfo = `max-width:calc(100% - ${custom.width + 30}px);`;
                 // #endif
                 this.setData({
