@@ -1,7 +1,9 @@
 <template>
     <!-- 文章列表 -->
-    <view :style="style_container">
-        <componentDiyModulesTabsView :value="article_tabs" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+    <view class="pr" :style="style_container">
+        <view :class="top_up == '1' ? 'ps z-i-deep-must top-0' : ''">
+            <componentDiyModulesTabsView :value="article_tabs" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        </view>
         <view class="padding-top">
             <componentDiyArticleList :key="key" :value="article_tabs" :is-common-style="false"></componentDiyArticleList>
         </view>
@@ -33,6 +35,7 @@
                 style: '',
                 article_tabs: {},
                 key: 1,
+                top_up: '0',
             };
         },
         created() {
@@ -40,8 +43,10 @@
         },
         methods: {
             init() {
+                const new_content = this.value.content || {};
                 const new_style = this.value.style || {};
                 let new_data = JSON.parse(JSON.stringify(this.value));
+                this.top_up = new_content.tabs_top_up;
                 new_data.content.theme = new_data.content.article_theme;
                 new_data.content.data_type = new_data.content.tabs_list[0].data_type;
                 new_data.content.category = new_data.content.tabs_list[0].category;
