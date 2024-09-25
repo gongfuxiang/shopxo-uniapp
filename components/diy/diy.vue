@@ -214,7 +214,7 @@
             },
             // 选项卡回调更新数据
             tabs_click_event(tabs_id, bool, params = {}) {
-                let new_data = this.value.diy_data;
+                let new_data = [];
                 this.setData({
                     is_tabs_type: bool,
                 });
@@ -261,7 +261,9 @@
                         this.get_goods_list(1);
                     }
                 } else {
-                    new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                    if (tabs_id == '') {
+                        new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                    }
                     // 先使用缓存数据展示
                     this.setData({
                         diy_data: new_data,
