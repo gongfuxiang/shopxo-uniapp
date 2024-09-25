@@ -2,7 +2,7 @@
     <view class="pr" :style="style_container">
         <swiper circular="true" :autoplay="form.is_roll == '1'" :interval="form.interval_time * 1000" :display-multiple-items="slides_per_group" :duration="500" :style="{ height: new_style.height * 2 + 'rpx' }" :previous-margin="previousMargin" :next-margin="nextMargin" @change="slideChange">
             <block v-if="form.carousel_type == 'card'">
-                <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" @tap="url_open(item.carousel_link)">
+                <swiper-item v-for="(item, index) in new_list" :key="index" class="flex-row align-c" :data-value="item.carousel_link.page" @tap="url_open">
                     <view class="swiper-item" :style="img_style" :class="['scale-defalt', { 'scale-1': animationData === index }]">
                         <image-empty :image-src="item.carousel_img[0]" class="img" :style="img_style" :img_fit="img_fit" error-style="width: 100rpx;height: 100rpx;"></image-empty>
                     </view>
@@ -244,9 +244,7 @@
                 this.$refs.popup.close();
             },
             url_open(link) {
-                if (!isEmpty(link)) {
-                    app.globalData.url_open(link.page);
-                }
+                app.globalData.url_event(link);
             },
         },
     };

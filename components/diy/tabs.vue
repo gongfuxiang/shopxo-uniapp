@@ -2,7 +2,7 @@
     <!-- 选项卡 -->
     <view class="pr">
         <view v-if="top_up == '1'" class="pf z-i-deep-must left-0 right-0 top-0">
-            <view class="seize-seat" :style="'padding-top:' + tabs_top"></view>
+            <view class="seize-seat" :style="tabs_top"></view>
             <view :style="style_container">
                 <componentDiyModulesTabsView :value="tabs_data" isTabs @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
             </view>
@@ -38,7 +38,7 @@
             spacingCommonStyle: {
                 type: Object,
                 default: () => ({}),
-            }
+            },
         },
         components: {
             componentDiyModulesTabsView,
@@ -51,7 +51,16 @@
 
                 // 是否滑动置顶
                 top_up: 0,
-                tabs_top: bar_height + 120 + 'rpx',
+                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                tabs_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                tabs_top: 'padding-top:' + (bar_height + 34 + 7 + 12) + 'px;',
+                // #endif
+                // #ifdef APP
+                tabs_top: 'padding-top:' + (bar_height + 34 + 0 + 12) + 'px;',
+                // #endif
             };
         },
         created() {

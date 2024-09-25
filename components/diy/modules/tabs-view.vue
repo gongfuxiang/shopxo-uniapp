@@ -4,7 +4,7 @@
         <view class="flex-row gap-10 jc-sb align-c">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
-                    <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'px;'">
+                    <view class="flex-row" :style="'column-gap: ' + tabs_spacing + 'rpx;'">
                         <view v-for="(item, index) in tabs_list" :key="index" :id="'one-nav-item-' + index" class="item nowrap flex-col jc-c gap-4" :class="tabs_theme + (index == active_index ? ' active' : '')" :data-index="index" @tap="handle_event">
                             <image v-if="!isEmpty(item.img)" :src="item.img[0].url" class="img" mode="widthFix" />
                             <view class="title" :style="index == active_index ? tabs_theme_style.tabs_title_checked : tabs_theme_style.tabs_title">{{ item.title }}</view>
@@ -104,11 +104,11 @@
                 };
                 // 标题样式
                 const new_tabs_theme_style = {
-                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked}px;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
-                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size}px;color:${new_style.tabs_color};`,
+                    tabs_title_checked: `font-weight: ${new_style.tabs_weight_checked};font-size: ${new_style.tabs_size_checked * 2}rpx;color:${new_style.tabs_color_checked};` + (['2', '4'].includes(this.tabs_theme_index) ? this.tabs_check : ``),
+                    tabs_title: `font-weight: ${new_style.tabs_weight};font-size: ${new_style.tabs_size * 2}rpx;color:${new_style.tabs_color};`,
                 };
                 this.setData({
-                    tabs_spacing: new_style.tabs_spacing,
+                    tabs_spacing: Number(new_style.tabs_spacing * 2),
                     tabs_list: new_content.tabs_list,
                     // 选项卡主题
                     tabs_theme: this.get_tabs_theme(new_content),

@@ -2,7 +2,7 @@
     <view class="oh" :style="style_container">
         <view :class="outer_class" :style="onter_style">
             <block v-if="!['5'].includes(theme)">
-                <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style">
+                <view v-for="(item, index) in list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
                     <block v-if="theme == '6'">
                         <view :class="['flex-row align-c jc-sb ptb-15 mlr-10 gap-20', { 'br-b-e': index != list.length - 1 }]">
                             <view v-if="is_show('title')" :class="text_line" :style="title_style">{{ item.title }}</view>
@@ -37,7 +37,7 @@
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                        <img class="original-price-left" :src="form.static_img[0].url" />
+                                        <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
                                         <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
@@ -72,7 +72,7 @@
                                         <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                     </view>
                                     <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex-row">
-                                        <image class="original-price-left" :src="form.static_img[0].url" />
+                                        <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
                                         <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                             >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                             <block v-if="is_show('original_price_unit')">
@@ -81,7 +81,7 @@
                                         </span>
                                     </view>
                                 </view>
-                                <view v-if="form.is_shop_show == '1'">
+                                <view v-if="form.is_shop_show == '1'" :data-index="index" @tap.stop="goods_button_event">
                                     <block v-if="form.shop_type == 'text'">
                                         <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                     </block>
@@ -97,7 +97,7 @@
             <block v-else>
                 <swiper circular="true" :autoplay="new_style.is_roll == '1'" :interval="new_style.interval_time * 1000" :duration="500" :style="{ width: '100%', height: new_style.content_outer_height * 2 + 'rpx' }">
                     <swiper-item v-for="(item1, index1) in shop_content_list" :key="index1" class="flex-row" :style="onter_style">
-                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style">
+                        <view v-for="(item, index) in item1.split_list" :key="index" class="pr" :class="layout_type" :style="layout_style" :data-value="item.goods_url" @tap="url_event">
                             <block v-if="!isEmpty(item)">
                                 <block v-if="!isEmpty(item.new_cover)">
                                     <image-empty :image-src="item.new_cover[0]" :class="'flex-img' + theme" :style="content_img_radius" error-style="width: 100rpx;height: 100rpx;"></image-empty>
@@ -121,7 +121,7 @@
                                             <span v-if="is_show('price_unit')" class="identifying">{{ item.show_price_unit }}</span>
                                         </view>
                                         <view v-if="show_content && is_show('original_price') && !isEmpty(item.min_original_price)" class="text-size-xss flex">
-                                            <image class="original-price-left" :src="form.static_img[0].url" />
+                                            <img v-if="form.static_img.length > 0" class="original-price-left" :src="form.static_img[0].url" />
                                             <span :class="['original-price text-line-1', { 'flex-1': form.is_price_solo == '1' }]"
                                                 >{{ item.show_original_price_symbol }}{{ item.min_original_price }}
                                                 <block v-if="is_show('original_price_unit')">
@@ -130,7 +130,7 @@
                                             </span>
                                         </view>
                                     </view>
-                                    <view v-if="form.is_shop_show == '1'">
+                                    <view v-if="form.is_shop_show == '1'" :data-index="index1" :data-split-index="index" @tap.stop="goods_button_event">
                                         <block v-if="form.shop_type == 'text'">
                                             <view class="plr-11 ptb-3 round" :style="button_style + ('color:' + new_style.shop_button_text_color)">{{ form.shop_button_text }}</view>
                                         </block>
@@ -145,6 +145,11 @@
                 </swiper>
             </block>
         </view>
+        <!-- 商品购买 -->
+        <component-goods-buy v-if="is_show_cart" ref="goods_buy" v-on:CartSuccessEvent="goods_cart_back_event"></component-goods-buy>
+        
+        <!-- 购物车抛物线 -->
+        <component-cart-para-curve v-if="is_show_cart" ref="cart_para_curve"></component-cart-para-curve>
     </view>
 </template>
 
@@ -152,9 +157,13 @@
     const app = getApp();
     import { isEmpty, common_styles_computer, get_math, gradient_handle, padding_computer, radius_computer } from '@/common/js/common/common.js';
     import imageEmpty from '@/components/diy/modules/image-empty.vue';
+    import componentGoodsBuy from '@/components/goods-buy/goods-buy';
+    import componentCartParaCurve from '@/components/cart-para-curve/cart-para-curve';
     export default {
         components: {
             imageEmpty,
+            componentGoodsBuy,
+            componentCartParaCurve
         },
         props: {
             value: {
@@ -172,6 +181,8 @@
             return {
                 form: {},
                 new_style: {},
+                is_show_cart: false,
+                propIsCartParaCurve: true,
                 default_list: {
                     title: '测试商品标题',
                     min_original_price: '41.2',
@@ -414,10 +425,88 @@
                 }
                 return style;
             },
-            url_open_event(link) {
-                if (!isEmpty(link)) {
-                    app.globalData.url_open(link.page);
+            url_event(link) {
+                app.globalData.url_event(link);
+            },
+            goods_button_event(e) {
+                let index = e.currentTarget.dataset.index || 0;
+                let goods = this.list[index];
+                if (this.theme == '5') {
+                    index = e.currentTarget.dataset.index || 0;
+                    split_index = e.currentTarget.dataset.split_index || 0;
+                    goods = this.shop_content_list[index][split_index];
                 }
+                if (this.form.shop_button_effect == '0') {
+                    app.globalData.url_event(goods.goods_url);
+                } else {
+                    this.goods_cart_event(goods);
+                }
+            },
+            // 加入购物车
+            goods_cart_event(e) {
+                if ((this.$refs.goods_buy || null) != null) {
+                    // 开启购物车抛物线效果则展示提示操作
+                    let is_success_tips = this.propIsCartParaCurve ? 0 : 1;
+                    this.$refs.goods_buy.init(
+                        goods,
+                        {
+                            buy_event_type: 'cart',
+                            is_direct_cart: 1,
+                            is_success_tips: is_success_tips,
+                        },
+                        {
+                            index: index,
+                            pos: e,
+                        }
+                    );
+                }
+            },
+            // 加入购物车成功回调
+            goods_cart_back_event(e) {
+                // 增加数量
+                var back = e.back_data;
+                var new_data = this.data;
+                var goods = new_data['goods_list'][back.index];
+                goods['user_cart_count'] = parseInt(goods['user_cart_count'] || 0) + parseInt(e.stock);
+                if (goods['user_cart_count'] > 99) {
+                    goods['user_cart_count'] = '99+';
+                }
+                new_data['goods_list'][back.index] = goods;
+                this.setData({
+                    data: new_data,
+                });
+            
+                // 抛物线
+                if (this.propIsCartParaCurve && (this.$refs.cart_para_curve || null) != null) {
+                    this.$refs.cart_para_curve.init(null, back.pos, goods.images);
+                }
+            
+                // 导航购物车处理
+                if (this.propIsCartNumberTabBarBadgeSync) {
+                    var cart_total = e.cart_number || 0;
+                    if (cart_total <= 0) {
+                        app.globalData.set_tab_bar_badge(2, 0);
+                    } else {
+                        app.globalData.set_tab_bar_badge(2, 1, cart_total);
+                    }
+                }
+            
+                // 当前页面
+                var page = app.globalData.current_page().split('?');
+                switch (page[0]) {
+                    // 商品详情页面
+                    case 'pages/goods-detail/goods-detail':
+                    // 商品搜索
+                    case 'pages/goods-search/goods-search':
+                        var res = app.globalData.get_page_object(page[0]);
+                        if (res.length > 0) {
+                            for (var i in res) {
+                                res[i].$vm.goods_cart_count_handle(cart_total);
+                            }
+                        }
+                        break;
+                }
+                this.$emit('CartSuccessEvent', { ...e, ...{ goods_list: new_data.goods_list, goods: goods } });
             },
         },
     };

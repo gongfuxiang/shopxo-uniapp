@@ -7,7 +7,7 @@
         <view class="pr" :style="diy_content_style">
             <view v-for="(item, index) in tabs_data" :key="index">
                 <componentDiyTabs v-if="item.key == 'tabs'" :value="item.com_data" :key="key" @tabs-click="tabs_click_event"></componentDiyTabs>
-                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + 'tabs-carousel'" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
+                <componentDiyTabsCarousel v-else-if="item.key == 'tabs-carousel'" :value="item.com_data" :key="key + index" @tabs-click="tabs_click_event"></componentDiyTabsCarousel>
             </view>
             <view v-if="is_tabs_type" class="diy-content">
                 <template v-if="diy_data.length > 0">
@@ -102,7 +102,7 @@
                 type: Object,
                 default: () => ({}),
             },
-            propDataId: {
+            propHomeId: {
                 type: [String, Number],
                 default: '',
             },
@@ -148,13 +148,23 @@
                 // 是否是模块数据或者是九宫格商品分类样式数据， 默认模块数据
                 is_tabs_type: true,
 
-                header_top: bar_height + 120,
+                // 5,7,0 是误差，， 12 是下边距，60是高度，bar_height是不同小程序下的导航栏距离顶部的高度
+                // #ifdef MP
+                header_top: 'padding-top:' + (bar_height + 34 + 5 + 12) + 'px;',
+                // #endif
+                // #ifdef H5 || MP-TOUTIAO
+                header_top: 'padding-top:' + (bar_height + 34 + 7 + 12) + 'px;',
+                // #endif
+                // #ifdef APP
+                header_top: 'padding-top:' + (bar_height + 34 + 0 + 12) + 'px;',
+                // #endif
 
                 header_data: {},
                 footer_data: {},
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
+                tabs_home_id: this.propHomeId,
                 // 商品列表
                 goods_list: [],
                 goods_total: 0,
@@ -172,13 +182,11 @@
                 // 判断数据是否在加载中
                 data_is_loading: 0,
                 key: '',
-                // 缓存key
-                cache_key: app.globalData.data.cache_diy_data_key
             };
         },
         computed: {
             diy_content_style() {
-                return `padding-top:${this.header_top}rpx;padding-bottom:${this.padding_footer_computer}rpx`;
+                return this.header_top + `padding-bottom:${this.padding_footer_computer}rpx;`;
             },
         },
         created() {
@@ -187,6 +195,7 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
+                // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
                     key: get_math(),
                     header_data: this.value.header,
@@ -194,7 +203,7 @@
                     diy_data: this.value.diy_data,
                     tabs_data: this.value.tabs_data,
                 });
-                uni.setStorageSync(this.cache_key + this.propDataId, this.value.diy_data);
+                uni.setStorageSync('diy-data-' + this.propId, this.value.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
@@ -210,7 +219,7 @@
                     id: tabs_id,
                 };
                 if (tabs_id) {
-                    new_data = uni.getStorageSync(this.cache_key + tabs_id) || [];
+                    new_data = uni.getStorageSync('diy-data-' + tabs_id) || [];
                     if (new_data.length > 0) {
                         // 先使用缓存数据展示
                         this.setData({
@@ -231,7 +240,7 @@
                                 const data = res.data.data.data;
                                 if (res.data.code == 0) {
                                     new_data = data?.config.diy_data || [];
-                                    uni.setStorageSync(this.cache_key + tabs_id, new_data);
+                                    uni.setStorageSync('diy-data-' + tabs_id, new_data);
                                     this.setData({
                                         diy_data: new_data,
                                     });
@@ -248,7 +257,7 @@
                         this.get_goods_list(1);
                     }
                 } else {
-                    new_data = uni.getStorageSync(this.cache_key + this.propDataId) || [];
+                    new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
                     // 先使用缓存数据展示
                     this.setData({
                         diy_data: new_data,
