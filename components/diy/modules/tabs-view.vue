@@ -1,6 +1,6 @@
 <template>
     <!-- 文章列表 -->
-    <view class="container">
+    <view class="container" :class="isTop ? 'ps z-i-deep-must bg-white' : ''" :style="'top:' + top + 'px;'">
         <view class="flex-row gap-10 jc-sb align-c">
             <view class="tabs flex-1 flex-width">
                 <scroll-view :scroll-x="true" :show-scrollbar="false" :scroll-with-animation="true" :scroll-into-view="'one-nav-item-' + active_index" class="wh-auto">
@@ -59,6 +59,14 @@
             isTabs: {
                 type: Boolean,
                 default: false,
+            },
+            isTop: {
+                type: Boolean,
+                default: false,
+            },
+            top: {
+                type: String,
+                default: '0',
             },
         },
         components: {

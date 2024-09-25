@@ -1,10 +1,8 @@
 <template>
     <!-- 文章列表 -->
-    <view class="pr" :style="style_container">
-        <view :class="top_up == '1' ? 'ps z-i-deep-must top-0' : ''">
-            <componentDiyModulesTabsView :value="article_tabs" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
-        </view>
-        <view class="padding-top">
+    <view class="overflow-unset" :style="style_container">
+        <componentDiyModulesTabsView :value="article_tabs" :is-top="top_up == '1'" @tabs-click="tabs_click_event"></componentDiyModulesTabsView>
+        <view class="padding-top oh">
             <componentDiyArticleList :key="key" :value="article_tabs" :is-common-style="false"></componentDiyArticleList>
         </view>
     </view>
@@ -86,4 +84,8 @@
         },
     };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+    .overflow-unset {
+        overflow: unset !important;
+    }
+</style>
