@@ -32,7 +32,7 @@
                         <componentDiyCoupon v-else-if="item.key == 'coupon'" :value="item.com_data"></componentDiyCoupon>
                         <!-- 工具组件 -->
                         <componentDiyFloatWindow v-else-if="item.key == 'float-window'" :value="item.com_data"></componentDiyFloatWindow>
-                        <componentDiyTextTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentDiyTextTitle>
+                        <componentDiyTitle v-else-if="item.key == 'text-title'" :value="item.com_data"></componentDiyTitle>
                         <componentDiyAuxiliaryLine v-else-if="item.key == 'row-line'" :value="item.com_data"></componentDiyAuxiliaryLine>
                         <componentDiyRichText v-else-if="item.key == 'rich-text'" :value="item.com_data"></componentDiyRichText>
                         <componentDiyAuxiliaryBlank v-else-if="item.key == 'auxiliary-blank'" :value="item.com_data"></componentDiyAuxiliaryBlank>
@@ -76,7 +76,7 @@
     import componentDiyHotZone from '@/components/diy/hot-zone';
     import componentDiyCoupon from '@/components/diy/coupon';
     import componentDiyFloatWindow from '@/components/diy/float-window';
-    import componentDiyTextTitle from '@/components/diy/text-title';
+    import componentDiyTitle from '@/components/diy/title';
     import componentDiyAuxiliaryLine from '@/components/diy/auxiliary-line';
     import componentDiyRichText from '@/components/diy/rich-text';
     import componentDiyAuxiliaryBlank from '@/components/diy/auxiliary-blank';
@@ -125,7 +125,7 @@
             componentDiyAuxiliaryLine,
             componentDiyRichText,
             componentDiyFloatWindow,
-            componentDiyTextTitle,
+            componentDiyTitle,
             componentDiyAuxiliaryBlank,
             componentDiyNavGroup,
             componentDiyGoodsList,
