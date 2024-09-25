@@ -1,23 +1,23 @@
 <template>
     <view>
-        <componentDiy :value="diy_data"></componentDiy>
+        <!-- <componentDiy :value="diy_data"></componentDiy> -->
     </view>
 </template>
 
 <script>
     import componentDiy from '@/components/diy/diy';
-    import initData from './init_data';
+    // import initData from './init_data';
     export default {
         components: {
             componentDiy,
         },
         data() {
             return {
-                diy_data: initData,
+                // diy_data: initData,
             };
         },
         mounted() {
-            console.log(initData);
+            // console.log(initData);
         },
         methods: {},
     };
