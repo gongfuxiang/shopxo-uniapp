@@ -55,8 +55,8 @@
                 </scroll-view>
             </view>
         </view>
-        <block v-if="is_show_footer !== '0'">
-            <componentDiyFooter :key="key" :value="footer_data.com_data" @footer-height="footer_height_computer" @footer-click="footer_click_event"></componentDiyFooter>
+        <block v-if="is_show_footer == 1">
+            <componentDiyFooter :key="key" :propValue="footer_data.com_data" @footer-height="footer_height_computer" @footer-tap="footer_click_event"></componentDiyFooter>
         </block>
     </view>
 </template>
@@ -91,7 +91,6 @@
     import componentGoodsList from '@/components/goods-list/goods-list';
     import componentNoData from '@/components/no-data/no-data';
     import componentBottomLine from '@/components/bottom-line/bottom-line';
-    import { get_math } from '../../common/js/common/common';
     // 状态栏高度
     var bar_height = parseInt(app.globalData.get_system_info('statusBarHeight', 0));
     // #ifdef MP-TOUTIAO
@@ -100,11 +99,11 @@
     export default {
         name: 'diy',
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
-            propHomeId: {
+            propDataId: {
                 type: [String, Number],
                 default: '',
             },
@@ -166,8 +165,8 @@
                 // 选项卡数据
                 tabs_data: {},
                 diy_data: [],
-                is_show_footer: '0',
-                tabs_home_id: this.propHomeId,
+                is_show_footer: 0,
+                tabs_home_id: this.propDataId,
                 // 商品列表
                 goods_list: [],
                 goods_total: 0,
@@ -185,6 +184,8 @@
                 // 判断数据是否在加载中
                 data_is_loading: 0,
                 key: '',
+                // 缓存key
+                cache_key: app.globalData.data.cache_diy_data_key,
             };
         },
         computed: {
@@ -198,16 +199,15 @@
         methods: {
             init() {
                 // tabs选项卡数据过滤
-                // const filter_tabs_list = this.value.tabs_data || [];
                 this.setData({
-                    is_show_footer: this.value.header.com_data.content.bottom_navigation_show,
-                    key: get_math(),
-                    header_data: this.value.header,
-                    footer_data: this.value.footer,
-                    diy_data: this.value.diy_data,
-                    tabs_data: this.value.tabs_data,
+                    key: Math.random(),
+                    is_show_footer: this.propValue.header.com_data.content.bottom_navigation_show,
+                    header_data: this.propValue.header,
+                    footer_data: this.propValue.footer,
+                    diy_data: this.propValue.diy_data,
+                    tabs_data: this.propValue.tabs_data,
                 });
-                uni.setStorageSync('diy-data-' + this.tabs_home_id, this.value.diy_data);
+                uni.setStorageSync(this.cache_key + this.tabs_home_id, this.propValue.diy_data);
             },
             footer_height_computer(number) {
                 this.padding_footer_computer = number * 2;
@@ -223,7 +223,7 @@
                     id: tabs_id,
                 };
                 if (tabs_id) {
-                    new_data = uni.getStorageSync('diy-data-' + tabs_id) || [];
+                    new_data = uni.getStorageSync(this.cache_key + tabs_id) || [];
                     if (new_data.length > 0) {
                         // 先使用缓存数据展示
                         this.setData({
@@ -244,7 +244,7 @@
                                 const data = res.data.data.data;
                                 if (res.data.code == 0) {
                                     new_data = data?.config.diy_data || [];
-                                    uni.setStorageSync('diy-data-' + tabs_id, new_data);
+                                    uni.setStorageSync(this.cache_key + tabs_id, new_data);
                                     this.setData({
                                         diy_data: new_data,
                                     });
@@ -262,7 +262,7 @@
                     }
                 } else {
                     if (tabs_id == '') {
-                        new_data = uni.getStorageSync('diy-data-' + this.tabs_home_id) || [];
+                        new_data = uni.getStorageSync(this.cache_key + this.tabs_home_id) || [];
                     }
                     // 先使用缓存数据展示
                     this.setData({

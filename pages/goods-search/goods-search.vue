@@ -162,10 +162,14 @@
 
         <!-- 快捷导航 -->
         <component-quick-nav></component-quick-nav>
+
+        <!-- 公共 -->
+        <componentCommon></componentCommon>
     </view>
 </template>
 <script>
     const app = getApp();
+    import componentCommon from '@/components/common/common';
     import componentQuickNav from "@/components/quick-nav/quick-nav";
     import componentPopup from "@/components/popup/popup";
     import componentNoData from "@/components/no-data/no-data";
@@ -278,6 +282,7 @@
         },
 
         components: {
+            componentCommon,
             componentQuickNav,
             componentPopup,
             componentNoData,

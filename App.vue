@@ -190,6 +190,9 @@
                 // 页面设计页面数据缓存key
                 cache_design_page_data_key: 'cache_design_page_data_key',
 
+                // 底部菜单选中索引缓存key
+                cache_footer_active_key: 'cache_footer_active_key',
+
                 // diy模块数据缓存key
                 cache_diy_data_key: 'cache_diy_data_key',
                 // diy页面数据缓存key

@@ -2,7 +2,7 @@
     <view :class="theme_view">
         <view v-if="(data || null) != null">
             <!-- diy模块 -->
-            <componentDiy :value="data.config" :propDataId="data.id"></componentDiy>
+            <componentDiy :propValue="data.config" :propDataId="data.id"></componentDiy>
 
             <!-- 结尾 -->
             <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>

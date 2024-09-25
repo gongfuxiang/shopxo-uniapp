@@ -1,36 +1,35 @@
 <template>
     <!-- 底部导航 -->
-    <view v-if="(value || null) !== null" class="footer-nav flex-row jc-c align-c">
+    <view v-if="(propValue || null) !== null" class="footer-nav flex-row jc-c align-c">
         <view class="footer-nav-content flex-row jc-c align-c wh" :style="style_container">
             <view class="bottom-line-exclude">
                 <view class="flex-row jc-sa align-c wh padding-0">
                     <view v-for="(item, index) in nav_content" :key="index" class="flex-1 flex-col jc-c align-c gap-5" :data-index="index" :data-value="item.link.page || ''" @tap="url_event">
                         <view v-if="nav_style !== 2" class="img-content pr">
-                            <view class="img-item pa border-radius-xs animate-linear" :class="is_active != index ? 'active' : ''">
+                            <view class="img-item pa border-radius-xs animate-linear" :class="active_index != index ? 'active' : ''">
                                 <image :src="item.img[0].url" class="img dis-block" model="widthFix"></image>
                             </view>
-                            <view class="img-item pa border-radius-xs animate-linear" :class="is_active == index ? 'active' : ''">
+                            <view class="img-item pa border-radius-xs animate-linear" :class="active_index == index ? 'active' : ''">
                                 <image :src="item.img_checked[0].url" class="img dis-block" model="widthFix"></image>
                             </view>
                         </view>
-                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="is_active == index ? text_color_checked : default_text_color">{{ item.name }}</text>
+                        <text v-if="nav_style !== 1" class="animate-linear size-12 pr z-i" :style="active_index == index ? text_color_checked : default_text_color">{{ item.name }}</text>
                     </view>
                 </view>
             </view>
         </view>
     </view>
 </template>
-
 <script>
     const app = getApp();
     import { common_styles_computer } from '@/common/js/common/common.js';
     export default {
         props: {
-            value: {
+            propValue: {
                 type: Object,
                 default: () => ({}),
             },
-            footerActiveIndex: {
+            propFooterActiveIndex: {
                 type: Number,
                 default: 0,
             },
@@ -43,37 +42,42 @@
                 nav_style: 0,
                 default_text_color: '',
                 text_color_checked: '',
-                is_active: this.footerActiveIndex,
+                active_index: this.propFooterActiveIndex,
             };
         },
-        created() {
-            //隐藏tabbar
-           // uni.hideTabBar();
+        // 属性值改变监听
+        watch: {
+            // 选中索引
+            propFooterActiveIndex(value, old_value) {
+                this.setData({
+                    active_index: value,
+                });
+            }
         },
         mounted() {
-            if ((this.value || null) !== null) {
+            if ((this.propValue || null) !== null) {
                 this.init();
             }
         },
         methods: {
+            // 初始化
             init() {
-                const new_content = this.value.content || {};
-                const new_style = this.value.style || {};
+                const new_content = this.propValue.content || {};
+                const new_style = this.propValue.style || {};
                 let nav_content = new_content.nav_content || [];
                 let page = app.globalData.current_page() || null;
-                let is_active = this.footerActiveIndex;
+                let active_index = this.propFooterActiveIndex;
                 if(page != null) {
                     for(var i in nav_content) {
-                        console.log(page, nav_content[i]['link'])
                         if((nav_content[i]['link'] || null) != null && (nav_content[i]['link']['page'] || null) != null && nav_content[i]['link']['page'] == '/'+page) {
-                            is_active = i;
+                            active_index = i;
                         }
                     }
                 }
                 this.setData({
                     nav_content: nav_content,
                     nav_style: new_content.nav_style || 0,
-                    is_active: is_active,
+                    active_index: active_index,
                     default_text_color: 'color:' + new_style.default_text_color || 'rgba(0, 0, 0, 1)',
                     text_color_checked: 'color:' + new_style.text_color_checked || 'rgba(204, 204, 204, 1)',
                     style_container: common_styles_computer(new_style.common_style),
@@ -83,23 +87,19 @@
                 // 底部菜单距离底部的安全距离
                 footer_height += parseInt(uni.getSystemInfoSync().statusBarHeight);
                 // #endif
-                console.log(footer_height)
                 this.$emit('footer-height', footer_height);
             },
+
             // 跳转链接
             url_event(e) {
                 const index = e.currentTarget.dataset.index;
-                const list_item = this.nav_content[index];
-                this.setData({
-                    is_active: index,
-                });
+                const item = this.nav_content[index];
                 app.globalData.url_event(e);
-                this.$emit('footer-tap', index, list_item);
+                this.$emit('footer-tap', index, item);
             },
         },
     };
 </script>
-
 <style lang="scss" scoped>
     .footer-nav {
         z-index: 9;

@@ -1,6 +1,6 @@
 <template>
     <view>
-        <componentDiyFooter :key="key" :footerActiveIndex="footer_active_index" :value="app_tabber" @footer-height="footer_height_value_event" @footer-tap="footer_tap_event"></componentDiyFooter>
+        <componentDiyFooter :key="key" :propValue="app_tabber" @footer-height="footer_height_value_event"></componentDiyFooter>
         <view v-if="propIsFooterSeat && footer_height_value > 0" :style="'height:'+footer_height_value+'rpx;'"></view>
     </view>
 </template>
@@ -12,7 +12,6 @@
             return {
                 key: '',
                 app_tabber: null,
-                footer_active_index: 0,
                 footer_height_value: 0,
             };
         },
@@ -40,15 +39,7 @@
                     footer_height_value: value*2
                 });
                 this.$emit('footer-height', value);
-            },
-            
-            // 底部导航菜单
-            footer_tap_event(index, data) {
-                this.setData({
-                    footer_active_index: index
-                });
-                console.log(index, data);
-            },
+            }
         }
     };
 </script>

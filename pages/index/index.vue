@@ -4,7 +4,7 @@
             <!-- diy模式 -->
             <block v-if="data_mode == 3">
                 <block v-if="data_list !== null">
-                    <componentDiy :value="data_list.config" :prop-home-id="data_list.id"></componentDiy>
+                    <componentDiy :propValue="data_list.config" :propDataId="data_list.id"></componentDiy>
                 </block>
             </block>
             <!-- 自动和手动模式 -->
@@ -268,33 +268,34 @@
             <block v-if="load_status == 0">
                 <component-no-data :propStatus="data_list_loding_status" :propMsg="data_list_loding_msg" propPage="home" :propIsHeader="true"></component-no-data>
             </block>
+        </view>
 
+        <!-- 页面已加载 -->
+        <block v-if="load_status == 1">
             <!-- 结尾 -->
-            <block v-if="data_mode != 3">
-                <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
-            </block>
+            <component-bottom-line :propStatus="data_bottom_line_status"></component-bottom-line>
 
             <!-- 版权信息 -->
-            <block v-if="load_status == 1 && data_mode != 3">
-                <component-copyright></component-copyright>
+            <component-copyright></component-copyright>
+
+            <!-- 非diy模式 -->
+            <block v-if="data_mode != 3">
+                <!-- 在线客服 -->
+                <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
+            
+                <!-- 快捷导航 -->
+                <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
+            
+                <!-- 用户基础 -->
+                <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
+            
+                <!-- app管理 -->
+                <component-app-admin ref="app_admin"></component-app-admin>
             </block>
-        </view>
-        <block v-if="load_status == 1 && data_mode != 3">
-            <!-- 在线客服 -->
-            <component-online-service :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-online-service>
-
-            <!-- 快捷导航 -->
-            <component-quick-nav :propIsNav="true" :propIsBar="true" :propIsGrayscale="plugins_mourning_data_is_app"></component-quick-nav>
-
-            <!-- 用户基础 -->
-            <component-user-base ref="user_base" :propIsGrayscale="plugins_mourning_data_is_app"></component-user-base>
-
-            <!-- app管理 -->
-            <component-app-admin ref="app_admin"></component-app-admin>
         </block>
 
         <!-- 公共 -->
-        <componentCommon @footer-height="footer_height_value_event"></componentCommon>
+        <componentCommon></componentCommon>
     </view>
 </template>
 
@@ -737,11 +738,6 @@
             // 搜索icon扫码事件
             search_icon_event(e) {
                 app.globalData.scan_handle();
-            },
-            
-            // 底部菜单高度
-            footer_height_value_event(value) {
-                console.log(value)
             }
         },
     };
