@@ -59,8 +59,6 @@
                         is_tabbar: is_tabbar
                     });
                 }
-                
-                console.log(is_tabbar)
             },
 
             // 底部菜单高度
