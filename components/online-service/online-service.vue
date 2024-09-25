@@ -11,19 +11,19 @@
                 </block>
                 <block v-else>
                     <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU || MP-KUAISHOU -->
-                    <button open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                    <button class="chat-btn" open-type="contact" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef MP-ALIPAY -->
-                    <button open-type="contact" class="alipay-contact">
-                        <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="40rpx*40rpx" />
+                    <button class="chat-btn" open-type="contact" class="alipay-contact">
+                        <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'chat-icon.png'" size="40rpx*40rpx" />
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
                     <!-- #endif -->
                     <!-- #ifdef H5 || APP -->
-                    <button type="default" @tap="call_event">
+                    <button class="chat-btn" type="default" @tap="call_event">
                         <image class="icon" :src="common_static_url+'chat-icon.png'" mode="scaleToFill"></image>
                         <text class="text dis-block text-size-xs cr-grey">{{$t('online-service.online-service.4l6k22')}}</text>
                     </button>
@@ -38,23 +38,23 @@
                             <view class="ring"></view>
     	                    <view class="ring"></view>
                             <block v-if="is_chat == 1">
-                                <button type="default" :class="common_ent" @tap="chat_event">
+                                <button class="chat-btn" type="default" :class="common_ent" @tap="chat_event">
                                     <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                                 </button>
                             </block>
                             <block v-else>
                                 <!-- #ifdef MP-WEIXIN || MP-TOUTIAO || MP-BAIDU -->
-                                <button open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
+                                <button class="chat-btn" open-type="contact" :class="common_ent" :show-message-card="propCard" :send-message-title="propTitle" :send-message-path="propPath" :send-message-img="propImg">
                                     <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                                 </button>
                                 <!-- #endif -->
                                 <!-- #ifdef MP-ALIPAY -->
-                                <button open-type="contact" :class="'alipay-contact '+common_ent">
-                                    <contact-button :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="40rpx*40rpx" />
+                                <button class="chat-btn" open-type="contact" :class="'alipay-contact '+common_ent">
+                                    <contact-button class="alipay-chat-btn" :tnt-inst-id="mini_alipay_tnt_inst_id" :scene="mini_alipay_scene" :alipay-card-no="mini_alipay_openid || ''" :icon="common_static_url+'online-service-icon.png'" size="40rpx*40rpx" />
                                 </button>
                                 <!-- #endif -->
                                 <!-- #ifdef H5 || APP -->
-                                <button type="default" :class="common_ent" @tap="call_event">
+                                <button class="chat-btn" type="default" :class="common_ent" @tap="call_event">
                                     <image class="icon dis-block" :src="common_static_url+'online-service-icon.png'"></image>
                                 </button>
                                 <!-- #endif -->
@@ -308,12 +308,12 @@
         pointer-events: auto;
     }
     .online-service-event-submit,
-    .online-service-event-submit button {
+    .online-service-event-submit .chat-btn {
         width: 50px;
         height: 50px;
         border-radius: 50%;
     }
-    .online-service-event-submit button {
+    .online-service-event-submit .chat-btn {
         border: 0;
         padding: 0;
     }
@@ -322,7 +322,7 @@
         height: 50px !important;
         position: relative;
     }
-    .goods-chat-container button {
+    .goods-chat-container .chat-btn {
         padding: 0;
         border: 0;
         line-height: initial;
@@ -344,7 +344,7 @@
     .goods-chat-container .alipay-contact .text {
         margin-top: -5rpx;
     }
-    .online-service-event-submit contact-button {
+    .online-service-event-submit .alipay-chat-btn {
         line-height: initial;
         display: block;
     }

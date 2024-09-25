@@ -3,7 +3,7 @@
         <!-- 开启事件 -->
         <movable-area v-if="quick_status == 1" :class="'quick-movable-container ' + common_ent" :style="'height: calc(100% - ' + height_dec + 'rpx);top:' + top + 'rpx;'">
             <movable-view direction="all" :x="x" :y="y" :animation="false" class="quick-event-submit" @tap="quick_open_event">
-                <image :src="common_static_url + 'quick-icon.png'" mode="widthFix"></image>
+                <image class="image" :src="common_static_url + 'quick-icon.png'" mode="widthFix"></image>
             </movable-view>
         </movable-area>
 
@@ -19,7 +19,7 @@
                     <view v-if="data_list.length > 0" class="nav-data-list">
                         <view v-for="(item, index) in data_list" :key="index" class="item cp">
                             <view :class="'item-content ' + ((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="(item.bg_color || null) == null ? '' : 'background-color:' + item.bg_color + ';'">
-                                <image :src="item.images_url" mode="aspectFit"></image>
+                                <image class="image" :src="item.images_url" mode="aspectFit"></image>
                             </view>
                             <view class="title">{{ item.name }}</view>
                         </view>
@@ -171,7 +171,7 @@
         border-radius: 50%;
     }
 
-    .quick-event-submit image {
+    .quick-event-submit .image {
         width: 50px !important;
         height: 50px !important;
         display: block;
@@ -231,7 +231,7 @@
     }
 
     .nav-data-list .item-content,
-    .nav-data-list .item image {
+    .nav-data-list .item .image {
         width: 70rpx !important;
         height: 70rpx !important;
     }
@@ -243,7 +243,7 @@
     }
 
     .nav-data-list .item .item-exposed,
-    .nav-data-list .item .item-exposed image {
+    .nav-data-list .item .item-exposed .image {
         width: 110rpx !important;
         height: 110rpx !important;
     }

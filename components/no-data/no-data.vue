@@ -52,7 +52,7 @@
                 </block>
                 <block v-else>
                     <view v-if="loading_content_type == 1" class="loading-title-animation">
-                        <text>{{title}}</text>
+                        <text class="title">{{title}}</text>
                     </view>
                     <view v-else class="loading-logo-content" :style="'margin-top: '+propLoadingLogoTop+';'">
                         <view class="loading-logo" :style="'background-image: url('+loading_logo+')'"></view>
@@ -63,7 +63,7 @@
 
             <!-- 2 处理错误 -->
             <view v-else-if="propStatus == 2" class="no-data-box tc">
-                <image :src="static_dir + 'error.png'" mode="widthFix"></image>
+                <image class="image" :src="static_dir + 'error.png'" mode="widthFix"></image>
                 <view class="no-data-tips">{{propMsg || $t('form.form.bniyyt')}}</view>
                 <view v-if="propBackBtn" class="margin-top-xxxl tc">
                     <button type="default" size="mini" class="bg-grey-e br-grey cr-base round" @tap="back_event">{{$t('common.return')}}</button>
@@ -72,7 +72,7 @@
 
             <!-- 0 默认没有数据 -->
             <view v-else-if="propStatus == 0" class="no-data-box tc">
-                <image :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
+                <image class="image" :src="propUrl ? propUrl : static_dir + 'empty.png'" mode="widthFix"></image>
                 <view class="no-data-tips">{{propMsg || $t('common.no_relevant_data_tips')}}</view>
             </view>
         </view>
@@ -221,7 +221,7 @@
     .no-data-box {
         padding: 15% 0;
     }
-    .no-data-box image {
+    .no-data-box .image {
         width: 160rpx;
         margin-bottom: 30rpx;
     }
@@ -229,7 +229,7 @@
         font-size: 24rpx;
         color: #999;
     }
-    .no-data-loading text {
+    .no-data-loading .title {
         color: #999;
     }
 

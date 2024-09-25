@@ -54,6 +54,7 @@
 <script>
     const app = getApp();
     var coupon_static_url = app.globalData.get_static_url('coupon', true);
+    var tabbar_pages = app.globalData.app_tabbar_pages();
     export default {
         name: 'coupon-card',
         props: {
@@ -135,7 +136,7 @@
                 // 符号
                 currency_symbol: app.globalData.currency_symbol(),
                 // 首页地址
-                home_page_url: app.globalData.app_tabbar_pages()[0],
+                home_page_url: tabbar_pages[0],
             };
         },
         methods: {

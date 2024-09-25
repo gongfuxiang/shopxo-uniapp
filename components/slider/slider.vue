@@ -4,7 +4,7 @@
             <uni-swiper-dot class="uni-swiper-dot-box" :mode="propMode" :dots-styles="dotsStyles" @clickItem="click_item" :info="propData" :current="current">
                 <swiper class="banner oh" :class="' banner-' + (propSize || 'default') + ' ' + propRadius" :autoplay="propData.length > 0" :duration="duration" :circular="circular" @change="swiper_change" :current="swiperDotIndex">
                     <swiper-item v-for="(item, i) in propData" :key="i">
-                        <image :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
+                        <image class="image" :src="item.images_url" mode="widthFix" :data-value="item.event_value || item.url" :data-type="item.event_type == undefined ? 1 : item.event_type" @tap="banner_event"> </image>
                     </swiper-item>
                 </swiper>
             </uni-swiper-dot>
@@ -124,22 +124,22 @@
         transform: translateY(0);
     }
 
-    .banner image {
+    .banner .image {
         min-width: 100%;
     }
 
     .banner-mini,
-    .banner-mini image {
+    .banner-mini .image {
         height: 200rpx !important;
     }
 
     .banner-default,
-    .banner-default image {
+    .banner-default .image {
         height: 280rpx !important;
     }
 
     .banner-max,
-    .banner-max image {
+    .banner-max .image {
         height: 420rpx !important;
     }
 

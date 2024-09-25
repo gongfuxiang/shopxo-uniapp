@@ -7,7 +7,7 @@
                         <view class="swiper-item flex-row flex-wrap" :class="'swiper-item' + i">
                             <view v-for="(item, j) in swiper_item_data" :key="j" class="swiper-item item">
                                 <view :class="'item-content ' + ((item.bg_color || null) == null ? 'item-exposed' : '')" :data-value="item.event_value" :data-type="item.event_type" @tap="navigation_event" :style="(item.bg_color || null) == null ? '' : 'background-color:' + item.bg_color + ';'">
-                                    <image :src="item.images_url" mode="aspectFit"></image>
+                                    <image class="image" :src="item.images_url" mode="aspectFit"></image>
                                 </view>
                                 <view class="title">{{ item.name }}</view>
                             </view>
@@ -101,7 +101,7 @@
     }
 
     .icon-nav-list .item .item-content,
-    .icon-nav-list .item image {
+    .icon-nav-list .item .image {
         width: 50rpx !important;
         height: 50rpx !important;
     }
@@ -113,7 +113,7 @@
     }
 
     .icon-nav-list .item .item-exposed,
-    .icon-nav-list .item .item-exposed image {
+    .icon-nav-list .item .item-exposed .image {
         width: 90rpx !important;
         height: 90rpx !important;
     }

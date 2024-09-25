@@ -159,6 +159,7 @@
 
 <script>
     const app = getApp();
+    var tabbar_pages = app.globalData.app_tabbar_pages();
     import { common_styles_computer, gradient_computer } from '@/common/js/common/common.js';
     export default {
         props: {
@@ -186,7 +187,7 @@
                     url_3: '',
                 },
                 // 首页地址
-                home_page_url: app.globalData.data.app_tabbar_pages()[0],
+                home_page_url: tabbar_pages[0],
             };
         },
         created() {

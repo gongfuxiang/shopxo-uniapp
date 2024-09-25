@@ -1,9 +1,9 @@
 <template>
     <view :class="theme_view">
         <view v-if="(propStatus || false)" class="data-bottom-line">
-            <view class="left"></view>
-            <view class="msg">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</view>
-            <view class="right"></view>
+            <view class="item left"></view>
+            <view class="item msg">{{propMsg || $t('bottom-line.bottom-line.44bct2')}}</view>
+            <view class="item right"></view>
         </view>
     </view>
 </template>
@@ -28,7 +28,7 @@
         padding: 40rpx;
         overflow: hidden;
     }
-    .data-bottom-line view {
+    .data-bottom-line .item {
         width: 33.3%;
     }
     .data-bottom-line .left,

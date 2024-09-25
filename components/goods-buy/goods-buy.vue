@@ -9,7 +9,7 @@
                 </view>
                 <!-- 规格基础信息 -->
                 <view class="goods-spec-base oh br-b pr">
-                    <image :src="goods_spec_base_images" mode="scaleToFill" class="radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
+                    <image :src="goods_spec_base_images" mode="scaleToFill" class="spec-images radius br" @tap="goods_detail_images_view_event" :data-value="goods_spec_base_images"></image>
                     <view class="goods-spec-base-content">
                         <view class="goods-price">
                             <view v-if="(goods.show_field_price_status || 0) == 1">
@@ -36,8 +36,8 @@
                                 <view class="text-size-sm">{{ item.name }}</view>
                                 <view v-if="item.value.length > 0" class="spec margin-top-sm">
                                     <block v-for="(items, keys) in item.value" :key="keys">
-                                        <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'round ' + items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
-                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="va-m dis-inline-block round margin-right-sm"></image>
+                                        <button @tap.stop="goods_spec_choice_event" :data-key="key" :data-keys="keys" type="default" size="mini" hover-class="none" :class="'spec-btn round ' + items.is_active + ' ' + items.is_dont + ' ' + items.is_disabled">
+                                            <image v-if="(items.images || null) != null" :src="items.images" mode="scaleToFill" class="spec-images va-m dis-inline-block round margin-right-sm"></image>
                                             <text class="va-m">{{ items.name }}</text>
                                         </button>
                                     </block>
@@ -50,7 +50,7 @@
                             <view class="fl margin-top">{{ $t('goods-buy.goods-buy.737wzz') }}</view>
                             <view class="number-content tc oh round">
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="0">-</view>
-                                <input @blur="goods_buy_number_blur" class="tc cr-grey bg-white fl va-m radius-0" type="number" :value="buy_number" />
+                                <input @blur="goods_buy_number_blur" class="number-input tc cr-grey bg-white fl va-m radius-0" type="number" :value="buy_number" />
                                 <view @tap="goods_buy_number_event" class="number-submit tc cr-grey fl va-m" data-type="1">+</view>
                             </view>
                         </view>
@@ -848,7 +848,7 @@
     .goods-spec-base {
         height: 230rpx;
     }
-    .goods-spec-base image {
+    .goods-spec-base .spec-images {
         width: 200rpx;
         height: 200rpx;
         position: absolute;
@@ -866,15 +866,15 @@
         overflow-x: hidden;
         margin-top: 20rpx;
     }
-    .goods-spec-choice-container .item .spec button {
+    .goods-spec-choice-container .item .spec .spec-btn {
         background-color: #f5f5f5;
         color: #666;
         border: 1px solid #ccc;
     }
-    .goods-spec-choice-container .item .spec button:not(:last-child) {
+    .goods-spec-choice-container .item .spec .spec-btn:not(:last-child) {
         margin-right: 25rpx;
     }
-    .goods-spec-choice-container .item .spec button image {
+    .goods-spec-choice-container .item .spec .spec-btn .spec-images {
         width: 40rpx;
         height: 40rpx !important;
     }
@@ -883,7 +883,7 @@
         background-color: #ffffff !important;
         border: 1px solid #ebeaea !important;
     }
-    .goods-spec-choice-container .spec-dont-choose image {
+    .goods-spec-choice-container .spec-dont-choose .spec-images {
         opacity: 0.5;
     }
     .goods-spec-choice-container .spec-items-disabled {
@@ -891,7 +891,7 @@
         background-color: #ffffff !important;
         border: 1px dashed #d5d5d5 !important;
     }
-    .goods-spec-choice-container .spec-items-disabled image {
+    .goods-spec-choice-container .spec-items-disabled .spec-images {
         opacity: 0.3;
     }
 
@@ -909,11 +909,11 @@
         width: 80rpx;
         font-weight: bold;
     }
-    .goods-spec-choice-container .number-content input {
+    .goods-spec-choice-container .number-content .number-input {
         width: 50px;
     }
     .goods-spec-choice-container .number-content .number-submit,
-    .goods-spec-choice-container .number-content input {
+    .goods-spec-choice-container .number-content .number-input {
         padding: 0;
         height: 60rpx;
         line-height: 60rpx;

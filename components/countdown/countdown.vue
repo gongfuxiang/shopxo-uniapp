@@ -2,14 +2,14 @@
     <view :class="theme_view">
         <view class="countdown" v-if="is_show && !is_end">
             <block v-if="propMsecShow">
-                <view class="time" :style="time_style">{{ msec }}</view>
-                <view class="ds" :style="ds_style">{{ propSecondDs }}</view>
+                <view class="fr time" :style="time_style">{{ msec }}</view>
+                <view class="fr ds" :style="ds_style">{{ propSecondDs }}</view>
             </block>
-            <view class="time" :style="time_style">{{ second }}</view>
-            <view class="ds" :style="ds_style">{{ propMinuteDs }}</view>
-            <view class="time" :style="time_style">{{ minute }}</view>
-            <view class="ds" :style="ds_style">{{ propHourDs }}</view>
-            <view class="time" :style="time_style">{{ hour }}</view>
+            <view class="fr time" :style="time_style">{{ second }}</view>
+            <view class="fr ds" :style="ds_style">{{ propMinuteDs }}</view>
+            <view class="fr time" :style="time_style">{{ minute }}</view>
+            <view class="fr ds" :style="ds_style">{{ propHourDs }}</view>
+            <view class="fr time" :style="time_style">{{ hour }}</view>
         </view>
         <view v-if="is_show && is_end" class="timer-title">{{ propMsg || this.$t('index.index.443683') }}</view>
     </view>
@@ -192,16 +192,10 @@
     .countdown {
         line-height: 38rpx;
     }
-
-    .countdown view {
-        float: right;
-    }
-
     .countdown .timer-title {
         color: #666;
         margin-right: 10rpx;
     }
-
     .countdown .time {
         padding: 0;
         -moz-border-radius: 8rpx;
@@ -210,7 +204,6 @@
         min-width: 40rpx;
         text-align: center;
     }
-
     .countdown .ds {
         color: #4b5459;
         padding: 0 8rpx;
